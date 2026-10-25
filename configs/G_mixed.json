@@ -1,0 +1,20 @@
+{
+  "name": "G_generated",
+  "description": "生成组：Lux3D 几何 + 坡面/起伏地形（宏观难度与 P 对齐）",
+  "scenes": {"train": "scenes/train_G.json", "validation": "scenes/val_G.json"},
+  "seeds": [0],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "total_control_steps": 20000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "eval_every_updates": 5
+}

@@ -1,0 +1,80 @@
+{
+  "name": "P_150k",
+  "description": "程序化基线：平地 + 方块/圆柱障碍",
+  "scenes": {
+    "train": "scenes/train_P.json",
+    "validation": "scenes/val_P.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "total_control_steps": 150000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "eval_every_updates": 5,
+  "run_id": "train_P_150k",
+  "seed": 0,
+  "source": {
+    "files": {
+      "scripts/exam.py": "9b0b18d9f4ec2c41a526466240356fc9b3822231551f6e3a071e34949aa13e13",
+      "scripts/controllers.py": "93c86cb02bf2ef762303684cd243fa13090426693587dec10d56040720f246af",
+      "scripts/build_scene.py": "86aa7eff3b1dd7ce43e15bb91c2768dcaf3ab923a4debc66e87322e25ddb6609",
+      "scripts/drive_test.py": "cca5fb06f088de3749ef2eac92e5789b683a76cb3683c3c1ad6961649680ac9b"
+    },
+    "content_sha": "05fd8807772027bb6149f1b6be8532fa",
+    "git_commit": "be3fef701581d886b8791373122947ac8d56a893",
+    "git_dirty": true
+  },
+  "model": {
+    "available": true,
+    "go2w_xml_sha": "c8feaef4afdf360335727c80a826d161",
+    "git_commit": "1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d",
+    "git_dirty": false
+  },
+  "packages": {
+    "mujoco": "3.17.0",
+    "numpy": "2.5.4",
+    "trimesh": "5.2.0",
+    "coacd": "1.0.14",
+    "manifold3d": "3.5.4",
+    "pillow": "13.0.0"
+  },
+  "train_scenes": [
+    "trainP_flat_0",
+    "trainP_flat_1",
+    "trainP_flat_2"
+  ],
+  "val_scenes": [
+    "valP_flat_0",
+    "valP_flat_1"
+  ],
+  "train_scene_ids": [
+    "4321ab8656ce5e58",
+    "4cc46fe6d98feb3b",
+    "8e01e607942eecdc"
+  ],
+  "val_scene_ids": [
+    "5f27d003c4c295b3",
+    "7bac94a3d61cc7c9"
+  ],
+  "action_space": {
+    "dim": 3,
+    "meaning": "前腿目标偏移 / 后腿目标偏移 / 轮速倍率",
+    "scale": [
+      0.3,
+      0.3,
+      0.6
+    ]
+  },
+  "init_params_checksum": "363c2dbdc5a2e92fd98ec8fb9cfba29f"
+}

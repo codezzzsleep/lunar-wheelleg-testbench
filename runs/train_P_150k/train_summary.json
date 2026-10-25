@@ -1,0 +1,20 @@
+{
+  "run_id": "train_P_150k",
+  "seed": 0,
+  "updates": 147,
+  "baseline_val_success": 1.0,
+  "throughput": {
+    "control_per_s": 413.0,
+    "physics_per_s": 4749.8
+  },
+  "peak_rss_mb": 671.6,
+  "wall_seconds": 498.9,
+  "control_steps": 150528,
+  "init_params_checksum": "363c2dbdc5a2e92fd98ec8fb9cfba29f",
+  "final_params_checksum": "d0ffacf6a8ab3b9f629f3c3c2638692f",
+  "params_changed": true,
+  "checkpoints": [
+    "checkpoints/final.npz",
+    "checkpoints/best.npz"
+  ]
+}

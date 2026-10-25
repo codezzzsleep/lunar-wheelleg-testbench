@@ -1,0 +1,20 @@
+{
+  "run_id": "train_G_40k",
+  "seed": 0,
+  "updates": 40,
+  "baseline_val_success": 0.5,
+  "throughput": {
+    "control_per_s": 412.1,
+    "physics_per_s": 4738.8
+  },
+  "peak_rss_mb": 656.5,
+  "wall_seconds": 139.9,
+  "control_steps": 40960,
+  "init_params_checksum": "363c2dbdc5a2e92fd98ec8fb9cfba29f",
+  "final_params_checksum": "8147dd9dd81349b6eb00cbd4fb734361",
+  "params_changed": true,
+  "checkpoints": [
+    "checkpoints/final.npz",
+    "checkpoints/best.npz"
+  ]
+}

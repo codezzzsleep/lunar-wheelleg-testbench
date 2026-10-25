@@ -1,0 +1,29 @@
+{
+  "name": "lunar_inspection_A",
+  "reference_kind": "synthetic",
+  "provenance": "程序化渲染的合成参考图（本项目生成），不是照片、不是真实地形数据",
+  "seed": 11,
+  "goal_x": 3.4,
+  "terrain": {
+    "kind": "flat",
+    "slope_deg": 0.0,
+    "roughness": 0.0,
+    "pits": 0,
+    "pit_depth": 0.0
+  },
+  "objects": [
+    {
+      "asset": "flat_slab_w300",
+      "x": 1.2,
+      "y": 0.1,
+      "yaw_deg": 12.0
+    }
+  ],
+  "difficulty": {
+    "rel_height_band": [
+      0.3,
+      0.7
+    ],
+    "lateral_offset": 0.1
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "name": "lunar_inspection_A",
+  "seed": 11,
+  "split": "train",
+  "start": [
+    0.0,
+    0.0
+  ],
+  "goal_x": 3.4,
+  "terrain": {
+    "kind": "flat",
+    "slope_deg": 0.0,
+    "roughness": 0.0,
+    "pits": 0,
+    "pit_depth": 0.0
+  },
+  "objects": [
+    {
+      "asset": "flat_slab_w300",
+      "x": 1.2,
+      "y": 0.1,
+      "yaw_deg": 12.0
+    }
+  ],
+  "provenance": {
+    "reference": "unknown",
+    "reference_kind": "synthetic",
+    "task_text": "月球基地外围巡检：机器人需要从着陆区出发，沿 +x 方向前进约 3.4 m，\n途中越过一块斜置的设备底板（生成资产 flat_slab，横向偏移 0.10 m），\n最终到达货运箱旁的检查点。地形整体微倾斜（约 4°），带轻微起伏，不允许翻越围栏。",
+    "mapping": "explicit_rules",
+    "terrain_representation": "heightfield",
+    "note": "参考图为程序化渲染的合成图；映射为显式规则，非视觉模型推理"
+  }
+}

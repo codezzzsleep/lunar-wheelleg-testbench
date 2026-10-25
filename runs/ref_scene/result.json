@@ -1,0 +1,36 @@
+{
+  "reference_pack": "references/pack_A",
+  "reference_kind": "synthetic",
+  "task_text": "月球基地外围巡检：机器人需要从着陆区出发，沿 +x 方向前进约 3.4 m，\n途中越过一块斜置的设备底板（生成资产 flat_slab，横向偏移 0.10 m），\n最终到达货运箱旁的检查点。地形整体微倾斜（约 4°），带轻微起伏，不允许翻越围栏。",
+  "scene_identity": "346cc40e45d9f608",
+  "objects": [
+    {
+      "asset": "flat_slab_w300",
+      "x": 1.2,
+      "y": 0.1,
+      "yaw_deg": 12.0
+    }
+  ],
+  "terrain": {
+    "kind": "flat",
+    "slope_deg": 0.0,
+    "roughness": 0.0,
+    "pits": 0,
+    "pit_depth": 0.0
+  },
+  "robot_outcome": {
+    "reason": "success",
+    "x": 3.403,
+    "contact_scene": true
+  },
+  "artifacts": {
+    "scene_spec": "scene_spec.json",
+    "rollout": "rollout.json",
+    "render": "scene_render.png"
+  },
+  "honesty": [
+    "参考图为合成渲染，不是照片或真实地形数据",
+    "参考→spec 为显式规则映射，不是视觉模型推理",
+    "地形为 heightfield，物体为 Lux3D 生成的静态碰撞体"
+  ]
+}

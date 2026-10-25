@@ -1,0 +1,95 @@
+[
+  {
+    "name": "trainG_flat_0",
+    "seed": 300,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.4,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 0.0
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "note": "所有物体为静态刚性体；地形为刚性 heightfield"
+    },
+    "family": "flat_slab_w300"
+  },
+  {
+    "name": "trainG_slope_1",
+    "seed": 301,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.4,
+    "terrain": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 0.0
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "note": "所有物体为静态刚性体；地形为刚性 heightfield"
+    },
+    "family": "crate_lid_w300"
+  },
+  {
+    "name": "trainG_mixed_2",
+    "seed": 302,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.4,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 4.0,
+      "roughness": 0.05,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 0.0
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "note": "所有物体为静态刚性体；地形为刚性 heightfield"
+    },
+    "family": "fallen_panel_w300"
+  }
+]

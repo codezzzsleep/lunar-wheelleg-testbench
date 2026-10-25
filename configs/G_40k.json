@@ -1,0 +1,25 @@
+{
+  "name": "G_40k",
+  "description": "\u751f\u6210\u7ec4\uff1aLux3D \u51e0\u4f55 + \u5761\u9762/\u8d77\u4f0f\u5730\u5f62\uff08\u5b8f\u89c2\u96be\u5ea6\u4e0e P \u5bf9\u9f50\uff09",
+  "scenes": {
+    "train": "scenes/train_G.json",
+    "validation": "scenes/val_G.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "total_control_steps": 40000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "eval_every_updates": 5
+}

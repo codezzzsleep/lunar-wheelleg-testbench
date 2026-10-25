@@ -1,0 +1,20 @@
+{
+  "name": "P_procedural",
+  "description": "程序化基线：平地 + 方块/圆柱障碍",
+  "scenes": {"train": "scenes/train_P.json", "validation": "scenes/val_P.json"},
+  "seeds": [0],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "total_control_steps": 20000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "eval_every_updates": 5
+}

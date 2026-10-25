@@ -1,0 +1,25 @@
+{
+  "name": "P_20k",
+  "description": "\u7a0b\u5e8f\u5316\u57fa\u7ebf\uff1a\u5e73\u5730 + \u65b9\u5757/\u5706\u67f1\u969c\u788d",
+  "scenes": {
+    "train": "scenes/train_P.json",
+    "validation": "scenes/val_P.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "total_control_steps": 20000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "eval_every_updates": 5
+}

@@ -88,7 +88,8 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
                     kp * (tg[leg][p] - d.qpos[e['qadr']]) - kd * d.qvel[e['vadr']], -45, 45)
             e = J[f'{leg}_wheel_joint']
             vt = v_target * min(1.0, t / ramp)
-            d.ctrl[e['act']] = np.clip(1.2 * (vt / WHEEL_R - d.qvel[e['vadr']]), -15, 15)
+            boost = ctrl_brain.wheel_boost() if hasattr(ctrl_brain, 'wheel_boost') else 1.0
+            d.ctrl[e['act']] = np.clip(1.2 * boost * (vt / WHEEL_R - d.qvel[e['vadr']]), -15, 15)
 
         mujoco.mj_step(m, d)
 
@@ -136,6 +137,7 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
         'wall_seconds': round(wall, 2),
         'y_offset': y_offset,
         'engaged': first_contact is not None,
+        'brain': ctrl_brain.stats() if hasattr(ctrl_brain, 'stats') else None,
         'obstacle': {k: man[k] for k in ('rel_height', 'rel_width', 'concavity',
                                           'coacd_parts', 'hit_part_cap', 'height_m')},
     }
@@ -146,7 +148,7 @@ if __name__ == '__main__':
     ap.add_argument('--asset', required=True)
     ap.add_argument('--stance', default='low', choices=['low', 'high'])
     ap.add_argument('--distance', type=float, default=2.0)
-    ap.add_argument('--controller', default='hold', choices=['hold', 'step'])
+    ap.add_argument('--controller', default='hold', choices=['hold', 'step', 'adapt'])
     a = ap.parse_args()
     r = run(a.asset, a.stance, a.distance, controller=a.controller)
     print(json.dumps(r, indent=2, ensure_ascii=False))

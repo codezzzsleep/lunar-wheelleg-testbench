@@ -8,7 +8,7 @@
 用法：
   python scripts/exam.py --asset assets/processed/cargo_crate --stance low --distance 2.0
 """
-import argparse, json, pathlib, sys, time
+import argparse, json, os, pathlib, sys, time
 import numpy as np
 import mujoco
 
@@ -20,7 +20,7 @@ GO2W_DIR = pathlib.Path('vendor/unitree_mujoco/unitree_robots/go2w')
 WHEEL_R = 0.086
 
 
-def compose_xml(asset_dir, out_xml):
+def compose_xml(asset_dir, out_xml, y_offset=0.0):
     """go2w + 月面 + 障碍物（静态，多块凸包拼成一个 body）。"""
     base = pathlib.Path(build_base())          # 已含重力与地面的 moon_flat.xml
     xml = base.read_text()
@@ -33,12 +33,14 @@ def compose_xml(asset_dir, out_xml):
         geoms.append(f'<geom type="mesh" mesh="obs{i}" rgba=".72 .56 .36 1" '
                      f'friction=".9 .02 .001" contype="1" conaffinity="1"/>')
     block = (
-        f'\n    <body name="obstacle" pos="2.0 0 0">'
+        f'\n    <body name="obstacle" pos="2.0 {y_offset:.4f} 0">'
         f'{"".join(geoms)}</body>'
     )
     xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
     xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
-    out = GO2W_DIR / 'moon_exam.xml'
+    # 每个进程/资产写自己的 XML：并行跑时共用同一个文件名会互相覆盖
+    tag = f'{pathlib.Path(asset_dir).name}_{os.getpid()}'
+    out = GO2W_DIR / f'_exam_{tag}.xml'
     out.write_text(xml)
     return out, man
 
@@ -48,8 +50,8 @@ def obstacle_geom_ids(m, body='obstacle'):
     return {g for g in range(m.ngeom) if m.geom_bodyid[g] == bid}
 
 
-def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0):
-    xml_path, man = compose_xml(asset_dir, None)
+def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0, y_offset=0.0):
+    xml_path, man = compose_xml(asset_dir, None, y_offset=y_offset)
     m = mujoco.MjModel.from_xml_path(str(xml_path))
     d = mujoco.MjData(m)
     J = ids(m)
@@ -127,6 +129,8 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
         'contact_steps': contact_steps,
         'sim_seconds': round(len(tilts) * dt, 2),
         'wall_seconds': round(wall, 2),
+        'y_offset': y_offset,
+        'engaged': first_contact is not None,
         'obstacle': {k: man[k] for k in ('rel_height', 'rel_width', 'concavity',
                                           'coacd_parts', 'hit_part_cap', 'height_m')},
     }

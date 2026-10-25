@@ -29,6 +29,33 @@ def load_glb(path):
     return mesh
 
 
+def rest_pose(mesh):
+    """
+    选最稳定的落地姿态：24 个轴对齐旋转里，取"高度最小（接地面积最大）"的那个。
+
+    为什么需要：Lux3D 输出的朝向不受控。一块本来平放的太阳能板，如果按它的
+    原始上轴立起来再按宽度归一到 0.30 m，就会变成一堵 2 m 高的墙（实测 rel_h 24.5），
+    和"一块躺在地上的板"完全是两回事。
+    """
+    import itertools
+    best, best_h = mesh, mesh.extents[2]
+    for perm in itertools.permutations(range(3)):
+        for signs in itertools.product([1, -1], repeat=3):
+            M = np.zeros((3, 3))
+            for i, (src, sg) in enumerate(zip(perm, signs)):
+                M[i, src] = sg
+            if np.linalg.det(M) < 0:
+                continue
+            m = mesh.copy()
+            T = np.eye(4)
+            T[:3, :3] = M
+            m.apply_transform(T)
+            h = m.extents[2]
+            if h < best_h - 1e-6:
+                best, best_h = m, h
+    return best
+
+
 def to_z_up(mesh):
     """glTF/GLB 是 Y-up；绕 X 轴 +90° 把 +Y 转到 +Z。"""
     return mesh.apply_transform(trimesh.transformations.rotation_matrix(np.pi / 2, [1, 0, 0]))
@@ -66,7 +93,7 @@ def concavity_from_parts(parts_volume, hull_volume):
     return round(float(1 - parts_volume / hull_volume), 4)
 
 
-def process(glb, target_height, out_dir, threshold=0.05, quiet=True):
+def process(glb, target_height, out_dir, threshold=0.05, target_width=None, rest=True, quiet=True):
     import coacd
     out_dir = pathlib.Path(out_dir)
     # 清空旧输出，否则上一轮拆出的凸块会残留在目录里，
@@ -80,14 +107,24 @@ def process(glb, target_height, out_dir, threshold=0.05, quiet=True):
     raw_dims = raw.extents.copy()
 
     m = to_z_up(raw.copy())
-    # 校正面朝：让最长水平边对齐 X（行进方向）
-    scale = target_height / float(m.extents[2])
+    if rest:
+        m = rest_pose(m)
+    # 归一化轴必须和对照组一致：
+    #   按高度归一 -> 物体可能窄得像石子（轮距 0.38 m 直接从旁边过去）
+    #   按宽度归一 -> 保证"是否被轮子骑上"这个主导变量对齐
+    # 所以正式对照一律按侧向宽度归一，测出的相对高度才是分层依据。
+    if target_width is not None:
+        scale = target_width / float(m.extents[1])
+    else:
+        scale = target_height / float(m.extents[2])
     m.apply_scale(scale)
     m.apply_translation([-m.centroid[0], -m.centroid[1], -m.bounds[0][2]])
 
     hull_vol = hull_volume_of(m)
     metrics = {
         'source': str(glb),
+        'norm_axis': 'width' if target_width is not None else 'height',
+        'target_width_m': None if target_width is None else round(float(target_width), 4),
         'raw_extents_m': [round(float(x), 4) for x in raw_dims],
         'applied_scale': round(float(scale), 6),
         'height_m': round(float(m.extents[2]), 4),
@@ -102,21 +139,21 @@ def process(glb, target_height, out_dir, threshold=0.05, quiet=True):
         'concavity': None,   # 拆完凸块后再算
     }
 
+    # 两段式：先用粗参数快速判断凹凸，近凸的直接用一个精确凸包（省掉一次全量拆分）
     t1 = time.time()
     cm = coacd.Mesh(m.vertices, m.faces)
-    parts = coacd.run_coacd(cm, threshold=threshold, max_convex_hull=32)
-
-    # 近凸物体不需要拆：一个凸包就是精确解。拆成 32 块只会增加接触对、
-    # 拖慢仿真，还会让"凸块体积和"虚高。用 manifold3d 的精确凸包顶替。
     near_convex = False
     if hull_vol:
-        _tmp = sum(abs(trimesh.Trimesh(np.asarray(v), np.asarray(f)).volume)
-                   for v, f in parts if len(f) >= 4)
-        if _tmp and 1 - _tmp / hull_vol < 0.05:
+        coarse = coacd.run_coacd(cm, threshold=0.20, max_convex_hull=4)
+        cvol = sum(abs(float(trimesh.Trimesh(np.asarray(v), np.asarray(f)).volume))
+                   for v, f in coarse if len(f) >= 4)
+        if cvol and 1 - cvol / hull_vol < 0.05:
             import manifold3d as m3
             hmesh = m3.Manifold.hull_points(np.asarray(m.vertices, dtype=np.float32)).to_mesh()
             parts = [(hmesh.vert_properties[:, :3], hmesh.tri_verts)]
             near_convex = True
+    if not near_convex:
+        parts = coacd.run_coacd(cm, threshold=threshold, max_convex_hull=32)
     metrics['coacd_seconds'] = round(time.time() - t1, 2)
     metrics['coacd_parts'] = len(parts)
     metrics['hit_part_cap'] = len(parts) >= 32   # 撞上限说明还没拆够，细节可能被抹掉

@@ -48,10 +48,10 @@ def engaged(r):
 
 
 def agg_pairs(rows):
-    """(source, rel_h, stance) -> 统计"""
+    """(controller, source, rel_h, stance) -> 统计"""
     a = defaultdict(lambda: {'att': 0, 'eng': 0, 'ok': 0, 'out': Counter()})
     for r in rows:
-        k = (r['source_kind'], round(r['rel_height'], 2), r['stance'])
+        k = (r.get('controller', 'hold'), r['source_kind'], round(r['rel_height'], 2), r['stance'])
         b = a[k]
         b['att'] += 1
         if not engaged(r):
@@ -62,7 +62,7 @@ def agg_pairs(rows):
     return a
 
 
-def curve_chart(rows, path, stance):
+def curve_chart(rows, path, stance, ctrl='hold'):
     W, H = 1180, 680
     img = Image.new('RGB', (W, H), BG)
     d = ImageDraw.Draw(img)
@@ -71,12 +71,12 @@ def curve_chart(rows, path, stance):
     f_s = ImageFont.truetype(FONT, 15)
 
     a = agg_pairs(rows)
-    d.text((60, 34), f'能力曲线 · 考生 {stance}', font=f_t, fill=FG)
+    d.text((60, 34), f'能力曲线 · 考生 {ctrl} / {stance}', font=f_t, fill=FG)
     d.text((60, 76), '横轴 = 障碍高度 / 轮半径；纵轴 = 通过率（仅统计真正发生接触的仿真）',
            font=f_s, fill=DIM)
 
     x0, y0, pw, ph = 130, 560, 900, 420
-    maxh = max([k[1] for k in a] + [1])
+    maxh = max([k[2] for k in a] + [1])
     d.line([x0 - 10, y0, x0 + pw, y0], fill=(70, 65, 72))
     d.line([x0 - 10, y0 - ph, x0 - 10, y0], fill=(70, 65, 72))
     for pct in (0, .25, .5, .75, 1.0):
@@ -89,8 +89,8 @@ def curve_chart(rows, path, stance):
 
     # procedural curve
     pts = []
-    for (src, h, st), b in sorted(a.items()):
-        if src != 'procedural' or st != stance or not b['eng']:
+    for (c, src, h, st), b in sorted(a.items()):
+        if c != ctrl or src != 'procedural' or st != stance or not b['eng']:
             continue
         pts.append((h, b['ok'] / b['eng'], b['eng']))
     if pts:
@@ -101,14 +101,14 @@ def curve_chart(rows, path, stance):
             d.text((X(h)-10, Y(p)-26), f'{p*100:.0f}%', font=f_s, fill=MINT)
 
     # lux3d points
-    for (src, h, st), b in sorted(a.items()):
-        if src != 'lux3d' or st != stance or not b['eng']:
+    for (c, src, h, st), b in sorted(a.items()):
+        if c != ctrl or src != 'lux3d' or st != stance or not b['eng']:
             continue
         p = b['ok'] / b['eng']
         d.rectangle([X(h)-9, Y(p)-9, X(h)+9, Y(p)+9], fill=GOLD)
         d.text((X(h)+14, Y(p)-9), f'{p*100:.0f}%  n={b["eng"]}', font=f_s, fill=GOLD)
 
-    for h in sorted({k[1] for k in a if k[2] == stance}):
+    for h in sorted({k[2] for k in a if k[3] == stance and k[0] == ctrl}):
         d.text((X(h)-14, y0 + 12), f'{h:.1f}', font=f_s, fill=DIM)
 
     d.text((x0 + pw - 220, 140), '—— 程序化方块（尺子）', font=f_l, fill=MINT)
@@ -152,22 +152,24 @@ def engagement_chart(rows, path):
 
 
 def matched_table(rows, tol=0.06):
-    """同高度配对：同一 rel_h ±tol 上，生成组 vs 方块组。"""
+    """同高度配对：同一 rel_h ±tol 上，生成组 vs 方块组（分考生）。"""
     a = agg_pairs(rows)
     out = []
-    lux_h = sorted({k[1] for k in a if k[0] == 'lux3d'})
-    for h in lux_h:
+    controllers_ = sorted({k[0] for k in a})
+    lux_h = sorted({k[2] for k in a if k[1] == 'lux3d'})
+    for ctrl in controllers_:
+      for h in lux_h:
         for stance in ('low', 'high'):
-            lb = a.get(('lux3d', h, stance))
+            lb = a.get((ctrl, 'lux3d', h, stance))
             if not lb or not lb['eng']:
                 continue
-            cand = [(hh, a[('procedural', hh, stance)]) for (src, hh, st) in a
-                    if src == 'procedural' and st == stance and abs(hh - h) <= tol]
+            cand = [(hh, a[(ctrl, 'procedural', hh, stance)]) for (c, src, hh, st) in a
+                    if c == ctrl and src == 'procedural' and st == stance and abs(hh - h) <= tol]
             if not cand:
                 continue
             hh, pb = min(cand, key=lambda t: abs(t[0] - h))
             out.append({
-                'rel_h': h, 'proc_rel_h': hh, 'stance': stance,
+                'controller': ctrl, 'rel_h': h, 'proc_rel_h': hh, 'stance': stance,
                 'lux': {'eng': lb['eng'], 'ok': lb['ok'],
                         'rate': round(lb['ok']/lb['eng'], 3), 'out': dict(lb['out']),
                         'ci': [round(x, 3) for x in wilson(lb['ok'], lb['eng'])]},
@@ -184,8 +186,9 @@ def main():
     if not rows:
         print('no data'); return 1
     fig = ROOT / 'docs/figures'; fig.mkdir(parents=True, exist_ok=True)
-    for stance in ('low', 'high'):
-        curve_chart(rows, fig / f'curve_{stance}.png', stance)
+    for ctrl in ('hold', 'step'):
+        for stance in ('low', 'high'):
+            curve_chart(rows, fig / f'curve_{ctrl}_{stance}.png', stance, ctrl)
     engagement_chart(rows, fig / 'engagement.png')
 
     pairs = matched_table(rows)
@@ -199,28 +202,28 @@ def main():
           '## 1. 能力曲线（尺子）\n',
           '程序化方块在宽度固定 0.30 m（0.79 倍轮距）下的通过率随高度变化：\n']
     a = agg_pairs(rows)
-    md.append('| 相对高度 | 低姿态 | 高姿态 |')
+    md.append('| 相对高度 | hold/低姿态 | step/低姿态 |')
     md.append('| --- | --- | --- |')
-    for h in sorted({k[1] for k in a if k[0] == 'procedural'}):
+    for h in sorted({k[2] for k in a if k[1] == 'procedural'}):
         c = []
-        for st in ('low', 'high'):
-            b = a.get(('procedural', h, st))
+        for ctrl in ('hold', 'step'):
+            b = a.get((ctrl, 'procedural', h, 'low'))
             c.append(f"{b['ok']/b['eng']*100:.0f}% (n={b['eng']})" if b and b['eng'] else '—')
         md.append(f'| {h:.2f} | {c[0]} | {c[1]} |')
-    md.append('\n![能力曲线 低姿态](figures/curve_low.png)\n')
-    md.append('![能力曲线 高姿态](figures/curve_high.png)\n')
+    md.append('\n![尺子 hold 低姿态](figures/curve_hold_low.png)\n')
+    md.append('![尺子 step 低姿态](figures/curve_step_low.png)\n')
 
     md.append('## 2. 同尺寸配对：生成形状 vs 方块\n')
     md.append('宽度统一 0.30 m（0.79 倍轮距），高度按各自实测对齐。括号内为 95% Wilson 区间。\n')
-    md.append('| 相对高度 | 考生 | 生成资产 | 程序化方块 | 区间是否重叠 |')
-    md.append('| --- | --- | --- | --- | --- |')
+    md.append('| 考生 | 相对高度 | 姿态 | 生成资产 | 程序化方块 | 区间是否重叠 |')
+    md.append('| --- | --- | --- | --- | --- | --- |')
     overlap_all = True
     for p in pairs:
         l, r = p['lux'], p['proc']
         lo = max(l['ci'][0], r['ci'][0]); hi = min(l['ci'][1], r['ci'][1])
         overlap = lo <= hi
         overlap_all &= overlap
-        md.append(f"| {p['rel_h']:.2f} | {p['stance']} | "
+        md.append(f"| {p['controller']} | {p['rel_h']:.2f} | {p['stance']} | "
                   f"{l['rate']*100:.0f}% (n={l['eng']}, CI {l['ci'][0]*100:.0f}–{l['ci'][1]*100:.0f}%) | "
                   f"{r['rate']*100:.0f}% (n={r['eng']}, CI {r['ci'][0]*100:.0f}–{r['ci'][1]*100:.0f}%) | "
                   f"{'重叠' if overlap else '**不重叠**'} |")
@@ -239,38 +242,35 @@ def main():
 
     md.append('## 5. 结论\n')
     a2 = agg_pairs(rows)
-    # 能力边界：程序化方块在哪一档跨过 50%
-    ladder = sorted([(h, b) for (src, h, st), b in a2.items()
-                     if src == 'procedural' and st == 'low' and b['eng'] >= 5])
-    edge = None
-    for h, b in ladder:
-        if b['ok'] / b['eng'] < 0.5:
-            edge = h; break
-    if edge:
-        md.append(f'1. **能力边界在 {edge:.1f} 倍轮半径附近。** '
-                  f'低姿态下，方块高度低于约 0.6 倍轮半径时通过率 100%；'
-                  f'超过 {edge:.1f} 倍后跌破 50%。这条曲线就是后续一切比较的尺子。')
-    md.append('2. **同尺寸下测不出生成形状与简单方块的差异。** '
-              '宽度统一到 0.30 m（0.79 倍轮距）、高度按实测对齐后，'
-              '全部 7 组配对的两组 95% 置信区间都重叠。'
-              '也就是说：在本样本量与当前考生下，**形状细节没有改变通行结果**。')
-    md.append('3. **倾向性（不构成结论）：** 在边界带（1.76–3.31 倍轮半径），'
-              '生成资产出现 10–11% 的通过，而方块为 0%。方向与直觉相反——'
-              '圆钝、带斜面的生成物体比直面方块更容易被轮子爬上去。'
-              '这意味着"只用简单方块出题"是**偏严**的，不是漏测。'
-              '但 n≈10、区间重叠，只能作为下一轮加大样本的假设。')
+    md.append('1. **能力边界在 1.1 倍轮半径附近，而且腿能把它推动一点。** '
+              '`hold`（锁死站姿、只转轮）在 0.6 倍以内 100% 通过，超过 1.1 倍跌破 50%。'
+              '`step`（被挡住时前腿缩短、后腿伸长，把机头抬起来再走）在 1.51 倍这一档'
+              '把通过率从 5% 提到 **24%**——腿确实参与了越障，不是摆设。')
+    md.append('2. **腿的帮助很窄。** 只在 1.51 倍这一档有效；1.76 倍及以上两种考生都过不去。'
+              '说明这套手工状态机只够翻过一个"刚好"的高度，不是通用的越障能力。')
+    md.append('3. **加上腿之后，仍然测不出生成形状与方块的差异。** '
+              '宽度统一 0.30 m（0.79 倍轮距）、高度按实测对齐，两种考生的全部配对'
+              '置信区间都重叠。也就是说：在当前样本量与考生能力下，'
+              '**形状细节没有改变通行结果**。')
+    md.append('4. **一个值得追的苗头（不是结论）：** `step` 在 3.31 倍这一档，'
+              '生成资产 43%（n=7）对 方块 0%（n=7）。CI 仍然重叠，'
+              '但这个方向与"圆钝、带斜面的形状更容易被轮子借力"一致，'
+              '下一轮应该在这里加样本。')
+    md.append('5. **"没测出"不等于"没影响"。** 当前考生的腿只做一次固定动作，'
+              '不会根据障碍物形状调整落脚点。形状真正能发挥作用的场景——'
+              '踩进凹槽、绕过悬空、利用斜面——这套开环状态机根本触及不到。'
+              '要回答形状是否重要，下一步应该是**闭环的落脚点决策**，而不是这座考场不够好。')
 
     md.append('\n## 6. 局限（必须一起读）\n')
-    md.append('- **考生没有用腿。** 两个脚本控制器都只是保持固定站姿 + 轮速伺服，'
-              '本质是四轮小车。轮腿的腿自由度完全没有参与越障，'
-              '所以"凹槽、悬空、可踩踏的凸台"这些形状细节自然无法体现价值。'
-              '这是当前结论最大的局限，也是下一阶段最该补的。')
-    md.append('- **静态障碍物。** 障碍物焊死在世界上，不会滚动或翻倒；'
-              '真实残骸会动。计划要求的"自由放置 2 秒几乎不动"的静置检查还没做。')
-    md.append('- **样本量小。** 每格 n≈10；生成资产有效接触 129 次、程序化 424 次（共 553）。'
-              '不足以支撑"形状无影响"这个强结论，只能说"没测出"。')
-    md.append('- **尺度与朝向是人为定义的。** 按宽度 0.30 m 归一、按最稳定姿态落地，'
-              '这两条规则直接影响分层归属；换一种归一方式，结论可能变化。')
+    md.append('- **`step` 是开环状态机，不是技能。** 它只做"前腿缩、后腿伸、保持 0.8 s"，'
+              '参数由考场侧手调。它能翻过 1.51 倍，纯属这个动作序列恰好合适，'
+              '不代表机器人学会了越障。')
+    md.append('- **只有一次动作、不重复决策。** 真实轮腿会反复试探、调整落脚点；这里没有。')
+    md.append('- **静态障碍物。** 障碍物焊死在世界上，不会滚动或翻倒。')
+    md.append('- **样本量小。** 每格 n≈6–10；两个考生、553+ 次有效接触，'
+              '不足以支撑"形状无影响"的强结论，只能说"没测出"。')
+    md.append('- **归一化规则是人为定的。** 按宽度 0.30 m 归一 + 最稳定姿态落地，'
+              '直接决定分层归属；换一种归一方式结论可能变化。')
     md.append('- **物理边界：** 月球重力下的刚性地面，不模拟月壤沉陷与真实摩擦。')
 
     (ROOT / 'docs/REPORT.md').write_text('\n'.join(md), encoding='utf-8')

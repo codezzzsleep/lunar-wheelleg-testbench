@@ -16,10 +16,11 @@ RESULTS = pathlib.Path('runs')
 
 
 def one(task):
-    asset_dir, stance, y_off = task
+    asset_dir, stance, y_off, controller = task
     try:
         from exam import run
-        r = run(asset_dir, stance=stance, target_x=2.0, seconds=18.0, y_offset=y_off)
+        r = run(asset_dir, stance=stance, target_x=2.0, seconds=18.0,
+                y_offset=y_off, controller=controller)
         man = json.loads((pathlib.Path(asset_dir) / 'manifest.json').read_text())
         r['source_kind'] = man.get('source_kind', 'lux3d')
         r['asset_id'] = man.get('asset_id', pathlib.Path(asset_dir).name)
@@ -31,7 +32,7 @@ def one(task):
         return r
     except Exception as e:
         return {'asset': str(asset_dir), 'stance': stance, 'y_offset': y_off,
-                'outcome': 'ERROR', 'error': repr(e)[:200]}
+                'controller': controller, 'outcome': 'ERROR', 'error': repr(e)[:200]}
 
 
 def layer_of(rel_h):
@@ -81,6 +82,7 @@ if __name__ == '__main__':
     ap.add_argument('--out', default='runs/batch.jsonl')
     ap.add_argument('--workers', type=int, default=4)
     ap.add_argument('--filter', default=None, help='只跑名字含该子串的资产')
+    ap.add_argument('--controllers', default='hold,step', help='考生：hold / step')
     ap.add_argument('--offsets', default='0,0.04,0.08,0.12,0.16,0.20,0.24,0.28,0.32,0.36,0.40,0.44',
                     help='障碍物横向偏移（采样"轮子会不会碰上"这条边界）')
     a = ap.parse_args()
@@ -90,8 +92,11 @@ if __name__ == '__main__':
     if a.filter:
         dirs = [d for d in dirs if a.filter in d.name]
     offsets = [float(x) for x in a.offsets.split(',')]
-    tasks = [(str(d), s, y) for d in dirs for s in a.stances for y in offsets]
-    print(f'{len(dirs)} assets x {len(a.stances)} stances x {len(offsets)} offsets = {len(tasks)} sims', flush=True)
+    controllers_ = a.controllers.split(',')
+    tasks = [(str(d), s, y, c) for d in dirs for s in a.stances
+             for c in controllers_ for y in offsets]
+    print(f'{len(dirs)} assets x {len(a.stances)} stances x {len(controllers_)} controllers '
+          f'x {len(offsets)} offsets = {len(tasks)} sims', flush=True)
 
     t0 = time.time()
     rows = []

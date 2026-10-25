@@ -14,6 +14,7 @@ import mujoco
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from drive_test import ids, LEG, STANCE, STANCE_HIGH
+import controllers
 from build_scene import build as build_base
 
 GO2W_DIR = pathlib.Path('vendor/unitree_mujoco/unitree_robots/go2w')
@@ -50,7 +51,7 @@ def obstacle_geom_ids(m, body='obstacle'):
     return {g for g in range(m.ngeom) if m.geom_bodyid[g] == bid}
 
 
-def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0, y_offset=0.0):
+def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0, y_offset=0.0, controller='hold'):
     xml_path, man = compose_xml(asset_dir, None, y_offset=y_offset)
     m = mujoco.MjModel.from_xml_path(str(xml_path))
     d = mujoco.MjData(m)
@@ -58,6 +59,7 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
     obs = obstacle_geom_ids(m)
 
     st = STANCE if stance == 'low' else STANCE_HIGH
+    ctrl_brain = controllers.make(controller, st)
     for leg in LEG:
         d.qpos[J[f'{leg}_thigh_joint']['qadr']] = st['thigh']
         d.qpos[J[f'{leg}_calf_joint']['qadr']] = st['calf']
@@ -78,10 +80,12 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
     t0 = time.time()
     for i in range(n):
         t = i * dt
+        tg = ctrl_brain.targets(t, d.qpos, d.qvel, False)
         for leg in LEG:
             for p in ('hip', 'thigh', 'calf'):
                 e = J[f'{leg}_{p}_joint']
-                d.ctrl[e['act']] = np.clip(kp * (st[p] - d.qpos[e['qadr']]) - kd * d.qvel[e['vadr']], -45, 45)
+                d.ctrl[e['act']] = np.clip(
+                    kp * (tg[leg][p] - d.qpos[e['qadr']]) - kd * d.qvel[e['vadr']], -45, 45)
             e = J[f'{leg}_wheel_joint']
             vt = v_target * min(1.0, t / ramp)
             d.ctrl[e['act']] = np.clip(1.2 * (vt / WHEEL_R - d.qvel[e['vadr']]), -15, 15)
@@ -121,6 +125,7 @@ def run(asset_dir, stance='low', target_x=2.0, seconds=18.0, v_target=1.0, ramp=
     return {
         'asset': str(asset_dir),
         'stance': stance,
+        'controller': controller,
         'outcome': outcome,
         'final_x': round(float(d.qpos[0]), 3),
         'distance_m': round(float(d.qpos[0] - start[0]), 3),
@@ -141,8 +146,9 @@ if __name__ == '__main__':
     ap.add_argument('--asset', required=True)
     ap.add_argument('--stance', default='low', choices=['low', 'high'])
     ap.add_argument('--distance', type=float, default=2.0)
+    ap.add_argument('--controller', default='hold', choices=['hold', 'step'])
     a = ap.parse_args()
-    r = run(a.asset, a.stance, a.distance)
+    r = run(a.asset, a.stance, a.distance, controller=a.controller)
     print(json.dumps(r, indent=2, ensure_ascii=False))
     pathlib.Path('runs').mkdir(exist_ok=True)
     pathlib.Path('runs/gate1_exam.json').write_text(json.dumps(r, indent=2, ensure_ascii=False))

@@ -14,19 +14,21 @@ import mujoco
 
 from exam import compose_xml, obstacle_geom_ids
 from drive_test import ids, LEG, STANCE, STANCE_HIGH
+import controllers
 
 WHEEL_R = 0.086
 W, H = 960, 540
 
 
 def render_exam(asset_dir, stance='low', seconds=8.0, fps=30, out_dir='runs/render',
-                follow=True, target_x=2.0):
-    xml_path, man = compose_xml(asset_dir, None)
+                follow=True, target_x=2.0, controller='hold', y_offset=0.0):
+    xml_path, man = compose_xml(asset_dir, None, y_offset=y_offset)
     m = mujoco.MjModel.from_xml_path(str(xml_path))
     d = mujoco.MjData(m)
     J = ids(m)
     obs = obstacle_geom_ids(m)
     st = STANCE if stance == 'low' else STANCE_HIGH
+    brain = controllers.make(controller, st)
 
     for leg in LEG:
         d.qpos[J[f'{leg}_thigh_joint']['qadr']] = st['thigh']
@@ -53,10 +55,11 @@ def render_exam(asset_dir, stance='low', seconds=8.0, fps=30, out_dir='runs/rend
     contact = None
     for i in range(int(seconds / dt)):
         t = i * dt
+        tg = brain.targets(t, d.qpos, d.qvel, False)
         for leg in LEG:
             for p in ('hip', 'thigh', 'calf'):
                 e = J[f'{leg}_{p}_joint']
-                d.ctrl[e['act']] = np.clip(kp * (st[p] - d.qpos[e['qadr']]) - kd * d.qvel[e['vadr']], -45, 45)
+                d.ctrl[e['act']] = np.clip(kp * (tg[leg][p] - d.qpos[e['qadr']]) - kd * d.qvel[e['vadr']], -45, 45)
             e = J[f'{leg}_wheel_joint']
             vt = 1.0 * min(1.0, t / 2.0)
             d.ctrl[e['act']] = np.clip(1.2 * (vt / WHEEL_R - d.qvel[e['vadr']]), -15, 15)
@@ -99,5 +102,6 @@ if __name__ == '__main__':
     ap.add_argument('--asset', default='assets/processed/cargo_crate')
     ap.add_argument('--stance', default='low')
     ap.add_argument('--seconds', type=float, default=8.0)
+    ap.add_argument('--controller', default='hold', choices=['hold','step'])
     a = ap.parse_args()
-    print(json.dumps(render_exam(a.asset, a.stance, a.seconds), indent=2))
+    print(json.dumps(render_exam(a.asset, a.stance, a.seconds, controller=a.controller), indent=2))

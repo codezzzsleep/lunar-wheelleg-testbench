@@ -52,7 +52,7 @@ def check_collision():
 
 def check_lux3d_object():
     subprocess.run([sys.executable, 'scripts/exam.py', '--asset',
-                    'assets/processed/cargo_crate', '--stance', 'low'],
+                    'assets/processed/cargo_crate_w300', '--stance', 'low'],
                    cwd=ROOT, env={'PYTHONPATH': '/tmp/robolib', 'PATH': '/usr/bin:/bin'},
                    capture_output=True)
     r = json.loads((ROOT / 'runs/gate1_exam.json').read_text())

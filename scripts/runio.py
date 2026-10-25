@@ -295,6 +295,11 @@ def new_run(out_dir, suite, config, resume=False):
         raise SystemExit(
             f'拒绝新建：{run_dir} 非空。\n'
             '  要续跑请加 --resume；要重跑请换一个新目录。本工具不会覆盖已有证据。')
+
+    # **先拍环境快照，再创建任何文件**。否则本运行目录自身会成为未跟踪文件，
+    # 让 git_dirty 变成 true，证据包会自证"源码不干净"。
+    env = environment_snapshot()
+
     for sub in ('figures', 'logs', 'replays'):
         (run_dir / sub).mkdir(parents=True, exist_ok=True)
 
@@ -303,7 +308,7 @@ def new_run(out_dir, suite, config, resume=False):
                 'created_at': time.strftime('%Y-%m-%dT%H:%M:%S%z')}
     man_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False))
     (run_dir / 'environment.json').write_text(
-        json.dumps(environment_snapshot(), indent=2, ensure_ascii=False))
+        json.dumps(env, indent=2, ensure_ascii=False))
     return run_dir, manifest
 
 

@@ -45,7 +45,7 @@ git -C vendor/unitree_mujoco checkout 1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d
 ## 快速测试（第 1 关验收）
 
 ```bash
-python scripts/gate1.py --out runs/gate1
+.venv/bin/python scripts/gate1.py --out runs/gate1
 ```
 
 四项：模型加载与重力冒烟、几何碰撞对照（凸包 vs CoACD）、Lux3D 资产进入考场并接触、
@@ -54,20 +54,23 @@ python scripts/gate1.py --out runs/gate1
 回归测试：
 
 ```bash
-python -m unittest discover -s tests -v      # 8 项，约 11 秒
+.venv/bin/python -m unittest discover -s tests -v      # 35 项，约 20 秒
 ```
 
 ## 一场演示 / 一次正式批跑
 
 ```bash
 # 冒烟：20 个 trial，约 6 秒
-python scripts/demo.py --suite smoke --out runs/smoke
+.venv/bin/python scripts/demo.py --suite smoke --out runs/smoke_$(date +%s)
 
-# 正式：2520 个 trial（35 个资产 × 2 站姿 × 3 控制器 × 12 横向偏移）
-python scripts/demo.py --suite canonical --out runs/canonical
+# 正式：2520 个 trial（35 个**选中**资产 × 2 站姿 × 3 控制器 × 12 横向偏移）
+.venv/bin/python scripts/demo.py --suite canonical --out runs/canonical_r2
+
+# 续跑（只补缺失任务，校验身份；不要用它重跑已有记录）
+.venv/bin/python scripts/demo.py --suite canonical --out runs/canonical_r2 --resume
 
 # 分析（只读显式指定的结果文件）
-python scripts/analyze.py --input runs/canonical/results.jsonl --out runs/canonical
+.venv/bin/python scripts/analyze.py --input runs/canonical_r2/results.jsonl --out runs/canonical_r2
 ```
 
 运行目录结构：
@@ -83,7 +86,11 @@ runs/<run_id>/
 ```
 
 **实测成本**（4 核 / 7 GB / 无 GPU）：canonical 2520 个 trial，3 个 worker，
-**672 秒**，单 trial 平均 0.27 秒墙面时间。完整结果已随仓库提交。
+约 **672 秒**。目录里 49 个可用资产中实际选中 35 个，`config.json` 分别记录
+`available_asset_count` 与 `selected_asset_count`，不要把 49 写成参与资产数。
+
+批次隔离：新运行只接受空目录；续跑必须 `--resume` 且校验 suite、完整任务集合与
+运行身份（控制参数 / 资产指纹 / 模型 / 仿真源码）。想重跑就换新目录，工具不会覆盖证据。
 
 ## 回放
 
@@ -104,7 +111,7 @@ python scripts/replay.py --run runs/canonical --trial <trial_id>
 | --- | --- | --- |
 | `hold` | 锁死站姿 + 轮速伺服，本质是四轮小车 | 障碍低于 0.6 倍轮半径几乎必过；越过 1.1 倍后大量倾覆 |
 | `step` | 被挡住时执行一次固定序列：前腿缩短、后腿伸长，把机头抬起来 | 在 1.51 倍这一档明显优于 hold；1.76 倍以上基本无效 |
-| `adapt` | 只用本体感觉（轮速、机体倾角、前进速度）在"抬腿 / 加大力矩"之间二选一 | 与 step 同级；**不会**按形状调整落脚点 |
+| `adapt` | 只用**机体前进速度 + 机体倾角**（不读轮速）在"抬腿 / 加大力矩"之间二选一 | 与 step 同级；**不会**按形状调整落脚点 |
 
 三者都是**手工控制器**，不是学出来的技能。`adapt` 的"自适应"仅指上述二选一，
 不能读作"学会了越障"。
@@ -133,8 +140,13 @@ python scripts/replay.py --run runs/canonical --trial <trial_id>
 - 同一资产的多个偏移不是多个独立形状家族；未做家族留出，**不能**声称泛化能力。
 - 障碍物是静态刚性体，不滚动、不翻倒。
 - 完成判据是「机体中心越过障碍后方 0.25 m 净空」，不等于整机完全通过。
-- **包围盒尺寸不足以刻画越障难度**：本次正式运行中，斜坡在 1.5 倍以上分层仍完成
-  24–33/36，而同高度方块仅 2/12。
+  「完成数」是终点任务完成数，含未接触障碍物的场景，不等于「越障成功数」。
+- box 与 mesh 匹配的是**相对高度与横向宽度**，前后长度未必相同；不写"尺寸完全相同"。
+- 同高度对照的条目来自少量几何对在不同考生与站姿下的重复比较，**不是独立形状样本**，
+  不做显著性推断。
+- 分层 L3 含多个高度，「同属 L3」不等于「同高度」；引用斜坡/方块的差异时要给精确高度。
+- **包围盒尺寸不足以单独刻画越障表现**：在本批固定场景网格中，不同几何体呈现不同完成
+  分布。这是一项有限观察，不是机制已验证，也不是新的通用难度指标。
 
 ## 目录
 

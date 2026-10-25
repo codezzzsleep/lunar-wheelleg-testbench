@@ -2,12 +2,15 @@
 分析：把一次运行的 results.jsonl 变成报告。
 
   python scripts/analyze.py --input runs/<run_id>/results.jsonl --out runs/<run_id>
+                            [--allow-partial]
 
-原则（对应复查意见第 3、4、5、6 节）：
-  · 只读 **显式指定** 的结果文件，绝不 glob 历史批次
-  · 分组键包含 shape 与 controller：方块 / 圆柱 / 斜坡 / 生成网格、三个考生不混算
-  · 报告里每个数字都来自本文件的输入；没有数据的组不生成结论
-  · 字体不再硬编码；找不到中文字体时降级为英文标签并明确提示
+严格校验（第二轮任务 3）：
+  · 逐行校验：必须是 JSON 对象、必要字段齐全、类型正确、status/outcome 自洽
+  · 重复 trial_id 直接报错，不自动合并
+  · 若同目录有冻结清单 manifest.json，则校验缺失/计划外 ID、参数身份、schema
+  · 全 ERROR / 全预检失败 / 无有效仿真 → 只写诊断文件并非零退出
+  · 不同控制/物理配置的记录不允许混成一个成绩
+  · 默认只读显式指定的文件；--allow-partial 才允许部分报告，且报告会醒目标注
 """
 import argparse
 import json
@@ -21,6 +24,11 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 BG, FG, DIM, GRID = (8, 7, 10), (244, 238, 228), (150, 143, 133), (32, 30, 36)
 GOLD, MINT, VIOLET = (232, 180, 90), (130, 230, 198), (164, 135, 255)
 
+REQUIRED = ('trial_id', 'status', 'controller', 'stance')
+VALID_STATUS = {'ok', 'precheck_failed', 'ERROR'}
+VALID_OUTCOME = {'completed', 'tipped', 'stuck', 'timeout', 'precheck_failed', 'ERROR'}
+PHYSICS_KEYS = ('control', 'gravity', 'friction', 'timestep')
+
 CJK_CANDIDATES = [
     os.environ.get('RLL_FONT', ''),
     '/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc',
@@ -32,7 +40,6 @@ CJK_CANDIDATES = [
 
 
 def find_cjk_font():
-    """返回 (path, supports_cjk)。找不到就返回 (None, False)，由调用方降级。"""
     for p in CJK_CANDIDATES:
         if p and pathlib.Path(p).exists():
             return str(p), True
@@ -48,8 +55,6 @@ def find_cjk_font():
 
 
 class LBL:
-    """有中文字体就用中文，没有就降级英文（并在报告里说明）。"""
-
     def __init__(self, has_cjk):
         self.cjk = has_cjk
 
@@ -57,31 +62,92 @@ class LBL:
         return zh if self.cjk else en
 
 
+# ------------------------------------------------------------------ 读取/校验
+
 def load(path):
-    rows, bad = [], 0
-    for line in pathlib.Path(path).read_text().splitlines():
+    rows, bad = [], []
+    for i, line in enumerate(pathlib.Path(path).read_text().splitlines(), 1):
         if not line.strip():
             continue
         try:
-            rows.append(json.loads(line))
-        except json.JSONDecodeError:
-            bad += 1
+            obj = json.loads(line)
+        except json.JSONDecodeError as e:
+            bad.append({'line': i, 'error': f'json:{e.msg}'})
+            continue
+        if not isinstance(obj, dict):
+            bad.append({'line': i, 'error': 'not_an_object'})
+            continue
+        miss = [k for k in REQUIRED if k not in obj]
+        if miss:
+            bad.append({'line': i, 'error': f'missing_fields:{",".join(miss)}'})
+            continue
+        if obj.get('status') not in VALID_STATUS:
+            bad.append({'line': i, 'error': f'bad_status:{obj.get("status")}'})
+            continue
+        if obj.get('outcome') not in VALID_OUTCOME:
+            bad.append({'line': i, 'error': f'bad_outcome:{obj.get("outcome")}'})
+            continue
+        # status / outcome 必须自洽
+        st, oc = obj['status'], obj['outcome']
+        if st == 'ok' and oc in ('precheck_failed', 'ERROR'):
+            bad.append({'line': i, 'error': f'status_outcome_conflict:{st}/{oc}'})
+            continue
+        if st in ('precheck_failed', 'ERROR') and oc != st:
+            bad.append({'line': i, 'error': f'status_outcome_conflict:{st}/{oc}'})
+            continue
+        rows.append(obj)
     return rows, bad
+
+
+def validate(rows, bad, manifest):
+    """返回 issues 列表。空列表表示可以出正式报告。"""
+    issues = []
+    if bad:
+        issues.append(f'{len(bad)} 行无法解析或字段非法（行号见 issues 详情）')
+
+    ids = [r.get('trial_id') for r in rows]
+    dups = [k for k, v in Counter(ids).items() if v > 1]
+    if dups:
+        issues.append(f'重复 trial_id {len(dups)} 个：{dups[:5]}')
+
+    if manifest:
+        expected = set(manifest.get('trial_ids') or [])
+        got = set(ids)
+        miss, extra = expected - got, got - expected
+        if miss:
+            issues.append(f'缺失 {len(miss)} 个计划内 trial')
+        if extra:
+            issues.append(f'{len(extra)} 个计划外 trial_id')
+
+    # 不同物理/控制配置不得混算
+    cfg = {json.dumps({k: r.get(k) for k in PHYSICS_KEYS}, sort_keys=True)
+           for r in rows}
+    if len(cfg) > 1:
+        issues.append(f'输入里存在 {len(cfg)} 套不同的控制/物理配置，不能合并为一个成绩')
+
+    ok_rows = [r for r in rows if r.get('status') == 'ok']
+    if not ok_rows:
+        issues.append('没有任何有效仿真记录（全为 ERROR 或 precheck_failed）')
+    return issues
 
 
 def counts(rows):
     c = Counter()
     for r in rows:
         c['records'] += 1
-        if r.get('status') == 'precheck_failed':
+        st = r.get('status')
+        if st == 'precheck_failed':
             c['precheck_failed'] += 1
+            continue
+        if st == 'ERROR':
+            c['ERROR'] += 1
             continue
         c['executed'] += 1
         if r.get('contact_any'):
             c['contact_any'] += 1
         if r.get('contact_wheel'):
             c['contact_wheel'] += 1
-        c[r.get('outcome') or 'ERROR'] += 1
+        c[r.get('outcome') or 'UNKNOWN'] += 1
     c['not_contacted'] = c['executed'] - c['contact_any']
     return c
 
@@ -90,12 +156,12 @@ def group(rows, keys):
     agg = defaultdict(lambda: {'n': 0, 'outcomes': Counter(),
                                'contact_any': 0, 'contact_wheel': 0})
     for r in rows:
-        if r.get('status') == 'precheck_failed':
+        if r.get('status') != 'ok':
             continue
         k = tuple(r.get(x) for x in keys)
         a = agg[k]
         a['n'] += 1
-        a['outcomes'][r.get('outcome') or 'ERROR'] += 1
+        a['outcomes'][r.get('outcome') or 'UNKNOWN'] += 1
         a['contact_any'] += 1 if r.get('contact_any') else 0
         a['contact_wheel'] += 1 if r.get('contact_wheel') else 0
     return agg
@@ -118,7 +184,6 @@ def bar_chart(agg, path, title, note, font_path):
     f_t, f_s, f_l = _font(font_path, 26), _font(font_path, 15), _font(font_path, 14)
     d.text((50, 30), title, font=f_t, fill=FG)
     d.text((50, 68), note, font=f_s, fill=DIM)
-
     x0, y0, pw, ph = 90, 500, W - 140, 340
     d.line([x0 - 10, y0, x0 + pw, y0], fill=(70, 65, 72))
     d.line([x0 - 10, y0 - ph, x0 - 10, y0], fill=(70, 65, 72))
@@ -126,10 +191,8 @@ def bar_chart(agg, path, title, note, font_path):
         y = y0 - ph * pct
         d.line([x0 - 10, y, x0 + pw, y], fill=GRID)
         d.text((x0 - 58, y - 9), f'{int(pct*100)}%', font=f_s, fill=DIM)
-
     bw = pw / len(keys) * 0.55
     for i, k in enumerate(keys):
-        # 该 (shape, controller) 在全部姿态/分层上的合并完成率
         num = sum(a['outcomes'].get('completed', 0) for kk, a in agg.items()
                   if kk[0] == k[0] and kk[2] == k[1])
         den = sum(a['n'] for kk, a in agg.items() if kk[0] == k[0] and kk[2] == k[1])
@@ -146,10 +209,14 @@ def bar_chart(agg, path, title, note, font_path):
     return path
 
 
+# ------------------------------------------------------------------ 主流程
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--input', required=True, help='results.jsonl 的显式路径')
-    ap.add_argument('--out', required=True, help='报告输出目录')
+    ap.add_argument('--input', required=True)
+    ap.add_argument('--out', required=True)
+    ap.add_argument('--allow-partial', action='store_true',
+                    help='允许在不完整/有失败记录时仍生成报告（报告会醒目标注）')
     a = ap.parse_args()
 
     inp = pathlib.Path(a.input)
@@ -159,9 +226,26 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     (out / 'figures').mkdir(exist_ok=True)
 
+    man_path = inp.parent / 'manifest.json'
+    manifest = json.loads(man_path.read_text()) if man_path.exists() else None
+
     rows, bad = load(inp)
-    if not rows:
-        raise SystemExit('输入为空，拒绝生成成功报告')
+    issues = validate(rows, bad, manifest)
+    has_plan = manifest is not None
+    # 探索性报告只适用于「单条合法仿真记录」；只有 ERROR 的一条记录不是探索性场景
+    exploratory = (not has_plan) and len(rows) == 1 and rows[0].get('status') == 'ok'
+
+    if issues and not a.allow_partial and not exploratory:
+        diag = {'input': str(inp), 'records': len(rows), 'bad_lines': bad,
+                'issues': issues,
+                'has_manifest': has_plan}
+        (out / 'diagnostics.json').write_text(json.dumps(diag, indent=2, ensure_ascii=False))
+        print('拒绝生成正式报告：', file=sys.stderr)
+        for i in issues:
+            print('  -', i, file=sys.stderr)
+        print(f'诊断已写入 {out/"diagnostics.json"}；如确需部分报告，加 --allow-partial',
+              file=sys.stderr)
+        return 2
 
     font_path, has_cjk = find_cjk_font()
     L = LBL(has_cjk)
@@ -170,30 +254,45 @@ def main():
     env = json.loads(env_path.read_text()) if env_path.exists() else {}
 
     c = counts(rows)
+    status = 'complete' if not issues else 'partial'
     md = ['# 运行报告\n']
-    md.append(f'- 运行目录：`{inp.parent.name}`　suite：`{cfg.get("suite", "?")}`')
-    md.append(f'- 输入：`{inp.name}`（记录 {c["records"]} 条，无法解析 {bad} 行）')
+    if status != 'complete':
+        md.append(f'> **状态：{status}。** 本报告基于不完整或有失败记录的输入，'
+                  f'不能作为正式验收通过。问题：{"; ".join(issues)}\n')
+    if exploratory:
+        md.append('> **探索性报告：未提供冻结任务清单，计划完整性未验证。**\n')
+
+    md.append(f'- 运行目录：`{inp.parent.name}`　suite：`{cfg.get("suite", "未提供")}`')
+    md.append(f'- 输入：`{inp.name}`（记录 {c["records"]} 条，非法行 {len(bad)}）')
     if env:
-        md.append(f'- 代码提交：`{str(env.get("code", {}).get("commit"))[:12]}`'
-                  f'（未提交修改：{env.get("code", {}).get("uncommitted_changes")}）')
-        md.append(f'- 模型提交：`{str(env.get("robot_model", {}).get("commit"))[:12]}`')
+        md.append(f'- 运行源码内容哈希：`{(env.get("source") or {}).get("content_sha")}`'
+                  f'（git {(env.get("source") or {}).get("git_commit")}，'
+                  f'未提交修改 {(env.get("source") or {}).get("git_dirty")}）')
+        md.append(f'- 模型：`{(env.get("model") or {}).get("go2w_xml_sha")}`'
+                  f'（git {(env.get("model") or {}).get("git_commit")}，'
+                  f'未提交修改 {(env.get("model") or {}).get("git_dirty")}）')
         md.append(f'- 版本：`{env.get("packages")}`')
     if not has_cjk:
-        md.append('\n> 未找到中文字体，图中标签已降级为英文；正文仍为中文。'
-                  '设置 `RLL_FONT=/path/to/font.ttc` 可恢复。')
+        md.append('\n> 未找到中文字体，图内标签降级为英文（正文仍中文）。'
+                  '设置 `RLL_FONT` 可恢复。')
 
     md.append('\n## 1. 任务计数\n')
-    md.append('| 计划 | 执行 | 预检失败 | 未接触 | 接触(任意机体) | 接触(轮子) |')
-    md.append('| --- | --- | --- | --- | --- | --- |')
-    md.append(f'| {cfg.get("planned_trials", "?")} | {c["executed"]} | {c["precheck_failed"]} | '
-              f'{c["not_contacted"]} | {c["contact_any"]} | {c["contact_wheel"]} |')
-    outs = {k: v for k, v in c.items()
-            if k in ('completed', 'tipped', 'stuck', 'timeout', 'ERROR')}
-    md.append(f'\n结果分布（分母 = 已执行 {c["executed"]}）：`{outs}`\n')
+    md.append('| 计划 | 收到 | ok | 预检失败 | ERROR | 缺失 | 重复 | 非法行 |')
+    md.append('| --- | --- | --- | --- | --- | --- | --- | --- |')
+    planned = cfg.get('planned_trials', '未提供')
+    n_missing = len(set((manifest or {}).get('trial_ids') or []) - {r['trial_id'] for r in rows})
+    n_dup = sum(1 for v in Counter(r['trial_id'] for r in rows).values() if v > 1)
+    md.append(f'| {planned} | {c["records"]} | {c["executed"]} | {c["precheck_failed"]} | '
+              f'{c["ERROR"]} | {n_missing} | {n_dup} | {len(bad)} |')
+    md.append(f'\n已执行记录的结果分布：'
+              f'`{ {k: v for k, v in c.items() if k in ("completed","tipped","stuck","timeout")} }`\n')
+    md.append('其中「完成」是**终点任务完成数**（机体中心越过障碍后方净空），'
+              '包含未接触障碍物的场景，不等于"越障成功数"。\n')
+    md.append(f'接触覆盖：任意机体接触 {c["contact_any"]}　轮子接触 {c["contact_wheel"]}　'
+              f'未接触 {c["not_contacted"]}（分母 = 已执行 {c["executed"]}）。\n')
 
     agg = group(rows, ['shape', 'source_kind', 'controller', 'stance'])
     md.append('## 2. 分形状 × 分考生\n')
-    md.append('方块、圆柱、斜坡、生成网格分别统计；三个考生分别统计，不合并成单一比例。\n')
     md.append('| shape | 来源 | 考生 | 姿态 | 执行 | 接触(任意) | 接触(轮) | 完成 | 完成率 | 结果分布 |')
     md.append('| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |')
     for k in sorted(agg, key=lambda t: tuple(str(x) for x in t)):
@@ -206,14 +305,12 @@ def main():
     if bar_chart(agg, out / 'figures/completion_by_shape_controller.png',
                  L('完成率 · 按形状与考生', 'Completion rate by shape and controller'),
                  L('每根柱合并该形状该考生的全部姿态与分层；n 为执行数',
-                   'each bar merges stances/layers; n = executed trials'),
-                 font_path):
+                   'bars merge stances/layers; n = executed'), font_path):
         md.append('\n![完成率](figures/completion_by_shape_controller.png)\n')
 
-    # ---- 同尺寸配对 ----
     by_h = defaultdict(lambda: defaultdict(list))
     for r in rows:
-        if r.get('status') == 'precheck_failed':
+        if r.get('status') != 'ok':
             continue
         h = (r.get('dimensions') or {}).get('rel_height')
         if h is None:
@@ -231,38 +328,35 @@ def main():
 
     md.append('\n## 3. 同尺寸对照（box vs 生成网格）\n')
     if pairs:
-        md.append('仅列出同时存在 box 与 mesh 的 (相对高度, 考生, 姿态) 组合。'
-                  '格式为「完成数/执行数」。\n')
+        md.append('匹配的是**相对高度与横向宽度**，前后长度未必相同；'
+                  '偏移网格与控制配置在同一批次内一致。格式为「完成数/执行数」。\n')
         md.append('| 相对高度 | 考生 | 姿态 | box | mesh |')
         md.append('| --- | --- | --- | --- | --- |')
         for p in pairs:
             md.append(f'| {p["rel_height"]:.2f} | {p["controller"]} | {p["stance"]} | '
                       f'{p["box"]} | {p["mesh"]} |')
+        md.append(f'\n共 {len(pairs)} 条，来自少量几何对在不同考生与站姿下的重复比较，'
+                  '**不是**独立形状样本，不作显著性推断。')
     else:
-        md.append('本次输入中没有任何同高度的 box 与 mesh 配对，'
-                  '**因此不对形状差异作任何陈述**。')
+        md.append('本次输入中没有同高度的 box 与 mesh 配对，**不对形状差异作任何陈述**。')
 
     md.append('\n## 4. 怎么读这张表\n')
-    md.append('- 完成率的分母是**已执行 trial**，其中包含未接触障碍物的场景；'
-              '"接触后完成率"需要另取分母，本文未做该条件统计。')
-    md.append('- 横向偏移是**确定性网格**，不是随机采样；本表的完成率只描述这张网格，'
-              '不能外推为随机月面或现实任务的成功概率。')
-    md.append('- 同一资产的多个偏移不是多个独立的形状家族。')
-    md.append('- 三个考生是手工控制器：`hold` 锁死站姿只转轮，`step` 执行固定抬腿序列，'
-              '`adapt` 用本体感觉在"抬腿/加大力矩"之间二选一。'
-              '都不能读作"学会了越障"。')
-    md.append('- 障碍物是**静态刚性体**，不滚动、不翻倒；地面刚性，摩擦未标定。')
+    md.append('- 完成率分母是**已执行 trial**，含未接触障碍物的场景；'
+              '「接触后完成率」需另取分母，不同控制器接触子集不同，不能称严格配对。')
+    md.append('- 横向偏移是确定性网格，非随机采样；结果只描述这张网格。')
+    md.append('- 同一资产的多个偏移不是独立形状家族。')
+    md.append('- 三个考生是手工控制器，不能读作"学会了越障"。')
+    md.append('- 障碍物静态刚性，地面刚性，摩擦未标定。')
 
     md.append('\n## 5. 未做的事\n')
-    md.append('- 未做形状家族留出测试，**不能**声称"对未见过物体泛化"。')
-    md.append('- 未做训练对照，**不能**声称生成资产对训练有帮助。')
-    md.append('- 未独立定义"有效难度"，**不能**声称"同难度下无差异"。')
+    md.append('- 未做形状家族留出 → 不能声称泛化。')
+    md.append('- 未做训练对照 → 不能声称对训练有帮助。')
+    md.append('- 未独立定义"有效难度" → 不能声称"同难度下无差异"。')
 
     (out / 'report.md').write_text('\n'.join(md), encoding='utf-8')
-    print(f'wrote {out/"report.md"}  records={len(rows)} executed={c["executed"]} pairs={len(pairs)}')
-    if not pairs:
-        print('注意：没有同尺寸配对，报告不含形状对比结论')
-    return 0
+    print(f'wrote {out/"report.md"}  status={status} records={len(rows)} '
+          f'executed={c["executed"]} pairs={len(pairs)} issues={len(issues)}')
+    return 0 if status == 'complete' else 3
 
 
 if __name__ == '__main__':

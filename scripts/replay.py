@@ -81,8 +81,31 @@ def main():
     if rec.get('status') != 'ok':
         raise SystemExit(f'该 trial 状态为 {rec.get("status")}，无法重演')
 
+    man_path = pathlib.Path(a.run) / 'manifest.json'
+    if not man_path.exists():
+        raise SystemExit(f'拒绝重演：{a.run} 下没有 manifest.json，无法校验身份')
+    manifest = json.loads(man_path.read_text())
+    ctx = manifest.get('context') or {}
+
+    # ---- 身份校验：源码、模型、资产都必须与本批一致 ----
+    problems = []
+    cur_src = runio.source_identity()['content_sha']
+    cur_mdl = runio.model_identity().get('go2w_xml_sha')
+    if ctx.get('source_sha') and cur_src != ctx['source_sha']:
+        problems.append(f'仿真源码已变化（记录 {ctx["source_sha"]}，当前 {cur_src}）')
+    if ctx.get('model_sha') and cur_mdl != ctx['model_sha']:
+        problems.append(f'模型已变化（记录 {ctx["model_sha"]}，当前 {cur_mdl}）')
+
     p = rec['planned']
     asset_dir = None if p.get('asset') in (None, 'flat') else str(ROOT / 'assets/processed' / p['asset'])
+    if asset_dir:
+        cur_fp = runio.asset_fingerprint(asset_dir)['collision_sha']
+        if rec.get('collision_sha') and cur_fp != rec['collision_sha']:
+            problems.append(f'碰撞资产已变化（记录 {rec["collision_sha"]}，当前 {cur_fp}）')
+    if problems:
+        print(json.dumps({'trial_id': a.trial, 'consistent': False,
+                          'identity_problems': problems}, indent=2, ensure_ascii=False))
+        raise SystemExit(2)
     out = pathlib.Path(a.run) / 'replays' / a.trial
     rec_path = Recorder(out, a.fps)
 
@@ -100,6 +123,7 @@ def main():
 
     verdict = {
         'trial_id': a.trial,
+        'identity_ok': True,
         'recorded': {k: rec.get(k) for k in ('outcome', 'final_x', 'max_tilt_deg')},
         'replayed': {k: again.get(k) for k in ('outcome', 'final_x', 'max_tilt_deg')},
         'tolerance': TOL,

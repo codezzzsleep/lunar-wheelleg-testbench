@@ -111,7 +111,7 @@ def build(shape, height_m, out_root='assets/processed', **kw):
         'hit_part_cap': False,
         'near_convex_hull_substituted': False,
         'parts_volume_m3': round(float(abs(float(mesh.volume))), 6),
-        'parts': [str(part)],
+        'parts': [f'parts/{part.name}'],
         'pass': True,
     }
     (out / 'manifest.json').write_text(json.dumps(man, indent=2, ensure_ascii=False))

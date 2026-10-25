@@ -1,6 +1,9 @@
 vendor/
-assets/processed/*.stl
+.venv/
 __pycache__/
-# 历史实验记录（旧评估流程，待复核）；正式运行目录按需显式提交
-runs/archive*/
+assets/processed/*.stl
+# 临时/调试运行目录不入库；正式批次目录显式提交
+runs/smoke_*/
+runs/gate1_*/
 runs/render/
+runs/archive*/

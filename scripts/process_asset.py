@@ -171,7 +171,7 @@ def process(glb, target_height, out_dir, threshold=0.05, target_width=None, rest
         pm = trimesh.Trimesh(np.asarray(v), np.asarray(f))
         p = out_dir / 'parts' / f'part_{i:02d}.stl'
         pm.export(p)
-        files.append(str(p))
+        files.append(f'parts/{p.name}')   # 相对 manifest 所在目录
         if pm.is_watertight:
             total_part_vol += abs(pm.volume)
     metrics['parts_volume_m3'] = round(total_part_vol, 6)

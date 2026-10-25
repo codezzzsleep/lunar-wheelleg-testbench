@@ -7,23 +7,24 @@
   tipped     任一时刻倾角 > TIP_DEG
   stuck      最后一 STUCK_WINDOW 秒内位移 < STUCK_EPS
   timeout    限时内既没完成也没倾覆、且还在动
-  precheck_failed  资产本身不合格，**不是**机器人的失败
+  precheck_failed  资产本身不合格（**不是**机器人的失败）
+  ERROR      仿真/加载异常（**不是**物理结果）
 
-注意：
-  · 「完成」只检查机体中心是否越过障碍后方一段净空，不等于整机完全通过。
-  · 「接触」分两级：contact_any（任意机体 geom 碰到障碍）与
-    contact_wheel（只有四个轮子的碰撞 geom 碰到）。报告主指标用 contact_wheel。
+资产解析、路径约定与哈希统一由 runio.resolve_asset 完成：预检、哈希、XML 加载
+都用同一份文件列表，避免"哈希算的文件"与"实际参与仿真的文件"不一致。
 """
 import json
 import pathlib
 import sys
 import time
+import traceback
 
 import numpy as np
 import mujoco
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import controllers
+import runio
 from build_scene import moon_scene_xml, DEFAULT_GRAVITY, DEFAULT_FRICTION
 from drive_test import ids, LEG, STANCE, STANCE_HIGH
 
@@ -31,8 +32,8 @@ WHEEL_R = 0.086
 TIP_DEG = 75.0
 STUCK_WINDOW = 3.0
 STUCK_EPS = 0.10
-CLEARANCE = 0.25          # 障碍后方净空（米）
-PRE_CHECK_SECONDS = 0.02   # 出生碰撞检测窗口
+CLEARANCE = 0.25
+PRE_CHECK_SECONDS = 0.02
 
 KP, KD = 150.0, 5.0
 WHEEL_KP = 1.2
@@ -40,55 +41,46 @@ WHEEL_TORQUE_MAX = 15.0
 LEG_TORQUE_MAX = 45.0
 
 
-# ------------------------------------------------------------------ 资产预检
+def control_fingerprint():
+    """所有会改变 trial 结果的控制与判据参数，参与运行身份。"""
+    return {'kp': KP, 'kd': KD, 'wheel_kp': WHEEL_KP,
+            'wheel_torque_max': WHEEL_TORQUE_MAX, 'leg_torque_max': LEG_TORQUE_MAX,
+            'wheel_r': WHEEL_R, 'tip_deg': TIP_DEG, 'stuck_window': STUCK_WINDOW,
+            'stuck_eps': STUCK_EPS, 'clearance': CLEARANCE,
+            'precheck_seconds': PRE_CHECK_SECONDS,
+            'stance_low': dict(STANCE), 'stance_high': dict(STANCE_HIGH),
+            'controllers': sorted(controllers.REGISTRY) if hasattr(controllers, 'REGISTRY')
+            else ['hold', 'step', 'adapt']}
 
-def precheck_asset(asset_dir):
-    """返回 (ok, reason, manifest)。不合格的资产绝不能算成机器人的失败。"""
-    d = pathlib.Path(asset_dir)
-    mf = d / 'manifest.json'
-    if not mf.exists():
-        return False, 'manifest_missing', None
-    try:
-        man = json.loads(mf.read_text())
-    except Exception as e:
-        return False, f'manifest_unreadable:{e}', None
-    if not man.get('pass', False):
-        return False, 'manifest_pass_false', man
-    parts = man.get('parts') or []
-    if not parts:
-        return False, 'no_collision_parts', man
-    for p in parts:
-        if not pathlib.Path(p).exists():
-            return False, f'missing_part:{pathlib.Path(p).name}', man
-    try:
-        h = float(man['height_m'])
-        w = float(man['rel_width'])
-    except Exception:
-        return False, 'bad_dimensions', man
-    if not (np.isfinite(h) and np.isfinite(w)) or h <= 0 or w <= 0:
-        return False, 'nonpositive_dimensions', man
-    return True, 'ok', man
+
+def scene_fingerprint(gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION):
+    return {'gravity': gravity, 'friction': friction, 'default_timestep': 0.002}
 
 
 # ------------------------------------------------------------------ 场景组装
 
-def compose_xml(asset_dir, man, y_offset=0.0, obstacle_x=2.0,
+def compose_xml(part_paths, y_offset=0.0, obstacle_x=2.0,
                 gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION):
-    """在内存里拼出完整 XML 字符串（不写任何共享文件）。man=None 表示平地基线。"""
+    """part_paths 为 runio 解析出的**实际文件列表**；None 表示平地基线。"""
     xml = moon_scene_xml(gravity=gravity, friction=friction)
-    if man is None:
+    if part_paths is None:
         return xml
     assets, geoms = [], []
-    for i, p in enumerate(man['parts']):
-        abs_p = str(pathlib.Path(p).resolve())
-        assets.append(f'<mesh name="obs{i}" file="{abs_p}"/>')
+    for i, p in enumerate(part_paths):
+        assets.append(f'<mesh name="obs{i}" file="{_xml_attr(p)}"/>')
         geoms.append(f'<geom type="mesh" mesh="obs{i}" rgba=".72 .56 .36 1" '
-                     f'friction="{friction}" contype="1" conaffinity="1"/>')
+                     f'friction="{_xml_attr(friction)}" contype="1" conaffinity="1"/>')
     block = (f'\n    <body name="obstacle" pos="{obstacle_x:.4f} {y_offset:.4f} 0">'
              f'{"".join(geoms)}</body>')
     xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
     xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
     return xml
+
+
+def _xml_attr(s):
+    """路径与数值都可能含空格或特殊字符，属性值统一转义。"""
+    return (str(s).replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+            .replace('"', '&quot;'))
 
 
 def _geom_ids_by_body(m, body_name):
@@ -111,43 +103,87 @@ def wheel_geom_ids(m):
 
 # ------------------------------------------------------------------ 单次试验
 
+def _base_record(asset_dir, resolved, controller, stance, y_offset, obstacle_x,
+                 gravity, friction, seconds):
+    flat = asset_dir is None
+    man = (resolved or {}).get('manifest') or {}
+    name = pathlib.Path(asset_dir).name if asset_dir else 'flat'
+    return {
+        'asset_id': 'flat' if flat else (man.get('asset_id') or name),
+        'asset_dir_name': name,
+        'family': 'flat' if flat else (man.get('family') or name),
+        'source_kind': 'none' if flat else (man.get('source_kind') or 'unknown'),
+        'shape': 'none' if flat else (man.get('shape') or 'mesh'),
+        'collision_sha': (resolved or {}).get('collision_sha'),
+        'path_mode': (resolved or {}).get('path_mode'),
+        'dimensions': ({k: man.get(k) for k in
+                        ('height_m', 'width_x_m', 'width_y_m', 'rel_height',
+                         'rel_width', 'concavity', 'coacd_parts')} if man else None),
+        'controller': controller, 'stance': stance, 'y_offset': y_offset,
+        'obstacle_x': obstacle_x, 'gravity': gravity, 'friction': friction,
+        'time_limit_s': seconds, 'timestep': None,
+        'control': {'kp': KP, 'kd': KD, 'wheel_kp': WHEEL_KP,
+                    'wheel_torque_max': WHEEL_TORQUE_MAX,
+                    'leg_torque_max': LEG_TORQUE_MAX, 'clearance': CLEARANCE,
+                    'tip_deg': TIP_DEG, 'stuck_window': STUCK_WINDOW,
+                    'stuck_eps': STUCK_EPS},
+    }
+
+
+def _fail(base, status, reason, detail=None):
+    return {**base, 'status': status, 'reason': reason,
+            'outcome': status, 'detail': detail,
+            'contact_any': None, 'contact_wheel': None,
+            'first_contact_s': None, 'first_wheel_contact_s': None,
+            'final_x': None, 'distance_m': None, 'max_tilt_deg': None,
+            'sim_seconds': 0.0, 'wall_seconds': 0.0, 'brain': None}
+
+
 def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
         obstacle_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0,
         gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION,
         on_frame=None, frame_fps=30):
     flat = asset_dir is None
     if flat:
-        ok, reason, man = True, 'flat_baseline', None
+        resolved = {'ok': True, 'reason': 'flat_baseline', 'manifest': None,
+                    'part_paths': None, 'collision_sha': None, 'path_mode': None}
     else:
-        ok, reason, man = precheck_asset(asset_dir)
-    base = {
-        'asset_id': 'flat' if flat else (man.get('asset_id') or pathlib.Path(asset_dir).name),
-        'family': 'flat' if flat else (man.get('family') or pathlib.Path(asset_dir).name),
-        'source_kind': 'none' if flat else man.get('source_kind', 'unknown'),
-        'shape': 'none' if flat else man.get('shape', 'mesh'),
-        'collision_sha': man.get('collision_sha') if man else None,
-        'dimensions': {k: man.get(k) for k in
-                       ('height_m', 'width_x_m', 'width_y_m', 'rel_height',
-                        'rel_width', 'concavity', 'coacd_parts')} if man else None,
-        'controller': controller, 'stance': stance, 'y_offset': y_offset,
-        'obstacle_x': obstacle_x, 'gravity': gravity, 'friction': friction,
-        'timestep': None, 'time_limit_s': seconds,
-        'control': {'kp': KP, 'kd': KD, 'wheel_kp': WHEEL_KP,
-                    'v_target': v_target, 'ramp_s': ramp},
-    }
-    if not ok:
-        return {**base, 'status': 'precheck_failed', 'reason': reason,
-                'outcome': 'precheck_failed', 'contact_any': False,
-                'contact_wheel': False, 'first_contact_s': None,
-                'first_wheel_contact_s': None, 'final_x': None, 'distance_m': None,
-                'max_tilt_deg': None, 'brain': None}
+        resolved = runio.resolve_asset(asset_dir)
 
-    xml = compose_xml(asset_dir, man, y_offset=y_offset, obstacle_x=obstacle_x,
-                      gravity=gravity, friction=friction)
-    m = mujoco.MjModel.from_xml_string(xml)
-    d = mujoco.MjData(m)
+    base = _base_record(asset_dir, resolved, controller, stance, y_offset,
+                        obstacle_x, gravity, friction, seconds)
+    if not resolved['ok']:
+        return _fail(base, 'precheck_failed', resolved['reason'],
+                     {'missing': resolved.get('missing'),
+                      'path_mode': resolved.get('path_mode')})
+
+    man = resolved['manifest'] or {}
+    try:
+        xml = compose_xml(resolved['part_paths'], y_offset=y_offset,
+                          obstacle_x=obstacle_x, gravity=gravity, friction=friction)
+        m = mujoco.MjModel.from_xml_string(xml)
+        d = mujoco.MjData(m)
+    except Exception as e:
+        return _fail(base, 'ERROR', 'model_load_failed',
+                     {'exception': type(e).__name__, 'message': str(e)[:400],
+                      'traceback': traceback.format_exc()[-800:]})
+
+    try:
+        return _simulate(m, d, resolved, base, stance, controller, y_offset,
+                         obstacle_x, seconds, v_target, ramp,
+                         on_frame=on_frame, frame_fps=frame_fps)
+    except Exception as e:
+        return _fail(base, 'ERROR', 'simulation_exception',
+                     {'exception': type(e).__name__, 'message': str(e)[:400],
+                      'traceback': traceback.format_exc()[-800:]})
+
+
+def _simulate(m, d, resolved, base, stance, controller, y_offset, obstacle_x,
+              seconds, v_target, ramp, on_frame=None, frame_fps=30):
+    flat = resolved['part_paths'] is None
+    man = resolved['manifest'] or {}
     J = ids(m)
-    obs = obstacle_geom_ids(m)
+    obs = obstacle_geom_ids(m) if not flat else set()
     wheels = wheel_geom_ids(m)
     robot_geoms = set(range(m.ngeom)) - obs
 
@@ -162,38 +198,32 @@ def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
     dt = m.opt.timestep
     base['timestep'] = dt
 
-    # 出生穿模检查：一开始就贴着障碍物，说明场景摆放有问题
-    for _ in range(int(PRE_CHECK_SECONDS / dt)):
-        mujoco.mj_step(m, d)
-        for c in d.contact[:d.ncon]:
-            if (c.geom1 in obs and c.geom2 in robot_geoms) or \
-               (c.geom2 in obs and c.geom1 in robot_geoms):
-                if d.qpos[0] < obstacle_x - 0.6:
-                    return {**base, 'status': 'precheck_failed',
-                            'reason': 'spawn_penetration', 'outcome': 'precheck_failed',
-                            'contact_any': True, 'contact_wheel': False,
-                            'first_contact_s': 0.0, 'first_wheel_contact_s': None,
-                            'final_x': round(float(d.qpos[0]), 3), 'distance_m': 0.0,
-                            'max_tilt_deg': 0.0, 'brain': None}
-
-    # 重新摆好姿态再正式开跑
-    for leg in LEG:
-        d.qpos[J[f'{leg}_thigh_joint']['qadr']] = st['thigh']
-        d.qpos[J[f'{leg}_calf_joint']['qadr']] = st['calf']
-    d.qpos[0] = 0.0
-    d.qpos[2] = 0.50
-    d.qvel[:] = 0
-    mujoco.mj_forward(m, d)
+    # 出生穿模：一开始就与障碍物接触，说明摆放/尺寸有问题
+    if not flat:
+        for _ in range(int(PRE_CHECK_SECONDS / dt)):
+            mujoco.mj_step(m, d)
+            for c in d.contact[:d.ncon]:
+                if (c.geom1 in obs and c.geom2 in robot_geoms) or \
+                   (c.geom2 in obs and c.geom1 in robot_geoms):
+                    if d.qpos[0] < obstacle_x - 0.6:
+                        return _fail(base, 'precheck_failed', 'spawn_penetration',
+                                     {'x': round(float(d.qpos[0]), 3)})
+        for leg in LEG:
+            d.qpos[J[f'{leg}_thigh_joint']['qadr']] = st['thigh']
+            d.qpos[J[f'{leg}_calf_joint']['qadr']] = st['calf']
+        d.qpos[0] = 0.0
+        d.qpos[2] = 0.50
+        d.qvel[:] = 0
+        mujoco.mj_forward(m, d)
 
     half_depth = 0.0 if flat else float(man.get('width_x_m') or 0.0) / 2.0
     finish_x = obstacle_x + half_depth + CLEARANCE
-
     start_x = float(d.qpos[0])
+
     xs, tilts = [], []
     first_contact = first_wheel = None
     contact_steps = wheel_steps = 0
-    outcome, reason = None, None
-    t_contact = None
+    outcome = reason = None
 
     t0 = time.time()
     for i in range(int(seconds / dt)):
@@ -214,7 +244,6 @@ def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
 
         mujoco.mj_step(m, d)
 
-        # 帧回调：回放/渲染走的就是这条控制路径，不另写一套近似逻辑
         if on_frame is not None and frame_fps:
             every = max(1, int(round(1.0 / (frame_fps * dt))))
             if i % every == 0:
@@ -237,8 +266,6 @@ def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
             wheel_steps += 1
             if first_wheel is None:
                 first_wheel = round(t, 3)
-        if first_wheel is not None and t_contact is None:
-            t_contact = round(t, 3)
 
         w, x, y, z = d.qpos[3:7]
         up = 1.0 - 2.0 * (x * x + y * y)
@@ -288,5 +315,5 @@ if __name__ == '__main__':
     ap.add_argument('--controller', default='hold', choices=['hold', 'step', 'adapt'])
     ap.add_argument('--y-offset', type=float, default=0.0)
     a = ap.parse_args()
-    r = run(a.asset, stance=a.stance, controller=a.controller, y_offset=a.y_offset)
-    print(json.dumps(r, indent=2, ensure_ascii=False))
+    print(json.dumps(run(a.asset, stance=a.stance, controller=a.controller,
+                         y_offset=a.y_offset), indent=2, ensure_ascii=False))

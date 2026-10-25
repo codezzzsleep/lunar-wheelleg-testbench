@@ -11,7 +11,7 @@
 
 用法：python scripts/process_asset.py assets/raw/cargo_crate.glb --height 0.28
 """
-import argparse, json, pathlib, time
+import argparse, json, pathlib, shutil, time
 import numpy as np
 import trimesh
 
@@ -69,6 +69,10 @@ def concavity_from_parts(parts_volume, hull_volume):
 def process(glb, target_height, out_dir, threshold=0.05, quiet=True):
     import coacd
     out_dir = pathlib.Path(out_dir)
+    # 清空旧输出，否则上一轮拆出的凸块会残留在目录里，
+    # manifest 只引用新的一部分，旧文件会变成误导性的"幽灵资产"
+    if out_dir.exists():
+        shutil.rmtree(out_dir)
     (out_dir / 'parts').mkdir(parents=True, exist_ok=True)
 
     t0 = time.time()

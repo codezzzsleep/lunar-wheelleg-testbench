@@ -250,7 +250,12 @@ def main():
     font_path, has_cjk = find_cjk_font()
     L = LBL(has_cjk)
     cfg_path, env_path = inp.parent / 'config.json', inp.parent / 'environment.json'
-    cfg = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
+    if cfg_path.exists():
+        cfg = json.loads(cfg_path.read_text())
+    elif manifest:                       # 新版运行器把配置写在 manifest.json
+        cfg = manifest
+    else:
+        cfg = {}
     env = json.loads(env_path.read_text()) if env_path.exists() else {}
 
     c = counts(rows)

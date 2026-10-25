@@ -31,3 +31,42 @@
 ## 本轮不做
 
 不改控制器策略、完成判据、障碍尺度、偏移网格；不加 GPU/RL/云/账户/新资产。
+
+---
+
+## 执行结果（2026-10-26）
+
+| # | 任务 | 验收 | 结果 | 证据 |
+| --- | --- | --- | --- | --- |
+| 1 | 批次隔离与安全续跑 | 跨 suite 拒绝、原文件字节不变 | 通过：exit=1，manifest/environment/results 校验和不变 | `tests/test_round2.py::TestBatchIsolation` |
+| 1 | | 续跑只补缺失 | 通过：删到 1 条后 `--resume`，最终 3 条 / 3 唯一 ID | 同上 `test_resume_only_fills_missing` |
+| 1 | | 参数/资产/模型/源码变化逐项拒绝 | 通过：改源码 → exit=1 且报"运行身份不一致" | `test_source_change_refused` |
+| 1 | | 脏记录拒绝 | 通过：重复 ID → exit=1，不悄悄过滤 | `test_duplicate_id_in_results_refused` |
+| 1 | | 并发写互斥 | 通过：存在 `.run.lock` → exit=1 | `test_lock_blocks_second_writer` |
+| 2 | 坏资产留记录 | 缺 manifest/坏 JSON/非对象/缺 part/无效尺寸 | 通过：全部 `precheck_failed`，无二次崩溃 | `TestPrecheckRobustness`（6 项） |
+| 2 | worker 异常 | 单任务异常 → ERROR 且整批继续 | 通过：未知控制器 → `status=ERROR` + traceback | `TestWorkerExceptionRecorded` |
+| 3 | 分析器严格校验 | 重复/缺失/非法行/全 ERROR 非零退出 | 通过：重复 ID exit=2；全 ERROR exit=2 且只出 `diagnostics.json` | `TestAnalyzerValidation`（7 项） |
+| 3 | | 探索性单条报告 | 通过：单条 hold → exit=0，标注"计划完整性未验证" | 同上 |
+| 4 | 资产路径解析 | 跨 cwd 一致 / 复制资产 / 空格路径 / 缺件报路径 | 通过：`collision_sha` 与 `path_mode` 一致；空格目录可加载 | `TestAssetResolution`（6 项） |
+| 5 | 来源证据 | 非平地 trial 均有非空 `collision_sha` | 通过：2520/2520，非平地缺 sha = 0 | `runs/canonical_r2/results.jsonl` |
+| 5 | | 改引用文件 → 身份变化并拒绝；残留文件不影响 | 通过：追加 1 字节 → sha 变、replay exit=2；加 stray.stl → sha 不变 | `test_*_identity`，实机 replay 验证 |
+| 5 | | 源码/模型身份可还原、无未记录修改 | 通过：`git_dirty=false`、模型 `dirty=false` | `runs/canonical_r2/environment.json` |
+| 6 | 安装流程 | 未激活 venv 的 shell 按文档命令可跑 | 通过：`setup.sh` 全流程 exit=0；`.venv/bin/python scripts/demo.py --suite smoke` 成功 | 实机 |
+| 6 | | 固定提交失败 → 非零退出 | 通过：伪造 commit → exit=1，未输出"安装完成" | 实机 |
+| 6 | | vendor 有修改 → 安全拒绝 | 通过：植入文件 → exit=1 并保留现场 | 实机 |
+
+## 过程记录（两次作废的运行，均未覆盖旧证据）
+
+1. `runs/canonical_r2`（第一次）：因运行目录自身成为未跟踪文件，`git_dirty` 被污染为
+   `true`，整批作废并删除。
+2. `runs/canonical_r2`（第二次）：`git_dirty` 仍为 true，原因是上一步的作废目录留在
+   工作区；清理后重跑。
+3. 最终批次：工作区干净、`git_dirty=false`、`source_sha=05fd8807…`、commit `cb018a0`。
+
+旧批次 `runs/canonical/`（`39e3d94`）原样保留，校验和在
+`runs/_archive_canonical_39e3d94/SHA256SUMS`。
+
+## 新测试
+
+`tests/test_credibility.py`（8 项，第一轮）+ `tests/test_round2.py`（27 项）
+= **35 项，全部通过**（约 20 秒）。

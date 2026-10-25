@@ -1,279 +1,267 @@
 """
-分析：把仿真记录变成结论。
+分析：把一次运行的 results.jsonl 变成报告。
 
-三条线：
-  1. 能力曲线 —— 程序化方块在不同相对高度下的通过率（这就是"尺子"）
-  2. 配对比较 —— 同一相对高度上，生成形状 vs 方块
-  3. 接触率 —— 横向偏移如何决定"轮子会不会碰上"
+  python scripts/analyze.py --input runs/<run_id>/results.jsonl --out runs/<run_id>
 
-只统计真正碰到障碍物的仿真；没碰到的不是成绩。
+原则（对应复查意见第 3、4、5、6 节）：
+  · 只读 **显式指定** 的结果文件，绝不 glob 历史批次
+  · 分组键包含 shape 与 controller：方块 / 圆柱 / 斜坡 / 生成网格、三个考生不混算
+  · 报告里每个数字都来自本文件的输入；没有数据的组不生成结论
+  · 字体不再硬编码；找不到中文字体时降级为英文标签并明确提示
 """
-import json, pathlib, sys
-from collections import defaultdict, Counter
+import argparse
+import json
+import os
+import pathlib
+import sys
+from collections import Counter, defaultdict
 from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FONT = '/tmp/sysroot/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc'
 BG, FG, DIM, GRID = (8, 7, 10), (244, 238, 228), (150, 143, 133), (32, 30, 36)
-GOLD, MINT = (232, 180, 90), (130, 230, 198)
+GOLD, MINT, VIOLET = (232, 180, 90), (130, 230, 198), (164, 135, 255)
+
+CJK_CANDIDATES = [
+    os.environ.get('RLL_FONT', ''),
+    '/usr/share/fonts/truetype/wqy/wqy-zenhei.ttc',
+    '/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc',
+    '/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc',
+    '/usr/share/fonts/truetype/droid/DroidSansFallbackFull.ttf',
+    str(ROOT / 'assets/fonts/wqy-zenhei.ttc'),
+]
 
 
-def load(patterns=('runs/batch_*.jsonl',)):
-    rows = []
-    for pat in patterns:
-        for f in ROOT.glob(pat):
-            for line in f.read_text().splitlines():
-                if line.strip():
-                    try:
-                        rows.append(json.loads(line))
-                    except json.JSONDecodeError:
-                        pass
-    return [r for r in rows if r.get('outcome') != 'ERROR']
-
-
-def wilson(k, n, z=1.96):
-    """二项比例的 Wilson 置信区间——n 只有个位数时不能只看点估计。"""
-    import math
-    if n == 0:
-        return (0.0, 0.0)
-    p = k / n
-    d = 1 + z * z / n
-    c = (p + z * z / (2 * n)) / d
-    m = z * math.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / d
-    return (max(0.0, c - m), min(1.0, c + m))
-
-
-def engaged(r):
-    return bool(r.get('engaged', r.get('first_contact_s') is not None))
-
-
-def agg_pairs(rows):
-    """(controller, source, rel_h, stance) -> 统计"""
-    a = defaultdict(lambda: {'att': 0, 'eng': 0, 'ok': 0, 'out': Counter()})
-    for r in rows:
-        k = (r.get('controller', 'hold'), r['source_kind'], round(r['rel_height'], 2), r['stance'])
-        b = a[k]
-        b['att'] += 1
-        if not engaged(r):
+def find_cjk_font():
+    """返回 (path, supports_cjk)。找不到就返回 (None, False)，由调用方降级。"""
+    for p in CJK_CANDIDATES:
+        if p and pathlib.Path(p).exists():
+            return str(p), True
+    for root in ('/usr/share/fonts', str(pathlib.Path.home() / '.fonts')):
+        r = pathlib.Path(root)
+        if not r.exists():
             continue
-        b['eng'] += 1
-        b['ok'] += r['outcome'] == 'completed'
-        b['out'][r['outcome']] += 1
-    return a
+        for pat in ('*wqy*', '*CJK*', '*SourceHan*', '*DroidSansFallback*'):
+            hits = sorted(r.rglob(pat))
+            if hits:
+                return str(hits[0]), True
+    return None, False
 
 
-def curve_chart(rows, path, stance, ctrl='hold'):
-    W, H = 1180, 680
+class LBL:
+    """有中文字体就用中文，没有就降级英文（并在报告里说明）。"""
+
+    def __init__(self, has_cjk):
+        self.cjk = has_cjk
+
+    def __call__(self, zh, en):
+        return zh if self.cjk else en
+
+
+def load(path):
+    rows, bad = [], 0
+    for line in pathlib.Path(path).read_text().splitlines():
+        if not line.strip():
+            continue
+        try:
+            rows.append(json.loads(line))
+        except json.JSONDecodeError:
+            bad += 1
+    return rows, bad
+
+
+def counts(rows):
+    c = Counter()
+    for r in rows:
+        c['records'] += 1
+        if r.get('status') == 'precheck_failed':
+            c['precheck_failed'] += 1
+            continue
+        c['executed'] += 1
+        if r.get('contact_any'):
+            c['contact_any'] += 1
+        if r.get('contact_wheel'):
+            c['contact_wheel'] += 1
+        c[r.get('outcome') or 'ERROR'] += 1
+    c['not_contacted'] = c['executed'] - c['contact_any']
+    return c
+
+
+def group(rows, keys):
+    agg = defaultdict(lambda: {'n': 0, 'outcomes': Counter(),
+                               'contact_any': 0, 'contact_wheel': 0})
+    for r in rows:
+        if r.get('status') == 'precheck_failed':
+            continue
+        k = tuple(r.get(x) for x in keys)
+        a = agg[k]
+        a['n'] += 1
+        a['outcomes'][r.get('outcome') or 'ERROR'] += 1
+        a['contact_any'] += 1 if r.get('contact_any') else 0
+        a['contact_wheel'] += 1 if r.get('contact_wheel') else 0
+    return agg
+
+
+def _font(path, size):
+    try:
+        return ImageFont.truetype(path, size) if path else ImageFont.load_default()
+    except Exception:
+        return ImageFont.load_default()
+
+
+def bar_chart(agg, path, title, note, font_path):
+    keys = sorted({(k[0], k[2]) for k in agg}, key=lambda t: (str(t[0]), str(t[1])))
+    if not keys:
+        return None
+    W, H = 1100, 620
     img = Image.new('RGB', (W, H), BG)
     d = ImageDraw.Draw(img)
-    f_t = ImageFont.truetype(FONT, 30)
-    f_l = ImageFont.truetype(FONT, 19)
-    f_s = ImageFont.truetype(FONT, 15)
+    f_t, f_s, f_l = _font(font_path, 26), _font(font_path, 15), _font(font_path, 14)
+    d.text((50, 30), title, font=f_t, fill=FG)
+    d.text((50, 68), note, font=f_s, fill=DIM)
 
-    a = agg_pairs(rows)
-    d.text((60, 34), f'能力曲线 · 考生 {ctrl} / {stance}', font=f_t, fill=FG)
-    d.text((60, 76), '横轴 = 障碍高度 / 轮半径；纵轴 = 通过率（仅统计真正发生接触的仿真）',
-           font=f_s, fill=DIM)
-
-    x0, y0, pw, ph = 130, 560, 900, 420
-    maxh = max([k[2] for k in a] + [1])
+    x0, y0, pw, ph = 90, 500, W - 140, 340
     d.line([x0 - 10, y0, x0 + pw, y0], fill=(70, 65, 72))
     d.line([x0 - 10, y0 - ph, x0 - 10, y0], fill=(70, 65, 72))
     for pct in (0, .25, .5, .75, 1.0):
         y = y0 - ph * pct
         d.line([x0 - 10, y, x0 + pw, y], fill=GRID)
-        d.text((x0 - 62, y - 9), f'{int(pct*100)}%', font=f_s, fill=DIM)
+        d.text((x0 - 58, y - 9), f'{int(pct*100)}%', font=f_s, fill=DIM)
 
-    def X(h): return x0 + pw * min(1.0, h / max(maxh, 1.2))
-    def Y(p): return y0 - ph * p
-
-    # procedural curve
-    pts = []
-    for (c, src, h, st), b in sorted(a.items()):
-        if c != ctrl or src != 'procedural' or st != stance or not b['eng']:
-            continue
-        pts.append((h, b['ok'] / b['eng'], b['eng']))
-    if pts:
-        pts.sort()
-        d.line([(X(h), Y(p)) for h, p, _ in pts], fill=MINT, width=3)
-        for h, p, n in pts:
-            d.ellipse([X(h)-6, Y(p)-6, X(h)+6, Y(p)+6], fill=MINT)
-            d.text((X(h)-10, Y(p)-26), f'{p*100:.0f}%', font=f_s, fill=MINT)
-
-    # lux3d points
-    for (c, src, h, st), b in sorted(a.items()):
-        if c != ctrl or src != 'lux3d' or st != stance or not b['eng']:
-            continue
-        p = b['ok'] / b['eng']
-        d.rectangle([X(h)-9, Y(p)-9, X(h)+9, Y(p)+9], fill=GOLD)
-        d.text((X(h)+14, Y(p)-9), f'{p*100:.0f}%  n={b["eng"]}', font=f_s, fill=GOLD)
-
-    for h in sorted({k[2] for k in a if k[3] == stance and k[0] == ctrl}):
-        d.text((X(h)-14, y0 + 12), f'{h:.1f}', font=f_s, fill=DIM)
-
-    d.text((x0 + pw - 220, 140), '—— 程序化方块（尺子）', font=f_l, fill=MINT)
-    d.rectangle([x0 + pw - 214, 186, x0 + pw - 196, 204], fill=GOLD)
-    d.text((x0 + pw - 186, 186), '生成资产', font=f_l, fill=GOLD)
-    img.save(path)
-    return path
-
-
-def engagement_chart(rows, path):
-    W, H = 1180, 560
-    img = Image.new('RGB', (W, H), BG)
-    d = ImageDraw.Draw(img)
-    f_t = ImageFont.truetype(FONT, 28)
-    f_s = ImageFont.truetype(FONT, 15)
-    d.text((60, 34), '接触率 vs 障碍物横向偏移', font=f_t, fill=FG)
-    d.text((60, 74), '轮距 0.38 m、轮半径 0.086 m；偏移过大时机器人从障碍物旁边通过，该次仿真不计成绩',
-           font=f_s, fill=DIM)
-
-    a = defaultdict(lambda: {'att': 0, 'eng': 0})
-    for r in rows:
-        k = round(float(r.get('y_offset', 0)), 2)
-        a[k]['att'] += 1
-        a[k]['eng'] += engaged(r)
-    x0, y0, pw, ph = 130, 470, 860, 330
-    d.line([x0 - 10, y0, x0 + pw, y0], fill=(70, 65, 72))
-    d.line([x0 - 10, y0 - ph, x0 - 10, y0], fill=(70, 65, 72))
-    offs = sorted(a)
-    bw = pw / max(len(offs), 1) * 0.5
-    for i, o in enumerate(offs):
-        b = a[o]
-        rate = b['eng'] / b['att'] if b['att'] else 0
-        cx = x0 + pw * (i + 0.5) / len(offs)
+    bw = pw / len(keys) * 0.55
+    for i, k in enumerate(keys):
+        # 该 (shape, controller) 在全部姿态/分层上的合并完成率
+        num = sum(a['outcomes'].get('completed', 0) for kk, a in agg.items()
+                  if kk[0] == k[0] and kk[2] == k[1])
+        den = sum(a['n'] for kk, a in agg.items() if kk[0] == k[0] and kk[2] == k[1])
+        rate = num / den if den else 0
+        cx = x0 + pw * (i + 0.5) / len(keys)
         h = ph * rate
-        d.rectangle([cx - bw/2, y0 - h, cx + bw/2, y0], fill=GOLD)
-        d.text((cx - 20, y0 - h - 24), f'{rate*100:.0f}%', font=f_s, fill=FG)
-        d.text((cx - 22, y0 + 12), f'+{o:.2f} m', font=f_s, fill=DIM)
-        d.text((cx - 20, y0 + 34), f'n={b["att"]}', font=f_s, fill=DIM)
+        color = {'box': MINT, 'mesh': GOLD}.get(k[0], VIOLET)
+        d.rectangle([cx - bw/2, y0 - h, cx + bw/2, y0], fill=color)
+        d.text((cx - 16, y0 - h - 22), f'{rate*100:.0f}%', font=f_s, fill=FG)
+        d.text((cx - 10, y0 + 10), str(k[0])[:9], font=f_l, fill=DIM)
+        d.text((cx - 10, y0 + 28), str(k[1]), font=f_l, fill=DIM)
+        d.text((cx - 12, y0 + 46), f'n={den}', font=f_l, fill=DIM)
     img.save(path)
     return path
-
-
-def matched_table(rows, tol=0.06):
-    """同高度配对：同一 rel_h ±tol 上，生成组 vs 方块组（分考生）。"""
-    a = agg_pairs(rows)
-    out = []
-    controllers_ = sorted({k[0] for k in a})
-    lux_h = sorted({k[2] for k in a if k[1] == 'lux3d'})
-    for ctrl in controllers_:
-      for h in lux_h:
-        for stance in ('low', 'high'):
-            lb = a.get((ctrl, 'lux3d', h, stance))
-            if not lb or not lb['eng']:
-                continue
-            cand = [(hh, a[(ctrl, 'procedural', hh, stance)]) for (c, src, hh, st) in a
-                    if c == ctrl and src == 'procedural' and st == stance and abs(hh - h) <= tol]
-            if not cand:
-                continue
-            hh, pb = min(cand, key=lambda t: abs(t[0] - h))
-            out.append({
-                'controller': ctrl, 'rel_h': h, 'proc_rel_h': hh, 'stance': stance,
-                'lux': {'eng': lb['eng'], 'ok': lb['ok'],
-                        'rate': round(lb['ok']/lb['eng'], 3), 'out': dict(lb['out']),
-                        'ci': [round(x, 3) for x in wilson(lb['ok'], lb['eng'])]},
-                'proc': {'eng': pb['eng'], 'ok': pb['ok'],
-                         'rate': round(pb['ok']/pb['eng'], 3) if pb['eng'] else None,
-                         'out': dict(pb['out']),
-                         'ci': [round(x, 3) for x in wilson(pb['ok'], pb['eng'])] if pb['eng'] else [0, 0]},
-            })
-    return out
 
 
 def main():
-    rows = load()
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--input', required=True, help='results.jsonl 的显式路径')
+    ap.add_argument('--out', required=True, help='报告输出目录')
+    a = ap.parse_args()
+
+    inp = pathlib.Path(a.input)
+    if not inp.exists():
+        raise SystemExit(f'输入不存在：{inp}')
+    out = pathlib.Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / 'figures').mkdir(exist_ok=True)
+
+    rows, bad = load(inp)
     if not rows:
-        print('no data'); return 1
-    fig = ROOT / 'docs/figures'; fig.mkdir(parents=True, exist_ok=True)
-    ctrls = sorted({r.get('controller', 'hold') for r in rows})
-    for ctrl in ctrls:
-        for stance in ('low', 'high'):
-            curve_chart(rows, fig / f'curve_{ctrl}_{stance}.png', stance, ctrl)
-    engagement_chart(rows, fig / 'engagement.png')
+        raise SystemExit('输入为空，拒绝生成成功报告')
 
-    pairs = matched_table(rows)
-    (ROOT / 'runs/pairs.json').write_text(json.dumps(pairs, indent=2, ensure_ascii=False))
+    font_path, has_cjk = find_cjk_font()
+    L = LBL(has_cjk)
+    cfg_path, env_path = inp.parent / 'config.json', inp.parent / 'environment.json'
+    cfg = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
+    env = json.loads(env_path.read_text()) if env_path.exists() else {}
 
-    total = len(rows)
-    eng = sum(1 for r in rows if engaged(r))
-    md = ['# 结果报告 · 月球基地轮腿机器人训练场\n',
-          f'- 仿真总数 **{total}**，其中真正碰到障碍物 **{eng}**（其余被机器人绕过，不计成绩）',
-          f'- 考生：脚本控制器，低姿态 / 高姿态；月球重力 1.62 m/s²；刚性地面\n',
-          '## 1. 能力曲线（尺子）\n',
-          '程序化方块在宽度固定 0.30 m（0.79 倍轮距）下的通过率随高度变化：\n']
-    a = agg_pairs(rows)
-    md.append('| 相对高度 | ' + ' | '.join(f'{c}/低姿态' for c in ctrls) + ' |')
-    md.append('| --- |' + ' --- |' * len(ctrls))
-    for h in sorted({k[2] for k in a if k[1] == 'procedural'}):
-        c = []
-        for ctrl in ctrls:
-            b = a.get((ctrl, 'procedural', h, 'low'))
-            c.append(f"{b['ok']/b['eng']*100:.0f}% (n={b['eng']})" if b and b['eng'] else '—')
-        md.append(f'| {h:.2f} | ' + ' | '.join(c) + ' |')
-    for c in ctrls:
-        md.append(f'\n![尺子 {c} 低姿态](figures/curve_{c}_low.png)\n')
+    c = counts(rows)
+    md = ['# 运行报告\n']
+    md.append(f'- 运行目录：`{inp.parent.name}`　suite：`{cfg.get("suite", "?")}`')
+    md.append(f'- 输入：`{inp.name}`（记录 {c["records"]} 条，无法解析 {bad} 行）')
+    if env:
+        md.append(f'- 代码提交：`{str(env.get("code", {}).get("commit"))[:12]}`'
+                  f'（未提交修改：{env.get("code", {}).get("uncommitted_changes")}）')
+        md.append(f'- 模型提交：`{str(env.get("robot_model", {}).get("commit"))[:12]}`')
+        md.append(f'- 版本：`{env.get("packages")}`')
+    if not has_cjk:
+        md.append('\n> 未找到中文字体，图中标签已降级为英文；正文仍为中文。'
+                  '设置 `RLL_FONT=/path/to/font.ttc` 可恢复。')
 
-    md.append('## 2. 同尺寸配对：生成形状 vs 方块\n')
-    md.append('宽度统一 0.30 m（0.79 倍轮距），高度按各自实测对齐。括号内为 95% Wilson 区间。\n')
-    md.append('| 考生 | 相对高度 | 姿态 | 生成资产 | 程序化方块 | 区间是否重叠 |')
+    md.append('\n## 1. 任务计数\n')
+    md.append('| 计划 | 执行 | 预检失败 | 未接触 | 接触(任意机体) | 接触(轮子) |')
     md.append('| --- | --- | --- | --- | --- | --- |')
-    overlap_all = True
-    for p in pairs:
-        l, r = p['lux'], p['proc']
-        lo = max(l['ci'][0], r['ci'][0]); hi = min(l['ci'][1], r['ci'][1])
-        overlap = lo <= hi
-        overlap_all &= overlap
-        md.append(f"| {p['controller']} | {p['rel_h']:.2f} | {p['stance']} | "
-                  f"{l['rate']*100:.0f}% (n={l['eng']}, CI {l['ci'][0]*100:.0f}–{l['ci'][1]*100:.0f}%) | "
-                  f"{r['rate']*100:.0f}% (n={r['eng']}, CI {r['ci'][0]*100:.0f}–{r['ci'][1]*100:.0f}%) | "
-                  f"{'重叠' if overlap else '**不重叠**'} |")
-    md.append('')
-    if overlap_all:
-        md.append('> **所有配对的两组置信区间都重叠 → 在本样本量下测不出通过率差异。**\n')
+    md.append(f'| {cfg.get("planned_trials", "?")} | {c["executed"]} | {c["precheck_failed"]} | '
+              f'{c["not_contacted"]} | {c["contact_any"]} | {c["contact_wheel"]} |')
+    outs = {k: v for k, v in c.items()
+            if k in ('completed', 'tipped', 'stuck', 'timeout', 'ERROR')}
+    md.append(f'\n结果分布（分母 = 已执行 {c["executed"]}）：`{outs}`\n')
+
+    agg = group(rows, ['shape', 'source_kind', 'controller', 'stance'])
+    md.append('## 2. 分形状 × 分考生\n')
+    md.append('方块、圆柱、斜坡、生成网格分别统计；三个考生分别统计，不合并成单一比例。\n')
+    md.append('| shape | 来源 | 考生 | 姿态 | 执行 | 接触(任意) | 接触(轮) | 完成 | 完成率 | 结果分布 |')
+    md.append('| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |')
+    for k in sorted(agg, key=lambda t: tuple(str(x) for x in t)):
+        a2 = agg[k]
+        done = a2['outcomes'].get('completed', 0)
+        md.append(f'| {k[0]} | {k[1]} | {k[2]} | {k[3]} | {a2["n"]} | {a2["contact_any"]} | '
+                  f'{a2["contact_wheel"]} | {done} | {done/a2["n"]*100:.0f}% | '
+                  f'{dict(a2["outcomes"])} |')
+
+    if bar_chart(agg, out / 'figures/completion_by_shape_controller.png',
+                 L('完成率 · 按形状与考生', 'Completion rate by shape and controller'),
+                 L('每根柱合并该形状该考生的全部姿态与分层；n 为执行数',
+                   'each bar merges stances/layers; n = executed trials'),
+                 font_path):
+        md.append('\n![完成率](figures/completion_by_shape_controller.png)\n')
+
+    # ---- 同尺寸配对 ----
+    by_h = defaultdict(lambda: defaultdict(list))
+    for r in rows:
+        if r.get('status') == 'precheck_failed':
+            continue
+        h = (r.get('dimensions') or {}).get('rel_height')
+        if h is None:
+            continue
+        by_h[(round(h, 2), r.get('controller'), r.get('stance'))][r.get('shape')].append(r)
+    pairs = []
+    for (h, ctrl, stance), shapes in sorted(by_h.items(), key=lambda kv: tuple(map(str, kv[0]))):
+        if 'box' in shapes and 'mesh' in shapes:
+            def rate(rs):
+                return sum(1 for x in rs if x.get('outcome') == 'completed'), len(rs)
+            bd, bn = rate(shapes['box'])
+            md_, mn = rate(shapes['mesh'])
+            pairs.append({'rel_height': h, 'controller': ctrl, 'stance': stance,
+                          'box': f'{bd}/{bn}', 'mesh': f'{md_}/{mn}'})
+
+    md.append('\n## 3. 同尺寸对照（box vs 生成网格）\n')
+    if pairs:
+        md.append('仅列出同时存在 box 与 mesh 的 (相对高度, 考生, 姿态) 组合。'
+                  '格式为「完成数/执行数」。\n')
+        md.append('| 相对高度 | 考生 | 姿态 | box | mesh |')
+        md.append('| --- | --- | --- | --- | --- |')
+        for p in pairs:
+            md.append(f'| {p["rel_height"]:.2f} | {p["controller"]} | {p["stance"]} | '
+                      f'{p["box"]} | {p["mesh"]} |')
     else:
-        md.append('> 存在区间不重叠的配对，见上表。\n')
-    md.append('\n## 3. 接触率\n')
-    md.append('![接触率](figures/engagement.png)\n')
+        md.append('本次输入中没有任何同高度的 box 与 mesh 配对，'
+                  '**因此不对形状差异作任何陈述**。')
 
-    md.append('## 4. 关键帧\n')
-    kf = ROOT / 'docs/figures/exam_keyframes.png'
-    if kf.exists():
-        md.append('![关键帧](figures/exam_keyframes.png)\n')
+    md.append('\n## 4. 怎么读这张表\n')
+    md.append('- 完成率的分母是**已执行 trial**，其中包含未接触障碍物的场景；'
+              '"接触后完成率"需要另取分母，本文未做该条件统计。')
+    md.append('- 横向偏移是**确定性网格**，不是随机采样；本表的完成率只描述这张网格，'
+              '不能外推为随机月面或现实任务的成功概率。')
+    md.append('- 同一资产的多个偏移不是多个独立的形状家族。')
+    md.append('- 三个考生是手工控制器：`hold` 锁死站姿只转轮，`step` 执行固定抬腿序列，'
+              '`adapt` 用本体感觉在"抬腿/加大力矩"之间二选一。'
+              '都不能读作"学会了越障"。')
+    md.append('- 障碍物是**静态刚性体**，不滚动、不翻倒；地面刚性，摩擦未标定。')
 
-    md.append('## 5. 结论\n')
-    md.append('1. **能力边界在 1.1 倍轮半径附近，腿能把它推动一点。** '
-              '`hold`（锁死站姿只转轮）在 0.6 倍以内 100% 通过，超过 1.1 倍跌破 50%。'
-              '`step` / `adapt`（抬腿越障）在 1.51 倍这一档把通过率从 5% 提到 **24%**。')
-    md.append('2. **闭环考生做出来了，但通过率并没有因此拉开形状差异。** '
-              '`adapt` 只用本体感觉（轮速、机体倾角、前进速度）判断"该抬腿还是该加大力矩"，'
-              '在 1.76 倍档比 `step` 多推进 0.12 m（1.82 vs 1.70），但全部配对的'
-              '95% 置信区间仍然重叠。')
-    md.append('3. **真正有力的发现：包围盒高度不是难度。** '
-              '在 1.76 倍这一档，生成的着陆器支架**一次腿都没让考生抬**（0.00 次/次）'
-              '就通过了 17%；同为 1.76 倍包围盒高度的方块，平均要抬 1.07 次腿、只通过 7%。'
-              '同宽同高、差别只在形状，难度却差了一个量级。')
-    md.append('4. **原因是几何量选错了。** 包围盒高度对圆钝、带斜面的物体**系统性高估**了'
-              '实际越障难度：轮子可以顺着曲面爬上去，而直面台阶必须把整个轮子抬过棱。'
-              '"同尺寸"如果按包围盒定义，生成物天然占便宜，比较就不公平。')
-    md.append('5. **所以下一步不是加样本，是换难度度量。** 应该用"轮子必须翻越的最大局部台阶高度"'
-              '（或接触点处的坡度分布）来分层，而不是包围盒。这一步做完，'
-              '"形状是否改变通行"才真正可回答。')
+    md.append('\n## 5. 未做的事\n')
+    md.append('- 未做形状家族留出测试，**不能**声称"对未见过物体泛化"。')
+    md.append('- 未做训练对照，**不能**声称生成资产对训练有帮助。')
+    md.append('- 未独立定义"有效难度"，**不能**声称"同难度下无差异"。')
 
-    md.append('\n## 6. 局限（必须一起读）\n')
-    md.append('- **考生仍是手工状态机，不是学出来的技能。** `adapt` 会判断"抬腿还是推"，'
-              '但不会根据障碍物形状调整落脚点位置——它能感知到"被挡住了"，感知不到"挡住我的是什么形状"。')
-    md.append('- **难度度量用的是包围盒**，见结论 4，这是当前最大的方法问题。')
-    md.append('- **静态障碍物。** 障碍物焊死在世界上，不会滚动或翻倒。')
-    md.append('- **样本量小。** 每格 n≈7–14；三个考生合计约 1000 次有效接触。')
-    md.append('- **归一化规则人为设定。** 按宽度 0.30 m 归一 + 最稳定姿态落地。')
-    md.append('- **物理边界：** 月球重力下的刚性地面，不模拟月壤沉陷与真实摩擦。')
-
-    (ROOT / 'docs/REPORT.md').write_text('\n'.join(md), encoding='utf-8')
-    print(f'{total} sims, {eng} engaged -> docs/REPORT.md')
-    for p in pairs:
-        print(f"  h={p['rel_h']:.2f} {p['stance']:5s} lux={p['lux']['rate']*100:5.0f}% "
-              f"proc={p['proc']['rate']*100:5.0f}%")
+    (out / 'report.md').write_text('\n'.join(md), encoding='utf-8')
+    print(f'wrote {out/"report.md"}  records={len(rows)} executed={c["executed"]} pairs={len(pairs)}')
+    if not pairs:
+        print('注意：没有同尺寸配对，报告不含形状对比结论')
     return 0
 
 

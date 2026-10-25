@@ -30,7 +30,7 @@ def job(args):
         (out / 'manifest.json').write_text(json.dumps(man, indent=2, ensure_ascii=False))
         return f'OK   {out.name}  rel_h={man["rel_height"]:.2f} rel_w={man["rel_width"]:.2f} parts={man["coacd_parts"]} conc={man["concavity"]}'
     except Exception as e:
-        return f'FAIL {stem} h={h}: {repr(e)[:120]}'
+        return f'FAIL {stem}: {repr(e)[:120]}'
 
 
 if __name__ == '__main__':

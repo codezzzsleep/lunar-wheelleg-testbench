@@ -22,8 +22,14 @@ WHEELBASE = 0.38     # 左右轮心距（go2w 模型读数）
 def load_glb(path):
     scene = trimesh.load(path, force='scene')
     if isinstance(scene, trimesh.Scene):
-        geoms = [g for g in scene.geometry.values() if len(g.faces) > 0]
-        mesh = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]
+        # 用 to_geometry()：它会应用节点变换与实例。
+        # 旧实现直接 concatenate(scene.geometry.values())，多节点/带位姿的 GLB 会丢变换。
+        geom = scene.to_geometry()
+        if isinstance(geom, trimesh.Scene):
+            geoms = [g for g in geom.geometry.values() if len(g.faces) > 0]
+            mesh = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]
+        else:
+            mesh = geom
     else:
         mesh = scene
     return mesh

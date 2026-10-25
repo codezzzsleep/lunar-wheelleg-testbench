@@ -1,0 +1,52 @@
+{
+  "gate": 1,
+  "all_pass": true,
+  "checks": {
+    "ITEM 1 · go2w 月球重力": {
+      "pass": true,
+      "seconds": 0.7,
+      "gravity": [
+        0.0,
+        0.0,
+        -1.62
+      ],
+      "nu": 16,
+      "nq": 23,
+      "body_z_after_4s": 0.159
+    },
+    "ITEM 2 · 碰撞对照 raw vs CoACD": {
+      "pass": true,
+      "seconds": 3.0,
+      "torus_faces": 2048,
+      "raw_final_z": 0.3549,
+      "coacd_parts": 12,
+      "coacd_seconds": 2.71,
+      "decomposed_final_z": 0.0199,
+      "raw_blocked": true,
+      "decomposed_passes": true,
+      "gate2_pass": true
+    },
+    "ITEM 3 · Lux3D 物体进考场并接触": {
+      "pass": true,
+      "seconds": 1.2,
+      "first_contact_s": 3.164,
+      "outcome": "tipped",
+      "rel_height": 3.059,
+      "parts": 1
+    },
+    "ITEM 4 · 脚本控制器 5 m 不倒": {
+      "pass": true,
+      "seconds": 3.1,
+      "A_low": {
+        "distance_m": 12.571,
+        "max_tilt_deg": 7.2,
+        "ride_height_m": 0.384
+      },
+      "B_high": {
+        "distance_m": 12.523,
+        "max_tilt_deg": 0.7,
+        "ride_height_m": 0.466
+      }
+    }
+  }
+}

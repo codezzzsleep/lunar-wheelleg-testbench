@@ -1,0 +1,253 @@
+{
+  "run_id": "smoke_test",
+  "suite": "smoke",
+  "planned": 20,
+  "records": 20,
+  "unparsable_lines": 0,
+  "wall_seconds": 6.2,
+  "groups": [
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "adapt",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "adapt",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "hold",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "hold",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 0,
+      "completed_rate_all_executed": 0.0,
+      "outcomes": {
+        "tipped": 1
+      }
+    },
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "step",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "box",
+      "source_kind": "procedural",
+      "controller": "step",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 1,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "adapt",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 2,
+      "completed": 1,
+      "completed_rate_all_executed": 0.5,
+      "outcomes": {
+        "tipped": 1,
+        "completed": 1
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "adapt",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 2,
+      "completed": 2,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 2
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "hold",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 2,
+      "completed": 1,
+      "completed_rate_all_executed": 0.5,
+      "outcomes": {
+        "tipped": 1,
+        "completed": 1
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "hold",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 1,
+      "completed": 1,
+      "completed_rate_all_executed": 0.5,
+      "outcomes": {
+        "tipped": 1,
+        "completed": 1
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "step",
+      "stance": "high",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 2,
+      "completed": 1,
+      "completed_rate_all_executed": 0.5,
+      "outcomes": {
+        "tipped": 1,
+        "completed": 1
+      }
+    },
+    {
+      "shape": "mesh",
+      "source_kind": "lux3d",
+      "controller": "step",
+      "stance": "low",
+      "layer": "L3 (>1.5)",
+      "planned": 2,
+      "executed": 2,
+      "precheck_failed": 0,
+      "contact_any": 2,
+      "contact_wheel": 2,
+      "completed": 1,
+      "completed_rate_all_executed": 0.5,
+      "outcomes": {
+        "tipped": 1,
+        "completed": 1
+      }
+    },
+    {
+      "shape": "none",
+      "source_kind": "none",
+      "controller": "hold",
+      "stance": "high",
+      "layer": "none",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 0,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    },
+    {
+      "shape": "none",
+      "source_kind": "none",
+      "controller": "hold",
+      "stance": "low",
+      "layer": "none",
+      "planned": 1,
+      "executed": 1,
+      "precheck_failed": 0,
+      "contact_any": 0,
+      "contact_wheel": 0,
+      "completed": 1,
+      "completed_rate_all_executed": 1.0,
+      "outcomes": {
+        "completed": 1
+      }
+    }
+  ]
+}

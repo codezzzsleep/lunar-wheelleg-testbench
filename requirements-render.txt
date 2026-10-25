@@ -1,0 +1,4 @@
+# 仅用于离屏渲染（demo/replay 出 GIF）。基础仿真不需要 OpenGL。
+# 系统层还需要一份 OSMesa，例如 Ubuntu: apt-get install -y libosmesa6
+# 设置：export MUJOCO_GL=osmesa
+pillow==13.0.0

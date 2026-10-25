@@ -1,118 +1,158 @@
 # 月球基地轮腿机器人训练场
 
-> Aholo 3D AI 黑客松参赛项目 · 阶段 0 / 第 1 关已完成
+用 Aholo Lux3D 生成月球基地还不存在的物体，把它们转成可碰撞的障碍，放进月球重力下的
+MuJoCo 场景，让 Go2W 轮腿机器人跑测试，并留下可复核的配置、结果、失败证据和回放。
 
-用 Lux3D 生成月球基地还不存在的物体（着陆器、货箱、设备、残骸），拆成凸块碰撞体，
-放进 MuJoCo 的月面考场，让轮腿机器人去考——**并且用它没见过的物体考它。**
+**核心表述**：用生成模型扩展机器人测试场景，把生成物体转成可碰撞、可重复测试的障碍，
+记录机器人在哪些条件下失败。
 
-## 现在到哪了
+**本轮不做**：不训练强化学习、不接 Isaac、不模拟月壤、不做真实机器人迁移、不建服务端。
 
-**第 1 关（生死关，原定 10.27）已通过：**
+---
 
-```
-$ PYTHONPATH=/tmp/robolib python3 scripts/gate1.py
-PASS  ITEM 1 · go2w 月球重力
-PASS  ITEM 2 · 碰撞对照 raw vs CoACD
-PASS  ITEM 3 · Lux3D 物体进考场并接触
-PASS  ITEM 4 · 脚本控制器 5 m 不倒
-GATE 1: PASS
-```
+## 环境要求
 
-全流程 8.2 秒（含一次真实 CoACD 拆块）。
-
-| 项 | 实测 |
+| 项 | 要求 |
 | --- | --- |
-| MuJoCo + go2w | 月球重力 1.62 m/s²，16 执行器（12 腿 + 4 轮），稳定站立 |
-| 碰撞对照 | 原始网格：小球停在 **z=0.355**（凸包把孔洞盖上）；CoACD 拆 **12 块**后穿到 **z=0.020** |
-| Lux3D 物体 | 货箱 13.0 MB，294 s 生成 → 定尺度 → 拆块 → **3.12 s 被轮子撞上**，机器人被顶翻 |
-| 脚本控制器 | 低姿态 12.57 m / 高姿态 12.52 m（要求 5 m），倾角 7.2° / 0.7°，机身 0.384 / 0.466 m 可区分 |
+| Python | 3.12（实测 3.12.3） |
+| CPU | 4 核可用（实测环境 4 核 / 7 GB，**无 GPU**） |
+| 磁盘 | 约 1.5 GB（含机器人模型 411 MB） |
+| 系统 | Linux；基础仿真**不需要** OpenGL |
 
+依赖版本锁定在 `requirements.txt`（mujoco 3.17.0 / numpy 2.5.4 / trimesh 5.2.0 /
+coacd 1.0.14 / manifold3d 3.5.4 / pillow 13.0.0）。只锁真实跑通的组合。
 
-## 结果（已完成部分）
-
-**第 2 关（原定 11.03）的核心内容已跑通**：696 次仿真、553 次有效接触、21 个资产、2 个考生。
-
-- **能力边界**：方块高度低于 0.6 倍轮半径 → 100% 通过；超过 1.1 倍 → 跌破 50%。
-- **腿确实有用**：`step` / `adapt` 考生在 1.51 倍轮半径这一档把通过率从 5% 提到 **24%**
-  （前腿缩短、后腿伸长，把机头抬起来压上台面）。回放：`demo/step_legs_1p51.gif`。
-- **闭环考生 `adapt` 已实现**：只用本体感觉（轮速、机体倾角、前进速度）判断"该抬腿还是该加大力矩"，
-  不读任何障碍物真值。
-- **关键发现：包围盒高度不是难度。** 1.76 倍档上，生成的着陆器支架**一次腿都没让考生抬**就通过了 17%；
-  同包围盒高度的方块平均要抬 1.07 次、只过 7%。圆钝形状的真实越障难度被包围盒系统性高估。
-
-> **所以下一步不是加样本，是换难度度量**：用"轮子必须翻越的最大局部台阶高度"替代包围盒。
-
-- **完整报告**：[`docs/REPORT.md`](docs/REPORT.md)；图在 `docs/figures/`；回放在 `demo/`。
-
-结论只在这些条件下成立：开环脚本考生、静态障碍物、刚性地面、月球重力。
-
-## 环境
-
-无 GPU，4 核 / 7 GB，纯 CPU。MuJoCo 跑 go2w 约 **10 倍实时**（16 s 仿真 ≈ 1.5 s 墙钟）。
-强化学习训练是扩展项，不是主线。
-
-Python 依赖装在 `/tmp/robolib`（系统无 venv），运行时加 `PYTHONPATH=/tmp/robolib`：
+## 干净安装
 
 ```bash
-python3 -m pip install --target /tmp/robolib mujoco trimesh numpy coacd manifold3d
-git clone --depth 1 https://github.com/unitreerobotics/unitree_mujoco vendor/unitree_mujoco
+git clone https://github.com/codezzzsleep/lunar-wheelleg-testbench
+cd lunar-wheelleg-testbench
+./setup.sh          # 建 venv、装锁定依赖、拉取固定提交的机器人模型、跑第 1 关验收
 ```
 
-## 一键复现
+`setup.sh` 会把 `vendor/unitree_mujoco` 切到固定提交
+`1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d`。模型已存在则复用，不会重复下载。
+
+手动安装：
 
 ```bash
-cd lunar-lab
-PYTHONPATH=/tmp/robolib python3 scripts/build_scene.py          # 生成 moon_flat.xml（重力+地面）
-PYTHONPATH=/tmp/robolib python3 scripts/gate1.py                # 第 1 关四项
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+git clone https://github.com/unitreerobotics/unitree_mujoco vendor/unitree_mujoco
+git -C vendor/unitree_mujoco checkout 1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d
 ```
 
-单跑某一项：
+## 快速测试（第 1 关验收）
 
 ```bash
-python3 scripts/check_collision.py                                   # 碰撞对照
-python3 scripts/process_asset.py assets/raw/cargo_crate.glb --height 0.28
-python3 scripts/exam.py --asset assets/processed/cargo_crate --stance low
-python3 scripts/drive_test.py                                        # 两个脚本考生
+python scripts/gate1.py --out runs/gate1
 ```
+
+四项：模型加载与重力冒烟、几何碰撞对照（凸包 vs CoACD）、Lux3D 资产进入考场并接触、
+平地驱动（两种站姿越过终点）。全部用函数返回值判定，**不读任何历史文件**；退出码非零即失败。
+
+回归测试：
+
+```bash
+python -m unittest discover -s tests -v      # 8 项，约 11 秒
+```
+
+## 一场演示 / 一次正式批跑
+
+```bash
+# 冒烟：20 个 trial，约 6 秒
+python scripts/demo.py --suite smoke --out runs/smoke
+
+# 正式：2520 个 trial（35 个资产 × 2 站姿 × 3 控制器 × 12 横向偏移）
+python scripts/demo.py --suite canonical --out runs/canonical
+
+# 分析（只读显式指定的结果文件）
+python scripts/analyze.py --input runs/canonical/results.jsonl --out runs/canonical
+```
+
+运行目录结构：
+
+```
+runs/<run_id>/
+  config.json       本批配置与 trial 清单
+  environment.json  代码提交、模型提交、包版本、CPU、是否含未提交修改
+  results.jsonl     逐 trial 原始记录（唯一事实来源）
+  summary.json      分组汇总
+  report.md         分析产出
+  figures/  replays/  logs/
+```
+
+**实测成本**（4 核 / 7 GB / 无 GPU）：canonical 2520 个 trial，3 个 worker，
+**672 秒**，单 trial 平均 0.27 秒墙面时间。完整结果已随仓库提交。
+
+## 回放
+
+```bash
+apt-get install -y libosmesa6          # 仅渲染需要
+export MUJOCO_GL=osmesa
+
+python scripts/replay.py --run runs/canonical --trial <trial_id>
+```
+
+回放是**重演**（re-simulation），不是轨迹回放：它走与考试完全相同的控制路径
+（`exam.run` 的同一份代码），并校验 `final_x` / `max_tilt_deg` 与记录一致；
+不一致会以非零退出码报错，不会把近似结果当成原轨迹。
+
+## 三个考生的真实能力
+
+| 考生 | 做什么 | 实测边界 |
+| --- | --- | --- |
+| `hold` | 锁死站姿 + 轮速伺服，本质是四轮小车 | 障碍低于 0.6 倍轮半径几乎必过；越过 1.1 倍后大量倾覆 |
+| `step` | 被挡住时执行一次固定序列：前腿缩短、后腿伸长，把机头抬起来 | 在 1.51 倍这一档明显优于 hold；1.76 倍以上基本无效 |
+| `adapt` | 只用本体感觉（轮速、机体倾角、前进速度）在"抬腿 / 加大力矩"之间二选一 | 与 step 同级；**不会**按形状调整落脚点 |
+
+三者都是**手工控制器**，不是学出来的技能。`adapt` 的"自适应"仅指上述二选一，
+不能读作"学会了越障"。
+
+## 当前支持的物理条件与不支持的
+
+**支持**：月球重力 1.62 m/s²、刚性平面地面、静态刚性障碍（CoACD 凸块分解）、
+两种站姿、确定性横向偏移网格。
+
+**不支持**：月壤沉陷 / 可变形地面、摩擦参数标定、动态或可翻倒的残骸、
+真实深度传感器噪声、任意非凸凹槽（MuJoCo 对闭合网格按凸包碰撞，必须先拆凸块）。
+
+## 常见错误
+
+| 现象 | 原因 / 处理 |
+| --- | --- |
+| `找不到 go2w 模型` | 未拉取模型。运行 `./setup.sh` 或按上文手动 clone |
+| `MUJOCO_GL` 相关报错 | 只有渲染需要；`export MUJOCO_GL=osmesa` 并安装 `libosmesa6` |
+| 报告中文字体变方块 | 设置 `RLL_FONT=/path/to/font.ttc`；找不到字体时图内标签自动降级为英文并在报告里提示 |
+| `precheck_failed` | 资产不合格（缺 parts / manifest pass=false / 尺寸异常），**不是**机器人的失败，计数与 outcome 分开统计 |
+| `trial_id 重复` | 配置相同被当成不同任务；检查 suite 生成逻辑 |
+
+## 已知局限
+
+- 横向偏移是**确定性网格**，不是随机采样；完成率只描述这张网格，不能外推。
+- 同一资产的多个偏移不是多个独立形状家族；未做家族留出，**不能**声称泛化能力。
+- 障碍物是静态刚性体，不滚动、不翻倒。
+- 完成判据是「机体中心越过障碍后方 0.25 m 净空」，不等于整机完全通过。
+- **包围盒尺寸不足以刻画越障难度**：本次正式运行中，斜坡在 1.5 倍以上分层仍完成
+  24–33/36，而同高度方块仅 2/12。
 
 ## 目录
 
 ```
-scripts/controllers.py  考生：hold（四轮小车）/ step（带腿抬头迈步）
-assets/raw/          Lux3D 原始 GLB
-assets/processed/    处理后：parts/*.stl + manifest.json（几何量、凸块数、凹度）
-scripts/             资产管线 / 场景构建 / 考场 / 考生 / 验收
-vendor/unitree_mujoco  go2w 模型（411 MB，未入库）
-runs/                每一关的结果 JSON
+scripts/
+  构建：build_scene.py / procedural.py / process_asset.py / build_library.py
+  运行：exam.py / controllers.py / demo.py / runio.py / analyze.py / replay.py
+  验收：gate1.py / check_collision.py
+assets/raw/        7 个 Lux3D 原始 GLB
+assets/processed/  处理后资产（parts/*.stl + manifest.json）
+runs/canonical/    本次正式运行的完整记录与报告
+docs/              执行清单、状态说明
+tests/             关键回归测试
 ```
 
-## 踩过的坑（都是实测，不是推测）
+## 来源与许可
 
-1. **MuJoCo 对闭合网格按凸包碰撞。** 圆环的孔洞会被"盖上"，小球停在管子上。
-   必须 CoACD 拆块，拆完才穿得过去。这是整个项目存在 CoACD 的唯一理由。
-2. **Lux3D 输出的网格不是水密的**（椅子 191,926 面 watertight=False；货箱也是）。
-   所以"凹度 = 1 − 网格体积/凸包体积"算不出来，改用 **1 − 凸块体积和/凸包体积**，
-   凸包用 `manifold3d`（精确，且不需要 scipy）。
-3. **近凸物体不要拆。** 货箱凹度 0.014，原本被拆成 32 块（撞上限），只是白增接触对。
-   现在凹度 < 0.05 直接用一个精确凸包顶替，货箱变成 1 块。
-4. **轮子不用换成圆柱。** go2w 的轮子碰撞体虽然是 mesh，但轮子本身是凸的，
-   凸包 ≈ 圆柱，换成圆柱是优化不是必需。
-5. **力矩突变会让机身翘头 60°** 并稳定在这个姿态上跑（不是倒，是轮式"翘头"）。
-   把速度指令做成 2 s 斜坡后，倾角降到 1.4°。
-6. **出生高度必须高于目标站姿高度**，否则机器人砸下来会翻倒——高姿态第一次失败就是这个原因，
-   不是控制器不行。
-7. **MuJoCo 是位精确可复现的**：同一条轨迹跑三次，`qpos` 逐位相同（`max|a-b| = 0.0`）。
-   所以考场只需存参数 + 种子。
-
-## 下一步（阶段 1）
-
-- [ ] Lux3D 批量生成 ≥ 30 个物体（≥ 8 类；另留 3–4 类只用于封存考场）
-- [ ] 程序化障碍生成器，按同一套几何量出题（方块、圆柱、斜坡）
-- [ ] 场景编排 + 自动检查（穿模、悬空、出生点、能否静置）
-- [ ] 考试运行器：多核并行、写日志、存回放
-- [ ] 第 2 关（11.03）：无人值守跑完 20 个场景并自动出报告
-
-## 诚实边界
-
-第一版只做**月球重力下的刚性地面**，不模拟月壤沉陷、不做真实摩擦参数标定。
-生成的岩石/货箱是"看起来合理"，不是"物理真实"。所有结论只在这个范围内成立。
+- 机器人模型：[unitreerobotics/unitree_mujoco](https://github.com/unitreerobotics/unitree_mujoco)
+  （固定提交），按其仓库许可使用。
+- 3D 生成：[Aholo Lux3D](https://www.aholo3d.cn)，资产由本项目生成。
+- 凸块分解：[CoACD](https://github.com/sarahweiii/CoACD)（MIT）。

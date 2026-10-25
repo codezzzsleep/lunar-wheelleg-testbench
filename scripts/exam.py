@@ -113,7 +113,8 @@ def wheel_geom_ids(m):
 
 def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
         obstacle_x=2.0, seconds=18.0, v_target=1.0, ramp=2.0,
-        gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION):
+        gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION,
+        on_frame=None, frame_fps=30):
     flat = asset_dir is None
     if flat:
         ok, reason, man = True, 'flat_baseline', None
@@ -212,6 +213,12 @@ def run(asset_dir, stance='low', controller='hold', y_offset=0.0,
                 -WHEEL_TORQUE_MAX, WHEEL_TORQUE_MAX)
 
         mujoco.mj_step(m, d)
+
+        # 帧回调：回放/渲染走的就是这条控制路径，不另写一套近似逻辑
+        if on_frame is not None and frame_fps:
+            every = max(1, int(round(1.0 / (frame_fps * dt))))
+            if i % every == 0:
+                on_frame(t, m, d)
 
         any_hit = wheel_hit = False
         for c in d.contact[:d.ncon]:

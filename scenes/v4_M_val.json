@@ -1,0 +1,566 @@
+[
+  {
+    "name": "M_6200_0",
+    "seed": 6200,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "debris_plate_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 11.7,
+        "target_height_m": 0.085
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "debris_plate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_1",
+    "seed": 6201,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "boulder_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -2.8,
+        "target_height_m": 0.0812
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "boulder_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_2",
+    "seed": 6202,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "V1",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 10.0,
+        "target_height_m": 0.0816
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "V1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_3",
+    "seed": 6203,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "debris_plate_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 11.5,
+        "target_height_m": 0.0832
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "debris_plate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_4",
+    "seed": 6204,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "boulder_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -3.9,
+        "target_height_m": 0.0879
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "boulder_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_5",
+    "seed": 6205,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "V1",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -0.2,
+        "target_height_m": 0.0815
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "V1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_6",
+    "seed": 6206,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "debris_plate_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -8.1,
+        "target_height_m": 0.0832
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "debris_plate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_7",
+    "seed": 6207,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "boulder_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -8.4,
+        "target_height_m": 0.0819
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "boulder_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_8",
+    "seed": 6208,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "V1",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -4.4,
+        "target_height_m": 0.0845
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "V1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_9",
+    "seed": 6209,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "debris_plate_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 3.2,
+        "target_height_m": 0.0803
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "debris_plate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_10",
+    "seed": 6210,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "boulder_w300",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": 4.2,
+        "target_height_m": 0.0887
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "boulder_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  },
+  {
+    "name": "M_6200_11",
+    "seed": 6211,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 3.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "V1",
+        "x": 1.8,
+        "y": 0.0,
+        "yaw_deg": -9.0,
+        "target_height_m": 0.0875
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "V1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.42
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill_cfg": {
+      "task": "M",
+      "require_contact": false,
+      "settle_seconds": 1.0,
+      "pass_clearance": 0.1
+    }
+  }
+]

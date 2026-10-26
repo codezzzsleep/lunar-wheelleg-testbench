@@ -1,0 +1,42 @@
+{
+  "tag": "v4M",
+  "started": "2026-10-26T23:40:14+0800",
+  "jobs": [
+    {
+      "id": "v4M_M_s0",
+      "group": "M",
+      "seed": 0,
+      "config": "configs/v4_M.json",
+      "out": "runs/v4M/M_s0",
+      "returncode": 0,
+      "seconds": 518.2,
+      "log": "runs/v4M/logs/v4M_M_s0.log",
+      "log_tail": "rue,\n  \"init_critic_checksum\": \"ec7fe66c817deb74d2da5c7f482b1da2\",\n  \"final_critic_checksum\": \"e707592b54fdb40c1764560244e2cb1a\",\n  \"baseline_det_success\": 0.9167,\n  \"final_det_success\": 0.9444,\n  \"baseline_stoch_success\": 0.8056,\n  \"final_stoch_success\": 0.8611,\n  \"baseline_stoch_tip\": 0.1111,\n  \"final_stoch_tip\": 0.0833,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "v4M_M_s1",
+      "group": "M",
+      "seed": 1,
+      "config": "configs/v4_M.json",
+      "out": "runs/v4M/M_s1",
+      "returncode": 0,
+      "seconds": 480.1,
+      "log": "runs/v4M/logs/v4M_M_s1.log",
+      "log_tail": "rue,\n  \"init_critic_checksum\": \"9aebfd15c2eff8873bbe6ddbd486737f\",\n  \"final_critic_checksum\": \"7a465795afab858321fd682ce8b83f2e\",\n  \"baseline_det_success\": 0.8056,\n  \"final_det_success\": 0.8333,\n  \"baseline_stoch_success\": 0.8333,\n  \"final_stoch_success\": 0.7778,\n  \"baseline_stoch_tip\": 0.0556,\n  \"final_stoch_tip\": 0.0556,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "v4M_M_s2",
+      "group": "M",
+      "seed": 2,
+      "config": "configs/v4_M.json",
+      "out": "runs/v4M/M_s2",
+      "returncode": 0,
+      "seconds": 490.5,
+      "log": "runs/v4M/logs/v4M_M_s2.log",
+      "log_tail": "rue,\n  \"init_critic_checksum\": \"b5674af6a1ae7701be28067c5bbfee80\",\n  \"final_critic_checksum\": \"fb583d7a175c386b91083b7e363d6c35\",\n  \"baseline_det_success\": 0.8611,\n  \"final_det_success\": 0.8333,\n  \"baseline_stoch_success\": 0.6944,\n  \"final_stoch_success\": 0.6944,\n  \"baseline_stoch_tip\": 0.1111,\n  \"final_stoch_tip\": 0.2778,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    }
+  ],
+  "finished": "2026-10-27T00:05:03+0800",
+  "n_jobs": 3,
+  "n_failed": 0
+}

@@ -17,8 +17,8 @@ import hashlib
 
 import numpy as np
 
-OBS_DIM = 42   # 本体感觉 40 + 导航状态 2（横向偏差、朝向误差）
-ACT_DIM = 4   # 与 wheelleg_env.ACT_DIM 保持一致
+OBS_DIM = 41   # 本体感觉 39 + 导航状态 2   # 本体感觉 40 + 导航状态 2（横向偏差、朝向误差）
+ACT_DIM = 3   # 学习器只管 3 维；转向由共享导航底座产生
 H = 64
 LOG2PI = float(np.log(2 * np.pi))
 

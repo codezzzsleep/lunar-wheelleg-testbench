@@ -1,0 +1,24 @@
+{
+  "run_id": "M_s1",
+  "seed": 1,
+  "updates": 30,
+  "control_steps": 30720,
+  "wall_seconds": 387.1,
+  "peak_rss_mb": 721.7,
+  "init_actor_checksum": "532f889e10037afee10a1de7b5a870c8",
+  "final_actor_checksum": "1885793f85665ea41cf27f588474d561",
+  "actor_changed": true,
+  "init_critic_checksum": "9aebfd15c2eff8873bbe6ddbd486737f",
+  "final_critic_checksum": "7a465795afab858321fd682ce8b83f2e",
+  "baseline_det_success": 0.8056,
+  "final_det_success": 0.8333,
+  "baseline_stoch_success": 0.8333,
+  "final_stoch_success": 0.7778,
+  "baseline_stoch_tip": 0.0556,
+  "final_stoch_tip": 0.0556,
+  "checkpoints": [
+    "final.npz",
+    "u0015.npz",
+    "u0030.npz"
+  ]
+}

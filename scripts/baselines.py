@@ -44,6 +44,10 @@ def run_episode(env, policy, seed):
     while not done:
         if policy == 'zero':
             a = np.zeros(wheelleg_env.ACT_DIM)
+        elif policy == 'primitive':
+            a = np.zeros(wheelleg_env.ACT_DIM)
+            if float(env.data.qvel[0]) < 0.35:
+                a[0], a[1], a[2] = 0.8, -0.8, -0.3   # 前腿抬、后腿伸、降速
         elif policy == 'simple':
             a = simple_controller(env)
         else:
@@ -86,26 +90,30 @@ def evaluate(policy, specs, seeds, label, cfg):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--split', default='validation')
+    ap.add_argument('--scenes', default=None, help='直接指定场景文件（优先于 --split）')
     ap.add_argument('--config', default='configs/skill_ppo.json')
     ap.add_argument('--checkpoints', nargs='*', default=[])
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
 
     cfg = json.loads((ROOT / a.config).read_text())
-    specs = json.loads((ROOT / f'scenes/skill_{a.split}.json').read_text())
+    scene_path = a.scenes or f'scenes/skill_{a.split}.json'
+    specs = json.loads((ROOT / scene_path).read_text())
     seeds = cfg.get('eval_episode_seeds', [0, 1, 2])
 
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
     results = []
     results.append(evaluate('zero', specs, seeds, 'zero_residual', cfg))
-    results.append(evaluate('simple', specs, seeds, 'simple_ctrl', cfg))
+    results.append(evaluate('primitive', specs, seeds, 'primitive', cfg))
     for s in (0, 1, 2):
         results.append(evaluate(ppo.init_params(np.random.default_rng(s)), specs, seeds,
                                 f'untrained_s{s}', cfg))
     for ck in a.checkpoints:
         params = dict(np.load(ck))
-        results.append(evaluate(params, specs, seeds, pathlib.Path(ck).stem, cfg))
+        # 标签用 checkpoint 所在目录（含种子），不能都叫 final
+        label = pathlib.Path(ck).parent.parent.name + '/' + pathlib.Path(ck).stem
+        results.append(evaluate(params, specs, seeds, label, cfg))
 
     (out / 'baselines.json').write_text(json.dumps(
         {'split': a.split, 'seeds': seeds, 'config': a.config, 'results': results},

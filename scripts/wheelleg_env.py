@@ -37,19 +37,23 @@ WHEEL_KP, WHEEL_MAX, LEG_MAX = 1.2, 15.0, 45.0
 # 观测 = 本体感觉 + 导航状态。
 # 导航状态只提供**通道相对量**（横向偏差、朝向误差），不是地形图、不是相机、
 # 也不是真实的定位系统——它是仿真真值，必须如实标注。
-OBS_DIM = 42   # 40 + 横向偏差 + 朝向误差
-# 4 维：前腿目标偏移、后腿目标偏移、轮速倍率、差速转向。
-# 第 4 维是必要的接口补充：原 3 维动作没有任何横向纠偏能力，
-# 导致失败主要是横向出界（21/36），属于任务与控制能力不匹配，
-# 而不是策略不行。这里补充转向能力，**不**通过放宽出界阈值来制造成功。
-ACT_DIM = 4
-ACT_SCALE = np.array([0.30, 0.30, 0.60, 0.60])
+OBS_DIM = 41   # 39 本体感觉 + 2 导航状态（横向偏差、朝向误差）
+# 学习器动作 3 维：前腿目标偏移、后腿目标偏移、轮速倍率。
+# 第 4 维（差速转向）**由共享导航底座产生**，不再交给学习器。
+# 这样"零越障残差"基线 = 导航底座 + 不学习，与学习策略共用同一底座、
+# 同一信息、同一约束；学习增益才归因于越障决策本身。
+ACT_DIM = 3
+ACT_SCALE = np.array([0.30, 0.30, 0.60])
+CTRL_DIM = 4                    # 内部实际下发的控制维度（含转向）
+NAV_K_LAT = 1.0                 # 导航底座：横向偏差增益（符号由开环标定确定）
+NAV_K_HEAD = 0.5                # 导航底座：朝向误差增益
 
 
 class WheelLegEnv:
     def __init__(self, spec, control_hz=50.0, max_seconds=12.0,
                  v_ref=1.0, tip_deg=60.0, asset_root=None,
-                 settle_seconds=1.0, pass_clearance=0.10, bounds_y=0.45):
+                 settle_seconds=1.0, pass_clearance=0.10, bounds_y=0.45,
+                 nav_base=True):
         self.spec = spec
         self.control_hz = float(control_hz)
         self.max_seconds = float(max_seconds)
@@ -66,6 +70,9 @@ class WheelLegEnv:
         self.channel_center = float(ch.get('center_y', 0.0))
         self.channel_half_width = float(ch.get('half_width', 0.45))
         self.require_contact = bool((spec.get('skill_cfg') or {}).get('require_contact', False))
+        self.nav_base = bool(nav_base)
+        cfg = spec.get('skill_cfg') or {}
+        self.task = str(cfg.get('task', 'M')).upper()   # M 安全通行 / K 接触越障
         # 初态扰动幅度（米 / 弧度）。所有策略共用同一组 seed，因此是配对比较。
         ip = spec.get('init_perturbation') or {}
         self.init_perturbation = {'lateral': float(ip.get('lateral_m', 0.05)),
@@ -253,7 +260,7 @@ class WheelLegEnv:
         self.wheel_contact_steps = 0
         # 稳定化：让姿态在固定站姿下落稳，不计入策略成绩
         for _ in range(int(0.6 / self.dt)):
-            self._apply_controls(np.zeros(ACT_DIM), drive=False)
+            self._apply_controls(np.zeros(CTRL_DIM), drive=False)
             mujoco.mj_step(m, d)
             self.n_physics += 1
         self.prev_x = float(d.qpos[0])
@@ -273,10 +280,22 @@ class WheelLegEnv:
         """该点地表高度（米）。与地形生成共用同一份插值实现，避免两套约定。"""
         return terrain.ground_height_at(self._h, x, y)
 
+    def _steer_from_nav(self):
+        """共享导航底座：只用通道横向偏差与朝向误差做比例控制。"""
+        lat, head = self._nav_state()
+        return float(np.clip(NAV_K_LAT * lat + NAV_K_HEAD * head, -1.0, 1.0))
+
+    def _full_action(self, action):
+        """把学习器 3 维动作补上底座产生的转向，得到内部 4 维控制量。"""
+        a = np.asarray(action, dtype=np.float64).reshape(ACT_DIM)
+        steer = self._steer_from_nav() if self.nav_base else 0.0
+        return np.concatenate([np.clip(a, -1, 1), [steer]])
+
     def _apply_controls(self, action, drive=True):
         d, m = self.data, self.model
         st = STANCE
-        a = np.clip(action, -1.0, 1.0) * ACT_SCALE
+        a = np.asarray(action, dtype=np.float64).reshape(CTRL_DIM)
+        a = np.concatenate([np.clip(a[:3], -1, 1) * ACT_SCALE, [np.clip(a[3], -1, 1) * 0.6]])
         for leg in LEG:
             off = a[0] if leg in FRONT else a[1]
             for p, base in (('hip', st['hip']), ('thigh', st['thigh']), ('calf', st['calf'])):
@@ -343,10 +362,11 @@ class WheelLegEnv:
     def step(self, action):
         action = np.asarray(action, dtype=np.float64).reshape(ACT_DIM)
         action = np.clip(action, -1.0, 1.0)
+        full = self._full_action(action)          # 补上导航底座的转向
         reward = 0.0
         r_lat = 0.0
         for _ in range(self.substeps):
-            self._apply_controls(action)
+            self._apply_controls(full)
             mujoco.mj_step(self.model, self.data)
             self.n_physics += 1
             # 接触必须逐物理步检测：只在控制步末采样会漏掉滚过矮障碍的短暂接触
@@ -397,33 +417,33 @@ class WheelLegEnv:
         terminated = False
         truncated = False
 
-        # ---- 通过判据：用**变换后**的真实几何边界，不是 manifest 半深 ----
+        # ---- 任务 M / K 分开定义（训练前冻结，不按成绩修改） ----
+        #   M 安全通行：四轮越过终点线 + 通道内稳定保持；允许绕行/跨骑/接触
+        #   K 接触越障：四轮越过障碍**变换后**远端 + 净空 + 稳定保持，且必须接触
         min_wheel_x = min(self._wheel_xs())
-        if self.obj_bounds:
-            target_x = max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
+        task = self.task
+        if task == 'K' and self.obj_bounds:
+            finish_x = max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
         else:
-            target_x = float(self.spec.get('goal_x', 3.0))
+            finish_x = float(self.spec.get('goal_x', 3.0))
 
-        # 通道约束（产品条件）：横向越界即失败
+        lat = y - self.channel_center
         in_channel = abs(lat) <= self.channel_half_width
 
-        # 连续稳定保持：进入通过区开始计时；中途退回、倾覆或出通道都清零重来，
-        # 不允许"到过就算"（旧实现 passed_at 一旦设置就永久有效）。
-        if min_wheel_x >= target_x and in_channel:
+        # 连续稳定保持：进入完成区开始计时；退回、倾覆或出通道都清零
+        if min_wheel_x >= finish_x and in_channel:
             if self.passed_at is None:
                 self.passed_at = self.t
         else:
-            if self.passed_at is not None and min_wheel_x < target_x - 0.02:
-                self.passed_at = None          # 回退，重新计时
+            if self.passed_at is not None and min_wheel_x < finish_x - 0.02:
+                self.passed_at = None
             if not in_channel:
                 self.passed_at = None
 
         if (self.passed_at is not None
                 and (self.t - self.passed_at) >= self.settle_seconds):
-            # 技能声明：越障必须**发生接触**。没接触就过去算 bypass，
-            # 单独记为失败类型，不能混进成功（绕行/跨骑不是接触越障证据）。
-            if self.require_contact and self.first_contact_t is None:
-                terminated, reason = True, 'bypass'
+            if task == 'K' and self.require_contact and self.first_contact_t is None:
+                terminated, reason = True, 'bypass'      # K 任务：无接触不算接触越障
                 reward -= self.w_oob * 0.5
             else:
                 terminated, reason = True, 'success'
@@ -435,9 +455,11 @@ class WheelLegEnv:
         if not terminated and not in_channel:
             terminated, reason = True, 'out_of_bounds'
             reward -= self.w_oob
-        if not terminated and x >= float(self.spec.get('goal_x', 6.0)):
-            terminated, reason = True, 'out_of_bounds'
-            reward -= self.w_oob
+        # 兜底：K 任务里跑过整个场景仍未满足完成条件 -> 记为未通过，不再伪装成出界
+        if (not terminated and self.passed_at is None
+                and x >= float(self.spec.get('goal_x', 6.0)) + 1.0):
+            terminated, reason = True, 'failed_to_pass'
+            reward -= self.w_oob * 0.5
         if not terminated and self.t >= self.max_seconds:
             truncated, reason = True, 'time_limit'
 
@@ -447,14 +469,14 @@ class WheelLegEnv:
             'reason': reason, 'terminated': terminated, 'truncated': truncated,
             'tilt_deg': round(tilt, 2), 'x': round(x, 3), 'y': round(y, 3),
             'vx': round(vx, 3), 't': round(self.t, 3),
-            'min_wheel_x': round(min_wheel_x, 3), 'pass_x': round(target_x, 3),
+            'min_wheel_x': round(min_wheel_x, 3), 'pass_x': round(finish_x, 3),
             'passed_at': (round(self.passed_at, 3) if self.passed_at is not None else None),
             'first_contact_s': (round(self.first_contact_t, 3)
                                 if self.first_contact_t is not None else None),
             'contact_any': self.first_contact_t is not None,
             'contact_wheel': self.wheel_contact_steps > 0,
             'contact_substeps': self.contact_steps,
-            'lateral_offset': round(lat, 3),
+            'lateral_offset': round(lat, 3), 'task': task,
             'channel_half_width': self.channel_half_width,
             'contact_style': ('none' if self.first_contact_t is None
                               else ('wheel' if self.wheel_contact_steps > 0

@@ -34,7 +34,10 @@ REAR = {'RR', 'RL'}
 KP, KD = 150.0, 5.0
 WHEEL_KP, WHEEL_MAX, LEG_MAX = 1.2, 15.0, 45.0
 
-OBS_DIM = 40   # 39 + 1（第 4 维动作进入 prev_action）
+# 观测 = 本体感觉 + 导航状态。
+# 导航状态只提供**通道相对量**（横向偏差、朝向误差），不是地形图、不是相机、
+# 也不是真实的定位系统——它是仿真真值，必须如实标注。
+OBS_DIM = 42   # 40 + 横向偏差 + 朝向误差
 # 4 维：前腿目标偏移、后腿目标偏移、轮速倍率、差速转向。
 # 第 4 维是必要的接口补充：原 3 维动作没有任何横向纠偏能力，
 # 导致失败主要是横向出界（21/36），属于任务与控制能力不匹配，
@@ -59,6 +62,13 @@ class WheelLegEnv:
         self.settle_seconds = float(settle_seconds)
         self.pass_clearance = float(pass_clearance)
         self.bounds_y = float(bounds_y)
+        ch = spec.get('channel') or {}
+        self.channel_center = float(ch.get('center_y', 0.0))
+        self.channel_half_width = float(ch.get('half_width', 0.45))
+        # 初态扰动幅度（米 / 弧度）。所有策略共用同一组 seed，因此是配对比较。
+        ip = spec.get('init_perturbation') or {}
+        self.init_perturbation = {'lateral': float(ip.get('lateral_m', 0.05)),
+                                  'yaw': float(ip.get('yaw_rad', 0.05))}
         # 终态奖励：有限且可解释；不靠无限加大倾覆罚值来"修好"排序
         self.w_success = 50.0
         self.w_tip = 50.0
@@ -103,7 +113,7 @@ class WheelLegEnv:
         xml = build_scene.moon_scene_xml(floor=False)
         xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax']))
 
-        assets, bodies, placements = [], [], []
+        assets, bodies, placements, bounds = [], [], [], []
         for i, obj in enumerate(self.spec.get('objects', [])):
             d = self.asset_root / obj['asset']
             res = _resolve_parts(d)
@@ -114,14 +124,23 @@ class WheelLegEnv:
 
             # 统一按目标高度缩放：P/G 两组因此共享同一尺度分布，尺度不再是混淆变量。
             # 缩放后的家族仍算同源变体，不宣称是新的独立形状。
-            scale, target_h = 1.0, obj.get('target_height_m')
-            if target_h:
-                man = runio.resolve_asset(d)['manifest'] or {}
-                h0 = float(man.get('height_m') or 0)
-                if h0 > 0:
-                    scale = float(target_h) / h0
-            scale_attr = ('' if abs(scale - 1.0) < 1e-9
-                          else f' scale="{scale:.6f} {scale:.6f} {scale:.6f}"')
+            # 各向异性归一化：高度控制难度、横向宽度保证封住通道。
+            # 等比缩放会让高瘦资产（如货箱）在压低后只剩几厘米宽，机器人直接绕过；
+            # 各向异性会改变长宽比，因此这是"同源变体"，不是新的独立形状。
+            target_h = obj.get('target_height_m')
+            target_w = obj.get('target_width_m')
+            man = runio.resolve_asset(d)['manifest'] or {}
+            h0 = float(man.get('height_m') or 0)
+            w0 = float(man.get('width_y_m') or 0)
+            sx = sy = sz = 1.0
+            if target_h and h0 > 0:
+                sz = float(target_h) / h0
+            if target_w and w0 > 0:
+                sy = float(target_w) / w0
+                sx = sy                     # 前后方向跟随横向，保持平面比例
+            scale = (sx, sy, sz)
+            scale_attr = ('' if all(abs(float(c) - 1.0) < 1e-9 for c in scale)
+                          else f' scale="{sx:.6f} {sy:.6f} {sz:.6f}"')
 
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
@@ -131,8 +150,16 @@ class WheelLegEnv:
                                'yaw_deg': obj.get('yaw_deg', 0.0),
                                'n_vertices': int(len(verts)),
                                'target_height_m': target_h,
-                               'mesh_scale': round(scale, 5)})
+                               'target_width_m': target_w,
+                               'mesh_scale': [round(float(c), 5) for c in scale]})
             placements.append(place_meta)
+            bounds.append({'asset': obj['asset'],
+                           'x_min': float(verts[:, 0].min()),
+                           'x_max': float(verts[:, 0].max()),
+                           'y_min': float(verts[:, 1].min()),
+                           'y_max': float(verts[:, 1].max()),
+                           'z_min': float(verts[:, 2].min()) + body_z,
+                           'z_max': float(verts[:, 2].max()) + body_z})
 
             inner = []
             for j, p_ in enumerate(res):
@@ -146,6 +173,7 @@ class WheelLegEnv:
                 f'quat="{quat}">{"".join(inner)}</body>')
 
         self.placements = placements
+        self.obj_bounds = bounds
         block = terrain.terrain_geom_xml() + '\n' + '\n'.join(bodies)
         xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
         xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
@@ -192,13 +220,22 @@ class WheelLegEnv:
         for leg in LEG:
             d.qpos[self.J[f'{leg}_thigh_joint']['qadr']] = st['thigh']
             d.qpos[self.J[f'{leg}_calf_joint']['qadr']] = st['calf']
+        # 初态扰动：真的按 seed 改变横向位置、朝向与起始速度。
+        # 旧实现完全忽略 seed，确定性评估的多个 episode_seed 是同一轨迹。
+        prng = np.random.default_rng(int(seed) * 7919 + 13)
+        pert = self.init_perturbation
         d.qpos[0] = float(self.spec.get('start', [0.0, 0.0])[0])
-        d.qpos[1] = float(self.spec.get('start', [0.0, 0.0])[1])
+        d.qpos[1] = (float(self.spec.get('start', [0.0, 0.0])[1])
+                     + float(prng.uniform(-pert['lateral'], pert['lateral'])))
         # 放到地表之上：取该处 hfield 高度再加一段
         # 出生姿态对齐局部地形法线：坡面上让机身与地面平行，
         # 否则初始倾角就是坡角，机器人一落地就滑/翻（实测 12.9° 起步直接翻车）。
         n = self._terrain_normal(d.qpos[0], d.qpos[1])
         d.qpos[3:7] = _quat_from_up(n)
+        # 初始朝向误差：绕 z 旋转一个种子相关的小角度
+        yaw_err = float(prng.uniform(-pert['yaw'], pert['yaw']))
+        d.qpos[3:7] = _quat_mul(d.qpos[3:7], np.array([np.cos(yaw_err/2), 0, 0,
+                                                       np.sin(yaw_err/2)]))
         d.qpos[2] = self._ground_height(d.qpos[0], d.qpos[1]) + 0.42
         d.qvel[:] = 0.0
         d.ctrl[:] = 0.0
@@ -283,9 +320,21 @@ class WheelLegEnv:
                 jp.append(d.qpos[e['qadr']])
                 jv.append(d.qvel[e['vadr']])
         wv = [d.qvel[self.J[f'{leg}_wheel_joint']['vadr']] for leg in LEG]
+        lat, head = self._nav_state()
         obs = np.concatenate([g_body, omega, [v_body[0]], jp, jv, wv,
-                              self.prev_action, [self.v_ref]]).astype(np.float32)
+                              self.prev_action, [self.v_ref],
+                              [lat, head]]).astype(np.float32)
         return obs
+
+    def _nav_state(self):
+        """通道相对导航量：横向偏差（米，左正）与朝向误差（弧度）。"""
+        d = self.data
+        y = float(d.qpos[1])
+        w, x, yy, z = d.qpos[3:7]
+        # 机体系 +x 在世界系的方向（前进方向）
+        fwd = np.array([1 - 2 * (yy * yy + z * z), 2 * (x * yy + z * w), 0.0])
+        heading = float(np.arctan2(fwd[1], fwd[0]))
+        return y - self.channel_center, heading
 
     # ---------------------------------------------------------------- 接口
     def reset(self, seed=None):
@@ -296,6 +345,7 @@ class WheelLegEnv:
         action = np.asarray(action, dtype=np.float64).reshape(ACT_DIM)
         action = np.clip(action, -1.0, 1.0)
         reward = 0.0
+        r_lat = 0.0
         for _ in range(self.substeps):
             self._apply_controls(action)
             mujoco.mj_step(self.model, self.data)
@@ -324,6 +374,7 @@ class WheelLegEnv:
         d = self.data
         x, y = float(d.qpos[0]), float(d.qpos[1])
         vx = float(d.qvel[0])
+        lat = y - self.channel_center
         tilt = self._tilt()
         progress = x - self.prev_x
         self.prev_x = x
@@ -335,7 +386,11 @@ class WheelLegEnv:
         r_speed = -0.1 * abs(vx - self.v_ref)
         r_tilt = -0.5 * max(0.0, tilt - 20.0) / 40.0
         r_smooth = -0.05 * float(np.sum((action - self.prev_action) ** 2))
-        reward = r_prog + r_speed + r_tilt + r_smooth
+        # 密集通道惩罚：失败的种子全部是"早早横向出界、永远拿不到成功信号"，
+        # 稀疏的终态奖励无法给出梯度。这里给横向偏差一个逐步惩罚，
+        # 让"留在通道内"成为一个可学的密集信号（假设，见报告）。
+        r_lat = -0.3 * abs(lat)
+        reward = r_prog + r_speed + r_tilt + r_smooth + r_lat
         ledger = {}
         self.prev_action = action.copy()
 
@@ -343,29 +398,39 @@ class WheelLegEnv:
         terminated = False
         truncated = False
 
-        # ---- 通过判据：四个轮子全部越过障碍远端 + 净空 ----
-        objs = self.spec.get('objects', [])
+        # ---- 通过判据：用**变换后**的真实几何边界，不是 manifest 半深 ----
         min_wheel_x = min(self._wheel_xs())
-        if objs:
-            target_x = max(float(o['x']) + float(self._obstacle_half_depth(o))
-                           + self.pass_clearance for o in objs)
+        if self.obj_bounds:
+            target_x = max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
         else:
             target_x = float(self.spec.get('goal_x', 3.0))
 
-        if self.passed_at is None and min_wheel_x >= target_x:
-            self.passed_at = self.t
-        if self.passed_at is not None and (self.t - self.passed_at) >= self.settle_seconds:
+        # 通道约束（产品条件）：横向越界即失败
+        in_channel = abs(lat) <= self.channel_half_width
+
+        # 连续稳定保持：进入通过区开始计时；中途退回、倾覆或出通道都清零重来，
+        # 不允许"到过就算"（旧实现 passed_at 一旦设置就永久有效）。
+        if min_wheel_x >= target_x and in_channel:
+            if self.passed_at is None:
+                self.passed_at = self.t
+        else:
+            if self.passed_at is not None and min_wheel_x < target_x - 0.02:
+                self.passed_at = None          # 回退，重新计时
+            if not in_channel:
+                self.passed_at = None
+
+        if (self.passed_at is not None
+                and (self.t - self.passed_at) >= self.settle_seconds):
             terminated, reason = True, 'success'
             reward += self.w_success
 
         if not terminated and tilt > self.tip_deg:
             terminated, reason = True, 'tipped'
             reward -= self.w_tip
-        if not terminated and abs(y) > self.bounds_y:
+        if not terminated and not in_channel:
             terminated, reason = True, 'out_of_bounds'
             reward -= self.w_oob
         if not terminated and x >= float(self.spec.get('goal_x', 6.0)):
-            # 兜底：跑过整个场景仍未满足通过判据也没翻 -> 记 out_of_bounds 式失败
             terminated, reason = True, 'out_of_bounds'
             reward -= self.w_oob
         if not terminated and self.t >= self.max_seconds:
@@ -384,8 +449,14 @@ class WheelLegEnv:
             'contact_any': self.first_contact_t is not None,
             'contact_wheel': self.wheel_contact_steps > 0,
             'contact_substeps': self.contact_steps,
+            'lateral_offset': round(lat, 3),
+            'channel_half_width': self.channel_half_width,
+            'contact_style': ('none' if self.first_contact_t is None
+                              else ('wheel' if self.wheel_contact_steps > 0
+                                    else 'body')),
             'rewards': {'progress': round(r_prog, 4), 'speed': round(r_speed, 4),
                         'tilt': round(r_tilt, 4), 'smooth': round(r_smooth, 4),
+                        'lateral': round(r_lat, 4),
                         'terminal': round(reward - (r_prog + r_speed + r_tilt + r_smooth), 4)},
             'episode_return_ledger': dict(ledger),
             'n_control': self.n_control, 'n_physics': self.n_physics,
@@ -401,6 +472,7 @@ def _resolve_parts(asset_dir):
 
 
 def _world_vertices(part_paths, x, y, yaw, scale=1.0):
+    """scale 可为标量或 (sx, sy, sz)。"""
     """读取碰撞网格顶点，绕 z 旋转并平移到世界坐标（只取顶点，不建场景）。"""
     import trimesh
     allv = []
@@ -411,7 +483,9 @@ def _world_vertices(part_paths, x, y, yaw, scale=1.0):
             allv.append(v)
     if not allv:
         return np.zeros((1, 3))
-    v = np.vstack(allv) * float(scale)
+    v = np.vstack(allv)
+    sv = np.asarray(scale, dtype=np.float64).reshape(-1)
+    v = v * (sv if sv.size == 3 else float(sv[0]))
     c, s_ = np.cos(yaw), np.sin(yaw)
     R = np.array([[c, -s_, 0.0], [s_, c, 0.0], [0.0, 0.0, 1.0]])
     v = v @ R.T
@@ -434,3 +508,14 @@ def _quat_from_up(up):
     ang = float(np.arctan2(s_, c))
     q = np.concatenate([[np.cos(ang / 2)], axis * np.sin(ang / 2)])
     return q
+
+
+def _quat_mul(a, b):
+    """四元数乘法 (w,x,y,z)。"""
+    aw, ax, ay, az = a
+    bw, bx, by, bz = b
+    return np.array([
+        aw*bw - ax*bx - ay*by - az*bz,
+        aw*bx + ax*bw + ay*bz - az*by,
+        aw*by - ax*bz + ay*bw + az*bx,
+        aw*bz + ax*by - ay*bx + az*bw])

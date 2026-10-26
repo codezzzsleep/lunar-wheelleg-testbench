@@ -17,7 +17,7 @@ import hashlib
 
 import numpy as np
 
-OBS_DIM = 40
+OBS_DIM = 42   # 本体感觉 40 + 导航状态 2（横向偏差、朝向误差）
 ACT_DIM = 4   # 与 wheelleg_env.ACT_DIM 保持一致
 H = 64
 LOG2PI = float(np.log(2 * np.pi))
@@ -224,27 +224,31 @@ def ppo_update(params, batch, opt, rng, epochs=4, minibatch=256, clip=0.2,
 
 # ------------------------------------------------------------------ GAE
 
-def gae(rewards, values, bootstrap_mask, continuation_mask, last_value,
+def gae(rewards, values, next_values, bootstrap_mask, continuation_mask,
         gamma=0.99, lam=0.95):
     """
     delta_t = r_t + gamma * bootstrap_mask_t * V(s_{t+1}) - V(s_t)
     adv_t   = delta_t + gamma * lambda * continuation_mask_t * adv_{t+1}
 
-    bootstrap_mask：真实终止(成功/倾覆/出界)=0，外部时间截断=1
-    continuation_mask：同回合内=1，回合结束（下一步来自 reset）=0
-    last_value 是采集结束后那个状态的 V（用于 rollout 截断时的 bootstrap），
-    是否真正使用由 bootstrap_mask[T-1] 决定。
+    旧实现用 values[t+1] 充当 V(s_{t+1})，只在 rollout **末尾**替换成 last_value。
+    一旦回合在 rollout 中途因时间限制截断并 reset，values[t+1] 就是**新回合**的价值，
+    中间位置的 bootstrap 全部污染。现在要求调用方提供每个转移真实后继状态的
+    next_values（长度与 T 相同），由采集器在 reset 之前取 V(s_{t+1})。
+
+    bootstrap_mask_t：真实终止(成功/倾覆/出界)=0，外部时间截断=1
+    continuation_mask_t：同回合内=1，回合结束（下一步来自 reset）=0
     """
     T = len(rewards)
     rewards = np.asarray(rewards, dtype=np.float64)
     values = np.asarray(values, dtype=np.float64)
+    next_values = np.asarray(next_values, dtype=np.float64)
     bootstrap_mask = np.asarray(bootstrap_mask, dtype=np.float64)
     continuation_mask = np.asarray(continuation_mask, dtype=np.float64)
+    assert next_values.shape[0] == T, 'next_values 必须与 T 等长'
     adv = np.zeros(T, dtype=np.float64)
     last = 0.0
     for t in reversed(range(T)):
-        nextv = values[t + 1] if t + 1 < T else last_value
-        delta = rewards[t] + gamma * bootstrap_mask[t] * nextv - values[t]
+        delta = rewards[t] + gamma * bootstrap_mask[t] * next_values[t] - values[t]
         last = delta + gamma * lam * continuation_mask[t] * last
         adv[t] = last
     return adv, adv + values

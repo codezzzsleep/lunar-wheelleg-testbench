@@ -93,18 +93,24 @@ class TestActionProbability(unittest.TestCase):
 
 class TestGAE(unittest.TestCase):
     def test_true_terminal_no_bootstrap(self):
-        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [1.0, 0.0], [1.0, 0.0],
-                         last_value=99.0, gamma=0.5, lam=1.0)
+        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [0.8, 99.0], [1.0, 0.0], [1.0, 0.0],
+                         gamma=0.5, lam=1.0)
         self.assertTrue(np.allclose(adv, [1.5, 1.2]), adv)
 
     def test_time_truncation_bootstraps(self):
-        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [1.0, 1.0], [1.0, 0.0],
-                         last_value=4.0, gamma=0.5, lam=1.0)
+        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [0.8, 4.0], [1.0, 1.0], [1.0, 0.0],
+                         gamma=0.5, lam=1.0)
         self.assertTrue(np.allclose(adv, [2.5, 3.2]), adv)
 
+    def test_mid_rollout_truncation_uses_true_successor(self):
+        """任务书反例：中途时间截断必须用真实后继价值，而不是 values[t+1]。"""
+        adv, _ = ppo.gae([1.0, 0.0], [10.0, 100.0], [7.0, 0.0],
+                         [1.0, 0.0], [0.0, 0.0], gamma=0.9, lam=1.0)
+        self.assertAlmostEqual(float(adv[0]), -2.7, places=9)
+
     def test_cross_episode_not_chained(self):
-        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [1.0, 0.0], [1.0, 0.0],
-                         last_value=7.0, gamma=0.5, lam=1.0)
+        adv, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [0.8, 7.0], [1.0, 0.0], [1.0, 0.0],
+                         gamma=0.5, lam=1.0)
         self.assertTrue(np.allclose(adv, [1.5, 1.2]), adv)
 
 

@@ -1,0 +1,346 @@
+[
+  {
+    "name": "skill_test_0",
+    "seed": 3100,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "cargo_crate_w300",
+        "x": 1.813,
+        "y": 0.012,
+        "yaw_deg": 9.5,
+        "target_height_m": 0.0937,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "cargo_crate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_1",
+    "seed": 3101,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "lander_leg_w300",
+        "x": 1.615,
+        "y": 0.001,
+        "yaw_deg": -9.1,
+        "target_height_m": 0.0914,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "lander_leg_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_2",
+    "seed": 3102,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "cargo_crate_w300",
+        "x": 1.733,
+        "y": -0.017,
+        "yaw_deg": -10.6,
+        "target_height_m": 0.0943,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "cargo_crate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_3",
+    "seed": 3103,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "lander_leg_w300",
+        "x": 1.797,
+        "y": -0.007,
+        "yaw_deg": -2.8,
+        "target_height_m": 0.0868,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "lander_leg_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_4",
+    "seed": 3104,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "cargo_crate_w300",
+        "x": 2.118,
+        "y": -0.024,
+        "yaw_deg": 11.4,
+        "target_height_m": 0.0869,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "cargo_crate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_5",
+    "seed": 3105,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "lander_leg_w300",
+        "x": 2.053,
+        "y": -0.029,
+        "yaw_deg": 0.2,
+        "target_height_m": 0.0939,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "lander_leg_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_6",
+    "seed": 3106,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "cargo_crate_w300",
+        "x": 2.137,
+        "y": 0.036,
+        "yaw_deg": 8.2,
+        "target_height_m": 0.0904,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "cargo_crate_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  },
+  {
+    "name": "skill_test_7",
+    "seed": 3107,
+    "split": "test",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "lander_leg_w300",
+        "x": 1.922,
+        "y": 0.037,
+        "yaw_deg": -8.9,
+        "target_height_m": 0.0876,
+        "target_width_m": 0.5
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "lander_leg_w300",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.4
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle"
+  }
+]

@@ -49,7 +49,22 @@ def main():
     det = train.evaluate(params, manifest, cfg, True)
     sto = train.evaluate(params, manifest, cfg, False)
 
+    # 确定性口径按**场景**统计（每个场景只用 episode_seed=0），
+    # 多初态另列，避免把同一场景的重复当成独立样本。
+    per_scene = [e for e in det['per_episode'] if e['episode_seed'] == 0]
+    scene_succ = sum(1 for e in per_scene if e['success'])
+    per_seed = {}
+    for e in det['per_episode']:
+        per_seed.setdefault(e['episode_seed'], []).append(1 if e['success'] else 0)
+
     res = {'label': a.label or pathlib.Path(a.checkpoint).stem,
+           'deterministic_per_scene': {
+               'n_scenes': len(per_scene), 'success': scene_succ,
+               'success_rate': round(scene_succ / len(per_scene), 4) if per_scene else None},
+           'deterministic_across_init_seeds': {
+               'n_init_seeds': len(per_seed),
+               'per_seed_rate': {k: round(sum(v) / len(v), 4)
+                                 for k, v in sorted(per_seed.items())}},
            'checkpoint': a.checkpoint,
            'checkpoint_actor_checksum': ppo.actor_checksum(params),
            'manifest': a.manifest, 'n_episodes': len(manifest),
@@ -57,10 +72,10 @@ def main():
     (out / 'eval.json').write_text(json.dumps(res, indent=2, ensure_ascii=False))
 
     from collections import Counter
-    print(f"{res['label']:28s} det {det['success']}/{det['n']}={det['success_rate']:.3f} "
-          f"倾覆 {det['tip_rate']:.3f} | stoch {sto['success']}/{sto['n']}="
-          f"{sto['success_rate']:.3f} 倾覆 {sto['tip_rate']:.3f} | "
-          f"回报 {sto['mean_return']:.1f}")
+    ps = res['deterministic_per_scene']
+    print(f"{res['label']:26s} det 按场景 {ps['success']}/{ps['n_scenes']}="
+          f"{ps['success_rate']} | det 多初态 {det['success_rate']} | "
+          f"stoch {sto['success_rate']} (n={sto['n']}) | 回报 {sto['mean_return']:.1f}")
     print('  det 结局:', dict(Counter(e['reason'] for e in det['per_episode'])))
     print('  stoch 结局:', dict(Counter(e['reason'] for e in sto['per_episode'])))
     return 0

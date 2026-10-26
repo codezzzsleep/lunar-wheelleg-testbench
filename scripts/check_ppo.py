@@ -183,7 +183,7 @@ def gae_handcheck():
     v = [0.5, 0.8]
     bm = [1.0, 0.0]
     cm = [1.0, 0.0]
-    adv, ret = ppo.gae(r, v, bm, cm, last_value=99.0, gamma=gamma, lam=lam)
+    adv, ret = ppo.gae(r, v, [0.8, 99.0], bm, cm, gamma=gamma, lam=lam)
     # delta1 = 2 + 0.5*0*99 - 0.8 = 1.2 ; adv1 = 1.2
     # delta0 = 1 + 0.5*1*0.8 - 0.5 = 0.9 ; adv0 = 0.9 + 0.5*1*1.2 = 1.5
     ok = np.allclose(adv, [1.5, 1.2]) and np.allclose(ret, [2.0, 2.0])
@@ -192,7 +192,7 @@ def gae_handcheck():
     # 情形 2：外部时间截断，用 last_value bootstrap
     bm2 = [1.0, 1.0]
     cm2 = [1.0, 0.0]
-    adv2, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], bm2, cm2, last_value=4.0,
+    adv2, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [0.8, 4.0], bm2, cm2,
                       gamma=gamma, lam=lam)
     # delta1 = 2 + 0.5*1*4 - 0.8 = 3.2 ; adv1 = 3.2
     # delta0 = 1 + 0.5*1*0.8 - 0.5 = 0.9 ; adv0 = 0.9 + 0.5*1*3.2 = 2.5
@@ -202,12 +202,28 @@ def gae_handcheck():
     # 情形 3：跨回合 reset —— t=0 的下一状态来自新回合，不能串回
     bm3 = [1.0, 0.0]
     cm3 = [1.0, 0.0]          # t=1 之后是新回合，advantage 不得回传
-    adv3, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], bm3, cm3, last_value=7.0,
+    adv3, _ = ppo.gae([1.0, 2.0], [0.5, 0.8], [0.8, 7.0], bm3, cm3,
                       gamma=gamma, lam=lam)
     # delta1 = 2 + 0.5*0*7 - 0.8 = 1.2 ; adv1 = 1.2
     # delta0 = 1 + 0.5*1*0.8 - 0.5 = 0.9 ; adv0 = 0.9 + 0.5*1*1.2 = 1.5
     ok = np.allclose(adv3, [1.5, 1.2])
     check('GAE 跨回合不串接', ok, f'adv={np.round(adv3,4)} 期望 [1.5 1.2]')
+
+
+def gae_mid_rollout_truncation():
+    """
+    任务书第三节的反例：turn 在 rollout 中途因时间限制截断，随后 reset。
+    旧实现用 values[t+1]（新回合的价值）会得到 +81；正确应为 -2.7。
+    """
+    rewards = [1.0, 0.0]
+    values = [10.0, 100.0]
+    bm = [1.0, 0.0]          # 第 0 步是外部截断 -> 需要 bootstrap
+    cm = [0.0, 0.0]          # 截断后换了回合，advantage 不串接
+    next_values = [7.0, 0.0]  # 第 0 步真实后继状态价值 = 7
+    adv, _ = ppo.gae(rewards, values, next_values, bm, cm, gamma=0.9, lam=1.0)
+    ok = abs(adv[0] - (-2.7)) < 1e-9
+    check('GAE 中间截断用真实后继价值（任务书反例）', ok,
+          f'adv[0]={adv[0]:.4f} 期望 -2.7（若错用 values[t+1]=100 会得到 81）')
 
 
 def main():
@@ -222,6 +238,7 @@ def main():
     reproducibility()
     print('\n=== GAE ===')
     gae_handcheck()
+    gae_mid_rollout_truncation()
     print(f'\n{"全部通过" if not FAILS else "失败项：" + ", ".join(FAILS)}')
     return 0 if not FAILS else 1
 

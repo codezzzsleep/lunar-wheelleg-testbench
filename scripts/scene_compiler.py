@@ -60,9 +60,23 @@ SCENARIO_DEFAULTS = {
 
 SPREAD_SCALE = {'紧': 0.7, '中': 1.0, '宽': 1.4}
 
-# 目标障碍高度阶梯（米）。P/G 两组共用同一阶梯，障碍按各自 manifest 高度
-# 等比缩放到该值 —— 尺度因此不是混淆变量，差异只能来自几何来源。
-TARGET_HEIGHTS = [0.050, 0.060, 0.070]
+# 距离条件 height 档 -> 目标物理高度（米）。轮半径 0.086 m。
+WHEEL_R = 0.086
+
+# 障碍横向宽度（米）。通道半宽默认 0.28 -> 通道宽 0.56，
+# 障碍 0.44 m 宽无法绕过，只能压过去；两侧各留 6 cm 余量。
+TARGET_WIDTH_M = 0.44
+CHANNEL_HALF_WIDTH_M = 0.28
+
+
+def band_target_height(band, rng):
+    """
+    产品条件里的 height 档**真正决定物理尺度**：在波段内取一个具体高度。
+    旧实现被固定的 TARGET_HEIGHTS 覆盖，低/中/高输出同一个 0.05 —— 那是错的。
+    """
+    lo, hi = HEIGHT_BANDS[band]['rel_h']
+    rel = float(rng.uniform(lo, hi))
+    return round(rel * WHEEL_R, 4)
 
 
 def parse_task(text):
@@ -136,7 +150,8 @@ def resolve(cond):
     return base
 
 
-def compile_scenes(cond, seed0, n, split='train', family_override=None):
+def compile_scenes(cond, seed0, n, split='train', family_override=None,
+                   frozen_heights=None):
     """生成 n 个场景；同一 (条件, seed) 可重建，改 seed 得到有意义的变体。"""
     p = resolve(cond)
     band = HEIGHT_BANDS.get(p['height'], HEIGHT_BANDS['低'])
@@ -170,8 +185,11 @@ def compile_scenes(cond, seed0, n, split='train', family_override=None):
             objs.append({'asset': asset, 'x': round(float(xs[k]), 3),
                          'y': round(float(y), 3),
                          'yaw_deg': round(float(rng.uniform(-15, 15)), 1),
-                         'target_height_m': (round(float(rng.choice(TARGET_HEIGHTS)), 4)
-                                             if TARGET_HEIGHTS else None)})
+                         'target_height_m': (
+                             round(float(rng.choice(frozen_heights)), 4) if frozen_heights
+                             else band_target_height(p['height'], rng)),
+                         # 横向宽度必须大于通道宽度，否则障碍挡不住路，任务退化成"绕过去"
+                         'target_width_m': round(float(TARGET_WIDTH_M), 3)})
         kind = p['terrain_kind']
         # 标签随实际内容走：有起伏/坑就不是单纯的 flat/slope
         has_bump = float(p.get('roughness', 0)) > 0 or int(p.get('pits', 0)) > 0

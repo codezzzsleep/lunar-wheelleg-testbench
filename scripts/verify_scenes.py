@@ -74,10 +74,12 @@ def measure_objects(env):
         zs = [float(d.geom_xpos[g][2]) for g in geoms]
         radii = [float(m.geom_rbound[g]) for g in geoms]
         # 用顶点重算世界坐标最低点（比 rbound 更准）
+        # 必须用与落地时**同一份**缩放，否则算出来的顶点与真实几何不一致
         verts = wheelleg_env._world_vertices(
             [str(pl_path) for pl_path in
              _part_paths(env.asset_root / pl['asset'])],
-            float(pl['x']), float(pl['y']), np.deg2rad(float(pl['yaw_deg'])))
+            float(pl['x']), float(pl['y']), np.deg2rad(float(pl['yaw_deg'])),
+            scale=pl.get('mesh_scale') or 1.0)   # 可为标量或 (sx,sy,sz)
         z_world = verts[:, 2] + float(pl['body_z'])
         ground = terrain.ground_height_many(env._h, verts[:, 0], verts[:, 1])
         burial = float(np.max(ground - z_world))       # >0 表示被地形埋住

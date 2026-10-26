@@ -65,14 +65,23 @@ def main():
     step('生成场景集', ['scripts/make_pg_scenes.py'], 'scenes')
     step('条件敏感性验收', ['scripts/verify_conditions.py', '--out', out / 'conditions'],
          'conditions')
+    # 校验的就是训练/评估用的那几份清单（此前的 A/B/C 与 P/G 不是同一份）
     step('场景物理有效性', ['scripts/verify_scenes.py',
-                        '--scenes', 'scenes/A_sparse.json', 'scenes/B_slope.json',
-                        'scenes/C_debris.json', '--out', out / 'verify'], 'verify')
+                        '--scenes', 'scenes/P_train.json', 'scenes/G_train.json',
+                        'scenes/P_test.json', 'scenes/G_test.json',
+                        '--out', out / 'verify'], 'verify')
     step('成本账本', ['scripts/cost_ledger.py', '--conditions', 'tasks/A_sparse.txt',
                  'tasks/B_slope.txt', 'tasks/C_debris.txt', '--out', out / 'cost'],
          'cost')
 
     if a.skip_train:
+        steps['status'] = {
+            'chain_ok': bool(steps['ok']),
+            'physical_ok': all(s.get('returncode') == 0 for s in steps['stage']
+                               if '物理' in s['name'] or '条件' in s['name']),
+            'learning_verified': False,
+            'learning_note': '未训练：只验证了条件→场景→物理校验链路',
+        }
         (out / 'pipeline.json').write_text(json.dumps(steps, indent=2, ensure_ascii=False))
         return 0 if steps['ok'] else 1
 
@@ -104,7 +113,9 @@ def main():
         for seed in plan['seeds']:
             ck = pathlib.Path(plan['root']) / f"{cfg['group']}_s{seed}" / 'checkpoints/final.npz'
             if not ck.exists():
-                evals.append({'id': f"{cfg['group']}_s{seed}", 'missing': str(ck)})
+                evals.append({'id': f"{cfg['group']}_s{seed}", 'missing': str(ck),
+                              'returncode': 1})
+                steps['ok'] = False
                 continue
             dst = out / 'eval' / f"{cfg['group']}_s{seed}"
             rc, sec = sh(['scripts/evaluate.py', '--checkpoint', ck,
@@ -114,11 +125,24 @@ def main():
                          out / 'logs' / f"eval_{cfg['group']}_s{seed}.log")
             evals.append({'id': f"{cfg['group']}_s{seed}", 'returncode': rc,
                           'seconds': sec, 'dir': str(dst)})
+            if rc != 0:
+                steps['ok'] = False       # 评估失败必须让总体失败
     (out / 'evals.json').write_text(json.dumps(evals, indent=2, ensure_ascii=False))
 
     steps['stage'].append({'name': '共同清单评估', 'evals': evals})
+    # 三种状态严格分开：链路跑通 / 物理合格 / 学习有效，不能互相顶替
+    steps['status'] = {
+        'chain_ok': bool(steps['ok']),
+        'physical_ok': all(s.get('returncode') == 0 for s in steps['stage']
+                           if '物理' in s['name'] or '条件' in s['name']),
+        'learning_verified': False,
+        'learning_note': ('短预算 demo 只验证链路可运行，学习收益未验证'
+                          if a.demo else '学习收益需另看 docs 报告中的对照表'),
+    }
     (out / 'pipeline.json').write_text(json.dumps(steps, indent=2, ensure_ascii=False))
-    print('\n完成 ->', out / 'pipeline.json', flush=True)
+    print(f"\n链路 ok={steps['status']['chain_ok']} 物理合格="
+          f"{steps['status']['physical_ok']} 学习有效="
+          f"{steps['status']['learning_verified']} -> {out/'pipeline.json'}", flush=True)
     return 0 if steps['ok'] else 1
 
 

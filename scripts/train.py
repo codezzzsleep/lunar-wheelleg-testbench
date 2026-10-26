@@ -151,6 +151,7 @@ def main():
 
     while steps < total_steps:
         obs_b, raw_b, logp_b, rew_b, val_b, bm_b, cm_b = [], [], [], [], [], [], []
+        next_obs_b = []
         for _ in range(horizon):
             v = float(ppo.forward(params, obs[None, :])['value'][0])
             exec_a, raw, logp, _ = ppo.sample(params, obs, act_rng)
@@ -161,18 +162,18 @@ def main():
             rew_b.append(r * cfg.get('reward_scale', 1.0)); val_b.append(v)
             bm_b.append(0.0 if te else 1.0)      # 真实终止不 bootstrap
             cm_b.append(0.0 if (te or tr) else 1.0)
-            obs_after = nobs                     # 截断状态，必须在 reset 前保存
+            next_obs_b.append(nobs)              # 每个转移的真实后继状态，reset 前保存
             obs = nobs
             steps += 1
             if te or tr:
                 spec_i = (spec_i + 1) % len(train_specs)
                 env = make_env(train_specs[spec_i], cfg)
                 obs, _ = env.reset(seed=seed + steps)
-        # bootstrap 必须用 rollout 结束时**那个状态**的价值。旧实现用 reset 之后
-        # 新回合的起点，时间截断时会把下一回合的 value 串进来。
-        last_v = float(ppo.forward(params, obs_after[None, :])['value'][0])
+        # 每个转移的 V(s_{t+1}) 都取真实后继状态（reset 之前记录），
+        # 这样 rollout 中途的时间截断也能正确 bootstrap。
+        next_val_b = ppo.forward(params, np.array(next_obs_b))['value']
 
-        adv, ret = ppo.gae(rew_b, val_b, bm_b, cm_b, last_v,
+        adv, ret = ppo.gae(rew_b, val_b, next_val_b, bm_b, cm_b,
                            gamma=cfg['gamma'], lam=cfg['gae_lambda'])
         adv = (adv - adv.mean()) / (adv.std() + 1e-8)
         batch = {'obs': np.array(obs_b), 'raw': np.array(raw_b),

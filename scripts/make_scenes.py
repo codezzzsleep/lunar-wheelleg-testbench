@@ -76,10 +76,37 @@ def write(name, specs):
     return p
 
 
+# ---------------------------------------------------------------- R 任务（小机器人任务）
+R_ASSETS = ['proc_box_h058', 'proc_box_h062', 'proc_cylinder_h090']
+R_OFFSETS = [0.06, 0.10, 0.14, 0.18]
+
+
+def R_set(prefix, n, seed0):
+    """
+    小任务场景：单个低障碍，横向偏移落在"零动作必翻、但存在可行动作"的区间。
+    可行性已由 scripts/feasibility_scan.py 的常数动作扫描确认（诊断，不是学习策略）。
+    """
+    out = []
+    for i in range(n):
+        asset = R_ASSETS[i % len(R_ASSETS)]
+        y = R_OFFSETS[(i // len(R_ASSETS)) % len(R_OFFSETS)] if prefix == 'valR' \
+            else [0.10, 0.10, 0.14][i % 3]
+        s = terrain.make_spec(
+            kind='flat', seed=seed0 + i,
+            objects=[{'asset': asset, 'x': 1.8, 'y': y, 'yaw_deg': 0.0}],
+            goal_x=6.0, name=f'{prefix}_{i}')
+        s['split'] = 'train' if prefix == 'trainR' else 'validation'
+        s['family'] = asset
+        out.append(s)
+    return out
+
+
 if __name__ == '__main__':
     write('train_P', P_set('trainP', 3, 100))
     write('val_P', P_set('valP', 2, 200))
     write('train_G', G_set('trainG', 3, 300))
     write('val_G', G_set('valG', 2, 400))
+    write('train_R', R_set('trainR', 3, 500))
+    write('val_R', R_set('valR', 10, 600))
     print('families: G train =', GEN_TRAIN)
     print('families: G val   =', GEN_VAL, '(与训练不重叠)')

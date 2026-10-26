@@ -1,0 +1,102 @@
+{
+  "name": "R_probe_lr1e3",
+  "description": "小任务：低障碍，整机通过并稳定保持 1 秒",
+  "scenes": {
+    "train": "scenes/train_R.json",
+    "validation": "scenes/val_R.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 0.9,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "total_control_steps": 40000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.001,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "eval_every_updates": 10,
+  "reward_scale": 0.02,
+  "run_id": "R_probe2",
+  "seed": 0,
+  "rng_streams": {
+    "init": 0,
+    "act": 1000,
+    "shuffle": 2000,
+    "eval": "per (scene, episode_seed)，与训练流无关"
+  },
+  "source": {
+    "files": {
+      "scripts/exam.py": "9b0b18d9f4ec2c41a526466240356fc9b3822231551f6e3a071e34949aa13e13",
+      "scripts/controllers.py": "93c86cb02bf2ef762303684cd243fa13090426693587dec10d56040720f246af",
+      "scripts/build_scene.py": "86aa7eff3b1dd7ce43e15bb91c2768dcaf3ab923a4debc66e87322e25ddb6609",
+      "scripts/drive_test.py": "cca5fb06f088de3749ef2eac92e5789b683a76cb3683c3c1ad6961649680ac9b"
+    },
+    "content_sha": "05fd8807772027bb6149f1b6be8532fa",
+    "git_commit": "e57d281d07e332c591d929298ee51a25456d4752",
+    "git_dirty": true
+  },
+  "model": {
+    "available": true,
+    "go2w_xml_sha": "c8feaef4afdf360335727c80a826d161",
+    "git_commit": "1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d",
+    "git_dirty": false
+  },
+  "packages": {
+    "mujoco": "3.17.0",
+    "numpy": "2.5.4",
+    "trimesh": "5.2.0",
+    "coacd": "1.0.14",
+    "manifold3d": "3.5.4",
+    "pillow": "13.0.0"
+  },
+  "train_scenes": [
+    "trainR_0",
+    "trainR_1",
+    "trainR_2"
+  ],
+  "train_scene_ids": [
+    "9df761844f65e97d",
+    "e09dc66da50b9bf2",
+    "f58374be39981afb"
+  ],
+  "val_scene_ids": [
+    "078d6fc9c9915584",
+    "2a672ffea18b2560",
+    "ec82087ff59a0f90",
+    "5ea2aa962b912a98",
+    "a65852e5c08771c3",
+    "9963a282af8ec6a5",
+    "90269ef95810e443",
+    "915e0ab523fc6427",
+    "d9cb694204b8740c",
+    "23f938319a5d789d"
+  ],
+  "eval_manifest_size": 50,
+  "action_space": {
+    "dim": 3,
+    "meaning": "前腿目标偏移 / 后腿目标偏移 / 轮速倍率",
+    "scale": [
+      0.3,
+      0.3,
+      0.6
+    ],
+    "convention": "raw = mean + std*eps；环境执行 clip(raw,-1,1)"
+  },
+  "init_actor_checksum": "6332a7ccf4241ff04c5225de4e0abcec",
+  "init_critic_checksum": "8925b1982b05f1c738311fa89a0d0d0e"
+}

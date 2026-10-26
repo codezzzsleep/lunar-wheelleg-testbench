@@ -1,0 +1,34 @@
+{
+  "name": "R_low_obstacle_v1",
+  "description": "\u5c0f\u4efb\u52a1\uff1a\u4f4e\u969c\u788d\uff0c\u6574\u673a\u901a\u8fc7\u5e76\u7a33\u5b9a\u4fdd\u6301 1 \u79d2",
+  "scenes": {
+    "train": "scenes/train_R.json",
+    "validation": "scenes/val_R.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 0.9,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "total_control_steps": 60000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "eval_every_updates": 10,
+  "reward_scale": 0.02
+}

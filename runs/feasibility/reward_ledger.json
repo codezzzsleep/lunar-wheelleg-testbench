@@ -1,0 +1,68 @@
+{
+  "scene": "trainP_flat_0",
+  "trajectories": {
+    "zero_action": {
+      "reason": "success",
+      "x": 3.122,
+      "min_wheel_x": 2.931,
+      "pass_x": 2.05,
+      "passed_at": 3.88,
+      "tilt_deg": 0.06,
+      "t": 4.9,
+      "undiscounted_return": 103.679,
+      "discounted_return": 15.846,
+      "ledger": {
+        "terminal_success": 50.3242
+      },
+      "last_reward_breakdown": {
+        "progress": 0.3394,
+        "speed": -0.0152,
+        "tilt": -0.0,
+        "smooth": -0.0,
+        "terminal": 50.0
+      }
+    },
+    "slow_down(a2=-1)": {
+      "reason": "success",
+      "x": 2.572,
+      "min_wheel_x": 2.38,
+      "pass_x": 2.05,
+      "passed_at": 8.14,
+      "tilt_deg": 0.08,
+      "t": 9.16,
+      "undiscounted_return": 68.56,
+      "discounted_return": -0.137,
+      "ledger": {
+        "terminal_success": 50.0605
+      },
+      "last_reward_breakdown": {
+        "progress": 0.1283,
+        "speed": -0.0679,
+        "tilt": -0.0,
+        "smooth": -0.0,
+        "terminal": 50.0
+      }
+    },
+    "speed_up(a2=+1)": {
+      "reason": "out_of_bounds",
+      "x": 3.422,
+      "min_wheel_x": 3.23,
+      "pass_x": 2.05,
+      "passed_at": 2.94,
+      "tilt_deg": 0.06,
+      "t": 3.8,
+      "undiscounted_return": 30.782,
+      "discounted_return": 13.441,
+      "ledger": {
+        "terminal_out_of_bounds": -29.4876
+      },
+      "last_reward_breakdown": {
+        "progress": 0.5499,
+        "speed": -0.0376,
+        "tilt": -0.0,
+        "smooth": -0.0,
+        "terminal": -30.0
+      }
+    }
+  }
+}

@@ -1,11 +1,16 @@
 """
 训练入口：PPO（numpy）+ 轮腿环境。
 
-  .venv/bin/python scripts/train.py --config configs/P_flat.json --out runs/train_P
-  .venv/bin/python scripts/train.py --config configs/G_mixed.json --out runs/train_G
+  .venv/bin/python scripts/train.py --config configs/R_low.json --seed 0 --out runs/train_s0
 
-记录：代码指纹、场景集合与划分、随机种子、超参、奖励、控制频率、累计控制步、
-每次更新的参数校验和、以及 checkpoint（含优化器状态）。
+本版修正（对应任务书第六、七、十一节）：
+  · 采集时分开 terminated / truncated：真实终止不 bootstrap，时间截断 bootstrap。
+  · 四条独立随机流：初始化 / 动作采样 / minibatch 打乱 / 评估。
+    评估不再消耗训练随机数 —— 改评估频率不会改变训练轨迹。
+  · 验证清单固定为 (scene, episode_seed) 列表并落盘；每个 checkpoint 评估同一清单。
+  · 逐场景逐种子结果全部保存，不只存两个场景的平均值。
+  · --resume 明确拒绝（方案 A）：本版不支持续训，不假装支持后清空重训。
+  · actor / critic 分开记录校验和；诊断项来自真实计算结果，不用 None 占位。
 """
 import argparse
 import json
@@ -25,13 +30,8 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 def load_scenes(path):
-    specs = json.loads(pathlib.Path(path).read_text())
-    out = []
-    for s in specs:
-        s = dict(s)
-        s['objects'] = s.get('objects', [])
-        out.append(s)
-    return out
+    return [dict(s, objects=s.get('objects', []))
+            for s in json.loads(pathlib.Path(path).read_text())]
 
 
 def make_env(spec, cfg):
@@ -40,189 +40,204 @@ def make_env(spec, cfg):
         v_ref=cfg['v_ref'], tip_deg=cfg['tip_deg'])
 
 
-def evaluate(params, specs, cfg, rng, deterministic=True):
-    """deterministic=True 用策略均值；False 用训练同款随机采样（同一个 rng 状态）。"""
-    """固定场景上的确定性评估；不更新参数、不更新归一化统计。"""
-    res = []
-    for spec in specs:
-        env = make_env(spec, cfg)
-        obs, _ = env.reset()
-        done = False
-        ep_return = 0.0
-        info = {}
+def build_eval_manifest(specs, episode_seeds):
+    return [{'scene': s['name'], 'scene_id': terrain.scene_identity(s),
+             'episode_seed': int(e), 'spec': s}
+            for s in specs for e in episode_seeds]
+
+
+def evaluate(params, manifest, cfg, deterministic):
+    """固定清单评估：每个 (scene, episode_seed) 重新播种，跨 checkpoint 可比。"""
+    rows = []
+    for item in manifest:
+        env = make_env(item['spec'], cfg)
+        obs, _ = env.reset(seed=item['episode_seed'])
+        rng = np.random.default_rng(item['episode_seed'] * 7919 + 13)
+        ret, info, done = 0.0, {}, False
         while not done:
-            a, _, _ = ppo.act(params, obs, rng, deterministic=deterministic)
+            if deterministic:
+                a = ppo.deterministic_action(params, obs)
+            else:
+                a, _, _, _ = ppo.sample(params, obs, rng)
             obs, r, te, tr, info = env.step(a)
-            ep_return += r
+            ret += r
             done = te or tr
-        res.append({'scene': spec.get('name'), 'reason': info.get('reason'),
-                    'x': info.get('x'), 'tilt_deg': info.get('tilt_deg'),
-                    'return': round(ep_return, 3),
-                    'n_control': info.get('n_control')})
-    succ = sum(1 for r in res if r['reason'] == 'success')
-    return {'scenes': res, 'n': len(res), 'success': succ,
-            'success_rate': round(succ / len(res), 3) if res else None}
+        rows.append({'scene': item['scene'], 'scene_id': item['scene_id'],
+                     'episode_seed': item['episode_seed'],
+                     'reason': info.get('reason'), 'return': round(ret, 3),
+                     'x': info.get('x'), 'tilt_deg': info.get('tilt_deg'),
+                     'success': info.get('reason') == 'success'})
+    n = len(rows)
+    succ = sum(1 for r in rows if r['success'])
+    tipped = sum(1 for r in rows if r['reason'] == 'tipped')
+    return {'n': n, 'success': succ, 'success_rate': round(succ / n, 4),
+            'tip_rate': round(tipped / n, 4),
+            'mean_return': round(float(np.mean([r['return'] for r in rows])), 3),
+            'per_episode': rows}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--config', required=True)
     ap.add_argument('--out', required=True)
-    ap.add_argument('--resume', action='store_true')
     ap.add_argument('--seed', type=int, default=None)
+    ap.add_argument('--resume', action='store_true')
     a = ap.parse_args()
+
+    if a.resume:
+        raise SystemExit(
+            '本版不支持续训（任务书第十一节方案 A）。\n'
+            '  旧实现的 --resume 会重新初始化参数并清空评估记录，那是在假装支持恢复。\n'
+            '  请换一个新的输出目录重跑。')
 
     cfg = json.loads(pathlib.Path(a.config).read_text())
     train_specs = load_scenes(ROOT / cfg['scenes']['train'])
     val_specs = load_scenes(ROOT / cfg['scenes']['validation'])
     seed = a.seed if a.seed is not None else cfg.get('seeds', [0])[0]
 
-    rng = np.random.default_rng(seed)
-    np.random.seed(seed)
+    init_rng = np.random.default_rng(seed)
+    act_rng = np.random.default_rng(seed + 1_000)
+    shuf_rng = np.random.default_rng(seed + 2_000)
 
     run_dir = pathlib.Path(a.out).resolve()
-    if run_dir.exists() and any(run_dir.iterdir()) and not a.resume:
-        raise SystemExit(f'拒绝新建：{run_dir} 非空。换目录或加 --resume')
+    if run_dir.exists() and any(run_dir.iterdir()):
+        raise SystemExit(f'拒绝新建：{run_dir} 非空。请换一个新目录。')
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / 'checkpoints').mkdir(exist_ok=True)
 
-    params = ppo.init_params(rng)
-    init_ck = ppo.params_checksum(params)
+    manifest = build_eval_manifest(val_specs, cfg.get('eval_episode_seeds', [0]))
+    (run_dir / 'eval_manifest.json').write_text(json.dumps(
+        [{k: v for k, v in m.items() if k != 'spec'} for m in manifest],
+        indent=2, ensure_ascii=False))
+
+    params = ppo.init_params(init_rng)
+    opt = ppo.Adam(params, lr=cfg['lr'])
+    init_actor, init_critic = ppo.actor_checksum(params), ppo.critic_checksum(params)
+
     (run_dir / 'config.json').write_text(json.dumps({
         **cfg, 'run_id': run_dir.name, 'seed': seed,
-        'source': runio.source_identity(),
-        'model': runio.model_identity(),
+        'rng_streams': {'init': seed, 'act': seed + 1000, 'shuffle': seed + 2000,
+                        'eval': 'per (scene, episode_seed)，与训练流无关'},
+        'source': runio.source_identity(), 'model': runio.model_identity(),
         'packages': runio.environment_snapshot()['packages'],
         'train_scenes': [s['name'] for s in train_specs],
-        'val_scenes': [s['name'] for s in val_specs],
         'train_scene_ids': [terrain.scene_identity(s) for s in train_specs],
         'val_scene_ids': [terrain.scene_identity(s) for s in val_specs],
+        'eval_manifest_size': len(manifest),
         'action_space': {'dim': ppo.ACT_DIM,
                          'meaning': '前腿目标偏移 / 后腿目标偏移 / 轮速倍率',
-                         'scale': list(wheelleg_env.ACT_SCALE)},
-        'init_params_checksum': init_ck,
+                         'scale': list(wheelleg_env.ACT_SCALE),
+                         'convention': 'raw = mean + std*eps；环境执行 clip(raw,-1,1)'},
+        'init_actor_checksum': init_actor, 'init_critic_checksum': init_critic,
     }, indent=2, ensure_ascii=False))
 
-    # 训练前基线（update 0）：没有它就无法说明"学过之后变好了"
-    (run_dir / 'eval.jsonl').write_text('')
-    base_val = evaluate(params, val_specs, cfg, rng)
-    base_st = evaluate(params, val_specs, cfg, rng, deterministic=False)
-    (run_dir / 'eval.jsonl').open('a').write(json.dumps({
-        'update': 0, 'control_steps': 0, **base_val,
-        'stochastic': {'success_rate': base_st['success_rate'],
-                       'tip_rate': round(sum(1 for s in base_st['scenes'] if s['reason']=='tipped')/len(base_st['scenes']), 3),
-                       'mean_return': round(float(np.mean([s['return'] for s in base_st['scenes']])), 2)},
-    }) + '\n')
-    print(f"  [u0 基线] val success {base_val['success']}/{base_val['n']}", flush=True)
+    eval_path = run_dir / 'eval.jsonl'
+    base = {'update': 0, 'control_steps': 0,
+            'det': evaluate(params, manifest, cfg, True),
+            'stoch': evaluate(params, manifest, cfg, False),
+            'actor_checksum': init_actor, 'critic_checksum': init_critic}
+    eval_path.write_text(json.dumps(base, ensure_ascii=False) + '\n')
+    print(f"[u0] det {base['det']['success_rate']} stoch {base['stoch']['success_rate']} "
+          f"tip {base['stoch']['tip_rate']} ret {base['stoch']['mean_return']}", flush=True)
 
     total_steps = int(cfg['total_control_steps'])
     horizon = int(cfg['horizon'])
-    log_path = run_dir / 'train_log.jsonl'
+    eval_every = int(cfg.get('eval_every_updates', 20))
     t0 = time.time()
-    steps = 0
-    updates = 0
-    best_val = -1e9
-    checksums = [{'update': 0, 'params': init_ck, 'control_steps': 0}]
+    steps, updates = 0, 0
+    spec_i = 0
+    env = make_env(train_specs[spec_i], cfg)
+    obs, _ = env.reset(seed=seed)
 
     while steps < total_steps:
-        # ---- 采集 ----
-        obs_buf, act_buf, logp_buf, rew_buf, val_buf, done_buf = [], [], [], [], [], []
-        ep_infos = []
-        spec_i = updates % len(train_specs)
-        env = make_env(train_specs[spec_i], cfg)
-        obs, _ = env.reset()
-        steps_this = 0
-        while steps_this < horizon:
-            f = ppo.forward(params, obs[None, :])
-            v = float(f['value'][0])
-            a_, logp, _ = ppo.act(params, obs, rng)
-            nobs, r, te, tr, info = env.step(a_)
-            done = te or tr
-            obs_buf.append(obs); act_buf.append(a_); logp_buf.append(logp)
-            rew_buf.append(r); val_buf.append(v); done_buf.append(done)
+        obs_b, raw_b, logp_b, rew_b, val_b, bm_b, cm_b = [], [], [], [], [], [], []
+        for _ in range(horizon):
+            v = float(ppo.forward(params, obs[None, :])['value'][0])
+            exec_a, raw, logp, _ = ppo.sample(params, obs, act_rng)
+            nobs, r, te, tr, info = env.step(exec_a)
+            obs_b.append(obs); raw_b.append(raw); logp_b.append(logp)
+            # 奖励缩放：只改数值条件，不改排序。回报量级上百会让价值函数欠拟合，
+            # 优势被价值误差主导，策略梯度退化成噪声（实测确定性成功率不升反降）。
+            rew_b.append(r * cfg.get('reward_scale', 1.0)); val_b.append(v)
+            bm_b.append(0.0 if te else 1.0)      # 真实终止不 bootstrap
+            cm_b.append(0.0 if (te or tr) else 1.0)
             obs = nobs
             steps += 1
-            steps_this += 1
-            if done:
-                ep_infos.append(info)
+            if te or tr:
                 spec_i = (spec_i + 1) % len(train_specs)
                 env = make_env(train_specs[spec_i], cfg)
-                obs, _ = env.reset()
-
+                obs, _ = env.reset(seed=seed + steps)
         last_v = float(ppo.forward(params, obs[None, :])['value'][0])
-        adv, ret = ppo.gae(rew_buf, val_buf, done_buf, last_v,
+
+        adv, ret = ppo.gae(rew_b, val_b, bm_b, cm_b, last_v,
                            gamma=cfg['gamma'], lam=cfg['gae_lambda'])
         adv = (adv - adv.mean()) / (adv.std() + 1e-8)
-        batch = {'obs': np.array(obs_buf), 'act': np.array(act_buf),
-                 'logp': np.array(logp_buf), 'adv': adv, 'ret': ret}
-        params, pstats = ppo.ppo_update(
-            params, batch, rng, epochs=cfg['epochs'], minibatch=cfg['minibatch'],
-            clip=cfg['clip'], lr=cfg['lr'], ent_coef=cfg['ent_coef'])
+        batch = {'obs': np.array(obs_b), 'raw': np.array(raw_b),
+                 'logp_old': np.array(logp_b), 'adv': adv, 'ret': ret}
+        params, hist = ppo.ppo_update(
+            params, batch, opt, shuf_rng, epochs=cfg['epochs'],
+            minibatch=cfg['minibatch'], clip=cfg['clip'],
+            ent_coef=cfg['ent_coef'], vf_coef=cfg['vf_coef'])
         updates += 1
-        ck = ppo.params_checksum(params)
-        checksums.append({'update': updates, 'params': ck, 'control_steps': steps})
 
+        last = hist[-1]
         rec = {'update': updates, 'control_steps': steps,
-               'sampled_reward_mean': round(float(np.mean(rew_buf)), 4),
-               'value_loss': None, 'ratio_dev_mean': pstats['ratio_dev_mean'],
-               'params_checksum': ck, 'episodes': len(ep_infos),
-               'reasons': {k: sum(1 for e in ep_infos if e.get('reason') == k)
-                           for k in ('success', 'tipped', 'time_limit', 'out_of_bounds')},
+               'policy_loss': round(float(np.mean([h['policy_loss'] for h in hist])), 6),
+               'value_loss': round(float(np.mean([h['value_loss'] for h in hist])), 6),
+               'entropy': round(float(last['entropy']), 4),
+               'kl': round(float(np.mean([h['kl'] for h in hist])), 6),
+               'clip_fraction': round(float(np.mean([h['clip_fraction'] for h in hist])), 4),
+               'grad_norm': round(float(np.mean([h['grad_norm'] for h in hist])), 4),
+               'update_norm': round(float(np.mean([h['update_norm'] for h in hist])), 6),
+               'log_std_mean': round(float(np.mean(params['log_std'])), 4),
+               'actor_checksum': ppo.actor_checksum(params),
+               'critic_checksum': ppo.critic_checksum(params),
+               'sampled_reward_mean': round(float(np.mean(rew_b)), 4),
                'wall_s': round(time.time() - t0, 1)}
-        with log_path.open('a') as fh:
+        with (run_dir / 'train_log.jsonl').open('a') as fh:
             fh.write(json.dumps(rec) + '\n')
-        print(f"[u{updates:03d}] steps={steps} R={rec['sampled_reward_mean']:+.2f} "
-              f"eps={rec['episodes']} reasons={rec['reasons']} "
-              f"ck={ck[:8]} {rec['wall_s']}s", flush=True)
+        if updates % 10 == 0:
+            print(f"[u{updates:03d}] steps={steps} R={rec['sampled_reward_mean']:+.2f} "
+                  f"pl={rec['policy_loss']:+.4f} vl={rec['value_loss']:.4f} "
+                  f"kl={rec['kl']:+.5f} clip={rec['clip_fraction']:.2f} "
+                  f"gn={rec['grad_norm']:.2f} {rec['wall_s']}s", flush=True)
 
-        if updates % cfg.get('eval_every_updates', 5) == 0:
-            val = evaluate(params, val_specs, cfg, rng)
-            stoch = evaluate(params, val_specs, cfg, rng, deterministic=False)
-            tip = sum(1 for s in stoch['scenes'] if s['reason'] == 'tipped')
-            (run_dir / 'eval.jsonl').open('a').write(json.dumps({
-                'update': updates, 'control_steps': steps, **val,
-                'stochastic': {'success_rate': stoch['success_rate'],
-                               'tip_rate': round(tip / len(stoch['scenes']), 3),
-                               'mean_return': round(float(np.mean([s['return'] for s in stoch['scenes']])), 2)},
-            }) + '\n')
-            print(f"  val success {val['success']}/{val['n']} "
-                  f"({val['success_rate']})", flush=True)
-            if val['success_rate'] is not None and val['success_rate'] > best_val:
-                best_val = val['success_rate']
-                np.savez(run_dir / 'checkpoints' / 'best.npz', **params)
+        if updates % eval_every == 0:
+            d = evaluate(params, manifest, cfg, True)
+            s = evaluate(params, manifest, cfg, False)
+            rec = {'update': updates, 'control_steps': steps, 'det': d, 'stoch': s,
+                   'actor_checksum': ppo.actor_checksum(params),
+                   'critic_checksum': ppo.critic_checksum(params)}
+            with eval_path.open('a') as fh:
+                fh.write(json.dumps(rec, ensure_ascii=False) + '\n')
+            np.savez(run_dir / 'checkpoints' / f'u{updates:04d}.npz', **params)
+            print(f"  [eval u{updates}] det {d['success_rate']} stoch {s['success_rate']} "
+                  f"tip {s['tip_rate']} ret {s['mean_return']}", flush=True)
 
     np.savez(run_dir / 'checkpoints' / 'final.npz', **params)
-    (run_dir / 'checksums.json').write_text(json.dumps(checksums, indent=2))
-    final_ck = ppo.params_checksum(params)
-    import resource
-    rss_mb = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0
-    env_only = None
-    try:
-        import wheelleg_env as _we
-        import time as _t
-        _e = make_env(train_specs[0], cfg)
-        _e.reset()
-        _t0 = _t.time()
-        for _ in range(200):
-            _e.step(np.zeros(ppo.ACT_DIM))
-        el = _t.time() - _t0
-        env_only = {'control_per_s': round(200 / el, 1),
-                    'physics_per_s': round(_e.n_physics / el, 1)}
-    except Exception as exc:
-        env_only = {'error': repr(exc)[:100]}
+    final = {'update': updates, 'control_steps': steps,
+             'det': evaluate(params, manifest, cfg, True),
+             'stoch': evaluate(params, manifest, cfg, False),
+             'actor_checksum': ppo.actor_checksum(params),
+             'critic_checksum': ppo.critic_checksum(params)}
+    with eval_path.open('a') as fh:
+        fh.write(json.dumps(final, ensure_ascii=False) + '\n')
 
+    import resource
     summary = {
         'run_id': run_dir.name, 'seed': seed, 'updates': updates,
-        'baseline_val_success': base_val['success_rate'],
-        'throughput': env_only,
-        'peak_rss_mb': round(rss_mb, 1),
-        'wall_seconds': round(time.time() - t0, 1),
-        'control_steps': steps,
-        'init_params_checksum': init_ck, 'final_params_checksum': final_ck,
-        'params_changed': init_ck != final_ck,
-        'checkpoints': ['checkpoints/final.npz',
-                        *(['checkpoints/best.npz']
-                          if (run_dir / 'checkpoints/best.npz').exists() else [])],
+        'control_steps': steps, 'wall_seconds': round(time.time() - t0, 1),
+        'peak_rss_mb': round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024.0, 1),
+        'init_actor_checksum': init_actor, 'final_actor_checksum': final['actor_checksum'],
+        'actor_changed': init_actor != final['actor_checksum'],
+        'init_critic_checksum': init_critic, 'final_critic_checksum': final['critic_checksum'],
+        'baseline_det_success': base['det']['success_rate'],
+        'final_det_success': final['det']['success_rate'],
+        'baseline_stoch_success': base['stoch']['success_rate'],
+        'final_stoch_success': final['stoch']['success_rate'],
+        'baseline_stoch_tip': base['stoch']['tip_rate'],
+        'final_stoch_tip': final['stoch']['tip_rate'],
+        'checkpoints': sorted(p.name for p in (run_dir / 'checkpoints').glob('*.npz')),
     }
     (run_dir / 'train_summary.json').write_text(json.dumps(summary, indent=2))
     print(json.dumps(summary, indent=2, ensure_ascii=False))

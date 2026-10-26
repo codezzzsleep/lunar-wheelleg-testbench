@@ -1,0 +1,24 @@
+{
+  "run_id": "R_f0",
+  "seed": 0,
+  "updates": 59,
+  "control_steps": 60416,
+  "wall_seconds": 438.9,
+  "peak_rss_mb": 648.8,
+  "init_actor_checksum": "3bf4d97dd0ffa416d94e1973e32d31b3",
+  "final_actor_checksum": "584fcaa0818439d908d1d733c7171efb",
+  "actor_changed": true,
+  "init_critic_checksum": "8925b1982b05f1c738311fa89a0d0d0e",
+  "final_critic_checksum": "ad6a3348c52e429abd605113020e089d",
+  "baseline_det_success": 0.5,
+  "final_det_success": 0.1,
+  "baseline_stoch_success": 0.54,
+  "final_stoch_success": 0.54,
+  "baseline_stoch_tip": 0.1,
+  "final_stoch_tip": 0.02,
+  "checkpoints": [
+    "final.npz",
+    "u0020.npz",
+    "u0040.npz"
+  ]
+}

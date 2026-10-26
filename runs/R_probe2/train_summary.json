@@ -1,0 +1,26 @@
+{
+  "run_id": "R_probe2",
+  "seed": 0,
+  "updates": 40,
+  "control_steps": 40960,
+  "wall_seconds": 537.6,
+  "peak_rss_mb": 660.1,
+  "init_actor_checksum": "6332a7ccf4241ff04c5225de4e0abcec",
+  "final_actor_checksum": "ed56060c2018681aec303bca62a6475f",
+  "actor_changed": true,
+  "init_critic_checksum": "8925b1982b05f1c738311fa89a0d0d0e",
+  "final_critic_checksum": "e64ad55270409f813a4d1ebd11146931",
+  "baseline_det_success": 0.5,
+  "final_det_success": 0.0,
+  "baseline_stoch_success": 0.46,
+  "final_stoch_success": 0.22,
+  "baseline_stoch_tip": 0.26,
+  "final_stoch_tip": 0.66,
+  "checkpoints": [
+    "final.npz",
+    "u0010.npz",
+    "u0020.npz",
+    "u0030.npz",
+    "u0040.npz"
+  ]
+}

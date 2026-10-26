@@ -1,0 +1,87 @@
+{
+  "scene": "trainR_0",
+  "trajectories": {
+    "zero_action": {
+      "reason": "tipped",
+      "x": 2.659,
+      "min_wheel_x": 2.482,
+      "pass_x": 2.05,
+      "passed_at": 4.54,
+      "tilt_deg": 60.47,
+      "t": 5.12,
+      "undiscounted_return": -27.33,
+      "discounted_return": 3.335,
+      "ledger": {
+        "terminal_tipped": -50.2816
+      },
+      "last_reward_breakdown": {
+        "progress": 0.2515,
+        "speed": -0.0273,
+        "tilt": -0.5059,
+        "smooth": -0.0,
+        "terminal": -50.0
+      },
+      "action": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scene": "trainR_0"
+    },
+    "best_pass": {
+      "reason": "success",
+      "x": 3.054,
+      "min_wheel_x": 2.793,
+      "pass_x": 2.05,
+      "passed_at": 4.72,
+      "tilt_deg": 1.27,
+      "t": 5.74,
+      "undiscounted_return": 98.95,
+      "discounted_return": 11.299,
+      "ledger": {
+        "terminal_success": 50.2865
+      },
+      "last_reward_breakdown": {
+        "progress": 0.3011,
+        "speed": -0.0146,
+        "tilt": -0.0,
+        "smooth": -0.0,
+        "terminal": 50.0
+      },
+      "action": [
+        -1.0,
+        0.5,
+        0.0
+      ],
+      "scene": "trainR_0"
+    },
+    "best_tip": {
+      "reason": "tipped",
+      "x": 2.45,
+      "min_wheel_x": 2.124,
+      "pass_x": 2.05,
+      "passed_at": 3.36,
+      "tilt_deg": 61.21,
+      "t": 3.42,
+      "undiscounted_return": -14.71,
+      "discounted_return": 3.633,
+      "ledger": {
+        "terminal_tipped": -50.0941
+      },
+      "last_reward_breakdown": {
+        "progress": 0.4414,
+        "speed": -0.0204,
+        "tilt": -0.5151,
+        "smooth": -0.0,
+        "terminal": -50.0
+      },
+      "action": [
+        1.0,
+        0.5,
+        1.0
+      ],
+      "scene": "trainR_0"
+    },
+    "time_limit": null
+  }
+}

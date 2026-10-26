@@ -70,3 +70,17 @@
 
 `tests/test_credibility.py`（8 项，第一轮）+ `tests/test_round2.py`（27 项）
 = **35 项，全部通过**（约 20 秒）。
+
+---
+
+## 第三轮补充（2026-10-26）：训练器修复
+
+基线 `e57d281` 的 `scripts/ppo.py` 有两处实现错误，已在 `fix/ppo` 分支修复并做数值验证：
+
+1. `_adam` 调用在参数循环外 → 每个 minibatch 只更新 `bv1`，actor 从未被优化。
+2. `act` 用未裁剪采样算 logp、返回裁剪后动作 → 未更新时 `ratio=1.015`。
+
+验证：`scripts/check_ppo.py`（中心差分误差 ~1e-10）、`tests/test_trainer.py`（10 项）。
+旧 150k 步与旧 checkpoint 保留在 `runs/train_P_150k`、`runs/train_G_40k` 等目录，
+标注为"actor 未更新、动作概率不一致，不能用于判断 PPO 学习能力或 P/G 收益"。
+结论见 [`TRAINER_REPORT.md`](TRAINER_REPORT.md)。

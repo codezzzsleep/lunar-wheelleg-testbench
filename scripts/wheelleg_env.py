@@ -40,7 +40,8 @@ ACT_SCALE = np.array([0.30, 0.30, 0.60])     # 前腿偏移, 后腿偏移, 轮�
 
 class WheelLegEnv:
     def __init__(self, spec, control_hz=50.0, max_seconds=12.0,
-                 v_ref=1.0, tip_deg=60.0, asset_root=None):
+                 v_ref=1.0, tip_deg=60.0, asset_root=None,
+                 settle_seconds=1.0, pass_clearance=0.10, bounds_y=0.45):
         self.spec = spec
         self.control_hz = float(control_hz)
         self.max_seconds = float(max_seconds)
@@ -49,6 +50,14 @@ class WheelLegEnv:
         self.asset_root = pathlib.Path(asset_root or
                                        pathlib.Path(__file__).resolve().parent.parent
                                        / 'assets/processed')
+        # 任务成功判据：整机（四轮）越过障碍远端 + 净空，并稳定保持 settle_seconds
+        self.settle_seconds = float(settle_seconds)
+        self.pass_clearance = float(pass_clearance)
+        self.bounds_y = float(bounds_y)
+        # 终态奖励：有限且可解释；不靠无限加大倾覆罚值来"修好"排序
+        self.w_success = 50.0
+        self.w_tip = 50.0
+        self.w_oob = 30.0
 
         self._xml, self._hf_png = self._compose()
         self.model = mujoco.MjModel.from_xml_string(self._xml)
@@ -61,15 +70,42 @@ class WheelLegEnv:
         for leg in LEG:
             self.wheel_geoms |= self._geom_ids(f'{leg}_wheel_link')
 
+        self._wheel_bodies = self._body_ids(['%s_wheel_link' % leg for leg in LEG])
         self.t = 0.0
         self.prev_action = np.zeros(ACT_DIM)
         self.prev_x = 0.0
+        self.passed_at = None
         self.n_control = 0
         self.n_physics = 0
         self.episode_return = 0.0
         self._reset_state(seed=spec.get('seed', 0))
 
     # ---------------------------------------------------------------- 场景
+    def _body_ids(self, names):
+        out = []
+        for n in names:
+            bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, n)
+            out.append(bid if bid >= 0 else None)
+        return out
+
+    def _wheel_xs(self):
+        xs = [float(self.data.xpos[b][0]) for b in self._wheel_bodies if b is not None]
+        return xs or [float(self.data.qpos[0])]
+
+    def _obstacle_half_depth(self, obj):
+        """障碍沿 x 的半深，取自资产 manifest 的真实尺寸（缺省 0.15）。"""
+        import runio as _ri
+        try:
+            man = _ri.resolve_asset(self.asset_root / obj['asset'])['manifest'] or {}
+            return float(man.get('width_x_m') or 0.30) / 2.0
+        except Exception:
+            return 0.15
+
+    def _ledger_key(self, reason, terminated):
+        if reason in ('success', 'tipped', 'out_of_bounds'):
+            return 'terminal_' + reason
+        return 'truncated_time_limit'
+
     def _geom_ids(self, body):
         bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, body) \
             if hasattr(self, 'model') else -1
@@ -137,6 +173,7 @@ class WheelLegEnv:
         self.episode_return = 0.0
         self.prev_action = np.zeros(ACT_DIM)
         self.prev_x = float(d.qpos[0])
+        self.passed_at = None
         # 稳定化：让姿态在固定站姿下落稳，不计入策略成绩
         for _ in range(int(0.6 / self.dt)):
             self._apply_controls(np.zeros(ACT_DIM), drive=False)
@@ -238,31 +275,55 @@ class WheelLegEnv:
         r_tilt = -0.5 * max(0.0, tilt - 20.0) / 40.0
         r_smooth = -0.05 * float(np.sum((action - self.prev_action) ** 2))
         reward = r_prog + r_speed + r_tilt + r_smooth
+        ledger = {}
         self.prev_action = action.copy()
 
         reason = None
         terminated = False
         truncated = False
-        goal_x = float(self.spec.get('goal_x', 3.0))
-        if tilt > self.tip_deg:
-            terminated, reason = True, 'tipped'
-            reward -= 200.0
-        elif abs(y) > 3.0:
-            terminated, reason = True, 'out_of_bounds'
-            reward -= 100.0
-        elif x >= goal_x:
+
+        # ---- 通过判据：四个轮子全部越过障碍远端 + 净空 ----
+        objs = self.spec.get('objects', [])
+        min_wheel_x = min(self._wheel_xs())
+        if objs:
+            target_x = max(float(o['x']) + float(self._obstacle_half_depth(o))
+                           + self.pass_clearance for o in objs)
+        else:
+            target_x = float(self.spec.get('goal_x', 3.0))
+
+        if self.passed_at is None and min_wheel_x >= target_x:
+            self.passed_at = self.t
+        if self.passed_at is not None and (self.t - self.passed_at) >= self.settle_seconds:
             terminated, reason = True, 'success'
-            reward += 200.0
-        elif self.t >= self.max_seconds:
+            reward += self.w_success
+
+        if not terminated and tilt > self.tip_deg:
+            terminated, reason = True, 'tipped'
+            reward -= self.w_tip
+        if not terminated and abs(y) > self.bounds_y:
+            terminated, reason = True, 'out_of_bounds'
+            reward -= self.w_oob
+        if not terminated and x >= float(self.spec.get('goal_x', 6.0)):
+            # 兜底：跑过整个场景仍未满足通过判据也没翻 -> 记 out_of_bounds 式失败
+            terminated, reason = True, 'out_of_bounds'
+            reward -= self.w_oob
+        if not terminated and self.t >= self.max_seconds:
             truncated, reason = True, 'time_limit'
 
         self.episode_return += reward
-        info = {'reason': reason, 'tilt_deg': round(tilt, 2), 'x': round(x, 3),
-                'y': round(y, 3), 'vx': round(vx, 3), 't': round(self.t, 3),
-                'rewards': {'progress': round(r_prog, 4), 'speed': round(r_speed, 4),
-                            'tilt': round(r_tilt, 4), 'smooth': round(r_smooth, 4)},
-                'n_control': self.n_control, 'n_physics': self.n_physics,
-                'scene': self.spec.get('name')}
+        ledger[self._ledger_key(reason, terminated)] = round(reward, 4)
+        info = {
+            'reason': reason, 'terminated': terminated, 'truncated': truncated,
+            'tilt_deg': round(tilt, 2), 'x': round(x, 3), 'y': round(y, 3),
+            'vx': round(vx, 3), 't': round(self.t, 3),
+            'min_wheel_x': round(min_wheel_x, 3), 'pass_x': round(target_x, 3),
+            'passed_at': (round(self.passed_at, 3) if self.passed_at is not None else None),
+            'rewards': {'progress': round(r_prog, 4), 'speed': round(r_speed, 4),
+                        'tilt': round(r_tilt, 4), 'smooth': round(r_smooth, 4),
+                        'terminal': round(reward - (r_prog + r_speed + r_tilt + r_smooth), 4)},
+            'episode_return_ledger': dict(ledger),
+            'n_control': self.n_control, 'n_physics': self.n_physics,
+            'scene': self.spec.get('name')}
         return self._obs(), float(reward), terminated, truncated, info
 
 

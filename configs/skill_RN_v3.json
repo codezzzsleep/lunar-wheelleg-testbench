@@ -1,0 +1,33 @@
+{
+  "name": "skill_RN_v3",
+  "description": "\u5355\u6280\u80fd\uff1a\u901a\u9053\u5185\u901a\u8fc7\u4f4e\u77ee Lux3D \u969c\u788d\uff08\u56db\u8f6e\u8fc7\u7ebf + \u901a\u9053\u5185\u7a33\u5b9a 1 \u79d2\uff09",
+  "scenes": {
+    "train": "scenes/skill_RN_train.json",
+    "validation": "scenes/skill_devval.json",
+    "test": "scenes/skill_devval.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2
+  ],
+  "total_control_steps": 30000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "reward_scale": 0.02,
+  "eval_every_updates": 15
+}

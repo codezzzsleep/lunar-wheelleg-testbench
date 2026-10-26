@@ -1,0 +1,30 @@
+[u0] det 0.0 stoch 0.0417 tip 0.0 ret -23.019
+[u010] steps=10240 R=+0.00 pl=-0.0056 vl=0.0172 kl=+0.00533 clip=0.04 gn=2.14 40.0s
+  [eval u15] det 0.1667 stoch 0.25 tip 0.0417 ret 1.766
+[u020] steps=20480 R=-0.00 pl=-0.0045 vl=0.0099 kl=+0.00757 clip=0.03 gn=2.10 122.8s
+[u030] steps=30720 R=-0.00 pl=-0.0087 vl=0.0093 kl=+0.00762 clip=0.07 gn=2.42 162.0s
+  [eval u30] det 0.3333 stoch 0.1667 tip 0.0 ret -3.289
+{
+  "run_id": "R_s0",
+  "seed": 0,
+  "updates": 30,
+  "control_steps": 30720,
+  "wall_seconds": 269.9,
+  "peak_rss_mb": 746.5,
+  "init_actor_checksum": "27a5b6b31b6f1bbf5cea12a6b62b713e",
+  "final_actor_checksum": "2db5403273546d65d62dedefb89077d2",
+  "actor_changed": true,
+  "init_critic_checksum": "bfda07564a183afa90bc903bebc7541c",
+  "final_critic_checksum": "b2cf73346a0f92434b37ef27f30f885b",
+  "baseline_det_success": 0.0,
+  "final_det_success": 0.3333,
+  "baseline_stoch_success": 0.0417,
+  "final_stoch_success": 0.1667,
+  "baseline_stoch_tip": 0.0,
+  "final_stoch_tip": 0.0,
+  "checkpoints": [
+    "final.npz",
+    "u0015.npz",
+    "u0030.npz"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "run_id": "RN_s1",
+  "seed": 1,
+  "updates": 30,
+  "control_steps": 30720,
+  "wall_seconds": 273.4,
+  "peak_rss_mb": 699.8,
+  "init_actor_checksum": "6057dd4fe81022acf366e3317cb224c5",
+  "final_actor_checksum": "bfea7028c074281edac07e3a6da644b7",
+  "actor_changed": true,
+  "init_critic_checksum": "05bf650fa7094145fd0399f7c6ce7732",
+  "final_critic_checksum": "3535443ad2e8a680e2fbf584d9d6d55d",
+  "baseline_det_success": 0.125,
+  "final_det_success": 0.4583,
+  "baseline_stoch_success": 0.1667,
+  "final_stoch_success": 0.125,
+  "baseline_stoch_tip": 0.0,
+  "final_stoch_tip": 0.0,
+  "checkpoints": [
+    "final.npz",
+    "u0015.npz",
+    "u0030.npz"
+  ]
+}

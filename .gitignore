@@ -9,3 +9,11 @@ runs/render/
 runs/archive*/
 runs/_hfield/
 runs/train_*/checkpoints/*.npz
+
+# 生成资产：只保留 GLB（mesh）与 manifest；3DGS PLY 与原始 zip 体积过大，
+# 不入库。可用 scripts/lux3d_client.py --status <taskId> 取回下载 URL，
+# 哈希记录在 runs/lux3d/ledger.jsonl。
+assets/generated/**/*.ply
+assets/generated/**/*.zip
+# 解包目录与 assets/raw/*.glb 是同一份文件，只保留 raw
+assets/generated/**/unpacked/

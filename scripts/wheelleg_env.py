@@ -65,6 +65,7 @@ class WheelLegEnv:
         ch = spec.get('channel') or {}
         self.channel_center = float(ch.get('center_y', 0.0))
         self.channel_half_width = float(ch.get('half_width', 0.45))
+        self.require_contact = bool((spec.get('skill_cfg') or {}).get('require_contact', False))
         # 初态扰动幅度（米 / 弧度）。所有策略共用同一组 seed，因此是配对比较。
         ip = spec.get('init_perturbation') or {}
         self.init_perturbation = {'lateral': float(ip.get('lateral_m', 0.05)),
@@ -127,20 +128,19 @@ class WheelLegEnv:
             # 各向异性归一化：高度控制难度、横向宽度保证封住通道。
             # 等比缩放会让高瘦资产（如货箱）在压低后只剩几厘米宽，机器人直接绕过；
             # 各向异性会改变长宽比，因此这是"同源变体"，不是新的独立形状。
+            # **整体等比缩放**到目标高度，不做各向异性拉伸：
+            # 之前为了统一横向宽度把 x/y 一起放大，T2 被拉成 1.2 m 长的板，
+            # 形状被扭曲。现在只按高度等比缩放，横向宽度保持自然比例；
+            # 通道宽度由场景按障碍实际横向尺寸决定，保证仍然封路。
             target_h = obj.get('target_height_m')
-            target_w = obj.get('target_width_m')
             man = runio.resolve_asset(d)['manifest'] or {}
             h0 = float(man.get('height_m') or 0)
-            w0 = float(man.get('width_y_m') or 0)
-            sx = sy = sz = 1.0
+            s_ = 1.0
             if target_h and h0 > 0:
-                sz = float(target_h) / h0
-            if target_w and w0 > 0:
-                sy = float(target_w) / w0
-                sx = sy                     # 前后方向跟随横向，保持平面比例
-            scale = (sx, sy, sz)
+                s_ = float(target_h) / h0
+            scale = (s_, s_, s_)
             scale_attr = ('' if all(abs(float(c) - 1.0) < 1e-9 for c in scale)
-                          else f' scale="{sx:.6f} {sy:.6f} {sz:.6f}"')
+                          else f' scale="{s_:.6f} {s_:.6f} {s_:.6f}"')
 
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
@@ -150,7 +150,6 @@ class WheelLegEnv:
                                'yaw_deg': obj.get('yaw_deg', 0.0),
                                'n_vertices': int(len(verts)),
                                'target_height_m': target_h,
-                               'target_width_m': target_w,
                                'mesh_scale': [round(float(c), 5) for c in scale]})
             placements.append(place_meta)
             bounds.append({'asset': obj['asset'],
@@ -421,8 +420,14 @@ class WheelLegEnv:
 
         if (self.passed_at is not None
                 and (self.t - self.passed_at) >= self.settle_seconds):
-            terminated, reason = True, 'success'
-            reward += self.w_success
+            # 技能声明：越障必须**发生接触**。没接触就过去算 bypass，
+            # 单独记为失败类型，不能混进成功（绕行/跨骑不是接触越障证据）。
+            if self.require_contact and self.first_contact_t is None:
+                terminated, reason = True, 'bypass'
+                reward -= self.w_oob * 0.5
+            else:
+                terminated, reason = True, 'success'
+                reward += self.w_success
 
         if not terminated and tilt > self.tip_deg:
             terminated, reason = True, 'tipped'

@@ -25,19 +25,35 @@ import terrain
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SCENES = ROOT / 'scenes'
 
-CHANNEL_HALF_W = 0.40
-OBSTACLE_W = 0.50
+CHANNEL_HALF_W = 0.40      # 兜底值；实际按障碍横向尺寸自适应
+OBSTACLE_W = None          # 不再强制横向宽度，改为等比缩放
 GOAL_X = 6.0
 
 # 家族划分（7 个原始生成家族）
-TRAIN_FAMILIES = ['flat_slab_w300', 'crate_lid_w300', 'fallen_panel_w300']
-VAL_FAMILIES = ['debris_plate_w300', 'boulder_w300']
-TEST_FAMILIES = ['cargo_crate_w300', 'lander_leg_w300']
+# R 组（旧开发资产）与 R+N 组（旧资产 + 本轮新生成家族）
+OLD_TRAIN = ['flat_slab_w300', 'crate_lid_w300', 'fallen_panel_w300']
+NEW_TRAIN = ['T1_device_base', 'T2', 'T3']          # 本轮真实生成
+OLD_VAL = ['debris_plate_w300', 'boulder_w300']
+NEW_VAL = ['V1']                                     # 本轮真实生成、仅开发验证
+# 已见诊断集（既非本轮新生成，也不再充当未见考核）
+SEEN_TEST = ['cargo_crate_w300', 'lander_leg_w300']
+
+TRAIN_FAMILIES = OLD_TRAIN
+VAL_FAMILIES = OLD_VAL
+TEST_FAMILIES = NEW_VAL
 
 SPLIT = {
-    'train': {'families': TRAIN_FAMILIES, 'n': 12, 'seed': 1100},
-    'validation': {'families': VAL_FAMILIES, 'n': 6, 'seed': 2100},
-    'test': {'families': TEST_FAMILIES, 'n': 8, 'seed': 3100},
+    # R 组：旧开发资产
+    'R_train': {'families': OLD_TRAIN, 'n': 12, 'seed': 1100},
+    # R+N 组：旧资产 + 新生成家族（训练场景数与预算相同）
+    'RN_train': {'families': OLD_TRAIN + NEW_TRAIN, 'n': 12, 'seed': 1100},
+    # 共同开发验证：旧验证家族 + 新验证家族 V1
+    'devval': {'families': OLD_VAL + NEW_VAL, 'n': 8, 'seed': 2100},
+    # 已见诊断集（旧考核资产，仅作诊断，不充当未见）
+    'seen': {'families': SEEN_TEST, 'n': 6, 'seed': 4100},
+    # 最终考核：本轮真实新生成的 X1/X2，策略冻结后才生成并建场
+    # 2 家族 × 4 布局 = 8 场景，每场景 3 个真实初态
+    'final': {'families': ['X1', 'X2'], 'n': 8, 'seed': 5100},
 }
 
 
@@ -57,21 +73,29 @@ def build(split):
                 'y': round(float(rng.uniform(-0.05, 0.05)), 3),
                 'yaw_deg': round(float(rng.uniform(-12, 12)), 1),
                 'target_height_m': round(h, 4),
-                'target_width_m': OBSTACLE_W,
             }],
             goal_x=GOAL_X, name=f'skill_{split}_{i}')
         s['split'] = split
         s['family'] = asset
-        s['channel'] = {'center_y': 0.0, 'half_width': CHANNEL_HALF_W}
+        # 通道宽度按**该障碍缩放后的实际横向尺寸**自适应：
+        # 两侧各留 0.08 m，机器人（宽约 0.30 m）仍无法绕过。
+        import runio
+        man = runio.resolve_asset(ROOT / 'assets/processed' / asset)['manifest'] or {}
+        h0 = float(man.get('height_m') or 0.09)
+        w0 = float(man.get('width_y_m') or 0.3)
+        wy = w0 * (h / h0)
+        half = max(0.26, wy / 2.0 + 0.08)
+        s['channel'] = {'center_y': 0.0, 'half_width': round(half, 3)}
         s['init_perturbation'] = {'lateral_m': 0.20, 'yaw_rad': 0.08}
         s['skill'] = 'channel_single_obstacle'
+        s['skill_cfg'] = {'require_contact': True}
         scenes.append(s)
     return scenes
 
 
 def main():
     summary = {}
-    for split in ('train', 'validation', 'test'):
+    for split in ('R_train', 'RN_train', 'devval', 'seen', 'final'):
         scenes = build(split)
         p = SCENES / f'skill_{split}.json'
         p.write_text(json.dumps(scenes, indent=2, ensure_ascii=False))
@@ -83,11 +107,15 @@ def main():
         print(f'skill_{split:10s} {len(scenes):2d} 场景  家族={fams}  '
               f'高度 {min(hs):.3f}-{max(hs):.3f} m')
 
-    tr = set(summary['train']['families'])
-    va = set(summary['validation']['families'])
-    te = set(summary['test']['families'])
-    assert not (tr & va) and not (tr & te) and not (va & te), '家族跨集合重叠'
-    print('家族划分无重叠 ✓')
+    tr = set(summary['R_train']['families']) | set(summary['RN_train']['families'])
+    va = set(summary['devval']['families'])
+    fi = set(summary['final']['families'])
+    print(f'训练家族 {sorted(tr)}')
+    print(f'开发验证家族 {sorted(va)}')
+    print(f'最终考核家族 {sorted(fi)}')
+    assert not (tr & va), f'训练/验证重叠: {tr & va}'
+    assert not (fi & tr) and not (fi & va), f'考核家族必须先于训练出现: {fi & (tr|va)}'
+    print('训练/验证/考核家族两两无重叠 ✓')
     (SCENES / 'skill_summary.json').write_text(json.dumps(summary, indent=2, ensure_ascii=False))
     return 0
 

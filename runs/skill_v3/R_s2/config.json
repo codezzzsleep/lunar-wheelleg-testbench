@@ -1,0 +1,118 @@
+{
+  "name": "skill_R_v3",
+  "description": "单技能：通道内通过低矮 Lux3D 障碍（四轮过线 + 通道内稳定 1 秒）",
+  "scenes": {
+    "train": "scenes/skill_R_train.json",
+    "validation": "scenes/skill_devval.json",
+    "test": "scenes/skill_devval.json"
+  },
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2
+  ],
+  "total_control_steps": 30000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "reward_scale": 0.02,
+  "eval_every_updates": 15,
+  "run_id": "R_s2",
+  "seed": 2,
+  "rng_streams": {
+    "init": 2,
+    "act": 1002,
+    "shuffle": 2002,
+    "eval": "per (scene, episode_seed)，与训练流无关"
+  },
+  "source": {
+    "files": {
+      "scripts/exam.py": "9b0b18d9f4ec2c41a526466240356fc9b3822231551f6e3a071e34949aa13e13",
+      "scripts/controllers.py": "93c86cb02bf2ef762303684cd243fa13090426693587dec10d56040720f246af",
+      "scripts/build_scene.py": "c9e94c7d775bf439e7a8e64425248743066ba494a6c319065d6680fdea29e89e",
+      "scripts/drive_test.py": "cca5fb06f088de3749ef2eac92e5789b683a76cb3683c3c1ad6961649680ac9b"
+    },
+    "content_sha": "15ff98cad2534849bb51e5217bf60e04",
+    "git_commit": "f7ed3a4399365f568e58cd286a1df0b2e1505f55",
+    "git_dirty": true
+  },
+  "model": {
+    "available": true,
+    "go2w_xml_sha": "c8feaef4afdf360335727c80a826d161",
+    "git_commit": "1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d",
+    "git_dirty": false
+  },
+  "packages": {
+    "mujoco": "3.17.0",
+    "numpy": "2.5.4",
+    "trimesh": "5.2.0",
+    "coacd": "1.0.14",
+    "manifold3d": "3.5.4",
+    "pillow": "13.0.0"
+  },
+  "train_scenes": [
+    "skill_R_train_0",
+    "skill_R_train_1",
+    "skill_R_train_2",
+    "skill_R_train_3",
+    "skill_R_train_4",
+    "skill_R_train_5",
+    "skill_R_train_6",
+    "skill_R_train_7",
+    "skill_R_train_8",
+    "skill_R_train_9",
+    "skill_R_train_10",
+    "skill_R_train_11"
+  ],
+  "train_scene_ids": [
+    "d7132c012ebe4887",
+    "6b1c700bcc21adb5",
+    "47408c132e34d2e4",
+    "966cadf6f9e8d03f",
+    "064b2b09df46f123",
+    "edb7968a80955b3a",
+    "22e1ad68404899c6",
+    "87f902ef52654cbe",
+    "aefbb07f9e08b07c",
+    "6ba37e6bbc3fc5b0",
+    "2a7fc3bfa016b45c",
+    "8357c767e740bbb5"
+  ],
+  "val_scene_ids": [
+    "5e9f2706beea3400",
+    "1b5e17ef1cc752f3",
+    "9ebe6000f5017847",
+    "b4c949c04760a747",
+    "628ab7ae3b4a3dcd",
+    "94a56567ae91b239",
+    "97c79fb67c7962be",
+    "5a1cbfc168f1e346"
+  ],
+  "eval_manifest_size": 24,
+  "action_space": {
+    "dim": 4,
+    "meaning": "前腿目标偏移 / 后腿目标偏移 / 轮速倍率 / 差速转向",
+    "scale": [
+      0.3,
+      0.3,
+      0.6,
+      0.6
+    ],
+    "convention": "raw = mean + std*eps；环境执行 clip(raw,-1,1)"
+  },
+  "init_actor_checksum": "76e131043af9a60712df71375aff61e6",
+  "init_critic_checksum": "dfd8e7ceceda8732f2a34afec4a36b95"
+}

@@ -1,0 +1,362 @@
+[
+  {
+    "name": "skill_final_0",
+    "seed": 5100,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X1",
+        "x": 2.006,
+        "y": 0.032,
+        "yaw_deg": 4.2,
+        "target_height_m": 0.0927
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.335
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_1",
+    "seed": 5101,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X2",
+        "x": 2.166,
+        "y": -0.043,
+        "yaw_deg": -1.3,
+        "target_height_m": 0.0944
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X2",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.26
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_2",
+    "seed": 5102,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X1",
+        "x": 2.075,
+        "y": 0.012,
+        "yaw_deg": 10.4,
+        "target_height_m": 0.0851
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.315
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_3",
+    "seed": 5103,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X2",
+        "x": 1.618,
+        "y": -0.027,
+        "yaw_deg": 10.7,
+        "target_height_m": 0.0914
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X2",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.26
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_4",
+    "seed": 5104,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X1",
+        "x": 1.735,
+        "y": -0.04,
+        "yaw_deg": -8.7,
+        "target_height_m": 0.0916
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.333
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_5",
+    "seed": 5105,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X2",
+        "x": 1.799,
+        "y": 0.011,
+        "yaw_deg": 6.3,
+        "target_height_m": 0.0896
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X2",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.26
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_6",
+    "seed": 5106,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X1",
+        "x": 2.02,
+        "y": -0.043,
+        "yaw_deg": -0.4,
+        "target_height_m": 0.0946
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X1",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.341
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  },
+  {
+    "name": "skill_final_7",
+    "seed": 5107,
+    "split": "final",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "X2",
+        "x": 1.944,
+        "y": 0.03,
+        "yaw_deg": -1.1,
+        "target_height_m": 0.0901
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "family": "X2",
+    "channel": {
+      "center_y": 0.0,
+      "half_width": 0.26
+    },
+    "init_perturbation": {
+      "lateral_m": 0.2,
+      "yaw_rad": 0.08
+    },
+    "skill": "channel_single_obstacle",
+    "skill_cfg": {
+      "require_contact": true
+    }
+  }
+]

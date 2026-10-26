@@ -1,0 +1,75 @@
+{
+  "tag": "rv3",
+  "started": "2026-10-26T21:30:58+0800",
+  "jobs": [
+    {
+      "id": "rv3_R_s0",
+      "group": "R",
+      "seed": 0,
+      "config": "configs/skill_R_v3.json",
+      "out": "runs/skill_v3/R_s0",
+      "returncode": 0,
+      "seconds": 306.0,
+      "log": "runs/skill_v3/logs/rv3_R_s0.log",
+      "log_tail": "anged\": true,\n  \"init_critic_checksum\": \"bfda07564a183afa90bc903bebc7541c\",\n  \"final_critic_checksum\": \"b2cf73346a0f92434b37ef27f30f885b\",\n  \"baseline_det_success\": 0.0,\n  \"final_det_success\": 0.3333,\n  \"baseline_stoch_success\": 0.0417,\n  \"final_stoch_success\": 0.1667,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "rv3_R_s1",
+      "group": "R",
+      "seed": 1,
+      "config": "configs/skill_R_v3.json",
+      "out": "runs/skill_v3/R_s1",
+      "returncode": 0,
+      "seconds": 301.5,
+      "log": "runs/skill_v3/logs/rv3_R_s1.log",
+      "log_tail": "hanged\": true,\n  \"init_critic_checksum\": \"05bf650fa7094145fd0399f7c6ce7732\",\n  \"final_critic_checksum\": \"9dedf024a967891dc1815aa4dd6603ae\",\n  \"baseline_det_success\": 0.125,\n  \"final_det_success\": 0.125,\n  \"baseline_stoch_success\": 0.1667,\n  \"final_stoch_success\": 0.25,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "rv3_R_s2",
+      "group": "R",
+      "seed": 2,
+      "config": "configs/skill_R_v3.json",
+      "out": "runs/skill_v3/R_s2",
+      "returncode": 0,
+      "seconds": 251.6,
+      "log": "runs/skill_v3/logs/rv3_R_s2.log",
+      "log_tail": "\"actor_changed\": true,\n  \"init_critic_checksum\": \"dfd8e7ceceda8732f2a34afec4a36b95\",\n  \"final_critic_checksum\": \"0501eed7d9264c1a5ed8204f9580057f\",\n  \"baseline_det_success\": 0.0,\n  \"final_det_success\": 0.0,\n  \"baseline_stoch_success\": 0.0,\n  \"final_stoch_success\": 0.0,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "rv3_RN_s0",
+      "group": "RN",
+      "seed": 0,
+      "config": "configs/skill_RN_v3.json",
+      "out": "runs/skill_v3/RN_s0",
+      "returncode": 0,
+      "seconds": 268.9,
+      "log": "runs/skill_v3/logs/rv3_RN_s0.log",
+      "log_tail": "anged\": true,\n  \"init_critic_checksum\": \"bfda07564a183afa90bc903bebc7541c\",\n  \"final_critic_checksum\": \"309162257e01e4676b237e137e2adab0\",\n  \"baseline_det_success\": 0.0,\n  \"final_det_success\": 0.0833,\n  \"baseline_stoch_success\": 0.0417,\n  \"final_stoch_success\": 0.0417,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "rv3_RN_s1",
+      "group": "RN",
+      "seed": 1,
+      "config": "configs/skill_RN_v3.json",
+      "out": "runs/skill_v3/RN_s1",
+      "returncode": 0,
+      "seconds": 315.5,
+      "log": "runs/skill_v3/logs/rv3_RN_s1.log",
+      "log_tail": "nged\": true,\n  \"init_critic_checksum\": \"05bf650fa7094145fd0399f7c6ce7732\",\n  \"final_critic_checksum\": \"3535443ad2e8a680e2fbf584d9d6d55d\",\n  \"baseline_det_success\": 0.125,\n  \"final_det_success\": 0.4583,\n  \"baseline_stoch_success\": 0.1667,\n  \"final_stoch_success\": 0.125,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "rv3_RN_s2",
+      "group": "RN",
+      "seed": 2,
+      "config": "configs/skill_RN_v3.json",
+      "out": "runs/skill_v3/RN_s2",
+      "returncode": 0,
+      "seconds": 252.9,
+      "log": "runs/skill_v3/logs/rv3_RN_s2.log",
+      "log_tail": "\"actor_changed\": true,\n  \"init_critic_checksum\": \"dfd8e7ceceda8732f2a34afec4a36b95\",\n  \"final_critic_checksum\": \"cc5f878493671314b44bbdded7b7436c\",\n  \"baseline_det_success\": 0.0,\n  \"final_det_success\": 0.0,\n  \"baseline_stoch_success\": 0.0,\n  \"final_stoch_success\": 0.0,\n  \"baseline_stoch_tip\": 0.0,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0015.npz\",\n    \"u0030.npz\"\n  ]\n}\n"
+    }
+  ],
+  "finished": "2026-10-26T21:59:14+0800",
+  "n_jobs": 6,
+  "n_failed": 0
+}

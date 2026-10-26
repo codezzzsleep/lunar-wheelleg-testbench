@@ -153,15 +153,20 @@ def main():
                    'terrain_spec': spec['terrain'], 'terrain_measured': t,
                    'objects': objs, 'contact': c,
                    'provenance': spec.get('provenance')}
-            row['ok'] = (all(o['ok_not_buried'] and o['ok_not_floating'] for o in objs)
-                         and (not objs or c['contact_occurred']))
+            # 场景**物理有效性**只看落地/悬空/出生；是否接触、任务是否成功是两件事，
+            # 必须分开统计（任务书第六节）。接触单独记为 contact_ok。
+            row['ok'] = all(o['ok_not_buried'] and o['ok_not_floating'] for o in objs)
+            row['contact_ok'] = (not objs) or c['contact_occurred']
             report.append(row)
             print(f"{spec['name']:26s} 坡 {t['slope_x_deg_measured']:5.2f}° "
                   f"峰 {t['surface_z_max']} 物体埋入 {[o['buried_m'] for o in objs]} "
-                  f"接触 {c['first_contact_s']} {'OK' if row['ok'] else 'FAIL'}")
+                  f"接触 {c['first_contact_s']} "
+                  f"{'物理OK' if row['ok'] else '物理FAIL'}"
+                  f"{'' if row.get('contact_ok') else '/未接触'}")
     (out / 'verify.json').write_text(json.dumps(report, indent=2, ensure_ascii=False))
     n_ok = sum(1 for r in report if r['ok'])
-    print(f'\n合格 {n_ok}/{len(report)}')
+    n_contact = sum(1 for r in report if r.get('contact_ok'))
+    print(f'\n物理合格 {n_ok}/{len(report)}；其中发生接触 {n_contact}/{len(report)}')
     return 0 if n_ok == len(report) else 1
 
 

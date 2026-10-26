@@ -1,0 +1,11 @@
+P_train      24 场景  家族=['proc_box_h043', 'proc_box_h050', 'proc_cylinder_h043']
+P_validation 12 场景  家族=['proc_box_h058', 'proc_cylinder_h090']
+P_test       12 场景  家族=['proc_box_h090', 'proc_box_h100']
+G_train      24 场景  家族=['crate_lid_w300', 'fallen_panel_w300', 'flat_slab_w300']
+G_validation 12 场景  家族=['boulder_w300', 'debris_plate_w300']
+G_test       12 场景  家族=['cargo_crate_w300', 'lander_leg_w300']
+P 家族划分无重叠 ✓
+G 家族划分无重叠 ✓
+train P/G 地形参数完全一致 ✓ (24 个场景)
+validation P/G 地形参数完全一致 ✓ (12 个场景)
+test P/G 地形参数完全一致 ✓ (12 个场景)

@@ -125,7 +125,7 @@ def main():
         'val_scene_ids': [terrain.scene_identity(s) for s in val_specs],
         'eval_manifest_size': len(manifest),
         'action_space': {'dim': ppo.ACT_DIM,
-                         'meaning': '前腿目标偏移 / 后腿目标偏移 / 轮速倍率',
+                         'meaning': '前腿目标偏移 / 后腿目标偏移 / 轮速倍率 / 差速转向',
                          'scale': list(wheelleg_env.ACT_SCALE),
                          'convention': 'raw = mean + std*eps；环境执行 clip(raw,-1,1)'},
         'init_actor_checksum': init_actor, 'init_critic_checksum': init_critic,
@@ -161,13 +161,16 @@ def main():
             rew_b.append(r * cfg.get('reward_scale', 1.0)); val_b.append(v)
             bm_b.append(0.0 if te else 1.0)      # 真实终止不 bootstrap
             cm_b.append(0.0 if (te or tr) else 1.0)
+            obs_after = nobs                     # 截断状态，必须在 reset 前保存
             obs = nobs
             steps += 1
             if te or tr:
                 spec_i = (spec_i + 1) % len(train_specs)
                 env = make_env(train_specs[spec_i], cfg)
                 obs, _ = env.reset(seed=seed + steps)
-        last_v = float(ppo.forward(params, obs[None, :])['value'][0])
+        # bootstrap 必须用 rollout 结束时**那个状态**的价值。旧实现用 reset 之后
+        # 新回合的起点，时间截断时会把下一回合的 value 串进来。
+        last_v = float(ppo.forward(params, obs_after[None, :])['value'][0])
 
         adv, ret = ppo.gae(rew_b, val_b, bm_b, cm_b, last_v,
                            gamma=cfg['gamma'], lam=cfg['gae_lambda'])

@@ -1,0 +1,31 @@
+{
+  "tag": "demo",
+  "started": "2026-10-26T18:25:33+0800",
+  "jobs": [
+    {
+      "id": "demo_P_s0",
+      "group": "P",
+      "seed": 0,
+      "config": "runs/pipeline_demo2/config_P.json",
+      "out": "runs/pipeline_demo2/train/P_s0",
+      "returncode": 0,
+      "seconds": 85.0,
+      "log": "runs/pipeline_demo2/train/logs/demo_P_s0.log",
+      "log_tail": "cd58f56ca03c3\",\n  \"actor_changed\": true,\n  \"init_critic_checksum\": \"f08efd28173eae12e55178f0b6a73ef6\",\n  \"final_critic_checksum\": \"9be4935aa7f030d432be9503a8877654\",\n  \"baseline_det_success\": 0.3333,\n  \"final_det_success\": 0.3333,\n  \"baseline_stoch_success\": 0.3333,\n  \"final_stoch_success\": 0.1667,\n  \"baseline_stoch_tip\": 0.25,\n  \"final_stoch_tip\": 0.6667,\n  \"checkpoints\": [\n    \"final.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "demo_G_s0",
+      "group": "G",
+      "seed": 0,
+      "config": "runs/pipeline_demo2/config_G.json",
+      "out": "runs/pipeline_demo2/train/G_s0",
+      "returncode": 0,
+      "seconds": 85.9,
+      "log": "runs/pipeline_demo2/train/logs/demo_G_s0.log",
+      "log_tail": "959294fc7a804\",\n  \"actor_changed\": true,\n  \"init_critic_checksum\": \"f08efd28173eae12e55178f0b6a73ef6\",\n  \"final_critic_checksum\": \"a68d862e89f49eefcb9c3068ec355aa2\",\n  \"baseline_det_success\": 0.6667,\n  \"final_det_success\": 0.3333,\n  \"baseline_stoch_success\": 0.1667,\n  \"final_stoch_success\": 0.1667,\n  \"baseline_stoch_tip\": 0.25,\n  \"final_stoch_tip\": 0.6667,\n  \"checkpoints\": [\n    \"final.npz\"\n  ]\n}\n"
+    }
+  ],
+  "finished": "2026-10-26T18:28:24+0800",
+  "n_jobs": 2,
+  "n_failed": 0
+}

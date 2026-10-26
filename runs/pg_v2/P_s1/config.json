@@ -1,0 +1,148 @@
+{
+  "name": "P_frozen_v1",
+  "description": "冻结协议：三条件同分布地形，仅障碍几何来源不同",
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2
+  ],
+  "total_control_steps": 40000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "reward_scale": 0.02,
+  "eval_every_updates": 20,
+  "group": "P",
+  "scenes": {
+    "train": "scenes/P_train.json",
+    "validation": "scenes/P_validation.json",
+    "test": "scenes/P_test.json"
+  },
+  "protocol": "PG_frozen_v2_4dim_act",
+  "run_id": "P_s1",
+  "seed": 1,
+  "rng_streams": {
+    "init": 1,
+    "act": 1001,
+    "shuffle": 2001,
+    "eval": "per (scene, episode_seed)，与训练流无关"
+  },
+  "source": {
+    "files": {
+      "scripts/exam.py": "9b0b18d9f4ec2c41a526466240356fc9b3822231551f6e3a071e34949aa13e13",
+      "scripts/controllers.py": "93c86cb02bf2ef762303684cd243fa13090426693587dec10d56040720f246af",
+      "scripts/build_scene.py": "c9e94c7d775bf439e7a8e64425248743066ba494a6c319065d6680fdea29e89e",
+      "scripts/drive_test.py": "cca5fb06f088de3749ef2eac92e5789b683a76cb3683c3c1ad6961649680ac9b"
+    },
+    "content_sha": "15ff98cad2534849bb51e5217bf60e04",
+    "git_commit": "7347599acc6177cc4d7ec32627b0e97d813660d8",
+    "git_dirty": true
+  },
+  "model": {
+    "available": true,
+    "go2w_xml_sha": "c8feaef4afdf360335727c80a826d161",
+    "git_commit": "1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d",
+    "git_dirty": false
+  },
+  "packages": {
+    "mujoco": "3.17.0",
+    "numpy": "2.5.4",
+    "trimesh": "5.2.0",
+    "coacd": "1.0.14",
+    "manifold3d": "3.5.4",
+    "pillow": "13.0.0"
+  },
+  "train_scenes": [
+    "train_巡检区_1000",
+    "train_巡检区_1001",
+    "train_巡检区_1002",
+    "train_巡检区_1003",
+    "train_巡检区_1004",
+    "train_巡检区_1005",
+    "train_巡检区_1006",
+    "train_巡检区_1007",
+    "train_坡地_1000",
+    "train_坡地_1001",
+    "train_坡地_1002",
+    "train_坡地_1003",
+    "train_坡地_1004",
+    "train_坡地_1005",
+    "train_坡地_1006",
+    "train_坡地_1007",
+    "train_残骸通行段_1000",
+    "train_残骸通行段_1001",
+    "train_残骸通行段_1002",
+    "train_残骸通行段_1003",
+    "train_残骸通行段_1004",
+    "train_残骸通行段_1005",
+    "train_残骸通行段_1006",
+    "train_残骸通行段_1007"
+  ],
+  "train_scene_ids": [
+    "b22b11cd3f1a4387",
+    "7e875a25acd95a49",
+    "75637838f63730b4",
+    "eab14a94174d78f9",
+    "90c13cf102faf93b",
+    "a2e259f156cd8328",
+    "a48ab5651a756dcc",
+    "c1af2dd3623b3937",
+    "42f9475f2036db42",
+    "74801b210707625e",
+    "1e653fb421d1034e",
+    "4e3c89ed6a3292e4",
+    "2b810d5bc76becb1",
+    "41a473e7b5e67b0f",
+    "01c08bd5977320ad",
+    "7503059d41c0ea65",
+    "9797e7f2c2d75151",
+    "95a311df1f0236c7",
+    "282e8df819e34038",
+    "c0f5d43b0ec99dde",
+    "1d3c237cea915561",
+    "84fb2edeadcb0d98",
+    "5c0b0b2c32c1c6f7",
+    "2939e1aefad31ae8"
+  ],
+  "val_scene_ids": [
+    "c844db418f878af1",
+    "5031ba66fb2aba4e",
+    "0863ae44583b4fec",
+    "b72e800c054860e9",
+    "ecdc019b7617a593",
+    "cef110a12e51a77a",
+    "6f3c78d98d32d76f",
+    "44ce31cc4cc0eb4c",
+    "ca490df4b559c9ee",
+    "b886ff741746d6df",
+    "f512f529b0eb3827",
+    "5f2fa1edbd72b963"
+  ],
+  "eval_manifest_size": 36,
+  "action_space": {
+    "dim": 4,
+    "meaning": "前腿目标偏移 / 后腿目标偏移 / 轮速倍率 / 差速转向",
+    "scale": [
+      0.3,
+      0.3,
+      0.6,
+      0.6
+    ],
+    "convention": "raw = mean + std*eps；环境执行 clip(raw,-1,1)"
+  },
+  "init_actor_checksum": "97ad122025a2c899abd28e94766c4d4d",
+  "init_critic_checksum": "8519d86fed6128964505c73813e56bc8"
+}

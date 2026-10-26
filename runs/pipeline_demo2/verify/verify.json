@@ -1,0 +1,2216 @@
+[
+  {
+    "scene": "train_巡检区_100",
+    "scene_id": "ae684abb7c9d4464",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 100
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          null
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.569,
+        "y": 0.113,
+        "yaw_deg": -4.3,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.116,
+        "yaw_deg": 8.5,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.56,
+      "contact_occurred": true,
+      "contact_substeps": 77,
+      "contact_wheel": true,
+      "reason": null,
+      "final_x": 3.647,
+      "steps": 300
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_巡检区_101",
+    "scene_id": "cf72565c235795c5",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 101
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.63,
+        "y": 0.141,
+        "yaw_deg": -13.2,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.127,
+        "yaw_deg": -7.3,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.62,
+      "contact_occurred": true,
+      "contact_substeps": 94,
+      "contact_wheel": true,
+      "reason": "out_of_bounds",
+      "final_x": 3.265,
+      "steps": 280
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_巡检区_102",
+    "scene_id": "c4b394b3856c09ad",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 102
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.747,
+        "y": 0.134,
+        "yaw_deg": -5.0,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.144,
+        "yaw_deg": -6.2,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.76,
+      "contact_occurred": true,
+      "contact_substeps": 81,
+      "contact_wheel": true,
+      "reason": null,
+      "final_x": 3.584,
+      "steps": 300
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_巡检区_103",
+    "scene_id": "052d7a1762393b64",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 103
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          null
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.574,
+        "y": 0.114,
+        "yaw_deg": -4.6,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.133,
+        "yaw_deg": -6.0,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.56,
+      "contact_occurred": true,
+      "contact_substeps": 83,
+      "contact_wheel": true,
+      "reason": null,
+      "final_x": 3.603,
+      "steps": 300
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_巡检区_104",
+    "scene_id": "352eaa24b761a2a8",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 104
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.747,
+        "y": 0.113,
+        "yaw_deg": -5.4,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.132,
+        "yaw_deg": -10.0,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.76,
+      "contact_occurred": true,
+      "contact_substeps": 74,
+      "contact_wheel": true,
+      "reason": null,
+      "final_x": 3.611,
+      "steps": 300
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_巡检区_105",
+    "scene_id": "ed82312eac34ad28",
+    "source": "scenes/A_sparse.json",
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 105
+    },
+    "terrain_spec": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 0.0,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0,
+      "surface_z_max": 0.0,
+      "zmax_declared": 0.001,
+      "actual_max_m_declared": 0.0,
+      "profile_x": [
+        [
+          -2.5,
+          0.0
+        ],
+        [
+          -2.0,
+          0.0
+        ],
+        [
+          -1.5,
+          0.0
+        ],
+        [
+          -1.0,
+          0.0
+        ],
+        [
+          -0.5,
+          0.0
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.0
+        ],
+        [
+          1.0,
+          0.0
+        ],
+        [
+          1.5,
+          0.0
+        ],
+        [
+          2.0,
+          0.0
+        ],
+        [
+          2.5,
+          0.0
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.733,
+        "y": 0.122,
+        "yaw_deg": -3.7,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.0427,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h050",
+        "x": 3.2,
+        "y": -0.135,
+        "yaw_deg": -11.6,
+        "body_z": 0.0,
+        "vertex_z_min_world": 0.0,
+        "vertex_z_max_world": 0.05,
+        "ground_under_min": 0.0,
+        "ground_under_max": 0.0,
+        "buried_m": 0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.74,
+      "contact_occurred": true,
+      "contact_substeps": 81,
+      "contact_wheel": true,
+      "reason": null,
+      "final_x": 3.608,
+      "steps": 300
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_100",
+    "scene_id": "9bd9a617ceb23293",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 100
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.33,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1534,
+      "surface_z_max": 0.6198,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1534
+        ],
+        [
+          -2.0,
+          0.2467
+        ],
+        [
+          -1.5,
+          0.2618
+        ],
+        [
+          -1.0,
+          0.2979
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4844
+        ],
+        [
+          1.5,
+          0.4934
+        ],
+        [
+          2.0,
+          0.5085
+        ],
+        [
+          2.5,
+          0.6198
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.689,
+        "y": 0.124,
+        "yaw_deg": -11.2,
+        "body_z": 0.4923,
+        "vertex_z_min_world": 0.4923,
+        "vertex_z_max_world": 0.535,
+        "ground_under_min": 0.4896,
+        "ground_under_max": 0.4923,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.74,
+      "contact_occurred": true,
+      "contact_substeps": 43,
+      "contact_wheel": true,
+      "reason": "success",
+      "final_x": 2.84,
+      "steps": 251
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_101",
+    "scene_id": "8a73eb3404c965b5",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 101
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.33,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1534,
+      "surface_z_max": 0.6198,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1534
+        ],
+        [
+          -2.0,
+          0.2467
+        ],
+        [
+          -1.5,
+          0.2618
+        ],
+        [
+          -1.0,
+          0.2979
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4874
+        ],
+        [
+          1.5,
+          0.5025
+        ],
+        [
+          2.0,
+          0.5205
+        ],
+        [
+          2.5,
+          0.6198
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.75,
+        "y": 0.128,
+        "yaw_deg": 12.6,
+        "body_z": 0.5224,
+        "vertex_z_min_world": 0.5224,
+        "vertex_z_max_world": 0.5651,
+        "ground_under_min": 0.4972,
+        "ground_under_max": 0.5224,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.78,
+      "contact_occurred": true,
+      "contact_substeps": 43,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.951,
+      "steps": 197
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_102",
+    "scene_id": "f3191675276137cb",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 102
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.5,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1444,
+      "surface_z_max": 0.6258,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1444
+        ],
+        [
+          -2.0,
+          0.2317
+        ],
+        [
+          -1.5,
+          0.2497
+        ],
+        [
+          -1.0,
+          0.2949
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4874
+        ],
+        [
+          1.5,
+          0.5025
+        ],
+        [
+          2.0,
+          null
+        ],
+        [
+          2.5,
+          0.6258
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.867,
+        "y": 0.118,
+        "yaw_deg": 6.5,
+        "body_z": 0.5368,
+        "vertex_z_min_world": 0.5368,
+        "vertex_z_max_world": 0.5795,
+        "ground_under_min": 0.4982,
+        "ground_under_max": 0.5368,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.92,
+      "contact_occurred": true,
+      "contact_substeps": 52,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.842,
+      "steps": 191
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_103",
+    "scene_id": "0613373f08f5e446",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 103
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.4,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1534,
+      "surface_z_max": 0.6258,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1534
+        ],
+        [
+          -2.0,
+          0.2467
+        ],
+        [
+          -1.5,
+          0.2618
+        ],
+        [
+          -1.0,
+          0.2979
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4874
+        ],
+        [
+          1.5,
+          0.5025
+        ],
+        [
+          2.0,
+          0.5235
+        ],
+        [
+          2.5,
+          0.6258
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.694,
+        "y": 0.11,
+        "yaw_deg": -10.3,
+        "body_z": 0.5157,
+        "vertex_z_min_world": 0.5157,
+        "vertex_z_max_world": 0.5584,
+        "ground_under_min": 0.5017,
+        "ground_under_max": 0.5157,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.74,
+      "contact_occurred": true,
+      "contact_substeps": 36,
+      "contact_wheel": true,
+      "reason": "success",
+      "final_x": 2.835,
+      "steps": 257
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_104",
+    "scene_id": "9c35dd8110279bb8",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 104
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.4,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1534,
+      "surface_z_max": 0.6258,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1534
+        ],
+        [
+          -2.0,
+          0.2467
+        ],
+        [
+          -1.5,
+          0.2618
+        ],
+        [
+          -1.0,
+          0.2979
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4874
+        ],
+        [
+          1.5,
+          0.5025
+        ],
+        [
+          2.0,
+          0.5205
+        ],
+        [
+          2.5,
+          0.6258
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.867,
+        "y": 0.112,
+        "yaw_deg": -10.7,
+        "body_z": 0.5352,
+        "vertex_z_min_world": 0.5352,
+        "vertex_z_max_world": 0.5779,
+        "ground_under_min": 0.4959,
+        "ground_under_max": 0.5352,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.94,
+      "contact_occurred": true,
+      "contact_substeps": 62,
+      "contact_wheel": true,
+      "reason": "success",
+      "final_x": 2.964,
+      "steps": 275
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_坡地_105",
+    "scene_id": "3f9d451c03eaf2bb",
+    "source": "scenes/B_slope.json",
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 105
+    },
+    "terrain_spec": {
+      "kind": "slope",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 5.4,
+      "slope_y_deg_measured": -0.07,
+      "surface_z_min": 0.1534,
+      "surface_z_max": 0.6258,
+      "zmax_declared": 0.76724,
+      "actual_max_m_declared": 0.7672,
+      "profile_x": [
+        [
+          -2.5,
+          0.1534
+        ],
+        [
+          -2.0,
+          0.2467
+        ],
+        [
+          -1.5,
+          0.2618
+        ],
+        [
+          -1.0,
+          0.2979
+        ],
+        [
+          -0.5,
+          0.2979
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.4543
+        ],
+        [
+          1.0,
+          0.4874
+        ],
+        [
+          1.5,
+          0.5025
+        ],
+        [
+          2.0,
+          0.5235
+        ],
+        [
+          2.5,
+          0.6258
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h043",
+        "x": 1.853,
+        "y": 0.112,
+        "yaw_deg": -3.0,
+        "body_z": 0.5359,
+        "vertex_z_min_world": 0.5359,
+        "vertex_z_max_world": 0.5786,
+        "ground_under_min": 0.4979,
+        "ground_under_max": 0.5359,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.92,
+      "contact_occurred": true,
+      "contact_substeps": 78,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.922,
+      "steps": 197
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_100",
+    "scene_id": "162c80c64c0e9c0a",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 100
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.47,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1058,
+      "surface_z_max": 0.4092,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.1058
+        ],
+        [
+          -2.0,
+          0.2016
+        ],
+        [
+          -1.5,
+          0.1876
+        ],
+        [
+          -1.0,
+          0.2036
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3254
+        ],
+        [
+          1.5,
+          0.3034
+        ],
+        [
+          2.0,
+          0.2934
+        ],
+        [
+          2.5,
+          0.4092
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.289,
+        "y": 0.113,
+        "yaw_deg": -4.3,
+        "body_z": 0.3301,
+        "vertex_z_min_world": 0.3301,
+        "vertex_z_max_world": 0.4201,
+        "ground_under_min": 0.307,
+        "ground_under_max": 0.3301,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.845,
+        "y": -0.116,
+        "yaw_deg": 8.5,
+        "body_z": 0.431,
+        "vertex_z_min_world": 0.431,
+        "vertex_z_max_world": 0.531,
+        "ground_under_min": 0.415,
+        "ground_under_max": 0.431,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.18,
+      "contact_occurred": true,
+      "contact_substeps": 106,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.244,
+      "steps": 177
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_101",
+    "scene_id": "052450e30bd382b5",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 101
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.47,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1058,
+      "surface_z_max": 0.4092,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.1058
+        ],
+        [
+          -2.0,
+          0.2016
+        ],
+        [
+          -1.5,
+          0.1876
+        ],
+        [
+          -1.0,
+          0.2036
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3274
+        ],
+        [
+          1.5,
+          0.3154
+        ],
+        [
+          2.0,
+          0.3074
+        ],
+        [
+          2.5,
+          0.4092
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.35,
+        "y": 0.141,
+        "yaw_deg": -13.2,
+        "body_z": 0.3351,
+        "vertex_z_min_world": 0.3351,
+        "vertex_z_max_world": 0.4251,
+        "ground_under_min": 0.3201,
+        "ground_under_max": 0.3351,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.881,
+        "y": -0.127,
+        "yaw_deg": -7.3,
+        "body_z": 0.4332,
+        "vertex_z_min_world": 0.4332,
+        "vertex_z_max_world": 0.5332,
+        "ground_under_min": 0.4015,
+        "ground_under_max": 0.4332,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.26,
+      "contact_occurred": true,
+      "contact_substeps": 133,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.903,
+      "steps": 237
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_102",
+    "scene_id": "05ddb0af6e19ea5f",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 102
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.66,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.0978,
+      "surface_z_max": 0.4172,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.0978
+        ],
+        [
+          -2.0,
+          0.1797
+        ],
+        [
+          -1.5,
+          0.1717
+        ],
+        [
+          -1.0,
+          0.2016
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3274
+        ],
+        [
+          1.5,
+          null
+        ],
+        [
+          2.0,
+          0.3114
+        ],
+        [
+          2.5,
+          0.4172
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.467,
+        "y": 0.134,
+        "yaw_deg": -5.0,
+        "body_z": 0.3338,
+        "vertex_z_min_world": 0.3338,
+        "vertex_z_max_world": 0.4238,
+        "ground_under_min": 0.3052,
+        "ground_under_max": 0.3338,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.784,
+        "y": -0.144,
+        "yaw_deg": -6.2,
+        "body_z": 0.4326,
+        "vertex_z_min_world": 0.4326,
+        "vertex_z_max_world": 0.5327,
+        "ground_under_min": 0.4155,
+        "ground_under_max": 0.4326,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.4,
+      "contact_occurred": true,
+      "contact_substeps": 76,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.476,
+      "steps": 179
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_103",
+    "scene_id": "deb335589696af5d",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 103
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.56,
+      "slope_y_deg_measured": 0.02,
+      "surface_z_min": 0.1058,
+      "surface_z_max": 0.4172,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.1058
+        ],
+        [
+          -2.0,
+          0.2016
+        ],
+        [
+          -1.5,
+          0.1876
+        ],
+        [
+          -1.0,
+          0.2036
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3274
+        ],
+        [
+          1.5,
+          0.3154
+        ],
+        [
+          2.0,
+          0.3114
+        ],
+        [
+          2.5,
+          0.4172
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.294,
+        "y": 0.114,
+        "yaw_deg": -4.6,
+        "body_z": 0.3348,
+        "vertex_z_min_world": 0.3348,
+        "vertex_z_max_world": 0.4248,
+        "ground_under_min": 0.3241,
+        "ground_under_max": 0.3348,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.7,
+        "y": -0.133,
+        "yaw_deg": -6.0,
+        "body_z": 0.431,
+        "vertex_z_min_world": 0.431,
+        "vertex_z_max_world": 0.531,
+        "ground_under_min": 0.4116,
+        "ground_under_max": 0.431,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.18,
+      "contact_occurred": true,
+      "contact_substeps": 116,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.282,
+      "steps": 182
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_104",
+    "scene_id": "497c3be5917fc132",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 104
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.56,
+      "slope_y_deg_measured": 0.0,
+      "surface_z_min": 0.1058,
+      "surface_z_max": 0.4172,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.1058
+        ],
+        [
+          -2.0,
+          0.2016
+        ],
+        [
+          -1.5,
+          0.1876
+        ],
+        [
+          -1.0,
+          0.2036
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3274
+        ],
+        [
+          1.5,
+          null
+        ],
+        [
+          2.0,
+          0.3094
+        ],
+        [
+          2.5,
+          0.4172
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.467,
+        "y": 0.113,
+        "yaw_deg": -5.4,
+        "body_z": 0.3326,
+        "vertex_z_min_world": 0.3326,
+        "vertex_z_max_world": 0.4226,
+        "ground_under_min": 0.3044,
+        "ground_under_max": 0.3326,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.72,
+        "y": -0.132,
+        "yaw_deg": -10.0,
+        "body_z": 0.4311,
+        "vertex_z_min_world": 0.4311,
+        "vertex_z_max_world": 0.5311,
+        "ground_under_min": 0.4129,
+        "ground_under_max": 0.4311,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.4,
+      "contact_occurred": true,
+      "contact_substeps": 137,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.626,
+      "steps": 199
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  },
+  {
+    "scene": "train_残骸通行段_105",
+    "scene_id": "b3b3a0024379562b",
+    "source": "scenes/C_debris.json",
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 105
+    },
+    "terrain_spec": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "terrain_measured": {
+      "slope_x_deg_measured": 3.56,
+      "slope_y_deg_measured": -0.09,
+      "surface_z_min": 0.1058,
+      "surface_z_max": 0.4172,
+      "zmax_declared": 0.509037,
+      "actual_max_m_declared": 0.509,
+      "profile_x": [
+        [
+          -2.5,
+          0.1058
+        ],
+        [
+          -2.0,
+          0.2016
+        ],
+        [
+          -1.5,
+          0.1876
+        ],
+        [
+          -1.0,
+          0.2036
+        ],
+        [
+          -0.5,
+          0.1737
+        ],
+        [
+          0.0,
+          null
+        ],
+        [
+          0.5,
+          0.3154
+        ],
+        [
+          1.0,
+          0.3274
+        ],
+        [
+          1.5,
+          null
+        ],
+        [
+          2.0,
+          0.3114
+        ],
+        [
+          2.5,
+          0.4172
+        ]
+      ]
+    },
+    "objects": [
+      {
+        "asset": "proc_box_h090",
+        "x": 1.453,
+        "y": 0.122,
+        "yaw_deg": -3.7,
+        "body_z": 0.334,
+        "vertex_z_min_world": 0.334,
+        "vertex_z_max_world": 0.424,
+        "ground_under_min": 0.3066,
+        "ground_under_max": 0.334,
+        "buried_m": 0.0,
+        "floating_m": -0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      },
+      {
+        "asset": "proc_box_h100",
+        "x": 2.721,
+        "y": -0.135,
+        "yaw_deg": -11.6,
+        "body_z": 0.4312,
+        "vertex_z_min_world": 0.4312,
+        "vertex_z_max_world": 0.5312,
+        "ground_under_min": 0.4131,
+        "ground_under_max": 0.4312,
+        "buried_m": -0.0,
+        "floating_m": 0.0,
+        "ok_not_buried": true,
+        "ok_not_floating": true
+      }
+    ],
+    "contact": {
+      "first_contact_s": 2.38,
+      "contact_occurred": true,
+      "contact_substeps": 79,
+      "contact_wheel": true,
+      "reason": "tipped",
+      "final_x": 1.437,
+      "steps": 177
+    },
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "ok": true
+  }
+]

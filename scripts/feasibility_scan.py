@@ -61,11 +61,14 @@ def main():
     out = pathlib.Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
 
+    # 动作维度由环境决定，不写死 3
+    dim = wheelleg_env.ACT_DIM
     grid = []
-    for a0 in (-1.0, -0.5, 0.0, 0.5, 1.0):
-        for a1 in (-0.5, 0.0, 0.5):
-            for a2 in (-1.0, -0.5, 0.0, 0.5, 1.0):
-                grid.append([a0, a1, a2])
+    for a0 in (-1.0, 0.0, 1.0):
+        for a2 in (-1.0, 0.0, 1.0):
+            act = [0.0] * dim
+            act[0], act[1], act[2] = a0, a0 * 0.5, a2
+            grid.append(act)
 
     print(f'常数动作扫描：{len(grid)} 个动作 × {len(specs)} 场景')
     scan = []
@@ -79,7 +82,7 @@ def main():
             if r['reason'] == 'success':
                 wins.append(act)
         zero = [r for r in scan if r['scene'] == spec['name']
-                and r['action'] == [0.0, 0.0, 0.0]][0]
+                and r['action'] == [0.0] * dim][0]
         print(f"  {spec['name']:16s} 可行动作 {len(wins):2d}/{len(grid)}  "
               f"零动作 -> {zero['reason']}")
 
@@ -89,7 +92,7 @@ def main():
     # 三类轨迹的账本：按真实结局挑代表，而不是假设某个动作一定对应某种结局
     spec = specs[0]
     rows = [r for r in scan if r['scene'] == spec['name']]
-    zero = [r for r in rows if r['action'] == [0.0, 0.0, 0.0]][0]
+    zero = [r for r in rows if r['action'] == [0.0] * wheelleg_env.ACT_DIM][0]
     succ = sorted([r for r in rows if r['reason'] == 'success'],
                   key=lambda r: -r['undiscounted_return'])
     tips = sorted([r for r in rows if r['reason'] == 'tipped'],
@@ -136,7 +139,7 @@ def main():
             for s in specs},
         'zero_action_reasons': {s['name']: next(
             r['reason'] for r in scan
-            if r['scene'] == s['name'] and r['action'] == [0.0, 0.0, 0.0])
+            if r['scene'] == s['name'] and r['action'] == [0.0] * wheelleg_env.ACT_DIM)
             for s in specs},
         'reward_ordering_ok': bool(ok),
     }, indent=2, ensure_ascii=False))

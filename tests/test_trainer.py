@@ -64,7 +64,8 @@ class TestAdam(unittest.TestCase):
 class TestActionProbability(unittest.TestCase):
     def test_ratio_is_one_before_update(self):
         params = ppo.init_params(np.random.default_rng(4))
-        params['bm'] = np.array([3.0, -3.0, 0.0])     # 制造必然裁剪的样本
+        # 按实际动作维度构造必然被裁剪的 bias（不写死 3 维）
+        params['bm'] = np.array([3.0, -3.0, 0.0, 3.0][:ppo.ACT_DIM])
         rng = np.random.default_rng(5)
         obs = rng.normal(0, 0.5, size=(32, ppo.OBS_DIM))
         raws, logps, execs = [], [], []

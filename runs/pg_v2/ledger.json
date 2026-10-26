@@ -1,0 +1,75 @@
+{
+  "tag": "pg_v2",
+  "started": "2026-10-26T16:53:43+0800",
+  "jobs": [
+    {
+      "id": "pg_v2_P_s0",
+      "group": "P",
+      "seed": 0,
+      "config": "configs/P_frozen.json",
+      "out": "runs/pg_v2/P_s0",
+      "returncode": 0,
+      "seconds": 538.8,
+      "log": "runs/pg_v2/logs/pg_v2_P_s0.log",
+      "log_tail": "\": true,\n  \"init_critic_checksum\": \"f08efd28173eae12e55178f0b6a73ef6\",\n  \"final_critic_checksum\": \"82253efccbd163ff6f4487bff26be7ed\",\n  \"baseline_det_success\": 0.3333,\n  \"final_det_success\": 0.25,\n  \"baseline_stoch_success\": 0.25,\n  \"final_stoch_success\": 0.3056,\n  \"baseline_stoch_tip\": 0.5556,\n  \"final_stoch_tip\": 0.3611,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "pg_v2_P_s1",
+      "group": "P",
+      "seed": 1,
+      "config": "configs/P_frozen.json",
+      "out": "runs/pg_v2/P_s1",
+      "returncode": 0,
+      "seconds": 516.3,
+      "log": "runs/pg_v2/logs/pg_v2_P_s1.log",
+      "log_tail": " true,\n  \"init_critic_checksum\": \"8519d86fed6128964505c73813e56bc8\",\n  \"final_critic_checksum\": \"78c80d9886ffbcfd3606950854e4907f\",\n  \"baseline_det_success\": 0.4167,\n  \"final_det_success\": 0.25,\n  \"baseline_stoch_success\": 0.1667,\n  \"final_stoch_success\": 0.0556,\n  \"baseline_stoch_tip\": 0.3056,\n  \"final_stoch_tip\": 0.3611,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "pg_v2_P_s2",
+      "group": "P",
+      "seed": 2,
+      "config": "configs/P_frozen.json",
+      "out": "runs/pg_v2/P_s2",
+      "returncode": 0,
+      "seconds": 488.9,
+      "log": "runs/pg_v2/logs/pg_v2_P_s2.log",
+      "log_tail": ": true,\n  \"init_critic_checksum\": \"b28a7ad43afabf4c3acc38ffe58c45c5\",\n  \"final_critic_checksum\": \"9eb6ccc14dbebd050e9f20af5bc56dd0\",\n  \"baseline_det_success\": 0.1667,\n  \"final_det_success\": 0.0,\n  \"baseline_stoch_success\": 0.0556,\n  \"final_stoch_success\": 0.0278,\n  \"baseline_stoch_tip\": 0.5556,\n  \"final_stoch_tip\": 0.2778,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "pg_v2_G_s0",
+      "group": "G",
+      "seed": 0,
+      "config": "configs/G_frozen.json",
+      "out": "runs/pg_v2/G_s0",
+      "returncode": 0,
+      "seconds": 517.4,
+      "log": "runs/pg_v2/logs/pg_v2_G_s0.log",
+      "log_tail": " true,\n  \"init_critic_checksum\": \"f08efd28173eae12e55178f0b6a73ef6\",\n  \"final_critic_checksum\": \"9e1c8e0f64beb36b94b1b5779dda0c0b\",\n  \"baseline_det_success\": 0.6667,\n  \"final_det_success\": 0.3333,\n  \"baseline_stoch_success\": 0.1389,\n  \"final_stoch_success\": 0.0833,\n  \"baseline_stoch_tip\": 0.5556,\n  \"final_stoch_tip\": 0.25,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "pg_v2_G_s1",
+      "group": "G",
+      "seed": 1,
+      "config": "configs/G_frozen.json",
+      "out": "runs/pg_v2/G_s1",
+      "returncode": 0,
+      "seconds": 540.6,
+      "log": "runs/pg_v2/logs/pg_v2_G_s1.log",
+      "log_tail": ": true,\n  \"init_critic_checksum\": \"8519d86fed6128964505c73813e56bc8\",\n  \"final_critic_checksum\": \"f916b7740b1b1e888527570dc11de27a\",\n  \"baseline_det_success\": 0.1667,\n  \"final_det_success\": 0.1667,\n  \"baseline_stoch_success\": 0.1389,\n  \"final_stoch_success\": 0.2222,\n  \"baseline_stoch_tip\": 0.3056,\n  \"final_stoch_tip\": 0.0,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    },
+    {
+      "id": "pg_v2_G_s2",
+      "group": "G",
+      "seed": 2,
+      "config": "configs/G_frozen.json",
+      "out": "runs/pg_v2/G_s2",
+      "returncode": 0,
+      "seconds": 466.7,
+      "log": "runs/pg_v2/logs/pg_v2_G_s2.log",
+      "log_tail": "anged\": true,\n  \"init_critic_checksum\": \"b28a7ad43afabf4c3acc38ffe58c45c5\",\n  \"final_critic_checksum\": \"cb0a1126c95497fa35a7f3ce2876bae2\",\n  \"baseline_det_success\": 0.1667,\n  \"final_det_success\": 0.0,\n  \"baseline_stoch_success\": 0.0278,\n  \"final_stoch_success\": 0.0,\n  \"baseline_stoch_tip\": 0.5,\n  \"final_stoch_tip\": 0.0833,\n  \"checkpoints\": [\n    \"final.npz\",\n    \"u0020.npz\",\n    \"u0040.npz\"\n  ]\n}\n"
+    }
+  ],
+  "finished": "2026-10-26T17:44:52+0800",
+  "n_jobs": 6,
+  "n_failed": 0
+}

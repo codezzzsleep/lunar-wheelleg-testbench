@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/verify_scenes.py", line 165, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/verify_scenes.py", line 146, in main
+    c = run_contact(env, a.contact_seconds)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/verify_scenes.py", line 118, in run_contact
+    o, r, te, tr, info = env.step(action)
+                         ^^^^^^^^^^^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/wheelleg_env.py", line 296, in step
+    action = np.asarray(action, dtype=np.float64).reshape(ACT_DIM)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: cannot reshape array of size 3 into shape (4,)

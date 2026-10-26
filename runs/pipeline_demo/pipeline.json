@@ -1,0 +1,52 @@
+{
+  "stage": [
+    {
+      "name": "生成场景集",
+      "returncode": 0,
+      "seconds": 0.2,
+      "log": "logs/scenes.log"
+    },
+    {
+      "name": "条件敏感性验收",
+      "returncode": 0,
+      "seconds": 1.7,
+      "log": "logs/conditions.log"
+    },
+    {
+      "name": "场景物理有效性",
+      "returncode": 1,
+      "seconds": 1.0,
+      "log": "logs/verify.log"
+    },
+    {
+      "name": "成本账本",
+      "returncode": 0,
+      "seconds": 3.8,
+      "log": "logs/cost.log"
+    },
+    {
+      "name": "训练",
+      "returncode": 0,
+      "seconds": 172.2,
+      "log": "logs/train.log"
+    },
+    {
+      "name": "共同清单评估",
+      "evals": [
+        {
+          "id": "P_s0",
+          "returncode": 0,
+          "seconds": 70.9,
+          "dir": "runs/pipeline_demo/eval/P_s0"
+        },
+        {
+          "id": "G_s0",
+          "returncode": 0,
+          "seconds": 64.7,
+          "dir": "runs/pipeline_demo/eval/G_s0"
+        }
+      ]
+    }
+  ],
+  "ok": false
+}

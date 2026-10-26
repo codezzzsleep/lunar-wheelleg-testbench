@@ -1,0 +1,1266 @@
+[
+  {
+    "name": "train_巡检区_1000",
+    "seed": 1000,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.709,
+        "y": 0.127,
+        "yaw_deg": -1.5,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 3.2,
+        "y": -0.115,
+        "yaw_deg": -3.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1000
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1001",
+    "seed": 1001,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.781,
+        "y": 0.125,
+        "yaw_deg": -2.2,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 3.2,
+        "y": -0.112,
+        "yaw_deg": -11.2,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1001
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1002",
+    "seed": 1002,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.585,
+        "y": 0.129,
+        "yaw_deg": -4.1,
+        "target_height_m": 0.05
+      },
+      {
+        "asset": "flat_slab_w300",
+        "x": 3.2,
+        "y": -0.122,
+        "yaw_deg": -2.7,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1002
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1003",
+    "seed": 1003,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.586,
+        "y": 0.141,
+        "yaw_deg": 7.6,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 3.2,
+        "y": -0.118,
+        "yaw_deg": -2.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1003
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1004",
+    "seed": 1004,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.736,
+        "y": 0.139,
+        "yaw_deg": 6.4,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 3.2,
+        "y": -0.143,
+        "yaw_deg": -0.5,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1004
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1005",
+    "seed": 1005,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.648,
+        "y": 0.124,
+        "yaw_deg": 5.3,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "flat_slab_w300",
+        "x": 3.2,
+        "y": -0.118,
+        "yaw_deg": -14.6,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1005
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1006",
+    "seed": 1006,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.696,
+        "y": 0.112,
+        "yaw_deg": 2.3,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 3.2,
+        "y": -0.117,
+        "yaw_deg": -11.9,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1006
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_巡检区_1007",
+    "seed": 1007,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "flat",
+      "slope_deg": 0.0,
+      "roughness": 0.0,
+      "pits": 0,
+      "pit_depth": 0.0
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.656,
+        "y": 0.113,
+        "yaw_deg": 0.6,
+        "target_height_m": 0.05
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 3.2,
+        "y": -0.113,
+        "yaw_deg": -5.0,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "巡检区",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.68,
+        3.64
+      ],
+      "offset_mode": "交错",
+      "seed": 1007
+    },
+    "group": "G",
+    "condition_key": "A"
+  },
+  {
+    "name": "train_坡地_1000",
+    "seed": 1000,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.829,
+        "y": 0.109,
+        "yaw_deg": 0.5,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1000
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1001",
+    "seed": 1001,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.901,
+        "y": 0.128,
+        "yaw_deg": -1.0,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1001
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1002",
+    "seed": 1002,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.705,
+        "y": 0.112,
+        "yaw_deg": 2.5,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1002
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1003",
+    "seed": 1003,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.706,
+        "y": 0.11,
+        "yaw_deg": 12.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1003
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1004",
+    "seed": 1004,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.856,
+        "y": 0.11,
+        "yaw_deg": 10.7,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1004
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1005",
+    "seed": 1005,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.768,
+        "y": 0.122,
+        "yaw_deg": -1.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1005
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1006",
+    "seed": 1006,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.816,
+        "y": 0.129,
+        "yaw_deg": -12.0,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1006
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_坡地_1007",
+    "seed": 1007,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.0,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 5.0,
+      "roughness": 0.03,
+      "pits": 1,
+      "pit_depth": 0.03
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.776,
+        "y": 0.119,
+        "yaw_deg": -10.4,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "坡地",
+      "height_band": "低",
+      "rel_h_range": [
+        0.5,
+        0.8
+      ],
+      "spread": [
+        1.8,
+        1.8
+      ],
+      "offset_mode": "摆正",
+      "seed": 1007
+    },
+    "group": "G",
+    "condition_key": "B"
+  },
+  {
+    "name": "train_残骸通行段_1000",
+    "seed": 1000,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.429,
+        "y": 0.127,
+        "yaw_deg": -1.5,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 2.685,
+        "y": -0.115,
+        "yaw_deg": -3.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1000
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1001",
+    "seed": 1001,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.501,
+        "y": 0.125,
+        "yaw_deg": -2.2,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 2.879,
+        "y": -0.112,
+        "yaw_deg": -11.2,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1001
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1002",
+    "seed": 1002,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.305,
+        "y": 0.129,
+        "yaw_deg": -4.1,
+        "target_height_m": 0.05
+      },
+      {
+        "asset": "flat_slab_w300",
+        "x": 2.721,
+        "y": -0.122,
+        "yaw_deg": -2.7,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1002
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1003",
+    "seed": 1003,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.306,
+        "y": 0.141,
+        "yaw_deg": 7.6,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 2.696,
+        "y": -0.118,
+        "yaw_deg": -2.3,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1003
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1004",
+    "seed": 1004,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.456,
+        "y": 0.139,
+        "yaw_deg": 6.4,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 2.698,
+        "y": -0.143,
+        "yaw_deg": -0.5,
+        "target_height_m": 0.07
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1004
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1005",
+    "seed": 1005,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "fallen_panel_w300",
+        "x": 1.368,
+        "y": 0.124,
+        "yaw_deg": 5.3,
+        "target_height_m": 0.07
+      },
+      {
+        "asset": "flat_slab_w300",
+        "x": 2.815,
+        "y": -0.118,
+        "yaw_deg": -14.6,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1005
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1006",
+    "seed": 1006,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "flat_slab_w300",
+        "x": 1.416,
+        "y": 0.112,
+        "yaw_deg": 2.3,
+        "target_height_m": 0.06
+      },
+      {
+        "asset": "crate_lid_w300",
+        "x": 2.888,
+        "y": -0.117,
+        "yaw_deg": -11.9,
+        "target_height_m": 0.06
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1006
+    },
+    "group": "G",
+    "condition_key": "C"
+  },
+  {
+    "name": "train_残骸通行段_1007",
+    "seed": 1007,
+    "split": "train",
+    "start": [
+      0.0,
+      0.0
+    ],
+    "goal_x": 6.5,
+    "terrain": {
+      "kind": "mixed",
+      "slope_deg": 3.0,
+      "roughness": 0.04,
+      "pits": 1,
+      "pit_depth": 0.04
+    },
+    "objects": [
+      {
+        "asset": "crate_lid_w300",
+        "x": 1.376,
+        "y": 0.113,
+        "yaw_deg": 0.6,
+        "target_height_m": 0.05
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "x": 2.792,
+        "y": -0.113,
+        "yaw_deg": -5.0,
+        "target_height_m": 0.05
+      }
+    ],
+    "provenance": {
+      "generator": "scripts/terrain.py",
+      "terrain_representation": "heightfield",
+      "units": "meters",
+      "note": "地形高度为真实米制；物体静态刚性"
+    },
+    "condition": {
+      "scenario": "残骸通行段",
+      "height_band": "中",
+      "rel_h_range": [
+        0.8,
+        1.2
+      ],
+      "spread": [
+        1.4,
+        2.8
+      ],
+      "offset_mode": "交错",
+      "seed": 1007
+    },
+    "group": "G",
+    "condition_key": "C"
+  }
+]

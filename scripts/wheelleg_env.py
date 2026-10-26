@@ -24,6 +24,7 @@ import mujoco
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import build_scene
+import runio
 import terrain
 from drive_test import ids, LEG, STANCE, STANCE_HIGH
 
@@ -33,9 +34,13 @@ REAR = {'RR', 'RL'}
 KP, KD = 150.0, 5.0
 WHEEL_KP, WHEEL_MAX, LEG_MAX = 1.2, 15.0, 45.0
 
-OBS_DIM = 39
-ACT_DIM = 3
-ACT_SCALE = np.array([0.30, 0.30, 0.60])     # 前腿偏移, 后腿偏移, 轮速倍率
+OBS_DIM = 40   # 39 + 1（第 4 维动作进入 prev_action）
+# 4 维：前腿目标偏移、后腿目标偏移、轮速倍率、差速转向。
+# 第 4 维是必要的接口补充：原 3 维动作没有任何横向纠偏能力，
+# 导致失败主要是横向出界（21/36），属于任务与控制能力不匹配，
+# 而不是策略不行。这里补充转向能力，**不**通过放宽出界阈值来制造成功。
+ACT_DIM = 4
+ACT_SCALE = np.array([0.30, 0.30, 0.60, 0.60])
 
 
 class WheelLegEnv:
@@ -65,12 +70,14 @@ class WheelLegEnv:
         self.dt = float(self.model.opt.timestep)
         self.substeps = max(1, int(round((1.0 / self.control_hz) / self.dt)))
         self.J = ids(self.model)
-        self.obs_geom = self._geom_ids('obstacle')
         self.wheel_geoms = set()
         for leg in LEG:
-            self.wheel_geoms |= self._geom_ids(f'{leg}_wheel_link')
+            self.wheel_geoms |= self._body_geoms(f'{leg}_wheel_link')
 
         self._wheel_bodies = self._body_ids(['%s_wheel_link' % leg for leg in LEG])
+        self.obstacle_geoms = set()
+        for i in range(len(self.spec.get('objects', []))):
+            self.obstacle_geoms |= self._body_geoms(f'obstacle{i}')
         self.t = 0.0
         self.prev_action = np.zeros(ACT_DIM)
         self.prev_x = 0.0
@@ -81,6 +88,76 @@ class WheelLegEnv:
         self._reset_state(seed=spec.get('seed', 0))
 
     # ---------------------------------------------------------------- 场景
+    def _compose(self):
+        h, meta = terrain.build_heightfield(self.spec)
+        self._h = h
+        self._zmax = meta['zmax']
+        self._terrain_meta = meta
+        hf_dir = pathlib.Path(self.spec.get('_hfield_dir') or
+                              (pathlib.Path(__file__).resolve().parent.parent / 'runs/_hfield'))
+        hf_dir.mkdir(parents=True, exist_ok=True)
+        png = hf_dir / f"{terrain.scene_identity(self.spec)}.png"
+        terrain.write_heightfield_png(h, png, zmax=meta['zmax'])   # 每次重写，避免陈旧地形
+
+        # 有地形 heightfield 时不要再叠一块平面地面（会填平坑洼、遮挡射线测量）
+        xml = build_scene.moon_scene_xml(floor=False)
+        xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax']))
+
+        assets, bodies, placements = [], [], []
+        for i, obj in enumerate(self.spec.get('objects', [])):
+            d = self.asset_root / obj['asset']
+            res = _resolve_parts(d)
+            if not res:
+                raise FileNotFoundError(f'物体资产不可用：{d}')
+            yaw = np.deg2rad(float(obj.get('yaw_deg', 0.0)))
+            quat = f'{np.cos(yaw/2):.6f} 0 0 {np.sin(yaw/2):.6f}'
+
+            # 统一按目标高度缩放：P/G 两组因此共享同一尺度分布，尺度不再是混淆变量。
+            # 缩放后的家族仍算同源变体，不宣称是新的独立形状。
+            scale, target_h = 1.0, obj.get('target_height_m')
+            if target_h:
+                man = runio.resolve_asset(d)['manifest'] or {}
+                h0 = float(man.get('height_m') or 0)
+                if h0 > 0:
+                    scale = float(target_h) / h0
+            scale_attr = ('' if abs(scale - 1.0) < 1e-9
+                          else f' scale="{scale:.6f} {scale:.6f} {scale:.6f}"')
+
+            # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
+            # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
+            verts = _world_vertices(res, float(obj['x']), float(obj['y']), yaw, scale=scale)
+            body_z, place_meta = terrain.place_on_terrain(h, verts)
+            place_meta.update({'asset': obj['asset'], 'x': obj['x'], 'y': obj['y'],
+                               'yaw_deg': obj.get('yaw_deg', 0.0),
+                               'n_vertices': int(len(verts)),
+                               'target_height_m': target_h,
+                               'mesh_scale': round(scale, 5)})
+            placements.append(place_meta)
+
+            inner = []
+            for j, p_ in enumerate(res):
+                name = f'obj{i}_{j}'
+                assets.append(f'<mesh name="{name}" file="{p_}"{scale_attr}/>')
+                inner.append(
+                    f'<geom type="mesh" mesh="{name}" rgba=".72 .56 .36 1" '
+                    f'friction="0.9 0.02 0.001" contype="1" conaffinity="1"/>')
+            bodies.append(
+                f'<body name="obstacle{i}" pos="{obj["x"]:.4f} {obj["y"]:.4f} {body_z:.5f}" '
+                f'quat="{quat}">{"".join(inner)}</body>')
+
+        self.placements = placements
+        block = terrain.terrain_geom_xml() + '\n' + '\n'.join(bodies)
+        xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
+        xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
+        self._obstacle_bodies = [f'obstacle{i}' for i in range(len(self.spec.get('objects', [])))]
+        return xml, str(png)
+
+    def _body_geoms(self, body_name):
+        bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, body_name)
+        if bid < 0:
+            return set()
+        return {g for g in range(self.model.ngeom) if self.model.geom_bodyid[g] == bid}
+
     def _body_ids(self, names):
         out = []
         for n in names:
@@ -106,49 +183,6 @@ class WheelLegEnv:
             return 'terminal_' + reason
         return 'truncated_time_limit'
 
-    def _geom_ids(self, body):
-        bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY, body) \
-            if hasattr(self, 'model') else -1
-        return set()
-
-    def _compose(self):
-        h, _ = terrain.build_heightfield(self.spec)
-        self._h = h
-        hf_dir = pathlib.Path(self.spec.get('_hfield_dir') or
-                              (pathlib.Path(__file__).resolve().parent.parent / 'runs/_hfield'))
-        hf_dir.mkdir(parents=True, exist_ok=True)
-        png = hf_dir / f"{terrain.scene_identity(self.spec)}.png"
-        if not png.exists():
-            terrain.write_heightfield_png(h, png)
-
-        xml = build_scene.moon_scene_xml()
-        xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png))
-
-        assets, bodies = [], []
-        for i, obj in enumerate(self.spec.get('objects', [])):
-            d = self.asset_root / obj['asset']
-            res = _resolve_parts(d)
-            if not res:
-                raise FileNotFoundError(f'物体资产不可用：{d}')
-            yaw = np.deg2rad(float(obj.get('yaw_deg', 0.0)))
-            quat = f'{np.cos(yaw/2):.6f} 0 0 {np.sin(yaw/2):.6f}'
-            inner = []
-            for j, p_ in enumerate(res):
-                name = f'obj{i}_{j}'
-                assets.append(f'<mesh name="{name}" file="{p_}"/>')
-                inner.append(
-                    f'<geom type="mesh" mesh="{name}" rgba=".72 .56 .36 1" '
-                    f'friction="0.9 0.02 0.001" contype="1" conaffinity="1"/>')
-            bodies.append(
-                f'<body name="obstacle{i}" pos="{obj["x"]:.4f} {obj["y"]:.4f} 0" '
-                f'quat="{quat}">{"".join(inner)}</body>')
-
-        block = terrain.terrain_geom_xml() + '\n' + '\n'.join(bodies)
-        xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
-        xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
-        self._obstacle_bodies = [f'obstacle{i}' for i in range(len(self.spec.get('objects', [])))]
-        return xml, str(png)
-
     # ---------------------------------------------------------------- 状态
     def _reset_state(self, seed=0):
         m, d = self.model, self.data
@@ -161,6 +195,10 @@ class WheelLegEnv:
         d.qpos[0] = float(self.spec.get('start', [0.0, 0.0])[0])
         d.qpos[1] = float(self.spec.get('start', [0.0, 0.0])[1])
         # 放到地表之上：取该处 hfield 高度再加一段
+        # 出生姿态对齐局部地形法线：坡面上让机身与地面平行，
+        # 否则初始倾角就是坡角，机器人一落地就滑/翻（实测 12.9° 起步直接翻车）。
+        n = self._terrain_normal(d.qpos[0], d.qpos[1])
+        d.qpos[3:7] = _quat_from_up(n)
         d.qpos[2] = self._ground_height(d.qpos[0], d.qpos[1]) + 0.42
         d.qvel[:] = 0.0
         d.ctrl[:] = 0.0
@@ -174,6 +212,9 @@ class WheelLegEnv:
         self.prev_action = np.zeros(ACT_DIM)
         self.prev_x = float(d.qpos[0])
         self.passed_at = None
+        self.first_contact_t = None
+        self.contact_steps = 0
+        self.wheel_contact_steps = 0
         # 稳定化：让姿态在固定站姿下落稳，不计入策略成绩
         for _ in range(int(0.6 / self.dt)):
             self._apply_controls(np.zeros(ACT_DIM), drive=False)
@@ -183,17 +224,18 @@ class WheelLegEnv:
         d.time = 0.0
         self.t = 0.0
 
+    def _terrain_normal(self, x, y, eps=0.08):
+        """用中心差分求地表法线（世界坐标），平地返回 +z。"""
+        hx1 = self._ground_height(x + eps, y); hx0 = self._ground_height(x - eps, y)
+        hy1 = self._ground_height(x, y + eps); hy0 = self._ground_height(x, y - eps)
+        dzdx = (hx1 - hx0) / (2 * eps)
+        dzdy = (hy1 - hy0) / (2 * eps)
+        n = np.array([-dzdx, -dzdy, 1.0])
+        return n / np.linalg.norm(n)
+
     def _ground_height(self, x, y):
-        """按 hfield 网格插值出该点的地表高度（hfield 覆盖 [-SPAN,SPAN]）。"""
-        from terrain import SPAN, N, ZMAX
-        u = (x + SPAN) / (2 * SPAN)     # 对应列
-        v = (y + SPAN) / (2 * SPAN)     # 对应行
-        if not (0.0 <= u <= 1.0 and 0.0 <= v <= 1.0):
-            return 0.0
-        i = int(round(u * (N - 1)))
-        j = int(round(v * (N - 1)))
-        peak = float(self._h.max()) or 1.0
-        return float(self._h[j, i]) / peak * ZMAX
+        """该点地表高度（米）。与地形生成共用同一份插值实现，避免两套约定。"""
+        return terrain.ground_height_at(self._h, x, y)
 
     def _apply_controls(self, action, drive=True):
         d, m = self.data, self.model
@@ -213,7 +255,8 @@ class WheelLegEnv:
                     WHEEL_KP * (0.0 - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
                 continue
             ramp = min(1.0, max(1e-3, self.t) / 2.0)
-            vt = self.v_ref * ramp * (1.0 + a[2])
+            turn = a[3] * (1.0 if leg in ('FL', 'RL') else -1.0)
+            vt = self.v_ref * ramp * (1.0 + a[2] + turn)
             d.ctrl[e['act']] = np.clip(
                 WHEEL_KP * (vt / WHEEL_R - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
 
@@ -257,6 +300,24 @@ class WheelLegEnv:
             self._apply_controls(action)
             mujoco.mj_step(self.model, self.data)
             self.n_physics += 1
+            # 接触必须逐物理步检测：只在控制步末采样会漏掉滚过矮障碍的短暂接触
+            if self.obstacle_geoms:
+                hit = wheel = False
+                dd = self.data
+                for c in dd.contact[:dd.ncon]:
+                    g1, g2 = c.geom1, c.geom2
+                    if (g1 in self.obstacle_geoms) != (g2 in self.obstacle_geoms):
+                        other = g2 if g1 in self.obstacle_geoms else g1
+                        if other not in self.obstacle_geoms:
+                            hit = True
+                            if other in self.wheel_geoms:
+                                wheel = True
+                if hit:
+                    self.contact_steps += 1
+                    if self.first_contact_t is None:
+                        self.first_contact_t = self.t
+                if wheel:
+                    self.wheel_contact_steps += 1
         self.n_control += 1
         self.t += self.substeps * self.dt
 
@@ -318,6 +379,11 @@ class WheelLegEnv:
             'vx': round(vx, 3), 't': round(self.t, 3),
             'min_wheel_x': round(min_wheel_x, 3), 'pass_x': round(target_x, 3),
             'passed_at': (round(self.passed_at, 3) if self.passed_at is not None else None),
+            'first_contact_s': (round(self.first_contact_t, 3)
+                                if self.first_contact_t is not None else None),
+            'contact_any': self.first_contact_t is not None,
+            'contact_wheel': self.wheel_contact_steps > 0,
+            'contact_substeps': self.contact_steps,
             'rewards': {'progress': round(r_prog, 4), 'speed': round(r_speed, 4),
                         'tilt': round(r_tilt, 4), 'smooth': round(r_smooth, 4),
                         'terminal': round(reward - (r_prog + r_speed + r_tilt + r_smooth), 4)},
@@ -332,3 +398,39 @@ def _resolve_parts(asset_dir):
     import runio
     r = runio.resolve_asset(asset_dir)
     return [str(p) for p in r['part_paths']] if r['ok'] else None
+
+
+def _world_vertices(part_paths, x, y, yaw, scale=1.0):
+    """读取碰撞网格顶点，绕 z 旋转并平移到世界坐标（只取顶点，不建场景）。"""
+    import trimesh
+    allv = []
+    for p_ in part_paths:
+        m = trimesh.load(p_, force='mesh')
+        v = np.asarray(m.vertices, dtype=np.float64)
+        if len(v):
+            allv.append(v)
+    if not allv:
+        return np.zeros((1, 3))
+    v = np.vstack(allv) * float(scale)
+    c, s_ = np.cos(yaw), np.sin(yaw)
+    R = np.array([[c, -s_, 0.0], [s_, c, 0.0], [0.0, 0.0, 1.0]])
+    v = v @ R.T
+    v[:, 0] += x
+    v[:, 1] += y
+    return v
+
+
+def _quat_from_up(up):
+    """返回把机体 +z 对齐到 up 的四元数 (w, x, y, z)。"""
+    up = np.asarray(up, dtype=np.float64)
+    up = up / (np.linalg.norm(up) + 1e-12)
+    z = np.array([0.0, 0.0, 1.0])
+    v = np.cross(z, up)
+    c = float(np.dot(z, up))
+    if np.linalg.norm(v) < 1e-9:
+        return np.array([1.0, 0.0, 0.0, 0.0]) if c > 0 else np.array([0.0, 1.0, 0.0, 0.0])
+    s_ = float(np.linalg.norm(v))
+    axis = v / s_
+    ang = float(np.arctan2(s_, c))
+    q = np.concatenate([[np.cos(ang / 2)], axis * np.sin(ang / 2)])
+    return q

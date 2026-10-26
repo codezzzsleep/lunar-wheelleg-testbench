@@ -1,12 +1,34 @@
-# 月球基地轮腿机器人训练场
+# 生成式 3D 环境驱动的轮腿机器人训练场
 
-用 Aholo Lux3D 生成月球基地还不存在的物体，把它们转成可碰撞的障碍，放进月球重力下的
-MuJoCo 场景，让 Go2W 轮腿机器人跑测试，并留下可复核的配置、结果、失败证据和回放。
+**这是一个"用 3D 生成构建机器人训练环境"的项目**：
+读任务条件 → 生成带真实米制地形的场景 → 把 Lux3D 生成的几何按地形落地并参与接触
+→ 用 PPO 在场景里训练轮腿机器人 → 在**共同留出清单**上比较程序化环境与生成环境。
 
-**核心表述**：用生成模型扩展机器人测试场景，把生成物体转成可碰撞、可重复测试的障碍，
-记录机器人在哪些条件下失败。
+链路：
+```
+任务条件(文本) ──► scene_spec ──► 物理场景(米制 heightfield + 生成几何)
+                        │                    │
+                        ▼                    ▼
+                  物理有效性检查        策略训练(PPO, 4 维残差动作)
+                                             │
+                                             ▼
+                                    共同测试清单评估
+```
 
-**本轮不做**：不训练强化学习、不接 Isaac、不模拟月壤、不做真实机器人迁移、不建服务端。
+**已实现**：条件化场景生成、米制地形、按地形落地、真实接触记录、PPO 训练、
+共同清单评估、成本账本、一键编排。
+
+**当前局限**（不把它们写成已完成）：
+- 生成环境相对程序化环境**没有显示出训练收益**；而且**两组都没学会**——
+  训练后确定性成功率低于未训练策略（0.292 / 0.222 vs 0.458）。
+  因此这份结果**不能**用来否定生成环境的价值，共同瓶颈在训练环节。
+  详见 `docs/PG_REPORT.md`。
+- 未接入 SpatialGen 世界（其输出能否用于 MuJoCo 碰撞未验证）。
+- 不模拟真实月壤、不做真实机器人迁移、没有像素视觉策略。
+- 参考图不参与几何生成（只做来源记录）。
+
+**旧模块**：先前的"机器人考场"（固定控制器跑 2520 次）保留为基础验证模块，
+在 `docs/REPORT.md`，不是本项目的训练主路径。
 
 ---
 
@@ -89,8 +111,46 @@ runs/<run_id>/
 约 **672 秒**。目录里 49 个可用资产中实际选中 35 个，`config.json` 分别记录
 `available_asset_count` 与 `selected_asset_count`，不要把 49 写成参与资产数。
 
+> 注：以上是**旧考场模块**的批次成本。训练链路见下节。
+
 批次隔离：新运行只接受空目录；续跑必须 `--resume` 且校验 suite、完整任务集合与
 运行身份（控制参数 / 资产指纹 / 模型 / 仿真源码）。想重跑就换新目录，工具不会覆盖证据。
+
+## 训练链路（本项目主路径）
+
+一条命令串起"条件 → 场景 → 校验 → 训练 → 共同评估"：
+
+```bash
+.venv/bin/python scripts/pipeline.py --demo --out runs/pipeline_demo   # 短预算跑通
+.venv/bin/python scripts/pipeline.py --full --out runs/pipeline_full   # 冻结预算
+```
+
+分步：
+
+```bash
+# 1. 任务条件 -> 场景（受限语法，见 tasks/）
+.venv/bin/python scripts/scene_compiler.py --task tasks/B_slope.txt --seed 100 --vary 6     --out scenes/B_slope.json
+
+# 2. 物理有效性：射线实测地形坡度、物体落地、真实接触
+.venv/bin/python scripts/verify_conditions.py --out runs/conditions
+.venv/bin/python scripts/verify_scenes.py --scenes scenes/A_sparse.json --out runs/verify
+
+# 3. P/G 场景集（同地形、同高度阶梯，仅几何来源不同）
+.venv/bin/python scripts/make_pg_scenes.py
+
+# 4. 训练（实验清单管理，记录退出码，可安全重跑）
+.venv/bin/python scripts/run_experiments.py --plan plans/pg_v2.json
+
+# 5. 共同清单评估
+.venv/bin/python scripts/evaluate.py     --checkpoint runs/pg_v2/P_s0/checkpoints/final.npz     --manifest scenes/test_common.json --config configs/P_frozen.json     --out runs/pg_v2_eval/P_s0
+
+# 6. 成本账本
+.venv/bin/python scripts/cost_ledger.py --conditions tasks/*.txt --out runs/cost
+```
+
+任务条件语法（`tasks/*.txt`）：`scenario / obstacles / height / spread / offset /
+slope / roughness / pits / pit_depth / length / family`。改这些值会真正改变
+地形（米制）与布局，见 `docs/PG_REPORT.md` 与 `runs/conditions/`。
 
 ## 回放
 

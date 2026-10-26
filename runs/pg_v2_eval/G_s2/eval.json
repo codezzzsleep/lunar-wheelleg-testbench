@@ -1,0 +1,1465 @@
+{
+  "label": "G_s2",
+  "checkpoint": "runs/pg_v2/G_s2/checkpoints/final.npz",
+  "checkpoint_actor_checksum": "d1dc62da5479d227c5be87de165b05d8",
+  "manifest": "scenes/test_common.json",
+  "n_episodes": 72,
+  "deterministic": {
+    "n": 72,
+    "success": 0,
+    "success_rate": 0.0,
+    "tip_rate": 0.0,
+    "mean_return": -5.455,
+    "per_episode": [
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -11.303,
+        "x": 1.414,
+        "tilt_deg": 28.74,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -11.303,
+        "x": 1.414,
+        "tilt_deg": 28.74,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -11.303,
+        "x": 1.414,
+        "tilt_deg": 28.74,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -11.552,
+        "x": 1.393,
+        "tilt_deg": 30.04,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -11.552,
+        "x": 1.393,
+        "tilt_deg": 30.04,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -11.552,
+        "x": 1.393,
+        "tilt_deg": 30.04,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -12.47,
+        "x": 1.38,
+        "tilt_deg": 30.33,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -12.47,
+        "x": 1.38,
+        "tilt_deg": 30.33,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -12.47,
+        "x": 1.38,
+        "tilt_deg": 30.33,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -12.315,
+        "x": 1.38,
+        "tilt_deg": 32.72,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -12.315,
+        "x": 1.38,
+        "tilt_deg": 32.72,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -12.315,
+        "x": 1.38,
+        "tilt_deg": 32.72,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -5.011,
+        "x": 1.657,
+        "tilt_deg": 7.16,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -5.011,
+        "x": 1.657,
+        "tilt_deg": 7.16,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -5.011,
+        "x": 1.657,
+        "tilt_deg": 7.16,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -3.398,
+        "x": 1.747,
+        "tilt_deg": 5.05,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -3.398,
+        "x": 1.747,
+        "tilt_deg": 5.05,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -3.398,
+        "x": 1.747,
+        "tilt_deg": 5.05,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -5.02,
+        "x": 1.686,
+        "tilt_deg": 7.96,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -5.02,
+        "x": 1.686,
+        "tilt_deg": 7.96,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -5.02,
+        "x": 1.686,
+        "tilt_deg": 7.96,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -10.156,
+        "x": 1.476,
+        "tilt_deg": 25.76,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -10.156,
+        "x": 1.476,
+        "tilt_deg": 25.76,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -10.156,
+        "x": 1.476,
+        "tilt_deg": 25.76,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -17.031,
+        "x": 1.279,
+        "tilt_deg": 34.0,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -17.031,
+        "x": 1.279,
+        "tilt_deg": 34.0,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.031,
+        "x": 1.279,
+        "tilt_deg": 34.0,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -18.28,
+        "x": 1.304,
+        "tilt_deg": 42.72,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -18.28,
+        "x": 1.304,
+        "tilt_deg": 42.72,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -18.28,
+        "x": 1.304,
+        "tilt_deg": 42.72,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": 9.348,
+        "x": 2.438,
+        "tilt_deg": 3.49,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": 9.348,
+        "x": 2.438,
+        "tilt_deg": 3.49,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": 9.348,
+        "x": 2.438,
+        "tilt_deg": 3.49,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -18.677,
+        "x": 1.317,
+        "tilt_deg": 44.24,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -18.677,
+        "x": 1.317,
+        "tilt_deg": 44.24,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -18.677,
+        "x": 1.317,
+        "tilt_deg": 44.24,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -10.031,
+        "x": 1.443,
+        "tilt_deg": 24.79,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -10.031,
+        "x": 1.443,
+        "tilt_deg": 24.79,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -10.031,
+        "x": 1.443,
+        "tilt_deg": 24.79,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -2.791,
+        "x": 1.732,
+        "tilt_deg": 1.82,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -2.791,
+        "x": 1.732,
+        "tilt_deg": 1.82,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -2.791,
+        "x": 1.732,
+        "tilt_deg": 1.82,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -10.927,
+        "x": 1.419,
+        "tilt_deg": 26.96,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -10.927,
+        "x": 1.419,
+        "tilt_deg": 26.96,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -10.927,
+        "x": 1.419,
+        "tilt_deg": 26.96,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -8.085,
+        "x": 1.512,
+        "tilt_deg": 18.1,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -8.085,
+        "x": 1.512,
+        "tilt_deg": 18.1,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -8.085,
+        "x": 1.512,
+        "tilt_deg": 18.1,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -5.008,
+        "x": 1.658,
+        "tilt_deg": 7.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -5.008,
+        "x": 1.658,
+        "tilt_deg": 7.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -5.008,
+        "x": 1.658,
+        "tilt_deg": 7.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -2.652,
+        "x": 1.78,
+        "tilt_deg": 8.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -2.652,
+        "x": 1.78,
+        "tilt_deg": 8.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -2.652,
+        "x": 1.78,
+        "tilt_deg": 8.21,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -2.7,
+        "x": 1.779,
+        "tilt_deg": 8.38,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -2.7,
+        "x": 1.779,
+        "tilt_deg": 8.38,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -2.7,
+        "x": 1.779,
+        "tilt_deg": 8.38,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -2.673,
+        "x": 1.78,
+        "tilt_deg": 8.43,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -2.673,
+        "x": 1.78,
+        "tilt_deg": 8.43,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -2.673,
+        "x": 1.78,
+        "tilt_deg": 8.43,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": 1.103,
+        "x": 1.982,
+        "tilt_deg": 11.65,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": 1.103,
+        "x": 1.982,
+        "tilt_deg": 11.65,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": 1.103,
+        "x": 1.982,
+        "tilt_deg": 11.65,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": 24.155,
+        "x": 3.282,
+        "tilt_deg": 6.37,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": 24.155,
+        "x": 3.282,
+        "tilt_deg": 6.37,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": 24.155,
+        "x": 3.282,
+        "tilt_deg": 6.37,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": 0.574,
+        "x": 1.943,
+        "tilt_deg": 11.17,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": 0.574,
+        "x": 1.943,
+        "tilt_deg": 11.17,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": 0.574,
+        "x": 1.943,
+        "tilt_deg": 11.17,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": 3.987,
+        "x": 2.144,
+        "tilt_deg": 9.76,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": 3.987,
+        "x": 2.144,
+        "tilt_deg": 9.76,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": 3.987,
+        "x": 2.144,
+        "tilt_deg": 9.76,
+        "success": false
+      }
+    ]
+  },
+  "stochastic": {
+    "n": 72,
+    "success": 0,
+    "success_rate": 0.0,
+    "tip_rate": 0.0556,
+    "mean_return": -24.985,
+    "per_episode": [
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -20.33,
+        "x": 1.303,
+        "tilt_deg": 19.62,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "03a93d107cb68656",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "8041fd29a9cb0a07",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -19.492,
+        "x": 1.251,
+        "tilt_deg": 20.38,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -19.502,
+        "x": 1.321,
+        "tilt_deg": 16.6,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "562a74f636785f8b",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "d117ae8947e318f4",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.397,
+        "x": 1.015,
+        "tilt_deg": 7.47,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -26.762,
+        "x": 0.939,
+        "tilt_deg": 6.24,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "403e6255196efdf0",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -31.712,
+        "x": 0.639,
+        "tilt_deg": 7.99,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.103,
+        "x": 1.013,
+        "tilt_deg": 6.71,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -24.262,
+        "x": 1.048,
+        "tilt_deg": 6.09,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "a8cd21e70a86ba09",
+        "episode_seed": 2,
+        "reason": "tipped",
+        "return": -67.39,
+        "x": 0.531,
+        "tilt_deg": 61.57,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.06,
+        "x": 1.014,
+        "tilt_deg": 6.97,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -25.949,
+        "x": 0.967,
+        "tilt_deg": 6.43,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "41e862d29191590a",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -35.735,
+        "x": 0.545,
+        "tilt_deg": 27.12,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -24.828,
+        "x": 0.995,
+        "tilt_deg": 6.88,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -26.973,
+        "x": 0.945,
+        "tilt_deg": 7.19,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "304af8940cd2e3c4",
+        "episode_seed": 2,
+        "reason": "tipped",
+        "return": -67.354,
+        "x": 0.545,
+        "tilt_deg": 61.73,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -22.031,
+        "x": 1.147,
+        "tilt_deg": 5.13,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -24.819,
+        "x": 1.038,
+        "tilt_deg": 5.14,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "0ad47896e7b30709",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -29.016,
+        "x": 0.814,
+        "tilt_deg": 5.51,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -27.291,
+        "x": 0.88,
+        "tilt_deg": 5.55,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -21.231,
+        "x": 1.24,
+        "tilt_deg": 1.76,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "29de38779ffcb9f4",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -24.327,
+        "x": 1.037,
+        "tilt_deg": 6.19,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.684,
+        "x": 0.958,
+        "tilt_deg": 5.59,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -28.21,
+        "x": 0.985,
+        "tilt_deg": 22.92,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "c6f1fd93e5f8cca2",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -24.522,
+        "x": 1.039,
+        "tilt_deg": 5.16,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -27.106,
+        "x": 0.896,
+        "tilt_deg": 5.65,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -23.055,
+        "x": 1.158,
+        "tilt_deg": 2.35,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "476b95c1be8f446a",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -23.814,
+        "x": 1.062,
+        "tilt_deg": 5.49,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3000",
+        "scene_id": "9c6f069f40d832f0",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3001",
+        "scene_id": "34c3cac8939cb778",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3002",
+        "scene_id": "80f9071fedfa3562",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -14.259,
+        "x": 1.463,
+        "tilt_deg": 0.91,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -14.73,
+        "x": 1.53,
+        "tilt_deg": 0.23,
+        "success": false
+      },
+      {
+        "scene": "test_巡检区_3003",
+        "scene_id": "e6ecc968107aa35f",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -17.798,
+        "x": 1.299,
+        "tilt_deg": 0.2,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.397,
+        "x": 1.015,
+        "tilt_deg": 7.47,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -26.762,
+        "x": 0.939,
+        "tilt_deg": 6.24,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3000",
+        "scene_id": "13d69bb10c26cdb8",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -31.712,
+        "x": 0.639,
+        "tilt_deg": 7.99,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.103,
+        "x": 1.013,
+        "tilt_deg": 6.71,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -24.262,
+        "x": 1.048,
+        "tilt_deg": 6.09,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3001",
+        "scene_id": "40b72469779f7532",
+        "episode_seed": 2,
+        "reason": "tipped",
+        "return": -67.39,
+        "x": 0.531,
+        "tilt_deg": 61.57,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.06,
+        "x": 1.014,
+        "tilt_deg": 6.97,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -25.949,
+        "x": 0.967,
+        "tilt_deg": 6.43,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3002",
+        "scene_id": "c3e2144421fe8893",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -35.735,
+        "x": 0.545,
+        "tilt_deg": 27.12,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -24.828,
+        "x": 0.995,
+        "tilt_deg": 6.88,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -26.973,
+        "x": 0.945,
+        "tilt_deg": 7.19,
+        "success": false
+      },
+      {
+        "scene": "test_坡地_3003",
+        "scene_id": "8f781812833183ee",
+        "episode_seed": 2,
+        "reason": "tipped",
+        "return": -67.354,
+        "x": 0.545,
+        "tilt_deg": 61.73,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -22.031,
+        "x": 1.147,
+        "tilt_deg": 5.13,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -24.819,
+        "x": 1.038,
+        "tilt_deg": 5.14,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3000",
+        "scene_id": "653a63b159ebfe74",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -29.016,
+        "x": 0.814,
+        "tilt_deg": 5.51,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -27.291,
+        "x": 0.88,
+        "tilt_deg": 5.55,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -21.231,
+        "x": 1.24,
+        "tilt_deg": 1.76,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3001",
+        "scene_id": "7cedead6242ce7da",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -24.327,
+        "x": 1.037,
+        "tilt_deg": 6.19,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -25.684,
+        "x": 0.958,
+        "tilt_deg": 5.59,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -21.954,
+        "x": 1.202,
+        "tilt_deg": 2.59,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3002",
+        "scene_id": "e761188501bc128b",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -24.522,
+        "x": 1.039,
+        "tilt_deg": 5.16,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 0,
+        "reason": "out_of_bounds",
+        "return": -27.106,
+        "x": 0.896,
+        "tilt_deg": 5.65,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 1,
+        "reason": "out_of_bounds",
+        "return": -23.055,
+        "x": 1.158,
+        "tilt_deg": 2.35,
+        "success": false
+      },
+      {
+        "scene": "test_残骸通行段_3003",
+        "scene_id": "340ee04c397bff47",
+        "episode_seed": 2,
+        "reason": "out_of_bounds",
+        "return": -23.814,
+        "x": 1.062,
+        "tilt_deg": 5.49,
+        "success": false
+      }
+    ]
+  }
+}

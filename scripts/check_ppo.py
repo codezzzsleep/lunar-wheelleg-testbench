@@ -139,7 +139,8 @@ def action_probability_consistency():
     """任务 B：参数未更新时，用保存的 raw 重算 logp 必须等于 old，包含边界样本。"""
     rng = np.random.default_rng(5)
     params = ppo.init_params(rng)
-    params['bm'] = np.array([3.0, -3.0, 0.0])      # 让部分样本必然被环境裁剪
+    # 按实际动作维度构造必然被裁剪的 bias（不写死 3 维）
+    params['bm'] = np.array([3.0, -3.0, 0.0, 3.0][:ppo.ACT_DIM])
     obs = rng.normal(0, 0.5, size=(64, ppo.OBS_DIM))
     raws, execs, logps = [], [], []
     for i in range(64):

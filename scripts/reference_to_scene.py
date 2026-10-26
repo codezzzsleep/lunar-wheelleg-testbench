@@ -78,7 +78,7 @@ def render_scene(spec, out_png, frames=3):
     shots = []
     for k in range(frames):
         for _ in range(90):
-            env.step([0.0, 0.0, 0.0])
+            env.step([0.0] * wheelleg_env.ACT_DIM)
         cam.lookat[:] = [float(d.qpos[0]) + 0.8, 0.0, 0.15]
         r.update_scene(d, camera=cam)
         shots.append(Image.fromarray(r.render()))
@@ -107,7 +107,7 @@ def main():
     roll = []
     info = {'reason': None, 't': 0.0, 'x': 0.0, 'tilt_deg': 0.0}
     for i in range(int(env.max_seconds / (env.substeps * env.dt)) + 5):
-        obs, r, te, tr, info = env.step([0.0, 0.0, 0.0])
+        obs, r, te, tr, info = env.step([0.0] * wheelleg_env.ACT_DIM)
         if i % 20 == 0:
             roll.append({'t': info['t'], 'x': info['x'], 'tilt': info['tilt_deg']})
         if te or tr:

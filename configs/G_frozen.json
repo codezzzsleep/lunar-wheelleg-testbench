@@ -1,0 +1,35 @@
+{
+  "name": "G_frozen_v1",
+  "description": "\u51bb\u7ed3\u534f\u8bae\uff1a\u4e09\u6761\u4ef6\u540c\u5206\u5e03\u5730\u5f62\uff0c\u4ec5\u969c\u788d\u51e0\u4f55\u6765\u6e90\u4e0d\u540c",
+  "seeds": [
+    0
+  ],
+  "control_hz": 50.0,
+  "max_seconds": 12.0,
+  "v_ref": 1.0,
+  "tip_deg": 60.0,
+  "eval_episode_seeds": [
+    0,
+    1,
+    2
+  ],
+  "total_control_steps": 40000,
+  "horizon": 1024,
+  "gamma": 0.99,
+  "gae_lambda": 0.95,
+  "lr": 0.0003,
+  "clip": 0.2,
+  "epochs": 4,
+  "minibatch": 256,
+  "ent_coef": 0.005,
+  "vf_coef": 0.5,
+  "reward_scale": 0.02,
+  "eval_every_updates": 20,
+  "group": "G",
+  "scenes": {
+    "train": "scenes/G_train.json",
+    "validation": "scenes/G_validation.json",
+    "test": "scenes/G_test.json"
+  },
+  "protocol": "PG_frozen_v2_4dim_act"
+}

@@ -1,0 +1,17 @@
+{
+  "tag": "demo",
+  "root": "runs/pipeline_demo/train",
+  "seeds": [
+    0
+  ],
+  "configs": [
+    {
+      "group": "P",
+      "path": "runs/pipeline_demo/config_P.json"
+    },
+    {
+      "group": "G",
+      "path": "runs/pipeline_demo/config_G.json"
+    }
+  ]
+}

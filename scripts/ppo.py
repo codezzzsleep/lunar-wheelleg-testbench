@@ -17,8 +17,8 @@ import hashlib
 
 import numpy as np
 
-OBS_DIM = 39
-ACT_DIM = 3
+OBS_DIM = 40
+ACT_DIM = 4   # 与 wheelleg_env.ACT_DIM 保持一致
 H = 64
 LOG2PI = float(np.log(2 * np.pi))
 

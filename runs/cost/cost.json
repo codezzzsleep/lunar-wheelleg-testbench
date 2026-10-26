@@ -1,0 +1,638 @@
+{
+  "conditions": [
+    {
+      "task": "A_sparse.txt",
+      "condition": {
+        "scenario": "巡检区",
+        "obstacles": 2,
+        "height": "低",
+        "spread": "宽",
+        "offset": "交错",
+        "slope": 0.0,
+        "length": 6.0
+      },
+      "unknown_lines": [],
+      "n_scenes": 8,
+      "n_ok": 8,
+      "n_failed": 0,
+      "failures": [],
+      "timing_s": {
+        "input_parse": 0.0,
+        "scene_generate": 0.01,
+        "physics_check": 1.6,
+        "total": 1.6
+      },
+      "per_scene_s": 0.2,
+      "assets_reused": "cached (历史 Lux3D 资产，生成时间不可追溯)",
+      "credits_spent_this_run": 0
+    },
+    {
+      "task": "B_slope.txt",
+      "condition": {
+        "scenario": "坡地",
+        "obstacles": 1,
+        "height": "低",
+        "slope": 5.0,
+        "roughness": 0.03,
+        "pits": 1,
+        "pit_depth": 0.03,
+        "length": 6.0
+      },
+      "unknown_lines": [],
+      "n_scenes": 8,
+      "n_ok": 8,
+      "n_failed": 0,
+      "failures": [],
+      "timing_s": {
+        "input_parse": 0.0,
+        "scene_generate": 0.0,
+        "physics_check": 0.98,
+        "total": 0.98
+      },
+      "per_scene_s": 0.12,
+      "assets_reused": "cached (历史 Lux3D 资产，生成时间不可追溯)",
+      "credits_spent_this_run": 0
+    },
+    {
+      "task": "C_debris.txt",
+      "condition": {
+        "scenario": "残骸通行段",
+        "obstacles": 2,
+        "height": "中",
+        "spread": "中",
+        "offset": "交错",
+        "slope": 3.0,
+        "roughness": 0.04,
+        "pits": 1,
+        "pit_depth": 0.04,
+        "length": 6.5
+      },
+      "unknown_lines": [],
+      "n_scenes": 8,
+      "n_ok": 8,
+      "n_failed": 0,
+      "failures": [],
+      "timing_s": {
+        "input_parse": 0.0,
+        "scene_generate": 0.0,
+        "physics_check": 0.95,
+        "total": 0.95
+      },
+      "per_scene_s": 0.12,
+      "assets_reused": "cached (历史 Lux3D 资产，生成时间不可追溯)",
+      "credits_spent_this_run": 0
+    }
+  ],
+  "total": {
+    "n_conditions": 3,
+    "n_scenes": 24,
+    "n_ok": 24,
+    "pass_rate": 1.0,
+    "wall_seconds_total": 3.54,
+    "wall_seconds_per_scene": 0.15,
+    "manual_interventions": 0,
+    "manual_note": "三个条件下的场景全部自动生成并通过物理检查，无人工修坐标",
+    "lux3d_assets_available": 7,
+    "procedural_assets_available": 52,
+    "new_generation_this_run": 0,
+    "credit_spend_this_run": 0,
+    "historical_generation_time": "unknown（旧资产生成耗时不可追溯，不估算）"
+  },
+  "assets": {
+    "lux3d": [
+      {
+        "asset": "boulder_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.2846,
+        "rel_height": 3.309,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "cargo_crate_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.2631,
+        "rel_height": 3.059,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "crate_lid_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.0427,
+        "rel_height": 0.497,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "debris_plate_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.0515,
+        "rel_height": 0.599,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "fallen_panel_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.0406,
+        "rel_height": 0.472,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "flat_slab_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.0347,
+        "rel_height": 0.403,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "lander_leg_w300",
+        "source_kind": "lux3d",
+        "height_m": 0.1516,
+        "rel_height": 1.763,
+        "coacd_parts": 32,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      }
+    ],
+    "procedural": [
+      {
+        "asset": "proc_box_h035",
+        "source_kind": "procedural",
+        "height_m": 0.0347,
+        "rel_height": 0.403,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h041",
+        "source_kind": "procedural",
+        "height_m": 0.0406,
+        "rel_height": 0.472,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h043",
+        "source_kind": "procedural",
+        "height_m": 0.0427,
+        "rel_height": 0.497,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h050",
+        "source_kind": "procedural",
+        "height_m": 0.05,
+        "rel_height": 0.581,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h052",
+        "source_kind": "procedural",
+        "height_m": 0.0515,
+        "rel_height": 0.599,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h054",
+        "source_kind": "procedural",
+        "height_m": 0.054,
+        "rel_height": 0.628,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h056",
+        "source_kind": "procedural",
+        "height_m": 0.056,
+        "rel_height": 0.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h058",
+        "source_kind": "procedural",
+        "height_m": 0.058,
+        "rel_height": 0.674,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h060",
+        "source_kind": "procedural",
+        "height_m": 0.06,
+        "rel_height": 0.698,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h062",
+        "source_kind": "procedural",
+        "height_m": 0.062,
+        "rel_height": 0.721,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h065",
+        "source_kind": "procedural",
+        "height_m": 0.065,
+        "rel_height": 0.756,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h075",
+        "source_kind": "procedural",
+        "height_m": 0.075,
+        "rel_height": 0.872,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h085",
+        "source_kind": "procedural",
+        "height_m": 0.085,
+        "rel_height": 0.988,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h090",
+        "source_kind": "procedural",
+        "height_m": 0.09,
+        "rel_height": 1.047,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h100",
+        "source_kind": "procedural",
+        "height_m": 0.1,
+        "rel_height": 1.163,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h110",
+        "source_kind": "procedural",
+        "height_m": 0.11,
+        "rel_height": 1.279,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h130",
+        "source_kind": "procedural",
+        "height_m": 0.13,
+        "rel_height": 1.512,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h152",
+        "source_kind": "procedural",
+        "height_m": 0.1516,
+        "rel_height": 1.763,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h170",
+        "source_kind": "procedural",
+        "height_m": 0.17,
+        "rel_height": 1.977,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h228",
+        "source_kind": "procedural",
+        "height_m": 0.228,
+        "rel_height": 2.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h263",
+        "source_kind": "procedural",
+        "height_m": 0.2631,
+        "rel_height": 3.059,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h285",
+        "source_kind": "procedural",
+        "height_m": 0.285,
+        "rel_height": 3.314,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h400",
+        "source_kind": "procedural",
+        "height_m": 0.4,
+        "rel_height": 4.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_box_h593",
+        "source_kind": "procedural",
+        "height_m": 0.593,
+        "rel_height": 6.895,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h035",
+        "source_kind": "procedural",
+        "height_m": 0.0347,
+        "rel_height": 0.403,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h041",
+        "source_kind": "procedural",
+        "height_m": 0.0406,
+        "rel_height": 0.472,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h043",
+        "source_kind": "procedural",
+        "height_m": 0.0427,
+        "rel_height": 0.497,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h050",
+        "source_kind": "procedural",
+        "height_m": 0.05,
+        "rel_height": 0.581,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h052",
+        "source_kind": "procedural",
+        "height_m": 0.0515,
+        "rel_height": 0.599,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h090",
+        "source_kind": "procedural",
+        "height_m": 0.09,
+        "rel_height": 1.047,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h130",
+        "source_kind": "procedural",
+        "height_m": 0.13,
+        "rel_height": 1.512,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h152",
+        "source_kind": "procedural",
+        "height_m": 0.1516,
+        "rel_height": 1.763,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h170",
+        "source_kind": "procedural",
+        "height_m": 0.17,
+        "rel_height": 1.977,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h228",
+        "source_kind": "procedural",
+        "height_m": 0.228,
+        "rel_height": 2.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h263",
+        "source_kind": "procedural",
+        "height_m": 0.2631,
+        "rel_height": 3.059,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h285",
+        "source_kind": "procedural",
+        "height_m": 0.285,
+        "rel_height": 3.314,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h400",
+        "source_kind": "procedural",
+        "height_m": 0.4,
+        "rel_height": 4.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_cylinder_h593",
+        "source_kind": "procedural",
+        "height_m": 0.593,
+        "rel_height": 6.895,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h035",
+        "source_kind": "procedural",
+        "height_m": 0.0347,
+        "rel_height": 0.403,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h041",
+        "source_kind": "procedural",
+        "height_m": 0.0406,
+        "rel_height": 0.472,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h043",
+        "source_kind": "procedural",
+        "height_m": 0.0427,
+        "rel_height": 0.497,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h050",
+        "source_kind": "procedural",
+        "height_m": 0.05,
+        "rel_height": 0.581,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h052",
+        "source_kind": "procedural",
+        "height_m": 0.0515,
+        "rel_height": 0.599,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h090",
+        "source_kind": "procedural",
+        "height_m": 0.09,
+        "rel_height": 1.047,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h130",
+        "source_kind": "procedural",
+        "height_m": 0.13,
+        "rel_height": 1.512,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h152",
+        "source_kind": "procedural",
+        "height_m": 0.1516,
+        "rel_height": 1.763,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h170",
+        "source_kind": "procedural",
+        "height_m": 0.17,
+        "rel_height": 1.977,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h228",
+        "source_kind": "procedural",
+        "height_m": 0.228,
+        "rel_height": 2.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h263",
+        "source_kind": "procedural",
+        "height_m": 0.2631,
+        "rel_height": 3.059,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h285",
+        "source_kind": "procedural",
+        "height_m": 0.285,
+        "rel_height": 3.314,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h400",
+        "source_kind": "procedural",
+        "height_m": 0.4,
+        "rel_height": 4.651,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      },
+      {
+        "asset": "proc_ramp_h593",
+        "source_kind": "procedural",
+        "height_m": 0.593,
+        "rel_height": 6.895,
+        "coacd_parts": 1,
+        "generation_time_s": "unknown",
+        "credits": "unknown"
+      }
+    ]
+  }
+}

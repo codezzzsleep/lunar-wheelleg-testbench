@@ -60,26 +60,42 @@ def height_1d(kind, x, H, D):
     raise ValueError(kind)
 
 
-def twin_solid(kind, H, W, D, seed=0, nx=72, ny=40):
+def front_rings(H, W, D, seed=0, n_front=36, ny=40):
+    """
+    正面：独立生成，**只依赖 (H, W, D, seed)**，与背面类型/背深无关。
+    返回 (xs, rings) 其中 rings[i] 是第 i 排的 (x, ys, zs)。
+    这正是 P3"同正面"的前提：所有背面必须原样复用这份采样。
+    """
     rng = np.random.default_rng(seed)
-    Lback = back_length(kind, H)
-    xs = np.linspace(-D, Lback, nx)
+    xs = np.linspace(-D, 0.0, n_front, endpoint=False)   # 不含 x=0，由背面提供
     half_w = W / 2.0
     ys = np.linspace(-half_w, half_w, ny)
+    g = np.sqrt(np.clip(1.0 - (ys / half_w) ** 2, MIN_EDGE_FRAC, 1.0))
+    rings = []
+    for x in xs:
+        s = np.sqrt(max(0.0, 1.0 - (x / D) ** 2))
+        h = H * s
+        noise = 1.0 + rng.standard_normal() * (0.08 * min(H, W, 2 * D) / 2) / max(D, 1e-6)
+        rings.append((float(x), ys, np.maximum(h * noise * g, 1e-3)))
+    return xs, rings, ys, g
 
-    # 高度设一个下限：否则上表面会落到 z=0 与下表面重合，
-    # 合并顶点后上下表面共享边，拓扑非流形。
-    Hx = np.maximum(np.array([height_1d(kind, float(x), H, D) for x in xs]), 1e-3)
-    if seed:
-        noise = 1.0 + rng.standard_normal(nx) * (0.08 * min(H, W, 2 * D) / 2) / max(D, 1e-6)
-        Hx = np.where(xs < 0, Hx * noise, Hx)
 
+def twin_solid(kind, H, W, D, seed=0, n_front=36, n_back=36, ny=40):
+    """高度场棱柱：正面复用 front_rings，背面按 kind 生成，两者在 x=0 处共享同一排。"""
+    Lback = back_length(kind, H)
+    _, frings, ys, g = front_rings(H, W, D, seed=seed, n_front=n_front, ny=ny)
+    xb = np.linspace(0.0, Lback, n_back)
+    brings = []
+    for x in xb:
+        h = max(height_1d(kind, float(x), H, D), 1e-3)
+        brings.append((float(x), ys, h * g))
+    rings = frings + brings
+    nx = len(rings)
     top = np.zeros((nx, ny, 3))
-    for i, x in enumerate(xs):
-        g = np.sqrt(np.clip(1.0 - (ys / half_w) ** 2, MIN_EDGE_FRAC, 1.0))
+    for i, (x, yy, zz) in enumerate(rings):
         top[i, :, 0] = x
-        top[i, :, 1] = ys
-        top[i, :, 2] = Hx[i] * g
+        top[i, :, 1] = yy
+        top[i, :, 2] = zz
 
     n = nx * ny
     V = np.vstack([top.reshape(-1, 3), top.reshape(-1, 3) * np.array([1, 1, 0])])
@@ -108,7 +124,6 @@ def twin_solid(kind, H, W, D, seed=0, nx=72, ny=40):
             quad = [t0, t1, b1, b0] if not flip else [t0, b0, b1, t1]
             faces += [[quad[0], quad[1], quad[2]], [quad[0], quad[2], quad[3]]]
 
-    # process=False：保持我们算好的拓扑，不让 trimesh 合并顶点
     m = trimesh.Trimesh(V, np.array(faces, dtype=np.int64), process=False)
     if float(m.volume) < 0:
         m.invert()

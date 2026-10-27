@@ -114,7 +114,10 @@ def main():
     hit_id = np.full((len(hs), len(ws)), -1, dtype=np.int32)
     for iy, yy in enumerate(hs):
         for ix, xx in enumerate(ws):
-            pc = np.array([(xx - K['cx']) / K['fx'], (yy - K['cy']) / K['fy'], -1.0])
+            # 图像 y 向下增大，而 MuJoCo 相机 +Y 向上 -> y 分量取负。
+            # 这一点用非对称标定物验证（见 scripts/calibrate_observe.py）。
+            pc = np.array([(xx - K['cx']) / K['fx'],
+                           -(yy - K['cy']) / K['fy'], -1.0])
             vd = cam_mat @ pc
             gid = np.array([-1], dtype=np.int32)
             dist = mujoco.mj_ray(m, d, cam_pos, vd, None, 1, -1, gid)
@@ -134,7 +137,7 @@ def main():
     zs = depth[ys, xs]
     if len(xs):
         pc = np.stack([(xs - K['cx']) * zs / K['fx'],
-                       (ys - K['cy']) * zs / K['fy'],
+                       -(ys - K['cy']) * zs / K['fy'],   # 相机 +Y 向上
                        -zs], axis=1)            # MuJoCo 相机朝 -z
         pw = pc @ cam_mat.T + cam_pos
     else:

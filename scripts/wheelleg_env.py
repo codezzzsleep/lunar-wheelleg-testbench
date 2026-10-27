@@ -139,9 +139,19 @@ class WheelLegEnv:
 
         assets, bodies, placements, bounds = [], [], [], []
         for i, obj in enumerate(self.spec.get('objects', [])):
-            d = (pathlib.Path(obj['mesh_file']) if obj.get('mesh_file')
-                 else self.asset_root / obj['asset'])
-            if obj.get('mesh_file'):
+            if obj.get('posed_dir'):
+                d = pathlib.Path(obj['posed_dir'])
+            elif obj.get('mesh_file'):
+                d = pathlib.Path(obj['mesh_file'])
+            else:
+                d = self.asset_root / obj['asset']
+            if obj.get('posed_dir'):
+                import json as _json
+                _man = _json.loads((pathlib.Path(obj['posed_dir']) / 'manifest.json').read_text())
+                res = [str((pathlib.Path(obj['posed_dir']) / p_).resolve())
+                       for p_ in _man['parts']]
+                obj = dict(obj); obj['_posed'] = True
+            elif obj.get('mesh_file'):
                 res = [str(pathlib.Path(obj['mesh_file']).resolve())]
             else:
                 res = _resolve_parts(d)
@@ -159,8 +169,9 @@ class WheelLegEnv:
             # 之前为了统一横向宽度把 x/y 一起放大，T2 被拉成 1.2 m 长的板，
             # 形状被扭曲。现在只按高度等比缩放，横向宽度保持自然比例；
             # 通道宽度由场景按障碍实际横向尺寸决定，保证仍然封路。
-            target_h = obj.get('target_height_m')
-            man = ({} if obj.get('mesh_file')
+            target_h = (None if obj.get('posed_dir')
+                        else obj.get('target_height_m'))
+            man = ({} if (obj.get('mesh_file') or obj.get('posed_dir'))
                    else runio.resolve_asset(d)['manifest'] or {})
             h0 = float(man.get('height_m') or 0)
             s_ = 1.0
@@ -173,15 +184,27 @@ class WheelLegEnv:
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
             verts = _world_vertices(res, float(obj['x']), float(obj['y']), yaw, scale=scale)
-            body_z, place_meta = terrain.place_on_terrain(h, verts)
-            place_meta.update({'asset': obj.get('asset') or pathlib.Path(obj['mesh_file']).name,
+            if obj.get('_posed'):
+                # 已配准资产：姿态固定，机身 z 直接取网格最低点贴地，
+                # 且**不**再叠加 place_on_terrain 的抬升（否则等于偷偷移位）。
+                body_z = -float(verts[:, 2].min())
+                place_meta = {'body_z': round(body_z, 5), 'posed': True,
+                              'min_clearance_m': 0.0,
+                              'ground_under_min_object_m': round(
+                                  float(terrain.ground_height_many(
+                                      h, verts[:, 0], verts[:, 1]).min()), 4)}
+            else:
+                body_z, place_meta = terrain.place_on_terrain(h, verts)
+            _name = (obj.get('asset')
+                     or pathlib.Path(obj.get('posed_dir') or obj.get('mesh_file') or 'asset').name)
+            place_meta.update({'asset': _name,
                                'x': obj['x'], 'y': obj['y'],
                                'yaw_deg': obj.get('yaw_deg', 0.0),
                                'n_vertices': int(len(verts)),
                                'target_height_m': target_h,
                                'mesh_scale': [round(float(c), 5) for c in scale]})
             placements.append(place_meta)
-            bounds.append({'asset': obj.get('asset') or pathlib.Path(obj['mesh_file']).name,
+            bounds.append({'asset': _name,
                            'x_min': float(verts[:, 0].min()),
                            'x_max': float(verts[:, 0].max()),
                            'y_min': float(verts[:, 1].min()),
@@ -365,6 +388,40 @@ class WheelLegEnv:
                               self.prev_action, [self.v_ref],
                               [lat, head]]).astype(np.float32)
         return obs
+
+    def robot_state(self):
+        """给动作库用的受限接口：本体状态 + 可见量 + 导航目标，不含真值背面。"""
+        d = self.data
+        w, x, y, z = d.qpos[3:7]
+        fwd = np.array([1 - 2 * (y * y + z * z), 2 * (x * y + z * w), 0.0])
+        return {'x': float(d.qpos[0]), 'y': float(d.qpos[1]),
+                'z': float(d.qpos[2]), 'vx': float(d.qvel[0]),
+                'tilt': self._tilt(), 'lateral': float(d.qpos[1]) - self.channel_center,
+                'heading': float(np.arctan2(fwd[1], fwd[0])),
+                'dt': float(self.substeps * self.dt), 't': float(self.t),
+                'finished': False, 'time_limit': float(self.max_seconds),
+                'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
+                'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
+
+    def brake_step(self):
+        """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""
+        for _ in range(self.substeps):
+            for leg in LEG:
+                e = self.J[f'{leg}_wheel_joint']
+                self.data.ctrl[e['act']] = float(np.clip(
+                    -6.0 * self.data.qvel[e['vadr']],
+                    -WHEEL_MAX, WHEEL_MAX))
+            for leg in LEG:
+                for p_ in ('hip', 'thigh', 'calf'):
+                    e = self.J[f'{leg}_{p_}_joint']
+                    tgt = STANCE[p_ if p_ != 'hip' else 'hip']
+                    self.data.ctrl[e['act']] = float(np.clip(
+                        KP * (tgt - self.data.qpos[e['qadr']])
+                        - KD * self.data.qvel[e['vadr']], -LEG_MAX, LEG_MAX))
+            mujoco.mj_step(self.model, self.data)
+            self.n_physics += 1
+        self.t += self.substeps * self.dt
+        self.n_control += 1
 
     def _nav_state(self):
         """通道相对导航量：横向偏差（米，左正）与朝向误差（弧度）。"""

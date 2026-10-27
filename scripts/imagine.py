@@ -186,17 +186,95 @@ def _http(method, path, body=None, timeout=90, headers=None):
         return raw          # 图生 create 返回裸整数 taskId
 
 
+def get_upload_token():
+    """GET /asset/v1/token -> (ousToken, globalDomain, blockSize)"""
+    j = _http('GET', '/asset/v1/token')
+    d = j.get('d') if isinstance(j, dict) and 'd' in j else j
+    if not isinstance(d, dict) or not d.get('ousToken'):
+        raise RuntimeError(f'上传凭证异常：{str(j)[:200]}')
+    return d['ousToken'], d['globalDomain'], int(d.get('blockSize') or 1048576)
+
+
+def upload_image(path):
+    """
+    两步上传：取 OUS 凭证 -> 在 COS 域名上单文件上传 -> 轮询状态 -> 返回可访问 URL。
+    文件大于 blockSize 时本函数明确报错（本轮输入图都是 KB 级，不走分片）。
+    """
+    import hashlib
+    import mimetypes
+    import uuid
+    import urllib.parse
+    b = pathlib.Path(path).read_bytes()
+    token, domain, block = get_upload_token()
+    if len(b) > block:
+        raise RuntimeError(f'文件 {len(b)} B 超过单文件上限 {block} B，需分片上传（未实现）')
+
+    boundary = '----unseen' + uuid.uuid4().hex
+    md5 = hashlib.md5(b).hexdigest()
+    parts = []
+    for name, val in (('md5', md5),):
+        parts.append(f'--{boundary}\r\nContent-Disposition: form-data; name="{name}"\r\n\r\n{val}\r\n'.encode())
+    ctype = mimetypes.guess_type(str(path))[0] or 'application/octet-stream'
+    parts.append((f'--{boundary}\r\nContent-Disposition: form-data; name="file"; '
+                  f'filename="{pathlib.Path(path).name}"\r\nContent-Type: {ctype}\r\n\r\n').encode())
+    parts.append(b); parts.append(f'\r\n--{boundary}--\r\n'.encode())
+    body = b''.join(parts)
+
+    url = domain.rstrip('/') + '/ous/api/v2/single/upload'
+    req = urllib.request.Request(url, data=body, method='POST')
+    req.add_header('Content-Type', f'multipart/form-data; boundary={boundary}')
+    req.add_header('ous-token-v2', token)
+    with urllib.request.urlopen(req, timeout=120) as r:
+        j = json.loads(r.read().decode())
+    if str(j.get('c')) != '0':
+        raise RuntimeError(f'上传失败：{str(j)[:200]}')
+    task = (j.get('d') or {}).get('taskId')
+    for _ in range(60):
+        st = _http_ous(domain, token, f'/ous/api/v2/upload/status?taskId={task}')
+        d = st.get('d') or {}
+        if str(d.get('status')) == '5':
+            for key in ('url', 'fileUrl', 'accessUrl', 'downloadUrl'):
+                if d.get(key):
+                    return d[key]
+            if isinstance(d.get('fileInfo'), dict):
+                for key in ('url', 'fileUrl'):
+                    if d['fileInfo'].get(key):
+                        return d['fileInfo'][key]
+            raise RuntimeError(f'状态成功但未找到 URL：{str(d)[:200]}')
+        time.sleep(2)
+    raise RuntimeError('上传状态轮询超时')
+
+
+def _http_ous(domain, token, path, timeout=60):
+    req = urllib.request.Request(domain.rstrip('/') + path, method='GET')
+    req.add_header('ous-token-v2', token)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.loads(r.read().decode())
+
+
 def submit_img_to_3d(img_url, model_cfg):
-    body = {'imageUrl': img_url,
+    body = {'img': img_url,
             'version': model_cfg.get('version', 'G1-Turbo'),
             'faceCount': model_cfg.get('face_count', 30000)}
-    r = _http('POST', '/lux3d/v1/generate/image-to-3d/task/create', body)
-    tid = r if isinstance(r, int) else (r.get('data') or r.get('taskId'))
-    return int(tid)
+    r = _http('POST', '/lux3d/v1/generate/img-to-3d/task/create', body)
+    if isinstance(r, int):
+        return int(r)
+    d = r.get('d') if isinstance(r, dict) else None
+    if isinstance(d, int):
+        return int(d)
+    if isinstance(d, dict) and d.get('taskId'):
+        return int(d['taskId'])
+    raise RuntimeError(f'create 响应无法解析: {str(r)[:200]}')
 
 
 def get_task(task_id):
-    return _http('GET', f'/lux3d/v1/generate/task/get?taskid={task_id}')
+    """统一结构：状态与输出都在 d 字段里，这里拍平成 {status, outputs}。"""
+    j = _http('GET', f'/lux3d/v1/generate/task/get?taskid={task_id}')
+    if isinstance(j, dict) and isinstance(j.get('d'), dict):
+        d = j['d']
+        return {'status': d.get('status'), 'outputs': d.get('outputs') or [],
+                'taskId': d.get('taskId'), 'raw': j}
+    return j
 
 
 def poll(task_id, timeout_s=1800, interval=10):
@@ -210,6 +288,20 @@ def poll(task_id, timeout_s=1800, interval=10):
             return j
         time.sleep(interval)
     return {'status': 'timeout'}
+
+
+def extract_glb(zip_path, dest):
+    """ZIP 里找 GLB（G1 固定返回 ZIP；内容 URL 常直接指向 zip）。"""
+    import zipfile
+    with zipfile.ZipFile(zip_path) as z:
+        names = [n for n in z.namelist() if n.lower().endswith('.glb')]
+        if not names:
+            return None
+        names.sort(key=lambda n: z.getinfo(n).file_size, reverse=True)
+        out = pathlib.Path(dest) / 'model.glb'
+        with z.open(names[0]) as f, open(out, 'wb') as g:
+            g.write(f.read())
+        return out
 
 
 def download_urls(urls, dest):
@@ -239,13 +331,24 @@ def main():
     ap.add_argument('--budget', default='configs/unseen_v1_budget.json')
     ap.add_argument('--ledger', default='runs/unseen/generation/ledger.jsonl')
     ap.add_argument('--cache', default='runs/unseen/generation/cache')
+    ap.add_argument('--only', default=None, help='只处理这些 id，逗号分隔')
+    ap.add_argument('--attach', default=None,
+                    help='把已创建未记账的任务接回：identity=taskid[,identity=taskid]')
     a = ap.parse_args()
 
     plan = json.loads(pathlib.Path(a.plan).read_text())
+    if a.only:
+        keep = {x.strip() for x in a.only.split(',')}
+        plan = dict(plan, inputs=[i for i in plan['inputs'] if i['id'] in keep])
     budget = json.loads(pathlib.Path(a.budget).read_text()) if \
         pathlib.Path(a.budget).exists() else None
     led = Ledger(a.ledger)
 
+    if a.attach:
+        for pair in a.attach.split(','):
+            ident, tid = pair.split('=')
+            led.update(ident, status=ST_SUBMITTED, task_id=int(tid), note='attached')
+            print(f'[attach] {ident[:12]} -> task {tid}')
     rows, need_submit = [], 0
     for item in plan_entries(plan):
         img = pathlib.Path(item['image'])
@@ -265,7 +368,7 @@ def main():
         else:
             state = 'need_create'
             need_submit += 1
-        rows.append({'id': item['id'], 'state': state, 'identity': ident[:16],
+        rows.append({'id': item['id'], 'state': state, 'identity': ident,
                      'task_id': (rec or {}).get('task_id'),
                      'img_sha': sha256_bytes(b)[:16], 'variant': item.get('variant', 'orig')})
 
@@ -293,10 +396,55 @@ def main():
               '其余工作（计划、缓存校验、离线处理）已完成。')
         return 3
 
+    # --- resume：接管已提交/未完成的持有任务，只查询与下载，绝不重新 create ---
+    if a.resume:
+        for item, row in zip(plan_entries(plan), rows):
+            if 'held' not in row['state']:
+                continue
+            ident = row['identity']
+            rec = next((r for r in led.all() if r.get('identity') == ident), None) or {}
+            tid = rec.get('task_id')
+            if not tid:
+                print(f'[held] {item["id"]} 无 task_id，跳过（不重提）')
+                continue
+            try:
+                j = poll(int(tid))
+            except Exception as e:
+                print(f'[poll-error] {item["id"]}: {type(e).__name__}')
+                continue
+            st = j.get('status')
+            if st == 3:
+                urls = [o['content'] for o in j.get('outputs', []) if o.get('content')]
+                d = cache_path(a.cache, ident); d.mkdir(parents=True, exist_ok=True)
+                try:
+                    files = download_urls(urls, d)
+                except Exception as e:
+                    print(f'[download-error] {item["id"]}: {type(e).__name__}')
+                    continue
+                glb = next((f for f in files if f.suffix == '.glb'), None)
+                if glb is None:
+                    zp = next((f for f in files if f.suffix == '.zip'), None)
+                    glb = extract_glb(zp, d) if zp else None
+                if glb is None or glb.open('rb').read(4) != b'glTF':
+                    led.update(ident, status=ST_INVALID, note='not_glb')
+                    print(f'[invalid] {item["id"]} 非 GLB')
+                    continue
+                (d / 'meta.json').write_text(json.dumps({
+                    'identity': ident, 'task_id': int(tid), 'glb_sha': sha256_file(glb),
+                    'request': item['model'], 'variant': item.get('variant', 'orig'),
+                    'ts': time.time()}, ensure_ascii=False, indent=2))
+                led.update(ident, status=ST_DOWNLOADED, glb_sha=sha256_file(glb))
+                print(f'[downloaded] {item["id"]} task {tid} -> {glb}')
+            elif st in (4, -1, 2):
+                led.update(ident, status=ST_FAILED, note=f'task_status={st}')
+                print(f'[failed] {item["id"]} status={st}')
+            else:
+                print(f'[pending] {item["id"]} task {tid} status={st}')
+
     for item, row in zip(plan_entries(plan), rows):
         if row['state'] not in ('need_create',):
             continue
-        ident = row['identity']
+        ident = row['identity']          # 完整身份，不做截断
         item_model = item['model']
         ok, why = led.reserve(ident, float(plan.get('credits_upper_per_task', 20)), budget)
         if not ok:
@@ -304,9 +452,13 @@ def main():
             break
         img_url = item.get('image_url')
         if not img_url:
-            print(f'[blocked] {item["id"]} 没有 image_url：需要官方上传接口，未擅自换公共图床')
-            led.update(ident, status=ST_FAILED, note='no_upload_url')
-            continue
+            try:
+                img_url = upload_image(item['image'])
+                led.update(ident, note=f'uploaded: {img_url[:60]}')
+            except Exception as e:
+                print(f'[upload-failed] {item["id"]}: {type(e).__name__} {str(e)[:120]}')
+                led.update(ident, status=ST_FAILED, note=f'upload_error: {type(e).__name__}')
+                continue
         try:
             tid = submit_img_to_3d(img_url, item_model)
         except Exception as e:
@@ -328,7 +480,10 @@ def main():
             except Exception as e:
                 led.update(ident, status=ST_FAILED, note=f'download_error: {type(e).__name__}')
                 continue
-            glb = next((f for f in files if f.suffix == '.glb'), files[0] if files else None)
+            glb = next((f for f in files if f.suffix == '.glb'), None)
+            if glb is None:
+                zp = next((f for f in files if f.suffix == '.zip'), None)
+                glb = extract_glb(zp, d) if zp else None
             if glb is None or glb.open('rb').read(4) != b'glTF':
                 led.update(ident, status=ST_INVALID, note='not_glb')
                 continue

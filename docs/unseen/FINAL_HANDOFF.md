@@ -11,7 +11,7 @@
 
 | 项 | 状态 | 依据 |
 | --- | --- | --- |
-| delivery_status | **EXTERNAL_BLOCKED** | 两份正式输入的观测、计划、预算、账本、上传路径均已就绪；`--submit` 因缺密钥返回 exit 3；`align.py` 已实现但 fixture 未达标 |
+| delivery_status | **PARTIAL** | 真实图生链路已跑通：上传、create、轮询、ZIP→GLB 下载均成功，已得 2 个真实候选；但配准未验证、正式评测未做 |
 | evidence_integrity | **PASS（含未验证项）** | 自验从原始 JSONL 重算：动作真触发、A0 真停、无越界成功、无重复记录、缺记录→insufficient_evidence；但**配准链未通过 fixture**，不能算已验证 |
 | research_gate | **NOT_PASS** | P1 4/18 通过、**P2 1/18 未过**、**P3 未过**、P4 30/30 过；C2/C3 未成立 |
 
@@ -36,10 +36,17 @@ export MUJOCO_GL=osmesa
 
 ## 生成与预算
 
-- 本轮新增 Lux3D 任务 **0** 个；预估积分 **0**；核验积分 **0**（无实际扣费）。
-- 授权额度：300 积分 / 单任务 ≤20 / ≤15 任务；计划 13 个输入（A 组 6、B 组 6、标定 1），
-  预留上界 260 ≤ 300，任务数 13 ≤ 15，**未超限**。
-- 历史账本 78 是提交额估算，不是余额；本轮不推测余额。
+- 本轮新增 Lux3D 图生任务 **2** 个：`4416952`、`4418107`，状态均为 succeeded + downloaded。
+- 预留上界 **40 积分**（2×20），剩余授权 260；任务数 2 ≤ 15。**未超限**。
+- 实际扣费：API 未返回 charge 字段 → `actual_charge=null`、`verified=unknown`，
+  不把预留写成实扣。
+- 两个候选几何确实不同：`4416952` extents 0.200×0.191×0.124 m；`4418107` 0.250×0.246×0.156 m。
+  同一输入产生不同几何，这对"重复输入是否给相同形状"是一个正面观察（样本量 2）。
+- **一次重复创建事故**：首个 create 成功后客户端误读响应（`TypeError`），修好后 resume 时
+  因身份被截断成 16 位导致缓存未命中，又创建了第二个任务。已修正身份截断与响应解析，
+  两个任务都保留在账本里（不删除负面记录），并从两者各下载了一个 GLB。
+- 输入图上传：`GET /asset/v1/token` → OUS `single/upload`（multipart，带 md5 与 `ous-token-v2`）
+  → 轮询 `upload/status` 直到 status=5 → 得到 URL。已实测成功。
 
 ## 主要对照结果（完整分母）
 
@@ -50,8 +57,8 @@ export MUJOCO_GL=osmesa
 
 ## 未完成项与真实阻塞
 
-1. **图生 create 与上传**：缺 `AHOLO_API_KEY`。计划、预算锁、账本、缓存校验、下载、
-   状态机均已实现；设置密钥后可直接 `--submit`。
+1. ~~图生 create 与上传~~：**已打通**（密钥在 `/var/lib/deepseek-harness/Aholo3D/.env`，
+   我上一轮误报为缺失）。仍需按计划补齐其余 11 个候选（剩余额度 260）。
 2. **可见面配准未验证**：`align.py` 已实现（可见面约束、yaw±25°/尺度 5 档、IoU/RMS/自由空间），
    但 fixture 测试 cand 56 px vs obs 914 px，IoU 0，**未达标**，不作为可用能力。
 3. **C2/C3 未成立**：没有真实候选，多假设收益未评估。

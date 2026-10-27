@@ -1,0 +1,45 @@
+{
+  "candidate": "runs/unseen/fixtures/fixture_A.glb",
+  "observation": "runs/unseen/obs/planA",
+  "T_world_from_asset": [
+    [
+      0.6298485452060298,
+      0.29370320010735657,
+      0.0,
+      1.8042521967899006
+    ],
+    [
+      -0.29370320010735657,
+      0.6298485452060298,
+      0.0,
+      0.003595640224621499
+    ],
+    [
+      0.0,
+      0.0,
+      0.6949609770709821,
+      -0.34748048853549107
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "direction": "asset -> world",
+  "scale_uniform": 0.6949609770709821,
+  "yaw_deg": -25.0,
+  "metrics": {
+    "iou": 0.0,
+    "rms_m": Infinity,
+    "freespace": 1.0,
+    "cand_px": 56,
+    "obs_px": 914
+  },
+  "rms_threshold_m": 0.00574,
+  "iou_threshold": 0.85,
+  "freespace_threshold": 0.05,
+  "pass": false,
+  "source_kind": "fixture"
+}

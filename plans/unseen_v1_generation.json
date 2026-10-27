@@ -1,0 +1,152 @@
+{
+  "scope": "unseen_v1",
+  "credits_upper_per_task": 20,
+  "note": "目标：A 组 6 个、B 组 6 个、标定 1 个、替换预留 2 个，合计 <=15",
+  "inputs": [
+    {
+      "id": "A1",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "purpose": "A 组第 1 个候选，兼作上传/图生/下载冒烟"
+    },
+    {
+      "id": "CAL1",
+      "group": "CAL",
+      "image": "cases/unseen_v1/calibration_asym.png",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "purpose": "不对称标定输入，核实生成输出朝向"
+    },
+    {
+      "id": "A2",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/aug_bright.png",
+      "variant": "bright",
+      "repeat_idx": 1,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A3",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/aug_crop8.png",
+      "variant": "crop8",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A4",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/aug_rot4.png",
+      "variant": "rot4",
+      "repeat_idx": 3,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A5",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 1,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A6",
+      "group": "A",
+      "image": "runs/unseen/obs/planA/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B1",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B2",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 1,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B3",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/aug_bright.png",
+      "variant": "bright",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B4",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/aug_crop8.png",
+      "variant": "crop8",
+      "repeat_idx": 3,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B5",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/aug_rot4.png",
+      "variant": "rot4",
+      "repeat_idx": 4,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B6",
+      "group": "B",
+      "image": "runs/unseen/obs/planB/crop_white.png",
+      "variant": "orig",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    }
+  ]
+}

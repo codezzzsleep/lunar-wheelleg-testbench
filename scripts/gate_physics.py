@@ -50,9 +50,13 @@ def build_spec(posed_dir, H, case_id, seed, channel_half=1.2):
     return spec
 
 
-def visible_of_front(case_dir):
-    """从**正面**几何算可见量（正面在所有背面下相同，因此这是可观测常量）。
-    只取 x<=0 的顶点，不读背面。"""
+def visible_of_front(case_dir, obstacle_x=OBSTACLE_X):
+    """从**正面**几何算可见量，并转换到**世界坐标**。
+
+    局部碰撞顶点在 x<=0 一侧，前沿是局部最小 x；必须加上障碍的世界摆放位置，
+    否则 x_front 会是负数，与机器人世界 x 比较就会"起步即触发"。
+    正面在所有背面下相同，因此这是可观测常量，不读背面。
+    """
     import trimesh
     man = json.loads((pathlib.Path(case_dir) / 'manifest.json').read_text())
     vs = []
@@ -63,7 +67,7 @@ def visible_of_front(case_dir):
     front = v[v[:, 0] <= 1e-6]
     if len(front) == 0:
         return {}
-    return {'x_front': float(front[:, 0].min()),
+    return {'x_front': float(front[:, 0].min()) + obstacle_x,
             'W_vis': float(front[:, 1].max() - front[:, 1].min()),
             'H_vis': float(front[:, 2].max())}
 
@@ -123,7 +127,7 @@ def main():
     for front, backs in sorted(groups.items()):
         for kind, c in sorted(backs.items()):
             spec = build_spec(posed, c['H'], c['id'], front[0])
-            vis = visible_of_front(pathlib.Path(posed) / c['id'])
+            vis = visible_of_front(pathlib.Path(posed) / c['id'], OBSTACLE_X)
             for act in actions:
                 for sd in seeds:
                     r = run_episode(spec, act, sd, visible=vis)
@@ -167,7 +171,8 @@ def main():
         if max(s.values()) == n_per and min(s.values()) == 0:
             p2_hits.append({'front': list(f), 'per_back': s})
 
-    vis_by_front = {f: visible_of_front(pathlib.Path(posed) / list(groups[f].values())[0]['id'])
+    vis_by_front = {f: visible_of_front(pathlib.Path(posed) / list(groups[f].values())[0]['id'],
+                                        OBSTACLE_X)
                     for f in groups}
     # P4：重演 30 回合
     rng = np.random.default_rng(7)

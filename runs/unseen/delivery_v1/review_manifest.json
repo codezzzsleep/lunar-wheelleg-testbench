@@ -1,0 +1,86 @@
+{
+  "delivery_id": "v1",
+  "commit": "22e8f8067fcbb47b44563e8464106de6b46a629a",
+  "worktree_clean": false,
+  "runs": {
+    "prep": "runs/unseen/prep/r1",
+    "gate_p": "runs/unseen/gate_p/w6",
+    "generation": "runs/unseen/generation",
+    "observations": {
+      "A": "runs/unseen/obs/planA",
+      "B": "runs/unseen/obs/planB",
+      "cal": "runs/unseen/obs/cal"
+    },
+    "alignment": "runs/unseen/align",
+    "e2e": "runs/unseen/e2e/e2",
+    "verification": "runs/unseen/verify/v3",
+    "demo": "runs/unseen/ui_five.png"
+  },
+  "files": {
+    "plan": {
+      "path": "plans/unseen_v1_generation.json",
+      "sha": "6c4042321a99127ebc722a8927e12d7c"
+    },
+    "budget": {
+      "path": "configs/unseen_v1_budget.json",
+      "sha": "7538e1c238a64e8d3b2c50888ac7b669"
+    },
+    "gate_p_results": {
+      "path": "runs/unseen/gate_p/w6/results.jsonl",
+      "sha": "3c5e8bd783062508d55ad0241d573037"
+    },
+    "e2e_decision": {
+      "path": "runs/unseen/e2e/e2/decision.json",
+      "sha": "f63e3e20935e48fcea8d5b13782c4f33"
+    },
+    "e2e_summary": {
+      "path": "runs/unseen/e2e/e2/summary.json",
+      "sha": "7e2d46a4dd38f3eda5c0235454da9a27"
+    },
+    "obs_A": {
+      "path": "runs/unseen/obs/planA/observation.json",
+      "sha": "4e3699c0e67ab45a04206f1a29599cfa"
+    },
+    "obs_B": {
+      "path": "runs/unseen/obs/planB/observation.json",
+      "sha": "682d3b02285bc2bd9226799d2c64c070"
+    },
+    "ui": {
+      "path": "runs/unseen/ui_five.png",
+      "sha": "796a60fc9eea9be7ef1c607bc1cb2507"
+    }
+  },
+  "commands": [
+    {
+      "cmd": "python scripts/imagine.py --plan plans/unseen_v1_generation.json --dry-run",
+      "exit": 0
+    },
+    {
+      "cmd": "python scripts/imagine.py --plan plans/unseen_v1_generation.json --submit --budget configs/unseen_v1_budget.json",
+      "exit": 3,
+      "note": "AHOLO_API_KEY missing"
+    },
+    {
+      "cmd": "python scripts/gate_physics.py --posed assets/posed --out runs/unseen/gate_p/w6",
+      "exit": 1,
+      "note": "P2/P3 not pass"
+    },
+    {
+      "cmd": "python scripts/align.py --candidate fixtures/fixture_A.glb --obs runs/unseen/obs/planA",
+      "exit": 1,
+      "note": "fixture did not reach thresholds"
+    }
+  ],
+  "external_blockers": [
+    {
+      "id": "AHOLO_API_KEY_MISSING",
+      "detail": "执行环境无 AHOLO_API_KEY，图生 create/上传无法执行；预算与计划已就绪",
+      "unblocks_with": "在执行环境设置 AHOLO_API_KEY 后运行 --submit"
+    }
+  ],
+  "status": {
+    "delivery": "EXTERNAL_BLOCKED",
+    "evidence": "PASS_WITH_OPEN_ITEMS",
+    "research_gate": "NOT_PASS"
+  }
+}

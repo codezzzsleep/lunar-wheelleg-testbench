@@ -53,11 +53,31 @@ class EpisodeRunner:
             if getattr(sk, 'brake', False):
                 env.brake_step()                   # 显式刹车，不是普通 step
                 braked += 1
-                info = {'reason': 'braking', 't': env.t,
-                        'x': float(env.data.qpos[0]),
-                        'tilt_deg': env._tilt(),
-                        'contact_style': None, 'contact_any': False}
-                done = bool(getattr(sk, 'done', False))
+                # 刹车期间仍然完整判失效：倾覆优先于"停住了"
+                tilt = env._tilt()
+                vx = abs(float(env.data.qvel[0]))
+                lat = float(env.data.qpos[1]) - env.channel_center
+                if tilt > env.tip_deg:
+                    info = {'reason': 'tipped', 't': env.t,
+                            'x': float(env.data.qpos[0]), 'tilt_deg': tilt,
+                            'contact_style': None, 'contact_any': False}
+                    done = True
+                elif abs(lat) > env.channel_half_width:
+                    info = {'reason': 'out_of_bounds', 't': env.t,
+                            'x': float(env.data.qpos[0]), 'tilt_deg': tilt,
+                            'contact_style': None, 'contact_any': False}
+                    done = True
+                elif bool(getattr(sk, 'done', False)) and vx < 0.05:
+                    # 停车完成：实际速度阈值 + 稳定保持，不能只等步数
+                    info = {'reason': 'abort', 't': env.t,
+                            'x': float(env.data.qpos[0]), 'tilt_deg': tilt,
+                            'contact_style': None, 'contact_any': False}
+                    done = True
+                else:
+                    info = {'reason': 'braking', 't': env.t,
+                            'x': float(env.data.qpos[0]), 'tilt_deg': tilt,
+                            'contact_style': None, 'contact_any': False}
+                    done = False
             else:
                 obs, r, te, tr, info = env.step(a)
                 done = te or tr
@@ -72,6 +92,7 @@ class EpisodeRunner:
 
         return {
             'reason': info.get('reason'), 'success': info.get('reason') == 'success',
+            'abort': info.get('reason') == 'abort',
             't_end': info.get('t'), 'x': info.get('x'),
             'final_x': round(float(env.data.qpos[0]), 3),
             'max_tilt': info.get('tilt_deg'),

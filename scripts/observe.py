@@ -167,6 +167,23 @@ def main():
     np.save(out / 'visible_points.npy', pw)
     Image.fromarray(rgb[cy0:cy1, cx0:cx1]).save(out / 'crop_raw.png')
 
+    # 真实补成正方形并输出 1024²：以掩码中心为心，边长 = max(宽,高)*(1+2*pad)
+    side_src = int(max(x1 - x0, y1 - y0) * (1 + 2 * a.crop_pad))
+    ccx = (x0 + x1) // 2
+    ccy = (y0 + y1) // 2
+    half = side_src // 2
+    sx0, sy0 = ccx - half, ccy - half
+    sx1, sy1 = sx0 + side_src, sy0 + side_src
+    # 越界部分用白色填充（背景色，避免把场景外内容当成物体）
+    canvas = Image.new('RGB', (side_src, side_src), (255, 255, 255))
+    px0, py0 = max(0, sx0), max(0, sy0)
+    px1, py1 = min(a.width, sx1), min(a.height, sy1)
+    if px1 > px0 and py1 > py0:
+        canvas.paste(Image.fromarray(rgb[py0:py1, px0:px1]), (px0 - sx0, py0 - sy0))
+    crop1024 = canvas.resize((1024, 1024), Image.LANCZOS)
+    crop1024.save(out / 'crop_white.png')
+    canvas.save(out / 'crop_white_src.png')
+
     info = {
         'case_id': case['case_id'],
         'camera': {'id': cam_id, 'fovy': a.fovy, 'pos_body': [0.42, 0.0, 0.20],
@@ -174,8 +191,10 @@ def main():
                    'convention': 'MuJoCo 相机朝 -z；图像 x 向右、y 向下；深度为正距离'},
         'image': {'W': a.width, 'H': a.height},
         'intrinsics': K,
-        'crop': {'box': [cx0, cy0, cx1, cy1], 'square_box': sq,
-                 'note': '裁剪变换单独保存，前向投影仍用原内参'},
+        'crop': {'box': [cx0, cy0, cx1, cy1],
+                 'square_box': [sx0, sy0, sx1, sy1], 'square_side_px': side_src,
+                 'out_size': [1024, 1024], 'pad_frac': a.crop_pad,
+                 'note': '真正补成正方形并缩放到 1024²；该变换单独保存，前向投影仍用原内参'},
         'visible': {'n_pixels': int(mask.sum()),
                     'x_front': x_front, 'y_center': y_center,
                     'W_vis': W_vis, 'H_vis': H_vis},

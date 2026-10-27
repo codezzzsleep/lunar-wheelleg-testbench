@@ -1,0 +1,205 @@
+"""
+五步页面：选案例 → 机器人视角 → 背面假设 → 物理预演 → 决定 → 执行与揭晓。
+
+  .venv/bin/python scripts/app_unseen.py --port 8090
+  # 打开 http://127.0.0.1:8090
+
+只读已跑过的 e2e 产物，不在页面里触发付费或重新生成；
+没有跑过案例时页面明确显示"未运行"，不伪造数据。
+"""
+import argparse
+import json
+import pathlib
+import sys
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+E2E = ROOT / 'runs/unseen/e2e'
+
+
+def list_cases():
+    out = []
+    if not E2E.exists():
+        return out
+    for d in sorted(E2E.iterdir()):
+        s = d / 'summary.json'
+        if s.exists():
+            try:
+                out.append({'run': d.name, **json.loads(s.read_text())})
+            except Exception:
+                out.append({'run': d.name, 'error': 'summary 无法解析'})
+    return out
+
+
+def load_run(run):
+    d = E2E / run
+    if not d.exists():
+        raise FileNotFoundError(run)
+    def rd(name, default=None):
+        p = d / name
+        if not p.exists():
+            return default
+        if name.endswith('.jsonl'):
+            return [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
+        return json.loads(p.read_text())
+    return {
+        'run': run,
+        'summary': rd('summary.json'),
+        'observation': rd('observation.json'),
+        'decision': rd('decision.json'),
+        'rehearsal': rd('rehearsal.jsonl', []),
+        'execution': rd('execution.jsonl', []),
+        'has_rgb': (d / 'rgb.png').exists(),
+        'has_mask': (d / 'mask.png').exists(),
+    }
+
+
+PAGE = r"""<!doctype html><html lang="zh-CN"><meta charset="utf-8">
+<title>看不见的那一面</title>
+<style>
+ *{box-sizing:border-box}
+ body{margin:0;font:14px/1.65 system-ui,-apple-system,"Noto Sans CJK SC",sans-serif;
+      background:#0b0a0d;color:#e9e3da}
+ header{padding:16px 22px;border-bottom:1px solid #24212a}
+ h1{margin:0;font-size:18px}
+ .sub{color:#8f8794;font-size:12px;margin-top:4px}
+ main{display:grid;grid-template-columns:300px 1fr;gap:16px;padding:16px 22px}
+ .card{background:#141219;border:1px solid #24212a;border-radius:10px;padding:14px;margin-bottom:14px}
+ .card h2{margin:0 0 10px;font-size:13px;color:#c9a86a;letter-spacing:1px}
+ select,button{width:100%;padding:8px;background:#0e0c12;color:#e9e3da;
+   border:1px solid #2c2836;border-radius:6px}
+ button{margin-top:10px;background:#c9a86a;color:#171318;border:0;font-weight:600;cursor:pointer}
+ img{max-width:46%;max-height:300px;border-radius:8px;border:1px solid #24212a;background:#0e0c12;margin-right:8px}
+ table{border-collapse:collapse;width:100%;font-size:12px}
+ th,td{border-bottom:1px solid #24212a;padding:5px 6px;text-align:left}
+ th{color:#8f8794;font-weight:500}
+ .ok{color:#7fe0b0}.bad{color:#ff9a9a}.dim{color:#8f8794}
+ .step{display:flex;gap:10px;align-items:baseline;margin-bottom:6px}
+ .n{background:#2a2432;color:#c9a86a;border-radius:99px;padding:1px 8px;font-size:11px}
+ pre{white-space:pre-wrap;font-family:ui-monospace,monospace;font-size:12px;
+     background:#0e0c12;border:1px solid #24212a;border-radius:6px;padding:10px}
+</style>
+<header><h1>看不见的那一面 · 轮腿机器人「先想后走」</h1>
+<div class="sub">机器人只看得到障碍正面；系统生成多种背面假设，预演每个走法，选最稳健的，再揭晓真相</div></header>
+<main>
+ <div>
+  <div class="card"><h2>选择案例</h2>
+    <select id="run"></select>
+    <button id="go">打开案例</button>
+    <div class="sub" id="note" style="margin-top:8px"></div>
+  </div>
+  <div class="card"><h2>来源声明</h2>
+    <div class="sub" id="src"></div>
+  </div>
+ </div>
+ <div>
+  <div class="card"><h2><span class="step"><span class="n">1</span>机器人视角</span></h2>
+    <div id="obs" class="dim">未选择案例</div>
+    <div id="imgs"></div>
+  </div>
+  <div class="card"><h2><span class="step"><span class="n">2</span>背面假设与预演</span></h2>
+    <div id="hyp" class="dim">—</div>
+  </div>
+  <div class="card"><h2><span class="step"><span class="n">3</span>决定</span></h2>
+    <div id="dec" class="dim">—</div>
+  </div>
+  <div class="card"><h2><span class="step"><span class="n">4</span>真值执行与揭晓</span></h2>
+    <div id="exec" class="dim">—</div>
+  </div>
+ </div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+async function boot(){
+  const r=await fetch('/api/cases'); const d=await r.json();
+  const sel=$('run');
+  if(!d.cases.length){ sel.innerHTML='<option>（还没有跑过案例）</option>';
+    $('note').textContent='先运行 scripts/unseen_pipeline.py 生成一个案例'; return; }
+  sel.innerHTML=d.cases.map(c=>`<option value="${c.run}">${c.case_id} · ${c.run}</option>`).join('');
+}
+async function open_(){
+  const run=$('run').value;
+  const r=await fetch('/api/run?name='+encodeURIComponent(run));
+  const d=await r.json();
+  if(d.error){ $('obs').innerHTML='<span class="bad">'+d.error+'</span>'; return; }
+  const s=d.summary||{}, o=(d.observation||{}).visible||{};
+  $('src').innerHTML = `假设来源：<b>${s.hyp_source||'?'}</b><br>${s.hyp_source_note||''}`;
+  $('obs').innerHTML = `可见像素 ${ (d.observation||{}).visible?.n_pixels ?? '—' }　
+    前沿 x=${o.x_front?.toFixed(3) ?? '—'} m　可见宽 ${o.W_vis?.toFixed(3) ?? '—'} m　
+    可见高 ${o.H_vis?.toFixed(3) ?? '—'} m`;
+  $('imgs').innerHTML = (d.has_rgb? `<img src="/img/${run}/rgb.png">`:'') +
+                        (d.has_mask? `<img src="/img/${run}/mask.png" style="margin-top:8px">`:'');
+  const rows=d.rehearsal||[];
+  const by={}; rows.forEach(m=>{const k=m.hypothesis_id+'|'+m.option;
+    (by[k]=by[k]||[]).push(m.success?1:0);});
+  let t='<table><tr><th>假设</th><th>动作</th><th>成功/总</th></tr>';
+  Object.keys(by).sort().forEach(k=>{const [h,o]=k.split('|');
+    const v=by[k]; t+=`<tr><td>${h}</td><td>${o}</td><td>${v.reduce((a,b)=>a+b,0)}/${v.length}</td></tr>`;});
+  t+='</table>'; $('hyp').innerHTML=t;
+  const dec=d.decision||{};
+  $('dec').innerHTML = `<b>选择 ${dec.chosen||'—'}</b>　
+    ${dec.no_robust_option? '<span class="bad">没有稳健通行动作</span>':'<span class="ok">存在稳健动作</span>'}<br>
+    <span class="dim">规则 ${dec.rule||'—'}　候选 ${ (dec.hypotheses||[]).length } 个　初态 ${dec.n_seeds||'—'} 个</span><br>
+    <span class="dim">${dec.reason_text||''}</span>
+    <pre>${JSON.stringify(dec.stats||{},null,1).slice(0,900)}</pre>`;
+  const ex=d.execution||[];
+  const chosen=ex.filter(m=>m.option===dec.chosen), blind=ex.filter(m=>m.option==='R1');
+  const rate=a=>a.length? a.filter(m=>m.success).length+'/'+a.length : '—';
+  $('exec').innerHTML = `<table><tr><th>在真值上的执行</th><th>成功</th></tr>
+    <tr><td>系统选择（${dec.chosen}）</td><td class="${chosen.every(m=>m.success)?'ok':'bad'}">${rate(chosen)}</td></tr>
+    <tr><td>盲走（R1）</td><td class="${blind.every(m=>m.success)?'ok':'bad'}">${rate(blind)}</td></tr></table>
+    <div class="dim" style="margin-top:6px">真值背面在本页揭晓：见执行记录与 summary；页面不读真值参与决策</div>`;
+}
+$('go').onclick=open_;
+boot().then(()=>{ const q=new URLSearchParams(location.search).get('run');
+  if(q){ $('run').value=q; open_(); } else if($('run').options.length){ open_(); } });
+</script></html>"""
+
+
+class H(BaseHTTPRequestHandler):
+    def log_message(self, *a):
+        pass
+
+    def _send(self, code, body, ctype='application/json; charset=utf-8'):
+        data = body.encode() if isinstance(body, str) else body
+        self.send_response(code)
+        self.send_header('Content-Type', ctype)
+        self.send_header('Content-Length', str(len(data)))
+        self.end_headers()
+        self.wfile.write(data)
+
+    def do_GET(self):
+        p = self.path.split('?', 1)[0]
+        q = dict(x.split('=', 1) for x in self.path.split('?', 1)[1].split('&')
+                 if '=' in x) if '?' in self.path else {}
+        if p in ('/', '/index.html'):
+            return self._send(200, PAGE, 'text/html; charset=utf-8')
+        if p == '/api/cases':
+            return self._send(200, json.dumps({'cases': list_cases()}, ensure_ascii=False))
+        if p == '/api/run':
+            try:
+                return self._send(200, json.dumps(load_run(q.get('name', '')),
+                                                  ensure_ascii=False))
+            except Exception as e:
+                return self._send(404, json.dumps({'error': f'{type(e).__name__}: {e}'}))
+        if p.startswith('/img/'):
+            parts = p.split('/')
+            f = E2E / parts[2] / parts[3]
+            if f.exists():
+                return self._send(200, f.read_bytes(), 'image/png')
+            return self._send(404, 'missing', 'text/plain')
+        return self._send(404, json.dumps({'error': 'not found'}))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument('--port', type=int, default=8090)
+    ap.add_argument('--host', default='127.0.0.1')
+    a = ap.parse_args()
+    srv = ThreadingHTTPServer((a.host, a.port), H)
+    print(f'看不见的那一面：http://{a.host}:{a.port}')
+    srv.serve_forever()
+
+
+if __name__ == '__main__':
+    main()

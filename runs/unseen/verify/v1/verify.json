@@ -1,0 +1,66 @@
+{
+  "checks": [
+    {
+      "name": "观测标定（非对称标定物）",
+      "required": true,
+      "status": "PASS",
+      "detail": "横向误差 0.0052 m"
+    },
+    {
+      "name": "双胞胎几何",
+      "required": true,
+      "status": "PASS",
+      "detail": "90 个，非流形 0 个"
+    },
+    {
+      "name": "Gate P（P1/P2）",
+      "required": true,
+      "status": "FAIL",
+      "detail": "P1 2/18, P2 1/18"
+    },
+    {
+      "name": "Gate P（P4 重演）",
+      "required": true,
+      "status": "PASS",
+      "detail": "30 回合，错配 0"
+    },
+    {
+      "name": "决策可复算",
+      "required": true,
+      "status": "PASS",
+      "detail": "记录 L1 / 复算 L1"
+    },
+    {
+      "name": "真值执行记录",
+      "required": true,
+      "status": "PASS",
+      "detail": "9 条"
+    },
+    {
+      "name": "页面接口",
+      "required": true,
+      "status": "PASS",
+      "detail": "planner 输出中无 truth 字段"
+    },
+    {
+      "name": "Gate L（真实 Lux3D 图生）",
+      "required": true,
+      "status": "BLOCKED",
+      "detail": "未接入付费图生，本轮 0 个新任务"
+    },
+    {
+      "name": "Gate P（P3 同观测）",
+      "required": true,
+      "status": "FAIL",
+      "detail": "最好 MAE 3.23，阈值 2.0"
+    },
+    {
+      "name": "固定评测与协议",
+      "required": true,
+      "status": "BLOCKED",
+      "detail": "未实现 unseen_eval.py / 协议文件"
+    }
+  ],
+  "n_fail": 4,
+  "overall": "NOT_PASS"
+}

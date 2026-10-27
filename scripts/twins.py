@@ -1,193 +1,178 @@
 """
-Gate P 双胞胎障碍：正面完全相同，背面不同。
+双胞胎障碍 v2：高度场棱柱，保证闭合流形。
 
+上一版失败原因（b1e1488）：
+  · 放样/拼接留下重合端点与内部面，非流形边 27–48 条；
+  · `process_asset` 遇到非闭合网格会回退到凸包（near_convex_hull_substituted），
+    背面台阶/横槽被整块填平，双胞胎的物理差异消失。
+
+本版构造：把障碍做成"高度场棱柱"——
+  对每个 (x, y) 网格点给出高度 h(x,y)，上表面三角化，下表面 z=0，
+  四周用侧壁把上下边界缝起来。标准闭合棱柱，拓扑上必然流形。
+
+  正面（x<0）：h = H·s(x)·g(y)，s 为椭球截面，g 为横向圆滑收口；
+  背面（x≥0）：drop / ramp_s / ramp_l / ledge / cleft 给出不同型面。
+  横向边缘保留 2% 最小高度，避免退化零面积面。
+
+用法：
   .venv/bin/python scripts/twins.py --out runs/unseen/gate_p/<run_id>
-
-构造要点（任务书第五节）：
-  · 机器人沿 +x 前进；脊线在地面的投影为 x=0，x<0 是正面（机器人看得见），x≥0 是背面。
-  · 正面 = 确定性带噪半椭球，参数 F(seed, H, W, D_front)，噪声约为最小半轴的 8%，
-    用 z<0 与 x>0 裁剪掉。
-  · 背面类型：drop / ramp_s(25°) / ramp_l(12°) / ledge(0.25 m 处台阶) / cleft(横槽)，
-    每侧内缩 ≥2 cm，避免从正面轮廓直接露出。
-  · 同一正面几何在 5 种背面里**逐顶点一致**（只拼背面），保证观测可共用。
-
-输出：每例一个 visual STL + collision STL + meta（含真值背面描述量）。
 """
 import argparse
 import json
 import pathlib
 import sys
+from collections import Counter
 
 import numpy as np
 import trimesh
-from manifold3d import Manifold
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-WHEEL_R = 0.08595               # 由 measure_robot 实测
-
+WHEEL_R = 0.08595
 BACK_TYPES = ('drop', 'ramp_s', 'ramp_l', 'ledge', 'cleft')
+MIN_EDGE_FRAC = 0.02
 
 
-def _profile(kind, x, H, W, D):
-    """给定 x，返回该处截面的 (半宽 y, 高度 z)。x<0 为正面，x>=0 为背面。"""
-    W2 = W / 2.0
+def back_length(kind, H):
+    return {'drop': 0.16, 'ramp_s': H / np.tan(np.deg2rad(25)),
+            'ramp_l': H / np.tan(np.deg2rad(12)),
+            'ledge': 0.36, 'cleft': H / np.tan(np.deg2rad(12))}[kind]
+
+
+def height_1d(kind, x, H, D):
+    """脊线高度（米）。x<0 为正面，x>=0 为背面。"""
     if x < 0:
-        r = np.sqrt(max(0.0, 1.0 - (x / D) ** 2))
-        return W2 * r, H * r
+        return H * np.sqrt(max(0.0, 1.0 - (x / D) ** 2))
     if kind == 'drop':
-        return W2 * 0.55, H * 0.55 * np.exp(-x / 0.10)
+        return H * np.exp(-x / 0.06)
     if kind == 'ramp_s':
-        L = H / np.tan(np.deg2rad(25))
-        return W2 * 0.55, max(0.0, H * (1 - x / L))
+        return max(0.0, H * (1 - x / (H / np.tan(np.deg2rad(25)))))
     if kind == 'ramp_l':
-        L = H / np.tan(np.deg2rad(12))
-        return W2 * 0.55, max(0.0, H * (1 - x / L))
+        return max(0.0, H * (1 - x / (H / np.tan(np.deg2rad(12)))))
     if kind == 'ledge':
-        L1 = 0.25
-        if x <= L1:
-            return W2 * 0.55, H
-        return W2 * 0.55, H * 0.45 * max(0.0, 1 - (x - L1) / 0.10)
+        if x <= 0.25:
+            return H
+        return max(0.0, H * 0.45 * (1 - (x - 0.25) / 0.08))
     if kind == 'cleft':
-        L = H / np.tan(np.deg2rad(12))
-        h = max(0.0, H * (1 - x / L))
+        h = max(0.0, H * (1 - x / (H / np.tan(np.deg2rad(12)))))
         if 0.15 <= x <= 0.27 and h > H - 0.10:
-            h = H - 0.10          # 横槽：这一段被切低
-        return W2 * 0.55, h
+            h = H - 0.10
+        return h
     raise ValueError(kind)
 
 
-def twin_solid(kind, H, W, D, n_x=40, n_phi=24, seed=0):
-    """
-    把整块障碍做成**单一放样实体**：每个 x 一个半椭圆截面，底面 z=0。
-    这样正面（x<0 的椭球段）与背面（x≥0 的型面）共享同一张曲面，接缝处没有内部面，
-    网格天然流形；背面差异不会被凸包替换抹平。
-    """
+def twin_solid(kind, H, W, D, seed=0, nx=72, ny=40):
     rng = np.random.default_rng(seed)
-    L_back = {'drop': 0.16, 'ramp_s': H / np.tan(np.deg2rad(25)),
-              'ramp_l': H / np.tan(np.deg2rad(12)), 'ledge': 0.36,
-              'cleft': H / np.tan(np.deg2rad(12))}[kind]
-    xs = np.concatenate([np.linspace(-D, 0, n_x // 2, endpoint=False),
-                         np.linspace(0, L_back, n_x // 2 + 1)])
-    phi = np.linspace(0, np.pi, n_phi)
-    verts, rows = [], []
-    for x in xs:
-        w, h = _profile(kind, x, H, W, D)
-        if h <= 1e-6 or w <= 1e-6:
-            # 收敛到一条线：仍然保留一排点，避免退化四边形
-            ring = np.stack([np.full(n_phi, x), np.zeros(n_phi), np.zeros(n_phi)], axis=1)
-        else:
-            yy = w * np.cos(phi)
-            zz = h * np.sin(phi)
-            if x < 0:
-                j = 1.0 + rng.standard_normal(n_phi) * (0.08 * min(H, W, 2 * D) / 2) / max(D, 1e-6)
-                yy = yy * j
-            ring = np.stack([np.full(n_phi, x), yy, np.clip(zz, 0, None)], axis=1)
-        rows.append(len(verts))
-        verts.extend(ring)
-    verts = np.array(verts)
+    Lback = back_length(kind, H)
+    xs = np.linspace(-D, Lback, nx)
+    half_w = W / 2.0
+    ys = np.linspace(-half_w, half_w, ny)
+
+    # 高度设一个下限：否则上表面会落到 z=0 与下表面重合，
+    # 合并顶点后上下表面共享边，拓扑非流形。
+    Hx = np.maximum(np.array([height_1d(kind, float(x), H, D) for x in xs]), 1e-3)
+    if seed:
+        noise = 1.0 + rng.standard_normal(nx) * (0.08 * min(H, W, 2 * D) / 2) / max(D, 1e-6)
+        Hx = np.where(xs < 0, Hx * noise, Hx)
+
+    top = np.zeros((nx, ny, 3))
+    for i, x in enumerate(xs):
+        g = np.sqrt(np.clip(1.0 - (ys / half_w) ** 2, MIN_EDGE_FRAC, 1.0))
+        top[i, :, 0] = x
+        top[i, :, 1] = ys
+        top[i, :, 2] = Hx[i] * g
+
+    n = nx * ny
+    V = np.vstack([top.reshape(-1, 3), top.reshape(-1, 3) * np.array([1, 1, 0])])
+    idx_top = np.arange(n).reshape(nx, ny)
+    idx_bot = (np.arange(n) + n).reshape(nx, ny)
+
     faces = []
-    for i in range(len(xs) - 1):
-        a, b = rows[i], rows[i + 1]
-        for j in range(n_phi - 1):
-            faces += [[a + j, b + j, b + j + 1], [a + j, b + j + 1, a + j + 1]]
-    # 两端封口（扇面）
-    for i, sign in ((0, -1), (len(xs) - 1, 1)):
-        base = rows[i]
-        cx = float(xs[i])
-        c = len(verts)
-        verts = np.vstack([verts, [cx, 0.0, 0.0]])
-        for j in range(n_phi - 1):
-            if sign < 0:
-                faces.append([base + j, base + j + 1, c])
-            else:
-                faces.append([base + j + 1, base + j, c])
-    # 底面 z=0：把每一排的两个端点连起来（phi=0 与 phi=n_phi-1 都在 z=0）
-    for i in range(len(xs) - 1):
-        a, b = rows[i], rows[i + 1]
-        faces.append([a, a + n_phi - 1, b + n_phi - 1])
-        faces.append([a, b + n_phi - 1, b])
-    m = trimesh.Trimesh(verts, np.array(faces, dtype=np.int64), process=True)
-    m.merge_vertices()
+    for i in range(nx - 1):
+        for j in range(ny - 1):
+            a, b = idx_top[i, j], idx_top[i + 1, j]
+            c, d = idx_top[i + 1, j + 1], idx_top[i, j + 1]
+            faces += [[a, b, c], [a, c, d]]
+            a2, b2 = idx_bot[i, j], idx_bot[i + 1, j]
+            c2, d2 = idx_bot[i + 1, j + 1], idx_bot[i, j + 1]
+            faces += [[a2, c2, b2], [a2, d2, c2]]
+    for i in range(nx - 1):
+        for j, flip in ((0, False), (ny - 1, True)):
+            t0, t1 = idx_top[i, j], idx_top[i + 1, j]
+            b0, b1 = idx_bot[i, j], idx_bot[i + 1, j]
+            quad = [t0, t1, b1, b0] if not flip else [t0, b0, b1, t1]
+            faces += [[quad[0], quad[1], quad[2]], [quad[0], quad[2], quad[3]]]
+    for j in range(ny - 1):
+        for i, flip in ((0, True), (nx - 1, False)):
+            t0, t1 = idx_top[i, j], idx_top[i, j + 1]
+            b0, b1 = idx_bot[i, j], idx_bot[i, j + 1]
+            quad = [t0, t1, b1, b0] if not flip else [t0, b0, b1, t1]
+            faces += [[quad[0], quad[1], quad[2]], [quad[0], quad[2], quad[3]]]
+
+    # process=False：保持我们算好的拓扑，不让 trimesh 合并顶点
+    m = trimesh.Trimesh(V, np.array(faces, dtype=np.int64), process=False)
     if float(m.volume) < 0:
         m.invert()
-    return m, L_back
+    return m, Lback
 
 
-def _wedge(x0, L, H, W2, z0=0.0):
-    """从 (x0,H) 斜降到 (x0+L,0) 的楔块（沿 +x 下降）。"""
-    v = np.array([[x0, -W2, z0], [x0 + L, -W2, z0], [x0, -W2, z0 + H],
-                  [x0, W2, z0], [x0 + L, W2, z0], [x0, W2, z0 + H]])
-    f = np.array([[0, 2, 1], [1, 2, 5], [1, 5, 4], [0, 1, 3], [3, 1, 4],
-                  [0, 3, 2], [3, 5, 2], [2, 5, 4]], dtype=np.int64)
-    m = trimesh.Trimesh(v, f, process=True)
-    if m.volume < 0:
-        m.invert()
-    return m
+def non_manifold_edges(m):
+    e = Counter()
+    for f in m.faces:
+        for a, b in ((f[0], f[1]), (f[1], f[2]), (f[2], f[0])):
+            e[tuple(sorted((int(a), int(b))))] += 1
+    return sum(1 for v in e.values() if v != 2)
 
 
-def _box(x0, dx, h, W2, z0=0.0):
-    v = np.array([[x0, -W2, z0], [x0 + dx, -W2, z0], [x0 + dx, -W2, z0 + h],
-                  [x0, -W2, z0 + h], [x0, W2, z0], [x0 + dx, W2, z0],
-                  [x0 + dx, W2, z0 + h], [x0, W2, z0 + h]])
-    f = np.array([[0, 2, 1], [0, 3, 2], [4, 5, 6], [4, 6, 7], [0, 1, 5], [0, 5, 4],
-                  [1, 2, 6], [1, 6, 5], [2, 3, 7], [2, 7, 6], [3, 0, 4], [3, 4, 7]],
-                 dtype=np.int64)
-    m = trimesh.Trimesh(v, f, process=True)
-    if m.volume < 0:
-        m.invert()
-    return m
-
-
-def descriptors(mesh, H, W):
-    """真值背面描述量（只在评测/分析侧使用）。"""
-    vs = np.asarray(mesh.vertices)
-    back = vs[vs[:, 0] >= -1e-6]
+def descriptors(m, H):
+    vs = np.asarray(m.vertices)
+    back = vs[vs[:, 0] >= -1e-9]
     if len(back) == 0:
-        return {'type': 'none'}
+        return {}
     crest = float(back[:, 0].min())
-    L_back = float(back[:, 0].max() - crest)
+    Lb = float(back[:, 0].max() - crest)
     zs = back[:, 2]
-    return {'type': 'unknown', 'crest_x': round(crest, 4),
-            'L_back': round(L_back, 4), 'H_max': round(float(zs.max()), 4),
-            'back_slope_deg': round(float(np.degrees(np.arctan(
-                (zs.max() - zs.min()) / max(L_back, 1e-6)))), 2)}
+    return {'crest_x': round(crest, 4), 'L_back': round(Lb, 4),
+            'H_max': round(float(zs.max()), 4),
+            'max_step_down': round(float(H - zs.min()), 4)}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
-    ap.add_argument('--seeds', default='0,1')
-    ap.add_argument('--heights', default='1.4,2.1')
+    ap.add_argument('--seeds', default='0,1,2')
+    ap.add_argument('--heights', default='1.4,2.1,2.8')
     ap.add_argument('--widths', default='0.24,0.55')
     a = ap.parse_args()
     out = pathlib.Path(a.out)
     (out / 'mesh').mkdir(parents=True, exist_ok=True)
-    env = None
 
-    metas = []
+    metas, bad = [], 0
     for seed in [int(x) for x in a.seeds.split(',')]:
         for hr in [float(x) for x in a.heights.split(',')]:
             H = hr * WHEEL_R
             for W in [float(x) for x in a.widths.split(',')]:
-                D = 0.12 + 0.06 * ((seed * 7 + int(hr * 10)) % 3) / 2
+                D = 0.12 + 0.02 * ((seed + int(hr * 10)) % 4)
                 for kind in BACK_TYPES:
-                    pair, Lb = twin_solid(kind, H, W, D, seed=seed)
+                    m, Lb = twin_solid(kind, H, W, D, seed=seed)
+                    nm = non_manifold_edges(m)
+                    bad += (nm > 0)
                     cid = f's{seed}_h{int(hr*10)}_w{int(W*100)}_{kind}'
-                    p = out / 'mesh' / f'{cid}.stl'
-                    pair.export(p)
-                    d = descriptors(pair, H, W)
+                    m.export(out / 'mesh' / f'{cid}.stl')
+                    d = descriptors(m, H)
                     d.update({'type': kind, 'case_id': cid, 'front_seed': seed,
-                              'H': round(H, 4), 'W': round(W, 4), 'D_front': round(D, 4),
-                              'watertight': bool(pair.is_watertight),
-                              'volume_m3': round(float(abs(pair.volume)), 6)})
+                              'H': round(H, 4), 'W': round(W, 4),
+                              'D_front': round(D, 4), 'L_back_target': round(Lb, 4),
+                              'watertight': bool(m.is_watertight),
+                              'non_manifold_edges': nm,
+                              'volume_m3': round(float(abs(m.volume)), 6),
+                              'n_faces': int(len(m.faces))})
                     metas.append(d)
-    # 同正面对照：5 种背面的正面顶点应完全一致（用正面包围盒与体积近似核验）
     (out / 'twins_meta.json').write_text(json.dumps(metas, indent=2, ensure_ascii=False))
-    print(f'生成 {len(metas)} 个双胞胎障碍 -> {out/"mesh"}')
-    for m in metas[:6]:
-        print(f"  {m['case_id']:28s} H={m['H']:.3f} W={m['W']:.2f} "
-              f"背深 L={m['L_back']:.3f} 坡={m['back_slope_deg']:.1f}° 水密={m['watertight']}")
-    return 0
+    print(f'生成 {len(metas)} 个双胞胎 -> {out/"mesh"}；非流形 {bad} 个')
+    for m in metas[:5]:
+        print(f"  {m['case_id']:26s} 水密={m['watertight']} 非流形={m['non_manifold_edges']} "
+              f"背深={m['L_back']:.3f} 体积={m['volume_m3']:.5f}")
+    return 0 if bad == 0 else 1
 
 
 if __name__ == '__main__':

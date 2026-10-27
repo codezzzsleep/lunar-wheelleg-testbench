@@ -119,14 +119,34 @@ class WheelLegEnv:
 
         # 有地形 heightfield 时不要再叠一块平面地面（会填平坑洼、遮挡射线测量）
         xml = build_scene.moon_scene_xml(floor=False)
+        cam = self.spec.get('front_cam')
+        if cam:
+            # 机头前上方相机；MuJoCo 相机朝自身 -z，俯角用绕 y 轴旋转实现
+            # MuJoCo 相机朝自身 -z（机体水平时就是正下方）。绕 +y 旋转 theta 后
+            # 视线 = (-sinθ, 0, -cosθ)。要朝 +x 且下俯 |pitch|：
+            #   -sinθ = cos(pitch), -cosθ = -sin(|pitch|)  =>  θ = -(90 - |pitch|)
+            pitch = float(cam.get('pitch_deg', -12.0))
+            ang = np.deg2rad(-(90.0 + pitch))
+            q = f'{np.cos(ang/2):.6f} 0 {np.sin(ang/2):.6f} 0'
+            pos = cam.get('pos', [0.30, 0.0, 0.06])
+            tag = (f'<camera name="front_cam" pos="{pos[0]} {pos[1]} {pos[2]}" '
+                   f'quat="{q}" fovy="{cam.get("fovy", 70.0)}"/>')
+            i = xml.find('<body name="base_link"')
+            if i >= 0:
+                j = xml.find('>', i) + 1
+                xml = xml[:j] + tag + xml[j:]
         xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax']))
 
         assets, bodies, placements, bounds = [], [], [], []
         for i, obj in enumerate(self.spec.get('objects', [])):
-            d = self.asset_root / obj['asset']
-            res = _resolve_parts(d)
-            if not res:
-                raise FileNotFoundError(f'物体资产不可用：{d}')
+            d = (pathlib.Path(obj['mesh_file']) if obj.get('mesh_file')
+                 else self.asset_root / obj['asset'])
+            if obj.get('mesh_file'):
+                res = [str(pathlib.Path(obj['mesh_file']).resolve())]
+            else:
+                res = _resolve_parts(d)
+                if not res:
+                    raise FileNotFoundError(f'物体资产不可用：{d}')
             yaw = np.deg2rad(float(obj.get('yaw_deg', 0.0)))
             quat = f'{np.cos(yaw/2):.6f} 0 0 {np.sin(yaw/2):.6f}'
 
@@ -140,7 +160,8 @@ class WheelLegEnv:
             # 形状被扭曲。现在只按高度等比缩放，横向宽度保持自然比例；
             # 通道宽度由场景按障碍实际横向尺寸决定，保证仍然封路。
             target_h = obj.get('target_height_m')
-            man = runio.resolve_asset(d)['manifest'] or {}
+            man = ({} if obj.get('mesh_file')
+                   else runio.resolve_asset(d)['manifest'] or {})
             h0 = float(man.get('height_m') or 0)
             s_ = 1.0
             if target_h and h0 > 0:
@@ -153,13 +174,14 @@ class WheelLegEnv:
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
             verts = _world_vertices(res, float(obj['x']), float(obj['y']), yaw, scale=scale)
             body_z, place_meta = terrain.place_on_terrain(h, verts)
-            place_meta.update({'asset': obj['asset'], 'x': obj['x'], 'y': obj['y'],
+            place_meta.update({'asset': obj.get('asset') or pathlib.Path(obj['mesh_file']).name,
+                               'x': obj['x'], 'y': obj['y'],
                                'yaw_deg': obj.get('yaw_deg', 0.0),
                                'n_vertices': int(len(verts)),
                                'target_height_m': target_h,
                                'mesh_scale': [round(float(c), 5) for c in scale]})
             placements.append(place_meta)
-            bounds.append({'asset': obj['asset'],
+            bounds.append({'asset': obj.get('asset') or pathlib.Path(obj['mesh_file']).name,
                            'x_min': float(verts[:, 0].min()),
                            'x_max': float(verts[:, 0].max()),
                            'y_min': float(verts[:, 1].min()),

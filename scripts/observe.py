@@ -69,6 +69,7 @@ def main():
     ap.add_argument('--height', type=int, default=960)
     ap.add_argument('--fovy', type=float, default=70.0)
     ap.add_argument('--crop-pad', type=float, default=0.35)
+    ap.add_argument('--mask-step', type=int, default=2, help='掩码射线采样步长')
     a = ap.parse_args()
 
     case = json.loads(pathlib.Path(a.case).read_text())
@@ -94,6 +95,8 @@ def main():
 
     r = mujoco.Renderer(m, a.height, a.width)
     r.update_scene(d, camera=cam_id)
+    # 关闭阴影：低角度方向光在 heightfield 上会产生锯齿状阴影瑕疵
+    r.scene.flags[mujoco.mjtRndFlag.mjRND_SHADOW] = 0
     rgb = r.render()
     r.enable_depth_rendering()
     r.update_scene(d, camera=cam_id)
@@ -107,27 +110,22 @@ def main():
     obs_geoms = {g for g in range(m.ngeom) if m.geom_bodyid[g] == obs_bid}
     cam_pos = np.array(d.cam_xpos[cam_id], dtype=np.float64)
     cam_mat = np.array(d.cam_xmat[cam_id], dtype=np.float64).reshape(3, 3)
-    step = 2                                   # 1/2 分辨率射线，再上采样
-    hs = np.arange(0, a.height, step)
-    ws = np.arange(0, a.width, step)
-    mask_small = np.zeros((len(hs), len(ws)), dtype=bool)
-    hit_id = np.full((len(hs), len(ws)), -1, dtype=np.int32)
-    for iy, yy in enumerate(hs):
-        for ix, xx in enumerate(ws):
-            # 图像 y 向下增大，而 MuJoCo 相机 +Y 向上 -> y 分量取负。
-            # 这一点用非对称标定物验证（见 scripts/calibrate_observe.py）。
-            pc = np.array([(xx - K['cx']) / K['fx'],
-                           -(yy - K['cy']) / K['fy'], -1.0])
-            vd = cam_mat @ pc
-            gid = np.array([-1], dtype=np.int32)
-            dist = mujoco.mj_ray(m, d, cam_pos, vd, None, 1, -1, gid)
-            if dist > 0 and int(gid[0]) in obs_geoms:
-                mask_small[iy, ix] = True
-                hit_id[iy, ix] = int(gid[0])
-    mask = np.repeat(np.repeat(mask_small, step, axis=0), step, axis=1)[:a.height, :a.width]
+    # 掩码与深度全部来自**渲染**：把障碍移走再渲一次，两次深度不同的像素就是障碍。
+    # 射线采样在轮廓边缘有约 ±10 mm 的偏差（网格对齐），改用渲染深度后与 align 同一口径。
+    bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
+    keep = m.body_pos[bid].copy()
+    m.body_pos[bid] = [0.0, 0.0, -80.0]
+    mujoco.mj_forward(m, d)
+    r.enable_depth_rendering()
+    r.update_scene(d, camera=cam_id)
+    depth_bg = r.render().copy()
+    r.disable_depth_rendering()
+    m.body_pos[bid] = keep
+    mujoco.mj_forward(m, d)
+
+    mask = depth < depth_bg - 1e-3
     seg = np.zeros((a.height, a.width, 2), dtype=np.int32)
-    seg[:mask.shape[0], :mask.shape[1], 0] = np.repeat(
-        np.repeat(hit_id, step, 0), step, 1)[:a.height, :a.width] + 1
+    seg[mask, 0] = 1
 
     K = intrinsics(a.width, a.height, a.fovy)
     # 反投影：相机坐标系 -> 世界
@@ -166,9 +164,17 @@ def main():
     np.save(out / 'depth.npy', depth)
     np.save(out / 'visible_points.npy', pw)
     Image.fromarray(rgb[cy0:cy1, cx0:cx1]).save(out / 'crop_raw.png')
-    # 台账像素之外一律涂白：背景地形在掠射角有噪点，会干扰图生
-    obj_only = np.full_like(rgb, 255)
-    obj_only[mask] = rgb[mask]
+    # 台账像素之外一律涂白：掩码膨胀 2px 再羽化 2px，避免边界出现灰边
+    m_ = mask.copy()
+    for _ in range(2):
+        m_ = (m_ | np.roll(m_, 1, 0) | np.roll(m_, -1, 0)
+              | np.roll(m_, 1, 1) | np.roll(m_, -1, 1))
+    alpha = m_.astype(np.float32)
+    for _ in range(2):                       # 简单盒式羽化
+        alpha = (alpha + np.roll(alpha, 1, 0) + np.roll(alpha, -1, 0)
+                 + np.roll(alpha, 1, 1) + np.roll(alpha, -1, 1)) / 5.0
+    a3 = alpha[:, :, None]
+    obj_only = (rgb.astype(np.float32) * a3 + 255.0 * (1 - a3)).astype(np.uint8)
     Image.fromarray(obj_only).save(out / 'masked_only.png')
 
     # 真实补成正方形并输出 1024²：以掩码中心为心，边长 = max(宽,高)*(1+2*pad)

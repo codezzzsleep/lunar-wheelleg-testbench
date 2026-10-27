@@ -39,6 +39,11 @@ def moon_scene_xml(gravity=DEFAULT_GRAVITY, friction=DEFAULT_FRICTION, floor=Tru
     # 并且让地形测量射线先打到平面而不是地形。
     ground = (f'\n    <geom name="lunar_ground" type="plane" size="0 0 0.05"'
               f' friction="{friction}" rgba=".28 .28 .32 1"/>') if floor else ''
+    # 观察渲染需要可辨认的明暗；给一个弱环境光，避免标定物落在全黑阴影里
+    visual = ('\n  <visual>\n    <headlight ambient="0.38 0.38 0.40" '
+              'diffuse="0.45 0.45 0.45" specular="0.1 0.1 0.1"/>\n  </visual>')
+    if '<visual>' not in xml:
+        xml = xml.replace('</mujoco>', visual + '\n</mujoco>')
     xml, n = re.subn(r'<worldbody>', '<worldbody>' + light + ground, xml, count=1)
     assert n == 1, 'go2w.xml 里没有找到 <worldbody>'
     return xml

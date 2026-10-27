@@ -1,0 +1,74 @@
+{
+  "obs": "runs/unseen/obs/planA",
+  "mesh": "runs/unseen/gate_p/planA/mesh/s7_h21_w34_drop.stl",
+  "native": [
+    1280,
+    960
+  ],
+  "rows": [
+    {
+      "name": "S0 同场景同路径 @原生 1280x960",
+      "n_px": 14542,
+      "n_edge": 1365,
+      "n_inner": 13177,
+      "median_mm": 0.0,
+      "p95_mm": 0.0,
+      "rms_mm": 0.0,
+      "signed_mean_mm": 0.0,
+      "max_abs_mm": 0.0,
+      "frac_over_10mm": 0.0,
+      "frac_over_100mm": 0.0,
+      "edge_rms_mm": 0.0,
+      "inner_rms_mm": 0.0,
+      "iou": 0.9779
+    },
+    {
+      "name": "S1 网格往返 @原生",
+      "n_px": 14542,
+      "n_edge": 1365,
+      "n_inner": 13177,
+      "median_mm": 0.0,
+      "p95_mm": 0.0,
+      "rms_mm": 0.0,
+      "signed_mean_mm": 0.0,
+      "max_abs_mm": 0.0,
+      "frac_over_10mm": 0.0,
+      "frac_over_100mm": 0.0,
+      "edge_rms_mm": 0.0,
+      "inner_rms_mm": 0.0,
+      "iou": 0.9779
+    },
+    {
+      "name": "S2 手工位姿(posed) @原生",
+      "n_px": 14538,
+      "n_edge": 1361,
+      "n_inner": 13177,
+      "median_mm": -0.18,
+      "p95_mm": 0.2,
+      "rms_mm": 0.45,
+      "signed_mean_mm": -0.16,
+      "max_abs_mm": 17.89,
+      "frac_over_10mm": 0.0008,
+      "frac_over_100mm": 0.0,
+      "edge_rms_mm": 0.19,
+      "inner_rms_mm": 0.47,
+      "iou": 0.9779
+    },
+    {
+      "name": "S3 降到 640x480",
+      "n_px": 3622,
+      "n_edge": 650,
+      "n_inner": 2972,
+      "median_mm": 0.02,
+      "p95_mm": 1.48,
+      "rms_mm": 3.8,
+      "signed_mean_mm": 0.22,
+      "max_abs_mm": 132.05,
+      "frac_over_10mm": 0.0157,
+      "frac_over_100mm": 0.0003,
+      "edge_rms_mm": 8.16,
+      "inner_rms_mm": 1.73,
+      "iou": 0.9747
+    }
+  ]
+}

@@ -68,7 +68,7 @@ def main():
     ap.add_argument('--width', type=int, default=1280)
     ap.add_argument('--height', type=int, default=960)
     ap.add_argument('--fovy', type=float, default=70.0)
-    ap.add_argument('--crop-pad', type=float, default=0.15)
+    ap.add_argument('--crop-pad', type=float, default=0.35)
     a = ap.parse_args()
 
     case = json.loads(pathlib.Path(a.case).read_text())
@@ -166,6 +166,10 @@ def main():
     np.save(out / 'depth.npy', depth)
     np.save(out / 'visible_points.npy', pw)
     Image.fromarray(rgb[cy0:cy1, cx0:cx1]).save(out / 'crop_raw.png')
+    # 台账像素之外一律涂白：背景地形在掠射角有噪点，会干扰图生
+    obj_only = np.full_like(rgb, 255)
+    obj_only[mask] = rgb[mask]
+    Image.fromarray(obj_only).save(out / 'masked_only.png')
 
     # 真实补成正方形并输出 1024²：以掩码中心为心，边长 = max(宽,高)*(1+2*pad)
     side_src = int(max(x1 - x0, y1 - y0) * (1 + 2 * a.crop_pad))
@@ -179,7 +183,7 @@ def main():
     px0, py0 = max(0, sx0), max(0, sy0)
     px1, py1 = min(a.width, sx1), min(a.height, sy1)
     if px1 > px0 and py1 > py0:
-        canvas.paste(Image.fromarray(rgb[py0:py1, px0:px1]), (px0 - sx0, py0 - sy0))
+        canvas.paste(Image.fromarray(obj_only[py0:py1, px0:px1]), (px0 - sx0, py0 - sy0))
     crop1024 = canvas.resize((1024, 1024), Image.LANCZOS)
     crop1024.save(out / 'crop_white.png')
     canvas.save(out / 'crop_white_src.png')

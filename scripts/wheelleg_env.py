@@ -121,13 +121,27 @@ class WheelLegEnv:
         xml = build_scene.moon_scene_xml(floor=False)
         cam = self.spec.get('front_cam')
         if cam:
-            # 机头前上方相机；MuJoCo 相机朝自身 -z，俯角用绕 y 轴旋转实现
-            # MuJoCo 相机朝自身 -z（机体水平时就是正下方）。绕 +y 旋转 theta 后
-            # 视线 = (-sinθ, 0, -cosθ)。要朝 +x 且下俯 |pitch|：
-            #   -sinθ = cos(pitch), -cosθ = -sin(|pitch|)  =>  θ = -(90 - |pitch|)
-            pitch = float(cam.get('pitch_deg', -12.0))
-            ang = np.deg2rad(-(90.0 + pitch))
-            q = f'{np.cos(ang/2):.6f} 0 {np.sin(ang/2):.6f} 0'
+            # 机头前上方相机。MuJoCo 相机沿自身 -z 看、图像 up 是自身 +y。
+            # 只用"绕 y 轴转"会把图像 up 留在世界 +y 上 -> 地平线竖着（曾犯此错）。
+            # 正确做法：直接构造相机基 —— 视线朝 +x 且下俯，图像 up 取世界 +z 的投影。
+            pitch = float(cam.get('pitch_deg', -12.0))       # 负值 = 向下俯
+            p_ = np.deg2rad(pitch)
+            fwd = np.array([np.cos(p_), 0.0, np.sin(p_)])    # 视线方向（世界系）
+            fwd /= np.linalg.norm(fwd)
+            world_up = np.array([0.0, 0.0, 1.0])
+            right = np.cross(fwd, world_up)
+            if np.linalg.norm(right) < 1e-6:                 # 正上方看时退化
+                right = np.array([0.0, 1.0, 0.0])
+            right /= np.linalg.norm(right)
+            up = np.cross(right, fwd)                        # 再正交化
+            up /= np.linalg.norm(up)
+            # 旋转矩阵列 = 相机轴在世界中的表示（x=right, y=up, z=-fwd）
+            R = np.stack([right, up, -fwd], axis=1)
+            qw = np.sqrt(max(0.0, 1.0 + R[0, 0] + R[1, 1] + R[2, 2])) / 2.0
+            qx = (R[2, 1] - R[1, 2]) / (4 * qw) if qw > 1e-8 else 0.0
+            qy = (R[0, 2] - R[2, 0]) / (4 * qw) if qw > 1e-8 else 0.0
+            qz = (R[1, 0] - R[0, 1]) / (4 * qw) if qw > 1e-8 else 0.0
+            q = f'{qw:.6f} {qx:.6f} {qy:.6f} {qz:.6f}'
             pos = cam.get('pos', [0.30, 0.0, 0.06])
             tag = (f'<camera name="front_cam" pos="{pos[0]} {pos[1]} {pos[2]}" '
                    f'quat="{q}" fovy="{cam.get("fovy", 70.0)}"/>')

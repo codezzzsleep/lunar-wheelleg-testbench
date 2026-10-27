@@ -67,25 +67,29 @@ def apply_T(mesh, M):
     return trimesh.Trimesh(v2, np.asarray(mesh.faces), process=False)
 
 
-def render_eval(mesh_world, obs, W=320, H=240, tmpdir=None):
+def render_eval(mesh_world, obs, W=640, H=480, tmpdir=None):
     """
-    用与观测同一相机渲染候选，返回 mask IoU / 深度 RMS / 自由空间违例。
-    候选以 mesh_file 形式放入场景（碰撞用凸包，这里只关心渲染轮廓与深度）。
+    用与观测**同一相机**重渲染候选，返回 mask IoU / 深度 RMS / 自由空间违例。
+
+    轮廓用"渲染深度差分"得到：把障碍移走再渲一次，两次深度不同的像素就是候选。
+    这比射线查询更贴近"渲染深度→点云"的验收口径，也避免射线与渲染不一致。
     """
+    from PIL import Image as _I
     obsd = json.loads((pathlib.Path(obs) / 'observation.json').read_text())
     fovy = obsd['camera']['fovy']
     cam_pos_body = obsd['camera']['pos_body']
     pitch = obsd['camera']['pitch_deg']
 
-    spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.8, name='align')
-    spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
-    spec['skill_cfg'] = {'task': 'M'}
-    # 必须走 posed 路径：mesh_file 会按 target_height_m 重新缩放，
-    # 那会把已经算好的世界变换破坏掉。
     pd = pathlib.Path(tmpdir).parent / 'posed_tmp'
     pd.mkdir(parents=True, exist_ok=True)
     (pd / 'mesh.stl').write_bytes(pathlib.Path(tmpdir).read_bytes())
     (pd / 'manifest.json').write_text(json.dumps({'parts': ['mesh.stl']}))
+
+    spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.8, name='align')
+    spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
+    spec['skill_cfg'] = {'task': 'M'}
+    # 必须与观测时同一初态，否则相机整体平移，轮廓对不上
+    spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     spec['objects'] = [{'posed_dir': str(pd), 'x': 0.0, 'y': 0.0,
                         'yaw_deg': 0.0, 'target_height_m': None}]
     spec['front_cam'] = {'pos': cam_pos_body, 'pitch_deg': pitch, 'fovy': fovy}
@@ -95,51 +99,41 @@ def render_eval(mesh_world, obs, W=320, H=240, tmpdir=None):
     mujoco.mj_forward(m, d)
     m.vis.global_.offwidth, m.vis.global_.offheight = W, H
     cid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
+    bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
+
     r = mujoco.Renderer(m, H, W)
     r.enable_depth_rendering()
     r.update_scene(d, camera=cid)
-    dep = r.render()
+    with_obj = r.render().copy()
+    keep = m.body_pos[bid].copy()
+    m.body_pos[bid] = [0.0, 0.0, -50.0]          # 移走障碍再渲一次（改模型位姿）
+    mujoco.mj_forward(m, d)
+    r.update_scene(d, camera=cid)
+    without = r.render().copy()
+    m.body_pos[bid] = keep
+    mujoco.mj_forward(m, d)
     r.disable_depth_rendering()
 
-    from PIL import Image as _I
+    cand_mask = (with_obj < without - 1e-3)
     obs_mask = np.array(_I.open(pathlib.Path(obs) / 'mask.png').convert('L')
-                        .resize((W, H))) > 127
+                        .resize((W, H), _I.NEAREST)) > 127
     obs_dep = np.load(pathlib.Path(obs) / 'depth.npy')
-    obs_dep = np.array(_I.fromarray(obs_dep.astype(np.float32), mode='F').resize((W, H)))
-
-    cam_bid = 1
-    obs_geoms = {g for g in range(m.ngeom)
-                 if m.geom_bodyid[g] == mujoco.mj_name2id(
-                     m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')}
-    # 渲染深度里，候选占据的像素 = 深度小于"空场景背景深度"的像素
-    cand_mask = np.zeros((H, W), bool)
-    vd = None
-    cam_pos = np.array(d.cam_xpos[cid]); cam_mat = np.array(d.cam_xmat[cid]).reshape(3, 3)
-    K = obsd['intrinsics']
-    # 用射线判定候选是否在该像素上（与观测链同一方法）
-    for yy in range(0, H, 2):
-        for xx in range(0, W, 2):
-            pc = np.array([(xx * obsd['image']['W'] / W - K['cx']) / K['fx'],
-                           -(yy * obsd['image']['H'] / H - K['cy']) / K['fy'], -1.0])
-            gid = np.array([-1], dtype=np.int32)
-            dist = mujoco.mj_ray(m, d, cam_pos, cam_mat @ pc, None, 1, -1, gid)
-            if dist > 0 and int(gid[0]) in obs_geoms:
-                cand_mask[yy, xx] = True
-    cand_mask = np.repeat(np.repeat(cand_mask, 2, 0), 2, 1)[:H, :W]
+    obs_dep = np.array(_I.fromarray(obs_dep.astype(np.float32), mode='F')
+                       .resize((W, H), _I.NEAREST))
 
     inter = (cand_mask & obs_mask).sum()
     union = (cand_mask | obs_mask).sum()
     iou = float(inter / union) if union else 0.0
     both = cand_mask & obs_mask
     if both.sum() >= 20:
-        dd = np.abs(dep[both] - obs_dep[both])
+        dd = np.abs(with_obj[both] - obs_dep[both])
         rms = float(np.sqrt(np.mean(dd ** 2)))
     else:
         rms = float('inf')
-    # 自由空间违例：候选出现在观测认为空的地方，且比观测背景更近
     free = cand_mask & (~obs_mask)
     fsv = float(free.sum() / max(1, cand_mask.sum()))
-    return {'iou': round(iou, 4), 'rms_m': round(rms, 5), 'freespace': round(fsv, 4),
+    return {'iou': round(iou, 4), 'rms_m': round(rms, 5) if rms != float('inf') else None,
+            'freespace': round(fsv, 4),
             'cand_px': int(cand_mask.sum()), 'obs_px': int(obs_mask.sum())}
 
 
@@ -168,13 +162,15 @@ def align(candidate, obs, out, workdir):
             mw = apply_T(mesh, M)
             mw.export(tmp)
             ev = render_eval(mw, obs, tmpdir=tmp)
-            score = (ev['iou'], -ev['rms_m'], -ev['freespace'])
+            score = (ev['iou'], -(ev['rms_m'] if ev['rms_m'] is not None else 9.9),
+                     -ev['freespace'])
             if best is None or score > best['score']:
                 best = {'score': score, 'M': M, 'eval': ev,
                         'scale': float(s0 * sc), 'yaw': float(yaw)}
     ev = best['eval']
     thr = max(RMS_ABS, RMS_REL * float(vis['H_vis']))
-    ok = (ev['iou'] >= 0.85 and ev['rms_m'] <= thr and ev['freespace'] <= 0.05)
+    ok = (ev['iou'] >= 0.85 and ev['rms_m'] is not None
+          and ev['rms_m'] <= thr and ev['freespace'] <= 0.05)
     rec = {'candidate': str(candidate), 'observation': str(obs),
            'T_world_from_asset': best['M'].tolist(),
            'direction': 'asset -> world',

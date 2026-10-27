@@ -1,0 +1,59 @@
+{
+  "candidate": "runs/unseen/fixtures/fixture_A.glb",
+  "observation": "runs/unseen/obs/planA_v2",
+  "T_world_from_asset": [
+    [
+      0.8540369701956096,
+      0.1791955757478582,
+      0.0,
+      1.7999498454340292
+    ],
+    [
+      -0.1791955757478582,
+      0.8540369701956096,
+      0.0,
+      -0.0010525448981071042
+    ],
+    [
+      0.0,
+      0.0,
+      0.8726340589436691,
+      -0.43631702947183454
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "direction": "asset -> world",
+  "scale_uniform": 0.8726340589436691,
+  "yaw_deg": -11.85,
+  "tx_m": -0.001,
+  "ty_m": -0.001,
+  "metrics": {
+    "mask_iou": 0.9911,
+    "cand_px": 14749,
+    "obs_px": 14660,
+    "n_inter": 14639,
+    "resolution": [
+      1280,
+      960
+    ],
+    "depth_med_mm": -0.467,
+    "depth_p95_mm": 1.043,
+    "depth_inner_rms_mm": 1.862,
+    "depth_edge_rms_mm": 5.286,
+    "vis_pt_med_mm": 0.449,
+    "vis_pt_p95_mm": 0.797,
+    "vis_pt_n": 14660,
+    "metric_version": "align-metric/v2",
+    "freespace_violation": 0.0247
+  },
+  "vis_pt_p95_threshold_mm": 5.69,
+  "iou_threshold": 0.85,
+  "freespace_threshold": 0.05,
+  "pass": true,
+  "source_kind": "fixture"
+}

@@ -97,6 +97,7 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     # 搜索阶段不计算点面距离（很慢），只在原生分辨率验收时计算
     if want_vis_pt is None:
         want_vis_pt = (W == obsd['image']['W'] and H == obsd['image']['H'])
+    n_sub = want_vis_pt if isinstance(want_vis_pt, int) and want_vis_pt is not True else 0
     H = H or obsd['image']['H']
 
     pd = pathlib.Path(tmpdir).parent / 'posed_tmp'
@@ -167,19 +168,19 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     # 观测可见点 -> 候选表面 的最近距离（原方案"可见面距离"）
     try:
         pw = np.load(pathlib.Path(obs) / 'visible_points.npy') if want_vis_pt else np.zeros(0)
+        if n_sub and len(pw) > n_sub:      # 固定种子的确定性子集
+            pw = pw[np.random.default_rng(0).choice(len(pw), n_sub, replace=False)]
         if pw.size and cand_mask.any():
             if len(pw) > 20000:
                 idx = np.random.default_rng(0).choice(len(pw), 20000, replace=False)
                 pw = pw[idx]
-            surf = mesh_world.sample(20000)
-            # 分块算最近距离，避免 (N, M, 3) 撑爆内存
-            nn = np.empty(len(pw))
-            for i in range(0, len(pw), 512):
-                blk = pw[i:i + 512]
-                d2 = ((blk[:, None, :] - surf[None, :, :]) ** 2).sum(-1)
-                nn[i:i + 512] = np.sqrt(d2.min(1))
+            # align-metric/v2：精确点到三角面距离（纯 numpy 实现，无 rtree/scipy）
+            from meshdist import point_to_mesh_distance
+            nn = point_to_mesh_distance(mesh_world, pw, chunk=256)
             out['vis_pt_med_mm'] = round(float(np.median(nn)) * 1000, 3)
             out['vis_pt_p95_mm'] = round(float(np.percentile(nn, 95)) * 1000, 3)
+            out['vis_pt_n'] = int(len(nn))
+            out['metric_version'] = 'align-metric/v2'
     except Exception as e:
         out['vis_pt_error'] = f'{type(e).__name__}'
 
@@ -216,43 +217,53 @@ def align(candidate, obs, out, workdir):
             mw.export(tmp)
             # 搜索阶段用低分辨率（快）；验收阶段一律回到原生分辨率，
             # 因为 640x480 会把边缘深度跳变放大（实测 RMS 0->42 mm）。
-            ev = render_eval(mw, obs, tmpdir=tmp, W=640, H=480)
-            score = (ev['mask_iou'], -(ev.get('vis_pt_p95_mm') or 9e9),
-                     -ev['freespace_violation'])
+            ev = render_eval(mw, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=800)
+            vm0 = ev.get('vis_pt_med_mm')
+            ok_c = (ev['mask_iou'] >= 0.85 and ev['freespace_violation'] <= 0.05)
+            score = (1 if ok_c else 0, -(vm0 if vm0 is not None else 9e9))
             if best is None or score > best['score']:
                 best = {'score': score, 'M': M, 'eval': ev,
                         'scale': float(s0 * sc), 'yaw': float(yaw)}
-    # ---- 局部精修：粗搜索步长(5°,0.1 scale)不足以把可见面误差降到 mm 级 ----
-    base_scale, base_yaw = best['scale'], best['yaw']
-    for it in range(2):
-        step_scale = [0.99, 1.0, 1.01]
-        step_yaw = [-1.0, 0.0, 1.0]
-        step_tx = [-0.008, 0.0, 0.008]        # 平移也必须参与优化：
-        step_ty = [-0.008, 0.0, 0.008]        # 从包围盒推导的平移有残差
+    # ---- 局部精修：坐标下降（每轮逐变量搜索，步长逐级减半）----
+    # 精修阶段只用廉价的内部深度残差；精确 vis_pt 只在最后验收算一次。
+    cur = dict(scale=best['scale'], yaw=best['yaw'], tx=0.0, ty=0.0)
+    base_M = best['M']
+
+    def eval_params(par):
+        m2 = apply_T(mesh, T(par['scale'], par['yaw'], 0, 0, 0))
+        b2 = m2.bounds
+        M2 = T(par['scale'], par['yaw'], cx + par['tx'] - b2[0][0],
+               par['ty'] - (b2[0][1] + b2[1][1]) / 2, -b2[0][2])
+        mw2 = apply_T(mesh, M2)
+        mw2.export(tmp)
+        ev2 = render_eval(mw2, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=1200)
+        ok_c = (ev2['mask_iou'] >= 0.85 and ev2['freespace_violation'] <= 0.05)
+        vm = ev2.get('vis_pt_med_mm')
+        return (1 if ok_c else 0, -(vm if vm is not None else 9e9)), M2, ev2
+
+    best_score, best_M, best_ev = eval_params(cur)
+    for it in range(4):
+        ds = [0.01, 0.005, 0.0025, 0.001][it]
+        dy = [1.0, 0.5, 0.25, 0.1][it]
+        dt = [0.008, 0.004, 0.002, 0.001][it]
         improved = False
-        for ds in step_scale:
-            for dy in step_yaw:
-              for dtx in step_tx:
-                for dty in step_ty:
-                    sc2 = base_scale * ds
-                    yaw2 = base_yaw + dy
-                    m2 = apply_T(mesh, T(sc2, yaw2, 0, 0, 0))
-                    b2 = m2.bounds
-                    M2 = T(sc2, yaw2, cx + dtx - b2[0][0],
-                           dty - (b2[0][1] + b2[1][1]) / 2, -b2[0][2])
-                    mw2 = apply_T(mesh, M2)
-                    mw2.export(tmp)
-                    ev2 = render_eval(mw2, obs, tmpdir=tmp, W=640, H=480,
-                                      want_vis_pt=True)
-                    score2 = (ev2['mask_iou'], -(ev2.get('vis_pt_p95_mm') or 9e9),
-                              -ev2['freespace_violation'])
-                    if score2 > best['score']:
-                        best = {'score': score2, 'M': M2, 'eval': ev2,
-                                'scale': float(sc2), 'yaw': float(yaw2)}
-                        base_scale, base_yaw = sc2, yaw2
-                        improved = True
-        if not improved:
+        for var, deltas in (('scale', [1 - ds, 1 + ds]), ('yaw', [-dy, dy]),
+                            ('tx', [-dt, dt]), ('ty', [-dt, dt])):
+            for dl in deltas:
+                trial = dict(cur)
+                if var == 'scale':
+                    trial['scale'] = cur['scale'] * dl
+                else:
+                    trial[var] = cur[var] + dl
+                sc, M2, ev2 = eval_params(trial)
+                if sc > best_score:
+                    best_score, best_M, best_ev, cur = sc, M2, ev2, trial
+                    improved = True
+        if not improved and it >= 2:
             break
+    best = {'score': best_score, 'M': best_M, 'eval': best_ev,
+            'scale': cur['scale'], 'yaw': cur['yaw'],
+            'tx': cur['tx'], 'ty': cur['ty']}
 
     # 用最佳变换在原生分辨率上重新验收
     mw_best = apply_T(mesh, best['M'])
@@ -268,6 +279,7 @@ def align(candidate, obs, out, workdir):
            'T_world_from_asset': best['M'].tolist(),
            'direction': 'asset -> world',
            'scale_uniform': best['scale'], 'yaw_deg': best['yaw'],
+           'tx_m': round(best.get('tx', 0.0), 5), 'ty_m': round(best.get('ty', 0.0), 5),
            'metrics': ev, 'vis_pt_p95_threshold_mm': round(thr * 1000, 3),
            'iou_threshold': 0.85, 'freespace_threshold': 0.05,
            'pass': bool(ok),

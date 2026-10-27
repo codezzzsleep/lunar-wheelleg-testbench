@@ -20,6 +20,7 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import gate_physics as GP
 import physicalize as PH
+import runner
 import skills
 import terrain
 import twins
@@ -74,7 +75,7 @@ def physicalize_hyps(hyps):
 
 
 def _spec_from_posed(posed_dir, H, x, seed):
-    spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=3.6,
+    spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=2.8,
                              name=pathlib.Path(posed_dir).name)
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['init_perturbation'] = {'lateral_m': GP.INIT_LAT, 'yaw_rad': GP.INIT_YAW}
@@ -85,25 +86,22 @@ def _spec_from_posed(posed_dir, H, x, seed):
     return spec
 
 
-def rehearse_option(posed_dir, H, x, option, seed, latency=(0.0,), time_limit=15.0):
-    """在**假设场景**里执行一个动作（不改真值）。"""
+def rehearse_option(posed_dir, H, x, option, seed, visible=None, time_limit=15.0):
+    """与 Gate P、真值执行共用同一个执行器。"""
     spec = _spec_from_posed(posed_dir, H, x, seed)
+    spec['goal_x'] = 2.8
     env = wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=time_limit,
                                    v_ref=1.0, tip_deg=60.0)
-    obs, _ = env.reset(seed=seed)
-    sk = skills.make_skill(option)
-    sk.reset({'lead_m': 0.45})
-    done, info = False, {}
-    while not done:
-        rs = env.robot_state()
-        a = sk.act(obs, rs)
-        obs, r, te, tr, info = env.step(a)
-        done = te or tr
-    return {'option': option, 'seed': seed, 'reason': info.get('reason'),
-            'success': info.get('reason') == 'success',
-            't_end': info.get('t'), 'x': info.get('x'),
-            'contact': info.get('contact_style'),
-            'belly_contact': info.get('contact_style') == 'body'}
+    r = runner.EpisodeRunner(env, skills.make_skill(option),
+                             visible=visible or {}, seed=seed)
+    out = r.run_with_seed(seed)
+    return {'option': option, 'seed': seed, 'reason': out['reason'],
+            'success': out['success'], 't_end': out['t_end'],
+            'x': out['final_x'], 'contact': out['contact'],
+            'belly_contact': out['belly_contact'],
+            'triggered': out['triggered'], 'brake_steps': out['brake_steps'],
+            'action_fingerprint': out['action_fingerprint'],
+            'phases': out['phases']}
 
 
 def decide(matrix, options, tau=0.0, c_fail=60.0, c_abort=40.0):
@@ -136,18 +134,27 @@ def decide(matrix, options, tau=0.0, c_fail=60.0, c_abort=40.0):
                     'c': {h: per_h[h]['c'] for h in hyps},
                     'R': round(risk, 3), 'mean_c': round(mean_c, 3)}
     safe = [o for o in options if o != 'A0' and o in stats and stats[o]['R'] <= tau]
+    tie, tied = False, []
     if safe:
         safe.sort(key=lambda o: (stats[o]['mean_c'], o))
         chosen, no_robust = safe[0], False
+        # 同分必须如实标注：此时"选了谁"是名称排序，不能当成选中了更好的动作
+        best_c = stats[safe[0]]['mean_c']
+        tied = [o for o in safe if abs(stats[o]['mean_c'] - best_c) < 1e-9]
+        tie = len(tied) > 1
     else:
         chosen, no_robust = 'A0', True
     return {'rule': 'worst-case-risk/v1', 'tau': tau, 'c_fail': c_fail,
             'c_abort': c_abort, 'hypotheses': hyps, 'n_seeds': len(seeds),
             'stats': stats, 'safe_set': safe, 'chosen': chosen,
+            'tie': tie, 'tied_options': tied,
             'no_robust_option': no_robust,
             'insufficient_evidence': False,
-            'reason_text': (f'在这 {len(hyps)} 个候选、每个 {len(seeds)} 个测试初态中均通过'
-                            if safe else '没有任何通行动作在所有候选里都通过 -> 选择 A0 刹停')}
+            'reason_text': (
+                (f'在这 {len(hyps)} 个候选、每个 {len(seeds)} 个测试初态中均通过'
+                 + (f'；{len(tied)} 个动作同分（{"/".join(tied)}），按名称排序取 {chosen}，'
+                    '这只是 tie-break，不代表它更优' if tie else ''))
+                if safe else '没有任何通行动作在所有候选里都通过 -> 选择 A0 刹停')}
 
 
 def main():
@@ -194,7 +201,8 @@ def main():
             if o == 'A0':
                 continue
             for sd in seeds:
-                m = rehearse_option(h['posed_dir'], h['H'], case['obstacle_x'], o, sd)
+                m = rehearse_option(h['posed_dir'], h['H'], case['obstacle_x'], o, sd,
+                                    visible=obs['visible'])
                 m['hypothesis_id'] = h['hypothesis_id']
                 matrix.append(m)
     (out / 'rehearsal.jsonl').write_text(
@@ -217,7 +225,8 @@ def main():
     exec_runs = []
     for o in {dec['chosen'], 'R1'} | ({'A0'} if dec['chosen'] != 'A0' else set()):
         for sd in seeds:
-            m = rehearse_option(truth_posed, case['H'], case['obstacle_x'], o, sd)
+            m = rehearse_option(truth_posed, case['H'], case['obstacle_x'], o, sd,
+                                visible=obs['visible'])
             m['is_truth'] = True
             exec_runs.append(m)
     (out / 'execution.jsonl').write_text(

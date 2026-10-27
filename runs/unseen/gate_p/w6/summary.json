@@ -1,0 +1,106 @@
+{
+  "n_fronts": 18,
+  "n_backs": 5,
+  "n_options": 3,
+  "n_seeds": 3,
+  "n_rows": 810,
+  "init_perturbation": {
+    "lateral_m": 0.05,
+    "yaw_rad": 0.03
+  },
+  "obstacle_x": 1.8,
+  "P1": {
+    "require": 4,
+    "hit": 4,
+    "pass": true,
+    "detail": [
+      {
+        "front": [
+          0,
+          1.4,
+          0.55
+        ],
+        "best": {
+          "cleft": "R1",
+          "drop": "R1",
+          "ledge": "L1",
+          "ramp_l": "R1",
+          "ramp_s": "R1"
+        }
+      },
+      {
+        "front": [
+          1,
+          1.4,
+          0.55
+        ],
+        "best": {
+          "cleft": "R1",
+          "drop": "L1",
+          "ledge": "R1",
+          "ramp_l": "R1",
+          "ramp_s": "R1"
+        }
+      },
+      {
+        "front": [
+          1,
+          2.8,
+          0.24
+        ],
+        "best": {
+          "cleft": "R2",
+          "drop": "R1",
+          "ledge": "R1",
+          "ramp_l": "R2",
+          "ramp_s": "R1"
+        }
+      },
+      {
+        "front": [
+          2,
+          1.4,
+          0.55
+        ],
+        "best": {
+          "cleft": "R1",
+          "drop": "L1",
+          "ledge": "R1",
+          "ramp_l": "L1",
+          "ramp_s": "R1"
+        }
+      }
+    ]
+  },
+  "P2": {
+    "require": 3,
+    "hit": 1,
+    "pass": false,
+    "detail": [
+      {
+        "front": [
+          1,
+          2.8,
+          0.24
+        ],
+        "per_back": {
+          "cleft": 0,
+          "drop": 3,
+          "ledge": 3,
+          "ramp_l": 0,
+          "ramp_s": 3
+        }
+      }
+    ]
+  },
+  "P3": {
+    "pass": null,
+    "note": "由 observe 侧的同观测检验单独给出，读 runs/unseen/obs/*/p3.json"
+  },
+  "P4": {
+    "replays": 30,
+    "mismatch": 0,
+    "pass": true
+  },
+  "all_required_pass": false
+}

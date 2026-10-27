@@ -26,6 +26,8 @@ from collections import defaultdict
 import numpy as np
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import runner
+import skills
 import terrain
 import wheelleg_env
 
@@ -37,7 +39,7 @@ INIT_YAW = 0.03
 
 def build_spec(posed_dir, H, case_id, seed, channel_half=1.2):
     man_path = pathlib.Path(posed_dir) / case_id / 'manifest.json'
-    spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=3.6,
+    spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=2.8,
                              name=f'gateP_{case_id}')
     spec['channel'] = {'center_y': 0.0, 'half_width': channel_half}
     spec['init_perturbation'] = {'lateral_m': INIT_LAT, 'yaw_rad': INIT_YAW}
@@ -48,28 +50,36 @@ def build_spec(posed_dir, H, case_id, seed, channel_half=1.2):
     return spec
 
 
-def run_episode(spec, action_kind, seed):
+def visible_of_front(case_dir):
+    """从**正面**几何算可见量（正面在所有背面下相同，因此这是可观测常量）。
+    只取 x<=0 的顶点，不读背面。"""
+    import trimesh
+    man = json.loads((pathlib.Path(case_dir) / 'manifest.json').read_text())
+    vs = []
+    for p_ in man['parts']:
+        m = trimesh.load(str(pathlib.Path(case_dir) / p_), force='mesh')
+        vs.append(np.asarray(m.vertices))
+    v = np.vstack(vs)
+    front = v[v[:, 0] <= 1e-6]
+    if len(front) == 0:
+        return {}
+    return {'x_front': float(front[:, 0].min()),
+            'W_vis': float(front[:, 1].max() - front[:, 1].min()),
+            'H_vis': float(front[:, 2].max())}
+
+
+def run_episode(spec, action_kind, seed, visible=None):
+    """与闭环共用同一个执行器（runner.EpisodeRunner），保证动作名称=行为。"""
     env = wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=15.0,
                                    v_ref=1.0, tip_deg=60.0)
-    obs, _ = env.reset(seed=seed)
-    q0 = [round(float(env.data.qpos[0]), 4), round(float(env.data.qpos[1]), 4)]
-    info, done = {}, False
-    while not done:
-        if action_kind == 'R1':
-            a = np.zeros(wheelleg_env.ACT_DIM)
-        elif action_kind == 'R2':
-            a = np.array([0.0, 0.0, -0.55])
-        elif action_kind == 'L1':
-            a = np.array([0.8, -0.3, -0.4])
-        else:
-            raise ValueError(action_kind)
-        obs, r, te, tr, info = env.step(a)
-        done = te or tr
-    return {'q0': q0, 'reason': info.get('reason'),
-            'success': info.get('reason') == 'success',
-            't_end': info.get('t'), 'x': info.get('x'),
-            'contact': info.get('contact_style'),
-            'belly_contact': info.get('contact_style') == 'body'}
+    r = runner.EpisodeRunner(env, skills.make_skill(action_kind),
+                             visible=visible or {}, seed=seed)
+    out = r.run_with_seed(seed)
+    return {'q0': out['q0'], 'reason': out['reason'], 'success': out['success'],
+            't_end': out['t_end'], 'x': out['final_x'],
+            'contact': out['contact'], 'belly_contact': out['belly_contact'],
+            'triggered': out['triggered'], 'brake_steps': out['brake_steps'],
+            'action_fingerprint': out['action_fingerprint']}
 
 
 def main():
@@ -113,9 +123,10 @@ def main():
     for front, backs in sorted(groups.items()):
         for kind, c in sorted(backs.items()):
             spec = build_spec(posed, c['H'], c['id'], front[0])
+            vis = visible_of_front(pathlib.Path(posed) / c['id'])
             for act in actions:
                 for sd in seeds:
-                    r = run_episode(spec, act, sd)
+                    r = run_episode(spec, act, sd, visible=vis)
                     rows.append({'front': list(front), 'back': kind, 'case_id': c['id'], 'H': c['H'],
                                  'option': act, 'seed': sd, 'coacd_parts': c['parts'],
                                  'concavity': c['concavity'], **r})
@@ -156,6 +167,8 @@ def main():
         if max(s.values()) == n_per and min(s.values()) == 0:
             p2_hits.append({'front': list(f), 'per_back': s})
 
+    vis_by_front = {f: visible_of_front(pathlib.Path(posed) / list(groups[f].values())[0]['id'])
+                    for f in groups}
     # P4：重演 30 回合
     rng = np.random.default_rng(7)
     idx = rng.choice(len(rows), size=min(a.replay_n, len(rows)), replace=False)
@@ -163,7 +176,7 @@ def main():
     for i in idx:
         r = rows[int(i)]
         spec = build_spec(posed, r['H'], r['case_id'], r['front'][0])
-        again = run_episode(spec, r['option'], r['seed'])
+        again = run_episode(spec, r['option'], r['seed'], visible=vis_by_front[tuple(r['front'])])
         if again['reason'] != r['reason']:
             mism += 1
 

@@ -51,6 +51,8 @@ def load_run(run):
         'execution': rd('execution.jsonl', []),
         'has_rgb': (d / 'rgb.png').exists(),
         'has_mask': (d / 'mask.png').exists(),
+        'views': sorted(p.name for p in (d / 'view').glob('*.png')) if (d / 'view').exists() else [],
+        'replay': sorted(p.name for p in (d / 'replay').glob('*.png')) if (d / 'replay').exists() else [],
     }
 
 
@@ -103,8 +105,13 @@ PAGE = r"""<!doctype html><html lang="zh-CN"><meta charset="utf-8">
   <div class="card"><h2><span class="step"><span class="n">3</span>决定</span></h2>
     <div id="dec" class="dim">—</div>
   </div>
+  <div class="card"><h2><span class="step"><span class="n">2b</span>候选背面（三维侧视）</span></h2>
+    <div id="hyp3d" class="dim">—</div>
+  </div>
   <div class="card"><h2><span class="step"><span class="n">4</span>真值执行与揭晓</span></h2>
     <div id="exec" class="dim">—</div>
+    <div id="reveal" style="margin-top:10px"></div>
+    <div id="replay" style="margin-top:10px"></div>
   </div>
  </div>
 </main>
@@ -142,13 +149,30 @@ async function open_(){
     <span class="dim">规则 ${dec.rule||'—'}　候选 ${ (dec.hypotheses||[]).length } 个　初态 ${dec.n_seeds||'—'} 个</span><br>
     <span class="dim">${dec.reason_text||''}</span>
     <pre>${JSON.stringify(dec.stats||{},null,1).slice(0,900)}</pre>`;
+  const hv=(d.views||[]).filter(n=>n.startsWith('hyp_'));
+  $('hyp3d').innerHTML = hv.length
+    ? hv.map(n=>`<figure style="display:inline-block;width:31%;margin:0 1% 0 0">
+        <img src="/img/${run}/view/${n}" style="max-height:150px">
+        <figcaption class="dim" style="font-size:11px">${n.replace('hyp_','').replace('.png','')}</figcaption>
+      </figure>`).join('')
+    : '<span class="dim">尚无候选三维视图</span>';
   const ex=d.execution||[];
   const chosen=ex.filter(m=>m.option===dec.chosen), blind=ex.filter(m=>m.option==='R1');
   const rate=a=>a.length? a.filter(m=>m.success).length+'/'+a.length : '—';
   $('exec').innerHTML = `<table><tr><th>在真值上的执行</th><th>成功</th></tr>
     <tr><td>系统选择（${dec.chosen}）</td><td class="${chosen.every(m=>m.success)?'ok':'bad'}">${rate(chosen)}</td></tr>
     <tr><td>盲走（R1）</td><td class="${blind.every(m=>m.success)?'ok':'bad'}">${rate(blind)}</td></tr></table>
-    <div class="dim" style="margin-top:6px">真值背面在本页揭晓：见执行记录与 summary；页面不读真值参与决策</div>`;
+    <div class="dim" style="margin-top:6px">决策只用了观测与假设；真值在这之后才展示</div>`;
+  const rev=(d.views||[]).filter(n=>n.startsWith('truth_'));
+  $('reveal').innerHTML = rev.length
+    ? `<div class="sub">揭晓：真值障碍（侧视，含背面）</div>
+       <img src="/img/${run}/view/${rev[0]}" style="max-height:200px">`
+    : '<span class="dim">尚无真值揭晓图</span>';
+  const rp=d.replay||[];
+  $('replay').innerHTML = rp.length
+    ? `<div class="sub">选定动作回放（${rp.length} 帧）</div>` +
+      rp.map(n=>`<img src="/img/${run}/replay/${n}" style="max-height:120px">`).join('')
+    : '<span class="dim">尚无回放帧</span>';
 }
 $('go').onclick=open_;
 boot().then(()=>{ const q=new URLSearchParams(location.search).get('run');
@@ -184,8 +208,8 @@ class H(BaseHTTPRequestHandler):
                 return self._send(404, json.dumps({'error': f'{type(e).__name__}: {e}'}))
         if p.startswith('/img/'):
             parts = p.split('/')
-            f = E2E / parts[2] / parts[3]
-            if f.exists():
+            f = E2E.joinpath(*parts[2:])
+            if f.exists() and f.is_file():
                 return self._send(200, f.read_bytes(), 'image/png')
             return self._send(404, 'missing', 'text/plain')
         return self._send(404, json.dumps({'error': 'not found'}))

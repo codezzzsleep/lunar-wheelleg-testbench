@@ -1,0 +1,126 @@
+{
+  "checks": [
+    {
+      "name": "观测标定（反投影横向）",
+      "required": true,
+      "status": "PASS",
+      "detail": "已知 0.12 / 反投影 0.1148"
+    },
+    {
+      "name": "双胞胎正面逐顶点一致",
+      "required": true,
+      "status": "PASS",
+      "detail": "5 个背面，正面指纹 1 种"
+    },
+    {
+      "name": "Gate P 无重复回合",
+      "required": true,
+      "status": "PASS",
+      "detail": "重复 0 条"
+    },
+    {
+      "name": "Gate P P1（最优选项随背面变）",
+      "required": true,
+      "status": "PASS",
+      "detail": "6/18 组（要求 >=4）"
+    },
+    {
+      "name": "Gate P P2（R1 一背全成另一背全败）",
+      "required": true,
+      "status": "FAIL",
+      "detail": "1/18 组（要求 >=3）"
+    },
+    {
+      "name": "状态机动作真的触发",
+      "required": true,
+      "status": "PASS",
+      "detail": "L1:270/270"
+    },
+    {
+      "name": "预演无重复记录",
+      "required": true,
+      "status": "PASS",
+      "detail": "重复 0 条"
+    },
+    {
+      "name": "L1 行为不等于 R1",
+      "required": true,
+      "status": "PASS",
+      "detail": "R1 8 种指纹 / L1 8 种，交集 0"
+    },
+    {
+      "name": "A0 真的刹停且不前进",
+      "required": true,
+      "status": "PASS",
+      "detail": "3 条，刹车步 [150, 150, 150]，终态 x [-0.003, -0.003, -0.003]"
+    },
+    {
+      "name": "成功记录在有效地形内",
+      "required": true,
+      "status": "PASS",
+      "detail": "超出场地仍判成功 0 条"
+    },
+    {
+      "name": "决策可复算",
+      "required": true,
+      "status": "PASS",
+      "detail": "记录 L2 / 复算 L2"
+    },
+    {
+      "name": "决策未偷看真值",
+      "required": true,
+      "status": "PASS",
+      "detail": "decision.json 中无 truth 字段"
+    },
+    {
+      "name": "缺记录 -> insufficient_evidence",
+      "required": true,
+      "status": "PASS",
+      "detail": "R1/drop_45 只有 2/3 条"
+    },
+    {
+      "name": "无安全动作 -> A0",
+      "required": true,
+      "status": "PASS",
+      "detail": "chosen=A0"
+    },
+    {
+      "name": "页面有候选三维视图",
+      "required": true,
+      "status": "PASS",
+      "detail": "3 张"
+    },
+    {
+      "name": "页面有回放帧",
+      "required": true,
+      "status": "PASS",
+      "detail": "6 帧"
+    },
+    {
+      "name": "页面有真值揭晓",
+      "required": true,
+      "status": "PASS",
+      "detail": "truth_side.png"
+    },
+    {
+      "name": "Gate P P3（同观测）",
+      "required": true,
+      "status": "FAIL",
+      "detail": "背面未内缩 2 cm，最好 MAE 3.23 > 2.0"
+    },
+    {
+      "name": "Gate L（真实 Lux3D 图生）",
+      "required": true,
+      "status": "BLOCKED",
+      "detail": "未接入付费图生，本批 0 个新任务"
+    },
+    {
+      "name": "固定评测与冻结协议",
+      "required": true,
+      "status": "BLOCKED",
+      "detail": "unseen_eval.py 未实现"
+    }
+  ],
+  "n_not_pass": 4,
+  "overall": "NOT_PASS"
+}

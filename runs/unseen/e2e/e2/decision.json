@@ -1,0 +1,80 @@
+{
+  "rule": "worst-case-risk/v1",
+  "tau": 0.0,
+  "c_fail": 60.0,
+  "c_abort": 40.0,
+  "hypotheses": [
+    "drop_45",
+    "ramp_l_30",
+    "ramp_s_18"
+  ],
+  "n_seeds": 3,
+  "stats": {
+    "R1": {
+      "f": {
+        "drop_45": 0.0,
+        "ramp_l_30": 0.0,
+        "ramp_s_18": 0.0
+      },
+      "c": {
+        "drop_45": 7.027,
+        "ramp_l_30": 7.0,
+        "ramp_s_18": 6.953
+      },
+      "R": 0.0,
+      "mean_c": 6.993
+    },
+    "R2": {
+      "f": {
+        "drop_45": 0.0,
+        "ramp_l_30": 0.0,
+        "ramp_s_18": 0.0
+      },
+      "c": {
+        "drop_45": 8.827,
+        "ramp_l_30": 8.8,
+        "ramp_s_18": 8.733
+      },
+      "R": 0.0,
+      "mean_c": 8.787
+    },
+    "L1": {
+      "f": {
+        "drop_45": 0.0,
+        "ramp_l_30": 0.0,
+        "ramp_s_18": 0.0
+      },
+      "c": {
+        "drop_45": 7.1,
+        "ramp_l_30": 7.347,
+        "ramp_s_18": 7.16
+      },
+      "R": 0.0,
+      "mean_c": 7.202
+    },
+    "L2": {
+      "f": {
+        "drop_45": 0.0,
+        "ramp_l_30": 0.0,
+        "ramp_s_18": 0.0
+      },
+      "c": {
+        "drop_45": 6.92,
+        "ramp_l_30": 6.8,
+        "ramp_s_18": 6.753
+      },
+      "R": 0.0,
+      "mean_c": 6.824
+    }
+  },
+  "safe_set": [
+    "L2",
+    "R1",
+    "L1",
+    "R2"
+  ],
+  "chosen": "L2",
+  "no_robust_option": false,
+  "insufficient_evidence": false,
+  "reason_text": "在这 3 个候选、每个 3 个测试初态中均通过"
+}

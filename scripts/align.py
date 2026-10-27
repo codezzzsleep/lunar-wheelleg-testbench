@@ -67,18 +67,37 @@ def apply_T(mesh, M):
     return trimesh.Trimesh(v2, np.asarray(mesh.faces), process=False)
 
 
-def render_eval(mesh_world, obs, W=640, H=480, tmpdir=None):
-    """
-    用与观测**同一相机**重渲染候选，返回 mask IoU / 深度 RMS / 自由空间违例。
+EDGE_BAND_PX = 3
 
-    轮廓用"渲染深度差分"得到：把障碍移走再渲一次，两次深度不同的像素就是候选。
-    这比射线查询更贴近"渲染深度→点云"的验收口径，也避免射线与渲染不一致。
+
+def _edge_band(mask, k=EDGE_BAND_PX):
+    """掩码边缘带（不依赖 scipy）：反复腐蚀后与原掩码的差。"""
+    inner = mask.copy()
+    for _ in range(k):
+        inner = (inner & np.roll(inner, 1, 0) & np.roll(inner, -1, 0)
+                 & np.roll(inner, 1, 1) & np.roll(inner, -1, 1))
+    return mask & ~inner
+
+
+def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
+    """
+    用与观测**同一相机、同一初态、原生分辨率**重渲染候选，输出分区域、分定义的指标。
+
+    指标定义（写死在这里，报告与自验都以它为准）：
+      mask_iou                候选轮廓与观测掩码的 IoU
+      depth_med_mm / p95_mm   内部像素（去掉 3 px 边缘带）的有符号深度残差
+      depth_edge_rms_mm       边缘带残差（只作诊断，不参与判定）
+      vis_pt_med_mm/p95_mm    观测可见点到**候选表面**的最近距离（即原方案的"可见面距离"）
+      freespace_violation     候选比观测表面更近超过 tol 的像素比例（真实侵入自由空间）
+    判定：IoU>=0.85 且 vis_pt_p95 <= max(5mm, 0.03H) 且 freespace<=0.05
     """
     from PIL import Image as _I
     obsd = json.loads((pathlib.Path(obs) / 'observation.json').read_text())
-    fovy = obsd['camera']['fovy']
-    cam_pos_body = obsd['camera']['pos_body']
-    pitch = obsd['camera']['pitch_deg']
+    W = W or obsd['image']['W']
+    # 搜索阶段不计算点面距离（很慢），只在原生分辨率验收时计算
+    if want_vis_pt is None:
+        want_vis_pt = (W == obsd['image']['W'] and H == obsd['image']['H'])
+    H = H or obsd['image']['H']
 
     pd = pathlib.Path(tmpdir).parent / 'posed_tmp'
     pd.mkdir(parents=True, exist_ok=True)
@@ -88,16 +107,17 @@ def render_eval(mesh_world, obs, W=640, H=480, tmpdir=None):
     spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.8, name='align')
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['skill_cfg'] = {'task': 'M'}
-    # 必须与观测时同一初态，否则相机整体平移，轮廓对不上
     spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     spec['objects'] = [{'posed_dir': str(pd), 'x': 0.0, 'y': 0.0,
                         'yaw_deg': 0.0, 'target_height_m': None}]
-    spec['front_cam'] = {'pos': cam_pos_body, 'pitch_deg': pitch, 'fovy': fovy}
+    spec['front_cam'] = {'pos': obsd['camera']['pos_body'],
+                         'pitch_deg': obsd['camera']['pitch_deg'],
+                         'fovy': obsd['camera']['fovy']}
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
     m, d = env.model, env.data
-    mujoco.mj_forward(m, d)
     m.vis.global_.offwidth, m.vis.global_.offheight = W, H
+    mujoco.mj_forward(m, d)
     cid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
     bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
 
@@ -106,7 +126,7 @@ def render_eval(mesh_world, obs, W=640, H=480, tmpdir=None):
     r.update_scene(d, camera=cid)
     with_obj = r.render().copy()
     keep = m.body_pos[bid].copy()
-    m.body_pos[bid] = [0.0, 0.0, -50.0]          # 移走障碍再渲一次（改模型位姿）
+    m.body_pos[bid] = [0.0, 0.0, -80.0]
     mujoco.mj_forward(m, d)
     r.update_scene(d, camera=cid)
     without = r.render().copy()
@@ -114,27 +134,60 @@ def render_eval(mesh_world, obs, W=640, H=480, tmpdir=None):
     mujoco.mj_forward(m, d)
     r.disable_depth_rendering()
 
-    cand_mask = (with_obj < without - 1e-3)
-    obs_mask = np.array(_I.open(pathlib.Path(obs) / 'mask.png').convert('L')
-                        .resize((W, H), _I.NEAREST)) > 127
+    cand_mask = with_obj < without - 1e-3
+    obs_mask = np.array(_I.open(pathlib.Path(obs) / 'mask.png').convert('L')) > 127
+    if obs_mask.shape != cand_mask.shape:
+        obs_mask = np.array(_I.open(pathlib.Path(obs) / 'mask.png').convert('L')
+                            .resize((W, H), _I.NEAREST)) > 127
     obs_dep = np.load(pathlib.Path(obs) / 'depth.npy')
-    obs_dep = np.array(_I.fromarray(obs_dep.astype(np.float32), mode='F')
-                       .resize((W, H), _I.NEAREST))
+    if obs_dep.shape != with_obj.shape:
+        obs_dep = np.array(_I.fromarray(obs_dep.astype(np.float32), mode='F')
+                           .resize((W, H), _I.NEAREST))
 
-    inter = (cand_mask & obs_mask).sum()
-    union = (cand_mask | obs_mask).sum()
-    iou = float(inter / union) if union else 0.0
-    both = cand_mask & obs_mask
-    if both.sum() >= 20:
-        dd = np.abs(with_obj[both] - obs_dep[both])
-        rms = float(np.sqrt(np.mean(dd ** 2)))
-    else:
-        rms = float('inf')
-    free = cand_mask & (~obs_mask)
-    fsv = float(free.sum() / max(1, cand_mask.sum()))
-    return {'iou': round(iou, 4), 'rms_m': round(rms, 5) if rms != float('inf') else None,
-            'freespace': round(fsv, 4),
-            'cand_px': int(cand_mask.sum()), 'obs_px': int(obs_mask.sum())}
+    inter = cand_mask & obs_mask
+    union = cand_mask | obs_mask
+    iou = float(inter.sum() / union.sum()) if union.sum() else 0.0
+
+    edge = _edge_band(inter)
+    inner = inter & ~edge
+    resid = with_obj - obs_dep
+    out = {'mask_iou': round(iou, 4),
+           'cand_px': int(cand_mask.sum()), 'obs_px': int(obs_mask.sum()),
+           'n_inter': int(inter.sum()),
+           'resolution': [W, H]}
+    if inner.sum() >= 20:
+        ri = resid[inner]
+        out.update({'depth_med_mm': round(float(np.median(ri)) * 1000, 3),
+                    'depth_p95_mm': round(float(np.percentile(np.abs(ri), 95)) * 1000, 3),
+                    'depth_inner_rms_mm': round(float(np.sqrt(np.mean(ri ** 2))) * 1000, 3)})
+    if edge.sum() >= 10:
+        out['depth_edge_rms_mm'] = round(
+            float(np.sqrt(np.mean(resid[edge] ** 2))) * 1000, 3)
+
+    # 观测可见点 -> 候选表面 的最近距离（原方案"可见面距离"）
+    try:
+        pw = np.load(pathlib.Path(obs) / 'visible_points.npy') if want_vis_pt else np.zeros(0)
+        if pw.size and cand_mask.any():
+            if len(pw) > 20000:
+                idx = np.random.default_rng(0).choice(len(pw), 20000, replace=False)
+                pw = pw[idx]
+            surf = mesh_world.sample(20000)
+            # 分块算最近距离，避免 (N, M, 3) 撑爆内存
+            nn = np.empty(len(pw))
+            for i in range(0, len(pw), 512):
+                blk = pw[i:i + 512]
+                d2 = ((blk[:, None, :] - surf[None, :, :]) ** 2).sum(-1)
+                nn[i:i + 512] = np.sqrt(d2.min(1))
+            out['vis_pt_med_mm'] = round(float(np.median(nn)) * 1000, 3)
+            out['vis_pt_p95_mm'] = round(float(np.percentile(nn, 95)) * 1000, 3)
+    except Exception as e:
+        out['vis_pt_error'] = f'{type(e).__name__}'
+
+    # 自由空间违例：候选比观测表面更近超过 tol（侵入相机与已观测表面之间）
+    tol = 0.005
+    intrude = cand_mask & obs_mask & (with_obj < obs_dep - tol)
+    out['freespace_violation'] = round(float(intrude.sum() / max(1, cand_mask.sum())), 4)
+    return out
 
 
 def align(candidate, obs, out, workdir):
@@ -161,28 +214,69 @@ def align(candidate, obs, out, workdir):
                   0.0 - (b[0][1] + b[1][1]) / 2, base_z - b[0][2])
             mw = apply_T(mesh, M)
             mw.export(tmp)
-            ev = render_eval(mw, obs, tmpdir=tmp)
-            score = (ev['iou'], -(ev['rms_m'] if ev['rms_m'] is not None else 9.9),
-                     -ev['freespace'])
+            # 搜索阶段用低分辨率（快）；验收阶段一律回到原生分辨率，
+            # 因为 640x480 会把边缘深度跳变放大（实测 RMS 0->42 mm）。
+            ev = render_eval(mw, obs, tmpdir=tmp, W=640, H=480)
+            score = (ev['mask_iou'], -(ev.get('vis_pt_p95_mm') or 9e9),
+                     -ev['freespace_violation'])
             if best is None or score > best['score']:
                 best = {'score': score, 'M': M, 'eval': ev,
                         'scale': float(s0 * sc), 'yaw': float(yaw)}
-    ev = best['eval']
+    # ---- 局部精修：粗搜索步长(5°,0.1 scale)不足以把可见面误差降到 mm 级 ----
+    base_scale, base_yaw = best['scale'], best['yaw']
+    for it in range(2):
+        step_scale = [0.99, 1.0, 1.01]
+        step_yaw = [-1.0, 0.0, 1.0]
+        step_tx = [-0.008, 0.0, 0.008]        # 平移也必须参与优化：
+        step_ty = [-0.008, 0.0, 0.008]        # 从包围盒推导的平移有残差
+        improved = False
+        for ds in step_scale:
+            for dy in step_yaw:
+              for dtx in step_tx:
+                for dty in step_ty:
+                    sc2 = base_scale * ds
+                    yaw2 = base_yaw + dy
+                    m2 = apply_T(mesh, T(sc2, yaw2, 0, 0, 0))
+                    b2 = m2.bounds
+                    M2 = T(sc2, yaw2, cx + dtx - b2[0][0],
+                           dty - (b2[0][1] + b2[1][1]) / 2, -b2[0][2])
+                    mw2 = apply_T(mesh, M2)
+                    mw2.export(tmp)
+                    ev2 = render_eval(mw2, obs, tmpdir=tmp, W=640, H=480,
+                                      want_vis_pt=True)
+                    score2 = (ev2['mask_iou'], -(ev2.get('vis_pt_p95_mm') or 9e9),
+                              -ev2['freespace_violation'])
+                    if score2 > best['score']:
+                        best = {'score': score2, 'M': M2, 'eval': ev2,
+                                'scale': float(sc2), 'yaw': float(yaw2)}
+                        base_scale, base_yaw = sc2, yaw2
+                        improved = True
+        if not improved:
+            break
+
+    # 用最佳变换在原生分辨率上重新验收
+    mw_best = apply_T(mesh, best['M'])
+    tmp_best = pathlib.Path(workdir) / 'best_native.stl'
+    mw_best.export(tmp_best)
+    ev = render_eval(mw_best, obs, tmpdir=tmp_best, want_vis_pt=True)
+    best['eval_native'] = ev
     thr = max(RMS_ABS, RMS_REL * float(vis['H_vis']))
-    ok = (ev['iou'] >= 0.85 and ev['rms_m'] is not None
-          and ev['rms_m'] <= thr and ev['freespace'] <= 0.05)
+    vp = ev.get('vis_pt_p95_mm')
+    ok = (ev['mask_iou'] >= 0.85 and vp is not None and vp <= thr * 1000
+          and ev['freespace_violation'] <= 0.05)
     rec = {'candidate': str(candidate), 'observation': str(obs),
            'T_world_from_asset': best['M'].tolist(),
            'direction': 'asset -> world',
            'scale_uniform': best['scale'], 'yaw_deg': best['yaw'],
-           'metrics': ev, 'rms_threshold_m': round(thr, 5),
+           'metrics': ev, 'vis_pt_p95_threshold_mm': round(thr * 1000, 3),
            'iou_threshold': 0.85, 'freespace_threshold': 0.05,
            'pass': bool(ok),
            'source_kind': 'fixture' if 'fixture' in str(candidate) else 'generated'}
     out = pathlib.Path(out); out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(rec, indent=2, ensure_ascii=False))
-    print(json.dumps({k: rec[k] for k in ('scale_uniform', 'yaw_deg', 'metrics', 'pass')},
+    print(json.dumps({k: rec[k] for k in ('scale_uniform', 'yaw_deg', 'pass')},
                      ensure_ascii=False))
+    print(json.dumps(rec['metrics'], ensure_ascii=False))
     return 0 if ok else 1
 
 

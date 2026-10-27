@@ -3,22 +3,22 @@
   "observation": "runs/unseen/obs/planA",
   "T_world_from_asset": [
     [
-      0.6298485452060298,
-      0.29370320010735657,
+      0.8525701935410561,
+      0.16572285778211496,
       0.0,
-      1.8042521967899006
+      1.803044578536997
     ],
     [
-      -0.29370320010735657,
-      0.6298485452060298,
+      -0.16572285778211496,
+      0.8525701935410561,
       0.0,
-      0.003595640224621499
+      -0.00034863185119897444
     ],
     [
       0.0,
       0.0,
-      0.6949609770709821,
-      -0.34748048853549107
+      0.868527489781472,
+      -0.434263744890736
     ],
     [
       0.0,
@@ -28,16 +28,24 @@
     ]
   ],
   "direction": "asset -> world",
-  "scale_uniform": 0.6949609770709821,
-  "yaw_deg": -25.0,
+  "scale_uniform": 0.868527489781472,
+  "yaw_deg": -11.0,
   "metrics": {
-    "iou": 0.0,
-    "rms_m": Infinity,
-    "freespace": 1.0,
-    "cand_px": 56,
-    "obs_px": 914
+    "mask_iou": 0.9859,
+    "cand_px": 14547,
+    "obs_px": 14568,
+    "n_inter": 14454,
+    "resolution": [
+      1280,
+      960
+    ],
+    "depth_med_mm": 2.933,
+    "depth_p95_mm": 4.986,
+    "depth_inner_rms_mm": 3.614,
+    "depth_edge_rms_mm": 85.011,
+    "freespace_violation": 0.0181
   },
-  "rms_threshold_m": 0.00574,
+  "vis_pt_p95_threshold_mm": 5.744,
   "iou_threshold": 0.85,
   "freespace_threshold": 0.05,
   "pass": false,

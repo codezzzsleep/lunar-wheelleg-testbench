@@ -1,0 +1,127 @@
+{
+  "wheel_radius_m": 0.08595,
+  "wheel_width_m": 0.0526,
+  "half_track_m": 0.14194,
+  "track_m": 0.28387,
+  "wheelbase_m": 0.38506,
+  "belly_clearance_m": 0.09155,
+  "trunk_has_collision_geom": true,
+  "belly_clearance_note": "躯干有碰撞几何",
+  "wheels": {
+    "FL": {
+      "body_x": 0.19344,
+      "body_y": 0.1419,
+      "axle_z": 0.08689,
+      "mesh_radius": 0.08595,
+      "half_width": 0.0263
+    },
+    "FR": {
+      "body_x": 0.1934,
+      "body_y": -0.14197,
+      "axle_z": 0.0869,
+      "mesh_radius": 0.08595,
+      "half_width": 0.0263
+    },
+    "RL": {
+      "body_x": -0.19162,
+      "body_y": 0.14195,
+      "axle_z": 0.08689,
+      "mesh_radius": 0.08595,
+      "half_width": 0.0263
+    },
+    "RR": {
+      "body_x": -0.19163,
+      "body_y": -0.14206,
+      "axle_z": 0.08691,
+      "mesh_radius": 0.08595,
+      "half_width": 0.0263
+    }
+  },
+  "action_scan": [
+    {
+      "kind": "front_leg",
+      "value": -1.0,
+      "front_axle_z": 0.08703,
+      "rear_axle_z": 0.08659,
+      "pitch_deg": 1.43
+    },
+    {
+      "kind": "rear_leg",
+      "value": -1.0,
+      "front_axle_z": 0.28378,
+      "rear_axle_z": 0.08691,
+      "pitch_deg": -44.46
+    },
+    {
+      "kind": "front_leg",
+      "value": -0.5,
+      "front_axle_z": 0.08703,
+      "rear_axle_z": 0.08656,
+      "pitch_deg": 0.11
+    },
+    {
+      "kind": "rear_leg",
+      "value": -0.5,
+      "front_axle_z": 0.08699,
+      "rear_axle_z": 0.08642,
+      "pitch_deg": -1.55
+    },
+    {
+      "kind": "front_leg",
+      "value": 0.0,
+      "front_axle_z": 0.087,
+      "rear_axle_z": 0.08664,
+      "pitch_deg": -0.44
+    },
+    {
+      "kind": "rear_leg",
+      "value": 0.0,
+      "front_axle_z": 0.087,
+      "rear_axle_z": 0.08664,
+      "pitch_deg": -0.44
+    },
+    {
+      "kind": "front_leg",
+      "value": 0.5,
+      "front_axle_z": 0.08701,
+      "rear_axle_z": 0.08669,
+      "pitch_deg": 0.0
+    },
+    {
+      "kind": "rear_leg",
+      "value": 0.5,
+      "front_axle_z": 0.08702,
+      "rear_axle_z": 0.08661,
+      "pitch_deg": -0.59
+    },
+    {
+      "kind": "front_leg",
+      "value": 1.0,
+      "front_axle_z": 0.08701,
+      "rear_axle_z": 0.08664,
+      "pitch_deg": 1.95
+    },
+    {
+      "kind": "rear_leg",
+      "value": 1.0,
+      "front_axle_z": 0.08698,
+      "rear_axle_z": 0.0867,
+      "pitch_deg": -1.58
+    }
+  ],
+  "brake": {
+    "cruise_vx_mps": 0.8532,
+    "vx_a2_minus1": 0.3238,
+    "vx_after_explicit_brake": 0.0,
+    "stopping_distance_m": 0.6791,
+    "a2_minus1_stops": false,
+    "explicit_brake_stops": true
+  },
+  "control_hz": 50.0,
+  "dt": 0.002,
+  "substeps": 10,
+  "action_dims": {
+    "learner": 3,
+    "ctrl": 4
+  }
+}

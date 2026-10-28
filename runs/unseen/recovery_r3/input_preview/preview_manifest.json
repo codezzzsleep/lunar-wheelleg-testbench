@@ -1,0 +1,60 @@
+{
+  "case": "cases/unseen_v1/planA.json",
+  "heights_m": [
+    0.16,
+    0.24,
+    0.32
+  ],
+  "texture": "assets/textures/rock_v1.png (seed 7, 只改视觉不改碰撞)",
+  "note": "预览用，未提交生成；需用户确认后才执行试点",
+  "rows": [
+    {
+      "tag": "cam0.16_plain",
+      "cam_height_requested": 0.16,
+      "cam_world_z": 0.16,
+      "mask_px": 14158,
+      "target_mean_luma": 150.8,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.16_plain.png"
+    },
+    {
+      "tag": "cam0.16_tex",
+      "cam_height_requested": 0.16,
+      "cam_world_z": 0.16,
+      "mask_px": 14158,
+      "target_mean_luma": 132.9,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.16_tex.png"
+    },
+    {
+      "tag": "cam0.24_plain",
+      "cam_height_requested": 0.24,
+      "cam_world_z": 0.24,
+      "mask_px": 14697,
+      "target_mean_luma": 151.8,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.24_plain.png"
+    },
+    {
+      "tag": "cam0.24_tex",
+      "cam_height_requested": 0.24,
+      "cam_world_z": 0.24,
+      "mask_px": 14697,
+      "target_mean_luma": 133.3,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.24_tex.png"
+    },
+    {
+      "tag": "cam0.32_plain",
+      "cam_height_requested": 0.32,
+      "cam_world_z": 0.32,
+      "mask_px": 15237,
+      "target_mean_luma": 152.4,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.32_plain.png"
+    },
+    {
+      "tag": "cam0.32_tex",
+      "cam_height_requested": 0.32,
+      "cam_world_z": 0.32,
+      "mask_px": 15237,
+      "target_mean_luma": 133.6,
+      "path": "runs/unseen/recovery_r3/input_preview/cam0.32_tex.png"
+    }
+  ]
+}

@@ -138,6 +138,14 @@ class WheelLegEnv:
             if i >= 0:
                 j = xml.find('>', i) + 1
                 xml = xml[:j] + tag + xml[j:]
+        mat = self.spec.get('object_material')
+        if mat:
+            # 纹理只改视觉，不改碰撞；贴图按盒投影（MuJoCo 2d 纹理默认行为）
+            tex_xml = (f'<texture name="{mat["name"]}_tex" type="2d" '
+                       f'file="{mat["texture"]}"/>'
+                       f'<material name="{mat["name"]}" texture="{mat["name"]}_tex" '
+                       f'specular="0.05" shininess="0.1"/>')
+            xml = xml.replace('<asset>', '<asset>' + tex_xml)
         xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax']))
 
         assets, bodies, placements, bounds = [], [], [], []
@@ -234,8 +242,11 @@ class WheelLegEnv:
             for j, p_ in enumerate(res):
                 name = f'obj{i}_{j}'
                 assets.append(f'<mesh name="{name}" file="{p_}"{scale_attr}/>')
+                mat = self.spec.get('object_material')
+                mat_attr = f' material="{mat["name"]}"' if mat else ''
+                rgba = ('.72 .56 .36 1' if not mat else '1 1 1 1')
                 inner.append(
-                    f'<geom type="mesh" mesh="{name}" rgba=".72 .56 .36 1" '
+                    f'<geom type="mesh" mesh="{name}" rgba="{rgba}"{mat_attr} '
                     f'friction="0.9 0.02 0.001" contype="1" conaffinity="1"/>')
             bodies.append(
                 f'<body name="obstacle{i}" pos="{obj["x"]:.4f} {obj["y"]:.4f} {body_z:.5f}" '

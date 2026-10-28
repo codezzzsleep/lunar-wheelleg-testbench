@@ -1,0 +1,123 @@
+{
+  "calibrated_rows": [
+    {
+      "load_n": 20.0,
+      "z_target_mm": 6.836,
+      "z_measured_mm": 6.812,
+      "rel_err": 0.0036,
+      "stable": true,
+      "k_used": 4.4176
+    },
+    {
+      "load_n": 40.0,
+      "z_target_mm": 10.852,
+      "z_measured_mm": 10.707,
+      "rel_err": 0.0134,
+      "stable": true,
+      "k_used": 5.5659
+    },
+    {
+      "load_n": 60.0,
+      "z_target_mm": 14.22,
+      "z_measured_mm": 13.942,
+      "rel_err": 0.0195,
+      "stable": true,
+      "k_used": 6.3713
+    },
+    {
+      "load_n": 80.0,
+      "z_target_mm": 17.226,
+      "z_measured_mm": 16.813,
+      "rel_err": 0.024,
+      "stable": true,
+      "k_used": 7.0125
+    },
+    {
+      "load_n": 100.0,
+      "z_target_mm": 19.989,
+      "z_measured_mm": 19.446,
+      "rel_err": 0.0272,
+      "stable": true,
+      "k_used": 7.554
+    }
+  ],
+  "version": "soil-single-wheel/v1",
+  "soil_version": "soil/v1",
+  "wheel_radius_m": 0.09,
+  "wheel_width_m": 0.1,
+  "gravity": 1.62,
+  "params": {
+    "kc": 1400.0,
+    "kphi": 820000.0,
+    "n": 1.0,
+    "cohesion_pa": 170.0,
+    "phi_deg": 35.0,
+    "k_shear": 0.018,
+    "source": "纲领名义参数（实验不确定性设定，不是月面统计分布）",
+    "version": "soil/v1",
+    "units": {
+      "kc": "N/m^(n+1)",
+      "kphi": "N/m^(n+2)",
+      "n": "-",
+      "cohesion_pa": "Pa",
+      "phi_deg": "deg",
+      "k_shear": "m"
+    }
+  },
+  "rows": [
+    {
+      "load_n": 20.0,
+      "z_target_mm": 6.836,
+      "z_measured_mm": 0.226,
+      "rel_err": 0.9669,
+      "stable": true,
+      "k_used": 2925.58,
+      "damping": 61.576
+    },
+    {
+      "load_n": 40.0,
+      "z_target_mm": 10.852,
+      "z_measured_mm": 0.355,
+      "rel_err": 0.9673,
+      "stable": false,
+      "k_used": 3686.0,
+      "damping": 69.116
+    },
+    {
+      "load_n": 60.0,
+      "z_target_mm": 14.22,
+      "z_measured_mm": 0.463,
+      "rel_err": 0.9674,
+      "stable": false,
+      "k_used": 4219.41,
+      "damping": 73.948
+    },
+    {
+      "load_n": 80.0,
+      "z_target_mm": 17.226,
+      "z_measured_mm": 0.0,
+      "rel_err": 1.0,
+      "stable": false,
+      "k_used": 4644.06,
+      "damping": 77.58
+    },
+    {
+      "load_n": 100.0,
+      "z_target_mm": 19.989,
+      "z_measured_mm": 0.817,
+      "rel_err": 0.9592,
+      "stable": false,
+      "k_used": 5002.67,
+      "damping": 80.52
+    }
+  ],
+  "fit": {
+    "factor": 0.00151,
+    "mean_rel_err": 0.0422,
+    "max_rel_err": 0.053
+  },
+  "tolerance": {
+    "target_rel_err": 0.3
+  },
+  "limitation": "单轮静置下陷；MuJoCo 凸-凸离散接触 vs Bekker 平板压力分布，不是同一模型；不证明月壤物理正确，也不含滑转/牵引/整机"
+}

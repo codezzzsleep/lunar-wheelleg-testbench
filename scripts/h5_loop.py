@@ -85,6 +85,8 @@ def main():
     ap.add_argument('--truth-case', required=True, help='隐藏真值 case（含 mesh）')
     ap.add_argument('--out', required=True)
     ap.add_argument('--seeds', type=int, nargs='+', default=[0, 1, 2])
+    ap.add_argument('--stress-test', action='store_true',
+                    help='跨对象诊断：候选与真值来自不同观测组，不能算正常 H5 效果')
     a = ap.parse_args()
 
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -113,7 +115,15 @@ def main():
     cand_sha = cand['world_sha256']
     if truth_sha == cand_sha:
         raise SystemExit('真值与候选 SHA 相同，拒绝：这不是独立隐藏真值')
+    cand_group = (cand.get('observation_group') or
+                  ('A' if str(cand['candidate_id']).startswith('A') else '?'))
+    truth_group = 'B' if 'planB' in str(a.truth_case) else 'A'
+    stress = bool(a.stress_test) or (cand_group != truth_group)
     rec = {'workflow': 'h5_loop/v1', 'source_kind': 'lux3d',
+           'cross_object': stress,
+           'label': ('STRESS_TEST: candidate from group %s, truth from group %s; '
+                     'NOT a normal H5 result' % (cand_group, truth_group))
+                    if stress else 'normal H5 (same observation group)',
            'candidate_id': cand['candidate_id'], 'candidate_task_id': cand.get('task_id'),
            'candidate_world_sha': cand_sha, 'truth_asset_sha': truth_sha,
            'truth_case': case['case_id'], 'truth_identity': case['case_id'],
@@ -208,6 +218,7 @@ def main():
     b0 = [e for e in execs if e['method'] == 'B0_blind']
     print(json.dumps({
         'candidate': cand['candidate_id'], 'truth': case['case_id'],
+        'cross_object_stress_test': stress,
         'same_sha': truth_sha == cand_sha,
         'chosen': chosen, 'decision_sha': rec['decision_sha256'][:12],
         'init_distinct': rec['initial_states_distinct'],

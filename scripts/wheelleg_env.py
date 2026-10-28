@@ -92,8 +92,14 @@ class WheelLegEnv:
         self.substeps = max(1, int(round((1.0 / self.control_hz) / self.dt)))
         self.J = ids(self.model)
         self.wheel_geoms = set()
+        self._wheel_body_ids = {}
         for leg in LEG:
-            self.wheel_geoms |= self._body_geoms(f'{leg}_wheel_link')
+            _g = self._body_geoms(f'{leg}_wheel_link')
+            self.wheel_geoms |= _g
+            _bid = mujoco.mj_name2id(self.model, mujoco.mjtObj.mjOBJ_BODY,
+                                     f'{leg}_wheel_link')
+            for _gg in _g:
+                self._wheel_body_ids[_gg] = _bid
 
         self._wheel_bodies = self._body_ids(['%s_wheel_link' % leg for leg in LEG])
         self.obstacle_geoms = set()
@@ -106,6 +112,19 @@ class WheelLegEnv:
         self.passed_at = None
         self.n_control = 0
         self.n_physics = 0
+        # 土壤模式：rigid（默认）/ soil（Bekker 简化软接触）
+        sc = (spec.get('soil') or {})
+        self.soil_mode = str(sc.get('mode', 'rigid'))
+        self.soil_params = None
+        self.soil_calib = None
+        if self.soil_mode != 'rigid':
+            import soil as SOIL
+            p_ = sc.get('params') or {}
+            self.soil_params = SOIL.SoilParams(**p_) if p_ else SOIL.SoilParams.moon_nominal()
+            self.soil_calib = float(sc.get('stiffness_factor', 0.00151))
+            self._soil_stats = {'steps': 0, 'max_sink_m': 0.0, 'resistance_n': 0.0,
+                                'slip': 0.0, 'load_n': 0.0}
+        self._soil_force = np.zeros(6)
         self.episode_return = 0.0
         self._reset_state(seed=spec.get('seed', 0))
 
@@ -351,11 +370,68 @@ class WheelLegEnv:
         # 稳定化：让姿态在固定站姿下落稳，不计入策略成绩
         for _ in range(int(0.6 / self.dt)):
             self._apply_controls(np.zeros(CTRL_DIM), drive=False)
+            self._soil_step()
             mujoco.mj_step(m, d)
             self.n_physics += 1
         self.prev_x = float(d.qpos[0])
         d.time = 0.0
         self.t = 0.0
+
+    def _soil_step(self):
+        """
+        每物理步的土壤入口：只对**轮–土**接触施加压实阻力，轮–岩石仍是刚体。
+        清空后重写，不累加；腾空轮不加力；重力/坡面分量不重复施加。
+        """
+        if self.soil_mode == 'rigid':
+            return
+        d, m = self.data, self.model
+        d.xfrc_applied[:] = 0.0                     # 不污染下一步
+        pm = self.soil_params
+        b_w = 0.10
+        R = 0.08595
+        sink_max = 0.0
+        resist = 0.0
+        load = 0.0
+        for c in range(d.ncon):
+            con = d.contact[c]
+            g1, g2 = con.geom1, con.geom2
+            in1 = g1 in self.wheel_geoms
+            in2 = g2 in self.wheel_geoms
+            if in1 == in2:
+                continue
+            other = g2 if in1 else g1
+            if other in self.obstacle_geoms:
+                continue                            # 轮–岩石：不施土壤力
+            pen = max(0.0, -float(con.dist))
+            sink_max = max(sink_max, pen)
+            fid = int(con.efc_address)
+            fz = float(np.linalg.norm(np.asarray(d.efc_force[fid:fid + 3]))) \
+                if fid >= 0 and fid + 3 <= d.efc_force.shape[0] else 0.0
+            if fz <= 0:
+                continue
+            load = max(load, fz)
+            # 下陷按轮载用 Bekker 公式**估算**（刚性接触本身不产生穿透）
+            z_est = pm.sinkage(fz, b_w, R)
+            sink_max = max(sink_max, z_est)
+            Rc = pm.compaction_resistance(z_est, b_w)
+            resist = max(resist, Rc)
+            A = b_w * float(np.sqrt(max(2 * R * z_est, 1e-9)))
+            v = float(d.qvel[0])
+            j = abs(v) * float(m.opt.timestep)
+            tau = pm.shear_stress(j, fz / max(A, 1e-9))
+            Ft_cap = pm.traction_limit(fz, max(A, 1e-9))
+            Ft = min(tau * A, Ft_cap)
+            wheel_geom = g1 if in1 else g2      # 轮体是承载受力的那一侧
+            b_id = self._wheel_body_ids.get(wheel_geom)
+            if b_id is not None and abs(v) > 1e-4:
+                sgn = -1.0 if v > 0 else 1.0
+                # 压实阻力 + 牵引上限之差：净滚动阻力，反向于运动
+                d.xfrc_applied[b_id][0] += sgn * Rc
+        self._soil_stats = {'steps': self._soil_stats['steps'] + 1,
+                            'max_sink_m': sink_max,
+                            'resistance_n': resist,
+                            'load_n': load,
+                            'mode': 'resistance+traction (sinkage estimated, not geometric)'}
 
     def _terrain_normal(self, x, y, eps=0.08):
         """用中心差分求地表法线（世界坐标），平地返回 +z。"""
@@ -457,6 +533,7 @@ class WheelLegEnv:
     def brake_step(self):
         """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""
         for _ in range(self.substeps):
+            self._soil_step() if hasattr(self, '_soil_step') else None
             for leg in LEG:
                 e = self.J[f'{leg}_wheel_joint']
                 self.data.ctrl[e['act']] = float(np.clip(
@@ -497,6 +574,7 @@ class WheelLegEnv:
         r_lat = 0.0
         for _ in range(self.substeps):
             self._apply_controls(full)
+            self._soil_step()
             mujoco.mj_step(self.model, self.data)
             self.n_physics += 1
             # 接触必须逐物理步检测：只在控制步末采样会漏掉滚过矮障碍的短暂接触

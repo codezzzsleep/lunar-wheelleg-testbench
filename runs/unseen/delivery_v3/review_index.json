@@ -1,0 +1,73 @@
+{
+  "delivery_id": "v3",
+  "commit": "57412b1f434a4a789345c5f944f818802d04b030",
+  "worktree_clean": true,
+  "pushed": true,
+  "observations": {
+    "cal": "runs/unseen/obs/final_cal",
+    "A": "runs/unseen/obs/final_planA",
+    "B": "runs/unseen/obs/final_planB"
+  },
+  "generation_table": "runs/unseen/generation/generation_table.json",
+  "ledger": "runs/unseen/generation/ledger.jsonl",
+  "frame_config": "configs/lux3d_frame.json",
+  "preflight": "runs/unseen/preflight/cal1_preflight.json",
+  "plan": "plans/unseen_v2_generation.json",
+  "checklist": "docs/UNSEEN_V1_CHECKLIST.md",
+  "files": {
+    "generation_table": {
+      "path": "runs/unseen/generation/generation_table.json",
+      "sha": "5f96e0f851707c60a27633e37cbe3fa1"
+    },
+    "ledger": {
+      "path": "runs/unseen/generation/ledger.jsonl",
+      "sha": "d55b84b10b6c8b97f6df5ec85eeb19da"
+    },
+    "frame": {
+      "path": "configs/lux3d_frame.json",
+      "sha": "d73f1c64c20ca40336a1dba9e7a2b798"
+    },
+    "preflight": {
+      "path": "runs/unseen/preflight/cal1_preflight.json",
+      "sha": "a65fb77c7fe44bfe32f57f9cd53930f8"
+    },
+    "plan": {
+      "path": "plans/unseen_v2_generation.json",
+      "sha": "fea1678302c6e88a8ffdd433941c09cb"
+    },
+    "align_A1": {
+      "path": "runs/unseen/align_v2/A1.json",
+      "sha": "655ced5fb1ba1e9f34ff818fad70dc67"
+    },
+    "checklist": {
+      "path": "docs/UNSEEN_V1_CHECKLIST.md",
+      "sha": "7e84a4d41efee203d88dc6d008bd9394"
+    },
+    "cal1_glb": {
+      "path": "runs/unseen/generation/cache/5b/5b3b2cd11a6fb4295217c795e36ab9becca01b46f3b59b936ccddc811a36c923/model.glb",
+      "sha": "2b6614e48cf32eaa962305a3df45e8fe"
+    },
+    "A1_glb": {
+      "path": "runs/unseen/generation/cache/71/719efabd90d9debca731d56bc8e030d46dc182c5ddb349dcf8e292954b82e121/model.glb",
+      "sha": "dd28ac44462bd4c594d194a51de18744"
+    },
+    "B1_glb": {
+      "path": "runs/unseen/generation/cache/99/990b3ac27c3908be180a0f0f53283c8d11098d68f11afc70954bd7e06294258c/model.glb",
+      "sha": "6609c593de5b8eb252b1a3ed89944e16"
+    }
+  },
+  "budget": {
+    "created_tasks": 13,
+    "held_credits_upper": 260.0,
+    "verified_charge": "unknown",
+    "remaining_credits": 40.0,
+    "remaining_tasks": 2,
+    "hard_cap": 300,
+    "max_create_tasks": 15
+  },
+  "status": {
+    "delivery": "PARTIAL",
+    "evidence_integrity": "PASS_WITH_OPEN_ITEMS",
+    "research_gate": "NOT_ESTABLISHED"
+  }
+}

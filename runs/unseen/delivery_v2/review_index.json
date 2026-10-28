@@ -1,0 +1,128 @@
+{
+  "delivery_id": "v2",
+  "commit": "29734ac66c5e3a05f32c37c29a55335187ff1141",
+  "worktree_clean": true,
+  "runs": {
+    "prep": "runs/unseen/prep",
+    "observations": {
+      "A_v2": "runs/unseen/obs/planA_v2",
+      "A_v3": "runs/unseen/obs/planA_v3",
+      "B_v2": "runs/unseen/obs/planB_v2",
+      "B_v3": "runs/unseen/obs/planB_v3",
+      "cal_v2": "runs/unseen/obs/cal_v2",
+      "cal_v3": "runs/unseen/obs/cal_v3"
+    },
+    "calibration": "runs/unseen/obs/cal_v2/calibration.json",
+    "gate_p": "runs/unseen/gate_p/w6",
+    "align_v1": "runs/unseen/align",
+    "align_v2": "runs/unseen/align_v2",
+    "freespace_counterexample": "runs/unseen/align_v2/diag/freespace_counterexample",
+    "generation": "runs/unseen/generation",
+    "eval_smoke": "runs/unseen/eval/smoke1"
+  },
+  "files": {
+    "budget_config": {
+      "path": "configs/unseen_v1_budget.json",
+      "sha": "7538e1c238a64e8d3b2c50888ac7b669"
+    },
+    "plan_v1": {
+      "path": "plans/unseen_v1_generation.json",
+      "sha": "6c4042321a99127ebc722a8927e12d7c"
+    },
+    "protocol_smoke": {
+      "path": "plans/unseen_v2_protocol_smoke.json",
+      "sha": "d24b2f13262392927a89c4540eb3f0a7"
+    },
+    "ledger": {
+      "path": "runs/unseen/generation/ledger.jsonl",
+      "sha": "904c5fc38cdffe0036f2b9a7c477e830"
+    },
+    "ledger_original": {
+      "path": "runs/unseen/generation/ledger_v1_original.jsonl",
+      "sha": "5b706c6a45e778f8236cb649c91650c5"
+    },
+    "cal_object": {
+      "path": "runs/unseen/prep/cal_object.json",
+      "sha": "47e4f27298e1646706fa8dba2e972159"
+    },
+    "fixture_v2": {
+      "path": "runs/unseen/align_v2/fixture_A_v2.json",
+      "sha": "96bc1ff2ca327d60cd3a3681a031db25"
+    },
+    "eval_results": {
+      "path": "runs/unseen/eval/smoke1/results.jsonl",
+      "sha": "e73b22c42baad66ba4cc6dd9f07960fe"
+    },
+    "eval_analysis": {
+      "path": "runs/unseen/eval/smoke1/analysis.json",
+      "sha": "37ebcbf8f66f08025f296e1cf0a75b7e"
+    },
+    "status_doc": {
+      "path": "docs/UNSEEN_EXECUTION_STATUS.md",
+      "sha": "902c805119814adeb92fbac1f06120a3"
+    }
+  },
+  "commands": [
+    {
+      "cmd": "python -m unittest discover -s tests",
+      "exit": 0,
+      "note": "94 tests OK"
+    },
+    {
+      "cmd": "python -m unittest tests.test_budget",
+      "exit": 0,
+      "note": "16 tests"
+    },
+    {
+      "cmd": "python -m unittest tests.test_freespace",
+      "exit": 0,
+      "note": "5 tests"
+    },
+    {
+      "cmd": "python -m unittest tests.test_detour",
+      "exit": 0,
+      "note": "6 tests"
+    },
+    {
+      "cmd": "python -m unittest tests.test_camera",
+      "exit": 0,
+      "note": "5 tests"
+    },
+    {
+      "cmd": "python scripts/calibrate_observe.py --out runs/unseen/obs/cal_v2",
+      "exit": 0
+    },
+    {
+      "cmd": "python scripts/test_freespace_counterexample.py",
+      "exit": 0
+    },
+    {
+      "cmd": "python scripts/unseen_eval.py --protocol plans/unseen_v2_protocol_smoke.json --out runs/unseen/eval/smoke1",
+      "exit": 0
+    },
+    {
+      "cmd": "python scripts/analyze_unseen.py --input runs/unseen/eval/smoke1/results.jsonl --protocol plans/unseen_v2_protocol_smoke.json --out runs/unseen/eval/smoke1",
+      "exit": 0
+    }
+  ],
+  "budget": {
+    "created_tasks": 2,
+    "held_credits_upper": 40.0,
+    "verified_charge": "unknown",
+    "hard_cap": 300,
+    "max_create_tasks": 15,
+    "remaining_credits": 260,
+    "remaining_tasks": 13
+  },
+  "external_blockers": [
+    {
+      "id": "PAID_SUBMIT_PAUSED",
+      "detail": "按用户指令暂停 CAL1 与所有新生成提交，待 CAL1 技术放行"
+    }
+  ],
+  "status": {
+    "delivery": "PARTIAL",
+    "evidence_integrity": "PASS_WITH_OPEN_ITEMS",
+    "research_gate": "NOT_PASS"
+  }
+}

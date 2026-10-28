@@ -1,0 +1,53 @@
+[
+  {
+    "method": "B0_blind",
+    "selected_action": "R1",
+    "evidence": {
+      "rule": "blind: always R1"
+    }
+  },
+  {
+    "method": "B1_height",
+    "selected_action": "A0",
+    "evidence": {
+      "rule": "visible height ratio 2.19 > 1.6"
+    }
+  },
+  {
+    "method": "B2_box",
+    "selected_action": "A0",
+    "evidence": "no non-A0 option succeeded in every initial state",
+    "tied": [],
+    "rehearsal_on": "box_prior"
+  },
+  {
+    "method": "B3_mirror",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.940; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "rehearsal_on": "mirror_hypothesis"
+  },
+  {
+    "method": "H5_lux3d",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.760; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "candidates": [
+      "A4"
+    ],
+    "rehearsal_on": "independent Lux3D candidates"
+  },
+  {
+    "method": "U_truth",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.700; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "rehearsal_on": "full truth geometry"
+  }
+]

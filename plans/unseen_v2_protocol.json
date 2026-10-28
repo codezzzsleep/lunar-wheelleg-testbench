@@ -1,0 +1,61 @@
+{
+  "protocol_version": "unseen-six/v1",
+  "frozen": "2026-10-28",
+  "note": "六方法正式协议：各方法独立规划，全部在共同真值、相同实际初态上执行。本文件冻结后不按任务成败调整。",
+  "case": "cases/unseen_v1/planA.json",
+  "observation_dir": "runs/unseen/recovery_r3/observations/A",
+  "goal_x": 2.6,
+  "initial_states": [
+    0,
+    1,
+    2
+  ],
+  "initial_state_note": "由 env.reset(seed) 的真实扰动产生；qpos/qvel 记录在 records.jsonl",
+  "methods": [
+    "B0_blind",
+    "B1_height",
+    "B2_box",
+    "B3_mirror",
+    "H5_lux3d",
+    "U_truth"
+  ],
+  "height_rule": {
+    "frozen_from": "开发集设置，不进测试调参",
+    "wheel_r": 0.08595,
+    "climb_direct": 1.0,
+    "climb_leg": 1.6,
+    "box_depth_m": 0.22
+  },
+  "candidates": [
+    {
+      "candidate_id": "A4",
+      "task_id": 4432118,
+      "world_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
+      "world_dir": "runs/unseen/recovery_r3/align_v3/world/A4",
+      "collision_dir": "runs/unseen/recovery_r3/pipeline_H5_A4/collision/A4",
+      "strict_rgbd_diagnostic_pass": false,
+      "planning_eligible": true
+    }
+  ],
+  "sensor_setting": {
+    "planning_inputs": [
+      "RGB",
+      "public visible height/width/front position"
+    ],
+    "not_used": [
+      "hidden truth geometry",
+      "exact soil realization"
+    ],
+    "disclosure": "H5 候选的 align24 搜索使用了密集可见点云；这是有披露的工程诊断变体，不等于“深度只用于位置尺度”"
+  },
+  "outcomes": [
+    "success",
+    "abort",
+    "tipover",
+    "out_of_bounds",
+    "out_of_field",
+    "timeout",
+    "ERROR"
+  ],
+  "success_definition": "越过目标线并满足通道与稳定保持；绕行合法；接触单列"
+}

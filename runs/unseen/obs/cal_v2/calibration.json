@@ -1,0 +1,31 @@
+{
+  "config": {
+    "lateral_tol_m": 0.005,
+    "depth_tol_m": 0.01,
+    "height_tol_m": 0.01,
+    "min_pixels": 200
+  },
+  "plane": {
+    "pass": true,
+    "known_plane_x_m": 1.7,
+    "recovered_x_median_m": 1.7,
+    "plane_err_m": 0.0,
+    "axial_to_euclid_ratio": 1.00967,
+    "n_points": 8318
+  },
+  "asymmetric": {
+    "pass": true,
+    "world_y_median_m": 0.1182,
+    "image_centroid_x_px": 289.9,
+    "world_y_on_image_left": true,
+    "visible_height_m": 0.1996,
+    "n_points": 3047
+  },
+  "ray_reference": {
+    "pass": true,
+    "axial_to_euclid_ratio": 1.00967,
+    "note": "mj_ray 仅作参考；验证轴向深度与欧氏距离的换算关系"
+  },
+  "note": "点云来自渲染深度的反投影；mj_ray 仅作独立参考",
+  "pass": true
+}

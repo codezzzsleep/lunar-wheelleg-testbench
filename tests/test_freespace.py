@@ -47,7 +47,7 @@ class TestFreespaceV21(unittest.TestCase):
         """候选伸到原轮廓外、遮住已观测地面 -> 必须被判侵入。"""
         prot = trimesh.creation.box(extents=[0.12, 0.16, 0.30])
         prot.apply_translation([1.74 - OX, 0.28, 0.15])
-        cand = trimesh.util.concatenate([self.base, prot])
+        cand = trimesh.util.concatenate([self.base.copy(), prot])
         cand.apply_translation([OX, 0, 0])
         p = self.tmp / 'cand_out.stl'; cand.export(p)
         ev = align.render_eval(cand, str(self.obs), tmpdir=p, want_vis_pt=True)

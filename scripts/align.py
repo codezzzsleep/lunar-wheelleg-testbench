@@ -103,7 +103,10 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     n_sub = want_vis_pt if isinstance(want_vis_pt, int) and want_vis_pt is not True else 0
     H = H or obsd['image']['H']
 
-    pd = pathlib.Path(tmpdir).parent / 'posed_tmp'
+    # MuJoCo 3.x 会按文件名缓存网格资产：同一个路径写不同网格会拿到旧的几何。
+    # 因此每次调用用唯一目录名，绝不复用 posed_tmp/mesh.stl。
+    import uuid as _uuid
+    pd = pathlib.Path(tmpdir).parent / f'posed_{_uuid.uuid4().hex[:12]}'
     pd.mkdir(parents=True, exist_ok=True)
     (pd / 'mesh.stl').write_bytes(pathlib.Path(tmpdir).read_bytes())
     (pd / 'manifest.json').write_text(json.dumps({'parts': ['mesh.stl']}))

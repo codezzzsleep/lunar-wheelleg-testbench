@@ -167,18 +167,56 @@ def main():
             if not improved:
                 break
         native = eval_pose(mesh, cur['M'], a.obs, tmp, None, None, True)
+        # 从最终 4x4 反解真实尺度与 yaw（不沿用初值元数据）
+        Mm = np.asarray(cur['M'])
+        col = Mm[:3, :3]
+        sc_real = float(np.cbrt(abs(np.linalg.det(col))))
+        R_real = col / max(sc_real, 1e-12)
+        yaw_real = float(np.degrees(np.arctan2(R_real[1, 0], R_real[0, 0])))
+        axis_real = (R_real @ np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])).round(3).tolist()
+        shear = float(np.max(np.abs(col.T @ col - (sc_real ** 2) * np.eye(3))))
+        # ---- 统一世界放置：最低点精确归零，下游不得再贴地 ----
+        mw_check = A.apply_T(mesh, Mm)
+        z_min_raw = float(np.asarray(mw_check.bounds)[0][2])
+        if abs(z_min_raw) > 1e-9:
+            Mm = Mm.copy(); Mm[2, 3] -= z_min_raw
+            mw_check = A.apply_T(mesh, Mm)
+            cur['M'] = Mm
+        z_min = float(np.asarray(mw_check.bounds)[0][2])
+        # 世界网格落盘：frame=world（body identity，环境不再平移/缩放/贴地）
+        world_dir = pathlib.Path(a.out).parent / 'world' / pathlib.Path(a.out).stem
+        world_dir.mkdir(parents=True, exist_ok=True)
+        mw_check.export(world_dir / 'body.stl')
+        (world_dir / 'manifest.json').write_text(json.dumps({
+            'coordinate_frame': 'world',
+            'T_world_from_asset': Mm.tolist(),
+            'z_min_world_m': round(z_min, 9),
+            'note': '顶点已在世界坐标；放入场景时 body 位姿必须为 identity'}, indent=2))
         thr = max(5.0, 0.03 * H_vis * 1000)
         p95 = native.get('vis_pt_p95_mm')
         ok = (native['mask_iou'] >= 0.85 and p95 is not None and p95 <= thr
               and native['freespace_violation'] <= 0.05)
-        rec = {'R_index': c['R_index'], 'init': c['init'], 'scale': c['scale'],
-               'yaw': c['yaw'], 'M': cur['M'].tolist(),
+        rec = {'R_index': c['R_index'], 'init': c['init'],
+               'scale_init': c['scale'], 'yaw_init': c['yaw'],
+               'scale': round(sc_real, 5), 'yaw': round(yaw_real, 3),
+               'R_axis_world': axis_real, 'shear_residual': round(shear, 9),
+               'z_min_world_m': round(z_min, 9),
+               'world_dir': str(world_dir),
+               'M': cur['M'].tolist(),
                'native': native, 'threshold_p95_mm': round(thr, 3), 'pass': bool(ok)}
         if best is None or (rec['pass'], -(p95 or 9e9)) > (best['pass'],
                                                            -(best['native'].get('vis_pt_p95_mm') or 9e9)):
             best = rec
 
+    # 朝向歧义只在**不同 R_index** 之间比较；同旋转不同尺度初值不算
+    distinct = {}
+    for c in top:
+        distinct.setdefault(c['R_index'], c['score'][0])
+    ranked = sorted(distinct.items(), key=lambda kv: kv[1])
+    ambig = (len(ranked) > 1 and abs(ranked[0][1] - ranked[1][1]) < 1.0)
     out = {'candidate': str(a.candidate), 'observation': str(a.obs),
+           'distinct_orientations_in_top': ranked,
+           'orientation_ambiguous': bool(ambig),
            'metric_version': 'align-metric/v2.1',
            'camera_schema': obsd.get('camera_schema'),
            'raw_bounds': raw_bounds, 'raw_extents': [float(x) for x in mesh.extents],
@@ -189,8 +227,7 @@ def main():
                     'quick_cover': c['score'][1]} for c in top],
            'best': best,
            'pass': bool(best and best['pass']),
-           'orientation_ambiguous': (len(top) > 1 and
-                                     abs(top[0]['score'][0] - top[1]['score'][0]) < 1.0)}
+           'orientation_ambiguous': None}
     p = pathlib.Path(a.out); p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(out, indent=2, ensure_ascii=False))
     print(json.dumps({'candidate': pathlib.Path(a.candidate).parent.name[:8],

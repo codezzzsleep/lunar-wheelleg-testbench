@@ -1,0 +1,138 @@
+{
+  "raw_bounds": [
+    [
+      -0.05999999865889549,
+      -0.015251746401190758,
+      -0.0020230223890393972
+    ],
+    [
+      0.05999999865889549,
+      0.015251746401190758,
+      0.0020230223890393972
+    ]
+  ],
+  "components_before": 2,
+  "components_after": 1,
+  "components": [
+    {
+      "index": 0,
+      "faces": 13898,
+      "verts": 6951,
+      "area_m2": 6352253420.325254,
+      "area_frac": 0.5162,
+      "bounds_min": [
+        -60000.0,
+        -15252.0,
+        -2023.0
+      ],
+      "bounds_max": [
+        60000.0,
+        15252.0,
+        2023.0
+      ],
+      "extents": [
+        120000.0,
+        30504.0,
+        4046.0
+      ],
+      "pca_span": [
+        3689.93778,
+        18009.12557,
+        57820.16265
+      ],
+      "watertight": true,
+      "signed_volume_m3": 11061082079064.666,
+      "max_extent": 120000.0,
+      "thin_ratio": 0.0638
+    },
+    {
+      "index": 1,
+      "faces": 15390,
+      "verts": 7697,
+      "area_m2": 5953605969.674208,
+      "area_frac": 0.4838,
+      "bounds_min": [
+        -59511.0,
+        -14781.0,
+        -1553.0
+      ],
+      "bounds_max": [
+        59513.0,
+        14776.0,
+        1555.0
+      ],
+      "extents": [
+        119024.0,
+        29557.0,
+        3108.0
+      ],
+      "pca_span": [
+        2811.34261,
+        16866.76933,
+        54181.78599
+      ],
+      "watertight": true,
+      "signed_volume_m3": -8166509823894.5,
+      "max_extent": 119024.0,
+      "thin_ratio": 0.0519
+    }
+  ],
+  "decisions": [
+    {
+      "index": 0,
+      "decision": "keep",
+      "reason": "main body (largest valid solid / enclosing shell)"
+    },
+    {
+      "index": 1,
+      "decision": "drop",
+      "reason": "near-zero thickness: PCA min/max = 0.0519"
+    }
+  ],
+  "body_policy": "union of components with area_frac >= 1%",
+  "body": {
+    "n_components": 2,
+    "faces": 29288,
+    "area_m2": 12305859389.999462,
+    "extents": [
+      120000.0,
+      30504.0,
+      4046.0
+    ],
+    "pca_span": [
+      3261.11828,
+      17435.1036,
+      55965.45098
+    ],
+    "max_extent": 120000.0,
+    "thin_ratio": 0.0583,
+    "watertight": true
+  },
+  "overall_pca_span": [
+    3261.11828,
+    17435.1036,
+    55965.45098
+  ],
+  "body_area_frac_of_total": 1.0,
+  "precheck": {
+    "thin": true,
+    "verdict": "rejected_thin",
+    "criteria": {
+      "thin_ratio_min": 0.2,
+      "small_area_frac": 0.01,
+      "weld_tol_m": 1e-06
+    }
+  },
+  "candidate": "runs/unseen/generation/cache/f3/f35285ee94e1ac5e538e83ddee9bdc741ac66e095b28c5cdc4f0025b02e5ad53/model.glb",
+  "id": "B5",
+  "version": "clean/v1",
+  "raw_sha": "f73f6d7be458c62b7d8b271c891af56cc8441c4dab67a7c650c5e9777ee6e99e",
+  "clean_path": "runs/unseen/recovery_r3/clean/B5/body.stl",
+  "clean_sha": "a18f705549494b18d76b6b6bd193e1e200d4df31fd6cbbcde6288390c4c2f94d",
+  "clean_extents": [
+    120000.0,
+    30504.0,
+    4046.0
+  ],
+  "world_frame": "local (z_min=0); placement T must be applied once downstream"
+}

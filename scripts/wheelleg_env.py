@@ -151,6 +151,14 @@ class WheelLegEnv:
             if obj.get('posed_dir'):
                 import json as _json
                 _man = _json.loads((pathlib.Path(obj['posed_dir']) / 'manifest.json').read_text())
+                if _man.get('coordinate_frame') == 'world':
+                    # 世界坐标资产：只允许 identity 放置，拒绝再平移/缩放/贴地
+                    if any(abs(float(obj.get(k, 0) or 0)) > 1e-9 for k in ('x', 'y')):
+                        raise ValueError(
+                            f"world-frame 资产禁止再平移：x={obj.get('x')} y={obj.get('y')}")
+                    if obj.get('scale') not in (None, 1, 1.0):
+                        raise ValueError('world-frame 资产禁止再缩放')
+                    obj = dict(obj); obj['_world_frame'] = True
                 res = [str((pathlib.Path(obj['posed_dir']) / p_).resolve())
                        for p_ in _man['parts']]
                 obj = dict(obj); obj['_posed'] = True
@@ -187,7 +195,14 @@ class WheelLegEnv:
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
             verts = _world_vertices(res, float(obj['x']), float(obj['y']), yaw, scale=scale)
-            if obj.get('_posed'):
+            if obj.get('_world_frame'):
+                # 世界坐标资产：顶点已是世界坐标，body 必须 identity，**不再**贴地
+                body_z = 0.0
+                place_meta = {'body_z': 0.0, 'world_frame': True,
+                              'min_clearance_m': round(
+                                  float(verts[:, 2].min()), 9),
+                              'note': 'coordinate_frame=world；下游未做任何平移/缩放/贴地'}
+            elif obj.get('_posed'):
                 # 已配准资产：姿态固定，机身 z 直接取网格最低点贴地，
                 # 且**不**再叠加 place_on_terrain 的抬升（否则等于偷偷移位）。
                 body_z = -float(verts[:, 2].min())

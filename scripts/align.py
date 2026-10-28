@@ -99,9 +99,15 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     obsd = json.loads((pathlib.Path(obs) / 'observation.json').read_text())
     W = int(W or obsd['image']['W'])
     # 搜索阶段不计算点面距离（很慢），只在原生分辨率验收时计算
+    # 明确区分 True / int / False（bool 是 int 子类，不能用 isinstance 判 True）
     if want_vis_pt is None:
         want_vis_pt = (W == obsd['image']['W'] and H == obsd['image']['H'])
-    n_sub = want_vis_pt if isinstance(want_vis_pt, int) and want_vis_pt is not True else 0
+    if want_vis_pt is True:
+        n_sub = 2500                      # 原生验收默认子集
+    elif isinstance(want_vis_pt, int) and not isinstance(want_vis_pt, bool):
+        n_sub = int(want_vis_pt)
+    else:
+        n_sub = 0
     H = int(H or obsd['image']['H'])
 
     # MuJoCo 3.x 会按文件名缓存网格资产：同一个路径写不同网格会拿到旧的几何。
@@ -178,8 +184,6 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     # 观测可见点 -> 候选表面 的最近距离（原方案"可见面距离"）
     try:
         pw = np.load(pathlib.Path(obs) / 'visible_points.npy') if want_vis_pt else np.zeros(0)
-        if n_sub is True:
-            n_sub = 2500                    # 原生验收的确定性子集（记录点数）
         if n_sub and len(pw) > n_sub:      # 固定种子的确定性子集
             pw = pw[np.random.default_rng(0).choice(len(pw), n_sub, replace=False)]
         if pw.size and cand_mask.any():
@@ -192,6 +196,9 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
             out['vis_pt_med_mm'] = round(float(np.median(nn)) * 1000, 3)
             out['vis_pt_p95_mm'] = round(float(np.percentile(nn, 95)) * 1000, 3)
             out['vis_pt_n'] = int(len(nn))
+            out['vis_pt_total'] = int(len(np.load(pathlib.Path(obs) / 'visible_points.npy')))
+            out['vis_pt_strategy'] = (f'deterministic_subset(n={n_sub},seed=0)'
+                                      if n_sub else 'all_points')
             out['metric_version'] = 'align-metric/v2'
     except Exception as e:
         out['vis_pt_error'] = f'{type(e).__name__}'

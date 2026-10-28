@@ -30,8 +30,11 @@ import wheelleg_env
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-RAISE_S = 1.2
-SETTLE_S = 2.0
+RAISE_S = 1.6
+SETTLE_S = 2.5
+# 仓库 drive_test 已验证的站姿（不新增步态，只换目标姿态）
+STANCE_LOW = {'hip': 0.0, 'thigh': 0.85, 'calf': -1.65}
+STANCE_HIGH = {'hip': 0.0, 'thigh': 0.55, 'calf': -1.05}
 IOU_MIN = 0.85
 KP_HOLD = 120.0
 KD_HOLD = 6.0
@@ -90,30 +93,46 @@ def capture(env, cid, out_png, W=1280, H=960):
     return {'mask': mask, 'depth': dep, 'snapshot': snap}
 
 
+def _stance_targets(env, stance):
+    return {f'{leg}_{p}_joint': float(v) for leg in ('FL', 'FR', 'RL', 'RR')
+            for p, v in stance.items()}
+
+
 def raise_body(env, seconds=RAISE_S, settle=SETTLE_S):
-    """统一 substeps 入口抬高机身，并等到线/角速度都稳定。"""
+    """
+    用**已验证的固定高站姿** STANCE_HIGH 作为目标（不是每步 q+delta 的持续偏置）。
+
+    旧实现把目标不断往前推，等价于恒定偏置，无法收敛到固定姿态，
+    因此出现"数值上抬高、随后失稳倒地"。现在：低姿态 -> 高姿态平滑插值，
+    到位后保持；轮子真实制动；逐物理步记录真实峰值与稳定保持。
+    """
     m, d = env.model, env.data
     z0 = float(d.qpos[2])
+    low = _stance_targets(env, STANCE_LOW)
+    high = _stance_targets(env, STANCE_HIGH)
     n_ctrl = int(seconds * env.control_hz)
-    for _ in range(n_ctrl):
+    z_trace = []
+    for i in range(n_ctrl):
+        a = min(1.0, (i + 1) / max(1, n_ctrl * 0.6))
+        for jn, t_hi in high.items():
+            e = env.J[jn]
+            tgt = (1 - a) * low[jn] + a * t_hi
+            d.ctrl[e['act']] = float(np.clip(
+                90.0 * (tgt - d.qpos[e['qadr']]) - 5.0 * d.qvel[e['vadr']],
+                -23.7, 23.7))
         for leg in ('FL', 'FR', 'RL', 'RR'):
-            for jn, delta in ((f'{leg}_thigh_joint', -0.25),
-                              (f'{leg}_calf_joint', +0.55)):
-                e = env.J[jn]
-                tgt = float(d.qpos[e['qadr']]) + delta
-                d.ctrl[e['act']] = float(np.clip(
-                    60.0 * (tgt - d.qpos[e['qadr']]) - 3.0 * d.qvel[e['vadr']],
-                    -23.7, 23.7))
+            e = env.J[f'{leg}_wheel_joint']
+            d.ctrl[e['act']] = float(np.clip(-6.0 * d.qvel[e['vadr']], -23.7, 23.7))
         for _ in range(env.substeps):
             if hasattr(env, '_soil_step'):
                 env._soil_step()
             mujoco.mj_step(m, d)
             env.n_physics += 1
-    # 停稳时保持**抬高后**的目标角，而不是逐渐滑回原姿态
-    hold = {}
-    for leg in ('FL', 'FR', 'RL', 'RR'):
-        for p_ in ('hip', 'thigh', 'calf'):
-            hold[f'{leg}_{p_}_joint'] = float(d.qpos[env.J[f'{leg}_{p_}_joint']['qadr']])
+            env.t += env.dt
+        z_trace.append(float(d.qpos[2]))
+
+    # 停稳：保持**高姿态目标**（不是当前角度，也不是逐步加偏置）
+    hold = dict(high)
     still = 0
     for _ in range(int(settle * env.control_hz)):
         for jn, tgt in hold.items():
@@ -121,12 +140,16 @@ def raise_body(env, seconds=RAISE_S, settle=SETTLE_S):
             d.ctrl[e['act']] = float(np.clip(
                 KP_HOLD * (tgt - d.qpos[e['qadr']]) - KD_HOLD * d.qvel[e['vadr']],
                 -23.7, 23.7))
+        for leg in ('FL', 'FR', 'RL', 'RR'):
+            e = env.J[f'{leg}_wheel_joint']
+            d.ctrl[e['act']] = float(np.clip(-6.0 * d.qvel[e['vadr']], -23.7, 23.7))
         for _ in range(env.substeps):
             if hasattr(env, '_soil_step'):
                 env._soil_step()
             mujoco.mj_step(m, d)
             env.n_physics += 1
             env.t += env.dt
+        z_trace.append(float(d.qpos[2]))
         if (float(np.linalg.norm(d.qvel[:3])) < 0.03
                 and float(np.linalg.norm(d.qvel[3:6])) < 0.08):
             still += 1
@@ -136,12 +159,16 @@ def raise_body(env, seconds=RAISE_S, settle=SETTLE_S):
             still = 0
     z1 = float(d.qpos[2])
     return {'z_before': round(z0, 4), 'z_after': round(z1, 4),
-            'z_peak_m': round(float(np.max(d.qpos[2])), 4),
+            'z_peak_m': round(float(np.max(z_trace)) if z_trace else z1, 4),
+            'stance_target': 'STANCE_HIGH (drive_test 已验证)',
             'delta_z_m': round(z1 - z0, 4),
             'vel_norm': round(float(np.linalg.norm(d.qvel[:6])), 4),
             'n_control_steps': n_ctrl, 'n_physics_steps': int(env.n_physics),
             'sim_time_s': round(float(env.t), 4),
-            'stable': bool(float(np.linalg.norm(d.qvel[:3])) < 0.03),
+            'v_lin': round(float(np.linalg.norm(d.qvel[:3])), 4),
+            'v_ang': round(float(np.linalg.norm(d.qvel[3:6])), 4),
+            'stable': bool(float(np.linalg.norm(d.qvel[:3])) < 0.03
+                           and float(np.linalg.norm(d.qvel[3:6])) < 0.08),
             'qpos': [round(float(x), 6) for x in d.qpos],
             'qvel': [round(float(x), 6) for x in d.qvel]}
 

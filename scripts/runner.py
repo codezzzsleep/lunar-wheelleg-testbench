@@ -36,6 +36,7 @@ class EpisodeRunner:
         self.visible = visible or {}
         self.max_steps = max_steps
         env.plan_visible = dict(self.visible)      # 关键：动作需要它才能触发
+        env.nav_target_y = env.channel_center      # 每次 reset 清空导航横向目标
         self.seed = seed
         self.skill.reset(params or {})
 
@@ -49,6 +50,12 @@ class EpisodeRunner:
         while not done and steps < self.max_steps:
             rs = env.robot_state()
             a = sk.act(obs, rs)
+            # 动作可以让导航底座改横向目标（D1/D2 靠这个真正绕行）
+            hint = getattr(sk, 'nav_target_hint', None)
+            if hint is not None and callable(hint):
+                tgt = hint()
+                if tgt is not None:
+                    env.nav_target_y = env.channel_center + float(tgt)
             actions.append(np.asarray(a, dtype=np.float64))
             if getattr(sk, 'brake', False):
                 env.brake_step()                   # 显式刹车，不是普通 step

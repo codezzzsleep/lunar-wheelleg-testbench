@@ -37,6 +37,7 @@ class Skill:
 
     def reset(self, plan=None):
         self.phase = 'idle'
+        self.nav_target = None
         self.t = 0.0
         self.done = False
         self.trace = []
@@ -44,6 +45,10 @@ class Skill:
 
     def act(self, obs, rs):
         raise NotImplementedError
+
+    def nav_target_hint(self):
+        """执行器读取：当前希望导航底座收敛到的横向目标。"""
+        return getattr(self, 'nav_target', None)
 
     def _base(self, speed_scale=0.0, front=0.0, rear=0.0):
         a = np.zeros(WE.ACT_DIM)
@@ -129,7 +134,10 @@ class S1(Skill):
 
 
 class Detour(Skill):
-    """左/右绕行：先稳定偏移，再越过，再回位。"""
+    """
+    左/右绕行：把**导航横向目标**真正改到一边，越过障碍后再回到通道中心。
+    之前只设 self.steer_hint，没有任何执行器读取它 —— 那个不算绕行。
+    """
     name = 'D1'
 
     def __init__(self, side=+1, r=0.5, params=None):
@@ -137,18 +145,35 @@ class Detour(Skill):
         self.r = r
         super().__init__(params)
 
+    def reset(self, plan=None):
+        super().reset(plan)
+        self.nav_target = None
+        self.phase = 'idle'
+
     def act(self, obs, rs):
         self.t += rs.get('dt', 0.02)
-        lat = rs.get('lateral', 0.0)
         x = rs.get('x', 0.0)
-        target = self.side * self.r
-        # 用差速转向做横向偏移；这里只给转向相关的速度差
-        err = target - lat
-        a = self._base(speed_scale=-0.1)
-        a[2] = float(np.clip(-0.05 + 0.0 * err, -1, 1))
-        self.steer_hint = float(np.clip(2.0 * err, -1, 1))
-        self.done = bool(rs.get('finished')) or self.t > rs.get('time_limit', 15.0)
-        return a
+        x_front = rs.get('x_front')
+        # 用可见前沿决定三个阶段：接近前切入、绕过障碍、越过回位
+        if x_front is None:
+            approach = 0.6
+            leave = 0.9
+        else:
+            approach = float(x_front) - 0.55
+            leave = float(x_front) + 0.75
+        if self.phase == 'idle' and x >= approach:
+            self.phase = 'shift'
+        elif self.phase == 'shift' and x >= leave:
+            self.phase = 'return'
+        elif self.phase == 'return' and abs(rs.get('lateral', 0.0)) < 0.06:
+            self.phase = 'done'
+        target = 0.0 if self.phase in ('idle', 'done') else self.side * self.r
+        if self.phase == 'return':
+            target = 0.0
+        self.nav_target = target
+        self.done = bool(rs.get('finished')) or self.phase == 'done'
+        # 绕行时略减速，其余保持直行
+        return self._base(speed_scale=(-0.15 if self.phase == 'shift' else 0.0))
 
 
 class A0(Skill):

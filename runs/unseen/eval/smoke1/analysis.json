@@ -1,0 +1,83 @@
+{
+  "diagnostics": {
+    "n_rows": 9,
+    "n_bad_lines": 0,
+    "bad": [],
+    "partial": false,
+    "missing": [],
+    "duplicate_keys": [],
+    "n_missing": 0
+  },
+  "main_table": [
+    {
+      "method": "B0",
+      "n": 3,
+      "success": 3,
+      "abort": 0,
+      "tipped": 0,
+      "stuck": 0,
+      "out_of_bounds": 0,
+      "out_of_field": 0,
+      "time_limit": 0,
+      "success_rate": 1.0,
+      "safe_stop_rate": 0.0,
+      "mean_cost_s": 5.653,
+      "mean_success_time_s": 5.653
+    },
+    {
+      "method": "B1",
+      "n": 3,
+      "success": 0,
+      "abort": 3,
+      "tipped": 0,
+      "stuck": 0,
+      "out_of_bounds": 0,
+      "out_of_field": 0,
+      "time_limit": 0,
+      "success_rate": 0.0,
+      "safe_stop_rate": 1.0,
+      "mean_cost_s": 40.0,
+      "mean_success_time_s": null
+    },
+    {
+      "method": "H3",
+      "n": 3,
+      "success": 3,
+      "abort": 0,
+      "tipped": 0,
+      "stuck": 0,
+      "out_of_bounds": 0,
+      "out_of_field": 0,
+      "time_limit": 0,
+      "success_rate": 1.0,
+      "safe_stop_rate": 0.0,
+      "mean_cost_s": 5.653,
+      "mean_success_time_s": 5.653
+    }
+  ],
+  "by_case": [
+    {
+      "case_id": "planA_h3ramp25",
+      "method": "B0",
+      "reasons": {
+        "success": 3
+      }
+    },
+    {
+      "case_id": "planA_h3ramp25",
+      "method": "B1",
+      "reasons": {
+        "abort": 3
+      }
+    },
+    {
+      "case_id": "planA_h3ramp25",
+      "method": "H3",
+      "reasons": {
+        "success": 3
+      }
+    }
+  ],
+  "n_independent_observations": 1,
+  "note": "相关案例（同一观测的多背面/通道）不作为独立样本"
+}

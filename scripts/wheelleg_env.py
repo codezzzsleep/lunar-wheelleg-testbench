@@ -71,6 +71,8 @@ class WheelLegEnv:
         self.channel_half_width = float(ch.get('half_width', 0.45))
         self.require_contact = bool((spec.get('skill_cfg') or {}).get('require_contact', False))
         self.nav_base = bool(nav_base)
+        # 导航横向目标：默认等于通道中心，绕行动作通过它真正改变横向轨迹
+        self.nav_target_y = float((self.spec.get('channel') or {}).get('center_y', 0.0))
         cfg = spec.get('skill_cfg') or {}
         self.task = str(cfg.get('task', 'M')).upper()   # M 安全通行 / K 接触越障
         # 初态扰动幅度（米 / 弧度）。所有策略共用同一组 seed，因此是配对比较。
@@ -98,6 +100,7 @@ class WheelLegEnv:
             self.obstacle_geoms |= self._body_geoms(f'obstacle{i}')
         self.t = 0.0
         self.prev_action = np.zeros(ACT_DIM)
+        self.nav_target_y = float(self.channel_center)
         self.prev_x = 0.0
         self.passed_at = None
         self.n_control = 0
@@ -326,9 +329,15 @@ class WheelLegEnv:
         return terrain.ground_height_at(self._h, x, y)
 
     def _steer_from_nav(self):
-        """共享导航底座：只用通道横向偏差与朝向误差做比例控制。"""
-        lat, head = self._nav_state()
-        return float(np.clip(NAV_K_LAT * lat + NAV_K_HEAD * head, -1.0, 1.0))
+        """
+        共享导航底座：向 nav_target_y 收敛的比例控制。
+        nav_target_y 默认等于 channel_center（保持旧行为）；绕行动作会改它。
+        """
+        y = float(self.data.qpos[1])
+        target = float(getattr(self, 'nav_target_y', self.channel_center))
+        lat_err = y - target
+        head = self._nav_state()[1]
+        return float(np.clip(NAV_K_LAT * lat_err + NAV_K_HEAD * head, -1.0, 1.0))
 
     def _full_action(self, action):
         """把学习器 3 维动作补上底座产生的转向，得到内部 4 维控制量。"""

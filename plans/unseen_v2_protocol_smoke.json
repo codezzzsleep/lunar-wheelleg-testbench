@@ -1,0 +1,42 @@
+{
+  "protocol_version": "unseen_v2_smoke",
+  "frozen": false,
+  "note": "H3 冒烟协议，用于验证评测器/分析器接线；不是正式冻结协议",
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "methods": [
+    {
+      "name": "B0",
+      "option": "R1",
+      "desc": "盲走：固定 R1，不预演"
+    },
+    {
+      "name": "B1",
+      "option": "A0",
+      "desc": "保守：窄通道停车"
+    },
+    {
+      "name": "H3",
+      "option": "R1",
+      "hypothesis": "h3_ramp25",
+      "desc": "程序化候选"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "planA_h3ramp25",
+      "observations": "runs/unseen/obs/planA_v2",
+      "obstacle_x": 1.8,
+      "channel_half": 1.2,
+      "truth_posed": "assets/posed_h3/h3_ramp25",
+      "hypotheses": {
+        "B0": "assets/posed_h3/h3_ramp25",
+        "B1": "assets/posed_h3/h3_ramp25",
+        "H3": "assets/posed_h3/h3_ramp25"
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "hyps": [
+    {
+      "hypothesis_id": "h3_drop",
+      "source_kind": "procedural",
+      "params": {
+        "id": "h3_drop",
+        "kind": "drop",
+        "ratio": 0.85
+      },
+      "mesh_path": "runs/unseen/obs/planA_v2/hyp/h3_drop.stl",
+      "L_back_prior": 0.16,
+      "H": 0.1897,
+      "W": 0.3399,
+      "D_front": 0.1199,
+      "accepted": null,
+      "reject_reason": null
+    },
+    {
+      "hypothesis_id": "h3_ramp25",
+      "source_kind": "procedural",
+      "params": {
+        "id": "h3_ramp25",
+        "kind": "ramp_s",
+        "angle_deg": 25.0
+      },
+      "mesh_path": "runs/unseen/obs/planA_v2/hyp/h3_ramp25.stl",
+      "L_back_prior": 0.4067,
+      "H": 0.1897,
+      "W": 0.3399,
+      "D_front": 0.1199,
+      "accepted": null,
+      "reject_reason": null
+    },
+    {
+      "hypothesis_id": "h3_ramp12",
+      "source_kind": "procedural",
+      "params": {
+        "id": "h3_ramp12",
+        "kind": "ramp_l",
+        "angle_deg": 12.0
+      },
+      "mesh_path": "runs/unseen/obs/planA_v2/hyp/h3_ramp12.stl",
+      "L_back_prior": 0.8923,
+      "H": 0.1897,
+      "W": 0.3399,
+      "D_front": 0.1199,
+      "accepted": null,
+      "reject_reason": null
+    },
+    {
+      "hypothesis_id": "h3_ledge",
+      "source_kind": "procedural",
+      "params": {
+        "id": "h3_ledge",
+        "kind": "ledge",
+        "ratio": 0.6
+      },
+      "mesh_path": "runs/unseen/obs/planA_v2/hyp/h3_ledge.stl",
+      "L_back_prior": 0.36,
+      "H": 0.1897,
+      "W": 0.3399,
+      "D_front": 0.1199,
+      "accepted": null,
+      "reject_reason": null
+    },
+    {
+      "hypothesis_id": "h3_cleft",
+      "source_kind": "procedural",
+      "params": {
+        "id": "h3_cleft",
+        "kind": "cleft",
+        "angle_deg": 12.0
+      },
+      "mesh_path": "runs/unseen/obs/planA_v2/hyp/h3_cleft.stl",
+      "L_back_prior": 0.8923,
+      "H": 0.1897,
+      "W": 0.3399,
+      "D_front": 0.1199,
+      "accepted": null,
+      "reject_reason": null
+    }
+  ]
+}

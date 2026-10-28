@@ -1,0 +1,28 @@
+{
+  "version": "planning-eligible/v1",
+  "frozen": "2026-10-28",
+  "note": "工程入场政策：回答'是否允许作为尚未证明正确的生成几何假设进入预演'，不是安全证明，也不是研究收益成立。冻结后才可跑真实对照，禁止按执行成败反向选择政策。",
+  "criteria": {
+    "source_kind": "lux3d",
+    "clean_verdict": "ok",
+    "thin_ratio_min": 0.2,
+    "contour_iou_min": 0.85,
+    "coordinate_frame": "world",
+    "no_birth_penetration": true,
+    "scale_tolerance": "由标定 fixture 预先确定并冻结，见 configs/calib_tolerance.json"
+  },
+  "sensor_setting": {
+    "planning_inputs": ["RGB", "public position/scale"],
+    "not_used_for_planning": ["dense depth profile"],
+    "disclosure": "若工程配准算法实际用了密集点云优化，必须在协议中如实声明，不得包装为'深度只用于位置尺度'"
+  },
+  "reporting": {
+    "strict_rgbd_diagnostic_pass": "IoU>=0.85, P95<=max(5mm,0.03H), freespace<=0.05（旧口径，失败仍是失败）",
+    "planning_eligible": "上表判据；通过不代表严格观测一致，也不代表安全"
+  },
+  "known_negative_cases": [
+    {"case": "A2", "reason": "thin_ratio 0.094 < 0.2，且原始可见面深度剖面不符"},
+    {"case": "A5/B1-B5", "reason": "thin_ratio 0.01-0.13，薄片，预检即拒绝"},
+    {"case": "fixture", "reason": "source_kind=fixture，不计入真实生成主张"}
+  ]
+}

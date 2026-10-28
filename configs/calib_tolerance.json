@@ -1,0 +1,10 @@
+{
+  "version": "calib-tolerance/v1",
+  "frozen": "2026-10-28",
+  "note": "位置/尺度误差带由标定 fixture 预先确定，冻结后不按真实候选结果调整",
+  "scale_rel_error_max": 0.005,
+  "yaw_deg_max": 0.5,
+  "translation_m_max": 0.002,
+  "vis_pt_p95_mm_max": 2.0,
+  "source": "已有 fixture 回归：尺度 0.35%、yaw 0.15°、平移 1 mm、vis_pt P95 0.797 mm"
+}

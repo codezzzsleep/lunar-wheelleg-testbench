@@ -1,0 +1,175 @@
+{
+  "workflow": "h5_fixture_loop/v1",
+  "source_kind": "fixture",
+  "truth_asset_sha": "2d9bb38ac048cb25489160c6673bdbc1b88529277d261821db1241f228b7e400",
+  "truth_identity": "fixture_obstacle",
+  "note": "fixture 仅验证接口；不计入真实 Lux3D 主张",
+  "options": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "A0"
+  ],
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "rehearsal": [
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R1",
+      "initial_state_id": "seed0",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R2",
+      "initial_state_id": "seed0",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L1",
+      "initial_state_id": "seed0",
+      "outcome": "success",
+      "cost": 0.428,
+      "t_end": 0.428
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L2",
+      "initial_state_id": "seed0",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "A0",
+      "initial_state_id": "seed0",
+      "outcome": "abort",
+      "cost": 40.0,
+      "t_end": null
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R1",
+      "initial_state_id": "seed1",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R2",
+      "initial_state_id": "seed1",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L1",
+      "initial_state_id": "seed1",
+      "outcome": "success",
+      "cost": 0.428,
+      "t_end": 0.428
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L2",
+      "initial_state_id": "seed1",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "A0",
+      "initial_state_id": "seed1",
+      "outcome": "abort",
+      "cost": 40.0,
+      "t_end": null
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R1",
+      "initial_state_id": "seed2",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "R2",
+      "initial_state_id": "seed2",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L1",
+      "initial_state_id": "seed2",
+      "outcome": "success",
+      "cost": 0.428,
+      "t_end": 0.428
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "L2",
+      "initial_state_id": "seed2",
+      "outcome": "success",
+      "cost": 0.426,
+      "t_end": 0.426
+    },
+    {
+      "candidate_id": "fixture_narrow",
+      "option_id": "A0",
+      "initial_state_id": "seed2",
+      "outcome": "abort",
+      "cost": 40.0,
+      "t_end": null
+    }
+  ],
+  "decision": {
+    "chosen_option": "R2",
+    "reason": "worst-case: every initial state succeeded; lowest max cost",
+    "frozen_before_execution": true
+  },
+  "execution": [
+    {
+      "method": "fixture_H5",
+      "option_id": "R2",
+      "initial_state_id": "seed0",
+      "truth_sha": "2d9bb38ac048cb25489160c6673bdbc1b88529277d261821db1241f228b7e400",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    },
+    {
+      "method": "fixture_H5",
+      "option_id": "R2",
+      "initial_state_id": "seed1",
+      "truth_sha": "2d9bb38ac048cb25489160c6673bdbc1b88529277d261821db1241f228b7e400",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    },
+    {
+      "method": "fixture_H5",
+      "option_id": "R2",
+      "initial_state_id": "seed2",
+      "truth_sha": "2d9bb38ac048cb25489160c6673bdbc1b88529277d261821db1241f228b7e400",
+      "outcome": "success",
+      "cost": 0.422,
+      "t_end": 0.422
+    }
+  ]
+}

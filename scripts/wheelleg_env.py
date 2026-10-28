@@ -122,10 +122,23 @@ class WheelLegEnv:
             p_ = sc.get('params') or {}
             self.soil_params = SOIL.SoilParams(**p_) if p_ else SOIL.SoilParams.moon_nominal()
             self.soil_calib = float(sc.get('stiffness_factor', 0.00151))
+            self._soil_limits = {}
+            self._soil_mu0 = {g: float(self.model.geom_friction[g][0])
+                              for g in self.wheel_geoms}
+            # 地形/地面 geom：名字里含 terrain 或 hfield 的，以及 plane
+            self._soil_ground_geoms = []
+            for g_ in range(self.model.ngeom):
+                nm = mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_GEOM, g_) or ''
+                gt = int(self.model.geom_type[g_])
+                if 'terrain' in nm or gt == int(mujoco.mjtGeom.mjGEOM_HFIELD) \
+                        or gt == int(mujoco.mjtGeom.mjGEOM_PLANE):
+                    self._soil_ground_geoms.append(g_)
+                    self._soil_mu0.setdefault(g_, float(self.model.geom_friction[g_][0]))
             self._soil_stats = {'steps': 0, 'max_sink_m': 0.0, 'resistance_n': 0.0,
                                 'traction_n': 0.0, 'load_n': 0.0, 'n_wheels': 0,
                                 'wheel_contact_steps': 0, 'sum_Rc': 0.0, 'sum_Ft': 0.0,
-                                'sum_work_j': 0.0, 'sum_load': 0.0}
+                                'sum_work_j': 0.0, 'sum_load': 0.0,
+                                'excess_traction_n': 0.0}
         self._soil_force = np.zeros(6)
         self.episode_return = 0.0
         self._reset_state(seed=spec.get('seed', 0))
@@ -398,12 +411,29 @@ class WheelLegEnv:
         self.t = 0.0
 
     def _wheel_geom_radius(self, gid):
-        """从模型几何读取轮半径与轮宽（不写死）。"""
-        size = np.asarray(self.model.geom_size[gid], dtype=float)
-        # cylinder: size=[radius, half_length, -]；按实际类型取值
-        rad = float(size[0])
-        half_len = float(size[1]) if size.shape[0] > 1 else 0.05
-        return rad, max(2.0 * half_len, 1e-3)
+        """
+        从模型几何读取轮半径与轮宽（不写死），**先判类型与朝向**。
+        cylinder: size=[radius, half_length, -]，轴默认沿 z；用 geom quat 判断实际轴向。
+        mesh/sphere 等其它类型：用几何包围盒推等效半径/宽度并标注来源。
+        """
+        m = self.model
+        gtype = int(m.geom_type[gid])
+        size = np.asarray(m.geom_size[gid], dtype=float)
+        if gtype == int(mujoco.mjtGeom.mjGEOM_CYLINDER):
+            rad = float(size[0])
+            width = max(2.0 * float(size[1]), 1e-3)
+            src = 'cylinder(size)'
+        else:
+            # mesh: geom_size 存的是**半尺寸**；较薄一维是轮宽，其余两维是半径
+            half = np.abs(size[:3])
+            order = np.argsort(half)
+            width = max(2.0 * float(half[order[0]]), 1e-3)
+            rad = float(max(half[order[1]], half[order[2]]))
+            src = f'type={gtype} geom_size(half-extent)'
+        self._wheel_geom_meta = getattr(self, '_wheel_geom_meta', {})
+        self._wheel_geom_meta[gid] = {'radius_m': round(rad, 5),
+                                      'width_m': round(width, 5), 'source': src}
+        return rad, width
 
     def _soil_step(self):
         """
@@ -447,10 +477,13 @@ class WheelLegEnv:
             except Exception:
                 continue
             f_norm = abs(float(buf[0]))         # 接触坐标系第 0 轴 = 法向
+            f_t1, f_t2 = float(buf[1]), float(buf[2])   # 两个切向分量
             if f_norm <= 0.0:
                 continue
-            rec = per_wheel.setdefault(b_id, {'fz': 0.0, 'gid': wg})
+            rec = per_wheel.setdefault(b_id, {'fz': 0.0, 'gid': wg,
+                                              'ft_vec': np.zeros(2)})
             rec['fz'] += f_norm                 # 逐轮汇总，避免同一轮多个接触重复计
+            rec['ft_vec'] += np.array([f_t1, f_t2])
 
         sink_max, resist, load_max, Ft_applied = 0.0, 0.0, 0.0, 0.0
         for b_id, rec in per_wheel.items():
@@ -474,11 +507,36 @@ class WheelLegEnv:
             Ft_cap = pm.traction_limit(fz, max(A, 1e-9))
             Ft = min(tau * A, Ft_cap)           # 牵引上限在这里真正生效
             Ft_applied = max(Ft_applied, Ft)
-            vx = float(d.cvel[b_id][3])
-            sgn = -1.0 if vx > 0 else 1.0
-            # 净阻力 = 压实阻力，且不超过牵引上限（避免把驱动力"推"过上限）
-            net = min(Rc, Ft)
-            d.xfrc_applied[b_id][0] += sgn * net
+            # 轮–地相对切向速度（轮体世界速度的水平分量），不是机体 x
+            vel = np.asarray(d.cvel[b_id][3:6], dtype=float)
+            v_t = float(np.hypot(vel[0], vel[1]))
+            if v_t < 1e-6:
+                continue
+            # 阻力方向 = 相对切向速度的反方向（在水平切平面内）
+            dir_x, dir_y = -vel[0] / v_t, -vel[1] / v_t
+            # 压实阻力 Rc 与可提供牵引 H 是**两个不同量**：
+            #   Rc = 压实阻力（N）：直接施加，反向于相对运动；
+            #   H  = A*c + W*tanφ（N）：该轮–土接触**可提供的最大切向力**。
+            # 若当前接触切向力已超过 H，多出的部分在这里被抵消（等效降低可用牵引），
+            # 从而真正限制驱动牵引，而不是拿 H 去裁 Rc。
+            d.xfrc_applied[b_id][0] += dir_x * Rc
+            d.xfrc_applied[b_id][1] += dir_y * Rc
+            # 用等效 Coulomb 摩擦实现牵引上限：mu_eff = H / W。
+            # 这是**替换**该轮接触的摩擦上限，不是叠加额外力，因此不与原摩擦双算。
+            mu_eff = float(np.clip(Ft_cap / max(fz, 1e-9),
+                                   0.0, self._soil_mu0.get(rec['gid'], 0.9)))
+            # 接触摩擦 = max(轮, 地面)，所以轮与地面都要设成同一个上限
+            self.model.geom_friction[rec['gid']][0] = mu_eff
+            if self._soil_ground_geoms:
+                for g_ in self._soil_ground_geoms:
+                    self.model.geom_friction[g_][0] = mu_eff
+            rec['mu_eff'] = mu_eff
+            self._soil_limits[b_id] = {'H_n': round(Ft, 4), 'Rc_n': round(Rc, 4),
+                                       'load_n': round(fz, 3),
+                                       'mu_eff': round(float(Ft_cap / max(fz, 1e-9)), 4),
+                                       'contact_area_m2': A, 'radius_m': R,
+                                       'width_m': b_w,
+                                       'slip_j_m': j}
         st = self._soil_stats
         st['steps'] += 1
         st['max_sink_m'] = max(st['max_sink_m'], sink_max)
@@ -491,10 +549,12 @@ class WheelLegEnv:
         st['sum_Rc'] += resist
         st['sum_Ft'] += Ft_applied
         st['sum_load'] += load_max
-        # 机械功：阻力 × 位移（阻力总是反向于运动，所以功应为负或零）
-        dx = float(d.qvel[0]) * float(m.opt.timestep)
-        st['sum_work_j'] += float(d.xfrc_applied[min(per_wheel)].copy()[0]) * dx \
-            if per_wheel else 0.0
+        # 机械功：**每个受力轮**在受力点处 力·速度·dt 求和
+        dt = float(m.opt.timestep)
+        for b_id in per_wheel:
+            f = np.asarray(d.xfrc_applied[b_id][:3], dtype=float)
+            v = np.asarray(d.cvel[b_id][3:6], dtype=float)
+            st['sum_work_j'] += float(np.dot(f, v)) * dt
         st['mode'] = ('rigid-contact + Bekker resistance/traction '
                       '(sinkage estimated per wheel load, not geometric)')
 
@@ -591,6 +651,7 @@ class WheelLegEnv:
         st['work_j'] = round(st['sum_work_j'], 6)
         st['contact_fraction'] = round(st.get('wheel_contact_steps', 0) /
                                        max(st.get('steps', 1), 1), 4)
+        st['limits'] = {str(k): v for k, v in (self._soil_limits or {}).items()}
         return st
 
     def robot_state(self):

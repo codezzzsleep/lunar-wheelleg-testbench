@@ -74,7 +74,12 @@ def _load_recovery(d, run):
         recs = rjl('records.jsonl')
         return {'run': run, 'kind': 'six', 'summary': summ,
                 'has_crop': (d / 'rgb.png').exists(),
-                'views': (_imgs_six(d, 'view')), 'replay': _imgs_six(d, 'replay'),
+                'views': [{'file': n,
+                           'kind': ('truth' if n.startswith('truth_') else 'candidate'),
+                           'stage': ('back' if n.endswith('_back.png') else
+                                     ('top' if n.endswith('_top.png') else 'side'))}
+                          for n in _imgs_six(d, 'view')],
+                'replay': _imgs_six(d, 'replay'),
                 'observation': rj('observation.json'),
                 'decision': {'chosen': None, 'methods': summ.get('methods'),
                              'rule': '每方法自选动作，再在同一真值上执行'},
@@ -242,12 +247,14 @@ async function open_(){
     <span class="dim">规则 ${dec.rule||'—'}　候选 ${ (dec.hypotheses||[]).length } 个　初态 ${dec.n_seeds||'—'} 个</span><br>
     <span class="dim">${dec.reason_text||''}</span>
     <pre>${JSON.stringify(dec.stats||{},null,1).slice(0,900)}</pre>`;
-  const hv=(d.views||[]).filter(n=>n.startsWith('hyp_'));
+  const hv=(d.views||[]).filter(n=> (typeof n==='string'? n.startsWith('hyp_')
+                                                       : n.kind==='candidate'));
+  const nameOf = v => (typeof v === 'string' ? v : v.file);
   $('hyp3d').innerHTML = hv.length
-    ? hv.map(n=>`<figure style="display:inline-block;width:31%;margin:0 1% 0 0">
+    ? hv.map(v=>{const n=nameOf(v); return `<figure style="display:inline-block;width:31%;margin:0 1% 0 0">
         <img src="/img/${run}/view/${n}" style="max-height:150px">
         <figcaption class="dim" style="font-size:11px">${n.replace('hyp_','').replace('.png','')}</figcaption>
-      </figure>`).join('')
+      </figure>`;}).join('')
     : '<span class="dim">尚无候选三维视图</span>';
   const ex=d.execution||[];
   const chosen=ex.filter(m=>m.option===dec.chosen), blind=ex.filter(m=>m.option==='R1');
@@ -256,10 +263,11 @@ async function open_(){
     <tr><td>系统选择（${dec.chosen}）</td><td class="${chosen.every(m=>m.success)?'ok':'bad'}">${rate(chosen)}</td></tr>
     <tr><td>盲走（R1）</td><td class="${blind.every(m=>m.success)?'ok':'bad'}">${rate(blind)}</td></tr></table>
     <div class="dim" style="margin-top:6px">决策只用了观测与假设；真值在这之后才展示</div>`;
-  const rev=(d.views||[]).filter(n=>n.startsWith('truth_'));
+  const rev=(d.views||[]).filter(n=> (typeof n==='string'? n.startsWith('truth_')
+                                                        : n.kind==='truth'));
   $('reveal').innerHTML = rev.length
-    ? `<div class="sub">揭晓：真值障碍（侧视，含背面）</div>
-       <img src="/img/${run}/view/${rev[0]}" style="max-height:200px">`
+    ? `<div class="sub">揭晓：真值障碍（含背面）</div>` +
+      rev.map(v=>`<img src="/img/${run}/view/${nameOf(v)}" style="max-height:200px">`).join('')
     : '<span class="dim">尚无真值揭晓图</span>';
   if(d.kind==='six'){ $('sixcard').style.display=''; $('six').innerHTML=fmtSix(d); }
   else { $('sixcard').style.display='none'; }

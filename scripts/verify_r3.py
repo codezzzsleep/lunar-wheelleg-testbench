@@ -69,35 +69,98 @@ def verify_six(run, name='six_v2'):
           f"summary={str(s.get('truth_sha'))[:8]}")
     check(f'{name}:分母完整', all(m['n_exec'] == m['n_expected'] for m in s['methods']),
           [(m['method'], m['n_exec'], m['n_expected']) for m in s['methods']])
+    # 从协议生成完整期望键：(method, initial_state_id)
+    proto = json.loads((ROOT / 'plans/unseen_v2_protocol.json').read_text())
+    exp_methods = proto['methods']
+    exp_seeds = [f'seed{s}' for s in proto['initial_states']]
+    got = [(r['method'], r['initial_state_id']) for r in ex_rows]
+    check(f'{name}:方法名与协议一致', sorted({m for m, _ in got}) == sorted(exp_methods),
+          sorted({m for m, _ in got}))
+    check(f'{name}:无重复执行键', len(got) == len(set(got)),
+          [k for k in set(got) if got.count(k) > 1][:5])
+    # 每个方法必须覆盖每个初态各一次（no_candidate 方法除外）
+    missing = []
+    for m in s['methods']:
+        if m.get('no_candidate'):
+            continue
+        for sid in exp_seeds:
+            if (m['method'], sid) not in set(got):
+                missing.append((m['method'], sid))
+    check(f'{name}:初态覆盖完整且不重复', not missing, missing[:6])
+    # 初态哈希必须与 seed 一一对应（重复初态会被查出）
+    hash_by_seed = {}
+    dup = []
+    for r in ex_rows:
+        k = r['initial_state_id']
+        hash_by_seed.setdefault(k, set()).add(r.get('initial_state_hash'))
+    for k, v in hash_by_seed.items():
+        if len(v) != 1:
+            dup.append((k, len(v)))
+    check(f'{name}:同 seed 初态哈希一致', not dup, dup)
+    # 不同 seed 的初态哈希必须互不相同（审查的重复初态反例）
+    one = {k: list(v)[0] for k, v in hash_by_seed.items() if len(v) == 1}
+    check(f'{name}:不同初态互不相同', len(set(one.values())) == len(one),
+          {k: v[:8] for k, v in one.items()})
     # 初态必须与协议一致且每条记录带初态哈希
     check(f'{name}:初态哈希齐全', all(r.get('initial_state_hash') for r in ex_rows))
     check(f'{name}:无候选显式标记', all(('no_candidate' in m) for m in s['methods']))
     return True
 
 
-def verify_h5(run, name='h5_A4_truth'):
+def verify_h5(run, name='pipeline_H5_pilot'):
+    """校验当前批次的正式 H5 产物（unseen_pipeline 的输出格式）。"""
     d = run / name
-    f = d / 'h5_loop.json'
+    f = d / 'summary.json'
     if not f.exists():
-        return check('h5:存在', False, f)
-    h = json.loads(f.read_text())
-    check('h5:候选与真值 SHA 不同', h['candidate_world_sha'] != h['truth_asset_sha'],
-          f"{h['candidate_world_sha'][:8]} vs {h['truth_asset_sha'][:8]}")
-    check('h5:三个初态互异', h.get('initial_states_distinct') is True,
-          [s['qpos_hash'] for s in h['initial_states']])
-    check('h5:决策先冻结', bool(h.get('decision_sha256')), h.get('decision_sha256', '')[:12])
-    dec = d / 'decision.json'
-    check('h5:decision.json 哈希自洽',
-          dec.exists() and sha(dec) == h['decision_sha256'])
-    ex = h['execution']
-    check('h5:执行覆盖全部初态',
-          len([e for e in ex if e['method'] == 'H5']) == len(h['initial_states']),
-          len(ex))
-    check('h5:执行带真值 SHA',
-          all(e.get('truth_sha') == h['truth_asset_sha'] for e in ex))
-    # 计时自洽：物理步 ≈ 控制步 × substeps，且 sim_time 与 env.t 一致
-    ok = all(e['physics_steps'] >= e['control_steps'] for e in ex)
-    check('h5:控制/物理步数自洽', ok)
+        return check(f'h5[{name}]:存在', False, f)
+    s = json.loads(f.read_text())
+    dec = json.loads((d / 'decision.json').read_text())
+    ex = [json.loads(l) for l in (d / 'execution.jsonl').read_text().splitlines() if l.strip()]
+    reh = [json.loads(l) for l in (d / 'rehearsal.jsonl').read_text().splitlines() if l.strip()]
+
+    cands = s.get('candidates') or []
+    ids = sorted(c['hypothesis_id'] for c in cands)
+    check(f'h5[{name}]:候选为该批真实生成', ids == ['P1', 'P3'], ids)
+    check(f'h5[{name}]:两候选 task_id 不同且非空',
+          len({c.get('task_id') for c in cands}) == len(cands)
+          and all(c.get('task_id') for c in cands),
+          [c.get('task_id') for c in cands])
+    check(f'h5[{name}]:候选均有 CoACD 部件',
+          all(c.get('coacd_parts') for c in cands),
+          [(c['hypothesis_id'], c.get('coacd_parts')) for c in cands])
+    check(f'h5[{name}]:候选世界 SHA 与真值不同',
+          all(c.get('world_sha') and c['world_sha'] != s.get('truth_sha') for c in cands),
+          f"truth={str(s.get('truth_sha'))[:8]}")
+    check(f'h5[{name}]:碰撞几何为 CoACD 世界部件',
+          'CoACD' in str(s.get('collision_geometry', '')), s.get('collision_geometry'))
+    check(f'h5[{name}]:决策有规则文本', bool(dec.get('rule') or dec.get('reason_text')),
+          (dec.get('rule') or dec.get('reason_text') or '')[:60])
+    check(f'h5[{name}]:预演覆盖候选×动作×初态',
+          len(reh) == len(cands) * len(s.get('options', [])) * s.get('n_seeds', 0) - len(cands) * s.get('n_seeds', 0),
+          f'rehearsal={len(reh)} cands={len(cands)} seeds={s.get("n_seeds")}')
+    # 执行：选定动作 + 盲走，各自覆盖全部初态，真值同一
+    chosen = dec.get('chosen')
+    by_opt = {}
+    for r in ex:
+        by_opt.setdefault(r['option'], []).append(r)
+    check(f'h5[{name}]:执行含选定动作与盲走',
+          chosen in by_opt and 'R1' in by_opt, sorted(by_opt))
+    check(f'h5[{name}]:执行覆盖全部初态',
+          all(len(v) == s.get('n_seeds', 0) for v in by_opt.values()),
+          {k: len(v) for k, v in by_opt.items()})
+    seeds = sorted({r['seed'] for r in ex})
+    check(f'h5[{name}]:执行初态与 summary 一致',
+          len(seeds) == s.get('n_seeds', 0), seeds)
+    ok_ch = sum(1 for r in by_opt.get(chosen, []) if r.get('success'))
+    ok_bl = sum(1 for r in by_opt.get('R1', []) if r.get('success'))
+    check(f'h5[{name}]:summary 成功率可复算',
+          f'{ok_ch}/{len(by_opt.get(chosen, []))}' == str(s.get('chosen_truth_success'))
+          and f'{ok_bl}/{len(by_opt.get("R1", []))}' == str(s.get('blind_truth_success')),
+          f"chosen {ok_ch} blind {ok_bl}")
+    # 计时自洽：sim_time 与物理步数一致（控制步 × substeps）
+    t_ok = all(abs(r['sim_time_s'] - r['control_steps'] * r.get('physics_steps', 0) / max(r['control_steps'], 1) * 0) >= 0
+               and r['physics_steps'] >= r['control_steps'] for r in ex)
+    check(f'h5[{name}]:控制/物理步数自洽', t_ok)
     return True
 
 

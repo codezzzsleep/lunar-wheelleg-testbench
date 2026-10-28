@@ -26,20 +26,12 @@ import time
 import urllib.error
 import urllib.request
 
+from budget import (BudgetLedger, new_attempt_id, ST_PLANNED, ST_CREATED,
+                    ST_SUBMITTED, ST_PENDING, ST_SUCCEEDED, ST_FAILED,
+                    ST_UNCERTAIN, ST_DOWNLOADED, ST_INVALID)
+
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 API_BASE = os.environ.get('AHOLO_API_BASE', 'https://api.aholo3d.cn')
-
-# 状态机
-ST_PLANNED = 'planned'
-ST_SUBMITTED = 'submitted'
-ST_PENDING = 'pending'
-ST_SUCCEEDED = 'succeeded'
-ST_FAILED = 'failed'
-ST_UNCERTAIN = 'uncertain'
-ST_DOWNLOADED = 'downloaded'
-ST_INVALID = 'invalid_asset'
-HELD = {ST_SUBMITTED, ST_PENDING, ST_UNCERTAIN, ST_SUCCEEDED}
-
 
 def sha256_bytes(b):
     return hashlib.sha256(b).hexdigest()
@@ -58,83 +50,6 @@ def _key():
     if not k:
         raise SystemExit('缺少 AHOLO_API_KEY 环境变量：图生需在执行环境中设置（不会打印其值）')
     return k
-
-
-class Lock:
-    def __init__(self, path):
-        self.path = pathlib.Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.fh = None
-
-    def __enter__(self):
-        self.fh = open(self.path, 'a+')
-        fcntl.flock(self.fh, fcntl.LOCK_EX)
-        return self
-
-    def __exit__(self, *a):
-        fcntl.flock(self.fh, fcntl.LOCK_UN)
-        self.fh.close()
-
-
-class Ledger:
-    """任务账本：每个 task 一行 JSON，追加写；预留与提交在同一把锁里完成。"""
-
-    def __init__(self, path):
-        self.path = pathlib.Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.lock = self.path.with_suffix('.lock')
-
-    def all(self):
-        if not self.path.exists():
-            return []
-        return [json.loads(l) for l in self.path.read_text().splitlines() if l.strip()]
-
-    def held_credits(self):
-        return sum(float(r.get('estimate_upper') or 0) for r in self.all()
-                   if r.get('status') in HELD)
-
-    def held_tasks(self):
-        return sum(1 for r in self.all() if r.get('status') in HELD)
-
-    def append(self, rec):
-        with self.lock_path():
-            with open(self.path, 'a') as f:
-                f.write(json.dumps(rec, ensure_ascii=False) + '\n')
-
-    def lock_path(self):
-        return Lock(self.lock)
-
-    def update(self, identity, **kw):
-        with Lock(self.lock):
-            rows = self.all()
-            for r in rows:
-                if r.get('identity') == identity:
-                    r.update(kw)
-            self.path.write_text('\n'.join(json.dumps(r, ensure_ascii=False)
-                                           for r in rows) + '\n')
-
-    def reserve(self, identity, credits_upper, budget):
-        """
-        原子预留：任务数 + 积分上界同时检查。成功返回 True。
-        预留本身写一条 planned 记录（随后立即转 submitted）。
-        """
-        with Lock(self.lock):
-            rows = self.all()
-            held_c = sum(float(r.get('estimate_upper') or 0) for r in rows
-                         if r.get('status') in HELD)
-            held_n = sum(1 for r in rows if r.get('status') in HELD)
-            if held_c + credits_upper > budget['hard_cap']:
-                return False, f'积分将达 {held_c + credits_upper} > 上限 {budget["hard_cap"]}'
-            if held_n + 1 > budget['max_create_tasks']:
-                return False, f'任务数将达 {held_n + 1} > 上限 {budget["max_create_tasks"]}'
-            if credits_upper > budget['per_task_cap']:
-                return False, f'单任务 {credits_upper} > 上限 {budget["per_task_cap"]}'
-            rows.append({'identity': identity, 'status': ST_PLANNED,
-                         'estimate_upper': credits_upper, 'actual_charge': None,
-                         'verified': 'unknown', 'ts': time.time()})
-            self.path.write_text('\n'.join(json.dumps(r, ensure_ascii=False)
-                                           for r in rows) + '\n')
-            return True, 'reserved'
 
 
 def request_identity(image_bytes, variant, model_cfg, repeat_idx):
@@ -321,6 +236,23 @@ def plan_entries(plan):
     return plan['inputs']
 
 
+def _mode(a):
+    """明确模式：冲突直接拒绝，缺省安全（dry-run）。"""
+    picked = [m for m, on in (('submit', a.submit), ('resume', a.resume),
+                              ('cached_only', a.cached_only)) if on]
+    if len(picked) > 1:
+        raise SystemExit(f'模式冲突：{picked}，只能选一个')
+    if not picked:
+        return 'dry_run'
+    return picked[0]
+
+
+def _identity_of(item):
+    b = pathlib.Path(item['image']).read_bytes()
+    return request_identity(b, item.get('variant', 'orig'), item['model'],
+                            item.get('repeat_idx', 0))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--plan', required=True)
@@ -332,81 +264,81 @@ def main():
     ap.add_argument('--ledger', default='runs/unseen/generation/ledger.jsonl')
     ap.add_argument('--cache', default='runs/unseen/generation/cache')
     ap.add_argument('--only', default=None, help='只处理这些 id，逗号分隔')
-    ap.add_argument('--attach', default=None,
-                    help='把已创建未记账的任务接回：identity=taskid[,identity=taskid]')
+    ap.add_argument('--report-only', action='store_true', help='只打印预算核对表')
     a = ap.parse_args()
 
+    mode = _mode(a)
     plan = json.loads(pathlib.Path(a.plan).read_text())
     if a.only:
         keep = {x.strip() for x in a.only.split(',')}
         plan = dict(plan, inputs=[i for i in plan['inputs'] if i['id'] in keep])
-    budget = json.loads(pathlib.Path(a.budget).read_text()) if \
-        pathlib.Path(a.budget).exists() else None
-    led = Ledger(a.ledger)
+    budget = (json.loads(pathlib.Path(a.budget).read_text())
+              if pathlib.Path(a.budget).exists() else None)
+    led = BudgetLedger(a.ledger)
 
-    if a.attach:
-        for pair in a.attach.split(','):
-            ident, tid = pair.split('=')
-            led.update(ident, status=ST_SUBMITTED, task_id=int(tid), note='attached')
-            print(f'[attach] {ident[:12]} -> task {tid}')
-    rows, need_submit = [], 0
-    for item in plan_entries(plan):
+    # ---- 分类每个计划项 ----
+    rows = []
+    for item in plan['inputs']:
         img = pathlib.Path(item['image'])
         if not img.exists():
-            rows.append({'id': item['id'], 'state': 'missing_image', 'path': str(img)})
+            rows.append({'id': item['id'], 'state': 'missing_image',
+                         'path': str(img)})
             continue
-        b = img.read_bytes()
-        ident = request_identity(b, item.get('variant', 'orig'), item['model'],
-                                 item.get('repeat_idx', 0))
+        ident = _identity_of(item)
         hit = cache_valid(a.cache, ident)
-        rec = next((r for r in led.all() if r.get('identity') == ident), None)
-        st = rec.get('status') if rec else None
+        recs = [r for r in led.rows() if r.get('identity') == ident and led.is_held(r)]
+        rec = recs[-1] if recs else None
         if hit:
             state = 'cached'
-        elif st in HELD:
-            state = f'{st}_held'
+        elif rec and rec.get('task_id'):
+            state = f"{rec['status']}_has_task"
+        elif rec:
+            state = f"{rec['status']}_no_task"
         else:
             state = 'need_create'
-            need_submit += 1
         rows.append({'id': item['id'], 'state': state, 'identity': ident,
                      'task_id': (rec or {}).get('task_id'),
-                     'img_sha': sha256_bytes(b)[:16], 'variant': item.get('variant', 'orig')})
+                     'img_sha': sha256_bytes(img.read_bytes())[:16],
+                     'variant': item.get('variant', 'orig')})
 
-    held_c = led.held_credits()
-    est = need_submit * float(plan.get('credits_upper_per_task', 20))
-    print(json.dumps({
-        'mode': ('dry-run' if a.dry_run or not (a.submit or a.resume or a.cached_only)
-                 else 'submit/resume'),
-        'n_inputs': len(rows), 'n_cached': sum(1 for r in rows if r['state'] == 'cached'),
-        'n_need_create': need_submit, 'n_held': sum(1 for r in rows if 'held' in r['state']),
-        'held_credits': held_c, 'planned_credits_upper': est,
-        'budget': budget, 'entries': rows,
-    }, indent=2, ensure_ascii=False))
+    n_need = sum(1 for r in rows if r['state'] == 'need_create')
+    est = n_need * float(plan.get('credits_upper_per_task', 20))
+    rep = led.report(budget) if budget else {'note': '未提供预算配置'}
+    out = {'mode': mode, 'n_inputs': len(rows),
+           'n_cached': sum(1 for r in rows if r['state'] == 'cached'),
+           'n_need_create': n_need,
+           'n_has_task': sum(1 for r in rows if r['state'].endswith('has_task')),
+           'planned_new_credits_upper': est,
+           'budget_report': rep, 'entries': rows}
+    print(json.dumps(out, indent=2, ensure_ascii=False))
 
-    if a.dry_run or not (a.submit or a.resume or a.cached_only):
-        print('\n[dry-run] 不联网、不上传、不提交。加 --submit 才会真正创建任务。')
+    if a.report_only or mode == 'dry_run':
+        print('\n[dry_run] 不联网、不上传、不 create。加 --submit 才会创建付费任务。')
         return 0
-    if a.cached_only:
+
+    # ---- cached-only：只读缓存，缺失即明确未满足 ----
+    if mode == 'cached_only':
+        miss = [r['id'] for r in rows if r['state'] != 'cached']
+        if miss:
+            print(f'\n[cached-only] 未满足：{len(miss)} 项无有效缓存 -> {miss}')
+            return 2
+        print('\n[cached-only] 全部命中缓存')
         return 0
 
     if not budget:
-        raise SystemExit(f'缺预算配置 {a.budget}：未核定预算时拒绝付费 create')
+        raise SystemExit(f'缺预算配置 {a.budget}')
     if os.environ.get('AHOLO_API_KEY') is None:
-        print('\n[BLOCKED] 缺少 AHOLO_API_KEY：无法执行上传与提交。'
-              '其余工作（计划、缓存校验、离线处理）已完成。')
+        print('\n[BLOCKED] 缺少 AHOLO_API_KEY，付费路径暂停；其余工作不受影响。')
         return 3
 
-    # --- resume：接管已提交/未完成的持有任务，只查询与下载，绝不重新 create ---
-    if a.resume:
-        for item, row in zip(plan_entries(plan), rows):
-            if 'held' not in row['state']:
+    # ---- resume：只查询/下载已有任务，绝不 create ----
+    if mode == 'resume':
+        n_done = 0
+        for item, row in zip(plan['inputs'], rows):
+            if not row['state'].endswith('has_task'):
                 continue
             ident = row['identity']
-            rec = next((r for r in led.all() if r.get('identity') == ident), None) or {}
-            tid = rec.get('task_id')
-            if not tid:
-                print(f'[held] {item["id"]} 无 task_id，跳过（不重提）')
-                continue
+            tid = row['task_id']
             try:
                 j = poll(int(tid))
             except Exception as e:
@@ -415,7 +347,8 @@ def main():
             st = j.get('status')
             if st == 3:
                 urls = [o['content'] for o in j.get('outputs', []) if o.get('content')]
-                d = cache_path(a.cache, ident); d.mkdir(parents=True, exist_ok=True)
+                d = cache_path(a.cache, ident)
+                d.mkdir(parents=True, exist_ok=True)
                 try:
                     files = download_urls(urls, d)
                 except Exception as e:
@@ -426,51 +359,59 @@ def main():
                     zp = next((f for f in files if f.suffix == '.zip'), None)
                     glb = extract_glb(zp, d) if zp else None
                 if glb is None or glb.open('rb').read(4) != b'glTF':
-                    led.update(ident, status=ST_INVALID, note='not_glb')
-                    print(f'[invalid] {item["id"]} 非 GLB')
+                    led.mark(row['attempt_id'] if 'attempt_id' in row else
+                             _attempt_of(led, ident), ST_INVALID, note='not_glb')
+                    print(f'[invalid] {item["id"]}')
                     continue
                 (d / 'meta.json').write_text(json.dumps({
-                    'identity': ident, 'task_id': int(tid), 'glb_sha': sha256_file(glb),
-                    'request': item['model'], 'variant': item.get('variant', 'orig'),
-                    'ts': time.time()}, ensure_ascii=False, indent=2))
-                led.update(ident, status=ST_DOWNLOADED, glb_sha=sha256_file(glb))
-                print(f'[downloaded] {item["id"]} task {tid} -> {glb}')
+                    'identity': ident, 'task_id': int(tid),
+                    'glb_sha': sha256_file(glb), 'request': item['model'],
+                    'variant': item.get('variant', 'orig'), 'ts': time.time()},
+                    ensure_ascii=False, indent=2))
+                led.mark(_attempt_of(led, ident), ST_DOWNLOADED,
+                         glb_sha=sha256_file(glb))
+                print(f'[downloaded] {item["id"]} task {tid}')
+                n_done += 1
             elif st in (4, -1, 2):
-                led.update(ident, status=ST_FAILED, note=f'task_status={st}')
+                led.mark(_attempt_of(led, ident), ST_FAILED, note=f'task_status={st}')
                 print(f'[failed] {item["id"]} status={st}')
             else:
                 print(f'[pending] {item["id"]} task {tid} status={st}')
+        print(json.dumps(led.report(budget), ensure_ascii=False))
+        return 0
 
-    for item, row in zip(plan_entries(plan), rows):
-        if row['state'] not in ('need_create',):
+    # ---- submit：唯一可以创建新任务的模式 ----
+    for item, row in zip(plan['inputs'], rows):
+        if row['state'] != 'need_create':
             continue
-        ident = row['identity']          # 完整身份，不做截断
-        item_model = item['model']
-        ok, why = led.reserve(ident, float(plan.get('credits_upper_per_task', 20)), budget)
+        ident = row['identity']
+        attempt = new_attempt_id()
+        upper = float(plan.get('credits_upper_per_task', 20))
+        ok, why = led.reserve(ident, attempt, upper, budget)
         if not ok:
             print(f'[budget] 停止新增：{why}')
             break
-        img_url = item.get('image_url')
-        if not img_url:
-            try:
-                img_url = upload_image(item['image'])
-                led.update(ident, note=f'uploaded: {img_url[:60]}')
-            except Exception as e:
-                print(f'[upload-failed] {item["id"]}: {type(e).__name__} {str(e)[:120]}')
-                led.update(ident, status=ST_FAILED, note=f'upload_error: {type(e).__name__}')
-                continue
         try:
-            tid = submit_img_to_3d(img_url, item_model)
+            img_url = item.get('image_url') or upload_image(item['image'])
         except Exception as e:
-            led.update(ident, status=ST_UNCERTAIN, note=f'submit_error: {type(e).__name__}')
+            # 上传失败：请求确实没有发出，可释放
+            led.release(attempt, f'upload_failed:{type(e).__name__}')
+            print(f'[upload-failed] {item["id"]}: {type(e).__name__}')
+            continue
+        try:
+            tid = submit_img_to_3d(img_url, item['model'])
+        except Exception as e:
+            # 可能已受理：按 uncertain 保留额度，不重提
+            led.mark(attempt, ST_UNCERTAIN,
+                     note=f'submit_error:{type(e).__name__}')
             print(f'[uncertain] {item["id"]}: {e} —— 不重提，先查询')
             continue
-        led.update(ident, status=ST_SUBMITTED, task_id=tid)
-        print(f'[submitted] {item["id"]} task_id={tid}')
+        led.mark(attempt, ST_CREATED, task_id=tid)      # task_id 立即落盘
+        print(f'[created] {item["id"]} task_id={tid}')
         try:
             j = poll(tid)
         except Exception as e:
-            led.update(ident, status=ST_UNCERTAIN, note=f'poll_error: {type(e).__name__}')
+            led.mark(attempt, ST_UNCERTAIN, note=f'poll_error:{type(e).__name__}')
             continue
         if j.get('status') == 3:
             urls = [o['content'] for o in j.get('outputs', []) if o.get('content')]
@@ -478,27 +419,33 @@ def main():
             try:
                 files = download_urls(urls, d)
             except Exception as e:
-                led.update(ident, status=ST_FAILED, note=f'download_error: {type(e).__name__}')
+                led.mark(attempt, ST_FAILED, note=f'download_error:{type(e).__name__}')
                 continue
             glb = next((f for f in files if f.suffix == '.glb'), None)
             if glb is None:
                 zp = next((f for f in files if f.suffix == '.zip'), None)
                 glb = extract_glb(zp, d) if zp else None
             if glb is None or glb.open('rb').read(4) != b'glTF':
-                led.update(ident, status=ST_INVALID, note='not_glb')
+                led.mark(attempt, ST_INVALID, note='not_glb')
                 continue
             (d / 'meta.json').write_text(json.dumps({
                 'identity': ident, 'task_id': tid, 'glb_sha': sha256_file(glb),
-                'request': item_model, 'variant': item.get('variant', 'orig'),
+                'request': item['model'], 'variant': item.get('variant', 'orig'),
                 'ts': time.time()}, ensure_ascii=False, indent=2))
-            led.update(ident, status=ST_DOWNLOADED, glb_sha=sha256_file(glb))
+            led.mark(attempt, ST_DOWNLOADED, glb_sha=sha256_file(glb))
             print(f'[downloaded] {item["id"]} -> {glb}')
         else:
-            led.update(ident, status=ST_FAILED, note=f'task_status={j.get("status")}')
+            led.mark(attempt, ST_FAILED, note=f'task_status={j.get("status")}')
 
-    print(json.dumps({'held_credits_after': led.held_credits(),
-                      'held_tasks_after': led.held_tasks()}, ensure_ascii=False))
+    print(json.dumps(led.report(budget), ensure_ascii=False))
     return 0
+
+
+def _attempt_of(led, identity):
+    recs = [r for r in led.rows() if r.get('identity') == identity and led.is_held(r)]
+    if not recs:
+        raise RuntimeError(f'identity {identity[:12]} 没有可更新记录')
+    return recs[-1]['attempt_id']
 
 
 if __name__ == '__main__':

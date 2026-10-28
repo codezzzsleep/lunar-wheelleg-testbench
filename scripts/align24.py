@@ -199,7 +199,7 @@ def main():
                'scale': round(sc_real, 5), 'yaw': round(yaw_real, 3),
                'R_axis_world': axis_real, 'shear_residual': round(shear, 9),
                'z_min_world_m': round(z_min, 9),
-               'world_dir': str(world_dir),
+
                'M': cur['M'].tolist(),
                'native': native, 'threshold_p95_mm': round(thr, 3), 'pass': bool(ok)}
         if best is None or (rec['pass'], -(p95 or 9e9)) > (best['pass'],

@@ -1,0 +1,29 @@
+{
+  "case_id": "planA",
+  "hyp_source": "H5",
+  "hyp_source_note": "真实 Lux3D 候选（本地缓存，未新建任务）",
+  "truth_sha": "2afba6f86613ff9e8943dcc5aedccd4bc822e98baabd6024f084d71ed389ede2",
+  "collision_geometry": "CoACD convex parts (world frame, posture preserved)",
+  "candidates": [
+    {
+      "hypothesis_id": "A4",
+      "task_id": 4432118,
+      "world_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
+      "collision_sha": "23d0025b34d8e2cc61f9d816376f0699",
+      "coacd_parts": 6
+    }
+  ],
+  "n_hypotheses": 1,
+  "n_seeds": 3,
+  "options": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "A0"
+  ],
+  "chosen": "R1",
+  "no_robust_option": false,
+  "chosen_truth_success": "3/3",
+  "blind_truth_success": "3/3"
+}

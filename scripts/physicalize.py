@@ -146,8 +146,13 @@ def main():
     man = {
         'asset_id': out.name,
         'hypothesis_id': a.hypothesis_id,
+        'schema': 'asset-manifest/v1',
+        'coordinate_frame': 'world',
         'source_kind': 'posed',
         'parts': files,
+        'T_world_from_asset': np.eye(4).tolist(),
+        'body_pose_expected': {'pos': [0.0, 0.0, 0.0], 'quat': [1.0, 0.0, 0.0, 0.0]},
+        'world_sha': sha256(src),
         'pass': True,
         'rest_pose': False,
         'rescaled': False,

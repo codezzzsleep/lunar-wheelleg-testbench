@@ -188,11 +188,14 @@ def main():
         R_real = Mm[:3, :3] / max(sc_real, 1e-12)
         shear = float(np.max(np.abs(Mm[:3, :3].T @ Mm[:3, :3]
                                     - (sc_real ** 2) * np.eye(3))))
-        # 增量 yaw：相对于选定轴基 R_axis，用完整旋转求，不用 arctan2 单元素
+        # 增量 yaw：R_total = Rz(yaw) @ R_axis，所以左侧增量是 R_real @ R_axis.T
         R_axis = rotations24()[c['R_index']]
-        dR = R_axis.T @ R_real
+        dR = R_real @ R_axis.T
         yaw_real = float(np.degrees(np.arctan2(dR[1, 0] - dR[0, 1],
                                                 dR[0, 0] + dR[1, 1])))
+        out_axis_err = float(np.max(np.abs(dR[:2, :2] - np.array(
+            [[np.cos(np.deg2rad(yaw_real)), -np.sin(np.deg2rad(yaw_real))],
+             [np.sin(np.deg2rad(yaw_real)), np.cos(np.deg2rad(yaw_real))]]))))
         axis_real = (R_real @ np.eye(3)).round(3).tolist()
         thr = max(5.0, 0.03 * H_vis * 1000)
         p95 = native.get('vis_pt_p95_mm')
@@ -202,6 +205,7 @@ def main():
                'scale_init': c['scale'], 'yaw_init': c['yaw'],
                'scale': round(sc_real, 5), 'yaw': round(yaw_real, 3),
                'R_axis_world': axis_real, 'shear_residual': round(shear, 9),
+               'yaw_residual': round(out_axis_err, 9),
                'z_min_world_m': round(z_min, 9),
 
                'M': cur['M'].tolist(),

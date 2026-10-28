@@ -1,0 +1,121 @@
+{
+  "asset_id": "A4",
+  "hypothesis_id": "A4",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl",
+    "parts/part_01.stl",
+    "parts/part_02.stl",
+    "parts/part_03.stl",
+    "parts/part_04.stl",
+    "parts/part_05.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 6,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 17.43,
+  "hit_part_cap": false,
+  "height_m": 0.1659,
+  "width_x_m": 0.20768,
+  "width_y_m": 0.36074,
+  "rel_height": 1.93,
+  "rel_width": 4.197,
+  "concavity": -0.02058,
+  "convex_hull_volume_m3": 0.008254,
+  "parts_volume_m3": 0.008423,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.679305076599121,
+      -0.18325810134410858,
+      0.0
+    ],
+    [
+      1.886988878250122,
+      0.1774819940328598,
+      0.16589565575122833
+    ]
+  ],
+  "raw_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
+  "collision_sha": "23d0025b34d8e2cc61f9d816376f0699",
+  "concavity_probe": {
+    "hull_bottom_z": -0.00037,
+    "parts_bottom_z": -0.00037,
+    "probe_xy": [
+      1.6773,
+      -0.1848
+    ]
+  },
+  "version": "physicalize/v1"
+}

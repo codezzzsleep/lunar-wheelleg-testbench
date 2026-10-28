@@ -1,0 +1,66 @@
+{
+  "rule": "worst-case-risk/v1",
+  "tau": 0.0,
+  "c_fail": 60.0,
+  "c_abort": 40.0,
+  "hypotheses": [
+    "A4"
+  ],
+  "n_seeds": 3,
+  "stats": {
+    "R1": {
+      "f": {
+        "A4": 0.0
+      },
+      "c": {
+        "A4": 5.647
+      },
+      "R": 0.0,
+      "mean_c": 5.647
+    },
+    "R2": {
+      "f": {
+        "A4": 0.0
+      },
+      "c": {
+        "A4": 7.287
+      },
+      "R": 0.0,
+      "mean_c": 7.287
+    },
+    "L1": {
+      "f": {
+        "A4": 0.0
+      },
+      "c": {
+        "A4": 6.047
+      },
+      "R": 0.0,
+      "mean_c": 6.047
+    },
+    "L2": {
+      "f": {
+        "A4": 0.0
+      },
+      "c": {
+        "A4": 5.86
+      },
+      "R": 0.0,
+      "mean_c": 5.86
+    }
+  },
+  "safe_set": [
+    "R1",
+    "L2",
+    "L1",
+    "R2"
+  ],
+  "chosen": "R1",
+  "tie": false,
+  "tied_options": [
+    "R1"
+  ],
+  "no_robust_option": false,
+  "insufficient_evidence": false,
+  "reason_text": "在这 1 个候选、每个 3 个测试初态中均通过"
+}

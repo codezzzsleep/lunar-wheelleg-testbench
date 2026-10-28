@@ -1,50 +1,101 @@
 """
-主动观察：真实抬高机身取得第二视角，再用第二视角筛除候选。
+主动观察 v2：在**真实隐藏真值场景**里执行抬高动作，取得真实第二观测，
+再用第二观测筛除候选。
 
   MUJOCO_GL=osmesa .venv/bin/python scripts/look_again.py \
-      --candidates plans/unseen_v2_protocol.json --out runs/unseen/recovery_r3/look_again
+      --protocol plans/unseen_v2_protocol.json --out runs/unseen/recovery_r3/look_again_v2
 
-要点（E4 任务 8 / 10.1）：
-  · 第二视角由**真实抬高机身**获得（不是瞬移相机），记录动作、耗时与稳定性；
-  · 从观察后的**实际 qpos/qvel** 继续，不 reset 抹掉观察成本；
-  · 第二视角只用于**筛除**候选，第一视角的约束继续保留（两者都满足才留）；
-  · 允许诚实的负面结果：没有获得信息 / 全部候选被淘汰。
+与 v1 的关键区别（3ef8f98 复核）：
+  · v1 起始场景没有真值障碍，比较的是候选自己两张掩码，不是候选对真实第二观测；
+  · v1 把"第二视角可见像素>300"当筛选规则，那只是有效性检查；
+  · v1 的 raise_body 按控制步算循环却每轮只 mj_step 一次，1.2 s 实际只推进 0.12 s。
+
+本版：真值场景取首视角 → 统一 substeps 入口抬高并停稳 → 真实第二观测
+      → 候选在**同一机器人状态 + 同一第二相机**下渲染 → 按轮廓 IoU 筛选
+      → 淘汰后从观察后状态重新决策。
 """
 import argparse
-import hashlib
 import json
 import pathlib
+import subprocess
 import sys
 
 import numpy as np
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import camera_io
 import mujoco
 import terrain
-import trimesh
 import wheelleg_env
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 RAISE_S = 1.2
+SETTLE_S = 2.0
+IOU_MIN = 0.85
+KP_HOLD = 120.0
+KD_HOLD = 6.0
 
 
-def _sha(p):
-    h = hashlib.sha256()
-    with open(p, 'rb') as f:
-        for b in iter(lambda: f.read(1 << 20), b''):
-            h.update(b)
-    return h.hexdigest()
+def scene_for(case, world=None, mesh_file=None):
+    spec = terrain.make_spec(kind='flat', seed=0, objects=[],
+                             goal_x=float(case.get('goal_x', 2.8)), name='look')
+    spec['channel'] = {'center_y': 0.0, 'half_width': float(case.get('channel_half', 1.2))}
+    spec['skill_cfg'] = {'task': 'M'}
+    spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
+    spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
+    if world:
+        spec['objects'] = [{'posed_dir': str(world)}]
+    elif mesh_file:
+        spec['objects'] = [{'mesh_file': str(pathlib.Path(mesh_file).resolve()),
+                            'x': case['obstacle_x'], 'y': 0.0, 'yaw_deg': 0.0,
+                            'target_height_m': case['H']}]
+    return spec
 
 
-def raise_body(env, seconds=RAISE_S):
-    """真实抬高机身：对所有腿的 thigh/calf 施加蹲伏-伸展控制，直到机身升高。"""
+def set_cam_height(env, cam_height):
+    cid = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
+    bid = env.model.cam_bodyid[cid]
+    mujoco.mj_forward(env.model, env.data)
+    B = np.asarray(env.data.xmat[bid]).reshape(3, 3)
+    b = np.asarray(env.data.xpos[bid])
+    env.model.cam_pos[cid][2] = (cam_height - b[2] - B[2, 0] * 0.42) / B[2, 2]
+    mujoco.mj_forward(env.model, env.data)
+    return cid
+
+
+def capture(env, cid, out_png, W=1280, H=960):
+    m, d = env.model, env.data
+    mujoco.mj_forward(m, d)
+    m.vis.global_.offwidth, m.vis.global_.offheight = W, H
+    r = mujoco.Renderer(m, H, W)
+    r.update_scene(d, camera=cid)
+    Image.fromarray(r.render()).save(out_png)
+    r.enable_depth_rendering(); r.update_scene(d, camera=cid)
+    dep = r.render().copy(); r.disable_depth_rendering()
+    obid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
+    mask = np.zeros_like(dep, dtype=bool)
+    if obid >= 0:
+        keep = m.body_pos[obid].copy()
+        m.body_pos[obid] = [0, 0, -80]; mujoco.mj_forward(m, d)
+        r.enable_depth_rendering(); r.update_scene(d, camera=cid)
+        bg = r.render().copy(); r.disable_depth_rendering()
+        m.body_pos[obid] = keep; mujoco.mj_forward(m, d)
+        mask = (np.isfinite(dep) & np.isfinite(bg) & (dep < bg - 1e-3)
+                & (dep > 0) & (dep < 100))
+    snap = {'world_pos': [float(x) for x in d.cam_xpos[cid]],
+            'R_world_from_camera': [[float(v) for v in row]
+                                    for row in np.asarray(d.cam_xmat[cid]).reshape(3, 3)],
+            'fovy_deg': float(m.cam_fovy[cid])}
+    return {'mask': mask, 'depth': dep, 'snapshot': snap}
+
+
+def raise_body(env, seconds=RAISE_S, settle=SETTLE_S):
+    """统一 substeps 入口抬高机身，并等到线/角速度都稳定。"""
     m, d = env.model, env.data
     z0 = float(d.qpos[2])
-    n = int(seconds / (env.substeps * env.dt))
-    for _ in range(n):
-        # 伸腿：把 calf 目标角往小（伸直）方向推，thigh 顶起
-        env._apply_controls(np.zeros(4), drive=False)
+    n_ctrl = int(seconds * env.control_hz)
+    for _ in range(n_ctrl):
         for leg in ('FL', 'FR', 'RL', 'RR'):
             for jn, delta in ((f'{leg}_thigh_joint', -0.25),
                               (f'{leg}_calf_joint', +0.55)):
@@ -53,144 +104,176 @@ def raise_body(env, seconds=RAISE_S):
                 d.ctrl[e['act']] = float(np.clip(
                     60.0 * (tgt - d.qpos[e['qadr']]) - 3.0 * d.qvel[e['vadr']],
                     -23.7, 23.7))
-        mujoco.mj_step(m, d)
+        for _ in range(env.substeps):
+            if hasattr(env, '_soil_step'):
+                env._soil_step()
+            mujoco.mj_step(m, d)
+            env.n_physics += 1
+    # 停稳时保持**抬高后**的目标角，而不是逐渐滑回原姿态
+    hold = {}
+    for leg in ('FL', 'FR', 'RL', 'RR'):
+        for p_ in ('hip', 'thigh', 'calf'):
+            hold[f'{leg}_{p_}_joint'] = float(d.qpos[env.J[f'{leg}_{p_}_joint']['qadr']])
+    still = 0
+    for _ in range(int(settle * env.control_hz)):
+        for jn, tgt in hold.items():
+            e = env.J[jn]
+            d.ctrl[e['act']] = float(np.clip(
+                KP_HOLD * (tgt - d.qpos[e['qadr']]) - KD_HOLD * d.qvel[e['vadr']],
+                -23.7, 23.7))
+        for _ in range(env.substeps):
+            if hasattr(env, '_soil_step'):
+                env._soil_step()
+            mujoco.mj_step(m, d)
+            env.n_physics += 1
+            env.t += env.dt
+        if (float(np.linalg.norm(d.qvel[:3])) < 0.03
+                and float(np.linalg.norm(d.qvel[3:6])) < 0.08):
+            still += 1
+            if still >= max(1, int(0.3 * env.control_hz)):
+                break
+        else:
+            still = 0
     z1 = float(d.qpos[2])
     return {'z_before': round(z0, 4), 'z_after': round(z1, 4),
-            'delta_z_m': round(z1 - z0, 4), 'seconds': seconds,
+            'z_peak_m': round(float(np.max(d.qpos[2])), 4),
+            'delta_z_m': round(z1 - z0, 4),
+            'vel_norm': round(float(np.linalg.norm(d.qvel[:6])), 4),
+            'n_control_steps': n_ctrl, 'n_physics_steps': int(env.n_physics),
+            'sim_time_s': round(float(env.t), 4),
+            'stable': bool(float(np.linalg.norm(d.qvel[:3])) < 0.03),
             'qpos': [round(float(x), 6) for x in d.qpos],
-            'qvel': [round(float(x), 6) for x in d.qvel],
-            'vz_end': round(float(d.qvel[2]), 4),
-        'stable': abs(float(d.qvel[2])) < 0.2}
-
-
-def render_view(env, out_png, W=1280, H=960):
-    m, d = env.model, env.data
-    cid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
-    mujoco.mj_forward(m, d)
-    m.vis.global_.offwidth, m.vis.global_.offheight = W, H
-    r = mujoco.Renderer(m, H, W)
-    r.update_scene(d, camera=cid)
-    img = r.render()
-    Image.fromarray(img).save(out_png)
-    r.enable_depth_rendering(); r.update_scene(d, camera=cid)
-    dep = r.render().copy(); r.disable_depth_rendering()
-    cam = {'world_pos': [float(x) for x in d.cam_xpos[cid]],
-           'R_world_from_camera': [[float(v) for v in row]
-                                   for row in np.asarray(d.cam_xmat[cid]).reshape(3, 3)],
-           'fovy_deg': float(m.cam_fovy[cid])}
-    return img, dep, cam
-
-
-def mask_of(env, dep, cam):
-    m, d = env.model, env.data
-    cid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
-    obid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
-    if obid < 0:
-        return np.zeros_like(dep, dtype=bool)
-    keep = m.body_pos[obid].copy()
-    m.body_pos[obid] = [0, 0, -80]; mujoco.mj_forward(m, d)
-    r = mujoco.Renderer(m, dep.shape[0], dep.shape[1])
-    r.enable_depth_rendering(); r.update_scene(d, camera=cid)
-    bg = r.render().copy(); r.disable_depth_rendering()
-    m.body_pos[obid] = keep; mujoco.mj_forward(m, d)
-    return np.isfinite(dep) & np.isfinite(bg) & (dep < bg - 1e-3) & (dep > 0) & (dep < 100)
-
-
-def scene_for(world_dir, case, seed=0):
-    spec = terrain.make_spec(kind='flat', seed=seed, objects=[],
-                             goal_x=float(case.get('goal_x', 2.8)), name='look')
-    spec['channel'] = {'center_y': 0.0, 'half_width': float(case.get('channel_half', 1.2))}
-    spec['skill_cfg'] = {'task': 'M'}
-    spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
-    spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
-    spec['objects'] = [{'posed_dir': str(world_dir)}] if world_dir else []
-    return spec
+            'qvel': [round(float(x), 6) for x in d.qvel]}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--protocol', required=True)
     ap.add_argument('--out', required=True)
-    ap.add_argument('--camera-height', type=float, default=0.16)
+    ap.add_argument('--camera-height', type=float, default=0.32,
+                    help='观察前机位（与首视角观测包一致）')
+    ap.add_argument('--soil', default='rigid')
+    ap.add_argument('--redecide', action='store_true')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     proto = json.loads(pathlib.Path(a.protocol).read_text())
     case = json.loads(pathlib.Path(proto['case']).read_text())
     cands = proto.get('candidates') or []
-    rec = {'workflow': 'look_again/v1', 'candidates_in': [c['candidate_id'] for c in cands]}
+    rec = {'workflow': 'look_again/v2',
+           'candidates_in': [c['candidate_id'] for c in cands],
+           'screening_rule': f'silhouette IoU vs real second observation >= {IOU_MIN}',
+           'disclosure': '第二观测的 RGB/深度属于可用传感数据；未把真值网格交给规划器'}
 
-    # ---- 视角 1：原始低置相机（记录基线）----
-    env1 = wheelleg_env.WheelLegEnv(scene_for(None, case))
-    env1.reset(seed=0)
-    cid = mujoco.mj_name2id(env1.model, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
-    bid = env1.model.cam_bodyid[cid]
-    B = np.asarray(env1.data.xmat[bid]).reshape(3, 3)
-    b = np.asarray(env1.data.xpos[bid])
-    env1.model.cam_pos[cid][2] = (a.camera_height - b[2] - B[2, 0] * 0.42) / B[2, 2]
-    mujoco.mj_forward(env1.model, env1.data)
-    cam1 = {'world_pos': [float(x) for x in env1.data.cam_xpos[cid]],
-            'z': round(float(env1.data.cam_xpos[cid][2]), 4)}
-    rec['view1'] = cam1
+    spec = scene_for(case, mesh_file=case['mesh'])
+    if a.soil != 'rigid':
+        spec['soil'] = {'mode': a.soil}
+    env = wheelleg_env.WheelLegEnv(spec)
+    env.reset(seed=0)
+    cid = set_cam_height(env, a.camera_height)
+    v1 = capture(env, cid, out / 'truth_view1.png')
+    rec['view1'] = {'cam_z': round(float(v1['snapshot']['world_pos'][2]), 4),
+                    'mask_px': int(v1['mask'].sum())}
+    act = raise_body(env)
+    v2 = capture(env, cid, out / 'truth_view2.png')
+    Image.fromarray((v2['mask'] * 255).astype(np.uint8)).save(out / 'truth_view2_mask.png')
+    np.save(out / 'truth_view2_depth.npy', v2['depth'])
+    rec['observation_action'] = act
+    rec['view2'] = {'cam_z': round(float(v2['snapshot']['world_pos'][2]), 4),
+                    'mask_px': int(v2['mask'].sum()),
+                    'delta_z_m': round(float(v2['snapshot']['world_pos'][2])
+                                       - float(v1['snapshot']['world_pos'][2]), 4)}
+    rec['observation_status'] = 'ok' if act['stable'] else 'observation_unstable'
+    if not act['stable']:
+        rec['note'] = '未停稳：不把上升中的图当作完成观察'
 
-    # ---- 真实抬高机身 ----
-    mv = raise_body(env1)
-    rec['observation_action'] = {**mv,
-        'note': '真实执行抬高动作（腿关节控制 + 物理步），不是瞬移相机'}
-    cam2_z = round(float(env1.data.cam_xpos[cid][2]), 4)
-    rec['view2'] = {'z': cam2_z, 'delta_z_m': round(cam2_z - cam1['z'], 4)}
+    # 第二观测本身是否可用：真值障碍在第二视角下必须仍占可辨像素
+    usable_ratio = (float(v2['mask'].sum()) / max(1, int(v1['mask'].sum())))
+    rec['second_view_usable'] = bool(usable_ratio >= 0.30)
+    rec['second_view_usable_ratio'] = round(usable_ratio, 4)
+    if not rec['second_view_usable']:
+        rec['outcome'] = 'second_observation_unusable'
+        rec['note'] = ('抬高动作导致机位仰起，目标在第一视角占 %d px、第二视角只剩 %d px，'
+                       '无法据此判定候选；不把它算作候选被证伪'
+                       % (int(v1['mask'].sum()), int(v2['mask'].sum())))
+        rec['screening'] = []
+        rec['kept'], rec['rejected'] = [], []
+        (out / 'look_again.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
+        print(json.dumps({'stable': act['stable'], 'dz': rec['view2']['delta_z_m'],
+                          'v1_px': rec['view1']['mask_px'],
+                          'v2_px': rec['view2']['mask_px'],
+                          'usable_ratio': rec['second_view_usable_ratio'],
+                          'outcome': rec['outcome']}, ensure_ascii=False))
+        return 0
 
     per = []
+    truth_mask = v2['mask']
     for c in cands:
-        wd = pathlib.Path(c['world_dir'])
-        # 在**同一机器人状态**下渲染（不 reset）
-        env1.model.body_pos[mujoco.mj_name2id(env1.model, mujoco.mjtObj.mjOBJ_BODY,
-                                              'obstacle0')] = [0, 0, -80] \
-            if mujoco.mj_name2id(env1.model, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0') >= 0 else None
-        # 候选要分别放进场景，因此每个候选重建环境，但用观察后的 qpos/qvel 恢复
-        env2 = wheelleg_env.WheelLegEnv(scene_for(wd, case))
-        env2.reset(seed=0)
-        cid2 = mujoco.mj_name2id(env2.model, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
-        env2.data.qpos[:] = np.asarray(mv['qpos'])
-        env2.data.qvel[:] = np.asarray(mv['qvel'])
-        bid2 = env2.model.cam_bodyid[cid2]
-        B2 = np.asarray(env2.data.xmat[bid2]).reshape(3, 3)
-        b2 = np.asarray(env2.data.xpos[bid2])
-        # 视角 1（观察前，低置）
-        env2.model.cam_pos[cid2][2] = (a.camera_height - b2[2] - B2[2, 0] * 0.42) / B2[2, 2]
-        mujoco.mj_forward(env2.model, env2.data)
-        img1, dep1, camv1 = render_view(env2, out / f"{c['candidate_id']}_view1.png")
-        mask1 = mask_of(env2, dep1, camv1)
-        # 视角 2（观察后，抬高机身得到的真实机位）
-        env2.model.cam_pos[cid2][2] = (cam2_z - b2[2] - B2[2, 0] * 0.42) / B2[2, 2]
-        mujoco.mj_forward(env2.model, env2.data)
-        img, dep, camv = render_view(env2, out / f"{c['candidate_id']}_view2.png")
-        mask = mask_of(env2, dep, camv)
-        px = int(mask.sum())
-        inter = int((mask & mask1).sum()); union = int((mask | mask1).sum()) or 1
+        e2 = wheelleg_env.WheelLegEnv(scene_for(case, world=c['world_dir']))
+        e2.reset(seed=0)
+        e2.data.qpos[:] = np.asarray(act['qpos'])
+        e2.data.qvel[:] = np.asarray(act['qvel'])
+        mujoco.mj_forward(e2.model, e2.data)
+        cid2 = mujoco.mj_name2id(e2.model, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
+        camera_io.restore(e2.model, e2.data, cid2, v2['snapshot'])
+        cv = capture(e2, cid2, out / f"{c['candidate_id']}_view2.png")
+        cm = cv['mask']
+        inter = int((cm & truth_mask).sum())
+        union = int((cm | truth_mask).sum()) or 1
         iou = inter / union
+        both = cm & truth_mask & np.isfinite(cv['depth']) & np.isfinite(v2['depth'])
+        dmed = (float(np.median(np.abs(cv['depth'][both] - v2['depth'][both]))) * 1000
+                if both.sum() > 50 else None)
+        visible = int(cm.sum())
+        kept = bool(visible > 300 and iou >= IOU_MIN)
         per.append({'candidate_id': c['candidate_id'],
-                    'view1_mask_px': int(mask1.sum()), 'view2_mask_px': px,
-                    'silhouette_iou_v1_v2': round(float(iou), 4),
-                    'viewpoint_changed': bool(iou < 0.98),
-                    'view2_mean_luma': round(float(np.array(
-                        Image.fromarray(img).convert('L'))[mask].mean()), 1) if px else 0.0,
-                    'kept': px > 300,
-                    'reject_reason': None if px > 300 else 'not visible from raised viewpoint'})
+                    'candidate_mask_px': visible,
+                    'silhouette_iou_vs_truth_view2': round(float(iou), 4),
+                    'depth_median_abs_mm': (round(dmed, 2) if dmed is not None else None),
+                    'kept': kept,
+                    'reject_reason': None if kept else
+                    ('not_visible_from_second_view' if visible <= 300
+                     else f'silhouette IoU {iou:.3f} < {IOU_MIN}')})
     kept = [p['candidate_id'] for p in per if p['kept']]
     rec['screening'] = per
     rec['kept'] = kept
     rec['rejected'] = [p['candidate_id'] for p in per if not p['kept']]
-    changed = [p['candidate_id'] for p in per if p.get('viewpoint_changed')]
-    rec['viewpoint_changed_for'] = changed
     rec['outcome'] = ('all_candidates_rejected' if not kept else
-                      ('screened' if len(kept) < len(cands) else
-                       ('viewpoint_changed_but_no_rejection' if changed
-                        else 'no_information_gained')))
-    rec['honest_note'] = ('第二视角只做筛除；第一视角约束继续保留。'
-                          '若全部被淘汰，按规则报告并刹停/补候选，不保留已证伪模型。')
+                      ('no_candidate_rejected' if len(kept) == len(cands)
+                       else 'screened'))
+
+    if a.redecide and rec['outcome'] == 'screened':
+        sub = dict(proto)
+        sub['candidates'] = [c for c in cands if c['candidate_id'] in kept]
+        candp = out / 'candidates_after_observation.json'
+        candp.write_text(json.dumps([{'candidate_id': c['candidate_id'],
+                                      'task_id': c.get('task_id'),
+                                      'world_dir': c['world_dir'],
+                                      'world_sha256': c.get('world_sha'),
+                                      'collision_dir': c['collision_dir'],
+                                      'coordinate_frame': 'world',
+                                      'planning_eligible': True,
+                                      'observation_group': 'A'}
+                                     for c in sub['candidates']],
+                                    ensure_ascii=False, indent=2))
+        r = subprocess.run([sys.executable, str(ROOT / 'scripts/unseen_pipeline.py'),
+                            '--case', proto['case'], '--hyp-source', 'H5',
+                            '--candidates', str(candp),
+                            '--out', str(out / 'redecide'), '--seeds', '0,1,2'],
+                           capture_output=True, text=True, cwd=str(ROOT))
+        summ = None
+        if r.returncode == 0 and r.stdout.strip():
+            try:
+                summ = json.loads(r.stdout.strip().splitlines()[-1])
+            except Exception:
+                summ = None
+        rec['redecision'] = {'exit': r.returncode, 'summary': summ,
+                             'note': '从观察后状态重新决策；观察耗时已计入 sim_time_s'}
     (out / 'look_again.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
-    print(json.dumps({'raised_dz': rec['view2']['delta_z_m'],
-                      'stable': mv['stable'], 'kept': kept,
+    print(json.dumps({'stable': act['stable'], 'dz': rec['view2']['delta_z_m'],
+                      'v1_px': rec['view1']['mask_px'], 'v2_px': rec['view2']['mask_px'],
+                      'screening': [(p['candidate_id'],
+                                     p['silhouette_iou_vs_truth_view2'], p['kept'])
+                                    for p in per],
                       'outcome': rec['outcome']}, ensure_ascii=False))
     return 0
 

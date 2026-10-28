@@ -1,5 +1,38 @@
 [
-  {"run": "six", "kind": "six", "case_id": "planA", "hyp_source": "六方法"},
-  {"run": "pipeline_H5_A4", "kind": "h5", "case_id": "planA", "hyp_source": "H5"},
-  {"run": "h5_A4_truth", "kind": "h5", "case_id": "planA", "hyp_source": "H5"}
+  {
+    "run": "six_v2",
+    "kind": "six",
+    "case_id": "planA",
+    "hyp_source": "六方法v2"
+  },
+  {
+    "run": "pipeline_H5_pilot",
+    "kind": "h5",
+    "case_id": "planA",
+    "hyp_source": "H5 双候选"
+  },
+  {
+    "run": "look_again_v2",
+    "kind": "look",
+    "case_id": "planA",
+    "hyp_source": "主动观察"
+  },
+  {
+    "run": "look_again",
+    "kind": "look",
+    "case_id": "planA",
+    "hyp_source": "主动观察v1"
+  },
+  {
+    "run": "six",
+    "kind": "six",
+    "case_id": "planA",
+    "hyp_source": "六方法v1"
+  },
+  {
+    "run": "h5_A4_truth",
+    "kind": "h5",
+    "case_id": "planA",
+    "hyp_source": "H5 A4"
+  }
 ]

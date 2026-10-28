@@ -89,6 +89,16 @@ def _load_recovery(d, run):
     def _imgs(sub):
         d2 = d / sub
         return sorted(x.name for x in d2.glob('*.png')) if d2.exists() else []
+    if (d / 'look_again.json').exists() and not (d / 'summary.json').exists():
+        la = rj('look_again.json', {})
+        return {'run': run, 'kind': 'look', 'summary': la,
+                'observation': None, 'decision': None,
+                'rehearsal': [], 'execution': [], 'look': la,
+                'has_rgb': (d / 'truth_view1.png').exists(),
+                'has_mask': (d / 'truth_view2_mask.png').exists(),
+                'has_crop': False,
+                'views': sorted(x.name for x in d.glob('*.png')),
+                'replay': []}
     return {'run': run, 'kind': 'h5',
             'has_crop': (d / 'crop_white.png').exists(),
             'views': (_imgs('view') + _imgs('collision')),
@@ -253,7 +263,20 @@ async function open_(){
     : '<span class="dim">尚无真值揭晓图</span>';
   if(d.kind==='six'){ $('sixcard').style.display=''; $('six').innerHTML=fmtSix(d); }
   else { $('sixcard').style.display='none'; }
-  if(d.kind==='h5' || d.h5loop){ $('h5card').style.display=''; $('h5').innerHTML=fmtH5(d); }
+  if(d.kind==='look'){
+    const L=d.look||{}, A=L.observation_action||{}, S=L.screening||[];
+    $('h5card').style.display=''; 
+    let t=`<table>
+      <tr><th>抬高动作</th><td>Δz ${A.delta_z_m??'—'} m，峰值 ${A.z_peak_m??'—'} m，
+        停稳=${A.stable}</td></tr>
+      <tr><th>第二观测</th><td>首视角 ${(L.view1||{}).mask_px} px →
+        第二视角 ${(L.view2||{}).mask_px} px（可用比 ${L.second_view_usable_ratio??'—'}）</td></tr>
+      <tr><th>结论</th><td>${L.outcome||'—'}</td></tr></table>`;
+    if(S.length) t+='<table style="margin-top:8px"><tr><th>候选</th><th>轮廓 IoU</th><th>保留</th></tr>'+
+      S.map(x=>`<tr><td>${x.candidate_id}</td><td>${x.silhouette_iou_vs_truth_view2}</td>
+        <td>${x.kept?'是':'否'}</td></tr>`).join('')+'</table>';
+    $('h5').innerHTML=t;
+  } else if(d.kind==='h5' || d.h5loop){ $('h5card').style.display=''; $('h5').innerHTML=fmtH5(d); }
   else { $('h5card').style.display='none'; }
   const rp=d.replay||[];
   $('replay').innerHTML = rp.length

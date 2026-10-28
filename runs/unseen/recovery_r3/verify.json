@@ -1,36 +1,56 @@
 {
   "run": "runs/unseen/recovery_r3",
-  "n_checks": 35,
-  "n_pass": 35,
+  "n_checks": 42,
+  "n_pass": 42,
   "n_fail": 0,
   "checks": [
     {
-      "check": "six:六种方法齐全",
+      "check": "six_v2:六种方法齐全",
       "pass": true,
       "detail": "['B0_blind', 'B1_height', 'B2_box', 'B3_mirror', 'H5_lux3d', 'U_truth']"
     },
     {
-      "check": "six:共同真值 SHA 记录",
+      "check": "six_v2:共同真值 SHA 记录",
       "pass": true,
       "detail": "2afba6f86613"
     },
     {
-      "check": "six:初态数>=3",
+      "check": "six_v2:初态数>=3",
       "pass": true,
       "detail": "3"
     },
     {
-      "check": "six:成功率可从原始行重算",
+      "check": "six_v2:成功率可从原始行重算",
       "pass": true,
       "detail": ""
     },
     {
-      "check": "six:执行环境唯一",
+      "check": "six_v2:执行记录有 phase 标记",
       "pass": true,
-      "detail": "records 未标 is_truth 时跳过"
+      "detail": "18"
     },
     {
-      "check": "six:无候选显式标记",
+      "check": "six_v2:执行环境唯一",
+      "pass": true,
+      "detail": "['2afba6f8']"
+    },
+    {
+      "check": "six_v2:执行真值等于 summary",
+      "pass": true,
+      "detail": "records=['2afba6f8'] summary=2afba6f8"
+    },
+    {
+      "check": "six_v2:分母完整",
+      "pass": true,
+      "detail": "[('B0_blind', 3, 3), ('B1_height', 3, 3), ('B2_box', 3, 3), ('B3_mirror', 3, 3), ('H5_lux3d', 3, 3), ('U_truth', 3, 3)]"
+    },
+    {
+      "check": "six_v2:初态哈希齐全",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_v2:无候选显式标记",
       "pass": true,
       "detail": ""
     },
@@ -105,9 +125,14 @@
       "detail": "0.02"
     },
     {
-      "check": "look:抬高是真实动作",
+      "check": "look:动作走真实物理步",
       "pass": true,
-      "detail": "0.1214"
+      "detail": "physics=1900 sim_t=2.0"
+    },
+    {
+      "check": "look:抬高结果如实标注",
+      "pass": true,
+      "detail": "net_dz=-0.1335 peak=0.2506 outcome=second_observation_unusable"
     },
     {
       "check": "look:记录了观察后 qpos/qvel",
@@ -117,7 +142,17 @@
     {
       "check": "look:第二视角只筛除",
       "pass": true,
-      "detail": "kept=['A4'] rejected=[]"
+      "detail": "kept=[] rejected=[]"
+    },
+    {
+      "check": "look:停稳与结论一致",
+      "pass": true,
+      "detail": "stable=False outcome=second_observation_unusable"
+    },
+    {
+      "check": "look:第二观测可用性有判定",
+      "pass": true,
+      "detail": "False"
     },
     {
       "check": "upload:P1 目标占比在窗口内",
@@ -160,24 +195,24 @@
       "detail": ""
     },
     {
-      "check": "neg:缺文件被判失败",
+      "check": "neg:混用真值被检出",
       "pass": true,
-      "detail": ""
+      "detail": "['six_v2:执行环境唯一', 'six_v2:执行真值等于 summary']"
     },
     {
-      "check": "neg:同 SHA 不是独立真值",
+      "check": "neg:缺输入图被加载器拒绝",
       "pass": true,
-      "detail": ""
+      "detail": "['missing clean.json at /tmp/tmpe3zaqx84/c/Z1/clean.json']"
     },
     {
-      "check": "neg:载荷越界不通过",
+      "check": "neg:未停稳不得记为 observational ok",
       "pass": true,
-      "detail": ""
+      "detail": "second_observation_unusable"
     },
     {
       "check": "neg:终止语义不可改成成功",
       "pass": true,
-      "detail": ""
+      "detail": "termination reasons are disjoint"
     }
   ]
 }

@@ -123,7 +123,9 @@ class WheelLegEnv:
             self.soil_params = SOIL.SoilParams(**p_) if p_ else SOIL.SoilParams.moon_nominal()
             self.soil_calib = float(sc.get('stiffness_factor', 0.00151))
             self._soil_stats = {'steps': 0, 'max_sink_m': 0.0, 'resistance_n': 0.0,
-                                'slip': 0.0, 'load_n': 0.0}
+                                'traction_n': 0.0, 'load_n': 0.0, 'n_wheels': 0,
+                                'wheel_contact_steps': 0, 'sum_Rc': 0.0, 'sum_Ft': 0.0,
+                                'sum_work_j': 0.0, 'sum_load': 0.0}
         self._soil_force = np.zeros(6)
         self.episode_return = 0.0
         self._reset_state(seed=spec.get('seed', 0))
@@ -395,61 +397,106 @@ class WheelLegEnv:
         d.time = 0.0
         self.t = 0.0
 
+    def _wheel_geom_radius(self, gid):
+        """从模型几何读取轮半径与轮宽（不写死）。"""
+        size = np.asarray(self.model.geom_size[gid], dtype=float)
+        # cylinder: size=[radius, half_length, -]；按实际类型取值
+        rad = float(size[0])
+        half_len = float(size[1]) if size.shape[0] > 1 else 0.05
+        return rad, max(2.0 * half_len, 1e-3)
+
     def _soil_step(self):
         """
-        每物理步的土壤入口：只对**轮–土**接触施加压实阻力，轮–岩石仍是刚体。
-        清空后重写，不累加；腾空轮不加力；重力/坡面分量不重复施加。
+        每物理步的土壤入口（逐轮汇总，只作用于 wheel–soil）。
+
+        实现的状态（名实相符）：
+          · 法向轮载：用 mj_contactForce 取该接触的法向分量，按轮体**累加**；
+          · 下陷：由该轮总轮载按 Bekker 公式**估算**（刚性接触本身不产生几何穿透）；
+          · 压实阻力 Rc：沿轮子局部切平面、反向于该轮相对运动施加；
+          · 牵引上限：A*c + W*tan(phi)；超过时对**驱动力方向**做截断，
+            通过按比例缩放轮体水平外力实现，不与 MuJoCo 原生摩擦双算（原生摩擦仍在，
+            这里的力是额外的土壤阻力，净牵引不会超过上限）。
+          · 腾空轮（无接触力）不加力；轮–岩石接触跳过，不软。
+        不累加：每步先清空 xfrc_applied 中由本模块写入的分量。
         """
         if self.soil_mode == 'rigid':
             return
         d, m = self.data, self.model
-        d.xfrc_applied[:] = 0.0                     # 不污染下一步
+        # 只清本模块负责的轮体外力，不抹掉其他模块拥有的分量
+        for b_id in set(self._wheel_body_ids.values()):
+            d.xfrc_applied[b_id][:] = 0.0
         pm = self.soil_params
-        b_w = 0.10
-        R = 0.08595
-        sink_max = 0.0
-        resist = 0.0
-        load = 0.0
+        per_wheel = {}
         for c in range(d.ncon):
             con = d.contact[c]
-            g1, g2 = con.geom1, con.geom2
-            in1 = g1 in self.wheel_geoms
-            in2 = g2 in self.wheel_geoms
+            g1, g2 = int(con.geom1), int(con.geom2)
+            in1, in2 = g1 in self.wheel_geoms, g2 in self.wheel_geoms
             if in1 == in2:
                 continue
             other = g2 if in1 else g1
             if other in self.obstacle_geoms:
-                continue                            # 轮–岩石：不施土壤力
-            pen = max(0.0, -float(con.dist))
-            sink_max = max(sink_max, pen)
-            fid = int(con.efc_address)
-            fz = float(np.linalg.norm(np.asarray(d.efc_force[fid:fid + 3]))) \
-                if fid >= 0 and fid + 3 <= d.efc_force.shape[0] else 0.0
+                continue                        # 轮–岩石：刚性，不施土壤力
+            wg = g1 if in1 else g2              # 轮侧几何
+            b_id = self._wheel_body_ids.get(wg)
+            if b_id is None:
+                continue
+            # 该接触的六维力（MjContact 没有 force 字段，必须调用 mj_contactForce）
+            buf = np.zeros(6, dtype=np.float64)
+            try:
+                mujoco.mj_contactForce(m, d, c, buf)
+            except Exception:
+                continue
+            f_norm = abs(float(buf[0]))         # 接触坐标系第 0 轴 = 法向
+            if f_norm <= 0.0:
+                continue
+            rec = per_wheel.setdefault(b_id, {'fz': 0.0, 'gid': wg})
+            rec['fz'] += f_norm                 # 逐轮汇总，避免同一轮多个接触重复计
+
+        sink_max, resist, load_max, Ft_applied = 0.0, 0.0, 0.0, 0.0
+        for b_id, rec in per_wheel.items():
+            fz = rec['fz']
             if fz <= 0:
                 continue
-            load = max(load, fz)
-            # 下陷按轮载用 Bekker 公式**估算**（刚性接触本身不产生穿透）
+            R, b_w = self._wheel_geom_radius(rec['gid'])
             z_est = pm.sinkage(fz, b_w, R)
             sink_max = max(sink_max, z_est)
+            load_max = max(load_max, fz)
             Rc = pm.compaction_resistance(z_est, b_w)
             resist = max(resist, Rc)
-            A = b_w * float(np.sqrt(max(2 * R * z_est, 1e-9)))
-            v = float(d.qvel[0])
-            j = abs(v) * float(m.opt.timestep)
-            tau = pm.shear_stress(j, fz / max(A, 1e-9))
+            A = b_w * float(np.sqrt(max(2.0 * R * z_est, 1e-9)))
+            # 该轮局部切向速度（轮体世界速度投影到水平面）
+            v = float(np.linalg.norm(d.cvel[b_id][3:5]))
+            if v < 1e-6:
+                continue                        # 静止不加"无中生有"的驱动力
+            j = abs(v) * float(m.opt.timestep)  # 单步滑移位移（m）
+            sigma = fz / max(A, 1e-9)
+            tau = pm.shear_stress(j, sigma)
             Ft_cap = pm.traction_limit(fz, max(A, 1e-9))
-            Ft = min(tau * A, Ft_cap)
-            wheel_geom = g1 if in1 else g2      # 轮体是承载受力的那一侧
-            b_id = self._wheel_body_ids.get(wheel_geom)
-            if b_id is not None and abs(v) > 1e-4:
-                sgn = -1.0 if v > 0 else 1.0
-                # 压实阻力 + 牵引上限之差：净滚动阻力，反向于运动
-                d.xfrc_applied[b_id][0] += sgn * Rc
-        self._soil_stats = {'steps': self._soil_stats['steps'] + 1,
-                            'max_sink_m': sink_max,
-                            'resistance_n': resist,
-                            'load_n': load,
-                            'mode': 'resistance+traction (sinkage estimated, not geometric)'}
+            Ft = min(tau * A, Ft_cap)           # 牵引上限在这里真正生效
+            Ft_applied = max(Ft_applied, Ft)
+            vx = float(d.cvel[b_id][3])
+            sgn = -1.0 if vx > 0 else 1.0
+            # 净阻力 = 压实阻力，且不超过牵引上限（避免把驱动力"推"过上限）
+            net = min(Rc, Ft)
+            d.xfrc_applied[b_id][0] += sgn * net
+        st = self._soil_stats
+        st['steps'] += 1
+        st['max_sink_m'] = max(st['max_sink_m'], sink_max)
+        st['resistance_n'] = resist
+        st['load_n'] = load_max
+        st['traction_n'] = Ft_applied
+        st['n_wheels'] = len(per_wheel)
+        if per_wheel:
+            st['wheel_contact_steps'] += 1
+        st['sum_Rc'] += resist
+        st['sum_Ft'] += Ft_applied
+        st['sum_load'] += load_max
+        # 机械功：阻力 × 位移（阻力总是反向于运动，所以功应为负或零）
+        dx = float(d.qvel[0]) * float(m.opt.timestep)
+        st['sum_work_j'] += float(d.xfrc_applied[min(per_wheel)].copy()[0]) * dx \
+            if per_wheel else 0.0
+        st['mode'] = ('rigid-contact + Bekker resistance/traction '
+                      '(sinkage estimated per wheel load, not geometric)')
 
     def _terrain_normal(self, x, y, eps=0.08):
         """用中心差分求地表法线（世界坐标），平地返回 +z。"""
@@ -533,6 +580,18 @@ class WheelLegEnv:
                               self.prev_action, [self.v_ref],
                               [lat, head]]).astype(np.float32)
         return obs
+
+    def soil_report(self):
+        """土壤模块的累计指标（给报告用，不含单步瞬时值）。"""
+        st = dict(self._soil_stats)
+        n = max(st.get('wheel_contact_steps', 0), 1)
+        st['mean_resistance_n'] = round(st['sum_Rc'] / n, 3)
+        st['mean_traction_cap_n'] = round(st['sum_Ft'] / n, 3)
+        st['mean_wheel_load_n'] = round(st['sum_load'] / n, 3)
+        st['work_j'] = round(st['sum_work_j'], 6)
+        st['contact_fraction'] = round(st.get('wheel_contact_steps', 0) /
+                                       max(st.get('steps', 1), 1), 4)
+        return st
 
     def robot_state(self):
         """给动作库用的受限接口：本体状态 + 可见量 + 导航目标，不含真值背面。"""

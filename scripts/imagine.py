@@ -276,6 +276,22 @@ def main():
               if pathlib.Path(a.budget).exists() else None)
     led = BudgetLedger(a.ledger)
 
+    # ---- 计划内重复身份检查：同一 identity 出现两次直接拒绝，避免重复扣费 ----
+    seen_ident, dup_ident = {}, []
+    for item in plan['inputs']:
+        if item.get('status') == 'disabled' or not item.get('image'):
+            continue
+        _id = _identity_of(item)
+        if _id in seen_ident:
+            dup_ident.append({'identity': _id,
+                              'ids': [seen_ident[_id], item['id']]})
+        else:
+            seen_ident[_id] = item['id']
+    if dup_ident:
+        print(json.dumps({'error': 'plan has duplicate request identity',
+                          'duplicates': dup_ident}, indent=2, ensure_ascii=False))
+        return 4
+
     # ---- 分类每个计划项 ----
     rows = []
     for item in plan['inputs']:

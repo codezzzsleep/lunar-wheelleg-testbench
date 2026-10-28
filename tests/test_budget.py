@@ -204,3 +204,58 @@ class TestModes(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class TestReserveNegativeCases(unittest.TestCase):
+    """任务书要求的两个反例：同 identity 重复计划、首次超时不得再 create。"""
+
+    def setUp(self):
+        self.tmp = pathlib.Path(tempfile.mkdtemp())
+        self.img = self.tmp / 'in.png'
+        self.img.write_bytes(b'\x89PNG\r\n\x1a\n' + b'1' * 64)
+        self.budgetp = self.tmp / 'budget.json'
+        self.budgetp.write_text(json.dumps(BUDGET_300_15))
+        self.ledger = self.tmp / 'ledger.jsonl'
+        self.cache = self.tmp / 'cache'
+
+    def _plan(self, ids):
+        item = {'image': str(self.img), 'variant': 'orig', 'repeat_idx': 0,
+                'model': {'version': 'G1-Turbo', 'face_count': 30000}}
+        p = self.tmp / 'plan.json'
+        p.write_text(json.dumps({'credits_upper_per_task': 20,
+                                 'inputs': [dict(item, id=i) for i in ids]}))
+        return p
+
+    def _argv(self, plan, *flags):
+        return ['imagine.py', '--plan', str(plan), '--budget', str(self.budgetp),
+                '--ledger', str(self.ledger), '--cache', str(self.cache), *flags]
+
+    def test_duplicate_identity_in_plan_rejected(self):
+        plan = self._plan(['X1', 'X2'])       # 同一图同一参数 -> 同 identity
+        with mock.patch.object(sys, 'argv', self._argv(plan, '--submit')), \
+             mock.patch.object(imagine, 'upload_image') as up, \
+             mock.patch.object(imagine, 'submit_img_to_3d') as cr, \
+             mock.patch.dict('os.environ', {'AHOLO_API_KEY': 'k'}):
+            rc = imagine.main()
+        self.assertEqual(rc, 4, '重复身份必须拒绝')
+        self.assertEqual((up.call_count, cr.call_count), (0, 0))
+
+    def test_first_create_timeout_does_not_create_again(self):
+        plan = self._plan(['X1'])
+        with mock.patch.object(sys, 'argv', self._argv(plan, '--submit')), \
+             mock.patch.object(imagine, 'upload_image', return_value='http://x/y.png'), \
+             mock.patch.object(imagine, 'submit_img_to_3d',
+                               side_effect=TimeoutError('t')) as cr1, \
+             mock.patch.dict('os.environ', {'AHOLO_API_KEY': 'k'}):
+            imagine.main()
+        self.assertEqual(cr1.call_count, 1)
+        led = B.BudgetLedger(self.ledger)
+        self.assertEqual(led.rows()[0]['status'], B.ST_UNCERTAIN)
+        # 再次 submit：该身份已是 uncertain_no_task，不得再 create
+        with mock.patch.object(sys, 'argv', self._argv(plan, '--submit')), \
+             mock.patch.object(imagine, 'upload_image', return_value='http://x/y.png'), \
+             mock.patch.object(imagine, 'submit_img_to_3d') as cr2, \
+             mock.patch.dict('os.environ', {'AHOLO_API_KEY': 'k'}):
+            imagine.main()
+        self.assertEqual(cr2.call_count, 0, '首次超时后不得再 create')
+        self.assertEqual(B.BudgetLedger(self.ledger).used_credits(), 20)

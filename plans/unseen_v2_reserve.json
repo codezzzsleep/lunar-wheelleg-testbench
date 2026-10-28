@@ -1,0 +1,43 @@
+{
+  "plan_version": "unseen_v2_reserve",
+  "created": "2026-10-28",
+  "camera_version": "final: cam_height 0.16 m, pitch 0.0, fovy 70",
+  "credits_upper_per_task": 20,
+  "price_source": "用户授权单任务上限 20；API 未返回官方报价，实际扣费记 unknown",
+  "enable_reason": {
+    "RESERVE1": "全部 10 个候选未通过；检验是否由生成档位造成（同输入换 G1）",
+    "RESERVE2": "检验是否由纯白底剪影输入造成（同几何/相机，改用保留地面与光照的裁剪图）"
+  },
+  "inputs": [
+    {
+      "id": "RESERVE1",
+      "group": "RES",
+      "status": "active",
+      "source_image": "runs/unseen/recovery_r3/observations/A/crop_white.png",
+      "image": "runs/unseen/recovery_r3/observations/A/crop_white.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1",
+        "face_count": 30000
+      },
+      "note": "与 A2 相同输入与参数，唯一变化是 version G1-Turbo -> G1"
+    },
+    {
+      "id": "RESERVE2",
+      "group": "RES",
+      "status": "active",
+      "source_image": "runs/unseen/recovery_r3/observations/A/crop_raw.png",
+      "image": "runs/unseen/recovery_r3/observations/A/crop_raw.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "raw_with_ground",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "note": "与 A2 相同几何与相机，输入保留地面/阴影/光照而不做白底合成"
+    }
+  ]
+}

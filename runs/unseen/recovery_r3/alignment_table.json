@@ -1,6 +1,11 @@
 {
   "metric_version": "align-metric/v2.1",
   "observation_camera": "camera-snapshot/v2, world_z 0.16",
+  "thresholds": {
+    "mask_iou": 0.85,
+    "vis_pt_p95": "max(5mm, 0.03*H_vis)",
+    "freespace": 0.05
+  },
   "rows": [
     {
       "plan_id": "A1",
@@ -161,23 +166,73 @@
       "orientation_ambiguous": true,
       "wall_s": 677.6,
       "align_status": "ALIGNMENT_FAILED"
+    },
+    {
+      "plan_id": "RESERVE1",
+      "best_R": 16,
+      "init": "W",
+      "scale": 2.829,
+      "yaw": 0.0,
+      "mask_iou": 0.8436,
+      "vis_pt_p95_mm": 23.434,
+      "vis_pt_n": 14158,
+      "freespace": 0.4693,
+      "threshold_p95_mm": 5.656,
+      "pass": false,
+      "orientation_ambiguous": true,
+      "wall_s": 617.8,
+      "align_status": "ALIGNMENT_FAILED"
+    },
+    {
+      "plan_id": "RESERVE2",
+      "best_R": 14,
+      "init": "geo",
+      "scale": 1.702,
+      "yaw": 0.0,
+      "mask_iou": 0.7261,
+      "vis_pt_p95_mm": 33.419,
+      "vis_pt_n": 14158,
+      "freespace": 0.482,
+      "threshold_p95_mm": 5.656,
+      "pass": false,
+      "orientation_ambiguous": true,
+      "wall_s": 610.6,
+      "align_status": "ALIGNMENT_FAILED"
     }
   ],
   "summary": {
-    "n_candidates": 10,
-    "n_iou_pass": 1,
-    "n_p95_pass": 0,
-    "n_freespace_pass": 0,
-    "n_all_pass": 0,
-    "n_orientation_ambiguous": 10,
-    "freespace_range": [
-      0.4,
-      0.679
-    ],
-    "iou_range": [
-      0.578,
-      0.945
-    ],
-    "interpretation": "10/10 候选的 freespace 侵入都在 0.40-0.68，而 IoU 可到 0.945。说明候选的**可见面深度剖面**与观测不符：对齐把最前点贴到观测前沿后，候选更接近平面，而真实障碍是穹顶，边缘处观测表面后退，候选因此在轮廓边缘持续侵入已观测空域。这是形状/曲率差异，不是相机或坐标问题（相机往返误差 1e-15，且 A2 的 IoU 从 0.0077 升到 0.945）。"
+    "main_candidates": {
+      "n": 10,
+      "iou_pass": 1,
+      "p95_pass": 0,
+      "fs_pass": 0,
+      "all_pass": 0,
+      "fs_range": [
+        0.4,
+        0.679
+      ],
+      "iou_range": [
+        0.578,
+        0.945
+      ]
+    },
+    "reserve_controls": {
+      "n": 2,
+      "iou_pass": 0,
+      "p95_pass": 0,
+      "fs_pass": 0,
+      "all_pass": 0,
+      "fs_range": [
+        0.469,
+        0.482
+      ],
+      "iou_range": [
+        0.726,
+        0.844
+      ]
+    },
+    "control_R1": "同一输入换档位 G1-Turbo -> G1：IoU 0.945 -> 0.844，未改善",
+    "control_R2": "同一几何/相机，输入保留地面与光照：IoU 0.945 -> 0.726，反而更差",
+    "conclusion": "档位与白底剪影都不是原因；19 个候选中 18 个的 freespace 侵入在 0.40-0.68，IoU 最高 0.945。修正相机后坐标问题已排除，剩余差异是生成形状的可见面深度剖面（更接近平面）与真实穹顶不符，属于 C2 的负面证据。"
   }
 }

@@ -80,15 +80,23 @@ def front_rings(H, W, D, seed=0, n_front=36, ny=40):
     return xs, rings, ys, g
 
 
+BACK_INSET_M = 0.02      # 背面每侧内缩（P3：正面必须完全遮住背面）
+
+
 def twin_solid(kind, H, W, D, seed=0, n_front=36, n_back=36, ny=40):
     """高度场棱柱：正面复用 front_rings，背面按 kind 生成，两者在 x=0 处共享同一排。"""
     Lback = back_length(kind, H)
     _, frings, ys, g = front_rings(H, W, D, seed=seed, n_front=n_front, ny=ny)
     xb = np.linspace(0.0, Lback, n_back)
     brings = []
+    # 背面每侧内缩 BACK_INSET_M，并且只在与正面相接处保持全宽、向外逐渐收窄，
+    # 保证从正面看时背面轮廓不会露出（P3 同观测的前提）。
+    half_w = W / 2.0
     for x in xb:
         h = max(height_1d(kind, float(x), H, D), 1e-3)
-        brings.append((float(x), ys, h * g))
+        keep = np.clip(1.0 - BACK_INSET_M / max(half_w, 1e-6), 0.0, 1.0)
+        ys_b = ys * keep
+        brings.append((float(x), ys_b, h * g * keep))
     rings = frings + brings
     nx = len(rings)
     top = np.zeros((nx, ny, 3))

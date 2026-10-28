@@ -70,6 +70,9 @@ def main():
     ap.add_argument('--fovy', type=float, default=70.0)
     ap.add_argument('--crop-pad', type=float, default=0.35)
     ap.add_argument('--mask-step', type=int, default=2, help='掩码射线采样步长')
+    ap.add_argument('--cam-height', type=float, default=None,
+                    help='相机离地高度（米）。低于障碍顶部时背面不可见，P3 才可能成立')
+    ap.add_argument('--pitch', type=float, default=None, help='俯角（负=向下）')
     a = ap.parse_args()
 
     case = json.loads(pathlib.Path(a.case).read_text())
@@ -83,7 +86,11 @@ def main():
     spec['objects'] = [{'mesh_file': case['mesh'], 'x': case['obstacle_x'],
                         'y': 0.0, 'yaw_deg': 0.0, 'target_height_m': case['H']}]
     # 相机必须装在机体轮廓之外，否则每根射线先生命中机器人自身几何（实测 2 cm 处）
-    spec['front_cam'] = {'pos': [0.42, 0.0, 0.20], 'pitch_deg': -12.0, 'fovy': a.fovy}
+    base_link_z = 0.3841        # 实测：base_link 相对地面的高度
+    cam_z = a.cam_height if a.cam_height is not None else (0.20 + base_link_z)
+    spec['front_cam'] = {'pos': [0.42, 0.0, cam_z - base_link_z],
+                         'pitch_deg': a.pitch if a.pitch is not None else -12.0,
+                         'fovy': a.fovy}
 
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
@@ -196,8 +203,10 @@ def main():
 
     info = {
         'case_id': case['case_id'],
-        'camera': {'id': cam_id, 'fovy': a.fovy, 'pos_body': [0.42, 0.0, 0.20],
-                   'pitch_deg': -12.0,
+        'camera': {'id': cam_id, 'fovy': a.fovy,
+                   'pos_body': spec['front_cam']['pos'],
+                   'cam_height_m': round(float(cam_z), 4),
+                   'pitch_deg': spec['front_cam']['pitch_deg'],
                    'convention': 'MuJoCo 相机朝 -z；图像 x 向右、y 向下；深度为正距离'},
         'image': {'W': a.width, 'H': a.height},
         'intrinsics': K,

@@ -20,6 +20,7 @@ import pathlib
 import sys
 
 import numpy as np
+import trimesh
 import mujoco
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -166,6 +167,13 @@ class WheelLegEnv:
                             f"world-frame 资产禁止再平移：x={obj.get('x')} y={obj.get('y')}")
                     if obj.get('scale') not in (None, 1, 1.0):
                         raise ValueError('world-frame 资产禁止再缩放')
+                    if abs(float(obj.get('yaw_deg', 0) or 0)) > 1e-9:
+                        raise ValueError(
+                            f"world-frame 资产禁止再旋转：yaw_deg={obj.get('yaw_deg')}")
+                    if obj.get('target_height_m') is not None:
+                        raise ValueError('world-frame 资产禁止 target_height_m 改写')
+                    if obj.get('quat') is not None:
+                        raise ValueError('world-frame 资产禁止外部 quat')
                     obj = dict(obj); obj['_world_frame'] = True
                 res = [str((pathlib.Path(obj['posed_dir']) / p_).resolve())
                        for p_ in _man['parts']]
@@ -202,7 +210,14 @@ class WheelLegEnv:
 
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
-            verts = _world_vertices(res, float(obj['x']), float(obj['y']), yaw, scale=scale)
+            if obj.get('_world_frame'):
+                # 世界坐标资产：顶点即世界坐标，不做任何变换，直接读原始顶点
+                verts = np.vstack([trimesh.load(r, force='mesh',
+                                                process=False).vertices.copy()
+                                   for r in res])
+            else:
+                verts = _world_vertices(res, float(obj.get('x', 0.0)),
+                                        float(obj.get('y', 0.0)), yaw, scale=scale)
             if obj.get('_world_frame'):
                 # 世界坐标资产：顶点已是世界坐标，body 必须 identity，**不再**贴地
                 body_z = 0.0
@@ -224,7 +239,7 @@ class WheelLegEnv:
             _name = (obj.get('asset')
                      or pathlib.Path(obj.get('posed_dir') or obj.get('mesh_file') or 'asset').name)
             place_meta.update({'asset': _name,
-                               'x': obj['x'], 'y': obj['y'],
+                               'x': float(obj.get('x', 0.0)), 'y': float(obj.get('y', 0.0)),
                                'yaw_deg': obj.get('yaw_deg', 0.0),
                                'n_vertices': int(len(verts)),
                                'target_height_m': target_h,
@@ -249,7 +264,8 @@ class WheelLegEnv:
                     f'<geom type="mesh" mesh="{name}" rgba="{rgba}"{mat_attr} '
                     f'friction="0.9 0.02 0.001" contype="1" conaffinity="1"/>')
             bodies.append(
-                f'<body name="obstacle{i}" pos="{obj["x"]:.4f} {obj["y"]:.4f} {body_z:.5f}" '
+                f'<body name="obstacle{i}" pos="{float(obj.get("x", 0.0)):.4f} '
+                f'{float(obj.get("y", 0.0)):.4f} {body_z:.5f}" '
                 f'quat="{quat}">{"".join(inner)}</body>')
 
         self.placements = placements

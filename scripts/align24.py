@@ -33,6 +33,15 @@ import terrain
 import wheelleg_env
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
+def _sha(p):
+    import hashlib
+    h = hashlib.sha256()
+    with open(p, 'rb') as f:
+        for b in iter(lambda: f.read(1 << 20), b''):
+            h.update(b)
+    return h.hexdigest()
 COARSE_YAW = np.linspace(-25, 25, 7)
 COARSE_SCALE = np.array([0.9, 1.0, 1.1])
 
@@ -166,36 +175,25 @@ def main():
                         improved = True
             if not improved:
                 break
-        native = eval_pose(mesh, cur['M'], a.obs, tmp, None, None, True)
-        # 从最终 4x4 反解真实尺度与 yaw（不沿用初值元数据）
-        Mm = np.asarray(cur['M'])
-        col = Mm[:3, :3]
-        sc_real = float(np.cbrt(abs(np.linalg.det(col))))
-        R_real = col / max(sc_real, 1e-12)
-        yaw_real = float(np.degrees(np.arctan2(R_real[1, 0], R_real[0, 0])))
-        axis_real = (R_real @ np.array([[1, 0, 0], [0, 1, 0], [0, 0, 1]])).round(3).tolist()
-        shear = float(np.max(np.abs(col.T @ col - (sc_real ** 2) * np.eye(3))))
-        # ---- 统一世界放置：最低点精确归零，下游不得再贴地 ----
-        mw_check = A.apply_T(mesh, Mm)
-        z_min_raw = float(np.asarray(mw_check.bounds)[0][2])
-        if abs(z_min_raw) > 1e-9:
-            Mm = Mm.copy(); Mm[2, 3] -= z_min_raw
-            mw_check = A.apply_T(mesh, Mm)
-            cur['M'] = Mm
-        z_min = float(np.asarray(mw_check.bounds)[0][2])
-        # 世界网格落盘：frame=world（body identity，环境不再平移/缩放/贴地）
-        world_dir = pathlib.Path(a.out).parent / 'world' / pathlib.Path(a.out).stem
-        world_dir.mkdir(parents=True, exist_ok=True)
-        mw_check.export(world_dir / 'body.stl')
-        (world_dir / 'manifest.json').write_text(json.dumps({
-            'coordinate_frame': 'world',
-            'T_world_from_asset': Mm.tolist(),
-            'z_min_world_m': round(z_min, 9),
-            'note': '顶点已在世界坐标；放入场景时 body 位姿必须为 identity'}, indent=2))
-        thr = max(5.0, 0.03 * H_vis * 1000)
-        p95 = native.get('vis_pt_p95_mm')
-        ok = (native['mask_iou'] >= 0.85 and p95 is not None and p95 <= thr
-              and native['freespace_violation'] <= 0.05)
+        # ---- 最终 M：z_min 归零在**评估前**完成，指标用同一个 M 重算 ----
+        Mm = cur['M'].copy()
+        z0 = float(np.asarray(A.apply_T(mesh, Mm).bounds)[0][2])
+        if abs(z0) > 1e-12:
+            Mm[2, 3] -= z0
+        cur['M'] = Mm
+        native = eval_pose(mesh, Mm, a.obs, tmp, None, None, True)
+        mw_final = A.apply_T(mesh, Mm)
+        z_min = float(np.asarray(mw_final.bounds)[0][2])
+        sc_real = float(np.cbrt(abs(np.linalg.det(Mm[:3, :3]))))
+        R_real = Mm[:3, :3] / max(sc_real, 1e-12)
+        shear = float(np.max(np.abs(Mm[:3, :3].T @ Mm[:3, :3]
+                                    - (sc_real ** 2) * np.eye(3))))
+        # 增量 yaw：相对于选定轴基 R_axis，用完整旋转求，不用 arctan2 单元素
+        R_axis = rotations24()[c['R_index']]
+        dR = R_axis.T @ R_real
+        yaw_real = float(np.degrees(np.arctan2(dR[1, 0] - dR[0, 1],
+                                                dR[0, 0] + dR[1, 1])))
+        axis_real = (R_real @ np.eye(3)).round(3).tolist()
         rec = {'R_index': c['R_index'], 'init': c['init'],
                'scale_init': c['scale'], 'yaw_init': c['yaw'],
                'scale': round(sc_real, 5), 'yaw': round(yaw_real, 3),
@@ -228,7 +226,36 @@ def main():
            'best': best,
            'pass': bool(best and best['pass']),
            }
+    # ---- 只把真正的 best 写入正式目录（原子替换，不覆盖循环中的临时结果）----
     p = pathlib.Path(a.out); p.parent.mkdir(parents=True, exist_ok=True)
+    world_dir = p.parent / 'world' / p.stem
+    world_dir.mkdir(parents=True, exist_ok=True)
+    if best is not None:
+        Mbest = np.asarray(best['M'])
+        mw = A.apply_T(mesh, Mbest)
+        part = world_dir / 'body.stl'
+        tmpf = world_dir / '.body.stl.tmp'
+        mw.export(tmpf); tmpf.replace(part)
+        man = {'schema': 'asset-manifest/v1', 'version': 'align24/v3',
+               'coordinate_frame': 'world', 'parts': ['body.stl'],
+               'T_world_from_asset': Mbest.tolist(),
+               'body_pose_expected': {'pos': [0, 0, 0], 'quat': [1, 0, 0, 0]},
+               'source_sha': _sha(a.candidate),
+               'world_sha': _sha(part),
+               'observation': str(a.obs),
+               'camera_schema': obsd.get('camera_schema'),
+               'metric_version': 'align-metric/v2.1'}
+        mant = world_dir / '.manifest.json.tmp'
+        mant.write_text(json.dumps(man, indent=2, ensure_ascii=False))
+        mant.replace(world_dir / 'manifest.json')
+        # 一致性自检：best.M 应用于源网格 == 导出的世界网格
+        rb = np.asarray(mw.bounds)
+        rd = trimesh.load(str(part), force='mesh', process=False)
+        dmax = float(np.max(np.abs(np.asarray(rd.bounds) - rb)))
+        out['export_check'] = {'max_bound_diff_m': round(dmax, 9),
+                               'consistent': dmax < 1e-6,
+                               'world_sha': man['world_sha']}
+        best['world_dir'] = str(world_dir)
     p.write_text(json.dumps(out, indent=2, ensure_ascii=False))
     print(json.dumps({'candidate': pathlib.Path(a.candidate).parent.name[:8],
                       'pass': out['pass'], 'n_coarse': len(cands),

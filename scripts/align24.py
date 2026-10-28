@@ -216,18 +216,18 @@ def main():
     ambig = (len(ranked) > 1 and abs(ranked[0][1] - ranked[1][1]) < 1.0)
     out = {'candidate': str(a.candidate), 'observation': str(a.obs),
            'distinct_orientations_in_top': ranked,
-           'orientation_ambiguous': bool(ambig),
            'metric_version': 'align-metric/v2.1',
            'camera_schema': obsd.get('camera_schema'),
            'raw_bounds': raw_bounds, 'raw_extents': [float(x) for x in mesh.extents],
            'n_coarse_evals': len(cands), 'wall_s': round(time.time() - t0, 1),
+           'orientation_ambiguous': bool(ambig),
            'top': [{'R_index': c['R_index'], 'init': c['init'],
                     'scale': round(c['scale'], 5), 'yaw': round(c['yaw'], 2),
                     'quick_med_mm': round(-c['score'][0], 3),
                     'quick_cover': c['score'][1]} for c in top],
            'best': best,
            'pass': bool(best and best['pass']),
-           'orientation_ambiguous': None}
+           }
     p = pathlib.Path(a.out); p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(out, indent=2, ensure_ascii=False))
     print(json.dumps({'candidate': pathlib.Path(a.candidate).parent.name[:8],

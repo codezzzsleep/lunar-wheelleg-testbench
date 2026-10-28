@@ -1,135 +1,188 @@
 {
-  "clean_version": "clean/v1",
+  "clean_version": "clean/v2",
+  "note": "weld keeps metres; integer keys用于分组 only",
   "rows": [
     {
       "id": "CAL1",
-      "task_glb": "runs/unseen/generation/cache/5b/5b3b2cd11a6fb4295217c795e36ab9becca01b46f3b59b936ccddc811a36c923/model.glb",
       "components_before": 1335,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.3402,
-      "area_frac": 0.9326,
-      "clean_sha": "644259520ff3"
+      "extents_m": [
+        0.11,
+        0.06163,
+        0.03304
+      ],
+      "body_area_frac": 0.9326,
+      "clean_sha": "4f1a0d37dd9d"
     },
     {
       "id": "A1",
-      "task_glb": "runs/unseen/generation/cache/71/719efabd90d9debca731d56bc8e030d46dc182c5ddb349dcf8e292954b82e121/model.glb",
       "components_before": 5,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.4047,
-      "area_frac": 1.0,
-      "clean_sha": "f88b6252b5d0"
+      "extents_m": [
+        0.1,
+        0.0351,
+        0.0623
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "7fab8c10cfb2"
     },
     {
       "id": "A2",
-      "task_glb": "runs/unseen/generation/cache/c0/c0e1693c51a9b89e381c4a9379d5ab52d718161a067e4cae6fb34ad4b6d5aab7/model.glb",
       "components_before": 54,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.4398,
-      "area_frac": 1.0,
-      "clean_sha": "873378c288ca"
+      "extents_m": [
+        0.1,
+        0.05604,
+        0.03152
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "7e42d586de46"
     },
     {
       "id": "A3",
-      "task_glb": "runs/unseen/generation/cache/9f/9f1e209864d761912bd55c6f633487dc75c40d63eeadc3ddc8bd7f345c4900dd/model.glb",
       "components_before": 526,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.3494,
-      "area_frac": 0.9955,
-      "clean_sha": "e7eaf9c4a5d2"
+      "extents_m": [
+        0.08,
+        0.04284,
+        0.13389
+      ],
+      "body_area_frac": 0.9955,
+      "clean_sha": "f2cf068aa805"
     },
     {
       "id": "A4",
-      "task_glb": "runs/unseen/generation/cache/f8/f8a76b33801a36279d41dd41f259cf11827d3925b811f495cbc4e7558be968f2/model.glb",
       "components_before": 112,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.425,
-      "area_frac": 0.99,
-      "clean_sha": "60ea748a39bc"
+      "extents_m": [
+        0.12,
+        0.05536,
+        0.06879
+      ],
+      "body_area_frac": 0.99,
+      "clean_sha": "4acccd8b1997"
     },
     {
       "id": "A5",
-      "task_glb": "runs/unseen/generation/cache/79/79c5612412ef232dd16536b106e73b2e3116a7a1f3869efc557170ac9054e4a5/model.glb",
       "components_before": 398,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.0287,
-      "area_frac": 0.9904,
-      "clean_sha": "549fff656c51"
+      "extents_m": [
+        0.12,
+        0.08318,
+        0.00196
+      ],
+      "body_area_frac": 0.9904,
+      "clean_sha": "4144a8190d3f"
     },
     {
       "id": "B1",
-      "task_glb": "runs/unseen/generation/cache/99/990b3ac27c3908be180a0f0f53283c8d11098d68f11afc70954bd7e06294258c/model.glb",
       "components_before": 2,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.0464,
-      "area_frac": 1.0,
-      "clean_sha": "c32bd1a8dd3c"
+      "extents_m": [
+        0.12,
+        0.02881,
+        0.0037
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "6a8f302d8d1c"
     },
     {
       "id": "B2",
-      "task_glb": "runs/unseen/generation/cache/64/649776ac7229cf972fcb654065b50d4fe6fb38b5159f02e9579b7d240a331e36/model.glb",
       "components_before": 2,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.0871,
-      "area_frac": 1.0,
-      "clean_sha": "325190b0b6dd"
+      "extents_m": [
+        0.12,
+        0.03659,
+        0.00743
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "ac4ad4defd97"
     },
     {
       "id": "B3",
-      "task_glb": "runs/unseen/generation/cache/a1/a1c170ddb3b9bed3a7a8b8110021acbc6a9eebf58588a9da121c7443ee1a6588/model.glb",
       "components_before": 1,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.0117,
-      "area_frac": 1.0,
-      "clean_sha": "f50e5b726e41"
+      "extents_m": [
+        0.12,
+        0.0324,
+        0.00132
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "f39996c4e71a"
     },
     {
       "id": "B4",
-      "task_glb": "runs/unseen/generation/cache/34/34c7e0d5a8bbc1cf016c37ee8f07e3f614bee2dc806c594e52adff5db9dc0e8e/model.glb",
       "components_before": 231,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.1282,
-      "area_frac": 0.999,
-      "clean_sha": "fe36030c6a39"
+      "extents_m": [
+        0.12,
+        0.03538,
+        0.01528
+      ],
+      "body_area_frac": 0.999,
+      "clean_sha": "fe6aa771682e"
     },
     {
       "id": "B5",
-      "task_glb": "runs/unseen/generation/cache/f3/f35285ee94e1ac5e538e83ddee9bdc741ac66e095b28c5cdc4f0025b02e5ad53/model.glb",
       "components_before": 2,
       "components_after": 1,
       "verdict": "rejected_thin",
       "thin_ratio": 0.0583,
-      "area_frac": 1.0,
-      "clean_sha": "a18f70554949"
+      "extents_m": [
+        0.12,
+        0.0305,
+        0.00405
+      ],
+      "body_area_frac": 1.0,
+      "clean_sha": "1a13c0593161"
     },
     {
       "id": "RESERVE1",
-      "task_glb": "runs/unseen/generation/cache/59/59062406940bb8d453a5c570c1211327d393422f4da4b1c72d60325b0334c3c4/model.glb",
       "components_before": 3521,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.4181,
-      "area_frac": 0.9478,
-      "clean_sha": "99a5ebcd2f9a"
+      "extents_m": [
+        0.12,
+        0.05442,
+        0.0529
+      ],
+      "body_area_frac": 0.9478,
+      "clean_sha": "f34aff9d0953"
     },
     {
       "id": "RESERVE2",
-      "task_glb": "runs/unseen/generation/cache/6c/6cd262be28091d4bdf27d3684ba0508a395c9c9080c89c91429be524c93af2cd/model.glb",
       "components_before": 375,
       "components_after": 1,
       "verdict": "ok",
       "thin_ratio": 0.3124,
-      "area_frac": 0.9969,
-      "clean_sha": "88f7737d8351"
+      "extents_m": [
+        0.12,
+        0.05098,
+        0.18408
+      ],
+      "body_area_frac": 0.9969,
+      "clean_sha": "bce5b971dd3e"
     }
   ]
 }

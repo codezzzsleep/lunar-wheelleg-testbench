@@ -44,9 +44,17 @@ def load_scene_mesh(path):
         m = sc
     m = m.copy()
     # 按容差焊接：UV 接缝不算真间隙（1e-3 会破坏拓扑，实测分量爆炸到 1 万+）
-    v = np.round(np.asarray(m.vertices) / WELD_TOL).astype(np.int64)
-    uniq, inv = np.unique(v, axis=0, return_inverse=True)
-    m = trimesh.Trimesh(uniq, inv[np.asarray(m.faces)], process=False)
+    # 注意：整数网格键只用于**分组**，顶点必须回到米制（取同组原顶点均值）
+    verts = np.asarray(m.vertices, dtype=np.float64)
+    key = np.round(verts / WELD_TOL).astype(np.int64)
+    uniq, inv = np.unique(key, axis=0, return_inverse=True)
+    rep = np.zeros((len(uniq), 3))
+    cnt = np.zeros(len(uniq))
+    np.add.at(rep, inv, verts)
+    np.add.at(cnt, inv, 1)
+    rep /= cnt[:, None]
+    m = trimesh.Trimesh(rep, inv[np.asarray(m.faces)], process=False)
+    assert m.extents.max() < 100.0, f'焊接后尺度异常：{m.extents}'
     return m
 
 

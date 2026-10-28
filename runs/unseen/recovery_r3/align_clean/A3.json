@@ -1,0 +1,142 @@
+{
+  "candidate": "runs/unseen/recovery_r3/clean/A3/body.stl",
+  "observation": "runs/unseen/recovery_r3/observations/A",
+  "distinct_orientations_in_top": [
+    [
+      15,
+      -11.182725669571864
+    ],
+    [
+      14,
+      -10.900491053172171
+    ]
+  ],
+  "metric_version": "align-metric/v2.1",
+  "camera_schema": "camera-snapshot/v2",
+  "raw_bounds": [
+    [
+      -0.03999999910593033,
+      -0.021418007090687752,
+      0.0
+    ],
+    [
+      0.03999999910593033,
+      0.021418007090687752,
+      0.13388679921627045
+    ]
+  ],
+  "raw_extents": [
+    0.07999999821186066,
+    0.042836014181375504,
+    0.13388679921627045
+  ],
+  "n_coarse_evals": 1512,
+  "wall_s": 179.8,
+  "top": [
+    {
+      "R_index": 14,
+      "init": "H",
+      "scale": 2.12108,
+      "yaw": 0.0,
+      "quick_med_mm": 10.9,
+      "quick_cover": 0.416
+    },
+    {
+      "R_index": 15,
+      "init": "H",
+      "scale": 2.12108,
+      "yaw": 0.0,
+      "quick_med_mm": 11.183,
+      "quick_cover": 0.4066666666666667
+    },
+    {
+      "R_index": 14,
+      "init": "H",
+      "scale": 2.59243,
+      "yaw": 0.0,
+      "quick_med_mm": 11.331,
+      "quick_cover": 0.31866666666666665
+    }
+  ],
+  "best": {
+    "R_index": 14,
+    "init": "H",
+    "scale_init": 2.5924303565682054,
+    "yaw_init": 0.0,
+    "scale": 2.56651,
+    "yaw": 0.0,
+    "R_axis_world": [
+      [
+        0.0,
+        1.0,
+        0.026
+      ],
+      [
+        0.0,
+        0.026,
+        -1.0
+      ],
+      [
+        -1.0,
+        0.0,
+        0.0
+      ]
+    ],
+    "shear_residual": 0.0,
+    "z_min_world_m": 0.0,
+    "world_dir": "runs/unseen/recovery_r3/align_clean/world/A3",
+    "M": [
+      [
+        0.0,
+        2.565626575478079,
+        0.0671832962812906,
+        1.7355345959168902
+      ],
+      [
+        0.0,
+        0.06718329628129062,
+        -2.565626575478079,
+        0.17154610131600587
+      ],
+      [
+        -2.566506053002523,
+        0.0,
+        0.0,
+        0.10266023982546571
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "native": {
+      "mask_iou": 0.6703,
+      "cand_px": 18452,
+      "obs_px": 14158,
+      "n_inter": 13087,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": -13.333,
+      "depth_p95_mm": 86.474,
+      "depth_inner_rms_mm": 36.26,
+      "depth_edge_rms_mm": 69.227,
+      "vis_pt_med_mm": 6.412,
+      "vis_pt_p95_mm": 30.39,
+      "vis_pt_n": 2500,
+      "vis_pt_total": 14158,
+      "vis_pt_strategy": "deterministic_subset(n=2500,seed=0)",
+      "metric_version": "align-metric/v2.1",
+      "freespace_violation": 0.5169,
+      "freespace_n_px": 9538,
+      "freespace_denom_px": 18452,
+      "freespace_outside_mask": 951
+    },
+    "threshold_p95_mm": 5.656,
+    "pass": false
+  },
+  "pass": false
+}

@@ -1,0 +1,183 @@
+{
+  "run": "runs/unseen/recovery_r3",
+  "n_checks": 35,
+  "n_pass": 35,
+  "n_fail": 0,
+  "checks": [
+    {
+      "check": "six:六种方法齐全",
+      "pass": true,
+      "detail": "['B0_blind', 'B1_height', 'B2_box', 'B3_mirror', 'H5_lux3d', 'U_truth']"
+    },
+    {
+      "check": "six:共同真值 SHA 记录",
+      "pass": true,
+      "detail": "2afba6f86613"
+    },
+    {
+      "check": "six:初态数>=3",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "check": "six:成功率可从原始行重算",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six:执行环境唯一",
+      "pass": true,
+      "detail": "records 未标 is_truth 时跳过"
+    },
+    {
+      "check": "six:无候选显式标记",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "h5:候选与真值 SHA 不同",
+      "pass": true,
+      "detail": "7646be25 vs 2afba6f8"
+    },
+    {
+      "check": "h5:三个初态互异",
+      "pass": true,
+      "detail": "['639c6856b4005e7f', '5a4af5ce6f397efb', '7d11b410129d2732']"
+    },
+    {
+      "check": "h5:决策先冻结",
+      "pass": true,
+      "detail": "b84226605aac"
+    },
+    {
+      "check": "h5:decision.json 哈希自洽",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "h5:执行覆盖全部初态",
+      "pass": true,
+      "detail": "6"
+    },
+    {
+      "check": "h5:执行带真值 SHA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "h5:控制/物理步数自洽",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "clean:全部候选都有行",
+      "pass": true,
+      "detail": "13"
+    },
+    {
+      "check": "clean:A2 判为薄片",
+      "pass": true,
+      "detail": "0.09426"
+    },
+    {
+      "check": "clean:A2 厚度比在 0.09 量级",
+      "pass": true,
+      "detail": "0.09426"
+    },
+    {
+      "check": "clean:决策与导出一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "soil:五档载荷",
+      "pass": true,
+      "detail": "5"
+    },
+    {
+      "check": "soil:五档均在 ±30% 内",
+      "pass": true,
+      "detail": "[0.0036, 0.0134, 0.0195, 0.024, 0.0272]"
+    },
+    {
+      "check": "soil:下陷公式可复算",
+      "pass": true,
+      "detail": "0.02"
+    },
+    {
+      "check": "look:抬高是真实动作",
+      "pass": true,
+      "detail": "0.1214"
+    },
+    {
+      "check": "look:记录了观察后 qpos/qvel",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "look:第二视角只筛除",
+      "pass": true,
+      "detail": "kept=['A4'] rejected=[]"
+    },
+    {
+      "check": "upload:P1 目标占比在窗口内",
+      "pass": true,
+      "detail": "0.7801"
+    },
+    {
+      "check": "upload:P1 亮度>60",
+      "pass": true,
+      "detail": "164.73"
+    },
+    {
+      "check": "upload:P1 字节 SHA 与清单一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "upload:P2 目标占比在窗口内",
+      "pass": true,
+      "detail": "0.7799"
+    },
+    {
+      "check": "upload:P2 亮度>60",
+      "pass": true,
+      "detail": "172.44"
+    },
+    {
+      "check": "upload:P2 字节 SHA 与清单一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "upload:试点计划未提交",
+      "pass": true,
+      "detail": "PREPARED_NOT_SUBMITTED"
+    },
+    {
+      "check": "upload:新增批次上界<=60",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg:缺文件被判失败",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg:同 SHA 不是独立真值",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg:载荷越界不通过",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg:终止语义不可改成成功",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

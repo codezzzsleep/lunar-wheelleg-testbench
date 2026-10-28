@@ -24,6 +24,7 @@ import numpy as np
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import mujoco
 import trimesh
+import camera_io
 import terrain
 import wheelleg_env
 
@@ -96,12 +97,12 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     """
     from PIL import Image as _I
     obsd = json.loads((pathlib.Path(obs) / 'observation.json').read_text())
-    W = W or obsd['image']['W']
+    W = int(W or obsd['image']['W'])
     # 搜索阶段不计算点面距离（很慢），只在原生分辨率验收时计算
     if want_vis_pt is None:
         want_vis_pt = (W == obsd['image']['W'] and H == obsd['image']['H'])
     n_sub = want_vis_pt if isinstance(want_vis_pt, int) and want_vis_pt is not True else 0
-    H = H or obsd['image']['H']
+    H = int(H or obsd['image']['H'])
 
     # MuJoCo 3.x 会按文件名缓存网格资产：同一个路径写不同网格会拿到旧的几何。
     # 因此每次调用用唯一目录名，绝不复用 posed_tmp/mesh.stl。
@@ -117,15 +118,18 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     spec['objects'] = [{'posed_dir': str(pd), 'x': 0.0, 'y': 0.0,
                         'yaw_deg': 0.0, 'target_height_m': None}]
-    spec['front_cam'] = {'pos': obsd['camera']['pos_body'],
-                         'pitch_deg': obsd['camera']['pitch_deg'],
-                         'fovy': obsd['camera']['fovy']}
+    # 相机只按**快照的世界位姿**恢复；不按 pitch/pos_body 重建（那是旧 bug 的来源）
+    spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0,
+                         'fovy': obsd['camera']['fovy_deg']}
+    # 机器人必须与观测时同一初态，否则相机随 body 移动
+    spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
     m, d = env.model, env.data
     m.vis.global_.offwidth, m.vis.global_.offheight = W, H
     mujoco.mj_forward(m, d)
     cid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
+    cam_check = camera_io.restore(m, d, cid, obsd['camera'])
     bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'obstacle0')
 
     r = mujoco.Renderer(m, H, W)
@@ -174,6 +178,8 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     # 观测可见点 -> 候选表面 的最近距离（原方案"可见面距离"）
     try:
         pw = np.load(pathlib.Path(obs) / 'visible_points.npy') if want_vis_pt else np.zeros(0)
+        if n_sub is True:
+            n_sub = 2500                    # 原生验收的确定性子集（记录点数）
         if n_sub and len(pw) > n_sub:      # 固定种子的确定性子集
             pw = pw[np.random.default_rng(0).choice(len(pw), n_sub, replace=False)]
         if pw.size and cand_mask.any():

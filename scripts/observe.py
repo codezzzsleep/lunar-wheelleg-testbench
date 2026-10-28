@@ -20,6 +20,7 @@ import numpy as np
 import mujoco
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+import camera_io
 import terrain
 import wheelleg_env
 
@@ -95,14 +96,15 @@ def main():
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
     cam_id = cam_id_of(env)
-    # 实测 base_link 离地高度，再把相机 local z 设成"目标离地高度 - 该值"
     m0, d0 = env.model, env.data
     mujoco.mj_forward(m0, d0)
     base_bid = mujoco.mj_name2id(m0, mujoco.mjtObj.mjOBJ_BODY, 'base_link')
     base_link_z = float(d0.xpos[base_bid][2])
-    want_z = a.cam_height if a.cam_height is not None else (base_link_z + 0.20)
-    m0.cam_pos[cam_id][2] = float(want_z - base_link_z)
-    mujoco.mj_forward(m0, d0)
+    if a.cam_height is not None:
+        # 按**世界离地高度**反解 local z（含机身俯仰投影），不是硬编码
+        camera_io.install_local_z_for_world_height(
+            m0, d0, cam_id, a.cam_height, local_x=0.42, local_y=0.0)
+    snap = camera_io.capture(m0, d0, cam_id, a.width, a.height)
     m, d = env.model, env.data
     m.vis.global_.offwidth = a.width
     m.vis.global_.offheight = a.height
@@ -211,17 +213,16 @@ def main():
 
     info = {
         'case_id': case['case_id'],
-        'camera': {'id': cam_id, 'fovy': a.fovy,
-                   'pos_body': spec['front_cam']['pos'],
-                   'cam_height_m': round(float(d0.cam_xpos[cam_id][2]), 4),
-                   'base_link_z_m': round(base_link_z, 4),
-                   'cam_world_pos': [round(float(x), 4) for x in d0.cam_xpos[cam_id]],
-                   'cam_world_mat': [[round(float(v), 5) for v in row]
-                                     for row in np.array(d0.cam_xmat[cam_id]).reshape(3, 3)],
-                   'pitch_deg': spec['front_cam']['pitch_deg'],
-                   'convention': 'MuJoCo 相机朝 -z；图像 x 向右、y 向下；深度为正距离'},
+        'camera_schema': camera_io.SCHEMA,
+        'camera': {**snap,
+                   'id': int(cam_id),
+                   'base_link_z_m': round(base_link_z, 5),
+                   'cam_height_m': round(float(snap['world_pos'][2]), 5),
+                   # 兼容旧字段：必须来自 model.cam_pos，不再来自未同步的 spec
+                   'pos_body': [float(x) for x in snap['local_pos']],
+                   'pitch_deg': spec['front_cam']['pitch_deg']},
         'image': {'W': a.width, 'H': a.height},
-        'intrinsics': K,
+        'intrinsics': snap['intrinsics'],
         'crop': {'box': [cx0, cy0, cx1, cy1],
                  'square_box': [sx0, sy0, sx1, sy1], 'square_side_px': side_src,
                  'out_size': [1024, 1024], 'pad_frac': a.crop_pad,

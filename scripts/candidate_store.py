@@ -56,17 +56,29 @@ def load_candidates(plan_path, clean_root, align_root, policy_path,
         cid = item['id']
         if item.get('status') == 'disabled' or not item.get('image'):
             continue
-        if item.get('group') not in ('A', 'B', observation_group, 'CAL'):
+        # 精确组匹配：A 组请求只接受 A 组，B 不混用，CAL 不进入正式候选
+        if str(item.get('group')) != str(observation_group):
+            report['rejected'].append({
+                'candidate_id': cid,
+                'reasons': [f"observation_group mismatch: plan={item.get('group')} "
+                            f"requested={observation_group}"]})
             continue
         rec, why = {'candidate_id': cid, 'source_kind': 'lux3d'}, []
+        cr = None
         # 1) 清理记录
         cj = clean_root / cid / 'clean.json'
         if not cj.exists():
-            why.append('missing clean.json')
+            why.append(f'missing clean.json at {cj}')
         else:
             cr = json.loads(cj.read_text())
             rec['clean_verdict'] = cr.get('precheck', {}).get('verdict')
-            rec['clean_sha256'] = cr.get('clean_sha')
+            cp = pathlib.Path(cr.get('clean_path') or (clean_root / cid / 'body.stl'))
+            if not cp.exists():
+                why.append(f'missing clean mesh {cp}')
+            else:
+                rec['clean_sha256'] = cr.get('clean_sha')
+                if cr.get('clean_sha') and _sha(cp) != cr['clean_sha']:
+                    why.append('clean mesh SHA mismatch (file != clean.json)')
             rec['thin_ratio'] = cr.get('verify', {}).get('thin_ratio')
             if rec['clean_verdict'] != 'ok':
                 why.append(f"clean verdict {rec['clean_verdict']}")
@@ -80,8 +92,11 @@ def load_candidates(plan_path, clean_root, align_root, policy_path,
             rec['best'] = (ar.get('best') or {}).get('native')
             wd = align_root / 'world' / cid
             man = wd / 'manifest.json'
+            body = wd / 'body.stl'
             if not man.exists():
-                why.append('missing world manifest')
+                why.append(f'missing world manifest at {man}')
+            if not body.exists():
+                why.append(f'missing world mesh at {body}')
             else:
                 m = json.loads(man.read_text())
                 if m.get('coordinate_frame') != 'world':
@@ -90,9 +105,20 @@ def load_candidates(plan_path, clean_root, align_root, policy_path,
                 rec['world_sha256'] = m.get('world_sha')
                 rec['T_world_from_asset'] = m.get('T_world_from_asset')
                 rec['world_dir'] = str(wd)
-                if m.get('world_sha') and (wd / 'body.stl').exists():
-                    if _sha(wd / 'body.stl') != m['world_sha']:
-                        why.append('world mesh SHA mismatch')
+                if not m.get('parts'):
+                    why.append('world manifest lacks parts')
+                if body.exists():
+                    if not m.get('world_sha'):
+                        why.append('world manifest lacks world_sha')
+                    elif _sha(body) != m['world_sha']:
+                        why.append('world mesh SHA mismatch (file != manifest)')
+                    src = ar.get('candidate')
+                    if src and not str(src).endswith('body.stl'):
+                        pass
+                # 与 clean.raw_sha / align.source_sha 串联
+                if cr and cr.get('raw_sha') and ar.get('raw_sha') \
+                        and cr['raw_sha'] != ar['raw_sha']:
+                    why.append('clean.raw_sha != align.raw_sha')
         # 3) 生成来源：由输入图字节身份在账本里查 task_id（不猜、不按 id 名匹配）
         import sys
         sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
@@ -112,7 +138,6 @@ def load_candidates(plan_path, clean_root, align_root, policy_path,
             why.append(f'identity resolution failed: {type(e).__name__}')
         rec['policy_version'] = policy.get('version')
         missing = [k for k in REQUIRED_KEYS if rec.get(k) in (None, '')]
-        missing = [k for k in missing if k not in ('glb_sha256', 'input_sha256')]
         if missing:
             why.append(f'missing keys {missing}')
         rec['reject_reason'] = '; '.join(why) if why else None

@@ -171,5 +171,12 @@
       "cost": 40.0,
       "t_end": null
     }
-  ]
+  ],
+  "reclassified": {
+    "status": "generated_self_replay",
+    "valid_as": "旧执行器诊断；候选自身场景的动作扫描与重演",
+    "invalid_as": "独立隐藏真值闭环（truth_asset_sha 与候选 world SHA 相同）",
+    "reason": "预演与执行都用同一候选几何；动作是另写的常数控制量，未走 runner/skills；计时用错误索引；三个 seed 未产生不同初态",
+    "superseded_by": "runs/unseen/recovery_r3/h5_A4_truth/h5_loop.json"
+  }
 }

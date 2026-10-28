@@ -1,0 +1,52 @@
+{
+  "schema": "asset-manifest/v1",
+  "version": "align24/v3",
+  "coordinate_frame": "world",
+  "parts": [
+    "body.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      0.026150069692726395,
+      0.0,
+      2.9965011868768876,
+      1.6800099041577983
+    ],
+    [
+      2.9965011868768876,
+      0.0,
+      -0.026150069692726395,
+      -0.002
+    ],
+    [
+      0.0,
+      2.996615288804943,
+      0.0,
+      0.08294782468594471
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0,
+      0,
+      0
+    ],
+    "quat": [
+      1,
+      0,
+      0,
+      0
+    ]
+  },
+  "source_sha": "8b15913bef0fa49d5b02b978da6c1961c9fce0bc492b40df8600bced0ae3d0b4",
+  "world_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
+  "observation": "runs/unseen/recovery_r3/observations/A",
+  "camera_schema": "camera-snapshot/v2",
+  "metric_version": "align-metric/v2.1"
+}

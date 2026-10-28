@@ -89,12 +89,22 @@ def main():
     ap.add_argument('--height', type=float, default=0.26)
     ap.add_argument('--width', type=float, default=0.62)
     ap.add_argument('--tag', default='fixture_obstacle')
+    ap.add_argument('--candidate-json', default=None,
+                    help='真实候选 JSON（candidate_store 输出）；给了就不造 fixture')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
-    wd, wsha = make_fixture_world(out, width=a.width, height=a.height, tag=a.tag)
-    rec = {'workflow': 'h5_fixture_loop/v1', 'source_kind': 'fixture',
+    if a.candidate_json:
+        cj = json.loads(pathlib.Path(a.candidate_json).read_text())
+        wd = pathlib.Path(cj['world_dir']); wsha = cj['world_sha256']
+        source_kind, tag = cj.get('source_kind', 'lux3d'), cj['candidate_id']
+        cand_meta = cj
+    else:
+        wd, wsha = make_fixture_world(out, width=a.width, height=a.height, tag=a.tag)
+        source_kind, tag, cand_meta = 'fixture', a.tag, None
+    rec = {'workflow': 'h5_loop/v2', 'source_kind': source_kind,
            'truth_asset_sha': wsha, 'truth_identity': 'fixture_obstacle',
-           'note': 'fixture 仅验证接口；不计入真实 Lux3D 主张',
+           'note': ('fixture 仅验证接口；不计入真实 Lux3D 主张' if source_kind == 'fixture'
+                    else '真实 Lux3D 候选单例；单候选原型，不宣称多假设收益'),
            'options': list(OPTIONS), 'seeds': a.seeds}
 
     # 1) 预演：候选 × 动作 × 初态（fixture 只有一个候选）
@@ -102,7 +112,7 @@ def main():
     for s in a.seeds:
         for o in OPTIONS:
             r = run_option(wd, o, seed=s)
-            rehearsal.append({'candidate_id': a.tag, 'option_id': o,
+            rehearsal.append({'candidate_id': tag, 'option_id': o,
                               'initial_state_id': f'seed{s}', **r})
     # 2) 决策：最坏情形（任一初态失败即不选该动作），A0 兜底
     by_opt = {}

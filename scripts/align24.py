@@ -194,6 +194,10 @@ def main():
         yaw_real = float(np.degrees(np.arctan2(dR[1, 0] - dR[0, 1],
                                                 dR[0, 0] + dR[1, 1])))
         axis_real = (R_real @ np.eye(3)).round(3).tolist()
+        thr = max(5.0, 0.03 * H_vis * 1000)
+        p95 = native.get('vis_pt_p95_mm')
+        ok = (native['mask_iou'] >= 0.85 and p95 is not None and p95 <= thr
+              and native['freespace_violation'] <= 0.05)
         rec = {'R_index': c['R_index'], 'init': c['init'],
                'scale_init': c['scale'], 'yaw_init': c['yaw'],
                'scale': round(sc_real, 5), 'yaw': round(yaw_real, 3),
@@ -234,7 +238,7 @@ def main():
         Mbest = np.asarray(best['M'])
         mw = A.apply_T(mesh, Mbest)
         part = world_dir / 'body.stl'
-        tmpf = world_dir / '.body.stl.tmp'
+        tmpf = world_dir / '_body_tmp.stl'   # 保留 .stl 扩展名供 trimesh 推断
         mw.export(tmpf); tmpf.replace(part)
         man = {'schema': 'asset-manifest/v1', 'version': 'align24/v3',
                'coordinate_frame': 'world', 'parts': ['body.stl'],
@@ -245,7 +249,7 @@ def main():
                'observation': str(a.obs),
                'camera_schema': obsd.get('camera_schema'),
                'metric_version': 'align-metric/v2.1'}
-        mant = world_dir / '.manifest.json.tmp'
+        mant = world_dir / '_manifest_tmp.json'
         mant.write_text(json.dumps(man, indent=2, ensure_ascii=False))
         mant.replace(world_dir / 'manifest.json')
         # 一致性自检：best.M 应用于源网格 == 导出的世界网格

@@ -1,0 +1,136 @@
+{
+  "candidate": "runs/unseen/recovery_r3/clean_v3/A1/body.stl",
+  "observation": "runs/unseen/recovery_r3/observations/A",
+  "distinct_orientations_in_top": [
+    [
+      19,
+      -15.697811127486121
+    ]
+  ],
+  "metric_version": "align-metric/v2.1",
+  "camera_schema": "camera-snapshot/v2",
+  "raw_bounds": [
+    [
+      -0.05000000074505806,
+      -0.017548486590385437,
+      0.0
+    ],
+    [
+      0.05000000074505806,
+      0.017548486590385437,
+      0.062296170741319656
+    ]
+  ],
+  "raw_extents": [
+    0.10000000149011612,
+    0.035096973180770874,
+    0.062296170741319656
+  ],
+  "n_coarse_evals": 1512,
+  "wall_s": 100.9,
+  "orientation_ambiguous": false,
+  "top": [
+    {
+      "R_index": 19,
+      "init": "H",
+      "scale": 5.90918,
+      "yaw": 0.0,
+      "quick_med_mm": 15.698,
+      "quick_cover": 0.152
+    },
+    {
+      "R_index": 19,
+      "init": "H",
+      "scale": 5.37198,
+      "yaw": 0.0,
+      "quick_med_mm": 16.152,
+      "quick_cover": 0.138
+    }
+  ],
+  "best": {
+    "R_index": 19,
+    "init": "H",
+    "scale_init": 5.909182618729588,
+    "yaw_init": 0.0,
+    "scale": 5.70442,
+    "yaw": 0.0,
+    "R_axis_world": [
+      [
+        0.0,
+        0.0,
+        1.0
+      ],
+      [
+        1.0,
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "shear_residual": 0.0,
+    "z_min_world_m": 0.0,
+    "M": [
+      [
+        0.0,
+        0.0,
+        5.704423531807989,
+        1.6680099041577983
+      ],
+      [
+        5.704423531807989,
+        0.0,
+        0.0,
+        -0.002
+      ],
+      [
+        0.0,
+        5.704423531807989,
+        0.0,
+        0.10010399985381163
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "native": {
+      "mask_iou": 0.6699,
+      "cand_px": 21136,
+      "obs_px": 14158,
+      "n_inter": 14158,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 3.85,
+      "depth_p95_mm": 31.29,
+      "depth_inner_rms_mm": 13.062,
+      "depth_edge_rms_mm": 15.977,
+      "vis_pt_med_mm": 4.966,
+      "vis_pt_p95_mm": 15.426,
+      "vis_pt_n": 2500,
+      "vis_pt_total": 14158,
+      "vis_pt_strategy": "deterministic_subset(n=2500,seed=0)",
+      "metric_version": "align-metric/v2.1",
+      "freespace_violation": 0.3324,
+      "freespace_n_px": 7026,
+      "freespace_denom_px": 21136,
+      "freespace_outside_mask": 4228
+    },
+    "threshold_p95_mm": 5.656,
+    "pass": false,
+    "world_dir": "runs/unseen/recovery_r3/align_v3/world/A1"
+  },
+  "pass": false,
+  "export_check": {
+    "max_bound_diff_m": 4.3e-08,
+    "consistent": true,
+    "world_sha": "05d8740a2966b6f687d158e9e0219d58f06eb4693fb0043cb834d591e8a5fa4e"
+  }
+}

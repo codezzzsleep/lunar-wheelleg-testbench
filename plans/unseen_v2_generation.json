@@ -1,0 +1,177 @@
+{
+  "plan_version": "unseen_v2",
+  "created": "2026-10-28",
+  "camera_version": "final: cam_height 0.16 m, pitch 0.0, fovy 70",
+  "credits_upper_per_task": 20,
+  "note": "CAL1 已创建（task 4431907），不得因改计划重建；A/B 用同一相机；扰动为确定性像素变换，不声称新增真实视角",
+  "inputs": [
+    {
+      "id": "CAL1",
+      "group": "CAL",
+      "status": "active",
+      "source_image": "cases/unseen_v1/calibration_asym.stl",
+      "image": "runs/unseen/obs/final_cal/crop_white.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A1",
+      "group": "A",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planA.json",
+      "image": "runs/unseen/obs/final_planA/crop_white.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A2",
+      "group": "A",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planA.json",
+      "image": "runs/unseen/obs/final_planA/aug_crop8.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "crop8",
+      "repeat_idx": 1,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A3",
+      "group": "A",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planA.json",
+      "image": "runs/unseen/obs/final_planA/aug_bright.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "bright",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A4",
+      "group": "A",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planA.json",
+      "image": "runs/unseen/obs/final_planA/aug_rot4.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "rot4",
+      "repeat_idx": 3,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "A5",
+      "group": "A",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planA.json",
+      "image": "runs/unseen/obs/final_planA/aug_gray.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "gray",
+      "repeat_idx": 4,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B1",
+      "group": "B",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planB.json",
+      "image": "runs/unseen/obs/final_planB/crop_white.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B2",
+      "group": "B",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planB.json",
+      "image": "runs/unseen/obs/final_planB/aug_crop8.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "crop8",
+      "repeat_idx": 1,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B3",
+      "group": "B",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planB.json",
+      "image": "runs/unseen/obs/final_planB/aug_bright.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "bright",
+      "repeat_idx": 2,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B4",
+      "group": "B",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planB.json",
+      "image": "runs/unseen/obs/final_planB/aug_rot4.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "rot4",
+      "repeat_idx": 3,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "B5",
+      "group": "B",
+      "status": "active",
+      "source_image": "cases/unseen_v1/planB.json",
+      "image": "runs/unseen/obs/final_planB/aug_gray.png",
+      "camera": "final_0.16m_pitch0",
+      "variant": "gray",
+      "repeat_idx": 4,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      }
+    },
+    {
+      "id": "RESERVE1",
+      "group": "RES",
+      "status": "disabled",
+      "image": null,
+      "enable_condition": "候选技术失败/无法下载/无法解析/合格候选不足或明确几何重复（需记录理由）"
+    },
+    {
+      "id": "RESERVE2",
+      "group": "RES",
+      "status": "disabled",
+      "image": null,
+      "enable_condition": "同上"
+    }
+  ]
+}

@@ -279,6 +279,10 @@ def main():
     # ---- 分类每个计划项 ----
     rows = []
     for item in plan['inputs']:
+        if item.get('status') == 'disabled' or not item.get('image'):
+            rows.append({'id': item['id'], 'state': 'disabled',
+                         'reason': item.get('enable_condition', '')})
+            continue
         img = pathlib.Path(item['image'])
         if not img.exists():
             rows.append({'id': item['id'], 'state': 'missing_image',

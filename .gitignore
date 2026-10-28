@@ -17,3 +17,8 @@ assets/generated/**/*.ply
 assets/generated/**/*.zip
 # 解包目录与 assets/raw/*.glb 是同一份文件，只保留 raw
 assets/generated/**/unpacked/
+
+# 图生任务的原始 results.zip（含 PLY/3DGS，动辄数十 MB）不入库；
+# 只保留 model.glb 与 meta.json，zip 可用 task_id 重新下载。
+runs/unseen/generation/**/results.zip
+runs/unseen/generation/by_task/**/*.zip

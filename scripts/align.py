@@ -28,8 +28,8 @@ import terrain
 import wheelleg_env
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-SEARCH_YAW_DEG = np.linspace(-25, 25, 11)
-SEARCH_SCALE = np.array([0.8, 0.9, 1.0, 1.1, 1.25])
+SEARCH_YAW_DEG = np.linspace(-25, 25, 7)
+SEARCH_SCALE = np.array([0.85, 1.0, 1.15])
 RMS_ABS = 0.005          # 5 mm
 RMS_REL = 0.03           # 或 3% 高度
 
@@ -232,7 +232,7 @@ def align(candidate, obs, out, workdir):
             mw.export(tmp)
             # 搜索阶段用低分辨率（快）；验收阶段一律回到原生分辨率，
             # 因为 640x480 会把边缘深度跳变放大（实测 RMS 0->42 mm）。
-            ev = render_eval(mw, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=800)
+            ev = render_eval(mw, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=250)
             vm0 = ev.get('vis_pt_med_mm')
             ok_c = (ev['mask_iou'] >= 0.85 and ev['freespace_violation'] <= 0.05)
             score = (1 if ok_c else 0, -(vm0 if vm0 is not None else 9e9))
@@ -251,7 +251,7 @@ def align(candidate, obs, out, workdir):
                par['ty'] - (b2[0][1] + b2[1][1]) / 2, -b2[0][2])
         mw2 = apply_T(mesh, M2)
         mw2.export(tmp)
-        ev2 = render_eval(mw2, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=1200)
+        ev2 = render_eval(mw2, obs, tmpdir=tmp, W=640, H=480, want_vis_pt=600)
         ok_c = (ev2['mask_iou'] >= 0.85 and ev2['freespace_violation'] <= 0.05)
         vm = ev2.get('vis_pt_med_mm')
         return (1 if ok_c else 0, -(vm if vm is not None else 9e9)), M2, ev2

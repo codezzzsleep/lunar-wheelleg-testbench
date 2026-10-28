@@ -1,0 +1,38 @@
+{
+  "generated": "2026-10-28",
+  "calibration_task": {
+    "task_id": 4431907,
+    "input": "runs/unseen/obs/final_cal/crop_white.png",
+    "input_sha256": "c1617f0bb718e11bef4270c38e26bcb92233a3a312ca726e78467bb2a76ee7b4",
+    "glb": "runs/unseen/generation/cache/5b/5b3b2cd11a6fb4295217c795e36ab9becca01b46f3b59b936ccddc811a36c923/model.glb",
+    "glb_extents_m": [
+      0.11,
+      0.0616,
+      0.033
+    ],
+    "views": "runs/unseen/gate_l/cal1/view_*.png"
+  },
+  "calibration_object": {
+    "design": "narrow-base triangular prism + front step",
+    "extents_m": [
+      0.09,
+      0.1,
+      0.22
+    ],
+    "bottom_area_m2": 0.003,
+    "largest_side_area_m2": 0.0232
+  },
+  "findings": {
+    "proportions_preserved": false,
+    "note": "输入为 0.09x0.10x0.22 的窄底棱柱，输出为 0.11x0.0616x0.033 的扁平块；比例 1:0.56:0.30，与输入的 1:1.11:2.44 不符，说明该次生成未保留标定件的细长比例，无法据它判定轴向对应",
+    "auto_upright_by_shape": "uncertain",
+    "largest_plane_on_bottom": "uncertain",
+    "reason": "标定件过细，生成结果被压扁；单次样本不足以推断固定轴向规律"
+  },
+  "decision": {
+    "fixed_axis_prior": "none",
+    "formal_alignment": "24 种保持手性的轴对齐朝向搜索 + yaw/平移/尺度精修",
+    "per_candidate_reporting": "逐个候选报告朝向是否唯一（与第二名差距过小则标 orientation_uncertain）"
+  },
+  "scope": "仅适用于本轮 G1-Turbo 图生；不同模型/区域不自动沿用"
+}

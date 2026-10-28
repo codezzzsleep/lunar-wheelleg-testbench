@@ -1,0 +1,47 @@
+{
+  "generated_at": "2026-10-28",
+  "checks": [
+    {
+      "check": "S03/S04 预算与恢复回归",
+      "pass": true,
+      "detail": "OK"
+    },
+    {
+      "check": "S05 CAL1 白底输入可读且目标亮度>60",
+      "pass": true,
+      "detail": "bytes=18521, target_px=206399, target_mean_luma=131.2"
+    },
+    {
+      "check": "S05 送图字节 SHA-256 已固定",
+      "pass": true,
+      "detail": "c1617f0bb718e11bef4270c38e26bcb92233a3a312ca726e78467bb2a76ee7b4"
+    },
+    {
+      "check": "S06 标定件最大平面不在底部",
+      "pass": true,
+      "detail": "bottom=0.0030, largest_other=0.0232, ratio=7.75"
+    },
+    {
+      "check": "S06 标定件流形水密",
+      "pass": true,
+      "detail": "faces=16"
+    },
+    {
+      "check": "S05/S06 CAL1 与 A/B 相机配置一致",
+      "pass": true,
+      "detail": "{\"cal\": [0.161, 0.0, [0.42, 0.0, 0.0], 70.0], \"planA\": [0.161, 0.0, [0.42, 0.0, 0.0], 70.0], \"planB\": [0.161, 0.0, [0.42, 0.0, 0.0], 70.0]}"
+    },
+    {
+      "check": "S06 单任务上界<=20 且总余量覆盖",
+      "pass": true,
+      "detail": "per_task_cap=20, hard_cap=300"
+    },
+    {
+      "check": "S06 API 凭据可用（不打印值）",
+      "pass": true,
+      "detail": "present (from environment)"
+    }
+  ],
+  "all_pass": true,
+  "note": "付费 create 的必要条件；不含研究验证（E0-E3/P1-P3/正式矩阵）"
+}

@@ -158,6 +158,24 @@ class WheelLegEnv:
             if i >= 0:
                 j = xml.find('>', i) + 1
                 xml = xml[:j] + tag + xml[j:]
+        vis = self.spec.get('visual') or {}
+        if vis:
+            lx = float(vis.get('light', {}).get('pos', [-1.2, -0.7, 1.5])[0])
+            ly = float(vis.get('light', {}).get('pos', [-1.2, -0.7, 1.5])[1])
+            lz = float(vis.get('light', {}).get('pos', [-1.2, -0.7, 1.5])[2])
+            d_x, d_y, d_z = vis.get('light', {}).get('dir', [0.6, 0.35, -0.72])
+            amb = vis.get('headlight', {}).get('ambient', '0.4 0.4 0.4')
+            dif = vis.get('headlight', {}).get('diffuse', '0.55 0.55 0.55')
+            import re as _re
+            if '<headlight' in xml:
+                xml = _re.sub(r'<headlight[^/]*/>',
+                              f'<headlight ambient="{amb}" diffuse="{dif}"/>', xml)
+            else:
+                xml = xml.replace('<visual>',
+                    f'<visual><headlight ambient="{amb}" diffuse="{dif}"/>')
+            xml = xml.replace('<worldbody>',
+                f'<worldbody><light pos="{lx} {ly} {lz}" dir="{d_x} {d_y} {d_z}" '
+                f'diffuse="0.85 0.8 0.7" castshadow="false"/>')
         mat = self.spec.get('object_material')
         if mat:
             # 纹理只改视觉，不改碰撞；贴图按盒投影（MuJoCo 2d 纹理默认行为）

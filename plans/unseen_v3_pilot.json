@@ -1,0 +1,93 @@
+{
+  "plan_version": "unseen_v3_pilot",
+  "created": "2026-10-28",
+  "status": "PREPARED_NOT_SUBMITTED",
+  "requires_user_confirmation": true,
+  "credits_upper_per_task": 20,
+  "max_new_tasks": 3,
+  "new_batch_cap": 60,
+  "history": {
+    "tasks_used": 15,
+    "credits_upper_used": 300,
+    "remaining": 0,
+    "actual_charge": "unknown"
+  },
+  "camera": {
+    "world_height_m": 0.32,
+    "pitch_deg": 0.0,
+    "fovy_deg": 70,
+    "note": "挂在 base_link local x=0.42；0.32 m 低于 base_link 中心 0.384 m，属低置前置安装"
+  },
+  "texture": {
+    "file": "assets/textures/rock_v1.png",
+    "seed": 7,
+    "uv": "三平面 UV OBJ（无 UV 的 STL 直接贴 2D 贴图会退化成条带，已用球/立方体验证）"
+  },
+  "inputs": [
+    {
+      "id": "P1",
+      "stone": "R01",
+      "case": "planA",
+      "image": "runs/unseen/recovery_r3/upload_pkg/P1/upload_1024.png",
+      "image_sha256": "c3f014e78a88b06f56714610e0ee0c5a384519c6e8ad559aaf8a61835f86f7b5",
+      "crop_box_px": [
+        1043,
+        963,
+        473,
+        473
+      ],
+      "longest_side_fraction": 0.7801,
+      "target_mean_luma": 164.73,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写"
+    },
+    {
+      "id": "P2",
+      "stone": "R02",
+      "case": "planB",
+      "image": "runs/unseen/recovery_r3/upload_pkg/P2/upload_1024.png",
+      "image_sha256": "719807408d382ddb9ace5319967a6292c92cd116ba06482c395eb3de8152a959",
+      "crop_box_px": [
+        842,
+        790,
+        877,
+        877
+      ],
+      "longest_side_fraction": 0.7799,
+      "target_mean_luma": 172.44,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写"
+    },
+    {
+      "id": "P3",
+      "stone": "R01",
+      "case": "planA",
+      "image": "runs/unseen/recovery_r3/upload_pkg/P1/upload_1024.png",
+      "image_sha256": "c3f014e78a88b06f56714610e0ee0c5a384519c6e8ad559aaf8a61835f86f7b5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 1,
+      "credits_upper": 20,
+      "sample_id": "pilot-repeat-1",
+      "extra": {
+        "sample_nonce": "20261028-p3"
+      },
+      "note": "与 P1 完全相同的输入字节与参数；仅用 sample_id/nonce 区分请求身份，不向官方 API 塞未核实参数，也不伪造输入差异"
+    }
+  ]
+}

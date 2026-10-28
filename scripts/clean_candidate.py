@@ -1,20 +1,22 @@
 """
-候选清理与廉价预检（任务 A）。
+候选清理 v3：决策直接决定导出面集合，导出后重读校验。
 
-  .venv/bin/python scripts/clean_candidate.py --candidate <glb> --out runs/unseen/recovery_r3/clean/<id>
+  .venv/bin/python scripts/clean_candidate.py --candidate <glb> --out <dir> --id A2
 
-做三件事：
-  1. 应用 GLB 节点变换，按**几何顶点连通性**分组（先按 1e-8 m 焊接，UV 接缝不算真间隙）；
-  2. 每个分量记录面数/面积/包围盒/主轴跨度/闭合性/有效体积/包含关系；
-  3. 选主体：优先"包含其他分量的外壳"，剔除零厚度浮面、退化面、内部重复壳、小碎片。
+相对 v1/v2 的修正（E4 审查）：
+  · v1 的 keep/drop 决策只是记录，导出时又按"面积>=1% 无序并集"重取，
+    浮空平面与内部壳根本没被删掉 —— 现在导出只写 decisions 里 keep 的分量；
+  · pca_span 曾用 2*sqrt(特征值)（顶点分布统计量，受网格密度影响），
+    改为**投影坐标 max-min** 的真实主轴跨度；
+  · components_after 不再写死，导出后重读文件重新统计；
+  · 无法判断包含关系时输出 containment_unknown，不静默当作"不包含"。
 
-约束（任务书四）：
-  · 不加背板、不增厚、不非等比拉伸、不用凸包造形；
-  · 主体不能只按面数/面积排序；
-  · 薄片候选在预检阶段直接 rejected_thin，不做长配准；
-  · 产物体积/厚度记录，PCA 最小轴范围 / 最大边 ≥ 0.2 作为薄片判据。
+判据（阈值与 E4 一致，未放宽）：
+  thin_ratio = 最小主轴跨度 / 最大主轴跨度 < 0.2  -> rejected_thin
+  浮空面：最小主轴跨度 < 1 mm 且面积占比 >= 3%
 """
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -22,170 +24,150 @@ import sys
 import numpy as np
 import trimesh
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
-WELD_TOL = 1e-6          # 1 µm：远小于真实特征，同时吞掉浮点噪声
-THIN_RATIO_MIN = 0.2     # PCA 最小轴 / 最大边
-SMALL_AREA_FRAC = 0.01   # 面积占比 < 1% 视为碎片
+VERSION = 'clean/v3'
+WELD_TOL = 1e-6
+THIN_RATIO_MIN = 0.2
+FRAGMENT_AREA_FRAC = 0.01
+FLOATING_THICK_M = 0.001
+FLOATING_AREA_FRAC = 0.03
+CONTAIN_FRAC = 0.90
 
 
-def load_scene_mesh(path):
-    """应用节点变换后的世界网格，并记录原始 bounds。"""
+def sha(p):
+    h = hashlib.sha256()
+    with open(p, 'rb') as f:
+        for b in iter(lambda: f.read(1 << 20), b''):
+            h.update(b)
+    return h.hexdigest()
+
+
+def load_world_mesh(path):
     sc = trimesh.load(str(path), force='scene')
-    if isinstance(sc, trimesh.Scene):
-        geoms = []
-        for name, g in sc.geometry.items():
-            T, _ = sc.graph.get(name)
-            gg = g.copy()
-            if T is not None:
-                gg.apply_transform(T)
-            geoms.append(gg)
-        m = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]
-    else:
-        m = sc
+    if not isinstance(sc, trimesh.Scene):
+        return _weld(sc.copy()), 1
+    geoms, n_nodes = [], 0
+    for node in sc.graph.nodes_geometry:
+        T, name = sc.graph[node]
+        g = sc.geometry[name]
+        gg = g.copy()
+        if T is not None:
+            gg.apply_transform(T)
+        geoms.append(gg)
+        n_nodes += 1
+    m = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]
+    return _weld(m), n_nodes
+
+
+def _weld(m):
     m = m.copy()
-    # 按容差焊接：UV 接缝不算真间隙（1e-3 会破坏拓扑，实测分量爆炸到 1 万+）
-    # 注意：整数网格键只用于**分组**，顶点必须回到米制（取同组原顶点均值）
+    try:
+        keep = m.nondegenerate_faces(height=1e-12)
+        if keep.sum() > 0:
+            m.update_faces(keep)
+    except Exception:
+        pass
     verts = np.asarray(m.vertices, dtype=np.float64)
+    if len(verts) == 0 or len(m.faces) == 0:
+        return m
     key = np.round(verts / WELD_TOL).astype(np.int64)
     uniq, inv = np.unique(key, axis=0, return_inverse=True)
-    rep = np.zeros((len(uniq), 3))
-    cnt = np.zeros(len(uniq))
-    np.add.at(rep, inv, verts)
-    np.add.at(cnt, inv, 1)
+    rep = np.zeros((len(uniq), 3)); cnt = np.zeros(len(uniq))
+    np.add.at(rep, inv, verts); np.add.at(cnt, inv, 1)
     rep /= cnt[:, None]
-    m = trimesh.Trimesh(rep, inv[np.asarray(m.faces)], process=False)
-    assert m.extents.max() < 100.0, f'焊接后尺度异常：{m.extents}'
-    return m
+    out = trimesh.Trimesh(rep, inv[np.asarray(m.faces)], process=False)
+    if out.extents.max() > 100.0:
+        raise RuntimeError(f'焊接后尺度异常 {out.extents}')
+    return out
 
 
-def components(mesh):
-    """按几何连通性分组（trimesh.split 不跨真实间隙合并）。"""
-    return list(mesh.split(only_watertight=False))
-
-
-def pca_span(pts):
-    if len(pts) < 4:
-        return np.zeros(3)
-    c = pts - pts.mean(0)
-    cov = c.T @ c / max(len(pts) - 1, 1)
-    w, _ = np.linalg.eigh(cov)
-    return np.sqrt(np.clip(w, 0, None)) * 2.0      # 各主轴跨度（约）
-
-
-def inside(inner_pts, outer_mesh):
-    """内部分量是否基本落在外壳内部（用包含测试的采样比例）。"""
-    try:
-        return float(np.mean(outer_mesh.contains(inner_pts)))
-    except Exception:
-        return 0.0
+def principal_spans(pts):
+    """真实主轴跨度：PCA 求轴后投影取 max-min（不是标准差量级）。"""
+    p = np.asarray(pts, dtype=np.float64)
+    if len(p) < 4:
+        return np.zeros(3), np.eye(3)
+    c = p.mean(0)
+    q = p - c
+    cov = q.T @ q / max(len(q) - 1, 1)
+    w, V = np.linalg.eigh(cov)
+    V = V[:, np.argsort(w)[::-1]]
+    proj = q @ V
+    return proj.max(0) - proj.min(0), V
 
 
 def analyse(path):
-    raw = trimesh.load(str(path), force='mesh', process=False)
-    raw_bounds = np.asarray(raw.bounds).tolist() if hasattr(raw, 'bounds') else None
-    m = load_scene_mesh(path)
-    comps = components(m)
-    total_area = float(sum(abs(c.area) for c in comps)) or 1.0
+    m, n_nodes = load_world_mesh(path)
+    comps = list(m.split(only_watertight=False))
+    total_area = float(sum(abs(float(c.area)) for c in comps)) or 1.0
     infos = []
     for i, c in enumerate(comps):
         v = np.asarray(c.vertices)
-        span = pca_span(v)
-        b = np.asarray(c.bounds)
-        ext = b[1] - b[0]
-        try:
-            vol = float(c.volume) if c.is_watertight else None
-        except Exception:
-            vol = None
+        spans, axes = principal_spans(v)
+        b = np.asarray(c.bounds); ext = b[1] - b[0]
         infos.append({
             'index': i, 'faces': int(len(c.faces)), 'verts': int(len(v)),
-            'area_m2': round(abs(float(c.area)), 8),
-            'area_frac': round(abs(float(c.area)) / total_area, 4),
-            'bounds_min': [round(float(x), 5) for x in b[0]],
-            'bounds_max': [round(float(x), 5) for x in b[1]],
-            'extents': [round(float(x), 5) for x in ext],
-            'pca_span': [round(float(x), 5) for x in span],
+            'area_m2': round(abs(float(c.area)), 9),
+            'area_frac': round(abs(float(c.area)) / total_area, 5),
+            'extents_m': [round(float(x), 6) for x in ext],
+            'principal_spans_m': [round(float(x), 6) for x in spans],
+            'pca_axes': [[round(float(x), 4) for x in axes[:, k]] for k in range(3)],
+            'max_span_m': round(float(max(spans)), 6),
+            'thin_ratio': round(float(min(spans) / max(max(spans), 1e-9)), 5),
             'watertight': bool(c.is_watertight),
-            'signed_volume_m3': (round(vol, 9) if vol is not None else None),
-            'max_extent': round(float(max(ext)), 5),
-            'thin_ratio': round(float(min(span) / max(max(span), 1e-9)), 4),
+            'bounds_min': [round(float(x), 6) for x in b[0]],
+            'bounds_max': [round(float(x), 6) for x in b[1]],
         })
 
-    # 主体选择：先看包含关系（外壳包住谁），再按有效体积/厚度
-    vols = [x['signed_volume_m3'] for x in infos]
-    cand_order = sorted(range(len(infos)),
-                        key=lambda i: (-(vols[i] or 0.0), -infos[i]['max_extent']))
-    keep = None
-    for i in cand_order:
-        if infos[i]['max_extent'] < 0.02:
+    by_area = sorted(range(len(infos)), key=lambda i: -infos[i]['area_frac'])
+    keep, contain_status = None, 'ok'
+    for i in by_area:
+        x = infos[i]
+        if x['area_frac'] < FRAGMENT_AREA_FRAC:
             continue
-        encloses = 0
-        for j in range(len(infos)):
-            if i == j or infos[j]['area_frac'] < SMALL_AREA_FRAC:
-                continue
-            if inside(np.asarray(comps[j].vertices)[::max(1, len(comps[j].vertices) // 200)],
-                      comps[i]) > 0.5:
-                encloses += 1
-        if infos[i]['watertight'] or encloses > 0:
-            keep = i
-            break
-    if keep is None and cand_order:
-        keep = cand_order[0]
+        if x['max_span_m'] < 0.02:
+            continue
+        if min(x['principal_spans_m']) < FLOATING_THICK_M and x['area_frac'] >= FLOATING_AREA_FRAC:
+            continue
+        keep = i
+        break
+
+    if keep is not None:
+        try:
+            kp = np.asarray(comps[keep].vertices)[::max(1, len(comps[keep].vertices) // 300)]
+            for j in by_area:
+                if j == keep or infos[j]['max_span_m'] <= infos[keep]['max_span_m']:
+                    continue
+                if float(np.mean(comps[j].contains(kp))) > CONTAIN_FRAC:
+                    keep = j
+                    break
+        except Exception:
+            contain_status = 'containment_unknown'
 
     decisions = []
     for x in infos:
-        if x['index'] == keep:
-            d, why = 'keep', 'main body (largest valid solid / enclosing shell)'
-        elif x['area_frac'] < SMALL_AREA_FRAC:
-            d, why = 'drop', 'fragment: area fraction < 1%'
+        i = x['index']
+        spans = x['principal_spans_m']
+        if i == keep:
+            decisions.append({'index': i, 'decision': 'keep',
+                              'reason': 'main body: largest area, not floating, thickness ok'})
+        elif x['area_frac'] < FRAGMENT_AREA_FRAC:
+            decisions.append({'index': i, 'decision': 'drop',
+                              'reason': f"fragment: area_frac {x['area_frac']} < {FRAGMENT_AREA_FRAC}"})
+        elif min(spans) < FLOATING_THICK_M:
+            decisions.append({'index': i, 'decision': 'drop',
+                              'reason': f"floating plane: min span {min(spans)*1000:.3f} mm < 1 mm"})
         elif x['thin_ratio'] < THIN_RATIO_MIN:
-            d, why = 'drop', f"near-zero thickness: PCA min/max = {x['thin_ratio']}"
-        elif keep is not None and x['max_extent'] < infos[keep]['max_extent'] * 0.2:
-            d, why = 'drop', 'small component inside main body'
+            decisions.append({'index': i, 'decision': 'drop',
+                              'reason': f"thin shell: thin_ratio {x['thin_ratio']} < {THIN_RATIO_MIN}"})
         else:
-            d, why = 'drop', 'secondary component (kept only main body)'
-        decisions.append({'index': x['index'], 'decision': d, 'reason': why})
+            decisions.append({'index': i, 'decision': 'drop',
+                              'reason': 'secondary shell/duplicate (only main body kept)'})
 
-    # 生成网格常被切成许多等大的表面片：主体应视为**大分量的并集**，
-    # 而不是单个分量（否则会落到 1.7% 面积的小片上，正是任务书警告的陷阱）。
-    overall_span = pca_span(np.asarray(m.vertices))
-    big = [c for c, x in zip(comps, infos) if x['area_frac'] >= SMALL_AREA_FRAC]
-    body = trimesh.util.concatenate(big) if big else None
-    body_info = None
-    if body is not None:
-        b = np.asarray(body.bounds); ext = b[1] - b[0]
-        bspan = pca_span(np.asarray(body.vertices))
-        body_info = {
-            'n_components': len(big),
-            'faces': int(len(body.faces)),
-            'area_m2': round(abs(float(body.area)), 8),
-            'extents': [round(float(x), 5) for x in ext],
-            'pca_span': [round(float(x), 5) for x in bspan],
-            'max_extent': round(float(max(ext)), 5),
-            'thin_ratio': round(float(min(bspan) / max(max(bspan), 1e-9)), 4),
-            'watertight': bool(body.is_watertight),
-        }
-    thin = (body_info['thin_ratio'] < THIN_RATIO_MIN) if body_info else True
-
-    return {
-        'raw_bounds': raw_bounds,
-        'components_before': len(comps),
-        'components_after': 1 if body is not None else 0,
-        'components': infos,
-        'decisions': decisions,
-        'body_policy': 'union of components with area_frac >= 1%',
-        'body': body_info,
-        'overall_pca_span': [round(float(x), 5) for x in overall_span],
-        'body_area_frac_of_total': (round(sum(x['area_frac'] for c, x in zip(comps, infos)
-                                                if x['area_frac'] >= SMALL_AREA_FRAC), 4)
-                                    if body_info else 0.0),
-        'precheck': {
-            'thin': bool(thin),
-            'verdict': 'rejected_thin' if thin else 'ok',
-            'criteria': {'thin_ratio_min': THIN_RATIO_MIN,
-                         'small_area_frac': SMALL_AREA_FRAC,
-                         'weld_tol_m': WELD_TOL},
-        },
-    }, body
+    kept = [d['index'] for d in decisions if d['decision'] == 'keep']
+    body = trimesh.util.concatenate([comps[i] for i in kept]) if kept else None
+    return {'version': VERSION, 'nodes': n_nodes, 'components_before': len(comps),
+            'components': infos, 'decisions': decisions, 'kept_indices': kept,
+            'containment_status': contain_status,
+            'total_area_m2': round(total_area, 8)}, body
 
 
 def main():
@@ -200,21 +182,15 @@ def main():
     try:
         rec, body = analyse(a.candidate)
     except Exception as e:
-        rec = {'error': f'{type(e).__name__}: {e}', 'precheck': {'verdict': 'precheck_failed'}}
+        rec = {'version': VERSION, 'error': f'{type(e).__name__}: {e}',
+               'precheck': {'verdict': 'precheck_failed', 'thin': None}}
         body = None
+
     rec['candidate'] = str(a.candidate)
     rec['id'] = cid
-    rec['version'] = 'clean/v1'
-    import hashlib
-    def sha(p):
-        h = hashlib.sha256()
-        with open(p, 'rb') as f:
-            for b in iter(lambda: f.read(1 << 20), b''):
-                h.update(b)
-        return h.hexdigest()
     rec['raw_sha'] = sha(a.candidate)
-    if body is not None:
-        # 把主体最低点移到 z=0（在**导出时**完成，下游不再贴地）
+
+    if body is not None and len(body.faces):
         b = np.asarray(body.bounds)
         body = body.copy()
         body.apply_translation([0, 0, -float(b[0][2])])
@@ -222,15 +198,43 @@ def main():
         body.export(p)
         rec['clean_path'] = str(p)
         rec['clean_sha'] = sha(p)
-        rec['clean_extents'] = [round(float(x), 5) for x in body.extents]
-        rec['world_frame'] = 'local (z_min=0); placement T must be applied once downstream'
+
+        rd = trimesh.load(str(p), force='mesh', process=True)
+        rd.merge_vertices()          # STL 是三角汤：先合并再数连通分量
+        rd_comps = list(rd.split(only_watertight=False))
+        spans, _ = principal_spans(np.asarray(rd.vertices))
+        rec['verify'] = {
+            'components_after': len(rd_comps),
+            'faces_after': int(len(rd.faces)),
+            'extents_m': [round(float(x), 6) for x in rd.extents],
+            'principal_spans_m': [round(float(x), 6) for x in spans],
+            'thin_ratio': round(float(min(spans) / max(max(spans), 1e-9)), 5),
+            'z_min_m': round(float(np.asarray(rd.bounds)[0][2]), 9),
+            'kept_expected': len(rec['kept_indices']),
+            'matches_decisions': len(rd_comps) == len(rec['kept_indices']),
+        }
+        rec['components_after'] = rec['verify']['components_after']
+        thin = rec['verify']['thin_ratio'] < THIN_RATIO_MIN
+        rec['precheck'] = {
+            'thin': bool(thin),
+            'verdict': 'rejected_thin' if thin else 'ok',
+            'criteria': {'thin_ratio_min': THIN_RATIO_MIN,
+                         'fragment_area_frac': FRAGMENT_AREA_FRAC,
+                         'floating_thick_m': FLOATING_THICK_M,
+                         'weld_tol_m': WELD_TOL},
+        }
+        rec['coordinate_frame'] = 'local (z_min=0); downstream applies T once'
+    else:
+        rec.setdefault('precheck', {'verdict': 'cleanup_failed', 'thin': None})
+        rec['components_after'] = 0
+
     (out / 'clean.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
-    print(json.dumps({'id': cid, 'components_before': rec.get('components_before'),
-                      'components_after': rec.get('components_after'),
-                      'verdict': rec['precheck']['verdict'],
-                      'body_thin_ratio': rec['body']['thin_ratio'] if rec.get('body') else None,
-                      'body_area_frac': rec.get('body_area_frac_of_total')}, ensure_ascii=False))
-    return 0 if rec.get('precheck', {}).get('verdict') == 'ok' else 1
+    v = rec.get('precheck', {})
+    print(json.dumps({'id': cid, 'before': rec.get('components_before'),
+                      'after': rec.get('components_after'), 'verdict': v.get('verdict'),
+                      'thin_ratio': rec.get('verify', {}).get('thin_ratio'),
+                      'kept': rec.get('kept_indices')}, ensure_ascii=False))
+    return 0 if v.get('verdict') == 'ok' else 1
 
 
 if __name__ == '__main__':

@@ -1,0 +1,101 @@
+{
+  "version": "clean/v3",
+  "nodes": 1,
+  "components_before": 1,
+  "components": [
+    {
+      "index": 0,
+      "faces": 29768,
+      "verts": 14886,
+      "area_m2": 0.006332843,
+      "area_frac": 1.0,
+      "extents_m": [
+        0.12,
+        0.032398,
+        0.001316
+      ],
+      "principal_spans_m": [
+        0.119999,
+        0.032506,
+        0.001314
+      ],
+      "pca_axes": [
+        [
+          -1.0,
+          0.0019,
+          0.0
+        ],
+        [
+          0.0019,
+          1.0,
+          0.0022
+        ],
+        [
+          0.0,
+          -0.0022,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.119999,
+      "thin_ratio": 0.01095,
+      "watertight": true,
+      "bounds_min": [
+        -0.06,
+        -0.016199,
+        -0.000658
+      ],
+      "bounds_max": [
+        0.06,
+        0.016199,
+        0.000658
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "index": 0,
+      "decision": "keep",
+      "reason": "main body: largest area, not floating, thickness ok"
+    }
+  ],
+  "kept_indices": [
+    0
+  ],
+  "containment_status": "ok",
+  "total_area_m2": 0.00633284,
+  "candidate": "runs/unseen/generation/cache/a1/a1c170ddb3b9bed3a7a8b8110021acbc6a9eebf58588a9da121c7443ee1a6588/model.glb",
+  "id": "B3",
+  "raw_sha": "d81f257f37c72e780f0136adde6421144d381f654a586ca64d5b5c65748d9641",
+  "clean_path": "runs/unseen/recovery_r3/clean_v3/B3/body.stl",
+  "clean_sha": "f39996c4e71ad9455e2aa55ee500c8656dcda3e8d7c4973981d9a9ccd71e2d8a",
+  "verify": {
+    "components_after": 1,
+    "faces_after": 29768,
+    "extents_m": [
+      0.12,
+      0.032398,
+      0.001316
+    ],
+    "principal_spans_m": [
+      0.119999,
+      0.032506,
+      0.001314
+    ],
+    "thin_ratio": 0.01095,
+    "z_min_m": 0.0,
+    "kept_expected": 1,
+    "matches_decisions": true
+  },
+  "components_after": 1,
+  "precheck": {
+    "thin": true,
+    "verdict": "rejected_thin",
+    "criteria": {
+      "thin_ratio_min": 0.2,
+      "fragment_area_frac": 0.01,
+      "floating_thick_m": 0.001,
+      "weld_tol_m": 1e-06
+    }
+  },
+  "coordinate_frame": "local (z_min=0); downstream applies T once"
+}

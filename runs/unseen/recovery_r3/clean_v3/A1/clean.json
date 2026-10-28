@@ -1,0 +1,205 @@
+{
+  "version": "clean/v3",
+  "nodes": 1,
+  "components_before": 3,
+  "components": [
+    {
+      "index": 0,
+      "faces": 14024,
+      "verts": 7014,
+      "area_m2": 0.016276489,
+      "area_frac": 0.50307,
+      "extents_m": [
+        0.1,
+        0.035097,
+        0.062296
+      ],
+      "principal_spans_m": [
+        0.1,
+        0.06243,
+        0.03516
+      ],
+      "pca_axes": [
+        [
+          -1.0,
+          -0.0005,
+          0.0023
+        ],
+        [
+          -0.0023,
+          -0.0017,
+          -1.0
+        ],
+        [
+          -0.0005,
+          1.0,
+          -0.0017
+        ]
+      ],
+      "max_span_m": 0.1,
+      "thin_ratio": 0.3516,
+      "watertight": true,
+      "bounds_min": [
+        -0.05,
+        -0.017548,
+        -0.031148
+      ],
+      "bounds_max": [
+        0.05,
+        0.017548,
+        0.031148
+      ]
+    },
+    {
+      "index": 1,
+      "faces": 7004,
+      "verts": 3500,
+      "area_m2": 0.008037288,
+      "area_frac": 0.24841,
+      "extents_m": [
+        0.098736,
+        0.034295,
+        0.030536
+      ],
+      "principal_spans_m": [
+        0.098732,
+        0.045725,
+        0.030184
+      ],
+      "pca_axes": [
+        [
+          -1.0,
+          0.0063,
+          -0.0048
+        ],
+        [
+          0.0015,
+          0.7463,
+          0.6656
+        ],
+        [
+          0.0077,
+          0.6656,
+          -0.7463
+        ]
+      ],
+      "max_span_m": 0.098732,
+      "thin_ratio": 0.30572,
+      "watertight": true,
+      "bounds_min": [
+        -0.04934,
+        -0.017154,
+        -0.030611
+      ],
+      "bounds_max": [
+        0.049397,
+        0.017141,
+        -7.5e-05
+      ]
+    },
+    {
+      "index": 2,
+      "faces": 6982,
+      "verts": 3493,
+      "area_m2": 0.008040632,
+      "area_frac": 0.24852,
+      "extents_m": [
+        0.098676,
+        0.034277,
+        0.030435
+      ],
+      "principal_spans_m": [
+        0.098673,
+        0.046016,
+        0.029757
+      ],
+      "pca_axes": [
+        [
+          -1.0,
+          -0.0048,
+          0.0073
+        ],
+        [
+          -0.0084,
+          0.7468,
+          -0.665
+        ],
+        [
+          0.0022,
+          0.6651,
+          0.7468
+        ]
+      ],
+      "max_span_m": 0.098673,
+      "thin_ratio": 0.30157,
+      "watertight": true,
+      "bounds_min": [
+        -0.049301,
+        -0.017152,
+        0.000187
+      ],
+      "bounds_max": [
+        0.049376,
+        0.017126,
+        0.030622
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "index": 0,
+      "decision": "keep",
+      "reason": "main body: largest area, not floating, thickness ok"
+    },
+    {
+      "index": 1,
+      "decision": "drop",
+      "reason": "secondary shell/duplicate (only main body kept)"
+    },
+    {
+      "index": 2,
+      "decision": "drop",
+      "reason": "secondary shell/duplicate (only main body kept)"
+    }
+  ],
+  "kept_indices": [
+    0
+  ],
+  "containment_status": "ok",
+  "total_area_m2": 0.03235441,
+  "candidate": "runs/unseen/generation/cache/71/719efabd90d9debca731d56bc8e030d46dc182c5ddb349dcf8e292954b82e121/model.glb",
+  "id": "A1",
+  "raw_sha": "dd28ac44462bd4c594d194a51de187447daa5cab285ef07eba6829ac36f53edb",
+  "clean_path": "runs/unseen/recovery_r3/clean_v3/A1/body.stl",
+  "clean_sha": "63921db20e117a96c32a42ae07160f0d0ea7e50cfe8d4c6ac30c6289272462be",
+  "verify": {
+    "components_after": 1,
+    "faces_after": 14024,
+    "extents_m": [
+      0.1,
+      0.035097,
+      0.062296
+    ],
+    "principal_spans_m": [
+      0.1,
+      0.06243,
+      0.03516
+    ],
+    "thin_ratio": 0.3516,
+    "z_min_m": 0.0,
+    "kept_expected": 1,
+    "matches_decisions": true
+  },
+  "components_after": 1,
+  "precheck": {
+    "thin": false,
+    "verdict": "ok",
+    "criteria": {
+      "thin_ratio_min": 0.2,
+      "fragment_area_frac": 0.01,
+      "floating_thick_m": 0.001,
+      "weld_tol_m": 1e-06
+    }
+  },
+  "coordinate_frame": "local (z_min=0); downstream applies T once"
+}

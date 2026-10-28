@@ -1,0 +1,101 @@
+{
+  "candidate": "runs/unseen/generation/cache/f3/f35285ee94e1ac5e538e83ddee9bdc741ac66e095b28c5cdc4f0025b02e5ad53/model.glb",
+  "observation": "runs/unseen/recovery_r3/observations/B",
+  "metric_version": "align-metric/v2.1",
+  "camera_schema": "camera-snapshot/v2",
+  "raw_bounds": [
+    [
+      -0.05999999865889549,
+      -0.015251746401190758,
+      -0.0020230223890393972
+    ],
+    [
+      0.05999999865889549,
+      0.015251746401190758,
+      0.0020230223890393972
+    ]
+  ],
+  "raw_extents": [
+    0.11999999731779099,
+    0.030503492802381516,
+    0.0040460447780787945
+  ],
+  "n_coarse_evals": 1512,
+  "wall_s": 677.6,
+  "top": [
+    {
+      "R_index": 19,
+      "init": "geo",
+      "scale": 4.34589,
+      "yaw": 0.0,
+      "quick_med_mm": 8.267,
+      "quick_cover": 0.6271428571428571
+    },
+    {
+      "R_index": 19,
+      "init": "H",
+      "scale": 4.51422,
+      "yaw": 0.0,
+      "quick_med_mm": 8.325,
+      "quick_cover": 0.6357142857142857
+    }
+  ],
+  "best": {
+    "R_index": 19,
+    "init": "geo",
+    "scale": 4.345890171962441,
+    "yaw": 0.0,
+    "M": [
+      [
+        0.0,
+        0.0,
+        4.2374645580621495,
+        1.6708927065120673
+      ],
+      [
+        4.2374645580621495,
+        0.0,
+        0.0,
+        -0.003
+      ],
+      [
+        0.0,
+        4.2374645580621495,
+        0.0,
+        0.06628241479019845
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "native": {
+      "mask_iou": 0.754,
+      "cand_px": 15159,
+      "obs_px": 20104,
+      "n_inter": 15159,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": -10.087,
+      "depth_p95_mm": 46.91,
+      "depth_inner_rms_mm": 23.801,
+      "depth_edge_rms_mm": 37.141,
+      "vis_pt_med_mm": 5.942,
+      "vis_pt_p95_mm": 70.003,
+      "vis_pt_n": 20000,
+      "metric_version": "align-metric/v2.1",
+      "freespace_violation": 0.6406,
+      "freespace_n_px": 9711,
+      "freespace_denom_px": 15159,
+      "freespace_outside_mask": 0
+    },
+    "threshold_p95_mm": 5.0,
+    "pass": false
+  },
+  "pass": false,
+  "orientation_ambiguous": true
+}

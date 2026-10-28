@@ -88,7 +88,10 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
       depth_med_mm / p95_mm   内部像素（去掉 3 px 边缘带）的有符号深度残差
       depth_edge_rms_mm       边缘带残差（只作诊断，不参与判定）
       vis_pt_med_mm/p95_mm    观测可见点到**候选表面**的最近距离（即原方案的"可见面距离"）
-      freespace_violation     候选比观测表面更近超过 tol 的像素比例（真实侵入自由空间）
+      freespace_violation     候选侵入**已观测空域**的像素比例（align-metric/v2.1）：
+                              判据是「候选 rays 沿同一相机射线，比有效观测表面更近 > tol」，
+                              分母是候选自身的有效可见像素；观测背景也算已知空域，
+                              不只限于原物体掩码内部。天空/远裁剪/无效深度不算已知空域。
     判定：IoU>=0.85 且 vis_pt_p95 <= max(5mm, 0.03H) 且 freespace<=0.05
     """
     from PIL import Image as _I
@@ -185,9 +188,18 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
         out['vis_pt_error'] = f'{type(e).__name__}'
 
     # 自由空间违例：候选比观测表面更近超过 tol（侵入相机与已观测表面之间）
+    # ---- align-metric/v2.1 自由空间 ----
+    # 已知空域 = 观测中深度有效（非天空/非远裁剪）的全部像素，包含原物体外的背景。
+    # 候选在这些像素上更近超过 tol，即为侵入相机与已观测表面之间的空间。
     tol = 0.005
-    intrude = cand_mask & obs_mask & (with_obj < obs_dep - tol)
-    out['freespace_violation'] = round(float(intrude.sum() / max(1, cand_mask.sum())), 4)
+    valid_obs = np.isfinite(obs_dep) & (obs_dep > 0) & (obs_dep < 100.0)
+    cand_valid = cand_mask & np.isfinite(with_obj) & (with_obj > 0) & (with_obj < 100.0)
+    intrude = cand_valid & valid_obs & (with_obj < obs_dep - tol)
+    out['freespace_violation'] = round(float(intrude.sum() / max(1, cand_valid.sum())), 4)
+    out['freespace_n_px'] = int(intrude.sum())
+    out['freespace_denom_px'] = int(cand_valid.sum())
+    out['freespace_outside_mask'] = int((intrude & ~obs_mask).sum())
+    out['metric_version'] = 'align-metric/v2.1'
     return out
 
 

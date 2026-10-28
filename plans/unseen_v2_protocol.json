@@ -1,9 +1,9 @@
 {
-  "protocol_version": "unseen-six/v1",
+  "protocol_version": "unseen-six/v2",
   "frozen": "2026-10-28",
   "note": "六方法正式协议：各方法独立规划，全部在共同真值、相同实际初态上执行。本文件冻结后不按任务成败调整。",
   "case": "cases/unseen_v1/planA.json",
-  "observation_dir": "runs/unseen/recovery_r3/observations/A",
+  "observation_dir": "runs/unseen/recovery_r3/obs032_planA",
   "goal_x": 2.6,
   "initial_states": [
     0,
@@ -28,12 +28,19 @@
   },
   "candidates": [
     {
-      "candidate_id": "A4",
-      "task_id": 4432118,
-      "world_sha": "7646be2561203724b261f9bf1eab9a17351948971a896bbbfdeaa6b4282b6a69",
-      "world_dir": "runs/unseen/recovery_r3/align_v3/world/A4",
-      "collision_dir": "runs/unseen/recovery_r3/pipeline_H5_A4/collision/A4",
-      "strict_rgbd_diagnostic_pass": false,
+      "candidate_id": "P1",
+      "task_id": 4454823,
+      "world_sha": "be943b1c169853983f29d7fab17357986ee2c6c2957598de8a9e93c0e82124c1",
+      "world_dir": "runs/unseen/recovery_r3/align_v3/world/P1",
+      "collision_dir": "runs/unseen/recovery_r3/pipeline_H5_pilot/collision/P1",
+      "planning_eligible": true
+    },
+    {
+      "candidate_id": "P3",
+      "task_id": 4454885,
+      "world_sha": "335f24ce88703702af99f507e0204c00739224896efaa3bac93f8b64a7784c52",
+      "world_dir": "runs/unseen/recovery_r3/align_v3/world/P3",
+      "collision_dir": "runs/unseen/recovery_r3/pipeline_H5_pilot/collision/P3",
       "planning_eligible": true
     }
   ],
@@ -46,7 +53,7 @@
       "hidden truth geometry",
       "exact soil realization"
     ],
-    "disclosure": "H5 候选的 align24 搜索使用了密集可见点云；这是有披露的工程诊断变体，不等于“深度只用于位置尺度”"
+    "disclosure": "B3_mirror 使用密集可见点云；H5 候选的 align24 搜索也使用可见点云。两者都在本协议如实披露，不声称“深度只用于位置尺度”"
   },
   "outcomes": [
     "success",

@@ -1,0 +1,126 @@
+{
+  "asset_id": "P3",
+  "hypothesis_id": "P3",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl",
+    "parts/part_01.stl",
+    "parts/part_02.stl",
+    "parts/part_03.stl",
+    "parts/part_04.stl",
+    "parts/part_05.stl",
+    "parts/part_06.stl",
+    "parts/part_07.stl",
+    "parts/part_08.stl",
+    "parts/part_09.stl",
+    "parts/part_10.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "335f24ce88703702af99f507e0204c00739224896efaa3bac93f8b64a7784c52",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 11,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 24.7,
+  "hit_part_cap": false,
+  "height_m": 0.17959,
+  "width_x_m": 0.2249,
+  "width_y_m": 0.34252,
+  "rel_height": 2.089,
+  "rel_width": 3.985,
+  "concavity": 0.00965,
+  "convex_hull_volume_m3": 0.009369,
+  "parts_volume_m3": 0.009279,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.6847214698791504,
+      -0.17126017808914185,
+      0.0
+    ],
+    [
+      1.9096179008483887,
+      0.17126017808914185,
+      0.17958660423755646
+    ]
+  ],
+  "raw_sha": "335f24ce88703702af99f507e0204c00739224896efaa3bac93f8b64a7784c52",
+  "collision_sha": "b8e88829e2e5165da13b856a614a4bb3",
+  "concavity_probe": {
+    "hull_bottom_z": -0.00037,
+    "parts_bottom_z": -0.00037,
+    "probe_xy": [
+      1.6828,
+      -0.1731
+    ]
+  },
+  "version": "physicalize/v1"
+}

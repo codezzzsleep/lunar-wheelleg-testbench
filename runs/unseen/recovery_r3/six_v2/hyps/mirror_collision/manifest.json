@@ -1,0 +1,109 @@
+{
+  "asset_id": "mirror_collision",
+  "hypothesis_id": "mirror_collision",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "d8ff30cee530c9cf476b0da205eb994820da9a8f8b0c96e4a127fda65f32e630",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 1,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 0.14,
+  "hit_part_cap": false,
+  "height_m": 0.18857,
+  "width_x_m": 0.2264,
+  "width_y_m": 0.33965,
+  "rel_height": 2.194,
+  "rel_width": 3.952,
+  "concavity": 0.00029,
+  "convex_hull_volume_m3": 0.00847,
+  "parts_volume_m3": 0.008467,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.6801316738128662,
+      -0.1699570268392563,
+      0.0
+    ],
+    [
+      1.906534194946289,
+      0.16969013214111328,
+      0.18857328593730927
+    ]
+  ],
+  "raw_sha": "d8ff30cee530c9cf476b0da205eb994820da9a8f8b0c96e4a127fda65f32e630",
+  "collision_sha": "6a009e68e791984ce31015b0485a16ca",
+  "concavity_probe": null,
+  "version": "physicalize/v1"
+}

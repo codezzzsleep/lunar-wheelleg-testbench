@@ -1,0 +1,13 @@
+{
+  "scope": "unseen_v3_pilot",
+  "authorized_on": "2026-10-29",
+  "hard_cap": 360,
+  "per_task_cap": 20,
+  "max_create_tasks": 18,
+  "credits_upper_per_task": 20,
+  "inherits": "configs/unseen_v1_budget.json",
+  "inherited_usage": {"tasks": 15, "credits_upper": 300},
+  "increment": {"tasks": 3, "credits_upper": 60},
+  "note": "在同一账本上**累加**新授权：历史 15 任务/300 上界保留，新增 3 任务/60 上界；不清空历史，不把 unknown 改成已核验支出",
+  "source": "用户 2026-10-29 批准 P1/P2/P3（最多3任务、新增上界60、单次<=20）"
+}

@@ -73,7 +73,8 @@ def collisionize(world_body, out_dir, hid):
     return d, man
 
 
-def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0):
+def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
+                soil_mode='rigid'):
     """统一执行器：与 Gate P、H5 预演、真值执行完全同一套。"""
     spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=goal_x,
                              name=pathlib.Path(world_dir).name)
@@ -81,12 +82,15 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0):
     spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
     spec['skill_cfg'] = {'task': 'M', 'require_contact': False, 'settle_seconds': 1.0}
     spec['objects'] = [{'posed_dir': str(world_dir)}]
+    if soil_mode != 'rigid':
+        spec['soil'] = {'mode': soil_mode}
     env = wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=time_limit,
                                    v_ref=1.0, tip_deg=60.0)
     r = runner.EpisodeRunner(env, skills.make_skill(option),
                              visible=visible or {}, seed=seed)
     out = r.run_with_seed(seed)
-    return {'option': option, 'seed': seed, 'reason': out['reason'],
+    return {'phase': 'rehearsal', 'option': option, 'seed': seed,
+            'sim_time_s_': round(float(env.t), 4), 'reason': out['reason'],
             'success': out['success'], 'abort': out['abort'],
             't_end': out['t_end'], 'final_x': out['final_x'],
             'max_tilt': out['max_tilt'], 'contact': out['contact'],
@@ -134,11 +138,20 @@ def plan_height(env_ctx, cfg):
 
 
 def plan_box(env_ctx, cfg, out_dir):
-    """方盒子：W_vis × D_prior × H_vis 的盒子做预演（不读真值背面）。"""
+    """
+    方盒子：W_vis × D_prior × H_vis。
+    前表面必须与观测前沿对齐：中心 x = x_front + D/2（此前放在 x_front，
+    导致盒子最前沿提前了 D/2=0.11 m，会改变接触时机）。
+    """
     w = env_ctx['W_vis']; h = env_ctx['H_vis']; d_prior = cfg['box_depth_m']
     m = trimesh.creation.box(extents=(d_prior, w, h))
-    m.apply_translation([env_ctx['x_front'], 0.0, h / 2])
-    return make_world_dir_from_mesh(m, out_dir, 'box', 'box_prior')
+    cx = env_ctx['x_front'] + d_prior / 2.0
+    m.apply_translation([cx, 0.0, h / 2])
+    wd, sha = make_world_dir_from_mesh(m, out_dir, 'box', 'box_prior')
+    meta = {'depth_prior_m': d_prior, 'front_face_x': round(env_ctx['x_front'], 5),
+            'center_x': round(cx, 5), 'back_face_x': round(cx + d_prior / 2.0, 5),
+            'note': '前表面与观测前沿对齐；背深来自冻结先验，不读真值'}
+    return wd, meta
 
 
 def make_world_dir_from_mesh(mesh, out_dir, name, kind):
@@ -154,17 +167,33 @@ def make_world_dir_from_mesh(mesh, out_dir, name, kind):
 
 
 def plan_mirror(env_ctx, out_dir):
-    """镜像补全：把观测可见点云沿 x_front 平面镜像，形成背面假设。"""
+    """
+    镜像补全：保留观测到的**前表面**，把未知部分补向遮挡侧（+x）。
+    此前关于 x=x_front 平面反射，会把补出的几何放到机器人一侧
+    （实测最前沿约 1.5667 m < 观测 1.68 m），不是"补到看不见的后部"。
+    """
     pts = np.load(pathlib.Path(env_ctx['obs_dir']) / 'visible_points.npy')
+    x_min = float(pts[:, 0].min())            # 最靠近机器人（观测前沿）
+    x_max = float(pts[:, 0].max())            # 可见面最深点 = 分割平面
+    depth = x_max - x_min
     mir = pts.copy()
-    mir[:, 0] = 2.0 * env_ctx['x_front'] - pts[:, 0]     # 关于 x=x_front 镜像
+    # 关于 x = x_max 镜像：镜像点必然落在 x >= x_max，即遮挡侧；可见前表面原样保留
+    mir[:, 0] = 2.0 * x_max - pts[:, 0]
     both = np.vstack([pts, mir])
+    meta = {'split_plane_x': round(x_max, 5), 'front_x': round(x_min, 5),
+            'visible_depth_m': round(depth, 5),
+            'min_x_before': round(x_min, 5),
+            'mirrored_min_x': round(float(mir[:, 0].min()), 5),
+            'note': '保留观测前表面；未知部分关于最深可见点补向 +x（遮挡侧），不读真值中心/背深'}
     import manifold3d as m3
     hm = m3.Manifold.hull_points(np.asarray(both, dtype=np.float32)).to_mesh()
     hull = trimesh.Trimesh(np.asarray(hm.vert_properties)[:, :3],
                            np.asarray(hm.tri_verts), process=True)
     hull.apply_translation([0, 0, -float(hull.bounds[0][2])])
-    return make_world_dir_from_mesh(hull, out_dir, 'mirror', 'mirror_hypothesis')
+    wd, sha = make_world_dir_from_mesh(hull, out_dir, 'mirror', 'mirror_hypothesis')
+    meta['hull_min_x'] = round(float(hull.bounds[0][0]), 5)
+    meta['hull_max_x'] = round(float(hull.bounds[1][0]), 5)
+    return wd, meta
 
 
 def main():
@@ -192,101 +221,172 @@ def main():
     tm.apply_translation([case['obstacle_x'], 0.0, -float(tm.bounds[0][2])])
     truth_wd, truth_sha = make_world_dir_from_mesh(tm, out, 'truth', 'truth')
     truth_col, truth_man = collisionize(truth_wd / 'body.stl', out, 'truth_collision')
+    truth_col_sha = truth_man.get('collision_sha')
+    if not truth_col_sha:
+        raise SystemExit('真值碰撞化失败：manifest 无 collision_sha')
 
     records, decisions = [], []
+    phy = {'control_hz': 50.0, 'substeps': None, 'soil_mode': proto.get('soil_mode', 'rigid'),
+           'physics_dt_s': None}
 
-    def rehearse_on(world_dir, method):
+    def initial_hash(env_world, seed):
+        """同一候选/真值下，reset(seed) 得到的实际初态哈希（用于配对校验）。"""
+        e = wheelleg_env.WheelLegEnv(_spec_for(env_world, case, goal_x))
+        e.reset(seed=seed)
+        return hashlib.sha256(
+            np.asarray(e.data.qpos, dtype=np.float64).tobytes()).hexdigest()[:16]
+
+    def _spec_for(world_dir, case, gx):
+        spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=gx,
+                                 name=pathlib.Path(world_dir).name)
+        spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
+        spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
+        spec['skill_cfg'] = {'task': 'M', 'require_contact': False,
+                             'settle_seconds': 1.0}
+        spec['objects'] = [{'posed_dir': str(world_dir)}]
+        if phy['soil_mode'] != 'rigid':
+            spec['soil'] = {'mode': phy['soil_mode']}
+        return spec
+
+    def rehearse_on(world_dir, method, phase, env_kind, env_sha):
         rows = []
-        for s in seeds:
+        for s_ in seeds:
+            ish = initial_hash(world_dir, s_)
             for o in OPTIONS:
-                r = run_episode(world_dir, o, s, vis, goal_x)
-                rows.append({'method': method, 'hypothesis': method,
-                             'initial_state_id': f'seed{s}', **r})
+                r = run_episode(world_dir, o, s_, vis, goal_x, soil_mode=phy['soil_mode'])
+                row = dict(r)
+                row.update({'method': method, 'phase': phase,
+                            'hypothesis': method,
+                            'initial_state_id': f'seed{s_}',
+                            'initial_state_hash': ish,
+                            'environment_kind': env_kind,
+                            'environment_sha': env_sha,
+                            'truth_sha': truth_sha if env_kind == 'truth' else None,
+                            'soil_mode': phy['soil_mode']})
+                rows.append(row)
         return rows
 
-    # 1) 盲走
+    def execute_on_truth(method, dec, env_sha):
+        """只保存实际被选动作在真值上的回合。"""
+        rows = []
+        for s_ in seeds:
+            ish = initial_hash(truth_col, s_)
+            r = run_episode(truth_col, dec, s_, vis, goal_x, soil_mode=phy['soil_mode'])
+            row = dict(r)
+            row.update({'method': method, 'phase': 'execution',
+                        'hypothesis': method, 'initial_state_id': f'seed{s_}',
+                        'initial_state_hash': ish,
+                        'environment_kind': 'truth', 'environment_sha': truth_sha,
+                        'truth_sha': truth_sha, 'truth_collision_sha': env_sha,
+                        'soil_mode': phy['soil_mode']})
+            rows.append(row)
+        return rows
+
+    # 1) 盲走：规则直接定动作，不需要在真值上试遍所有动作
     dec, why = plan_blind(ctx)
-    decisions.append({'method': 'B0_blind', 'selected_action': dec, 'evidence': why})
-    records += rehearse_on(truth_col, 'B0_blind')      # 盲走无候选，直接在真值上跑
+    decisions.append({'method': 'B0_blind', 'selected_action': dec, 'evidence': why,
+                      'planning_inputs': ['no candidate']})
+    records += execute_on_truth('B0_blind', dec, truth_col_sha)
 
     # 2) 可见高度规则
     dec, why = plan_height(ctx, cfg)
-    decisions.append({'method': 'B1_height', 'selected_action': dec, 'evidence': why})
-    records += rehearse_on(truth_col, 'B1_height')
+    decisions.append({'method': 'B1_height', 'selected_action': dec, 'evidence': why,
+                      'planning_inputs': ['H_vis', 'wheel_r', 'frozen thresholds']})
+    records += execute_on_truth('B1_height', dec, truth_col_sha)
 
-    # 3) 方盒子：先在盒子上预演，再在真值上执行
-    box_wd, _ = plan_box(ctx, cfg, out / 'hyps')
-    box_col, _ = collisionize(box_wd / 'body.stl', out / 'hyps', 'box_collision')
-    reh = rehearse_on(box_col, 'B2_box')
-    dec, why, tied = choose_option([r for r in reh if r['option'] != 'A0'])
+    # 3) 方盒子：盒子前表面与观测前沿对齐
+    box_wd, box_meta = plan_box(ctx, cfg, out / 'hyps')
+    box_col, box_man = collisionize(box_wd / 'body.stl', out / 'hyps', 'box_collision')
+    reh = rehearse_on(box_col, 'B2_box', 'rehearsal', 'box_prior', box_man.get('collision_sha'))
+    dec, why, tied = choose_option(reh)
     decisions.append({'method': 'B2_box', 'selected_action': dec, 'evidence': why,
-                      'tied': tied, 'rehearsal_on': 'box_prior'})
-    records += [r for r in rehearse_on(truth_col, 'B2_box') if r['option'] == dec]
+                      'tied': tied, 'rehearsal_on': 'box_prior',
+                      'rehearsal_environment_sha': box_man.get('collision_sha'),
+                      'hypothesis_geometry': box_meta,
+                      'planning_inputs': ['W_vis', 'H_vis', 'x_front', 'frozen depth prior']})
+    records += reh
+    records += execute_on_truth('B2_box', dec, truth_col_sha)
 
-    # 4) 镜像补全
-    mir_wd, _ = plan_mirror(ctx, out / 'hyps')
-    mir_col, _ = collisionize(mir_wd / 'body.stl', out / 'hyps', 'mirror_collision')
-    reh = rehearse_on(mir_col, 'B3_mirror')
+    # 4) 镜像补全：保留观测前表面，未知部分补向遮挡侧
+    mir_wd, mir_meta = plan_mirror(ctx, out / 'hyps')
+    mir_col, mir_man = collisionize(mir_wd / 'body.stl', out / 'hyps', 'mirror_collision')
+    reh = rehearse_on(mir_col, 'B3_mirror', 'rehearsal', 'mirror_hypothesis',
+                      mir_man.get('collision_sha'))
     dec, why, tied = choose_option(reh)
     decisions.append({'method': 'B3_mirror', 'selected_action': dec, 'evidence': why,
-                      'tied': tied, 'rehearsal_on': 'mirror_hypothesis'})
-    records += [r for r in rehearse_on(truth_col, 'B3_mirror') if r['option'] == dec]
+                      'tied': tied, 'rehearsal_on': 'mirror_hypothesis',
+                      'rehearsal_environment_sha': mir_man.get('collision_sha'),
+                      'hypothesis_geometry': mir_meta,
+                      'planning_inputs': ['visible point cloud (disclosed)']})
+    records += reh
+    records += execute_on_truth('B3_mirror', dec, truth_col_sha)
 
     # 5) Lux3D 多候选
     cands = proto.get('candidates') or []
     if cands:
-        per = []
+        per, reh_all = [], []
         for c in cands:
-            reh = rehearse_on(pathlib.Path(c['collision_dir']), f"H5_lux3d:{c['candidate_id']}")
-            per.append({'candidate_id': c['candidate_id'], 'rows': reh})
-        # 多假设：每个动作必须在所有候选、所有初态都通过
+            rows = rehearse_on(pathlib.Path(c['collision_dir']),
+                               f"H5_lux3d", 'rehearsal', 'lux3d_candidate',
+                               c.get('collision_sha'))
+            for r_ in rows:
+                r_['candidate_id'] = c['candidate_id']
+            per.append({'candidate_id': c['candidate_id'], 'rows': rows})
+            reh_all += rows
         merged = []
         for o in OPTIONS:
-            rows_o = [r for p in per for r in p['rows'] if r['option'] == o]
-            worst = max((r['cost'] for r in rows_o), default=FAR)
-            merged.append({'option': o, 'success': all(r['success'] for r in rows_o),
-                           'cost': worst})
-        dec, why, tied = choose_option([{'option': m['option'],
-                                         'success': m['success'],
-                                         'cost': m['cost']} for m in merged])
+            rows_o = [r for r in reh_all if r['option'] == o]
+            merged.append({'option': o,
+                           'success': all(r['success'] for r in rows_o),
+                           'cost': max((r['cost'] for r in rows_o), default=FAR)})
+        dec, why, tied = choose_option(merged)
         decisions.append({'method': 'H5_lux3d', 'selected_action': dec, 'evidence': why,
                           'tied': tied, 'candidates': [c['candidate_id'] for c in cands],
-                          'rehearsal_on': 'independent Lux3D candidates'})
-        records += [r for r in rehearse_on(truth_col, 'H5_lux3d') if r['option'] == dec]
+                          'rehearsal_on': 'independent Lux3D candidates',
+                          'planning_inputs': ['RGB observation', 'candidate meshes']})
+        records += reh_all
+        records += execute_on_truth('H5_lux3d', dec, truth_col_sha)
     else:
         decisions.append({'method': 'H5_lux3d', 'selected_action': None,
                           'evidence': 'no planning_eligible Lux3D candidate',
-                          'no_candidate': True})
+                          'no_candidate': True, 'planning_inputs': []})
 
     # 6) 真实形状上限：拥有完整真值几何
-    reh = rehearse_on(truth_col, 'U_truth')
+    reh = rehearse_on(truth_col, 'U_truth', 'rehearsal', 'truth', truth_col_sha)
     dec, why, tied = choose_option(reh)
     decisions.append({'method': 'U_truth', 'selected_action': dec, 'evidence': why,
-                      'tied': tied, 'rehearsal_on': 'full truth geometry'})
-    records += [r for r in rehearse_on(truth_col, 'U_truth') if r['option'] == dec]
+                      'tied': tied, 'rehearsal_on': 'full truth geometry',
+                      'planning_inputs': ['full truth geometry (ceiling only)']})
+    records += reh
+    records += execute_on_truth('U_truth', dec, truth_col_sha)
 
-    # ---- 汇总：每个方法只在**真值**上的执行结果计入 ----
+    # ---- 汇总：只统计 phase=execution ----
     summary = []
-    for d in decisions:
-        m = d['method']
-        rows = [r for r in records if r['method'] == m and r.get('is_exec') is not False]
-        # 执行行：方法在真值上、且 option == 选定动作
-        ex = [r for r in rows if r['option'] == d['selected_action']]
-        summary.append({'method': m, 'selected_action': d['selected_action'],
-                        'n_exec': len(ex),
+    for d_ in decisions:
+        m = d_['method']
+        ex = [r for r in records if r['method'] == m and r['phase'] == 'execution']
+        n_exp = len(seeds) if d_['selected_action'] else 0
+        summary.append({'method': m, 'selected_action': d_['selected_action'],
+                        'n_exec': len(ex), 'n_expected': n_exp,
+                        'complete': len(ex) == n_exp,
                         'success': sum(1 for r in ex if r['success']),
                         'abort': sum(1 for r in ex if r['abort']),
                         'fail': sum(1 for r in ex if not r['success'] and not r['abort']),
                         'mean_cost': (round(float(np.mean([r['cost'] for r in ex])), 3)
                                       if ex else None),
                         'outcomes': [r['reason'] for r in ex],
-                        'no_candidate': d.get('no_candidate', False)})
+                        'no_candidate': d_.get('no_candidate', False)})
     (out / 'records.jsonl').write_text(
         '\n'.join(json.dumps(r, ensure_ascii=False) for r in records) + '\n')
     (out / 'decisions.json').write_text(json.dumps(decisions, ensure_ascii=False, indent=2))
     (out / 'summary.json').write_text(json.dumps({
         'protocol': a.protocol, 'truth_sha': truth_sha,
-        'truth_collision_sha': truth_man.get('collision_sha'),
+        'truth_collision_sha': truth_col_sha,
+        'soil_mode': phy['soil_mode'],
+        'expected_keys': [{'method': d_['method'],
+                           'initial_state_id': f'seed{s_}',
+                           'n_expected': (len(seeds) if d_['selected_action'] else 0)}
+                          for d_ in decisions for s_ in seeds],
         'initial_states': seeds, 'n_initial_states': len(seeds),
         'methods': summary,
         'note': ('所有方法在同一 truth_sha 上执行；预演只在各自假设上进行，'

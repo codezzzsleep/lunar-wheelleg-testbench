@@ -50,6 +50,11 @@ def list_cases():
     return out
 
 
+def _imgs_six(d, sub):
+    d2 = d / sub
+    return sorted(x.name for x in d2.glob('*.png')) if d2.exists() else []
+
+
 def _load_recovery(d, run):
     """把 recovery_r3 下的两种批次归一化成页面需要的字段。"""
     def rj(name, default=None):
@@ -68,6 +73,8 @@ def _load_recovery(d, run):
         decs = rj('decisions.json', [])
         recs = rjl('records.jsonl')
         return {'run': run, 'kind': 'six', 'summary': summ,
+                'has_crop': (d / 'rgb.png').exists(),
+                'views': (_imgs_six(d, 'view')), 'replay': _imgs_six(d, 'replay'),
                 'observation': rj('observation.json'),
                 'decision': {'chosen': None, 'methods': summ.get('methods'),
                              'rule': '每方法自选动作，再在同一真值上执行'},
@@ -79,7 +86,13 @@ def _load_recovery(d, run):
                 'has_mask': (d / 'mask.png').exists(),
                 'views': [], 'replay': []}
     # H5 单例管线
+    def _imgs(sub):
+        d2 = d / sub
+        return sorted(x.name for x in d2.glob('*.png')) if d2.exists() else []
     return {'run': run, 'kind': 'h5',
+            'has_crop': (d / 'crop_white.png').exists(),
+            'views': (_imgs('view') + _imgs('collision')),
+            'replay': _imgs('replay'),
             'summary': rj('summary.json', {}),
             'observation': rj('observation.json'),
             'decision': rj('decision.json', {}),
@@ -204,7 +217,8 @@ async function open_(){
     前沿 x=${o.x_front?.toFixed(3) ?? '—'} m　可见宽 ${o.W_vis?.toFixed(3) ?? '—'} m　
     可见高 ${o.H_vis?.toFixed(3) ?? '—'} m`;
   $('imgs').innerHTML = (d.has_rgb? `<img src="/img/${run}/rgb.png">`:'') +
-                        (d.has_mask? `<img src="/img/${run}/mask.png" style="margin-top:8px">`:'');
+                        (d.has_mask? `<img src="/img/${run}/mask.png" style="margin-top:8px">`:'') +
+                        (d.has_crop? `<img src="/img/${run}/crop_white.png" style="margin-top:8px">`:'');
   const rows=d.rehearsal||[];
   const by={}; rows.forEach(m=>{const k=m.hypothesis_id+'|'+m.option;
     (by[k]=by[k]||[]).push(m.success?1:0);});
@@ -318,11 +332,20 @@ class H(BaseHTTPRequestHandler):
             except Exception as e:
                 return self._send(404, json.dumps({'error': f'{type(e).__name__}: {e}'}))
         if p.startswith('/img/'):
+            # 与数据同一注册表：E2E 与 recovery_r3 都按 run 名解析
             parts = p.split('/')
-            f = E2E.joinpath(*parts[2:])
-            if f.exists() and f.is_file():
-                return self._send(200, f.read_bytes(), 'image/png')
-            return self._send(404, 'missing', 'text/plain')
+            rel = parts[2:]
+            cands = [E2E.joinpath(*rel), RECOVERY.joinpath(*rel)]
+            for f in cands:
+                if f.exists() and f.is_file():
+                    ctype = 'image/png'
+                    if f.suffix.lower() in ('.jpg', '.jpeg'):
+                        ctype = 'image/jpeg'
+                    elif f.suffix.lower() == '.json':
+                        ctype = 'application/json; charset=utf-8'
+                    return self._send(200, f.read_bytes(), ctype)
+            return self._send(404, json.dumps({'error': 'missing image',
+                                               'tried': [str(x) for x in cands]}))
         return self._send(404, json.dumps({'error': 'not found'}))
 
 

@@ -1,0 +1,121 @@
+{
+  "asset_id": "P1",
+  "hypothesis_id": "P1",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl",
+    "parts/part_01.stl",
+    "parts/part_02.stl",
+    "parts/part_03.stl",
+    "parts/part_04.stl",
+    "parts/part_05.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "be943b1c169853983f29d7fab17357986ee2c6c2957598de8a9e93c0e82124c1",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 6,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 18.24,
+  "hit_part_cap": false,
+  "height_m": 0.15898,
+  "width_x_m": 0.19992,
+  "width_y_m": 0.3498,
+  "rel_height": 1.85,
+  "rel_width": 4.07,
+  "concavity": -0.01453,
+  "convex_hull_volume_m3": 0.008115,
+  "parts_volume_m3": 0.008233,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.687131643295288,
+      -0.17489835619926453,
+      0.0
+    ],
+    [
+      1.8870491981506348,
+      0.17489835619926453,
+      0.15898370742797852
+    ]
+  ],
+  "raw_sha": "be943b1c169853983f29d7fab17357986ee2c6c2957598de8a9e93c0e82124c1",
+  "collision_sha": "6ffd7f9caec43e38aa87cbba0a60c4b6",
+  "concavity_probe": {
+    "hull_bottom_z": -0.00037,
+    "parts_bottom_z": -0.00037,
+    "probe_xy": [
+      1.6852,
+      -0.1766
+    ]
+  },
+  "version": "physicalize/v1"
+}

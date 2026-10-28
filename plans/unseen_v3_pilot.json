@@ -45,7 +45,9 @@
       "variant": "orig",
       "repeat_idx": 0,
       "credits_upper": 20,
-      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写"
+      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写",
+      "group": "A",
+      "observation_dir": "runs/unseen/recovery_r3/obs032_planA"
     },
     {
       "id": "P2",
@@ -68,7 +70,9 @@
       "variant": "orig",
       "repeat_idx": 0,
       "credits_upper": 20,
-      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写"
+      "note": "两个不同形状的**程序化双胞胎**，不是扫描自然石头；标签如实写",
+      "group": "B",
+      "observation_dir": "runs/unseen/recovery_r3/obs032_planB"
     },
     {
       "id": "P3",
@@ -87,7 +91,9 @@
       "extra": {
         "sample_nonce": "20261028-p3"
       },
-      "note": "与 P1 完全相同的输入字节与参数；仅用 sample_id/nonce 区分请求身份，不向官方 API 塞未核实参数，也不伪造输入差异"
+      "note": "与 P1 完全相同的输入字节与参数；仅用 sample_id/nonce 区分请求身份，不向官方 API 塞未核实参数，也不伪造输入差异",
+      "group": "A",
+      "observation_dir": "runs/unseen/recovery_r3/obs032_planA"
     }
   ]
 }

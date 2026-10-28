@@ -1,0 +1,97 @@
+[
+  {
+    "method": "B0_blind",
+    "selected_action": "R1",
+    "evidence": {
+      "rule": "blind: always R1"
+    },
+    "planning_inputs": [
+      "no candidate"
+    ]
+  },
+  {
+    "method": "B1_height",
+    "selected_action": "A0",
+    "evidence": {
+      "rule": "visible height ratio 2.19 > 1.6"
+    },
+    "planning_inputs": [
+      "H_vis",
+      "wheel_r",
+      "frozen thresholds"
+    ]
+  },
+  {
+    "method": "B2_box",
+    "selected_action": "A0",
+    "evidence": "no non-A0 option succeeded in every initial state",
+    "tied": [],
+    "rehearsal_on": "box_prior",
+    "rehearsal_environment_sha": "29b0f919306cc91b9ca57de34baeb2c3",
+    "hypothesis_geometry": {
+      "depth_prior_m": 0.22,
+      "front_face_x": 1.68013,
+      "center_x": 1.79013,
+      "back_face_x": 1.90013,
+      "note": "前表面与观测前沿对齐；背深来自冻结先验，不读真值"
+    },
+    "planning_inputs": [
+      "W_vis",
+      "H_vis",
+      "x_front",
+      "frozen depth prior"
+    ]
+  },
+  {
+    "method": "B3_mirror",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.680; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "rehearsal_on": "mirror_hypothesis",
+    "rehearsal_environment_sha": "6a009e68e791984ce31015b0485a16ca",
+    "hypothesis_geometry": {
+      "split_plane_x": 1.79333,
+      "front_x": 1.68013,
+      "visible_depth_m": 0.1132,
+      "min_x_before": 1.68013,
+      "mirrored_min_x": 1.79333,
+      "note": "保留观测前表面；未知部分关于最深可见点补向 +x（遮挡侧），不读真值中心/背深",
+      "hull_min_x": 1.68013,
+      "hull_max_x": 1.90653
+    },
+    "planning_inputs": [
+      "visible point cloud (disclosed)"
+    ]
+  },
+  {
+    "method": "H5_lux3d",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.680; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "candidates": [
+      "P1",
+      "P3"
+    ],
+    "rehearsal_on": "independent Lux3D candidates",
+    "planning_inputs": [
+      "RGB observation",
+      "candidate meshes"
+    ]
+  },
+  {
+    "method": "U_truth",
+    "selected_action": "R1",
+    "evidence": "worst-case min cost 5.700; tied=['R1']",
+    "tied": [
+      "R1"
+    ],
+    "rehearsal_on": "full truth geometry",
+    "planning_inputs": [
+      "full truth geometry (ceiling only)"
+    ]
+  }
+]

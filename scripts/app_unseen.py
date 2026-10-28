@@ -15,26 +15,89 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 E2E = ROOT / 'runs/unseen/e2e'
+RECOVERY = ROOT / 'runs/unseen/recovery_r3'
+# 本批新增运行：只读缓存，页面不触发任何付费动作
+REGISTRY = RECOVERY / 'page_runs.json'
+
+
+def _registry():
+    if REGISTRY.exists():
+        try:
+            return json.loads(REGISTRY.read_text())
+        except Exception:
+            return []
+    return []
 
 
 def list_cases():
     out = []
-    if not E2E.exists():
-        return out
-    for d in sorted(E2E.iterdir()):
-        s = d / 'summary.json'
-        if s.exists():
-            try:
-                out.append({'run': d.name, **json.loads(s.read_text())})
-            except Exception:
-                out.append({'run': d.name, 'error': 'summary 无法解析'})
+    if E2E.exists():
+        for d in sorted(E2E.iterdir()):
+            s = d / 'summary.json'
+            if s.exists():
+                try:
+                    out.append({'run': d.name, 'kind': 'e2e',
+                                **json.loads(s.read_text())})
+                except Exception:
+                    out.append({'run': d.name, 'kind': 'e2e',
+                                'error': 'summary 无法解析'})
+    for r in _registry():
+        d = RECOVERY / r['run']
+        if d.exists():
+            out.append({'run': r['run'], 'kind': r.get('kind', 'recovery'),
+                        'case_id': r.get('case_id', r['run']),
+                        'hyp_source': r.get('hyp_source', '')})
     return out
+
+
+def _load_recovery(d, run):
+    """把 recovery_r3 下的两种批次归一化成页面需要的字段。"""
+    def rj(name, default=None):
+        p = d / name
+        return json.loads(p.read_text()) if p.exists() else default
+
+    def rjl(name):
+        p = d / name
+        if not p.exists():
+            return []
+        return [json.loads(l) for l in p.read_text().splitlines() if l.strip()]
+
+    if (d / 'summary.json').exists() and (d / 'decisions.json').exists():
+        # 六方法矩阵
+        summ = rj('summary.json', {})
+        decs = rj('decisions.json', [])
+        recs = rjl('records.jsonl')
+        return {'run': run, 'kind': 'six', 'summary': summ,
+                'observation': rj('observation.json'),
+                'decision': {'chosen': None, 'methods': summ.get('methods'),
+                             'rule': '每方法自选动作，再在同一真值上执行'},
+                'six': {'methods': summ.get('methods', []),
+                        'decisions': decs, 'truth_sha': summ.get('truth_sha'),
+                        'initial_states': summ.get('initial_states')},
+                'rehearsal': recs, 'execution': [],
+                'has_rgb': (d / 'rgb.png').exists(),
+                'has_mask': (d / 'mask.png').exists(),
+                'views': [], 'replay': []}
+    # H5 单例管线
+    return {'run': run, 'kind': 'h5',
+            'summary': rj('summary.json', {}),
+            'observation': rj('observation.json'),
+            'decision': rj('decision.json', {}),
+            'rehearsal': rjl('rehearsal.jsonl'),
+            'execution': rjl('execution.jsonl'),
+            'h5loop': rj('h5_loop.json'),
+            'has_rgb': (d / 'rgb.png').exists(),
+            'has_mask': (d / 'mask.png').exists(),
+            'views': [], 'replay': []}
 
 
 def load_run(run):
     d = E2E / run
     if not d.exists():
-        raise FileNotFoundError(run)
+        d = RECOVERY / run
+        if not d.exists():
+            raise FileNotFoundError(run)
+        return _load_recovery(d, run)
     def rd(name, default=None):
         p = d / name
         if not p.exists():
@@ -108,6 +171,12 @@ PAGE = r"""<!doctype html><html lang="zh-CN"><meta charset="utf-8">
   <div class="card"><h2><span class="step"><span class="n">2b</span>候选背面（三维侧视）</span></h2>
     <div id="hyp3d" class="dim">—</div>
   </div>
+  <div class="card" id="sixcard" style="display:none"><h2><span class="step"><span class="n">5</span>六方法对照（共同真值）</span></h2>
+    <div id="six" class="dim">—</div>
+  </div>
+  <div class="card" id="h5card" style="display:none"><h2><span class="step"><span class="n">6</span>真实 Lux3D 候选链</span></h2>
+    <div id="h5" class="dim">—</div>
+  </div>
   <div class="card"><h2><span class="step"><span class="n">4</span>真值执行与揭晓</span></h2>
     <div id="exec" class="dim">—</div>
     <div id="reveal" style="margin-top:10px"></div>
@@ -168,11 +237,53 @@ async function open_(){
     ? `<div class="sub">揭晓：真值障碍（侧视，含背面）</div>
        <img src="/img/${run}/view/${rev[0]}" style="max-height:200px">`
     : '<span class="dim">尚无真值揭晓图</span>';
+  if(d.kind==='six'){ $('sixcard').style.display=''; $('six').innerHTML=fmtSix(d); }
+  else { $('sixcard').style.display='none'; }
+  if(d.kind==='h5' || d.h5loop){ $('h5card').style.display=''; $('h5').innerHTML=fmtH5(d); }
+  else { $('h5card').style.display='none'; }
   const rp=d.replay||[];
   $('replay').innerHTML = rp.length
     ? `<div class="sub">选定动作回放（${rp.length} 帧）</div>` +
       rp.map(n=>`<img src="/img/${run}/replay/${n}" style="max-height:120px">`).join('')
     : '<span class="dim">尚无回放帧</span>';
+}
+function fmtSix(d){
+  const s=(d.six||{}).methods||[];
+  if(!s.length) return '<span class="dim">该运行没有六方法表</span>';
+  let t='<table><tr><th>方法</th><th>自选动作</th><th>执行</th><th>成功</th><th>刹停</th><th>失败</th><th>均代价</th></tr>';
+  s.forEach(m=>{
+    const cls=m.success===m.n_exec&&m.n_exec>0?'ok':(m.success===0?'bad':'');
+    t+=`<tr><td>${m.method}</td><td>${m.selected_action??'—'}</td><td>${m.n_exec}</td>
+        <td class="${cls}">${m.success}</td><td>${m.abort}</td><td>${m.fail}</td>
+        <td>${m.mean_cost??'—'}</td></tr>`;
+  });
+  t+='</table>';
+  t+=`<div class="dim" style="margin-top:6px">共同真值 ${ (d.six.truth_sha||'').slice(0,12) }…
+      初态 ${JSON.stringify(d.six.initial_states)}　预演不计入执行成绩</div>`;
+  return t;
+}
+function fmtH5(d){
+  const h=d.h5loop;
+  if(!h) return '<span class="dim">该运行没有 H5 单例记录</span>';
+  const c=(h.candidate_meta)||{};
+  const same = h.candidate_world_sha===h.truth_asset_sha;
+  let t=`<table>
+    <tr><th>候选</th><td>${h.candidate_id||'—'}（task ${h.candidate_task_id??'—'}）</td></tr>
+    <tr><th>候选 world SHA</th><td>${(h.candidate_world_sha||'').slice(0,16)}…</td></tr>
+    <tr><th>真值 SHA</th><td>${(h.truth_asset_sha||'').slice(0,16)}…</td></tr>
+    <tr><th>是否独立真值</th><td class="${same?'bad':'ok'}">${same?'否（同一资产，不能算独立闭环）':'是'}</td></tr>
+    <tr><th>初态</th><td>${(h.initial_states||[]).length} 个，互异=${h.initial_states_distinct}</td></tr>
+    <tr><th>决策</th><td>${(h.decision||{}).chosen_option||'—'}（先冻结：${(h.decision_sha256||'').slice(0,12)}…）</td></tr>
+  </table>`;
+  const ex=h.execution||[];
+  const h5=ex.filter(e=>e.method==='H5'), b0=ex.filter(e=>e.method==='B0_blind');
+  const rate=a=>a.length?a.filter(e=>e.success).length+'/'+a.length:'—';
+  t+=`<table style="margin-top:8px"><tr><th>在独立真值上</th><th>成功</th></tr>
+      <tr><td>H5 选定动作</td><td>${rate(h5)}</td></tr>
+      <tr><td>盲走 B0</td><td>${rate(b0)}</td></tr></table>`;
+  if(h5.length&&b0.length&&h5.filter(e=>e.success).length===b0.filter(e=>e.success).length)
+    t+='<div class="dim" style="margin-top:6px">本例 H5 与盲走结果相同：不宣称收益</div>';
+  return t;
 }
 $('go').onclick=open_;
 boot().then(()=>{ const q=new URLSearchParams(location.search).get('run');

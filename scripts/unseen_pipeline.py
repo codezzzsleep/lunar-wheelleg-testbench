@@ -189,6 +189,17 @@ def decide(matrix, options, tau=0.0, c_fail=60.0, c_abort=40.0):
                 if safe else '没有任何通行动作在所有候选里都通过 -> 选择 A0 刹停')}
 
 
+def _source_note(hyps):
+    """按候选实际 source_kind 生成来源说明，不因 hyp_source=H5 就宣称真实生成。"""
+    kinds = {h.get('source_kind') for h in hyps}
+    if kinds == {'fixture'}:
+        return ('FIXTURE：接口/算法测试用几何，不是 Lux3D 生成结果，'
+                '不得计入真实生成收益')
+    if kinds == {'lux3d'}:
+        return '真实 Lux3D 候选（本地缓存，未新建任务）'
+    return f'混合来源 {sorted(k for k in kinds if k)}；逐候选见 candidates[].source_kind'
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--case', required=True)
@@ -248,7 +259,8 @@ def main():
                  'kind': 'lux3d', 'world_dir': c['world_dir'],
                  'world_sha': c['world_sha256'],
                  'task_id': c.get('task_id'),
-                 'source_kind': 'lux3d',
+                 # source_kind 从候选登记传播；fixture 不得被写成真实生成
+                 'source_kind': c.get('source_kind', 'lux3d'),
                  'metrics': c.get('best')} for c in cands]
         world_mode = True
     else:
@@ -385,11 +397,12 @@ def main():
         'case_id': case['case_id'], 'hyp_source': a.hyp_source,
         'hyp_source_note': ('几何先验假设，不是 Lux3D 生成结果'
                             if a.hyp_source == 'H3'
-                            else '真实 Lux3D 候选（本地缓存，未新建任务）'),
+                            else _source_note(hyps)),
         'truth_sha': truth_sha,
         'collision_geometry': ('CoACD convex parts (world frame, posture preserved)'
                                if world_mode else 'posed parts (legacy local frame)'),
         'candidates': [{'hypothesis_id': h['hypothesis_id'],
+                        'source_kind': h.get('source_kind'),
                         'task_id': h.get('task_id'),
                         'world_sha': h.get('world_sha'),
                         'collision_sha': h.get('collision_sha'),

@@ -1,7 +1,7 @@
 {
   "case_id": "R01",
   "hyp_source": "H5",
-  "hyp_source_note": "真实 Lux3D 候选（本地缓存，未新建任务）",
+  "hyp_source_note": "FIXTURE：接口/算法测试用几何，不是 Lux3D 生成结果，不得计入真实生成收益",
   "truth_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed",
   "collision_geometry": "CoACD convex parts (world frame, posture preserved)",
   "candidates": [
@@ -28,5 +28,12 @@
   "chosen": "S1",
   "no_robust_option": false,
   "chosen_truth_success": "3/3",
-  "blind_truth_success": "0/3"
+  "blind_truth_success": "0/3",
+  "correction": {
+    "at": "2026-10-29",
+    "issue": "hyp_source_note 曾写成“真实 Lux3D 候选”，但候选 task_id=fixture、source_kind=fixture",
+    "fixed": "来源说明应为 FIXTURE：接口测试用几何，不计真实生成收益；原始数值结果保留不改",
+    "source_kind": "fixture",
+    "counts_as_real_generation": false
+  }
 }

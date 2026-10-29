@@ -1008,5 +1008,10 @@
     "n_usable": 0,
     "rate": 0.0,
     "target_9_of_10": false
-  }
+  },
+  "failure_breakdown": {
+    "unstable": 8,
+    "viewpoint_change_too_small": 2
+  },
+  "corrected_note": "更正：实际为 8 个 unstable、2 个 viewpoint_change_too_small；此前报告写 7+2 有误。归因也按接口复核更正为 action[1] 语义错误，不是\"差速底座转向能力不足\"。"
 }

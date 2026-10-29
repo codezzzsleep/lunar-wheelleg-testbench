@@ -34,6 +34,12 @@ FRONT = {'FR', 'FL'}
 REAR = {'RR', 'RL'}
 KP, KD = 150.0, 5.0
 WHEEL_KP, WHEEL_MAX, LEG_MAX = 1.2, 15.0, 45.0
+# 驾驶接口的物理常量与限幅（实测轮距/轮径在 __init__ 里再核对）
+DRIVE_TRACK_M = 0.2837            # 轮中心距（实测）
+DRIVE_WHEEL_R = 0.08599           # 轮半径（实测）
+DRIVE_V_MAX = 0.8                 # m/s
+DRIVE_W_MAX = 1.2                 # rad/s
+DRIVE_RPS_MAX = 6.0               # 轮角速度上限
 
 # 观测 = 本体感觉 + 导航状态。
 # 导航状态只提供**通道相对量**（横向偏差、朝向误差），不是地形图、不是相机、
@@ -147,6 +153,16 @@ class WheelLegEnv:
                                 'sum_work_j': 0.0, 'sum_load': 0.0,
                                 'sum_H': 0.0, 'excess_traction_n': 0.0}
         self._soil_force = np.zeros(6)
+        # 驾驶接口状态：符号映射（默认 +1，可用 calibrate_wheel_signs 实测覆盖）
+        self.DRIVE_TRACK = DRIVE_TRACK_M
+        self.DRIVE_WHEEL_R = DRIVE_WHEEL_R
+        self.DRIVE_V_MAX = DRIVE_V_MAX
+        self.DRIVE_W_MAX = DRIVE_W_MAX
+        self.DRIVE_RPS_MAX = DRIVE_RPS_MAX
+        self._wheel_sign = {'L': 1.0, 'R': 1.0}
+        self._wheel_rps_last = {}
+        self.last_drive = None
+        self.n_control = 0
         self.episode_return = 0.0
         self._reset_state(seed=spec.get('seed', 0))
 
@@ -589,7 +605,7 @@ class WheelLegEnv:
         steer = self._steer_from_nav() if self.nav_base else 0.0
         return np.concatenate([np.clip(a, -1, 1), [steer]])
 
-    def _apply_controls(self, action, drive=True):
+    def _apply_controls(self, action, drive=True, wheel_rps=None):
         d, m = self.data, self.model
         st = STANCE
         a = np.asarray(action, dtype=np.float64).reshape(CTRL_DIM)
@@ -603,6 +619,12 @@ class WheelLegEnv:
                     KP * (tgt - d.qpos[e['qadr']]) - KD * d.qvel[e['vadr']],
                     -LEG_MAX, LEG_MAX)
             e = self.J[f'{leg}_wheel_joint']
+            if wheel_rps is not None:
+                side = 'L' if leg in ('FL', 'RL') else 'R'
+                want = float(wheel_rps.get(side, 0.0))
+                d.ctrl[e['act']] = float(np.clip(
+                    WHEEL_KP * (want - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX))
+                continue
             if not drive:
                 d.ctrl[e['act']] = np.clip(
                     WHEEL_KP * (0.0 - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
@@ -668,6 +690,68 @@ class WheelLegEnv:
                 'finished': False, 'time_limit': float(self.max_seconds),
                 'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
                 'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
+
+    def step_drive(self, v_forward_mps=0.0, yaw_rate_rps=0.0, max_wheel_rps=None):
+        """
+        语义明确的轮式驾驶接口（**不是**残差动作）。
+
+          v_forward_mps  机体前进速度（m/s），可为 0（停车）
+          yaw_rate_rps   机体偏航角速度（rad/s），正=左转（逆时针）
+
+        腿部保持 STANCE 原 PD，转向**不写入**前后腿姿态残差。
+        左右轮周向速度：v_L = v - w*B/2，v_R = v + w*B/2；轮角速度 = 周向速度 / R。
+        轮轴符号由 _wheel_sign 实测映射（不猜）。
+
+        走统一物理推进入口：与 step() 相同的 substeps、土壤钩子、接触检测与计时。
+        """
+        d, m = self.data, self.model
+        v = float(np.clip(v_forward_mps, -self.DRIVE_V_MAX, self.DRIVE_V_MAX))
+        w = float(np.clip(yaw_rate_rps, -self.DRIVE_W_MAX, self.DRIVE_W_MAX))
+        B = self.DRIVE_TRACK
+        R = self.DRIVE_WHEEL_R
+        vL = v - w * B / 2.0
+        vR = v + w * B / 2.0
+        cap = max_wheel_rps if max_wheel_rps is not None else self.DRIVE_RPS_MAX
+        targets = {'L': float(np.clip(vL / R, -cap, cap)),
+                   'R': float(np.clip(vR / R, -cap, cap))}
+
+        # 复用与 step() 完全相同的腿部控制；只把轮速目标换成显式值
+        self._apply_controls(np.zeros(CTRL_DIM), drive=True, wheel_rps=targets)
+
+        # ---- 与 step() 相同的物理推进 ----
+        for _ in range(self.substeps):
+            self._soil_step()
+            mujoco.mj_step(m, d)
+            self.n_physics += 1
+        self.n_control += 1
+        self.t += self.substeps * self.dt
+        for leg in LEG:
+            e = self.J[f'{leg}_wheel_joint']
+            self._wheel_rps_last[leg] = float(d.qvel[e['vadr']] * self._wheel_sign.get(
+                'L' if leg in ('FL', 'RL') else 'R', 1.0))
+        self.last_drive = {'v_target': v, 'yaw_rate': w,
+                           'wheel_rps_target': dict(targets),
+                           't': round(float(self.t), 4)}
+        return self._obs(), 0.0, False, False, {'reason': 'driving'}
+
+    def calibrate_wheel_signs(self, v_test=0.12, seconds=0.4):
+        """
+        实测轮轴符号：给定"正角速度"，看机体实际前进/后退，确定 L/R 的符号映射。
+        不猜符号；结果写入 self._wheel_sign 并返回记录。
+        """
+        rec = {}
+        for assumed in (+1.0, -1.0):
+            self._wheel_sign = {'L': assumed, 'R': assumed}
+            x0 = float(self.data.qpos[0])
+            self.step_drive(v_forward_mps=v_test, yaw_rate_rps=0.0)
+            for _ in range(int(seconds / (self.substeps * self.dt)) - 1):
+                self.step_drive(v_forward_mps=v_test, yaw_rate_rps=0.0)
+            dx = float(self.data.qpos[0]) - x0
+            rec[assumed] = round(dx, 4)
+        best = max(rec, key=lambda k: rec[k])
+        self._wheel_sign = {'L': best, 'R': best}
+        return {'dx_by_assumed_sign': {str(k): v for k, v in rec.items()},
+                'chosen_sign': best, 'positive_means_forward': rec[best] > 0}
 
     def brake_step(self):
         """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""

@@ -25,6 +25,8 @@ import terrain
 import wheelleg_env
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+# 实测稳定包络（空场扫描）：v<=0.10 m/s、|w|<=0.35 rad/s 稳定；
+# v>=0.15 m/s 会抬头失稳并失去接触（tilt 23°、ncon=0）。观察动作据此限幅。
 # 运行前写死的判据（不按结果调整）
 STABLE_V_LIN = 0.05          # m/s
 STABLE_V_ANG = 0.10          # rad/s
@@ -100,28 +102,40 @@ def angle_deg(a, b):
     return float(np.degrees(np.arccos(c)))
 
 
-def drive_to(env, target_y, stop_x=None, max_s=8.0):
+def drive_to(env, target_y, stop_x=None, max_s=24.0, v_max=0.09):
     """
-    真实差速行驶到目标横向偏移（不改 qpos）。
-    低速 + 停止距离保护：接近障碍前必须停下，不能冲过去（那会改变任务）。
+    用**语义明确的** step_drive 航点控制行驶到目标横向偏移（不改 qpos）。
+
+    航点：先在 (x_stop, 0) 附近保持，再横向到 target_y —— 用弧线实现，
+    不要求原地横移。大航向误差先降速，接近目标逐步减速。
     """
     t0 = env.t
     n = int(max_s * env.control_hz)
     for _ in range(n):
-        lat = float(env.data.qpos[1]) - env.channel_center
-        err = target_y - lat
         if stop_x is not None and float(env.data.qpos[0]) >= stop_x:
             break
-        # 低速前进；横向分量交给导航底座
-        vx = 0.20 if abs(err) > 0.05 else 0.0
-        a = np.array([vx, float(np.clip(2.2 * err, -1.0, 1.0)), 0.0])
-        env.step(a)
-        if abs(err) < 0.03 and vx == 0.0:
+        lat = float(env.data.qpos[1]) - env.channel_center
+        err = target_y - lat
+        if abs(err) < 0.04:
             break
-    return round(float(env.t - t0), 3)
+        # 期望航向：朝 (x+0.4, target_y) 走
+        dx = 0.45
+        want = float(np.arctan2(err, dx))
+        R = np.asarray(env.data.xmat[0]).reshape(3, 3) if False else None
+        # 机体朝向：用四元数取前向
+        w, x, y, z = env.data.qpos[3:7]
+        fwd = np.array([1 - 2 * (y * y + z * z), 2 * (x * y + z * w)])
+        have = float(np.arctan2(fwd[1], fwd[0]))
+        dyaw = float(np.arctan2(np.sin(want - have), np.cos(want - have)))
+        v = v_max * max(0.25, 1.0 - abs(dyaw) / 1.2)
+        w_cmd = float(np.clip(2.2 * dyaw, -0.35, 0.35))
+        _, _, te, tr, info = env.step_drive(v_forward_mps=v, yaw_rate_rps=w_cmd)
+        if te or tr:
+            return round(float(env.t - t0), 3), info.get('reason')
+    return round(float(env.t - t0), 3), None
 
 
-def face_target(env, cid, case, max_s=4.0, tol_deg=6.0):
+def face_target(env, cid, case, max_s=8.0, tol_deg=6.0):
     """
     朝向目标：差速轮无法原地转，用"低速前进 + 把导航横向目标设回目标 y"实现转弯。
     以相机前向与实际目标方向的夹角为判据。
@@ -141,9 +155,11 @@ def face_target(env, cid, case, max_s=4.0, tol_deg=6.0):
         best = min(best, abs(err))
         if abs(err) < tol_deg:
             break
-        # 用横向动作分量把机头往目标方向掰
-        a = np.array([0.22, float(np.clip(-1.6 * err / 45.0, -1.0, 1.0)), 0.0])
-        env.step(a)
+        # 用明确的航向角速度把机头对准目标（不是腿姿残差）
+        w_cmd = float(np.clip(-1.6 * err / 45.0, -0.35, 0.35))
+        _, _, te, tr, info = env.step_drive(v_forward_mps=0.04, yaw_rate_rps=w_cmd)
+        if te or tr:
+            break
     return {'seconds': round(float(env.t - t0), 3), 'final_err_deg': round(abs(err), 2),
             'best_err_deg': round(best, 2)}
 
@@ -154,8 +170,11 @@ def brake_and_settle(env, max_s=3.0):
     hold = 0
     n = int(max_s * env.control_hz)
     for _ in range(n):
-        env.brake_step()
-        v_lin = float(np.linalg.norm(env.data.qvel[:2]))
+        # 显式零速驾驶命令（腿部保持站姿），而不是旧的残差刹车通路
+        _, _, te, tr, _info = env.step_drive(v_forward_mps=0.0, yaw_rate_rps=0.0)
+        if te or tr:
+            break
+        v_lin = float(np.linalg.norm(env.data.qvel[:3]))
         v_ang = float(np.linalg.norm(env.data.qvel[3:6]))
         tilt = env._tilt()
         if v_lin < STABLE_V_LIN and v_ang < STABLE_V_ANG and tilt < STABLE_TILT_DEG:
@@ -165,7 +184,7 @@ def brake_and_settle(env, max_s=3.0):
         else:
             hold = 0
     return {'stable': hold >= int(STABLE_HOLD_S * env.control_hz),
-            'v_lin': round(float(np.linalg.norm(env.data.qvel[:2])), 4),
+            'v_lin': round(float(np.linalg.norm(env.data.qvel[:3])), 4),
             'v_ang': round(float(np.linalg.norm(env.data.qvel[3:6])), 4),
             'tilt_deg': round(float(env._tilt()), 2),
             'hold_s': round(hold / env.control_hz, 3),
@@ -196,7 +215,7 @@ def main():
                                'tilt_deg': STABLE_TILT_DEG, 'hold_s': STABLE_HOLD_S,
                                'min_target_px': MIN_TARGET_PX,
                                'min_depth_frac': MIN_DEPTH_FRAC,
-                               'min_cam_yaw_change_deg': MIN_CAM_YAW_CHANGE_DEG},
+                               'min_cam_forward_angle_change_deg': MIN_CAM_YAW_CHANGE_DEG},
            'runs': []}
 
     for sd in a.seeds:
@@ -206,7 +225,7 @@ def main():
         v1 = capture(env, cid, out / f'seed{sd}_view1.png')
         # 停止线：障碍前沿前保留 0.55 m（车体前伸 + 刹停余量）
         stop_x = float(case['obstacle_x']) - float(case.get('D', 0.3)) / 2.0 - 0.55
-        move_s = drive_to(env, target_y, stop_x=max(0.3, stop_x))
+        move_s, move_stop = drive_to(env, target_y, stop_x=max(0.3, stop_x))
         face = face_target(env, cid, case)
         st = brake_and_settle(env)
         v2 = capture(env, cid, out / f'seed{sd}_view2.png')
@@ -215,13 +234,14 @@ def main():
                   and v2['depth_valid_frac'] >= MIN_DEPTH_FRAC
                   and dyaw >= MIN_CAM_YAW_CHANGE_DEG)
         rec['runs'].append({
-            'seed': sd, 'move_seconds': move_s, 'face': face,
+            'seed': sd, 'move_seconds': move_s, 'move_stop_reason': move_stop,
+            'face': face,
             'brake_seconds': st['brake_seconds'],
             'stable': st['stable'], 'v_lin': st['v_lin'], 'v_ang': st['v_ang'],
             'tilt_deg': st['tilt_deg'], 'hold_s': st['hold_s'],
             'view1_mask_px': v1['mask_px'], 'view2_mask_px': v2['mask_px'],
             'view2_depth_valid_frac': v2['depth_valid_frac'],
-            'cam_yaw_change_deg': round(dyaw, 2),
+            'cam_forward_angle_change_deg': round(dyaw, 2),
             'lat_after': round(float(env.data.qpos[1]), 4),
             'usable': bool(usable),
             'fail_reason': (None if usable else
@@ -243,7 +263,7 @@ def main():
     (out / 'drive_observe.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
     print(json.dumps(rec['summary'], ensure_ascii=False),
           json.dumps([{k: r[k] for k in ('seed', 'usable', 'fail_reason',
-                                         'view2_mask_px', 'cam_yaw_change_deg')}
+                                         'view2_mask_px', 'cam_forward_angle_change_deg')}
                       for r in rec['runs']], ensure_ascii=False))
     return 0
 

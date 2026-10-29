@@ -131,23 +131,24 @@
       "note": "与首个采样完全相同字节与参数；用 sample_id/nonce 区分请求身份"
     },
     {
-      "id": "G_R04_rep2",
-      "stone": "R04",
-      "case": "cases/unseen_v1/R04.json",
-      "image": "runs/unseen/recovery_r3/upload_pkg/R04/upload_1024.png",
-      "image_sha256": "83a34f227c84fa9530e0d8b3faf158998017bf83cf2afa8142cf82a35fa8d847",
+      "id": "G_R01_rep3",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R01/upload_1024.png",
+      "image_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
       "model": {
         "version": "G1-Turbo",
         "face_count": 30000
       },
       "variant": "orig",
-      "repeat_idx": 1,
+      "repeat_idx": 2,
       "credits_upper": 20,
-      "sample_id": "stone-R04-rep2",
+      "sample_id": "stone-R01-rep3",
       "extra": {
-        "sample_nonce": "20261029-R04"
+        "sample_nonce": "20261029-R01-rep3"
       },
-      "note": "与首个采样完全相同字节与参数；用 sample_id/nonce 区分请求身份"
+      "note": "R01 第三个独立采样；与首采样同字节同参数，用 sample_id/nonce 区分请求身份"
     }
-  ]
+  ],
+  "corrected": "2026-10-29：按复核建议把 R04 第二样本替换为 R01 第三样本；原计划留版本记录"
 }

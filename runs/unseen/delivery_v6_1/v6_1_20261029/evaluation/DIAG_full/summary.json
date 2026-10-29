@@ -1,0 +1,181 @@
+{
+  "schema": "eval-v6/v1",
+  "case": "R01_truth_base",
+  "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+  "truth_collision_sha": "1416021bd2c3346fb4a426c52818d5cd",
+  "time_limit_s": 30.0,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "validation_seeds": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+  "decision_written_at": 1793299060.4844537,
+  "decision_rule": "worst-case-risk/v2",
+  "methods": [
+    {
+      "method": "H5_F_single",
+      "selected_action": "L2",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 2,
+      "abort": 0,
+      "fail": 1,
+      "mean_cost": 24.42,
+      "outcomes": [
+        "success",
+        "time_limit",
+        "success"
+      ],
+      "validation_success": 3,
+      "validation_n": 5,
+      "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+      "n_hypotheses": 1
+    },
+    {
+      "method": "H5_F_multi",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.513,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 4,
+      "validation_n": 5,
+      "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+      "n_hypotheses": 4
+    },
+    {
+      "method": "B3_F",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.513,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 4,
+      "validation_n": 5,
+      "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+      "n_hypotheses": 1
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "validation_success": 0,
+      "validation_n": 5,
+      "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+      "n_hypotheses": 1
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.513,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 4,
+      "validation_n": 5,
+      "decision_sha": "33723248de65d5ea5ed1d5f2b91a28248dea7cc93984ccad15541a9a6549a61e",
+      "n_hypotheses": 1
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "C_R01_face12k",
+      "kind": "fused",
+      "world_sha": "d69266074e9889bd3a5521a40d8a8420e4eebd0076ce29b631a641834a4aaebc",
+      "collision_sha": "4c852142081ee7db82322fd43c9ee744",
+      "parts": 32,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    },
+    {
+      "id": "G_R01",
+      "kind": "fused",
+      "world_sha": "ccb13565bd6409e1f1a43c72ea49e4c51e197b044acee4b738feb44c09085989",
+      "collision_sha": "3969a3c57f2e6571e7a4760700b0b392",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    },
+    {
+      "id": "G_R01_rep2",
+      "kind": "fused",
+      "world_sha": "6fd88df463bf8620829719faae60130a60661d87b8c0bf622c283f87d614bae3",
+      "collision_sha": "4c49f2ed3d45c5b53af0176c302b3a72",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    },
+    {
+      "id": "G_R01_rep3",
+      "kind": "fused",
+      "world_sha": "6cd4b37068d0caf74a61fdf905f222be802ad39fbef12db63cc051eb0a2733f3",
+      "collision_sha": "fcd48833a1159a32c02bdd0d9acbef5d",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    },
+    {
+      "id": "H5_F_single",
+      "kind": "fused",
+      "world_sha": "d69266074e9889bd3a5521a40d8a8420e4eebd0076ce29b631a641834a4aaebc",
+      "collision_sha": "b86e68e77616626b0b2c8ca12df5a2aa",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    },
+    {
+      "id": "B3_F",
+      "kind": "fused",
+      "world_sha": "8f6543d13085a3d8731902a76c9b06f1a3c6bc16ac5b165b3134b15d9562a67b",
+      "collision_sha": "0ddddfba6386c7b6702e3f2544624e11",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "mirror"
+    }
+  ],
+  "note": "H5_F/B3_F 的可见面由观测约束构造；visible strict pass 不等于 Lux3D 原始模型通过。U_truth 是上限参考，不冒充真实可用方法。"
+}

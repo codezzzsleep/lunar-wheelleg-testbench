@@ -53,10 +53,12 @@ def boolean_diff(a, b):
                            np.asarray(mm.tri_verts), process=True)
 
 
-def write_world(mesh, d, name='body'):
+def write_world(mesh, d, name='body', x=1.8, y=0.0):
+    """世界坐标父资产：必须与 observe 的 obstacle_x 对齐，否则父候选与观测不同位置。"""
     d = pathlib.Path(d); d.mkdir(parents=True, exist_ok=True)
     body = d / f'{name}.stl'
     m = mesh.copy()
+    m.apply_translation([float(x), float(y), 0.0])
     m.apply_translation([0, 0, -float(m.bounds[0][2])])
     m.export(body)
     (d / 'manifest.json').write_text(json.dumps(
@@ -64,6 +66,19 @@ def write_world(mesh, d, name='body'):
          'parts': [f'{name}.stl'], 'world_sha': sha_file(body),
          'source_kind': 'fixture', 'note': FIXTURE_TAG}, indent=2))
     return d, body
+
+
+def write_local(mesh, d, name='body'):
+    """局部网格（xy 居中、贴地），供 observe 用 obstacle_x 放置。"""
+    d = pathlib.Path(d); d.mkdir(parents=True, exist_ok=True)
+    body = d / f'{name}.stl'
+    m = mesh.copy()
+    b = m.bounds
+    m.apply_translation([-(float(b[0][0]) + float(b[1][0])) / 2.0,
+                         -(float(b[0][1]) + float(b[1][1])) / 2.0,
+                         -float(b[0][2])])
+    m.export(body)
+    return body
 
 
 def write_case(mesh_path, case_id, out, obstacle_x=1.8, H=None):
@@ -111,6 +126,23 @@ def fuse_one(obs, parent_world, pid, out, cfg_path, pitch=None):
     return json.loads((out / 'manifest.json').read_text())
 
 
+def common_grid(meshes, pitch, margin=3):
+    lo = np.min(np.array([m.bounds[0] for m in meshes]), axis=0) - margin * pitch
+    hi = np.max(np.array([m.bounds[1] for m in meshes]), axis=0) + margin * pitch
+    lo[2] = 0.0
+    dims = np.maximum(np.ceil((hi - lo) / pitch).astype(int), 6)
+    xs = lo[0] + (np.arange(dims[0]) + 0.5) * pitch
+    ys = lo[1] + (np.arange(dims[1]) + 0.5) * pitch
+    zs = lo[2] + (np.arange(dims[2]) + 0.5) * pitch
+    X, Y, Z = np.meshgrid(xs, ys, zs, indexing='ij')
+    return {'origin': lo, 'pitch': float(pitch), 'dims': dims, 'xs': xs, 'ys': ys,
+            'zs': zs, 'X': X, 'Y': Y, 'Z': Z}
+
+
+def occ_on(mesh, grid):
+    return FZ.parent_solid(mesh, grid, 1)[0]
+
+
 def occ_of(mesh, pitch, ref=None):
     grid = fuse_grid(mesh, ref, pitch)
     return FZ.parent_solid(mesh, grid, 1)[0], grid
@@ -145,12 +177,14 @@ def main():
     # ---------------- F0：同形父候选 ----------------
     f0 = out / 'F0'
     base = ellipsoid()
-    truth_world, truth_body = write_world(base, f0 / 'truth')
-    case = write_case(truth_body, 'F0_truth', f0 / 'cases', obstacle_x=1.8)
+    truth_world, truth_body = write_world(base, f0 / 'truth', x=1.8)
+    local_body = write_local(base, f0 / 'local')
+    case = write_case(local_body, 'F0_truth', f0 / 'cases', obstacle_x=1.8)
     obs = observe(case, f0 / 'observation')
     fus = fuse_one(obs, truth_world, 'F0_parent', f0 / 'fusion', a.config)
-    occ_t, grid = occ_of(base, pitch)
-    occ_f, _ = occ_of(trimesh.load(f0 / 'fusion/body.stl', force='mesh'), pitch, base)
+    fused0 = trimesh.load(f0 / 'fusion/body.stl', force='mesh')
+    grid = common_grid([base, fused0], pitch)
+    occ_t = occ_on(base, grid); occ_f = occ_on(fused0, grid)
     inter = int((occ_t & occ_f).sum()); union = int((occ_t | occ_f).sum())
     results['rows'].append({
         'id': 'F0', 'status': 'PASS' if fus['strict']['pass'] and inter / union >= 0.9 else 'FAIL',
@@ -164,7 +198,7 @@ def main():
         'note': FIXTURE_TAG})
 
     # ---------------- F1：可见面扰动，隐藏保持 ----------------
-    f1 = out / 'F1'
+    f1 = out / 'F1'; f1.mkdir(parents=True, exist_ok=True)
     m = base.copy()
     v = np.asarray(m.vertices).copy()
     x_front = float(v[:, 0].min())
@@ -172,13 +206,13 @@ def main():
     near = v[:, 0] < cut
     v[near, 0] -= 0.008            # 可见面向相机方向外推 8 mm
     m.vertices = v
-    parent_w, parent_b = write_world(m, f1 / 'parent_visible_shift')
+    parent_w, parent_b = write_world(m, f1 / 'parent_visible_shift', x=1.8)
     obs1 = observe(case, f1 / 'observation')     # 用 F0 的同一观测
     fus1 = fuse_one(obs1, parent_w, 'F1_parent', f1 / 'fusion', a.config)
     # 隐藏核心：x > 物体中位面（远离可见面与测量带）
-    occ_p, grid1 = occ_of(m, pitch)
-    occ_t1, _ = occ_of(base, pitch, base)
-    occ_f1, _ = occ_of(trimesh.load(f1 / 'fusion/body.stl', force='mesh'), pitch, base)
+    fused1 = trimesh.load(f1 / 'fusion/body.stl', force='mesh')
+    grid1 = common_grid([base, m, fused1], pitch)
+    occ_t1 = occ_on(base, grid1); occ_f1 = occ_on(fused1, grid1)
     xmid = float(np.median(base.bounds[:, 0]))
     hid = grid1['X'] > xmid
     hid_core = occ_t1 & hid
@@ -196,11 +230,11 @@ def main():
         'paths': {'fusion': str(f1 / 'fusion')}, 'note': FIXTURE_TAG})
 
     # ---------------- F2：同可见面，不同隐藏 ----------------
-    f2 = out / 'F2'
+    f2 = out / 'F2'; f2.mkdir(parents=True, exist_ok=True)
     notch = trimesh.creation.icosphere(subdivisions=2, radius=0.045)
     notch.apply_translation([float(base.bounds[1][0]) - 0.02, 0.0, 0.09])
     back_cut = boolean_diff(base, notch)
-    write_world(back_cut, f2 / 'parent_back_notch')
+    write_world(back_cut, f2 / 'parent_back_notch', x=1.8)
     fusA = fuse_one(obs1, truth_world, 'F2_flat_back', f2 / 'fusion_flat', a.config)
     fusB = fuse_one(obs1, f2 / 'parent_back_notch', 'F2_notch_back', f2 / 'fusion_notch',
                     a.config)
@@ -217,7 +251,7 @@ def main():
         'note': FIXTURE_TAG})
 
     # ---------------- F3：尺度与坐标往返 ----------------
-    f3 = out / 'F3'
+    f3 = out / 'F3'; f3.mkdir(parents=True, exist_ok=True)
     rows3 = []
     for s in (0.1, 1.0, 10.0):
         raw = base.copy()
@@ -225,7 +259,7 @@ def main():
         # 正确的“单位/配准”变换：缩回原尺度并贴地（不是只缩物体）
         world = raw.copy()
         world.apply_scale(1.0 / s)
-        d, _ = write_world(world, f3 / f'parent_s{s:g}')
+        d, _ = write_world(world, f3 / f'parent_s{s:g}', x=1.8)
         rows3.append({'scale': s, 'world_body_sha': sha_file(d / 'body.stl')})
     uniq = {r['world_body_sha'] for r in rows3}
     results['rows'].append({
@@ -234,7 +268,7 @@ def main():
         'rows': rows3, 'n_unique_world_sha': len(uniq), 'note': FIXTURE_TAG})
 
     # ---------------- F4：坏输入 ----------------
-    f4 = out / 'F4'
+    f4 = out / 'F4'; f4.mkdir(parents=True, exist_ok=True)
     bad = f4 / 'bad_obs'; bad.mkdir(parents=True, exist_ok=True)
     shutil.copy(obs / 'observation.json', bad / 'observation.json')
     r = subprocess.run([sys.executable, str(ROOT / 'scripts/fuse_observed.py'),
@@ -264,10 +298,10 @@ def main():
         'note': FIXTURE_TAG})
 
     # ---------------- F5：真值隔离 ----------------
-    f5 = out / 'F5'
+    f5 = out / 'F5'; f5.mkdir(parents=True, exist_ok=True)
     # 同一观测、同一父候选；两个“隐藏真值”只影响执行端，不影响融合身份
     t2 = boolean_diff(base, notch)
-    write_world(t2, f5 / 'truth_alt')
+    write_world(t2, f5 / 'truth_alt', x=1.8)
     fus5a = fuse_one(obs1, truth_world, 'F5_truth_A', f5 / 'fusion_tA', a.config)
     fus5b = fuse_one(obs1, truth_world, 'F5_truth_B', f5 / 'fusion_tB', a.config)
     same = (fus5a['world_sha'] == fus5b['world_sha']

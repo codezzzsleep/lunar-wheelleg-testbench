@@ -1,0 +1,40 @@
+{
+  "schema": "fixtures/v6_1",
+  "tag": "FIXTURE: not Lux3D; not model benefit",
+  "rows": [
+    {
+      "id": "F0",
+      "status": "FAIL",
+      "iou": 0.9676,
+      "vis_p95_mm": 2.175,
+      "freespace": 0.1105,
+      "hidden_kept_ratio": 1.0,
+      "carved_free_voxels": 184,
+      "watertight": true,
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/fusion/manifest.json"
+    },
+    {
+      "id": "F1",
+      "status": "FAIL",
+      "iou": 0.9678,
+      "vis_p95_mm": 2.129,
+      "freespace": 0.1096,
+      "hidden_kept_ratio": 1.0,
+      "carved_free_voxels": 1206,
+      "watertight": true,
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F1/fusion/manifest.json"
+    }
+  ],
+  "completed": [
+    "F0",
+    "F1"
+  ],
+  "not_run": [
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+  ],
+  "blocker": "F2 起 fuse 子进程在导出阶段报目录不存在（fixtures/F2/fusion_flat/_metric.stl），属 fixture harness 的路径缺陷；F0/F1 已产出可核对结果，其余未跑，不伪造。",
+  "key_finding": "F0 的父候选就是观测真值实体本身，融合后仍得到 freespace 0.1105、IoU 0.9676、可见点 P95 2.18 mm。因此在“父候选完全正确”的情形下 freespace 违例仍是 0.11，证明该 0.11 来自我方的占据/提取阶段（壳厚、mask 膨胀、体素量化），不是 Lux3D 父候选造成的。F1（可见面外推 8 mm、隐藏不变）同样 0.1096、保隐藏 1.0。"
+}

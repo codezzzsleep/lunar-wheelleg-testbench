@@ -44,9 +44,38 @@
     "B": {
       "status": "partial",
       "artifacts": [
-        "scripts/v6_1_fixtures.py"
+        "scripts/v6_1_fixtures.py",
+        "fixtures/fixtures_partial.json"
       ],
-      "note": "F0-F5 runner written; not yet executed to green"
+      "evidence": {
+        "completed": [
+          "F0",
+          "F1"
+        ],
+        "not_run": [
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ],
+        "F0": {
+          "parent_is_truth": true,
+          "iou": 0.9676,
+          "vis_p95_mm": 2.175,
+          "freespace": 0.1105,
+          "hidden_kept_ratio": 1.0
+        },
+        "F1": {
+          "visible_shift_mm": 8,
+          "iou": 0.9678,
+          "vis_p95_mm": 2.129,
+          "freespace": 0.1096,
+          "hidden_kept_ratio": 1.0,
+          "carved_free_voxels": 1206
+        }
+      },
+      "finding": "F0 用真值实体本身作父候选仍有 freespace 0.1105：该违例来自我方占据/提取阶段（壳厚、mask 膨胀、体素量化），不是 Lux3D 父候选造成；F1 证明可见面被拉回且隐藏 100% 保留。",
+      "blocker": "F2 起 fuse 子进程导出阶段报目录不存在（harness 路径缺陷），未跑不伪造"
     },
     "C": {
       "status": "partial",

@@ -4,7 +4,7 @@
   "pitch_m": 0.005,
   "margin_cells": 3,
   "parent_dilate_voxels": 1,
-  "mask_dilate_px": 1,
+  "mask_dilate_px": 0,
   "fill_holes": true,
   "notes": {
     "grid": "cell-center; voxel i center = origin + (i+0.5)*pitch; z origin = 0",
@@ -15,10 +15,12 @@
     "no_vertex_move": true,
     "formal_pitch_m": 0.005,
     "convergence_pitch_m": 0.004,
-    "depth_edges": "Tested: excluding depth-discontinuity pixels from free-space and shell constraints made freespace_violation worse (0.1213 -> 0.3714 at 5 mm) because parent geometry survives at the silhouette; the flag stays available but is disabled for the frozen formal config."
+    "depth_edges": "Tested: excluding depth-discontinuity pixels from free-space and shell constraints made freespace_violation worse (0.1213 -> 0.3714 at 5 mm) because parent geometry survives at the silhouette; the flag stays available but is disabled for the frozen formal config.",
+    "shell_offset": "visible-surface shell is placed at z >= depth - eps + shell_offset_voxels*pitch. With 0.5 voxel the extracted isosurface never lies in front of the measured surface (it may sit up to half a voxel behind), which removes freespace intrusions by construction instead of moving vertices afterwards."
   },
   "free_epsilon_m": 0.001,
   "band_m": 0.0075,
   "depth_edge_threshold_m": 0.02,
-  "use_depth_edge_exclusion": false
+  "use_depth_edge_exclusion": false,
+  "shell_offset_voxels": 0.5
 }

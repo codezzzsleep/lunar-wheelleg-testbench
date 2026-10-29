@@ -390,12 +390,17 @@ def hidden_retention(parent, fused, grid, space, parent_inside, fused_occ):
 
 def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed=0):
     t0 = time.time()
-    observation = pathlib.Path(observation); parent_world = pathlib.Path(parent_world)
+    observation = pathlib.Path(observation)
+    # 多父候选：并集先验（H5_F_multi）。单个父候选时行为不变。
+    pw_list = ([pathlib.Path(parent_world)] if isinstance(parent_world, (str, pathlib.Path))
+               else [pathlib.Path(x) for x in parent_world])
     out = pathlib.Path(out_dir); out.mkdir(parents=True, exist_ok=True)
     pitch = float(cfg['pitch_m'])
-    parent = _load_mesh(parent_world / 'body.stl')
-    if len(parent.faces) == 0:
-        raise SystemExit('父候选没有三角面')
+    meshes = [_load_mesh(p / 'body.stl') for p in pw_list]
+    for i, mm in enumerate(meshes):
+        if len(mm.faces) == 0:
+            raise SystemExit(f'父候选没有三角面：{pw_list[i]}')
+    parent = (meshes[0] if len(meshes) == 1 else trimesh.util.concatenate(meshes))
     vis = np.load(observation / 'visible_points.npy')
     if vis.ndim != 2 or vis.shape[1] != 3 or len(vis) < 10:
         raise SystemExit(f'visible_points 形状异常 {getattr(vis, "shape", None)}')
@@ -412,7 +417,17 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
                                          if cfg.get('use_depth_edge_exclusion') else 0.0))
     space_stats['front_error_bound_mm'] = round(
         (float(cfg['free_epsilon_m']) + pitch / 2.0) * 1000, 3)
-    parent_inside, parent_stats = parent_solid(parent, grid, int(cfg['parent_dilate_voxels']))
+    parent_inside = np.zeros(grid['dims'], dtype=bool)
+    parent_stats = {'parents': [], 'solid_method': []}
+    for mm, pp in zip(meshes, pw_list):
+        pi, st = parent_solid(mm, grid, int(cfg['parent_dilate_voxels']))
+        parent_inside |= pi
+        parent_stats['parents'].append(str(pp))
+        parent_stats['solid_method'].append(st.get('solid_method'))
+        parent_stats['watertight_parent'] = bool(parent_stats.get('watertight_parent', True)
+                                                 and st.get('watertight_parent'))
+    parent_stats['n_inside_voxels'] = int(parent_inside.sum())
+    parent_stats['n_parents'] = len(meshes)
     keep_p = parent_inside & (space != 2)          # 未知区保留父先验，自由区被 carve
     from PIL import Image
     mask = np.array(Image.open(observation / 'mask.png').convert('L')) > 127
@@ -427,7 +442,13 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     ui = np.clip(np.nan_to_num(u, nan=-1), 0, W - 1).astype(np.int64)
     vi = np.clip(np.nan_to_num(v, nan=-1), 0, H - 1).astype(np.int64)
     in_mask = in_fov & mask_d[vi, ui]
-    shell = in_mask.reshape(grid['dims']) & (space == 1)
+    # 可见面壳层：放在测量面之后（0.5 体素偏移），保证提取出的等值面不在观测面前方
+    off = float(cfg.get('shell_offset_voxels', 0.5)) * pitch
+    d_at = np.full(len(in_fov), np.nan)
+    _valid = in_fov & np.isfinite(z)
+    d_at[_valid] = np.load(observation / 'depth.npy')[vi[_valid], ui[_valid]]
+    behind = _valid & np.isfinite(d_at) & (z >= d_at - float(cfg['free_epsilon_m']) + off)
+    shell = (in_mask & behind).reshape(grid['dims'])
     occ = keep_p | shell
     before = occ.copy()
     occ, _ = largest_component(occ)
@@ -445,6 +466,7 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     body = out / 'body.stl'
     mesh.export(body)
     retention = hidden_retention(parent, mesh, grid, space, parent_inside, occ)
+    retention['n_parents'] = len(meshes)
     tmp = out / '_metric.stl'; mesh.export(tmp)
     metrics = {}
     try:
@@ -476,8 +498,8 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
         'coordinate_frame': 'world', 'parts': ['body.stl'],
         'world_sha': sha_file(body),
         'inputs': {'observation': str(observation),
-                   'parent_world': str(parent_world),
-                   'parent_mesh_sha': sha_file(parent_world / 'body.stl'),
+                   'parent_world': [str(x) for x in pw_list],
+                   'parent_mesh_sha': [sha_file(x / 'body.stl') for x in pw_list],
                    'effective_config_sha': cfg.get('_sha')},
         'grid': {'convention': 'cell-center',
                  'origin': [float(x) for x in grid['origin']],
@@ -540,7 +562,7 @@ def load_effective_config(base_path, overrides=None):
                                 'band_m', 'parent_dilate_voxels',
                                 'mask_dilate_px', 'fill_holes',
                                 'depth_edge_threshold_m',
-                                'use_depth_edge_exclusion')}
+                                'use_depth_edge_exclusion', 'shell_offset_voxels')}
     opts = dict(overrides or {})
     for k, v in opts.items():
         if v is not None:
@@ -558,14 +580,16 @@ def load_effective_config(base_path, overrides=None):
                               'band_m', 'parent_dilate_voxels',
                               'mask_dilate_px', 'fill_holes',
                               'depth_edge_threshold_m',
-                              'use_depth_edge_exclusion', 'version')})
+                              'use_depth_edge_exclusion', 'shell_offset_voxels',
+                              'version')})
     return eff
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--observation', required=True)
-    ap.add_argument('--parent-world', default=None)
+    ap.add_argument('--parent-world', default=None, action='append',
+                    help='可重复：多父候选按并集先验融合（H5_F_multi）')
     ap.add_argument('--parent-id', default='parent')
     ap.add_argument('--method', choices=['H5_F', 'B3_F'], required=True)
     ap.add_argument('--out', required=True)
@@ -578,11 +602,13 @@ def main():
     (out / 'effective_config.json').write_text(json.dumps(eff, ensure_ascii=False, indent=2))
     cfg = dict(eff); cfg['_sha'] = eff['sha256']
     if a.method == 'B3_F' and not a.parent_world:
-        a.parent_world = str(out.parent / f'{a.parent_id}_mirror_parent')
-        build_mirror(a.observation, a.parent_world)
+        mirror_dir = out.parent / f'{a.parent_id}_mirror_parent'
+        build_mirror(a.observation, mirror_dir)
+        a.parent_world = [str(mirror_dir)]
     if not a.parent_world:
         raise SystemExit('H5_F 需要 --parent-world')
-    man = fuse(a.observation, a.parent_world, a.parent_id, a.out, cfg,
+    man = fuse(a.observation, (a.parent_world if len(a.parent_world) > 1 else a.parent_world[0]),
+               a.parent_id, a.out, cfg,
                method=a.method, seed=a.seed)
     print(json.dumps({k: man[k] for k in ('version', 'method', 'parent_id', 'world_sha',
                                           'watertight', 'volume_m3', 'space',

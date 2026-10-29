@@ -88,8 +88,7 @@ def _load_recovery(d, run):
                         'initial_states': summ.get('initial_states')},
                 'rehearsal': recs, 'execution': [],
                 'has_rgb': (d / 'rgb.png').exists(),
-                'has_mask': (d / 'mask.png').exists(),
-                'views': [], 'replay': []}
+                'has_mask': (d / 'mask.png').exists()}
     # H5 单例管线
     def _imgs(sub):
         d2 = d / sub
@@ -106,7 +105,11 @@ def _load_recovery(d, run):
                 'replay': []}
     return {'run': run, 'kind': 'h5',
             'has_crop': (d / 'crop_white.png').exists(),
-            'views': (_imgs('view') + _imgs('collision')),
+            'views': [{'file': n,
+                       'kind': ('truth' if n.startswith('truth_') else 'candidate'),
+                       'stage': ('back' if n.endswith('_back.png') else
+                                 ('top' if n.endswith('_top.png') else 'side'))}
+                      for n in (_imgs('view') + _imgs('collision'))],
             'replay': _imgs('replay'),
             'summary': rj('summary.json', {}),
             'observation': rj('observation.json'),
@@ -115,8 +118,7 @@ def _load_recovery(d, run):
             'execution': rjl('execution.jsonl'),
             'h5loop': rj('h5_loop.json'),
             'has_rgb': (d / 'rgb.png').exists(),
-            'has_mask': (d / 'mask.png').exists(),
-            'views': [], 'replay': []}
+            'has_mask': (d / 'mask.png').exists()}
 
 
 def load_run(run):

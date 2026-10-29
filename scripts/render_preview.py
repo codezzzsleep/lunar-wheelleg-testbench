@@ -46,16 +46,21 @@ def scene_xml(mesh_path, checkered=True):
 </mujoco>"""
 
 
-def render(mesh_path, out_png, azimuth, elevation, zoom=1.35):
+def render(mesh_path, out_png, azimuth, elevation, zoom=1.9):
     m = mujoco.MjModel.from_xml_string(scene_xml(mesh_path))
     d = mujoco.MjData(m)
     mujoco.mj_forward(m, d)
     gid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_GEOM, 'obj')
     # 用几何的实际包围盒定相机，保证主角充满画面
-    # geom_aabb 是**几何局部**包围盒；世界位置要加上 geom_xpos
-    lo = np.asarray(m.geom_aabb[gid][:3]); hi = np.asarray(m.geom_aabb[gid][3:])
-    center = np.asarray(d.geom_xpos[gid]) + (lo + hi) / 2
-    diag = float(np.linalg.norm(hi - lo))
+    # geom_aabb 的语义是 **(center, size)**，不是 (lo, hi)：
+    #   aabb[:3] = 几何局部中心，aabb[3:] = 半尺寸
+    # 之前把 center/size 当 lo/hi，导致 lookat 偏移、物体被画面裁掉。
+    c_local = np.asarray(m.geom_aabb[gid][:3], dtype=float)
+    half = np.asarray(m.geom_aabb[gid][3:], dtype=float)
+    R = np.asarray(d.geom_xmat[gid], dtype=float).reshape(3, 3)
+    # 局部中心先按几何旋转再平移到世界
+    center = np.asarray(d.geom_xpos[gid]) + R @ c_local
+    diag = float(2.0 * np.linalg.norm(half))
     m.vis.global_.offwidth, m.vis.global_.offheight = W, H
     r = mujoco.Renderer(m, H, W)
     cam = mujoco.MjvCamera()
@@ -68,7 +73,10 @@ def render(mesh_path, out_png, azimuth, elevation, zoom=1.35):
     img = np.array(r.render(), copy=True)      # 立刻复制，避免缓冲被复用
     Image.fromarray(img).save(out_png)
     g = img.astype(float)
+    # 目标在画面内的占比（用非背景像素估计），确保四周留白可读
+    obj_px = int((np.abs(g - np.median(g)) > 12).sum())
     return {'file': pathlib.Path(out_png).name, 'mean': round(float(g.mean()), 1),
+            'object_px_frac': round(obj_px / float(g.size), 4),
             'std': round(float(g.std()), 2),
             'unique_colors': int(len(np.unique(img.reshape(-1, 3), axis=0))),
             'distance_m': round(float(cam.distance), 4),

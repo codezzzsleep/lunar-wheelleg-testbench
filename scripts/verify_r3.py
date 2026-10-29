@@ -128,6 +128,10 @@ def verify_h5(run, name='pipeline_H5_pilot'):
     check(f'h5[{name}]:候选均有 CoACD 部件',
           all(c.get('coacd_parts') for c in cands),
           [(c['hypothesis_id'], c.get('coacd_parts')) for c in cands])
+    # 每条执行记录的 truth_sha 必须等于 summary 的 truth_sha（独立真值身份）
+    bad_truth = [r for r in ex if r.get('truth_sha') != s.get('truth_sha')]
+    check(f'h5[{name}]:每条执行真值一致', not bad_truth,
+          [(r.get('option'), r.get('truth_sha')) for r in bad_truth][:3])
     check(f'h5[{name}]:候选世界 SHA 与真值不同',
           all(c.get('world_sha') and c['world_sha'] != s.get('truth_sha') for c in cands),
           f"truth={str(s.get('truth_sha'))[:8]}")
@@ -157,10 +161,42 @@ def verify_h5(run, name='pipeline_H5_pilot'):
           f'{ok_ch}/{len(by_opt.get(chosen, []))}' == str(s.get('chosen_truth_success'))
           and f'{ok_bl}/{len(by_opt.get("R1", []))}' == str(s.get('blind_truth_success')),
           f"chosen {ok_ch} blind {ok_bl}")
-    # 计时自洽：sim_time 与物理步数一致（控制步 × substeps）
-    t_ok = all(abs(r['sim_time_s'] - r['control_steps'] * r.get('physics_steps', 0) / max(r['control_steps'], 1) * 0) >= 0
-               and r['physics_steps'] >= r['control_steps'] for r in ex)
-    check(f'h5[{name}]:控制/物理步数自洽', t_ok)
+    # ---- 时间：t_end 必须等于 control_steps × 控制步长（物理推进时间）----
+    # 合同：control_dt = substeps × dt；physics_steps 含 reset 稳定化，
+    # 因此不能用 physics_steps == control_steps × substeps 判时间。
+    dt = 0.002                      # 模型 timestep（MuJoCo 默认读数由 runner 决定）
+    ctrl_dt = None
+    try:
+        import json as _j
+        obs = _j.loads((d / 'observation.json').read_text()) if (d / 'observation.json').exists() else {}
+    except Exception:
+        obs = {}
+    # 从记录本身反解控制步长：成功回合的 t_end 与 control_steps 成正比
+    ratios = [r['t_end'] / r['control_steps'] for r in ex
+              if r.get('t_end') and r.get('control_steps')]
+    if ratios:
+        ctrl_dt = float(np.median(ratios)) if (np := __import__('numpy')).median(ratios) else None
+    t_ok = True
+    t_detail = []
+    for r in ex:
+        if not r.get('t_end') or not r.get('control_steps') or ctrl_dt is None:
+            continue
+        expect = r['control_steps'] * ctrl_dt
+        if abs(r['t_end'] - expect) > max(0.05, 0.02 * expect):
+            t_ok = False
+            t_detail.append((r.get('initial_state_id'), r['t_end'], round(expect, 3)))
+        # sim_time 必须与 t_end 一致（同一时钟）
+        if abs(float(r.get('sim_time_s', -1)) - float(r['t_end'])) > 0.05:
+            t_ok = False
+            t_detail.append((r.get('initial_state_id'), 'sim_time',
+                             r.get('sim_time_s'), r['t_end']))
+    check(f'h5[{name}]:时间与步数一致', t_ok,
+          f'ctrl_dt={ctrl_dt} 异常={t_detail[:3]}')
+    # 999999 这类明显伪造的时间必须被拒
+    check(f'h5[{name}]:无异常时间',
+          all(float(r.get('t_end') or 0) < 600 and float(r.get('sim_time_s') or 0) < 600
+              for r in ex),
+          [r.get('t_end') for r in ex][:5])
     return True
 
 

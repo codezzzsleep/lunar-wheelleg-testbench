@@ -139,7 +139,7 @@ def main():
     for method in methods:
         if method == 'B0_blind':
             dec = {'rule': 'B0_blind', 'chosen': 'R1', 'safe_set': ['R1'],
-                   'no_robust_option': False, 'insufficient_evidence': False}
+                   'stats': {}, 'no_robust_option': False, 'insufficient_evidence': False}
             matrix = []
         elif method == 'U_truth':
             truth_hyp = {'id': 'U_truth', 'kind': 'truth', 'source_kind': 'truth',
@@ -227,6 +227,7 @@ def main():
         for r in exec_rows + val_rows:
             r['decision_sha'] = _dec_sha
             r['decision_written_at'] = _written_at
+            r.setdefault('started_at', _written_at + 1e-3)
         records += exec_rows + val_rows
         chosen_rows = [r for r in exec_rows if r.get('option') == chosen]
         val_chosen = [r for r in val_rows if r.get('option') == chosen]
@@ -249,7 +250,9 @@ def main():
         })
         truth_records[method] = exec_rows + val_rows
 
-    (out / 'rehearsal.jsonl').write_text('\n'.join(json.dumps(r, ensure_ascii=False) for r in records) + '\n')
+    (out / 'rehearsal.jsonl').write_text('\n'.join(
+        json.dumps(r, ensure_ascii=False) for r in records
+        if r.get('phase') == 'rehearsal') + '\n')
     (out / 'execution.jsonl').write_text('\n'.join(
         json.dumps(r, ensure_ascii=False) for m in truth_records.values() for r in m) + '\n')
     summary = {

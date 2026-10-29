@@ -1,0 +1,45 @@
+{
+  "schema": "contract/v6_1",
+  "checks": {
+    "C2_candidates_present": {
+      "pass": true,
+      "detail": "missing=[]"
+    },
+    "C3_seeds_present": {
+      "pass": true,
+      "detail": "missing=[]"
+    },
+    "C1_matrix_complete": {
+      "pass": true,
+      "detail": "n_expected=42 n_got=42 missing=0 first=[]"
+    },
+    "C6_no_duplicates": {
+      "pass": true,
+      "detail": "dups=[]"
+    },
+    "C4_decision_complete": {
+      "pass": true,
+      "detail": "missing_keys=[]"
+    },
+    "C4b_chosen_in_safe_set": {
+      "pass": true,
+      "detail": "chosen 必须在各自 safe_set 内"
+    },
+    "C5_execution_references_decision": {
+      "pass": true,
+      "detail": "n_bad=0 decision_sha=7fb8a0b9e6cf788b58171175a02d1df0453e49693e1618642046f8033d0ad896"
+    },
+    "C8_only_allowed_actions": {
+      "pass": true,
+      "detail": "unexpected=[]"
+    },
+    "C7_decision_before_execution": {
+      "pass": true,
+      "detail": "decision_at=1793296377.352934 first_exec_at=1793296377.3539338"
+    }
+  },
+  "n_checks": 9,
+  "n_pass": 9,
+  "ok": true,
+  "problems": []
+}

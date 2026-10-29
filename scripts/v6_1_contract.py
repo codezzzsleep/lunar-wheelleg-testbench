@@ -77,15 +77,32 @@ def check(rehearsal, execution, decision, expect):
     dups = sorted(k for k, v in got.items() if v > 1)
     add('C6_no_duplicates', not dups, f'dups={dups[:6]}')
 
-    # C4 决策完整
-    need = ('rule', 'safe_set', 'chosen', 'stats', 'decision_sha')
-    miss = [k for k in need if k not in (decision or {})]
-    add('C4_decision_complete', not miss, f'missing_keys={miss}')
+    # C4 决策完整（支持单决策与 bundle 两种形态）
+    bundle = (decision or {}).get('decisions')
+    if bundle is not None:
+        miss = []
+        if 'decision_sha' not in (decision or {}):
+            miss.append('decision_sha')
+        if 'written_at' not in (decision or {}):
+            miss.append('written_at')
+        for i, d in enumerate(bundle):
+            for k in ('rule', 'safe_set', 'chosen', 'stats'):
+                if k not in d:
+                    miss.append(f'decisions[{i}].{k}')
+        add('C4_decision_complete', not miss, f'missing_keys={miss[:8]}')
+        chosen_by_method = {d.get('method'): d.get('chosen') for d in bundle}
+    else:
+        need = ('rule', 'safe_set', 'chosen', 'stats', 'decision_sha')
+        miss = [k for k in need if k not in (decision or {})]
+        add('C4_decision_complete', not miss, f'missing_keys={miss}')
+        chosen_by_method = {'__single__': (decision or {}).get('chosen')}
     if not miss:
-        chosen = decision.get('chosen')
-        ok_choice = (chosen == 'A0') or (chosen in (decision.get('safe_set') or []))
-        add('C4b_chosen_in_safe_set', ok_choice,
-            f"chosen={chosen} safe_set={decision.get('safe_set')}")
+        ok_all = True
+        for d in (bundle if bundle is not None else [decision]):
+            ch = d.get('chosen')
+            if not (ch == 'A0' or ch in (d.get('safe_set') or [])):
+                ok_all = False
+        add('C4b_chosen_in_safe_set', ok_all, 'chosen 必须在各自 safe_set 内')
 
     # C5 执行引用决策
     dsha = (decision or {}).get('decision_sha')
@@ -93,10 +110,15 @@ def check(rehearsal, execution, decision, expect):
     add('C5_execution_references_decision', not bad_ref,
         f'n_bad={len(bad_ref)} decision_sha={dsha}')
 
-    # C8 无越权动作
-    allowed = {decision.get('chosen'), 'A0', 'R1'}
-    bad_opt = sorted({r.get('option') for r in execution} - allowed)
-    add('C8_only_allowed_actions', not bad_opt, f'unexpected={bad_opt}')
+    # C8 无越权动作（按方法分别检查）
+    bad_opt = []
+    for r in execution:
+        m = r.get('method')
+        chosen_m = chosen_by_method.get(m) or chosen_by_method.get('__single__')
+        allowed = {chosen_m, 'A0', 'R1'}
+        if r.get('option') not in allowed:
+            bad_opt.append(f"{m}:{r.get('option')}")
+    add('C8_only_allowed_actions', not bad_opt, f'unexpected={sorted(set(bad_opt))[:6]}')
 
     # C7 决策先于执行
     try:

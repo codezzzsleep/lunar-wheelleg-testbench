@@ -1,0 +1,96 @@
+{
+  "schema": "eval-v6/v1",
+  "case": "R01_truth_base",
+  "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+  "truth_collision_sha": "1416021bd2c3346fb4a426c52818d5cd",
+  "time_limit_s": 30.0,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "validation_seeds": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "decision_sha": "7fb8a0b9e6cf788b58171175a02d1df0453e49693e1618642046f8033d0ad896",
+  "decision_written_at": 1793296377.352934,
+  "decision_rule": "worst-case-risk/v2",
+  "methods": [
+    {
+      "method": "H5_F_single",
+      "selected_action": "L2",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 2,
+      "abort": 0,
+      "fail": 1,
+      "mean_cost": 24.42,
+      "outcomes": [
+        "success",
+        "time_limit",
+        "success"
+      ],
+      "validation_success": 3,
+      "validation_n": 5,
+      "decision_sha": "7fb8a0b9e6cf788b58171175a02d1df0453e49693e1618642046f8033d0ad896",
+      "n_hypotheses": 1
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "validation_success": 0,
+      "validation_n": 5,
+      "decision_sha": "7fb8a0b9e6cf788b58171175a02d1df0453e49693e1618642046f8033d0ad896",
+      "n_hypotheses": 1
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.513,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 4,
+      "validation_n": 5,
+      "decision_sha": "7fb8a0b9e6cf788b58171175a02d1df0453e49693e1618642046f8033d0ad896",
+      "n_hypotheses": 1
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H5_F_single",
+      "kind": "fused",
+      "world_sha": "d69266074e9889bd3a5521a40d8a8420e4eebd0076ce29b631a641834a4aaebc",
+      "collision_sha": "b86e68e77616626b0b2c8ca12df5a2aa",
+      "parts": null,
+      "strict_pass": false,
+      "source_kind": "h5_f"
+    }
+  ],
+  "note": "H5_F/B3_F 的可见面由观测约束构造；visible strict pass 不等于 Lux3D 原始模型通过。U_truth 是上限参考，不冒充真实可用方法。"
+}

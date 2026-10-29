@@ -1,0 +1,257 @@
+{
+  "schema": "soil-summary/v5",
+  "batch_id": "v5_20261029",
+  "model_level": {
+    "rigid_contact": true,
+    "compaction_resistance": "applied per wheel per physics substep",
+    "equivalent_traction": "mu_eff=H/W applied to wheel/ground geom friction",
+    "geometry_sinkage": "NOT_IMPLEMENTED",
+    "visual_only": "none"
+  },
+  "A": {
+    "calibration_5_loads_rel_err": [
+      0.0036,
+      0.0134,
+      0.0195,
+      0.024,
+      0.0272
+    ],
+    "validation_4_loads_rel_err": [
+      0.0524,
+      0.044,
+      0.0364,
+      0.0312
+    ],
+    "validation_within_30pct": true,
+    "limitation": "单轮竖直滑轨、显式刚度弹簧；轮几何 0.09/0.10，不是整机 0.08595/0.0526"
+  },
+  "B": {
+    "rigid_final_x_mean": 3.6727,
+    "soil_final_x_mean": 3.612,
+    "rigid_wall_s_mean": 0.6551,
+    "soil_wall_s_mean": 1.1724,
+    "soil_work_j_mean": -58.8787,
+    "note": "同一 R1 控制输入；土壤模式的位移/功由实际接触与压实阻力产生"
+  },
+  "C": {
+    "rows": [
+      {
+        "slope_deg": 0.0,
+        "soil": false,
+        "reason": "success",
+        "final_x": 3.671,
+        "max_tilt": 0.07
+      },
+      {
+        "slope_deg": 0.0,
+        "soil": true,
+        "reason": "success",
+        "final_x": 3.616,
+        "max_tilt": 0.11
+      },
+      {
+        "slope_deg": 5.0,
+        "soil": false,
+        "reason": "success",
+        "final_x": 3.597,
+        "max_tilt": 5.2
+      },
+      {
+        "slope_deg": 5.0,
+        "soil": true,
+        "reason": "success",
+        "final_x": 3.528,
+        "max_tilt": 5.25
+      },
+      {
+        "slope_deg": 10.0,
+        "soil": false,
+        "reason": "success",
+        "final_x": 3.514,
+        "max_tilt": 10.35
+      },
+      {
+        "slope_deg": 10.0,
+        "soil": true,
+        "reason": "time_limit",
+        "final_x": 3.242,
+        "max_tilt": 10.41
+      },
+      {
+        "slope_deg": 15.0,
+        "soil": false,
+        "reason": "time_limit",
+        "final_x": 3.374,
+        "max_tilt": 15.51
+      },
+      {
+        "slope_deg": 15.0,
+        "soil": true,
+        "reason": "time_limit",
+        "final_x": 2.844,
+        "max_tilt": 15.59
+      },
+      {
+        "slope_deg": 20.0,
+        "soil": false,
+        "reason": "tipped",
+        "final_x": 0.823,
+        "max_tilt": 60.8
+      },
+      {
+        "slope_deg": 20.0,
+        "soil": true,
+        "reason": "time_limit",
+        "final_x": 2.257,
+        "max_tilt": 20.78
+      }
+    ],
+    "note": "冻结 R1/6 s/seed0；10/15/20° 在土壤模式均 time_limit；20° 刚性 tipped vs 土壤 time_limit；不把差异解释成月壤改善"
+  },
+  "D": {
+    "rows": [
+      {
+        "cohesion_pa": 0.0,
+        "phi_deg": 0.0,
+        "H_n": 0.0,
+        "contact_area_m2": 0.002564,
+        "torque_nm": 0.2,
+        "drive_force_n": 2.326,
+        "mu_eff": 0.0,
+        "ft_max_n": 0.0003,
+        "ft_p50_n": 0.0003,
+        "ft_p95_n": 0.0003,
+        "ft_mean_n": 0.0003,
+        "dx_m": 0.0002,
+        "spin_rad_s": 135.1899
+      },
+      {
+        "cohesion_pa": 0.0,
+        "phi_deg": 0.0,
+        "H_n": 0.0,
+        "contact_area_m2": 0.002564,
+        "torque_nm": 0.5,
+        "drive_force_n": 5.814,
+        "mu_eff": 0.0,
+        "ft_max_n": 0.0003,
+        "ft_p50_n": 0.0003,
+        "ft_p95_n": 0.0003,
+        "ft_mean_n": 0.0003,
+        "dx_m": 0.0002,
+        "spin_rad_s": 338.0023
+      },
+      {
+        "cohesion_pa": 0.0,
+        "phi_deg": 0.0,
+        "H_n": 0.0,
+        "contact_area_m2": 0.002564,
+        "torque_nm": 1.0,
+        "drive_force_n": 11.628,
+        "mu_eff": 0.0,
+        "ft_max_n": 0.0003,
+        "ft_p50_n": 0.0003,
+        "ft_p95_n": 0.0003,
+        "ft_mean_n": 0.0003,
+        "dx_m": 0.0002,
+        "spin_rad_s": 676.0228
+      },
+      {
+        "cohesion_pa": 0.0,
+        "phi_deg": 0.0,
+        "H_n": 0.0,
+        "contact_area_m2": 0.002564,
+        "torque_nm": 2.0,
+        "drive_force_n": 23.256,
+        "mu_eff": 0.0,
+        "ft_max_n": 0.0003,
+        "ft_p50_n": 0.0003,
+        "ft_p95_n": 0.0003,
+        "ft_mean_n": 0.0003,
+        "dx_m": 0.0002,
+        "spin_rad_s": 1352.0639
+      },
+      {
+        "cohesion_pa": 0.0,
+        "phi_deg": 0.0,
+        "H_n": 0.0,
+        "contact_area_m2": 0.002564,
+        "torque_nm": 4.0,
+        "drive_force_n": 46.512,
+        "mu_eff": 0.0,
+        "ft_max_n": 0.0003,
+        "ft_p50_n": 0.0003,
+        "ft_p95_n": 0.0003,
+        "ft_mean_n": 0.0003,
+        "dx_m": 0.0002,
+        "spin_rad_s": 2704.1461
+      }
+    ],
+    "note": "复用已提交的单轮判别数据；不是整机"
+  },
+  "E": {
+    "stage": "E_stability",
+    "n_episodes": 1000,
+    "n_anomaly": 0,
+    "n_nonfinite": 0,
+    "by_outcome": {
+      "time_limit": 792,
+      "abort": 200,
+      "tipped": 8
+    },
+    "by_terrain": {
+      "flat": 250,
+      "slope10": 250,
+      "slope15": 250,
+      "obstacle": 250
+    },
+    "by_action": {
+      "R1": 200,
+      "R2": 200,
+      "S1": 200,
+      "D1": 200,
+      "A0": 200
+    },
+    "max_abs_qpos": 49.344168,
+    "max_abs_qvel": 15.550796,
+    "note": "组合含平地/坡面/障碍、5 组土壤参数、10 个初态、5 个动作；不是重复同一平地回合 1000 次；每回合 5 s",
+    "wall_s": 1383.07,
+    "max_final_x_m": 3.047,
+    "max_tilt_deg": 61.42,
+    "n_out_of_field": 0,
+    "anomaly_rule": "NaN/Inf、|final_x|>6.1 m、|max_tilt|>90°；max_abs_qpos/qvel 含轮关节，不等于机体位姿"
+  },
+  "F": {
+    "rigid_wall_s_mean": 0.4949,
+    "soil_wall_s_mean": 0.8748,
+    "wall_time_ratio_soil_over_rigid": 1.768,
+    "same_control_steps": true,
+    "note": "同场景/同控制/同初态；无渲染；土壤模式额外做逐轮接触计算"
+  },
+  "G": {
+    "moving": {
+      "formula_max_sink_m": 0.02650460563759086,
+      "wheel_penetration_m": -0.000988,
+      "contact_at_end": "none"
+    },
+    "static": {
+      "steps": 100,
+      "penetration_m": -0.0009696771689242933,
+      "formula_max_sink_m": 0.02650460563759086,
+      "contact": false,
+      "wheel_penetrations_m": [
+        -0.001166,
+        -0.001166,
+        -0.001149,
+        -0.001149,
+        -0.00106,
+        -0.00106,
+        -0.00097,
+        -0.00097
+      ]
+    },
+    "verdict": "PARTIAL_NOT_IMPLEMENTED",
+    "limitation": "轮底实测约 -0.97 mm（在地表上方/接触求解间隙），公式估计 26.5 mm；整机没有几何下陷。静态末端 contact=false，是本次测量的具体限制，不写成已完成"
+  },
+  "capability_status": "PARTIAL",
+  "note": "月壤是刚性接触上的半经验压实阻力/等效牵引近似；不是颗粒仿真、不是真实月面迁移；几何下陷未实现；坡面/稳定性/吞吐有本批数据；参数范围随机化只覆盖有限样本"
+}

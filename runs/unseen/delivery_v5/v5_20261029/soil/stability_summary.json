@@ -1,0 +1,31 @@
+{
+  "stage": "E_stability",
+  "n_episodes": 1000,
+  "n_anomaly": 0,
+  "n_nonfinite": 0,
+  "by_outcome": {
+    "time_limit": 792,
+    "abort": 200,
+    "tipped": 8
+  },
+  "by_terrain": {
+    "flat": 250,
+    "slope10": 250,
+    "slope15": 250,
+    "obstacle": 250
+  },
+  "by_action": {
+    "R1": 200,
+    "R2": 200,
+    "S1": 200,
+    "D1": 200,
+    "A0": 200
+  },
+  "max_abs_qpos": 49.344168,
+  "max_abs_qvel": 15.550796,
+  "note": "组合含平地/坡面/障碍、5 组土壤参数、10 个初态、5 个动作；不是重复同一平地回合 1000 次；每回合 5 s",
+  "max_final_x_m": 3.047,
+  "max_tilt_deg": 61.42,
+  "n_out_of_field": 0,
+  "anomaly_rule": "NaN/Inf、|final_x|>6.1 m、|max_tilt|>90°；max_abs_qpos/qvel 含轮关节，不等于机体位姿"
+}

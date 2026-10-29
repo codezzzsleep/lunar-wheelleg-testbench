@@ -1,223 +1,164 @@
-# 月面上岗考场：用 Lux3D 给轮腿机器人出"没见过的题"
+# 看不见的那一面：生成式 3D 行动前推演
 
-**一句话**：给需要提前准备陌生作业环境的月面/野外机器人团队——描述上岗任务，
-系统真实生成 3D 构件、自动物理化进场景，机器人练习，再用没参与训练的题考它。
+**当前方向**：轮腿机器人只看得到障碍正面。系统把真实仿真 RGB-D 观测送进 Lux3D 生成
+候选背面几何，在候选上预演“右绕 / 左绕 / 跨越 / 直行 / 安全回退”等动作，按冻结的
+worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。目标不是训练一个策略，而是
+把“生成 → 物理化 → 预演 → 决定 → 独立验证”做成可解释、可复现、可审计的闭环。
 
-**现在可以操作**
-```bash
-.venv/bin/python scripts/app.py --port 8080     # 打开 http://127.0.0.1:8080
-```
-出题（任务 M/K、资产、障碍高度、初始偏差）→ 考核（零残差/固定原语/学习策略，跑真实仿真）
-→ 复盘（结局、接触、终态、失败阶段、下一道练习题建议、轨迹图）。页面不收费。
+> 页面是当前主入口；旧的考场与 RL/训练路线已降为历史，数据与报告仍保留在仓库里。
 
-**本轮实测**（详见 [`docs/ROUND3_REPORT.md`](docs/ROUND3_REPORT.md)）
-- 共享导航底座（学习器只管 3 维，转向由底座产生）：无障碍 20 个真实初态 **20/20 安全到达**。
-- 任务 M（安全通行）：底座已饱和，零残差 0.944，学习后 0.833–0.944，**没有可测增益**。
-- 任务 K（接触越障，必须接触）：学习后均值 0.593 vs 未训练 0.556，**未达 10pp 目标**，
-  且一个种子退化到 0.306。
-- 固定原语 0/12 —— 一次真实的可行性否定。
-- 真实生成：6 个 Lux3D 家族，累计**提交额 78 积分**（API 未回传实际扣费，账本记提交额）。
-
-**能力边界**：不能说学会了越障；任务 M 对当前底座太容易；X1/X2 已是"已见"诊断资产；
-没有新的最终保留考题；不模拟真实月壤、不做真实机器人迁移、没有像素视觉。
-
-**文档**：本轮 [`docs/ROUND3_REPORT.md`](docs/ROUND3_REPORT.md)；
-上一轮 [`docs/ROUND2_REPORT.md`](docs/ROUND2_REPORT.md)（含协议差异说明）；
-旧固定控制器考场 [`docs/REPORT.md`](docs/REPORT.md)。
-
-## 环境要求
-
-| 项 | 要求 |
-| --- | --- |
-| Python | 3.12（实测 3.12.3） |
-| CPU | 4 核可用（实测环境 4 核 / 7 GB，**无 GPU**） |
-| 磁盘 | 约 1.5 GB（含机器人模型 411 MB） |
-| 系统 | Linux；基础仿真**不需要** OpenGL |
-
-依赖版本锁定在 `requirements.txt`（mujoco 3.17.0 / numpy 2.5.4 / trimesh 5.2.0 /
-coacd 1.0.14 / manifold3d 3.5.4 / pillow 13.0.0）。只锁真实跑通的组合。
-
-## 干净安装
+## 当前入口 / 先看什么
 
 ```bash
-git clone https://github.com/codezzzsleep/lunar-wheelleg-testbench
-cd lunar-wheelleg-testbench
-./setup.sh          # 建 venv、装锁定依赖、拉取固定提交的机器人模型、跑第 1 关验收
+# 只读页面：默认打开已提交的真实支持运行
+.venv/bin/python scripts/app_unseen.py --port 8091
+# http://127.0.0.1:8091/
 ```
 
-`setup.sh` 会把 `vendor/unitree_mujoco` 切到固定提交
-`1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d`。模型已存在则复用，不会重复下载。
+常用直达：
 
-手动安装：
+```text
+http://127.0.0.1:8091/?run=pipeline_H5_R03      # 真实候选 G_R03 完整单例闭环（H5=盲走=3/3）
+http://127.0.0.1:8091/?run=H5_R01_face12k       # V5 正式 H5：统一初态 0.05/0.05，L2 2/3
+http://127.0.0.1:8091/?run=six_R01_v5           # R01 六方法：H5 无候选，B3/U/宽度规则 S1 3/3
+http://127.0.0.1:8091/?run=six_R03_v5           # R03 六方法：六方法均 3/3
+http://127.0.0.1:8091/?run=six_R02_v5           # R02 边界：所有非 A0 0/3，H5 no_candidate
+http://127.0.0.1:8091/?run=six_R04_v5           # R04 边界：所有非 A0 0/3，H5 no_candidate
+http://127.0.0.1:8091/?run=look_loop_R01_v3     # 第二观察 fixture 链（FIXTURE）
+http://127.0.0.1:8091/?run=batch:v5_20261029    # V5 批次入口（manifest + formal table）
+```
+
+- 运行注册表：`runs/unseen/page_registry.json`
+- V5 批次唯一入口：`runs/unseen/delivery_v5/v5_20261029/manifest.json`
+- 页面只读 `runs/`、`cases/` 下已落盘产物；打开页面**不会**调用生成 API、不会新建任务。
+- 批次 `evaluation/` 下新出现的 `summary.json + records/execution` 会被自动登记；
+  没有正式运行时页面显示明确状态，不补造结果。
+
+页面按五个画面组织：
+
+1. **看见**：真实送生成的图、原观测、可见面 mask、深度用途与观察方向。
+2. **想象**：真实生成候选的侧视/后侧视/俯视、来源与 task 身份、候选/清理/配准/planning 计数。
+3. **试走**：候选 × 动作预演矩阵、失败阶段（tipped / timeout / abort / n/a）。
+4. **决定**：选了什么、规则、哪个候选或约束改变了决定。
+5. **执行与揭晓**：独立真值、成功/失败、逐初态数值回放、H5 与 B0/镜像/盒子/真值上界的对照。
+
+另单独显示：strict 几何诊断与 planning eligibility、fixture 标签、cache/new 模式、
+月壤近似、模拟时间与 wall time、观察不可用/无候选/缺 decision 等状态。
+
+## 验证页面（真实浏览器）
+
+本仓库已用 headless Chromium 实际打开并截图（不是只看接口）：
 
 ```bash
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-git clone https://github.com/unitreerobotics/unitree_mujoco vendor/unitree_mujoco
-git -C vendor/unitree_mujoco checkout 1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d
+python -m py_compile scripts/app_unseen.py
+.venv/bin/python scripts/app_unseen.py --port 8091
+# 另一个 shell：
+FONTCONFIG_FILE=/tmp/fonts.conf \
+LD_LIBRARY_PATH=/tmp/sysroot/usr/lib/x86_64-linux-gnu:/tmp/sysroot/lib/x86_64-linux-gnu \
+~/.cache/ms-playwright/chromium_headless_shell-1248/chrome-headless-shell-linux64/chrome-headless-shell \
+  --headless --no-sandbox --disable-gpu --hide-scrollbars --window-size=1600,2600 \
+  --virtual-time-budget=4000 \
+  --screenshot=runs/unseen/delivery_v5/v5_20261029/media/page/01_pipeline_H5_R03.png \
+  'http://127.0.0.1:8091/?run=pipeline_H5_R03'
 ```
 
-## 快速测试（第 1 关验收）
+截图目录：`runs/unseen/delivery_v5/v5_20261029/media/page/`。
+`FONTCONFIG_FILE=/tmp/fonts.conf` 指向本机已有的 Noto CJK 字体；没有 CJK 字体的环境
+需要先安装中文字体，否则截图会出现方框（这是字体环境问题，不是页面数据问题）。
+
+## 这版是什么 / 不是什么
+
+- **输入是仿真 RGB-D**，不是真实相机；观测包来自 MuJoCo 渲染，深度只用于可见面分割与
+  可见量（`x_front / W_vis / H_vis`），不读背面真值。
+- **执行是独立仿真**，不是真实机器人，也不是真实月面迁移。页面里的“真值”是同一
+  MuJoCo case 的独立物理执行，不是现场传感器。
+- **月壤是半经验近似**：Bekker 压实阻力 + 等效库仑牵引；整机仍是刚性接触，
+  **几何下陷没有实现**（`soil-acceptance` stage G = `PARTIAL_NOT_IMPLEMENTED`）。
+  单轮标定不能直接证明整机几何下陷。
+- **候选资格与 strict 几何分开**：strict 是 IoU/P95/freespace 的观测一致性诊断；
+  planning eligibility 是独立的工程入场政策。两者都不是安全证明，也不等于收益成立。
+- **benefit 当前是 `NOT_ESTABLISHED`**：R03 的 H5 与盲走/镜像同为 3/3；V5 R01 的正式
+  H5 是 L2 **2/3**（seed0 30.02 s timeout），低于 B3_mirror / U_truth / 宽度规则的 S1
+  **3/3**；而 C_R01_face12k 只是 IoU-only planning eligible，strict 仍失败（P95 11.0 mm、
+  freespace 0.5106、hit_part_cap=true）。因此不能写成合格候选或 Lux3D 独有收益。
+- 页面不把 fixture 标成 Lux3D；不把预演动画标成真实执行回放；没有回放帧就明确显示
+  “未保存回放帧”，只给逐初态数值。
+
+## 当前证据（V5 批次，2026-10-29）
+
+以 `runs/unseen/delivery_v5/v5_20261029/manifest.json` 与页面为准，摘要：
+
+- 真实生成：3 个单图对照任务（R01 az25 / az45 / face12k），累计上界 60 积分；
+  ledger 记录 3 个 task_id，实际扣费仍为 unknown（API 不回传）。
+- 候选处理：3 个生成/下载；3/3 清理通过；3/3 配准完成；**0 strict pass**；
+  **1 planning eligible（IoU-only）**：`C_R01_face12k`（task 4466144，IoU 0.8622、
+  P95 11.0 mm > 9.957、freespace 0.5106、hit_part_cap=true），另外 2 个 ineligible。
+  strict 与 planning 分列，页面逐候选列出，不隐藏。
+- 已落盘的正式运行（`evaluation/`）：
+  - 正式 H5 `H5_R01_face12k`：统一初态 0.05/0.05，chosen `L2`，真值 **2/3**
+    （seed0 `time_limit` 30.02 s，seed1/2 success 7.48/6.88 s），B0 R1 **0/3**；
+    B3_mirror / U_truth / 宽度规则均 `S1` 3/3（mean 6.593）→ H5 无收益；
+  - 六方法 R03：六方法均 3/3，H5 与 B0 同分（6.42）；B2/U 的 D1 6.387；
+  - 六方法 R01：H5 `no_candidate`，B3_mirror / U_truth 的 S1 3/3，B0 R1 0/3；
+  - 六方法 R02 / R04：H5 `no_candidate`，所有非 A0 动作 0/3（能力边界）。
+  - **初态更正**：旧 `H5_R01_face12k_init003` 的 yaw=0.03、L2 3/3 已标 SUPERSEDED，
+    不与 six 的 0.05/0.05 配对，不用于正式表；正式表见
+    `evaluation/formal_table_v5.json`，benefit 见 `evaluation/benefit_summary.json`。
+- 真值动作扫描（`cases/`，不是候选闭环）：R01_base 只有 S1 3/3；R01_az25/az45 无
+  全初态通过动作；R02/R04 全部非 A0 失败；R03 多个动作 3/3。
+- 月壤：单轮/平地/坡面/零牵引/吞吐/整机 stage A–G 已跑；stage G 明确
+  `geometry_sinkage_implemented=false`；稳定性 1000 回合仍在补（页面显示实时计数）。
+- 统一验收：本批 verify **73/73**（以 `verify/` 与页面 `preflight` 为准）；测试绿灯
+  不替代研究收益结论。
+- 观察：V5 的 az25/az45 是“不同相对观察方向”的诊断，不是 R01 单视角重复采样；
+  R01_base 观测包缺 RGB/depth/mask，页面显式标不可用。
+- 第二观察：真实候选的 trigger 运行 `trigger_face12k` 判定“候选一致，不触发观察”；
+  fixture trigger 对（`trigger_fixture_pair*`）只验证 trigger 逻辑，**不是真实收益证据**。
+  完整第二观察/续行仍是 fixture 链（`look_loop_R01_v3`），不等同真实候选“再看一眼”。
+
+## 快速回归
 
 ```bash
-.venv/bin/python scripts/gate1.py --out runs/gate1
+.venv/bin/python -m py_compile scripts/app_unseen.py
+.venv/bin/python -m unittest discover -s tests -v      # 现有单元测试
 ```
 
-四项：模型加载与重力冒烟、几何碰撞对照（凸包 vs CoACD）、Lux3D 资产进入考场并接触、
-平地驱动（两种站姿越过终点）。全部用函数返回值判定，**不读任何历史文件**；退出码非零即失败。
-
-回归测试：
+页面接口烟测：
 
 ```bash
-.venv/bin/python -m unittest discover -s tests -v      # 35 项，约 20 秒
+curl -sS http://127.0.0.1:8091/api/cases | python3 -m json.tool
+curl -sS 'http://127.0.0.1:8091/api/run?name=pipeline_H5_R03' | python3 -m json.tool
 ```
 
-## 一场演示 / 一次正式批跑
+## 目录（当前相关）
 
-```bash
-# 冒烟：20 个 trial，约 6 秒
-.venv/bin/python scripts/demo.py --suite smoke --out runs/smoke_$(date +%s)
-
-# 正式：2520 个 trial（35 个**选中**资产 × 2 站姿 × 3 控制器 × 12 横向偏移）
-.venv/bin/python scripts/demo.py --suite canonical --out runs/canonical_r2
-
-# 续跑（只补缺失任务，校验身份；不要用它重跑已有记录）
-.venv/bin/python scripts/demo.py --suite canonical --out runs/canonical_r2 --resume
-
-# 分析（只读显式指定的结果文件）
-.venv/bin/python scripts/analyze.py --input runs/canonical_r2/results.jsonl --out runs/canonical_r2
+```text
+scripts/app_unseen.py                 只读页面（manifest + registry 驱动）
+runs/unseen/page_registry.json        页面运行注册表
+runs/unseen/delivery_v5/v5_20261029/  V5 批次：manifest、observations、candidates、cases、soil、verify、media/page
+runs/unseen/recovery_r3/              已提交的支持运行（真实 G_R03、六方法、fixture 观察链、开发例）
+cases/unseen_v1/                      案例定义与 V5 truth/twin 用例
+docs/DEMO_V5.md                       2–3 分钟演示脚本（当前批次证据）
+docs/UNSEEN_STATUS_CURRENT.md         研究状态与边界（历史状态文档之一）
 ```
 
-运行目录结构：
+## 历史：旧考场与 RL/训练路线（保留，不再作为当前主入口）
 
-```
-runs/<run_id>/
-  config.json       本批配置与 trial 清单
-  environment.json  代码提交、模型提交、包版本、CPU、是否含未提交修改
-  results.jsonl     逐 trial 原始记录（唯一事实来源）
-  summary.json      分组汇总
-  report.md         分析产出
-  figures/  replays/  logs/
-```
+以下内容保留用于追溯，**不是**当前默认路线，也不代表当前 V5 交付。旧运行目录、
+`docs/ROUND*_REPORT.md`、`docs/PG_REPORT.md`、`runs/canonical*/` 等均未删除。
 
-**实测成本**（4 核 / 7 GB / 无 GPU）：canonical 2520 个 trial，3 个 worker，
-约 **672 秒**。目录里 49 个可用资产中实际选中 35 个，`config.json` 分别记录
-`available_asset_count` 与 `selected_asset_count`，不要把 49 写成参与资产数。
-
-> 注：以上是**旧考场模块**的批次成本。训练链路见下节。
-
-批次隔离：新运行只接受空目录；续跑必须 `--resume` 且校验 suite、完整任务集合与
-运行身份（控制参数 / 资产指纹 / 模型 / 仿真源码）。想重跑就换新目录，工具不会覆盖证据。
-
-## 训练链路（本项目主路径）
-
-一条命令串起"条件 → 场景 → 校验 → 训练 → 共同评估"：
-
-```bash
-.venv/bin/python scripts/pipeline.py --demo --out runs/pipeline_demo   # 短预算跑通
-.venv/bin/python scripts/pipeline.py --full --out runs/pipeline_full   # 冻结预算
-```
-
-分步：
-
-```bash
-# 1. 任务条件 -> 场景（受限语法，见 tasks/）
-.venv/bin/python scripts/scene_compiler.py --task tasks/B_slope.txt --seed 100 --vary 6     --out scenes/B_slope.json
-
-# 2. 物理有效性：射线实测地形坡度、物体落地、真实接触
-.venv/bin/python scripts/verify_conditions.py --out runs/conditions
-.venv/bin/python scripts/verify_scenes.py --scenes scenes/A_sparse.json --out runs/verify
-
-# 3. P/G 场景集（同地形、同高度阶梯，仅几何来源不同）
-.venv/bin/python scripts/make_pg_scenes.py
-
-# 4. 训练（实验清单管理，记录退出码，可安全重跑）
-.venv/bin/python scripts/run_experiments.py --plan plans/pg_v2.json
-
-# 5. 共同清单评估
-.venv/bin/python scripts/evaluate.py     --checkpoint runs/pg_v2/P_s0/checkpoints/final.npz     --manifest scenes/test_common.json --config configs/P_frozen.json     --out runs/pg_v2_eval/P_s0
-
-# 6. 成本账本
-.venv/bin/python scripts/cost_ledger.py --conditions tasks/*.txt --out runs/cost
-```
-
-任务条件语法（`tasks/*.txt`）：`scenario / obstacles / height / spread / offset /
-slope / roughness / pits / pit_depth / length / family`。改这些值会真正改变
-地形（米制）与布局，见 `docs/PG_REPORT.md` 与 `runs/conditions/`。
-
-## 回放
-
-```bash
-apt-get install -y libosmesa6          # 仅渲染需要
-export MUJOCO_GL=osmesa
-
-python scripts/replay.py --run runs/canonical --trial <trial_id>
-```
-
-回放是**重演**（re-simulation），不是轨迹回放：它走与考试完全相同的控制路径
-（`exam.run` 的同一份代码），并校验 `final_x` / `max_tilt_deg` 与记录一致；
-不一致会以非零退出码报错，不会把近似结果当成原轨迹。
-
-## 三个考生的真实能力
-
-| 考生 | 做什么 | 实测边界 |
-| --- | --- | --- |
-| `hold` | 锁死站姿 + 轮速伺服，本质是四轮小车 | 障碍低于 0.6 倍轮半径几乎必过；越过 1.1 倍后大量倾覆 |
-| `step` | 被挡住时执行一次固定序列：前腿缩短、后腿伸长，把机头抬起来 | 在 1.51 倍这一档明显优于 hold；1.76 倍以上基本无效 |
-| `adapt` | 只用**机体前进速度 + 机体倾角**（不读轮速）在"抬腿 / 加大力矩"之间二选一 | 与 step 同级；**不会**按形状调整落脚点 |
-
-三者都是**手工控制器**，不是学出来的技能。`adapt` 的"自适应"仅指上述二选一，
-不能读作"学会了越障"。
-
-## 当前支持的物理条件与不支持的
-
-**支持**：月球重力 1.62 m/s²、刚性平面地面、静态刚性障碍（CoACD 凸块分解）、
-两种站姿、确定性横向偏移网格。
-
-**不支持**：月壤沉陷 / 可变形地面、摩擦参数标定、动态或可翻倒的残骸、
-真实深度传感器噪声、任意非凸凹槽（MuJoCo 对闭合网格按凸包碰撞，必须先拆凸块）。
-
-## 常见错误
-
-| 现象 | 原因 / 处理 |
-| --- | --- |
-| `找不到 go2w 模型` | 未拉取模型。运行 `./setup.sh` 或按上文手动 clone |
-| `MUJOCO_GL` 相关报错 | 只有渲染需要；`export MUJOCO_GL=osmesa` 并安装 `libosmesa6` |
-| 报告中文字体变方块 | 设置 `RLL_FONT=/path/to/font.ttc`；找不到字体时图内标签自动降级为英文并在报告里提示 |
-| `precheck_failed` | 资产不合格（缺 parts / manifest pass=false / 尺寸异常），**不是**机器人的失败，计数与 outcome 分开统计 |
-| `trial_id 重复` | 配置相同被当成不同任务；检查 suite 生成逻辑 |
-
-## 已知局限
-
-- 横向偏移是**确定性网格**，不是随机采样；完成率只描述这张网格，不能外推。
-- 同一资产的多个偏移不是多个独立形状家族；未做家族留出，**不能**声称泛化能力。
-- 障碍物是静态刚性体，不滚动、不翻倒。
-- 完成判据是「机体中心越过障碍后方 0.25 m 净空」，不等于整机完全通过。
-  「完成数」是终点任务完成数，含未接触障碍物的场景，不等于「越障成功数」。
-- box 与 mesh 匹配的是**相对高度与横向宽度**，前后长度未必相同；不写"尺寸完全相同"。
-- 同高度对照的条目来自少量几何对在不同考生与站姿下的重复比较，**不是独立形状样本**，
-  不做显著性推断。
-- 分层 L3 含多个高度，「同属 L3」不等于「同高度」；引用斜坡/方块的差异时要给精确高度。
-- **包围盒尺寸不足以单独刻画越障表现**：在本批固定场景网格中，不同几何体呈现不同完成
-  分布。这是一项有限观察，不是机制已验证，也不是新的通用难度指标。
-
-## 目录
-
-```
-scripts/
-  构建：build_scene.py / procedural.py / process_asset.py / build_library.py
-  运行：exam.py / controllers.py / demo.py / runio.py / analyze.py / replay.py
-  验收：gate1.py / check_collision.py
-assets/raw/        7 个 Lux3D 原始 GLB
-assets/processed/  处理后资产（parts/*.stl + manifest.json）
-runs/canonical/    本次正式运行的完整记录与报告
-docs/              执行清单、状态说明
-tests/             关键回归测试
-```
+- 旧主线是“条件 → 场景 → 训练 → 共同评估”的 RL/考试路线：`scripts/pipeline.py`、
+  `scripts/run_experiments.py`、`scripts/evaluate.py`；控制器是 `hold` / `step` / `adapt`
+  手工控制器，不是学出来的技能。
+- 旧考场：`scripts/demo.py`、`scripts/analyze.py`、`scripts/replay.py`；`hold/step/adapt`
+  的实测边界见 `docs/ROUND3_REPORT.md`。旧结论（任务 M 无可测增益、任务 K 未达 10pp、
+  固定原语 0/12）只属于旧路线，不要搬到 V5 上。
+- 旧入口 `scripts/app.py --port 8080` 仍保留，但新工作看 `scripts/app_unseen.py`。
+- 旧训练/考场数据与报告仍在 `runs/`、`docs/` 中；本 README 不删除任何旧数据。
 
 ## 来源与许可
 
 - 机器人模型：[unitreerobotics/unitree_mujoco](https://github.com/unitreerobotics/unitree_mujoco)
   （固定提交），按其仓库许可使用。
-- 3D 生成：[Aholo Lux3D](https://www.aholo3d.cn)，资产由本项目生成。
+- 3D 生成：[Aholo Lux3D](https://www.aholo3d.cn)，候选由本项目真实生成任务产生。
 - 凸块分解：[CoACD](https://github.com/sarahweiii/CoACD)（MIT）。

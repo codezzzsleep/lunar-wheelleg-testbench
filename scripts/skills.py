@@ -122,10 +122,17 @@ class S1(Skill):
     执行时抬高机体（前后腿同时伸展）并保持直行。
     """
     name = 'S1'
-    CLR = TRACK_M - 2 * 0.0526 - 0.04       # 轮内净空 - 裕量
+    # 轮内净空 = 轮中心距 - 两倍(轮宽/2) = 中心距 - 一个轮宽
+    # 旧式写成 track - 2*轮宽 - 裕量，把轮宽多减了一次（实测净空 0.2311 vs 旧式 0.1385）
+    WHEEL_W = 0.0526
+    CLR_RAW = TRACK_M - WHEEL_W              # 0.2311 m
+    MARGIN = 0.04                            # 安全裕量
+    CLR = CLR_RAW - MARGIN                   # 0.1911 m
 
     def applicable(self, obs_vis):
-        return obs_vis.get('W_vis') is not None and obs_vis['W_vis'] < self.CLR
+        # 只读公开可见宽度与机器人尺寸；隐藏部分更宽属于真实风险
+        w = obs_vis.get('W_vis')
+        return w is not None and w < self.CLR
 
     def act(self, obs, rs):
         self.t += rs.get('dt', 0.02)
@@ -134,6 +141,21 @@ class S1(Skill):
 
 
 class Detour(Skill):
+    """
+    绕行适用性：只读**公开**信息（可见宽度、通道半宽、机器人包络、制动距离）。
+    侧向空间不足时返回 False（记 not_applicable），不放宽出界线。
+    """
+    ROBOT_HALF_W = 0.20          # 机体横向半宽（含轮）
+    LATERAL_NEED = 0.36          # 绕到侧面所需的净横移（含转弯包络）
+    BRAKE_M = 0.25               # 制动余量
+
+    def applicable(self, obs_vis, channel_half=1.2):
+        w = obs_vis.get('W_vis')
+        if w is None:
+            return False
+        side_room = float(channel_half) - (float(w) / 2.0 + self.ROBOT_HALF_W)
+        return side_room >= self.LATERAL_NEED
+
     """
     左/右绕行：把**导航横向目标**真正改到一边，越过障碍后再回到通道中心。
     之前只设 self.steer_hint，没有任何执行器读取它 —— 那个不算绕行。

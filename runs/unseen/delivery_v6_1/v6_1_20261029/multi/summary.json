@@ -1,0 +1,117 @@
+{
+  "schema": "multi-parent-summary/v6_1",
+  "batch": "v6_1_20261029",
+  "config": "configs/unseen_v6_1_fusion.json",
+  "cases": {
+    "R01": {
+      "observation": "runs/unseen/recovery_r3/obs_R01",
+      "n_candidates": 4,
+      "n_qualified": 4,
+      "candidates": [
+        {
+          "parent": "C_R01_face12k",
+          "mask_iou": 0.952,
+          "vis_p95_mm": 2.037,
+          "freespace": 0.1404,
+          "volume_m3": 0.006732906,
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "qualified": true,
+          "why": "（合格但 freespace 0.1404 未过 strict 0.05）",
+          "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/C_R01_face12k/manifest.json"
+        },
+        {
+          "parent": "G_R01",
+          "mask_iou": 0.9546,
+          "vis_p95_mm": 2.107,
+          "freespace": 0.1426,
+          "volume_m3": 0.006088604,
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "qualified": true,
+          "why": "（合格但 freespace 0.1426 未过 strict 0.05）",
+          "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01/manifest.json"
+        },
+        {
+          "parent": "G_R01_rep2",
+          "mask_iou": 0.9547,
+          "vis_p95_mm": 2.145,
+          "freespace": 0.1403,
+          "volume_m3": 0.00607999,
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "qualified": true,
+          "why": "（合格但 freespace 0.1403 未过 strict 0.05）",
+          "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep2/manifest.json"
+        },
+        {
+          "parent": "G_R01_rep3",
+          "mask_iou": 0.9546,
+          "vis_p95_mm": 2.166,
+          "freespace": 0.1301,
+          "volume_m3": 0.006071604,
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "qualified": true,
+          "why": "（合格但 freespace 0.1301 未过 strict 0.05）",
+          "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep3/manifest.json"
+        }
+      ],
+      "H5_F_multi": {
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/H5_F_multi/manifest.json",
+        "n_parents": 4,
+        "parents": [
+          "C_R01_face12k",
+          "G_R01",
+          "G_R01_rep2",
+          "G_R01_rep3"
+        ],
+        "world_sha": "0e475fa750aebb97063cf1cebfa386a88bde001ecf54171af0e6551c8c58026d",
+        "mask_iou": 0.9519,
+        "vis_p95_mm": 2.088,
+        "freespace": 0.1472,
+        "volume_m3": 0.006739146,
+        "hidden_kept_ratio": 1.0,
+        "qualified": true,
+        "why": "（合格但 freespace 0.1472 未过 strict 0.05）"
+      }
+    },
+    "R03": {
+      "observation": "runs/unseen/recovery_r3/obs_R03",
+      "n_candidates": 1,
+      "n_qualified": 1,
+      "candidates": [
+        {
+          "parent": "G_R03",
+          "mask_iou": 0.9349,
+          "vis_p95_mm": 2.522,
+          "freespace": 0.119,
+          "volume_m3": 0.012030521,
+          "solid_method": [
+            "ray_parity"
+          ],
+          "qualified": true,
+          "why": "（合格但 freespace 0.119 未过 strict 0.05）",
+          "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R03/G_R03/manifest.json"
+        }
+      ],
+      "H5_F_multi": null
+    }
+  },
+  "findings": [
+    "R01 四个不同的真实 Lux3D 父候选在同一观测下收敛到同一可见面：IoU 0.9520-0.9547、可见点 P95 2.04-2.17 mm；四父并集（H5_F_multi）IoU 0.9519、P95 2.09 mm。说明可见面由观测主导，而不是由父候选主导。",
+    "四个父候选的融合体体积不同（0.00673 / 0.00609 / 0.00608 / 0.00607 m3），即“同可见面、不同隐藏结构”在真实父候选上成立，而不只存在于构造 fixture。",
+    "R03 单父候选：IoU 0.9349、P95 2.52 mm，作为第二个案例覆盖。",
+    "全部候选 freespace 0.13-0.15，仍未过 strict 0.05；F0 已知答案证明这部分来自我方提取阶段。",
+    "体积数值被放大：Lux3D 父候选非水密，父实体化走 shell_floodfill 回退（已标 solid_method），因此融合体体积不能当作真实物体体积估计。"
+  ],
+  "not_established": [
+    "H5_F_multi 的决策收益（尚未预演/执行）",
+    "碰撞保真（multi 资产尚未做 box 转换与度量）",
+    "R01 是开发案例，不是留出样本"
+  ]
+}

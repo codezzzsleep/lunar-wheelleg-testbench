@@ -97,7 +97,67 @@
       "note": "box route preserves geometry to ~1 mm; IoU 0.937 at 2.5 mm evaluation vs 4 mm construction. Probes/perf/cache identity still open."
     },
     "D": {
-      "status": "pending"
+      "status": "partial",
+      "artifacts": [
+        "scripts/v6_1_multi.py",
+        "multi/summary.json",
+        "multi/R01/index.json",
+        "multi/R03/index.json"
+      ],
+      "evidence": {
+        "R01": {
+          "n_candidates": 4,
+          "n_qualified": 4,
+          "per_parent": [
+            {
+              "parent": "C_R01_face12k",
+              "iou": 0.952,
+              "p95_mm": 2.037,
+              "volume_m3": 0.006732906
+            },
+            {
+              "parent": "G_R01",
+              "iou": 0.9546,
+              "p95_mm": 2.107,
+              "volume_m3": 0.006088604
+            },
+            {
+              "parent": "G_R01_rep2",
+              "iou": 0.9547,
+              "p95_mm": 2.145,
+              "volume_m3": 0.00607999
+            },
+            {
+              "parent": "G_R01_rep3",
+              "iou": 0.9546,
+              "p95_mm": 2.166,
+              "volume_m3": 0.006071604
+            }
+          ],
+          "H5_F_multi": {
+            "n_parents": 4,
+            "iou": 0.9519,
+            "p95_mm": 2.088,
+            "freespace": 0.1472
+          }
+        },
+        "R03": {
+          "n_candidates": 1,
+          "iou": 0.9349,
+          "p95_mm": 2.522,
+          "freespace": 0.119
+        }
+      },
+      "findings": [
+        "四个不同真实父候选收敛到同一可见面（IoU 0.952-0.955 / P95 2.04-2.17 mm），但体积不同（0.00673/0.00609/0.00608/0.00607 m3）：真实父候选上存在“同可见面、不同隐藏结构”",
+        "体积被父实体化回退放大（非水密 -> shell_floodfill），不能当作真实体积",
+        "freespace 0.13-0.15 仍未过 strict"
+      ],
+      "pending": [
+        "决策完整性合同与决策先落盘",
+        "multi 的预演与真值执行",
+        "multi 资产的碰撞度量与探针"
+      ]
     },
     "E": {
       "status": "pending"

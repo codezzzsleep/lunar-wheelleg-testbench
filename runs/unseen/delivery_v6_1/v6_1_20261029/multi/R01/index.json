@@ -1,0 +1,97 @@
+{
+  "schema": "multi-parent/v6_1",
+  "case": "R01",
+  "observation": "runs/unseen/recovery_r3/obs_R01",
+  "qualification_rule": {
+    "mask_iou_min": 0.9,
+    "vis_p95_mm_max": 5.0,
+    "note": "只用可见面，不看真值；不合格候选只作诊断，不进 multi"
+  },
+  "candidates": [
+    {
+      "parent": "C_R01_face12k",
+      "world": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align",
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/C_R01_face12k/manifest.json",
+      "world_sha": "32e1f88abf7789f5df70cd64c3c9f0264efd9b1e8dc2f01bda9ba8647a0076b4",
+      "mask_iou": 0.952,
+      "vis_p95_mm": 2.037,
+      "freespace": 0.1404,
+      "volume_m3": 0.006732906,
+      "hidden_kept_ratio": 1.0,
+      "solid_method": [
+        "shell_floodfill"
+      ],
+      "qualified": true,
+      "why": "（合格但 freespace 0.1404 未过 strict 0.05）"
+    },
+    {
+      "parent": "G_R01",
+      "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01",
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01/manifest.json",
+      "world_sha": "71908e2490cde6c222cff8a20110022c3d411bc6d173a645ac86eecb0b37d800",
+      "mask_iou": 0.9546,
+      "vis_p95_mm": 2.107,
+      "freespace": 0.1426,
+      "volume_m3": 0.006088604,
+      "hidden_kept_ratio": 1.0,
+      "solid_method": [
+        "shell_floodfill"
+      ],
+      "qualified": true,
+      "why": "（合格但 freespace 0.1426 未过 strict 0.05）"
+    },
+    {
+      "parent": "G_R01_rep2",
+      "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep2",
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep2/manifest.json",
+      "world_sha": "5e5217aa830c16b80e973ba32b4e67f7dae9bfa1d4510e1779dc5c992934464c",
+      "mask_iou": 0.9547,
+      "vis_p95_mm": 2.145,
+      "freespace": 0.1403,
+      "volume_m3": 0.00607999,
+      "hidden_kept_ratio": 1.0,
+      "solid_method": [
+        "shell_floodfill"
+      ],
+      "qualified": true,
+      "why": "（合格但 freespace 0.1403 未过 strict 0.05）"
+    },
+    {
+      "parent": "G_R01_rep3",
+      "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep3",
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep3/manifest.json",
+      "world_sha": "b2a4e3897b588cf8df8e3679658688d71a62966817794503fc7b0d66dcc1fde1",
+      "mask_iou": 0.9546,
+      "vis_p95_mm": 2.166,
+      "freespace": 0.1301,
+      "volume_m3": 0.006071604,
+      "hidden_kept_ratio": 1.0,
+      "solid_method": [
+        "shell_floodfill"
+      ],
+      "qualified": true,
+      "why": "（合格但 freespace 0.1301 未过 strict 0.05）"
+    }
+  ],
+  "n_candidates": 4,
+  "n_qualified": 4,
+  "H5_F_multi": {
+    "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/H5_F_multi/manifest.json",
+    "n_parents": 4,
+    "parents": [
+      "C_R01_face12k",
+      "G_R01",
+      "G_R01_rep2",
+      "G_R01_rep3"
+    ],
+    "world_sha": "0e475fa750aebb97063cf1cebfa386a88bde001ecf54171af0e6551c8c58026d",
+    "mask_iou": 0.9519,
+    "vis_p95_mm": 2.088,
+    "freespace": 0.1472,
+    "volume_m3": 0.006739146,
+    "hidden_kept_ratio": 1.0,
+    "qualified": true,
+    "why": "（合格但 freespace 0.1472 未过 strict 0.05）"
+  },
+  "not_established": "multi 只是“多个真实父候选的并集先验”，不等于多个独立观测，也不等于更多物体；同源变体不算新样本"
+}

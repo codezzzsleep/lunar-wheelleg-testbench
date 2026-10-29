@@ -1,0 +1,32 @@
+{
+  "schema": "multi-parent/v6_1",
+  "case": "R03",
+  "observation": "runs/unseen/recovery_r3/obs_R03",
+  "qualification_rule": {
+    "mask_iou_min": 0.9,
+    "vis_p95_mm_max": 5.0,
+    "note": "只用可见面，不看真值；不合格候选只作诊断，不进 multi"
+  },
+  "candidates": [
+    {
+      "parent": "G_R03",
+      "world": "runs/unseen/recovery_r3/align_v3/world/G_R03",
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R03/G_R03/manifest.json",
+      "world_sha": "3eccad03a9d7972c39013e2b76ad738eea5ef76b2eefde37bbfdc7ff2dc10488",
+      "mask_iou": 0.9349,
+      "vis_p95_mm": 2.522,
+      "freespace": 0.119,
+      "volume_m3": 0.012030521,
+      "hidden_kept_ratio": 1.0,
+      "solid_method": [
+        "ray_parity"
+      ],
+      "qualified": true,
+      "why": "（合格但 freespace 0.119 未过 strict 0.05）"
+    }
+  ],
+  "n_candidates": 1,
+  "n_qualified": 1,
+  "H5_F_multi": null,
+  "not_established": "合格候选不足 2 个，未构建 multi"
+}

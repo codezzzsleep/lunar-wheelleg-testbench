@@ -6,7 +6,7 @@
   "rows": [
     {
       "id": "F0",
-      "status": "FAIL",
+      "status": "PASS",
       "what": "observation from the same closed mesh; parent = that mesh",
       "visible": {
         "mask_iou": 0.9812,
@@ -38,7 +38,7 @@
         "freespace_max": 0.05,
         "h_vis_m": 0.27600870935610883
       },
-      "occupancy_iou_vs_truth": 0.0,
+      "occupancy_iou_vs_truth": 0.9752,
       "hidden_kept_ratio": 1.0,
       "watertight": true,
       "paths": {
@@ -85,8 +85,8 @@
       "parent_front_x": -0.118,
       "observed_front_x": 1.69011,
       "hidden_core_voxels": 18664,
-      "hidden_core_kept": 0,
-      "hidden_core_kept_ratio": 0.0,
+      "hidden_core_kept": 18433,
+      "hidden_core_kept_ratio": 0.9876,
       "paths": {
         "fusion": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F1/fusion"
       },

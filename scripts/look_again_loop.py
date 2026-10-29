@@ -36,6 +36,7 @@ import wheelleg_env
 from runner import EpisodeRunner
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+INIT_CFG = json.loads((ROOT / 'configs/unseen_initial_state_v5.json').read_text())
 IOU_MIN = 0.85
 
 
@@ -43,7 +44,8 @@ def _spec(world, case, seed=0):
     spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=2.6, name='ll')
     spec['channel'] = {'center_y': 0.0, 'half_width': float(case.get('channel_half', 1.2))}
     spec['skill_cfg'] = {'task': 'M'}
-    spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
+    spec['init_perturbation'] = {'lateral_m': float(INIT_CFG['lateral_m']),
+                                 'yaw_rad': float(INIT_CFG['yaw_rad'])}
     spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
     spec['objects'] = [{'posed_dir': str(world)}]
     return spec
@@ -53,8 +55,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--case', required=True)
     ap.add_argument('--obs', required=True)
-    ap.add_argument('--candidates', required=True,
-                    help='候选碰撞部件目录的父目录（每个候选一个子目录）')
+    ap.add_argument('--candidates', default=None,
+                    help='候选碰撞部件目录的父目录（每个候选一个子目录）；与 --candidates-json 二选一')
+    ap.add_argument('--candidates-json', default=None,
+                    help='候选登记表 JSON（world_dir/collision_dir/candidate_id/source_kind）')
+    ap.add_argument('--trigger-only', action='store_true',
+                    help='只算候选分歧触发，不驾驶/不观察')
+    ap.add_argument('--force-observe', action='store_true',
+                    help='候选一致时仍观察（仅诊断；默认不触发）')
+    ap.add_argument('--trigger-seeds', type=int, nargs='+', default=[0, 1, 2])
+    ap.add_argument('--time-limit', type=float, default=30.0)
     ap.add_argument('--out', required=True)
     ap.add_argument('--seed', type=int, default=0)
     ap.add_argument('--camera-height', type=float, default=0.32)
@@ -63,9 +73,26 @@ def main():
     case = json.loads(pathlib.Path(a.case).read_text())
     obs = json.loads((pathlib.Path(a.obs) / 'observation.json').read_text())
     vis = obs['visible']
-    cands = sorted(p for p in pathlib.Path(a.candidates).iterdir() if p.is_dir())
+    if a.candidates_json:
+        raw = json.loads(pathlib.Path(a.candidates_json).read_text())
+        if isinstance(raw, dict):
+            raw = raw.get('accepted') or raw.get('candidates') or []
+        cands = [{'id': c.get('candidate_id'), 'world_dir': c.get('world_dir'),
+                  'collision_dir': c.get('collision_dir') or c.get('world_dir'),
+                  'source_kind': c.get('source_kind', 'unknown'),
+                  'planning_eligible': c.get('planning_eligible')} for c in raw]
+        if not cands:
+            raise SystemExit('候选登记表为空')
+    elif a.candidates:
+        cands = [{'id': p.name, 'world_dir': str(p), 'collision_dir': str(p),
+                  'source_kind': 'unknown'} for p in
+                 sorted(p for p in pathlib.Path(a.candidates).iterdir() if p.is_dir())]
+    else:
+        raise SystemExit('必须给 --candidates 或 --candidates-json')
     rec = {'workflow': 'look_again_loop/v1', 'seed': a.seed,
-           'candidates_in': [c.name for c in cands],
+           'candidates_in': [c['id'] for c in cands],
+           'candidate_source': ('json' if a.candidates_json else 'directory'),
+           'candidate_kinds': {c['id']: c.get('source_kind') for c in cands},
            'criteria': {'iou_min': IOU_MIN, 'min_target_px': DO.MIN_TARGET_PX,
                         'stable': 'v_lin<%.2f v_ang<%.2f tilt<%.0f hold>=%.1fs'
                                   % (DO.STABLE_V_LIN, DO.STABLE_V_ANG,
@@ -73,9 +100,59 @@ def main():
 
     # ---------- 1. 首视角 + 真实行驶观察 ----------
     PROTO = json.loads((ROOT / 'configs/unseen_phase_protocol_v2.json').read_text())
-    TOTAL_S = float(PROTO['total_task_seconds'])
+    TOTAL_S = float(a.time_limit if a.time_limit else PROTO['total_task_seconds'])
     rec['phase_protocol'] = PROTO['version']
     rec['total_task_seconds'] = TOTAL_S
+    # ---------- 0. 候选分歧触发（V5 P4） ----------
+    def _trigger(cands, vis, case, seeds, total_s):
+        per = []
+        for c in cands:
+            safe = {}
+            for o in ACT.OPTIONS:
+                if o == ACT.FALLBACK:
+                    continue
+                ok, why = ACT.applicable(o, vis, case.get('channel_half', 1.2))
+                if not ok:
+                    continue
+                rs = []
+                for sd in seeds:
+                    e = wheelleg_env.WheelLegEnv(
+                        _spec(pathlib.Path(c['collision_dir']), case),
+                        max_seconds=total_s)
+                    e.reset(seed=sd)
+                    r = EpisodeRunner(e, skills.make_skill(o), visible=vis, seed=sd).run()
+                    rs.append({'success': r['success'],
+                               'cost': (r['t_end'] if r['success'] else
+                                        (40.0 if r['abort'] else 60.0))})
+                if rs and all(x['success'] for x in rs):
+                    safe[o] = max(x['cost'] for x in rs)
+            chosen = min(safe, key=safe.get) if safe else ACT.FALLBACK
+            per.append({'candidate': c['id'], 'source_kind': c.get('source_kind'),
+                        'safe': safe, 'chosen': chosen,
+                        'safe_actions': sorted(safe)})
+        chosen_set = sorted({p['chosen'] for p in per})
+        safe_set = sorted({tuple(p['safe_actions']) for p in per})
+        return {'rule': 'trigger/v1: 候选的稳健可行动作集合或最坏代价最优动作不一致 -> 观察',
+                'triggered': bool(len(chosen_set) > 1 or len(safe_set) > 1),
+                'chosen_set': chosen_set, 'safe_sets': safe_set,
+                'candidates': per,
+                'reason': ('候选动作分歧' if len(chosen_set) > 1
+                           else ('候选安全集合分歧' if len(safe_set) > 1
+                                 else '候选一致，不触发观察'))}
+
+    trig = None
+    if a.candidates_json or a.trigger_only:
+        trig = _trigger(cands, vis, case, a.trigger_seeds, TOTAL_S)
+        (out / 'trigger.json').write_text(json.dumps(trig, indent=2, ensure_ascii=False))
+        rec['trigger'] = trig
+        if a.trigger_only or (not trig['triggered'] and not a.force_observe):
+            rec['outcome'] = ('trigger_only' if a.trigger_only else 'not_triggered')
+            (out / 'look_loop.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
+            print(json.dumps({'outcome': rec['outcome'],
+                              'triggered': trig['triggered'],
+                              'chosen_set': trig['chosen_set'],
+                              'reason': trig['reason']}, ensure_ascii=False))
+            return 0
     truth_dir, truth_meta = build_truth_assets(case, out / 'truth')
     rec['truth_assets'] = truth_meta
     env = wheelleg_env.WheelLegEnv(_spec(pathlib.Path(truth_dir), case),
@@ -110,7 +187,7 @@ def main():
 
     if not usable:
         rec['outcome'] = 'observation_failed'
-        rec['screening'] = [{'candidate': c.name, 'status': 'not_evaluated'} for c in cands]
+        rec['screening'] = [{'candidate': c['id'], 'status': 'not_evaluated'} for c in cands]
         (out / 'look_loop.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))
         print(json.dumps({'outcome': rec['outcome'],
                           'reason': st.get('stable'), 'mask': v2['mask_px']},
@@ -120,23 +197,24 @@ def main():
     # ---------- 2. 用真实第二观测筛选候选 ----------
     per = []
     for c in cands:
-        e2 = wheelleg_env.WheelLegEnv(_spec(c, case), max_seconds=TOTAL_S)
+        e2 = wheelleg_env.WheelLegEnv(_spec(pathlib.Path(c['world_dir']), case),
+                                      max_seconds=TOTAL_S)
         e2.reset(seed=a.seed)
         # 关键：恢复到**观察后**状态（不是出生状态）
         e2.restore_state(dict(snapshot))
         cid2 = mujoco.mj_name2id(e2.model, mujoco.mjtObj.mjOBJ_CAMERA, 'front_cam')
         camera_io.restore(e2.model, e2.data, cid2, v2['snapshot'])
-        cv = DO.capture(e2, cid2, out / f'{c.name}_view2.png')
+        cv = DO.capture(e2, cid2, out / f"{c['id']}_view2.png")
         inter = int((cv['mask'] & v2['mask']).sum())
         union = int((cv['mask'] | v2['mask']).sum()) or 1
         iou = inter / union
         kept = bool(cv['mask_px'] > 300 and iou >= IOU_MIN)
-        per.append({'candidate': c.name, 'mask_px': cv['mask_px'],
+        per.append({'candidate': c['id'], 'mask_px': cv['mask_px'],
                     'iou_vs_real_view2': round(float(iou), 4), 'kept': kept,
                     'status': 'kept' if kept else 'rejected_by_second_view'})
     rec['screening'] = per
-    kept = [c for c in cands if any(p['candidate'] == c.name and p['kept'] for p in per)]
-    rec['kept'] = [c.name for c in kept]
+    kept = [c for c in cands if any(p['candidate'] == c['id'] and p['kept'] for p in per)]
+    rec['kept'] = [c['id'] for c in kept]
 
     if not kept:
         rec['outcome'] = 'all_candidates_rejected'
@@ -151,15 +229,16 @@ def main():
         for o in options:
             ok, why = ACT.applicable(o, vis, case.get('channel_half', 1.2))
             if not ok:
-                reh.append({'candidate': c.name, 'option': o, 'not_applicable': why,
+                reh.append({'candidate': c['id'], 'option': o, 'not_applicable': why,
                             'success': False, 'cost': None})
                 continue
-            e3 = wheelleg_env.WheelLegEnv(_spec(c, case), max_seconds=TOTAL_S)
+            e3 = wheelleg_env.WheelLegEnv(_spec(pathlib.Path(c['collision_dir']), case),
+                                          max_seconds=TOTAL_S)
             e3.reset(seed=a.seed)
             e3.restore_state(dict(snapshot))        # 观察后状态
             r = EpisodeRunner(e3, skills.make_skill(o), visible=vis, seed=a.seed)
             o_ = r.run_from_state(dict(snapshot))
-            reh.append({'candidate': c.name, 'option': o, 'reason': o_['reason'],
+            reh.append({'candidate': c['id'], 'option': o, 'reason': o_['reason'],
                         'success': o_['success'], 'abort': o_['abort'],
                         't_end': o_['t_end'], 't_start': o_['t_start'],
                         'cost': (o_['t_end'] if o_['success'] else
@@ -231,7 +310,8 @@ def _spec_world(case):
     spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.6, name='ll')
     spec['channel'] = {'center_y': 0.0, 'half_width': float(case.get('channel_half', 1.2))}
     spec['skill_cfg'] = {'task': 'M'}
-    spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
+    spec['init_perturbation'] = {'lateral_m': float(INIT_CFG['lateral_m']),
+                                 'yaw_rad': float(INIT_CFG['yaw_rad'])}
     spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
     spec['objects'] = [{'mesh_file': str(pathlib.Path(case['mesh']).resolve()),
                         'x': case['obstacle_x'], 'y': 0.0, 'yaw_deg': 0.0,

@@ -1,0 +1,54 @@
+{
+  "schema": "look-again-v5/v1",
+  "real_candidate": {
+    "run": "trigger_face12k",
+    "source_kind": "lux3d",
+    "triggered": false,
+    "chosen_set": [
+      "L2"
+    ],
+    "reason": "候选一致，不触发观察"
+  },
+  "controlled_fixture": {
+    "trigger_run": "trigger_fixture_pair_box",
+    "triggered": true,
+    "chosen_set": [
+      "A0",
+      "S1"
+    ],
+    "source_kind": "fixture",
+    "full_run": "fixture_pair_full",
+    "observation_usable": true,
+    "baseline_m": 0.529,
+    "bearing_deg": 11.67,
+    "screening": [
+      {
+        "candidate": "FX_truth",
+        "iou": 0.998,
+        "kept": true
+      },
+      {
+        "candidate": "FX_box",
+        "iou": 0.4853,
+        "kept": false
+      }
+    ],
+    "chosen": "S1",
+    "execution": [
+      [
+        "S1",
+        "success"
+      ],
+      [
+        "R1",
+        "tipped"
+      ]
+    ]
+  },
+  "state_contract": {
+    "observation_state_hash": "a3405a027354c8667f9a0f532be01054",
+    "continuing_from": "snapshot"
+  },
+  "benefit_status": "NOT_ESTABLISHED",
+  "note": "真实候选没有分歧，按规则不观察；fixture 全链路只证明触发/筛选/续行接口，fixture 不计入 Lux3D 收益；真实多假设观察收益未建立"
+}

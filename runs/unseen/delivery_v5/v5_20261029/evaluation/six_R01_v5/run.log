@@ -1,0 +1,77 @@
+{
+ "truth_sha": "ae1837cd3114",
+ "methods": [
+  {
+   "method": "B0_blind",
+   "selected_action": "R1",
+   "n_exec": 3,
+   "n_expected": 3,
+   "complete": true,
+   "success": 0,
+   "abort": 0,
+   "fail": 3,
+   "mean_cost": 60.0,
+   "no_candidate": false
+  },
+  {
+   "method": "B1_height",
+   "selected_action": "A0",
+   "n_exec": 3,
+   "n_expected": 3,
+   "complete": true,
+   "success": 0,
+   "abort": 3,
+   "fail": 0,
+   "mean_cost": 40.0,
+   "no_candidate": false
+  },
+  {
+   "method": "B2_box",
+   "selected_action": "A0",
+   "n_exec": 3,
+   "n_expected": 3,
+   "complete": true,
+   "success": 0,
+   "abort": 3,
+   "fail": 0,
+   "mean_cost": 40.0,
+   "no_candidate": false
+  },
+  {
+   "method": "B3_mirror",
+   "selected_action": "S1",
+   "n_exec": 3,
+   "n_expected": 3,
+   "complete": true,
+   "success": 3,
+   "abort": 0,
+   "fail": 0,
+   "mean_cost": 6.593,
+   "no_candidate": false
+  },
+  {
+   "method": "H5_lux3d",
+   "selected_action": null,
+   "n_exec": 0,
+   "n_expected": 0,
+   "complete": true,
+   "success": 0,
+   "abort": 0,
+   "fail": 0,
+   "mean_cost": null,
+   "no_candidate": true
+  },
+  {
+   "method": "U_truth",
+   "selected_action": "S1",
+   "n_exec": 3,
+   "n_expected": 3,
+   "complete": true,
+   "success": 3,
+   "abort": 0,
+   "fail": 0,
+   "mean_cost": 6.593,
+   "no_candidate": false
+  }
+ ]
+}

@@ -1,0 +1,532 @@
+{
+  "schema": "formal-comparison/v5",
+  "batch_id": "v5_20261029",
+  "time_protocol": "phase-protocol/v2: 30 s; observation not included in these truth-execution rows",
+  "initial_state": "configs/unseen_initial_state_v5.json: lateral 0.05, yaw 0.05; qpos+qvel hashes recorded",
+  "cases": [
+    {
+      "case": "R01",
+      "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+      "truth_collision_sha": "08fba9fe3b8ba3d88f82062540495cbd",
+      "time_limit_s": 30.0,
+      "candidate": "C_R01_face12k",
+      "candidate_planning_eligible": true,
+      "candidate_strict_pass": false,
+      "candidate_metrics": {
+        "mask_iou": 0.8622,
+        "vis_pt_p95_mm": 11.0,
+        "freespace_violation": 0.5106,
+        "coacd_parts": 32,
+        "hit_part_cap": true
+      },
+      "initial_state_match": true,
+      "source_runs": [
+        "six_R01_v5",
+        "H5_R01_face12k"
+      ]
+    },
+    {
+      "case": "R02",
+      "truth_sha": "ddeb1722383c387b7c6743778e23c53c396e4ea920c9b93b227c77e0e00030eb",
+      "truth_collision_sha": "8bb01c6499b93feb8495fb69859bd42f",
+      "time_limit_s": 30.0,
+      "candidate": null,
+      "candidate_planning_eligible": false,
+      "candidate_strict_pass": null,
+      "candidate_metrics": null,
+      "initial_state_match": null,
+      "source_runs": [
+        "six_R02_v5"
+      ]
+    },
+    {
+      "case": "R03",
+      "truth_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+      "truth_collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+      "time_limit_s": 30.0,
+      "candidate": "G_R03",
+      "candidate_planning_eligible": true,
+      "candidate_strict_pass": false,
+      "candidate_metrics": {
+        "mask_iou": 0.8847,
+        "vis_pt_p95_mm": 7.938,
+        "freespace_violation": 0.1818,
+        "coacd_parts": 2,
+        "hit_part_cap": false
+      },
+      "initial_state_match": null,
+      "source_runs": [
+        "six_R03_v5"
+      ]
+    },
+    {
+      "case": "R04",
+      "truth_sha": "fd5a02c94aa76b5ebd8f535b8a3291a0934378bf9a7160f552e6decd462ac330",
+      "truth_collision_sha": "2d7f4c679f5cce1d4a33ca05b9aabff2",
+      "time_limit_s": 30.0,
+      "candidate": null,
+      "candidate_planning_eligible": false,
+      "candidate_strict_pass": null,
+      "candidate_metrics": null,
+      "initial_state_match": null,
+      "source_runs": [
+        "six_R04_v5"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "no_candidate": false,
+      "case": "R01",
+      "source": "six_R01_v5"
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R01",
+      "source": "six_R01_v5"
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R01",
+      "source": "six_R01_v5"
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.593,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R01",
+      "source": "six_R01_v5"
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.593,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R01",
+      "source": "six_R01_v5"
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": "L2",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 2,
+      "abort": 0,
+      "fail": 1,
+      "timeout": 1,
+      "mean_cost": 24.787,
+      "outcomes": [
+        "time_limit",
+        "success",
+        "success"
+      ],
+      "blind_success": 0,
+      "blind_mean_cost": 60.0,
+      "no_candidate": false,
+      "source_run": "evaluation/H5_R01_face12k",
+      "case": "R01",
+      "source": "H5_R01_face12k"
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "no_candidate": false,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": null,
+      "n_exec": 0,
+      "n_expected": 0,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": null,
+      "outcomes": [],
+      "no_candidate": true,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R02",
+      "source": "six_R02_v5"
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "D1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.387,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "D1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.387,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false,
+      "case": "R03",
+      "source": "six_R03_v5"
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "no_candidate": false,
+      "case": "R04",
+      "source": "six_R04_v5"
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R04",
+      "source": "six_R04_v5"
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R04",
+      "source": "six_R04_v5"
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R04",
+      "source": "six_R04_v5"
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": null,
+      "n_exec": 0,
+      "n_expected": 0,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": null,
+      "outcomes": [],
+      "no_candidate": true,
+      "case": "R04",
+      "source": "six_R04_v5"
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false,
+      "case": "R04",
+      "source": "six_R04_v5"
+    }
+  ],
+  "note": "R01 H5 用 C_R01_face12k（仅过工程政策，strict 失败）；R03 H5 用 G_R03（strict 失败）；R02/R04 无合格候选，H5 记 no_candidate；所有方法 30 s、同一真值/初态。"
+}

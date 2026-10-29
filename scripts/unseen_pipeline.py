@@ -27,6 +27,7 @@ import twins
 import wheelleg_env
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+INIT_CFG = json.loads((ROOT / 'configs/unseen_initial_state_v5.json').read_text())
 
 # H3 先验：3 个固定背面型面，**故意不等于**真值可能取到的 5 种
 PRIOR_BACKS = [('ramp_s', 18.0), ('ramp_l', 30.0), ('drop', 45.0)]
@@ -91,7 +92,8 @@ def _spec_from_world(world_dir, seed, goal_x=2.6):
     spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=goal_x,
                              name=pathlib.Path(world_dir).name)
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
-    spec['init_perturbation'] = {'lateral_m': GP.INIT_LAT, 'yaw_rad': GP.INIT_YAW}
+    spec['init_perturbation'] = {'lateral_m': float(INIT_CFG['lateral_m']),
+                                 'yaw_rad': float(INIT_CFG['yaw_rad'])}
     spec['skill_cfg'] = {'task': 'M', 'require_contact': False, 'settle_seconds': 1.0}
     spec['objects'] = [{'posed_dir': str(world_dir)}]      # 只有这一项，x/y/yaw 全不传
     return spec
@@ -146,6 +148,8 @@ def decide(matrix, options, tau=0.0, c_fail=60.0, c_abort=40.0):
     """
     hyps = sorted({m['hypothesis_id'] for m in matrix})
     seeds = sorted({m['seed'] for m in matrix})
+    if not hyps:
+        return {'insufficient_evidence': True, 'missing': 'no hypotheses in matrix'}
     stats = {}
     for o in options:
         if o == 'A0':
@@ -213,6 +217,8 @@ def main():
                     help='candidate_store 输出的候选 JSON 列表；H4/H5 必需')
     ap.add_argument('--policy', default='configs/unseen_planning_policy.json')
     ap.add_argument('--goal-x', type=float, default=2.6)
+    ap.add_argument('--time-limit', type=float, default=30.0,
+                    help='V5 统一物理任务时限（默认 30 s；旧 12/15 s 运行保留）')
     a = ap.parse_args()
 
     case = json.loads(pathlib.Path(a.case).read_text())
@@ -247,6 +253,10 @@ def main():
         cands = json.loads(pathlib.Path(a.candidates).read_text())
         if isinstance(cands, dict):
             cands = cands.get('accepted') or cands.get('candidates') or []
+        if not isinstance(cands, list):
+            raise SystemExit('候选 JSON 必须是列表或含 accepted/candidates 的对象')
+        if not cands:
+            raise SystemExit('候选列表为空：H5 需要至少一个 planning_eligible 候选')
         for c in cands:
             if c.get('coordinate_frame') != 'world':
                 raise SystemExit(f"候选 {c.get('candidate_id')} 不是 world 坐标系，拒绝")
@@ -309,7 +319,8 @@ def main():
                 if world_mode:
                     # 物理用 CoACD 碰撞部件（世界坐标、保姿态）；视觉网格不参与碰撞
                     m = rehearse_world(pathlib.Path(h['collision_dir']), o, sd,
-                                       visible=obs['visible'], goal_x=a.goal_x)
+                                       visible=obs['visible'], goal_x=a.goal_x,
+                                       time_limit=a.time_limit)
                 else:
                     m = rehearse_option(h['posed_dir'], h['H'], case['obstacle_x'], o, sd,
                                         visible=obs['visible'])
@@ -380,7 +391,7 @@ def main():
         for sd in seeds:
             if world_mode:
                 m = rehearse_world(truth_collision, o, sd, visible=obs['visible'],
-                                   goal_x=a.goal_x)
+                                   goal_x=a.goal_x, time_limit=a.time_limit)
             else:
                 m = rehearse_option(out / 'truth_posed', case['H'],
                                     case['obstacle_x'], o, sd,
@@ -409,6 +420,7 @@ def main():
                         'coacd_parts': h.get('coacd_parts')} for h in hyps],
         'n_hypotheses': len(hyps), 'n_seeds': len(seeds), 'options': options,
         'chosen': dec['chosen'], 'no_robust_option': dec['no_robust_option'],
+        'time_limit_s': a.time_limit,
         'chosen_truth_success': f"{sum(1 for m in chosen_rows if m['success'])}/{len(chosen_rows)}",
         'blind_truth_success': f"{sum(1 for m in blind_rows if m['success'])}/{len(blind_rows)}",
     }

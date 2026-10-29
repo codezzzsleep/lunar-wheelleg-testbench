@@ -1,0 +1,51 @@
+{
+  "workflow": "look_again_loop/v1",
+  "seed": 0,
+  "candidates_in": [
+    "C_R01_face12k"
+  ],
+  "candidate_source": "json",
+  "candidate_kinds": {
+    "C_R01_face12k": "lux3d"
+  },
+  "criteria": {
+    "iou_min": 0.85,
+    "min_target_px": 1500,
+    "stable": "v_lin<0.05 v_ang<0.10 tilt<8 hold>=0.4s"
+  },
+  "phase_protocol": "phase-protocol/v2",
+  "total_task_seconds": 30.0,
+  "trigger": {
+    "rule": "trigger/v1: 候选的稳健可行动作集合或最坏代价最优动作不一致 -> 观察",
+    "triggered": false,
+    "chosen_set": [
+      "L2"
+    ],
+    "safe_sets": [
+      [
+        "L2",
+        "R2",
+        "S1"
+      ]
+    ],
+    "candidates": [
+      {
+        "candidate": "C_R01_face12k",
+        "source_kind": "lux3d",
+        "safe": {
+          "R2": 7.6,
+          "L2": 6.1,
+          "S1": 6.44
+        },
+        "chosen": "L2",
+        "safe_actions": [
+          "L2",
+          "R2",
+          "S1"
+        ]
+      }
+    ],
+    "reason": "候选一致，不触发观察"
+  },
+  "outcome": "trigger_only"
+}

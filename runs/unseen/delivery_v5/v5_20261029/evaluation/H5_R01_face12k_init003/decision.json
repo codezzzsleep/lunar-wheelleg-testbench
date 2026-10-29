@@ -1,0 +1,95 @@
+{
+  "rule": "worst-case-risk/v1",
+  "tau": 0.0,
+  "c_fail": 60.0,
+  "c_abort": 40.0,
+  "hypotheses": [
+    "C_R01_face12k"
+  ],
+  "n_seeds": 3,
+  "stats": {
+    "R1": {
+      "f": {
+        "C_R01_face12k": 1.0
+      },
+      "c": {
+        "C_R01_face12k": 60.0
+      },
+      "R": 1.0,
+      "mean_c": 60.0
+    },
+    "R2": {
+      "f": {
+        "C_R01_face12k": 0.0
+      },
+      "c": {
+        "C_R01_face12k": 7.48
+      },
+      "R": 0.0,
+      "mean_c": 7.48
+    },
+    "L1": {
+      "f": {
+        "C_R01_face12k": 1.0
+      },
+      "c": {
+        "C_R01_face12k": 60.0
+      },
+      "R": 1.0,
+      "mean_c": 60.0
+    },
+    "L2": {
+      "f": {
+        "C_R01_face12k": 0.0
+      },
+      "c": {
+        "C_R01_face12k": 6.087
+      },
+      "R": 0.0,
+      "mean_c": 6.087
+    },
+    "S1": {
+      "f": {
+        "C_R01_face12k": 0.0
+      },
+      "c": {
+        "C_R01_face12k": 6.407
+      },
+      "R": 0.0,
+      "mean_c": 6.407
+    },
+    "D1": {
+      "f": {
+        "C_R01_face12k": 1.0
+      },
+      "c": {
+        "C_R01_face12k": 60.0
+      },
+      "R": 1.0,
+      "mean_c": 60.0
+    },
+    "D2": {
+      "f": {
+        "C_R01_face12k": 1.0
+      },
+      "c": {
+        "C_R01_face12k": 60.0
+      },
+      "R": 1.0,
+      "mean_c": 60.0
+    }
+  },
+  "safe_set": [
+    "L2",
+    "S1",
+    "R2"
+  ],
+  "chosen": "L2",
+  "tie": false,
+  "tied_options": [
+    "L2"
+  ],
+  "no_robust_option": false,
+  "insufficient_evidence": false,
+  "reason_text": "在这 1 个候选、每个 3 个测试初态中均通过"
+}

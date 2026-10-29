@@ -1,0 +1,58 @@
+{
+  "workflow": "look_again_loop/v1",
+  "seed": 0,
+  "candidates_in": [
+    "FX_truth",
+    "FX_R01"
+  ],
+  "candidate_source": "json",
+  "candidate_kinds": {
+    "FX_truth": "fixture",
+    "FX_R01": "fixture"
+  },
+  "criteria": {
+    "iou_min": 0.85,
+    "min_target_px": 1500,
+    "stable": "v_lin<0.05 v_ang<0.10 tilt<8 hold>=0.4s"
+  },
+  "phase_protocol": "phase-protocol/v2",
+  "total_task_seconds": 30.0,
+  "trigger": {
+    "rule": "trigger/v1: 候选的稳健可行动作集合或最坏代价最优动作不一致 -> 观察",
+    "triggered": false,
+    "chosen_set": [
+      "S1"
+    ],
+    "safe_sets": [
+      [
+        "S1"
+      ]
+    ],
+    "candidates": [
+      {
+        "candidate": "FX_truth",
+        "source_kind": "fixture",
+        "safe": {
+          "S1": 6.7
+        },
+        "chosen": "S1",
+        "safe_actions": [
+          "S1"
+        ]
+      },
+      {
+        "candidate": "FX_R01",
+        "source_kind": "fixture",
+        "safe": {
+          "S1": 8.96
+        },
+        "chosen": "S1",
+        "safe_actions": [
+          "S1"
+        ]
+      }
+    ],
+    "reason": "候选一致，不触发观察"
+  },
+  "outcome": "trigger_only"
+}

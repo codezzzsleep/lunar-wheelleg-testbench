@@ -1,0 +1,60 @@
+{
+  "schema": "benefit-summary/v5",
+  "batch_id": "v5_20261029",
+  "benefit_status": "NOT_ESTABLISHED",
+  "R01": {
+    "H5": {
+      "action": "L2",
+      "success": "2/3",
+      "mean_cost": 24.787,
+      "timeout": 1
+    },
+    "B0_blind": {
+      "action": "R1",
+      "success": "0/3"
+    },
+    "B3_mirror": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "U_truth": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "width_rule": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "conclusion": "H5 2/3 低于 B3/U/宽度规则 3/3；唯一一次失败是 seed0 L2 30.02 s 超时；无收益"
+  },
+  "R03": {
+    "H5": {
+      "action": "R1",
+      "success": "3/3",
+      "mean_cost": 6.42
+    },
+    "B0_blind": {
+      "action": "R1",
+      "success": "3/3",
+      "mean_cost": 6.42
+    },
+    "conclusion": "H5 与盲走同分同代价；无收益"
+  },
+  "R02_R04": {
+    "conclusion": "所有非放弃动作 0/3；能力边界；H5 no_candidate"
+  },
+  "state_correction": "旧 H5 face12k 在 gate_physics yaw=0.03 初态下 L2 3/3；六方法用 yaw=0.05。V5 统一为 0.05/0.05 后 H5 2/3，旧 3/3 结果保留为 init003 但不用于正式表。",
+  "what_is_supported": [
+    "H5 在 R01 上优于盲走/B1/B2（3/3 vs 0/3）在旧初态下；统一初态后不成立",
+    "链路、预演、独立真值执行、负例回退可运行"
+  ],
+  "what_is_not_supported": [
+    "H5 优于 B3 镜像、可见宽度规则或 U_truth",
+    "隐藏背面推断必要",
+    "Lux3D 独有收益",
+    "R01 是独立留出案例"
+  ]
+}

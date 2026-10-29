@@ -35,6 +35,7 @@ import runner
 import skills
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+INIT_CFG = json.loads((ROOT / 'configs/unseen_initial_state_v5.json').read_text())
 # 完整动作库（S1 跨骑、D1/D2 绕行按公开可见量判定适用性）
 OPTIONS = ('R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2', 'A0')
 FAR, ABORT = 60.0, 40.0
@@ -216,6 +217,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--protocol', required=True)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--time-limit', type=float, default=30.0,
+                    help='统一物理任务时限（V5 默认 30 s；旧 six_v4 是 15 s）')
     a = ap.parse_args()
     proto = json.loads(pathlib.Path(a.protocol).read_text())
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
@@ -246,17 +249,27 @@ def main():
            'physics_dt_s': None}
 
     def initial_hash(env_world, seed):
-        """同一候选/真值下，reset(seed) 得到的实际初态哈希（用于配对校验）。"""
+        """同一候选/真值下，reset(seed) 得到的实际初态哈希（qpos，兼容旧记录）。"""
         e = wheelleg_env.WheelLegEnv(_spec_for(env_world, case, goal_x))
         e.reset(seed=seed)
         return hashlib.sha256(
             np.asarray(e.data.qpos, dtype=np.float64).tobytes()).hexdigest()[:16]
 
+    def initial_full_hash(env_world, seed):
+        """qpos+qvel 的完整初态哈希（V5：不只 q0/qpos）。"""
+        e = wheelleg_env.WheelLegEnv(_spec_for(env_world, case, goal_x))
+        e.reset(seed=seed)
+        h = hashlib.sha256()
+        h.update(np.asarray(e.data.qpos, dtype=np.float64).tobytes())
+        h.update(np.asarray(e.data.qvel, dtype=np.float64).tobytes())
+        return h.hexdigest()[:16]
+
     def _spec_for(world_dir, case, gx):
         spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=gx,
                                  name=pathlib.Path(world_dir).name)
         spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
-        spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
+        spec['init_perturbation'] = {'lateral_m': float(INIT_CFG['lateral_m']),
+                                     'yaw_rad': float(INIT_CFG['yaw_rad'])}
         spec['skill_cfg'] = {'task': 'M', 'require_contact': False,
                              'settle_seconds': 1.0}
         spec['objects'] = [{'posed_dir': str(world_dir)}]
@@ -290,12 +303,14 @@ def main():
         rows = []
         for s_ in seeds:
             ish = initial_hash(world_dir, s_)
+            ifh = initial_full_hash(world_dir, s_)
             for o in OPTIONS:
                 if not APPLY[o][0]:
                     rows.append({'method': method, 'phase': phase,
                                  'hypothesis': method, 'option': o,
                                  'initial_state_id': f'seed{s_}',
                                  'initial_state_hash': ish,
+                                 'initial_full_hash': ifh,
                                  'environment_kind': env_kind,
                                  'environment_sha': env_sha,
                                  'truth_sha': truth_sha if env_kind == 'truth' else None,
@@ -304,12 +319,14 @@ def main():
                                  'success': False, 'abort': False,
                                  'reason': APPLY[o][1], 'cost': None})
                     continue
-                r = run_episode(world_dir, o, s_, vis, goal_x, soil_mode=phy['soil_mode'])
+                r = run_episode(world_dir, o, s_, vis, goal_x,
+                                time_limit=a.time_limit, soil_mode=phy['soil_mode'])
                 row = dict(r)
                 row.update({'method': method, 'phase': phase,
                             'hypothesis': method,
                             'initial_state_id': f'seed{s_}',
                             'initial_state_hash': ish,
+                            'initial_full_hash': ifh,
                             'environment_kind': env_kind,
                             'environment_sha': env_sha,
                             'truth_sha': truth_sha if env_kind == 'truth' else None,
@@ -324,11 +341,14 @@ def main():
             return rows
         for s_ in seeds:
             ish = initial_hash(truth_col, s_)
-            r = run_episode(truth_col, dec, s_, vis, goal_x, soil_mode=phy['soil_mode'])
+            ifh = initial_full_hash(truth_col, s_)
+            r = run_episode(truth_col, dec, s_, vis, goal_x,
+                            time_limit=a.time_limit, soil_mode=phy['soil_mode'])
             row = dict(r)
             row.update({'method': method, 'phase': 'execution',
                         'hypothesis': method, 'initial_state_id': f'seed{s_}',
                         'initial_state_hash': ish,
+                        'initial_full_hash': ifh,
                         'environment_kind': 'truth', 'environment_sha': truth_sha,
                         'truth_sha': truth_sha, 'truth_collision_sha': env_sha,
                         'soil_mode': phy['soil_mode']})
@@ -453,6 +473,7 @@ def main():
         'protocol': a.protocol, 'truth_sha': truth_sha,
         'truth_collision_sha': truth_col_sha,
         'soil_mode': phy['soil_mode'],
+        'time_limit_s': a.time_limit,
         'expected_keys': [{'method': d_['method'],
                            'initial_state_id': f'seed{s_}',
                            'n_expected': (len(seeds) if d_['selected_action'] else 0)}

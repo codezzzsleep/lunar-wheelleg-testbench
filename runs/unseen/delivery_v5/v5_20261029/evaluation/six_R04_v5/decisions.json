@@ -1,0 +1,83 @@
+[
+  {
+    "method": "B0_blind",
+    "selected_action": "R1",
+    "evidence": {
+      "rule": "blind: always R1"
+    },
+    "planning_inputs": [
+      "no candidate"
+    ]
+  },
+  {
+    "method": "B1_height",
+    "selected_action": "A0",
+    "evidence": {
+      "rule": "visible height ratio 2.42 > 1.6"
+    },
+    "planning_inputs": [
+      "H_vis",
+      "wheel_r",
+      "frozen thresholds"
+    ]
+  },
+  {
+    "method": "B2_box",
+    "selected_action": "A0",
+    "evidence": "no non-A0 option succeeded in every initial state",
+    "tied": [],
+    "rehearsal_on": "box_prior",
+    "rehearsal_environment_sha": "2c8190e1312923b2468ce584485889e9",
+    "hypothesis_geometry": {
+      "depth_prior_m": 0.22,
+      "front_face_x": 1.51333,
+      "center_x": 1.62333,
+      "back_face_x": 1.73333,
+      "note": "前表面与观测前沿对齐；背深来自冻结先验，不读真值"
+    },
+    "planning_inputs": [
+      "W_vis",
+      "H_vis",
+      "x_front",
+      "frozen depth prior"
+    ]
+  },
+  {
+    "method": "B3_mirror",
+    "selected_action": "A0",
+    "evidence": "no non-A0 option succeeded in every initial state",
+    "tied": [],
+    "rehearsal_on": "mirror_hypothesis",
+    "rehearsal_environment_sha": "a5e417335ed8d257ac0f19c7c66ade16",
+    "hypothesis_geometry": {
+      "split_plane_x": 1.85477,
+      "front_x": 1.51333,
+      "visible_depth_m": 0.34143,
+      "min_x_before": 1.51333,
+      "mirrored_min_x": 1.85477,
+      "note": "保留观测前表面；未知部分关于最深可见点补向 +x（遮挡侧），不读真值中心/背深",
+      "hull_min_x": 1.51333,
+      "hull_max_x": 2.1962
+    },
+    "planning_inputs": [
+      "visible point cloud (disclosed)"
+    ]
+  },
+  {
+    "method": "H5_lux3d",
+    "selected_action": null,
+    "evidence": "no planning_eligible Lux3D candidate",
+    "no_candidate": true,
+    "planning_inputs": []
+  },
+  {
+    "method": "U_truth",
+    "selected_action": "A0",
+    "evidence": "no non-A0 option succeeded in every initial state",
+    "tied": [],
+    "rehearsal_on": "full truth geometry",
+    "planning_inputs": [
+      "full truth geometry (ceiling only)"
+    ]
+  }
+]

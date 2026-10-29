@@ -1,0 +1,49 @@
+{
+  "options": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "S1",
+    "D1",
+    "D2",
+    "A0"
+  ],
+  "registry": {
+    "options": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2",
+      "A0"
+    ],
+    "traverse": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "fallback": "A0",
+    "straddle_threshold_m": 0.1913,
+    "straddle_formula": "track - wheel_width - margin",
+    "detour_half_width_m": 0.2,
+    "detour_lateral_need_m": 0.36,
+    "note": "A0 是安全回退，不计任务成功，也不进入可通行安全集合"
+  },
+  "applicability": {
+    "R1": true,
+    "R2": true,
+    "L1": true,
+    "L2": true,
+    "S1": true,
+    "D1": true,
+    "D2": true,
+    "A0": true
+  }
+}

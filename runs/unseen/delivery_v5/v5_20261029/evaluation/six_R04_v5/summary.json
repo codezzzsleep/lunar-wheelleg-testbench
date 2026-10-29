@@ -1,0 +1,206 @@
+{
+  "protocol": "plans/unseen_v5_six_R04.json",
+  "truth_sha": "fd5a02c94aa76b5ebd8f535b8a3291a0934378bf9a7160f552e6decd462ac330",
+  "truth_collision_sha": "2d7f4c679f5cce1d4a33ca05b9aabff2",
+  "soil_mode": "rigid",
+  "time_limit_s": 30.0,
+  "expected_keys": [
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed0",
+      "n_expected": 0
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed1",
+      "n_expected": 0
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed2",
+      "n_expected": 0
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    }
+  ],
+  "initial_states": [
+    0,
+    1,
+    2
+  ],
+  "n_initial_states": 3,
+  "methods": [
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": null,
+      "n_exec": 0,
+      "n_expected": 0,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": null,
+      "outcomes": [],
+      "no_candidate": true
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "no_candidate": false
+    }
+  ],
+  "note": "所有方法在同一 truth_sha 上执行；预演只在各自假设上进行，不计入执行成绩"
+}

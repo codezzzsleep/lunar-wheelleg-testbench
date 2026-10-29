@@ -17,6 +17,16 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 - 当前状态：`docs/UNSEEN_STATUS_V6.md`
 - 关键限制：H5-F 可见几何过 strict，但 CoACD 32/64 的占据 IoU 只有 0.28，标 `COLLISION_UNRELIABLE`；H5-F 的 S1 成功不能归因于隐藏几何。第二观察真实触发但两者都保留，worst-case 选 A0；benefit=NOT_ESTABLISHED。
 
+## 资料与项目历程
+
+- **当前执行状态**（唯一状态中心）：`docs/UNSEEN_STATUS_V6_1.md`（V6.1 在途）→ `docs/UNSEEN_STATUS_V6.md`
+- **项目历程与决策证据**：`docs/PROJECT_JOURNEY.md`（每阶段：想解决什么、怎么做的、哪条判断被修正、证据等级）
+- **外部资料来源登记**：`docs/sources/lux3d/README.md` + 机器可读 `docs/sources/lux3d/source_manifest.json`
+- **场景适配分析**：`docs/research/LUX3D_SCENE_FIT.md`（官方说明 / 项目实测 / 项目推断三类分开）
+
+> 资料登记只记录「当时参考了什么、资料说了什么、没有证明什么」。原文与素材**未归档**：
+> 2026-10-29 在本机尝试打开两个飞书链接均被重定向到 `accounts.feishu.cn` 登录页，未重新读取。
+
 ## 当前入口 / 先看什么
 
 ```bash
@@ -113,7 +123,7 @@ LD_LIBRARY_PATH=/tmp/sysroot/usr/lib/x86_64-linux-gnu:/tmp/sysroot/lib/x86_64-li
   - 六方法 R02 / R04：H5 `no_candidate`，所有非 A0 动作 0/3（能力边界）。
   - **初态更正**：旧 `H5_R01_face12k_init003` 的 yaw=0.03、L2 3/3 已标 SUPERSEDED，
     不与 six 的 0.05/0.05 配对，不用于正式表；正式表见
-    `evaluation/formal_table_v5.json`，benefit 见 `evaluation/benefit_summary.json`。
+    `runs/unseen/delivery_v5/v5_20261029/evaluation/formal_table_v5.json`，benefit 见 `runs/unseen/delivery_v5/v5_20261029/evaluation/benefit_summary.json`。
 - 真值动作扫描（`cases/`，不是候选闭环）：R01_base 只有 S1 3/3；R01_az25/az45 无
   全初态通过动作；R02/R04 全部非 A0 失败；R03 多个动作 3/3。
 - 月壤：单轮/平地/坡面/零牵引/吞吐/整机 stage A–G 已跑；stage G 明确

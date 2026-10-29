@@ -1,0 +1,69 @@
+{
+  "schema": "external-source-register/v1",
+  "recorded_date": "2026-10-29",
+  "recorded_by": "project",
+  "purpose": "记录本项目参考过的外部资料来源；不是原文镜像，也不构成本仓库软件许可的一部分。",
+  "local_reverification_note": "2026-10-29 在本机打开两个链接均被重定向到 https://accounts.feishu.cn 登录页，未能读取正文；以下元数据与摘要来自既有阅读记录，access 状态见各条的 local_reverification。",
+  "sources": [
+    {
+      "id": "S01",
+      "title": "Aholo Lux3D 模型资料包-280930",
+      "title_note": "标题中的 280930 按原题保留，不推断其代表年份。",
+      "url": "https://lq9n5lvfn2i.feishu.cn/wiki/I5MOwqZLJixmP1k2Gcic6DMdnsc",
+      "publisher_display": "杭州群核信息技术有限公司",
+      "modified_display": ["10月08日", "正文：10月7日修改"],
+      "modified_display_note": "页面两处显示的修改时间不一致，原样保留，不自行统一。",
+      "accessed_date": "2026-10-29",
+      "accessed_date_note": "项目阅读记录日期，不是本机重新获取日期。",
+      "local_reverification": "not_reverified_on_this_machine: redirects to accounts.feishu.cn",
+      "record_kind": "source_metadata_and_authored_summary",
+      "authored_summary": "资料介绍标准版与极速版、视觉材质及渲染、自动化集成与应用案例，并说明复杂背面、部件穿插及复杂凹凸结构的生成稳定性存在限制。",
+      "summary_is_verbatim": false,
+      "read_scope": {
+        "read": ["产品说明", "能力边界", "部分案例备注", "常见问题", "官方 Skill 与 Codex 集成说明"],
+        "not_read": ["全部视频", "GLB/ZIP/演示素材", "页面原文导出"]
+      },
+      "original_fulltext_archived": false,
+      "all_media_archived": false,
+      "file_path": null,
+      "file_sha256": null,
+      "redistribution_license": "not_verified"
+    },
+    {
+      "id": "S02",
+      "title": "Aholo Lux3D操作指南-270920-5.0版本",
+      "url": "https://lq9n5lvfn2i.feishu.cn/wiki/XSvrwbuKcigED2k8HNHcRdd2nSd",
+      "publisher_display": null,
+      "modified_display": ["09月24日"],
+      "modified_display_note": "不自行补年份。",
+      "accessed_date": "2026-10-29",
+      "accessed_date_note": "项目阅读记录日期，不是本机重新获取日期。",
+      "local_reverification": "not_reverified_on_this_machine: redirects to accounts.feishu.cn",
+      "record_kind": "source_metadata_and_authored_summary",
+      "authored_summary": "指南说明单图与多图输入等操作，建议首图提供正面偏侧面的信息；单图流程可先生成四视图，也可跳过直接生成。产品界面流程与我们现有 API 请求是否等价，尚未核对。",
+      "summary_is_verbatim": false,
+      "open_questions": [
+        "界面默认流程是否包含多视图生成等额外图像处理",
+        "标准版/极速版的名称与当前 API 版本如何对应",
+        "四视图中间结果是否可作为额外输入被我们的客户端使用"
+      ],
+      "original_fulltext_archived": false,
+      "all_media_archived": false,
+      "file_path": null,
+      "file_sha256": null,
+      "redistribution_license": "not_verified"
+    }
+  ],
+  "derived_documents": {
+    "scene_fit_analysis": "docs/research/LUX3D_SCENE_FIT.md",
+    "project_journey": "docs/PROJECT_JOURNEY.md",
+    "source_readme": "docs/sources/lux3d/README.md",
+    "current_status": "docs/UNSEEN_STATUS_V6_1.md"
+  },
+  "constraints": [
+    "不保存会过期的登录/下载凭证作为永久来源",
+    "不对 URL 做哈希后称为原文 SHA",
+    "第三方原文、截图与附件不默认归入本仓库软件许可",
+    "只有真实文件才登记 file_sha256"
+  ]
+}

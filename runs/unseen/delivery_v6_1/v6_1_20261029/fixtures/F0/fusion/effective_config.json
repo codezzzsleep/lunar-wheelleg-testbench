@@ -1,5 +1,5 @@
 {
-  "pitch_m": 0.005,
+  "pitch_m": 0.004,
   "margin_cells": 3,
   "free_epsilon_m": 0.001,
   "band_m": 0.0075,
@@ -12,6 +12,8 @@
   "version": "fuse-observed/v2",
   "base_config": "configs/unseen_v6_1_fusion.json",
   "base_config_sha256": "81cf221c3f51117887ec74488e91f5cd440ad7c7367e48b0331c70a4e0658a7e",
-  "cli_overrides": {},
-  "sha256": "caa7cd542fce9d9562a26658e26c2eb6795922d085b91b3018ff3c6eb5f056a0"
+  "cli_overrides": {
+    "pitch_m": 0.004
+  },
+  "sha256": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274"
 }

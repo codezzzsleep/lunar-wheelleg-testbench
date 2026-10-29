@@ -167,6 +167,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/unseen/delivery_v6_1/v6_1_20261029/fixtures')
     ap.add_argument('--config', default='configs/unseen_v6_1_fusion.json')
+    ap.add_argument('--pitch', type=float, default=None, help='融合分辨率（米）；缺省用配置值')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads((ROOT / a.config).read_text())
@@ -181,7 +182,7 @@ def main():
     local_body = write_local(base, f0 / 'local')
     case = write_case(local_body, 'F0_truth', f0 / 'cases', obstacle_x=1.8)
     obs = observe(case, f0 / 'observation')
-    fus = fuse_one(obs, truth_world, 'F0_parent', f0 / 'fusion', a.config)
+    fus = fuse_one(obs, truth_world, 'F0_parent', f0 / 'fusion', a.config, a.pitch)
     fused0 = trimesh.load(f0 / 'fusion/body.stl', force='mesh')
     grid = common_grid([base, fused0], pitch)
     occ_t = occ_on(base, grid); occ_f = occ_on(fused0, grid)
@@ -208,7 +209,7 @@ def main():
     m.vertices = v
     parent_w, parent_b = write_world(m, f1 / 'parent_visible_shift', x=1.8)
     obs1 = observe(case, f1 / 'observation')     # 用 F0 的同一观测
-    fus1 = fuse_one(obs1, parent_w, 'F1_parent', f1 / 'fusion', a.config)
+    fus1 = fuse_one(obs1, parent_w, 'F1_parent', f1 / 'fusion', a.config, a.pitch)
     # 隐藏核心：x > 物体中位面（远离可见面与测量带）
     fused1 = trimesh.load(f1 / 'fusion/body.stl', force='mesh')
     grid1 = common_grid([base, m, fused1], pitch)
@@ -235,9 +236,9 @@ def main():
     notch.apply_translation([float(base.bounds[1][0]) - 0.02, 0.0, 0.09])
     back_cut = boolean_diff(base, notch)
     write_world(back_cut, f2 / 'parent_back_notch', x=1.8)
-    fusA = fuse_one(obs1, truth_world, 'F2_flat_back', f2 / 'fusion_flat', a.config)
+    fusA = fuse_one(obs1, truth_world, 'F2_flat_back', f2 / 'fusion_flat', a.config, a.pitch)
     fusB = fuse_one(obs1, f2 / 'parent_back_notch', 'F2_notch_back', f2 / 'fusion_notch',
-                    a.config)
+                    a.config, a.pitch)
     va = float(fusA['volume_m3'] or 0.0); vb = float(fusB['volume_m3'] or 0.0)
     results['rows'].append({
         'id': 'F2', 'status': ('PASS' if (fusA['strict']['pass'] and fusB['strict']['pass']
@@ -302,8 +303,8 @@ def main():
     # 同一观测、同一父候选；两个“隐藏真值”只影响执行端，不影响融合身份
     t2 = boolean_diff(base, notch)
     write_world(t2, f5 / 'truth_alt', x=1.8)
-    fus5a = fuse_one(obs1, truth_world, 'F5_truth_A', f5 / 'fusion_tA', a.config)
-    fus5b = fuse_one(obs1, truth_world, 'F5_truth_B', f5 / 'fusion_tB', a.config)
+    fus5a = fuse_one(obs1, truth_world, 'F5_truth_A', f5 / 'fusion_tA', a.config, a.pitch)
+    fus5b = fuse_one(obs1, truth_world, 'F5_truth_B', f5 / 'fusion_tB', a.config, a.pitch)
     same = (fus5a['world_sha'] == fus5b['world_sha']
             and fus5a['inputs']['effective_config_sha'] == fus5b['inputs']['effective_config_sha'])
     results['rows'].append({

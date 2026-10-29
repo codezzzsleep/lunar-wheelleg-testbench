@@ -1,0 +1,263 @@
+{
+  "schema": "fixtures/v6_1",
+  "tag": "FIXTURE: not Lux3D; not model benefit",
+  "config": "configs/unseen_v6_1_fusion.json",
+  "pitch_m": 0.005,
+  "rows": [
+    {
+      "id": "F0",
+      "status": "FAIL",
+      "what": "observation from the same closed mesh; parent = that mesh",
+      "visible": {
+        "mask_iou": 0.9812,
+        "cand_px": 8275,
+        "obs_px": 8163,
+        "n_inter": 8141,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 0.03,
+        "depth_p95_mm": 3.44,
+        "depth_inner_rms_mm": 1.643,
+        "depth_edge_rms_mm": 7.228,
+        "freespace_violation": 0.0488,
+        "freespace_n_px": 404,
+        "freespace_denom_px": 8275,
+        "freespace_outside_mask": 109,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.552,
+        "vis_pt_p95_mm": 1.513,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict": {
+        "pass": true,
+        "iou_min": 0.85,
+        "p95_mm_threshold": 8.28,
+        "freespace_max": 0.05,
+        "h_vis_m": 0.27600870935610883
+      },
+      "occupancy_iou_vs_truth": 0.0,
+      "hidden_kept_ratio": 1.0,
+      "watertight": true,
+      "paths": {
+        "observation": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/observation",
+        "fusion": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/fusion",
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/fusion/manifest.json"
+      },
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    },
+    {
+      "id": "F1",
+      "status": "FAIL",
+      "what": "visible surface pushed 8 mm toward camera; hidden part unchanged",
+      "visible": {
+        "mask_iou": 0.9812,
+        "cand_px": 8275,
+        "obs_px": 8163,
+        "n_inter": 8141,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": -0.728,
+        "depth_p95_mm": 4.239,
+        "depth_inner_rms_mm": 2.047,
+        "depth_edge_rms_mm": 7.228,
+        "freespace_violation": 0.0596,
+        "freespace_n_px": 493,
+        "freespace_denom_px": 8275,
+        "freespace_outside_mask": 109,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.644,
+        "vis_pt_p95_mm": 1.898,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict": {
+        "pass": false,
+        "iou_min": 0.85,
+        "p95_mm_threshold": 8.28,
+        "freespace_max": 0.05,
+        "h_vis_m": 0.27600870935610883
+      },
+      "parent_front_x": -0.118,
+      "observed_front_x": 1.69011,
+      "hidden_core_voxels": 18664,
+      "hidden_core_kept": 0,
+      "hidden_core_kept_ratio": 0.0,
+      "paths": {
+        "fusion": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F1/fusion"
+      },
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    },
+    {
+      "id": "F2",
+      "status": "PASS",
+      "what": "same visible surface; two different hidden structures (flat back vs notch)",
+      "visible_A": {
+        "mask_iou": 0.9812,
+        "cand_px": 8275,
+        "obs_px": 8163,
+        "n_inter": 8141,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 0.03,
+        "depth_p95_mm": 3.44,
+        "depth_inner_rms_mm": 1.643,
+        "depth_edge_rms_mm": 7.228,
+        "freespace_violation": 0.0488,
+        "freespace_n_px": 404,
+        "freespace_denom_px": 8275,
+        "freespace_outside_mask": 109,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.552,
+        "vis_pt_p95_mm": 1.513,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "visible_B": {
+        "mask_iou": 0.9812,
+        "cand_px": 8275,
+        "obs_px": 8163,
+        "n_inter": 8141,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 0.03,
+        "depth_p95_mm": 3.44,
+        "depth_inner_rms_mm": 1.643,
+        "depth_edge_rms_mm": 7.228,
+        "freespace_violation": 0.0488,
+        "freespace_n_px": 404,
+        "freespace_denom_px": 8275,
+        "freespace_outside_mask": 109,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.552,
+        "vis_pt_p95_mm": 1.513,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "volume_A_m3": 0.004785125,
+      "volume_B_m3": 0.004569381,
+      "hidden_volume_difference_m3": 0.000215744,
+      "retention_A": {
+        "unknown_core_parent_voxels": 71319,
+        "kept_voxels": 71319,
+        "removed_voxels": 0,
+        "added_voxels": 16,
+        "kept_ratio": 1.0,
+        "removed_ratio": 0.0,
+        "added_volume_m3": 1.024e-06,
+        "carved_free_voxels": 329,
+        "carved_free_volume_m3": 2.1056e-05,
+        "parent_hidden_to_fused_mm": {
+          "n": 805,
+          "med": 0.534,
+          "p95": 1.379
+        },
+        "fused_to_parent_mm": {
+          "n": 1500,
+          "med": 0.742,
+          "p95": 2.061
+        },
+        "n_parents": 1,
+        "shell_rule": {
+          "lower": "depth - eps + offset",
+          "upper": "depth + band + offset",
+          "eps_m": 0.001,
+          "band_m": 0.0075,
+          "offset_m": 0.002
+        },
+        "shell_voxels": 3945,
+        "shell_outside_parent_voxels": 192
+      },
+      "retention_B": {
+        "unknown_core_parent_voxels": 67948,
+        "kept_voxels": 67948,
+        "removed_voxels": 0,
+        "added_voxels": 16,
+        "kept_ratio": 1.0,
+        "removed_ratio": 0.0,
+        "added_volume_m3": 1.024e-06,
+        "carved_free_voxels": 329,
+        "carved_free_volume_m3": 2.1056e-05,
+        "parent_hidden_to_fused_mm": {
+          "n": 850,
+          "med": 0.531,
+          "p95": 1.461
+        },
+        "fused_to_parent_mm": {
+          "n": 1500,
+          "med": 0.775,
+          "p95": 2.159
+        },
+        "n_parents": 1,
+        "shell_rule": {
+          "lower": "depth - eps + offset",
+          "upper": "depth + band + offset",
+          "eps_m": 0.001,
+          "band_m": 0.0075,
+          "offset_m": 0.002
+        },
+        "shell_voxels": 3945,
+        "shell_outside_parent_voxels": 192
+      },
+      "paths": {
+        "A": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F2/fusion_flat",
+        "B": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F2/fusion_notch"
+      },
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    },
+    {
+      "id": "F3",
+      "status": "PASS",
+      "what": "raw scaled by 0.1/1/10 then inverse transform; world entity must match",
+      "rows": [
+        {
+          "scale": 0.1,
+          "world_body_sha": "64110ddbe317cfaf3ea9fb60eb03ded273c4e8f13050a5e149984cf57834fd71"
+        },
+        {
+          "scale": 1.0,
+          "world_body_sha": "64110ddbe317cfaf3ea9fb60eb03ded273c4e8f13050a5e149984cf57834fd71"
+        },
+        {
+          "scale": 10.0,
+          "world_body_sha": "64110ddbe317cfaf3ea9fb60eb03ded273c4e8f13050a5e149984cf57834fd71"
+        }
+      ],
+      "n_unique_world_sha": 1,
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    },
+    {
+      "id": "F4",
+      "status": "PASS",
+      "what": "missing visible points and all-invalid depth must be rejected",
+      "missing_files_exit": 1,
+      "missing_files_reason": "FileNotFoundError: [Errno 2] No such file or directory: 'runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F4/bad_obs/visible_points.npy'",
+      "nan_depth_exit": 1,
+      "nan_depth_reason": "深度图有效像素比例 0.0000 < 1%，拒绝融合（不要把坏观测当成全未知）",
+      "logs": [
+        "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F4/reject.log",
+        "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F4/reject_nan_depth.log"
+      ],
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    },
+    {
+      "id": "F5",
+      "status": "PASS",
+      "what": "fusion identity must not depend on hidden truth",
+      "fusion_world_sha_A": "5e035c61776b11b4b5339539617c2e7a8e10ee4315203fa1056b67661bfa53a1",
+      "fusion_world_sha_B": "5e035c61776b11b4b5339539617c2e7a8e10ee4315203fa1056b67661bfa53a1",
+      "config_sha_A": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274",
+      "config_sha_B": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274",
+      "truth_objects_differ": true,
+      "note": "FIXTURE: not Lux3D; not model benefit"
+    }
+  ]
+}

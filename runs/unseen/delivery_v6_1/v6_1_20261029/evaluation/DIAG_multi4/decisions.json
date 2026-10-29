@@ -1,0 +1,590 @@
+{
+  "schema": "decision-bundle/v6_1",
+  "decision_sha": "75dec295e2ec0b9daaff16c0b472b5c3d56415a8e8611b4525ab173c2b5b2270",
+  "written_at": 1793297212.50757,
+  "decisions": [
+    {
+      "rule": "worst-case-risk/v2",
+      "tau": 0.0,
+      "c_fail": 60.0,
+      "c_abort": 40.0,
+      "hypotheses": [
+        "C_R01_face12k",
+        "G_R01",
+        "G_R01_rep2",
+        "G_R01_rep3"
+      ],
+      "n_seeds": 3,
+      "stats": {
+        "R1": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "R2": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 1,
+              "n": 3,
+              "f": 0.333,
+              "max_cost": 60.0,
+              "costs": [
+                7.94,
+                7.74,
+                60.0
+              ]
+            },
+            "G_R01": {
+              "fails": 1,
+              "n": 3,
+              "f": 0.333,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                7.76,
+                7.9
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 7.64,
+              "costs": [
+                7.64,
+                7.52,
+                7.58
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 1,
+              "n": 3,
+              "f": 0.333,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                7.76,
+                7.9
+              ]
+            }
+          },
+          "risk": 0.333,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "L1": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "L2": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.56,
+              "costs": [
+                6.52,
+                6.56,
+                6.52
+              ]
+            },
+            "G_R01": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.56,
+              "costs": [
+                6.56,
+                6.5,
+                6.5
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.14,
+              "costs": [
+                6.1,
+                6.14,
+                6.1
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.58,
+              "costs": [
+                6.58,
+                6.5,
+                6.42
+              ]
+            }
+          },
+          "risk": 0.0,
+          "worst_cost": 6.58,
+          "safe": true,
+          "missing": [],
+          "insufficient": false
+        },
+        "S1": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.54,
+              "costs": [
+                6.46,
+                6.54,
+                6.52
+              ]
+            },
+            "G_R01": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.54,
+              "costs": [
+                6.54,
+                6.52,
+                6.48
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.3,
+              "costs": [
+                6.3,
+                6.3,
+                6.3
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.54,
+              "costs": [
+                6.54,
+                6.54,
+                6.48
+              ]
+            }
+          },
+          "risk": 0.0,
+          "worst_cost": 6.54,
+          "safe": true,
+          "missing": [],
+          "insufficient": false
+        },
+        "D1": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "D2": {
+          "per_hypothesis": {
+            "C_R01_face12k": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep2": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            },
+            "G_R01_rep3": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        }
+      },
+      "safe_set": [
+        "S1",
+        "L2"
+      ],
+      "chosen": "S1",
+      "no_robust_option": false,
+      "tie": false,
+      "tied_options": [
+        "S1"
+      ],
+      "insufficient_evidence": false,
+      "missing": [],
+      "reason_text": "在 4 个候选 × 3 个冻结初态上均完成；按最坏代价选 S1（tie=False）",
+      "n_members": 4,
+      "members": [
+        "C_R01_face12k",
+        "G_R01",
+        "G_R01_rep2",
+        "G_R01_rep3"
+      ],
+      "method": "H5_F_multi"
+    },
+    {
+      "rule": "B0_blind",
+      "chosen": "R1",
+      "safe_set": [
+        "R1"
+      ],
+      "stats": {},
+      "no_robust_option": false,
+      "insufficient_evidence": false,
+      "method": "B0_blind"
+    },
+    {
+      "rule": "worst-case-risk/v2",
+      "tau": 0.0,
+      "c_fail": 60.0,
+      "c_abort": 40.0,
+      "hypotheses": [
+        "U_truth"
+      ],
+      "n_seeds": 3,
+      "stats": {
+        "R1": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "R2": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "L1": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "L2": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 1,
+              "n": 3,
+              "f": 0.333,
+              "max_cost": 60.0,
+              "costs": [
+                6.7,
+                60.0,
+                6.56
+              ]
+            }
+          },
+          "risk": 0.333,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "S1": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 0,
+              "n": 3,
+              "f": 0.0,
+              "max_cost": 6.52,
+              "costs": [
+                6.5,
+                6.52,
+                6.52
+              ]
+            }
+          },
+          "risk": 0.0,
+          "worst_cost": 6.52,
+          "safe": true,
+          "missing": [],
+          "insufficient": false
+        },
+        "D1": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        },
+        "D2": {
+          "per_hypothesis": {
+            "U_truth": {
+              "fails": 3,
+              "n": 3,
+              "f": 1.0,
+              "max_cost": 60.0,
+              "costs": [
+                60.0,
+                60.0,
+                60.0
+              ]
+            }
+          },
+          "risk": 1.0,
+          "worst_cost": 60.0,
+          "safe": false,
+          "missing": [],
+          "insufficient": false
+        }
+      },
+      "safe_set": [
+        "S1"
+      ],
+      "chosen": "S1",
+      "no_robust_option": false,
+      "tie": false,
+      "tied_options": [
+        "S1"
+      ],
+      "insufficient_evidence": false,
+      "missing": [],
+      "reason_text": "在 1 个候选 × 3 个冻结初态上均完成；按最坏代价选 S1（tie=False）",
+      "method": "U_truth"
+    }
+  ]
+}

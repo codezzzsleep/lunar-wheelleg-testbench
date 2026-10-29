@@ -1,11 +1,7 @@
-fuse 失败 F1_parent: Traceback (most recent call last):
-  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 618, in <module>
-    
-  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 608, in main
-    if not a.parent_world:
-          ^^^^^^^^^^^^^^^^
-  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 502, in fuse
-    'parent_mesh_sha': sha_file(parent_world / 'body.stl'),
-                                ~~~~~~~~~~~~~^~~~~~~~~~~~
-TypeError: unsupported operand type(s) for /: 'str' and 'str'
-
+F0 FAIL | observation from the same closed mesh; parent = that mesh
+F1 FAIL | visible surface pushed 8 mm toward camera; hidden part unchanged
+F2 PASS | same visible surface; two different hidden structures (flat back vs notch)
+F3 PASS | raw scaled by 0.1/1/10 then inverse transform; world entity must match
+F4 PASS | missing visible points and all-invalid depth must be rejected
+F5 PASS | fusion identity must not depend on hidden truth
+{"n": 6, "fail": ["F0", "F1"]}

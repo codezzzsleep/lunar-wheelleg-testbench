@@ -1,0 +1,28 @@
+{
+  "schema": "contact-source/v6_1",
+  "trajectory": "runs/unseen/delivery_v6_1/v6_1_20261029/media/traj_H5F_S1_seed0.json",
+  "option": "S1",
+  "seed": 0,
+  "n_contact_points": 18,
+  "n_contacts_all": 908,
+  "obstacle_body": "obstacle0",
+  "counts": {
+    "observed_face": 18,
+    "parent_hidden": 0,
+    "collision_added": 0
+  },
+  "fractions": {
+    "observed_face": 1.0,
+    "parent_hidden": 0.0,
+    "collision_added": 0.0
+  },
+  "vis_tol_mm": 15.0,
+  "d_vis_mm": {
+    "med": 2.564,
+    "p95": 3.491
+  },
+  "n_in_parent": 0,
+  "n_in_collision": 8,
+  "in_parent_but_not_collision": 0,
+  "note": "接触来源只是归因工具：接触到隐藏面不等于生成方法带来收益；需要与同真值下的决策差异一起看。"
+}

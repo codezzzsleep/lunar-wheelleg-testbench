@@ -5,7 +5,8 @@
   "qualification_rule": {
     "mask_iou_min": 0.9,
     "vis_p95_mm_max": 5.0,
-    "note": "只用可见面，不看真值；不合格候选只作诊断，不进 multi"
+    "freespace_max": 0.05,
+    "note": "三项全过才是规划合格；不合格只作诊断"
   },
   "candidates": [
     {
@@ -21,8 +22,9 @@
       "solid_method": [
         "shell_floodfill"
       ],
-      "qualified": true,
-      "why": "（合格但 freespace 0.1404 未过 strict 0.05）"
+      "qualified": false,
+      "why": "freespace 0.1404 > 0.05",
+      "local_visible_ok": true
     },
     {
       "parent": "G_R01",
@@ -37,8 +39,9 @@
       "solid_method": [
         "shell_floodfill"
       ],
-      "qualified": true,
-      "why": "（合格但 freespace 0.1426 未过 strict 0.05）"
+      "qualified": false,
+      "why": "freespace 0.1426 > 0.05",
+      "local_visible_ok": true
     },
     {
       "parent": "G_R01_rep2",
@@ -53,8 +56,9 @@
       "solid_method": [
         "shell_floodfill"
       ],
-      "qualified": true,
-      "why": "（合格但 freespace 0.1403 未过 strict 0.05）"
+      "qualified": false,
+      "why": "freespace 0.1403 > 0.05",
+      "local_visible_ok": true
     },
     {
       "parent": "G_R01_rep3",
@@ -69,13 +73,48 @@
       "solid_method": [
         "shell_floodfill"
       ],
-      "qualified": true,
-      "why": "（合格但 freespace 0.1301 未过 strict 0.05）"
+      "qualified": false,
+      "why": "freespace 0.1301 > 0.05",
+      "local_visible_ok": true
     }
   ],
   "n_candidates": 4,
-  "n_qualified": 4,
-  "H5_F_multi": {
+  "n_qualified": 0,
+  "not_established": "multi 只是“多个真实父候选的并集先验”，不等于多个独立观测，也不等于更多物体；同源变体不算新样本",
+  "mode": "separate",
+  "H5_F_multi_definition": {
+    "kind": "separate_matrix",
+    "hypotheses": [
+      {
+        "id": "R01_C_R01_face12k",
+        "world": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align",
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/C_R01_face12k/manifest.json",
+        "qualified": false
+      },
+      {
+        "id": "R01_G_R01",
+        "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01",
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01/manifest.json",
+        "qualified": false
+      },
+      {
+        "id": "R01_G_R01_rep2",
+        "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep2",
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep2/manifest.json",
+        "qualified": false
+      },
+      {
+        "id": "R01_G_R01_rep3",
+        "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep3",
+        "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/G_R01_rep3/manifest.json",
+        "qualified": false
+      }
+    ],
+    "n_hypotheses": 4,
+    "n_qualified": 0,
+    "note": "真正的多假设：每个候选各自预演（候选×动作×初态），再由 worst-case-risk/v2 统一决策；不合并几何"
+  },
+  "H5_F_union_control": {
     "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/multi/R01/H5_F_multi/manifest.json",
     "n_parents": 4,
     "parents": [
@@ -91,7 +130,9 @@
     "volume_m3": 0.006739146,
     "hidden_kept_ratio": 1.0,
     "qualified": true,
-    "why": "（合格但 freespace 0.1472 未过 strict 0.05）"
+    "why": "（合格但 freespace 0.1472 未过 strict 0.05）",
+    "kind": "union"
   },
-  "not_established": "multi 只是“多个真实父候选的并集先验”，不等于多个独立观测，也不等于更多物体；同源变体不算新样本"
+  "formal_planning_eligible": false,
+  "note": "qualification 现在要求 IoU/P95/freespace 三项全过；freespace 未过的候选只是“局部可见面合格”，不能作为正式规划资产"
 }

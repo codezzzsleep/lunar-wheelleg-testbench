@@ -447,7 +447,12 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     d_at = np.full(len(in_fov), np.nan)
     _valid = in_fov & np.isfinite(z)
     d_at[_valid] = np.load(observation / 'depth.npy')[vi[_valid], ui[_valid]]
-    behind = _valid & np.isfinite(d_at) & (z >= d_at - float(cfg['free_epsilon_m']) + off)
+    # 表面约束只在**测量邻域**内有效：下界 = 测量面 - eps + 偏移，上界 = 测量面 + band。
+    # 更深的未知区域由父先验决定，不能沿轮廓一路填满（否则会把未知区变成实体）。
+    band_m = float(cfg['band_m'])
+    behind = (_valid & np.isfinite(d_at)
+              & (z >= d_at - float(cfg['free_epsilon_m']) + off)
+              & (z <= d_at + band_m + off))
     shell = (in_mask & behind).reshape(grid['dims'])
     occ = keep_p | shell
     before = occ.copy()
@@ -467,6 +472,11 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     mesh.export(body)
     retention = hidden_retention(parent, mesh, grid, space, parent_inside, occ)
     retention['n_parents'] = len(meshes)
+    retention['shell_rule'] = {'lower': 'depth - eps + offset', 'upper': 'depth + band + offset',
+                              'eps_m': float(cfg['free_epsilon_m']), 'band_m': band_m,
+                              'offset_m': off}
+    retention['shell_voxels'] = int(shell.sum())
+    retention['shell_outside_parent_voxels'] = int((shell & ~parent_inside).sum())
     tmp = out / '_metric.stl'; mesh.export(tmp)
     metrics = {}
     try:

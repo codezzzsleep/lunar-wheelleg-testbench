@@ -41,6 +41,7 @@ POOL = {
 # 资格门槛（只用可见面，不看真值）：掩码 IoU 与可见点 P95。
 QUAL_IOU_MIN = 0.90
 QUAL_P95_MM_MAX = 5.0
+QUAL_FREESPACE_MAX = 0.05     # 与 strict 门槛一致：freespace 不过就不算合格资产
 
 
 def run_fuse(observation, parents, parent_id, out):
@@ -60,22 +61,22 @@ def run_fuse(observation, parents, parent_id, out):
 
 
 def qualifying(man):
+    """正式资格：三项全过才算合格。任一不过只能作诊断，不得进入正式规划。"""
     m = man.get('metrics') or {}
     iou = m.get('mask_iou'); p95 = m.get('vis_pt_p95_mm'); free = m.get('freespace_violation')
-    if iou is None or p95 is None:
+    if iou is None or p95 is None or free is None:
         return False, '指标缺失'
-    ok = (iou >= QUAL_IOU_MIN) and (p95 <= QUAL_P95_MM_MAX)
     why = []
     if iou < QUAL_IOU_MIN:
         why.append(f'IoU {iou} < {QUAL_IOU_MIN}')
     if p95 > QUAL_P95_MM_MAX:
         why.append(f'可见点 P95 {p95} > {QUAL_P95_MM_MAX} mm')
-    if ok and free is not None and free > 0.05:
-        why.append(f'（合格但 freespace {free} 未过 strict 0.05）')
-    return ok, '；'.join(why) or 'ok'
+    if free > QUAL_FREESPACE_MAX:
+        why.append(f'freespace {free} > {QUAL_FREESPACE_MAX}')
+    return (not why), ('；'.join(why) or 'ok')
 
 
-def do_case(case, out_root):
+def do_case(case, out_root, mode='separate'):
     spec = POOL[case]
     cdir = out_root / case
     cdir.mkdir(parents=True, exist_ok=True)
@@ -98,11 +99,11 @@ def do_case(case, out_root):
         print(case, pid, 'qualified' if ok else 'NOT', m.get('mask_iou'), m.get('vis_pt_p95_mm'))
     q = [r for r in rows if r['qualified']]
     multi = None
-    if len(q) >= 2:
-        mout = cdir / 'H5_F_multi'
-        man = run_fuse(spec['observation'], [r['world'] for r in q], f'{case}_H5_F_multi', mout)
+    if mode == 'union' and len(q) >= 2:
+        mout = cdir / 'H5_F_union'
+        man = run_fuse(spec['observation'], [r['world'] for r in q], f'{case}_H5_F_union', mout)
         mm = man.get('metrics') or {}
-        multi = {'manifest': str(mout / 'manifest.json'), 'n_parents': len(q),
+        multi = {'manifest': str(mout / 'manifest.json'), 'kind': 'union', 'n_parents': len(q),
                  'parents': [r['parent'] for r in q], 'world_sha': man.get('world_sha'),
                  'mask_iou': mm.get('mask_iou'), 'vis_p95_mm': mm.get('vis_pt_p95_mm'),
                  'freespace': mm.get('freespace_violation'),
@@ -110,11 +111,23 @@ def do_case(case, out_root):
                  'hidden_kept_ratio': (man.get('retention') or {}).get('kept_ratio'),
                  'qualified': qualifying(man)[0], 'why': qualifying(man)[1]}
         print(case, 'H5_F_multi', multi['mask_iou'], multi['vis_p95_mm'], multi['qualified'])
+    if mode == 'separate':
+        multi = {'kind': 'separate_matrix',
+                 'hypotheses': [{'id': f"{case}_{r['parent']}", 'world': r['world'],
+                                 'manifest': r['manifest'], 'qualified': r['qualified']}
+                                for r in rows],
+                 'n_hypotheses': len(rows), 'n_qualified': len(q),
+                 'note': ('真正的多假设：每个候选各自预演，矩阵为 候选×动作×初态，'
+                          '再由 decision.worst-case-risk/v2 统一决策；不合并几何')}
     idx = {'schema': 'multi-parent/v6_1', 'case': case, 'observation': spec['observation'],
-           'qualification_rule': {'mask_iou_min': QUAL_IOU_MIN, 'vis_p95_mm_max': QUAL_P95_MM_MAX,
-                                  'note': '只用可见面，不看真值；不合格候选只作诊断，不进 multi'},
+           'mode': mode,
+           'qualification_rule': {'mask_iou_min': QUAL_IOU_MIN,
+                                  'vis_p95_mm_max': QUAL_P95_MM_MAX,
+                                  'freespace_max': QUAL_FREESPACE_MAX,
+                                  'note': ('三项全过才是规划合格；单项通过只说明该项；'
+                                           '不合格候选只作诊断，不进正式 multi 预演')},
            'candidates': rows, 'n_candidates': len(rows), 'n_qualified': len(q),
-           'H5_F_multi': multi,
+           'H5_F_multi_definition': multi,
            'not_established': ('multi 只是“多个真实父候选的并集先验”，不等于多个独立观测，'
                                '也不等于更多物体；同源变体不算新样本' if multi else
                                '合格候选不足 2 个，未构建 multi')}
@@ -126,11 +139,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--case', default='both', choices=['R01', 'R03', 'both'])
     ap.add_argument('--out', default=str(BATCH / 'multi'))
+    ap.add_argument('--mode', default='separate', choices=['separate', 'union'],
+                    help='separate=每个候选独立资产（真正的多假设矩阵）；union=并集实体（仅作对照）')
     a = ap.parse_args()
     out_root = pathlib.Path(a.out); out_root.mkdir(parents=True, exist_ok=True)
     cases = ['R01', 'R03'] if a.case == 'both' else [a.case]
     for c in cases:
-        do_case(c, out_root)
+        do_case(c, out_root, a.mode)
     print(json.dumps({'cases': cases, 'out': str(out_root)}, ensure_ascii=False))
 
 

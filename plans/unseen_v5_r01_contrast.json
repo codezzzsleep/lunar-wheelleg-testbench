@@ -1,0 +1,94 @@
+{
+  "plan_version": "unseen_v5_r01_contrast",
+  "status": "DRAFT_NOT_SUBMITTED",
+  "created": "2026-10-29",
+  "requires_user_confirmation": true,
+  "basis": "三份 R01 真实候选均已 clean/v4 通过、1512 次完整搜索配准，IoU 0.726/0.800/0.815 全部 < 0.85，且非尺度问题；因此准备\"一次只改一个因素\"的对照草案",
+  "existing_failures": [
+    {
+      "candidate": "G_R01",
+      "task_id": 4463022,
+      "mask_iou": 0.8154,
+      "p95_mm": 16.175
+    },
+    {
+      "candidate": "G_R01_rep2",
+      "task_id": 4463124,
+      "mask_iou": 0.7263,
+      "p95_mm": 31.545
+    },
+    {
+      "candidate": "G_R01_rep3",
+      "task_id": 4463154,
+      "mask_iou": 0.8004,
+      "p95_mm": 23.354
+    }
+  ],
+  "single_factor": {
+    "changed": "每次只改一项：石头偏航 +25° / +45° / 或面数档位",
+    "held_fixed": [
+      "G1-Turbo",
+      "其余输入参数",
+      "石头几何",
+      "相机 0.32 m",
+      "观测包",
+      "clean/v4",
+      "24 朝向 + 1512 次粗搜索 + 精修",
+      "threshold 不调"
+    ]
+  },
+  "max_new_tasks": 3,
+  "credits_upper_per_task": 20,
+  "new_batch_cap": 60,
+  "history": {
+    "tasks_used": 24,
+    "credits_upper": 480,
+    "actual_charge": "unknown"
+  },
+  "would_be_cumulative": {
+    "tasks": 27,
+    "credits_upper": 540
+  },
+  "inputs": [
+    {
+      "id": "C_R01_az25",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/contrast_pkg/az25/upload_1024.png",
+      "image_sha256": "1f7d10b46b7d0a53dde601da84d25f5294ea35404dce7a3d4ae37537570095ce",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "change": "仅石头相对相机偏航 +25°（取景 78.1%、亮度 141，其余参数不变）",
+      "sample_id": "stone-R01-contrast-az25"
+    },
+    {
+      "id": "C_R01_az45",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/contrast_pkg/az45/upload_1024.png",
+      "image_sha256": "6ac14e8ba31eef6185d378f8f9d95e15c86b27a63ac997c596edd9b3e4339a38",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "change": "仅石头相对相机偏航 +45°（取景 78.1%、亮度 145）",
+      "sample_id": "stone-R01-contrast-az45"
+    },
+    {
+      "id": "C_R01_face12k",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R01/upload_1024.png",
+      "image_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "change": "输入不变，只把面数档位 30000 -> 12000",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 12000
+      },
+      "sample_id": "stone-R01-contrast-face12k"
+    }
+  ]
+}

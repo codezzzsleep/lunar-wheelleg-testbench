@@ -1,0 +1,51 @@
+{
+  "version": "reject-evidence/v2",
+  "rows": [
+    {
+      "candidate": "G_R01",
+      "n_coarse_evals": 1512,
+      "search_complete": true,
+      "mask_iou": 0.8154,
+      "vis_pt_p95_mm": 16.175,
+      "freespace": 0.5654,
+      "reason": "IoU 0.815 < 0.85"
+    },
+    {
+      "candidate": "G_R02",
+      "n_coarse_evals": 1512,
+      "search_complete": true,
+      "mask_iou": 0.7447,
+      "vis_pt_p95_mm": 10.71,
+      "freespace": 0.4718,
+      "reason": "IoU 0.745 < 0.85"
+    },
+    {
+      "candidate": "G_R04",
+      "n_coarse_evals": 1512,
+      "search_complete": true,
+      "mask_iou": 0.7684,
+      "vis_pt_p95_mm": 29.007,
+      "freespace": 0.4769,
+      "reason": "IoU 0.768 < 0.85"
+    },
+    {
+      "candidate": "G_R01_rep2",
+      "n_coarse_evals": 1512,
+      "search_complete": true,
+      "mask_iou": 0.7263,
+      "vis_pt_p95_mm": 31.545,
+      "freespace": 0.6593,
+      "reason": "IoU 0.726 < 0.85"
+    },
+    {
+      "candidate": "G_R01_rep3",
+      "n_coarse_evals": 1512,
+      "search_complete": true,
+      "mask_iou": 0.8004,
+      "vis_pt_p95_mm": 23.354,
+      "freespace": 0.6438,
+      "reason": "IoU 0.800 < 0.85"
+    }
+  ],
+  "note": "全部候选已在 clean/v4（尺度不变）下通过清理，并在统一尺度 + 24 朝向 + 精修后配准；拒绝理由是归一化后的轮廓 IoU / 点距 / 自由空间不达标，与原始导出尺度无关。G_R01 在 clean/v3 下曾被 2 cm 绝对门误拒，已用 clean/v4 重评通过并完成配准。"
+}

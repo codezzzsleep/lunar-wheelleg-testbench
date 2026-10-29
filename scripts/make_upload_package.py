@@ -38,7 +38,7 @@ def sha(p):
     return h.hexdigest()
 
 
-def render(case, cam_h, tex_path, out_dir):
+def render(case, cam_h, tex_path, out_dir, azimuth_deg=0.0):
     spec = terrain.make_spec(kind='flat', seed=0, objects=[],
                              goal_x=float(case.get('goal_x', 2.8)), name='up')
     spec['channel'] = {'center_y': 0.0, 'half_width': float(case.get('channel_half', 1.2))}
@@ -64,7 +64,7 @@ def render(case, cam_h, tex_path, out_dir):
         if uv_obj.exists():
             mesh_for_render = uv_obj
     spec['objects'] = [{'mesh_file': str(mesh_for_render),
-                        'x': case['obstacle_x'], 'y': 0.0, 'yaw_deg': 0.0,
+                        'x': case['obstacle_x'], 'y': 0.0, 'yaw_deg': float(azimuth_deg),
                         'target_height_m': case['H']}]
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
@@ -154,12 +154,15 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--cam-height', type=float, default=0.32)
     ap.add_argument('--texture', default='assets/textures/rock_v1.png')
+    ap.add_argument('--azimuth', type=float, default=0.0,
+                    help='石头相对相机的偏航（度）。只改可见面，机位与取景不变；'
+                         '用于"一次只改一个因素"的对照输入')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     case = json.loads(pathlib.Path(a.case).read_text())
     tex = (ROOT / a.texture) if a.texture else None
 
-    rgb, mask, cam = render(case, a.cam_height, tex, out)
+    rgb, mask, cam = render(case, a.cam_height, tex, out, a.azimuth)
     # 白底隔离版本：避免高度场渲染噪点进入上传图
     iso = isolate_white(rgb, mask)
     Image.fromarray(iso).save(out / 'isolated_white.png')

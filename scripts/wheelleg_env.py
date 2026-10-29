@@ -40,6 +40,7 @@ DRIVE_WHEEL_R = 0.08599           # 轮半径（实测）
 DRIVE_V_MAX = 0.8                 # m/s
 DRIVE_W_MAX = 1.2                 # rad/s
 DRIVE_RPS_MAX = 6.0               # 轮角速度上限
+FIELD_X_MAX = 3.95                # 地形覆盖 [-4,4]，留 5 cm 余量
 
 # 观测 = 本体感觉 + 导航状态。
 # 导航状态只提供**通道相对量**（横向偏差、朝向误差），不是地形图、不是相机、
@@ -780,6 +781,29 @@ class WheelLegEnv:
                 'n_physics': self.n_physics,
                 'time_offset': round(float(self.t - d.time), 6)}
 
+    def _check_termination(self):
+        """
+        统一的终止判定：倾覆 / 越界 / 出场地 / 超时。
+        step()、step_drive()、brake_step() 必须共用，不能各自报告 False。
+        返回 (terminated, truncated, info)。
+        """
+        d = self.data
+        tilt = self._tilt()
+        if tilt > self.tip_deg:
+            return True, False, {'reason': 'tipped', 't': float(self.t),
+                                 'x': float(d.qpos[0]), 'tilt_deg': tilt}
+        lat = float(d.qpos[1]) - self.channel_center
+        if abs(lat) > self.channel_half_width:
+            return True, False, {'reason': 'out_of_bounds', 't': float(self.t),
+                                 'x': float(d.qpos[0]), 'tilt_deg': tilt}
+        if float(d.qpos[0]) > FIELD_X_MAX:
+            return True, False, {'reason': 'out_of_field', 't': float(self.t),
+                                 'x': float(d.qpos[0]), 'tilt_deg': tilt}
+        if float(self.t) >= float(getattr(self, 'max_seconds', 1e9)):
+            return False, True, {'reason': 'time_limit', 't': float(self.t),
+                                 'x': float(d.qpos[0]), 'tilt_deg': tilt}
+        return False, False, {}
+
     def step_drive(self, v_forward_mps=0.0, yaw_rate_rps=0.0, max_wheel_rps=None):
         """
         语义明确的轮式驾驶接口（**不是**残差动作）。
@@ -820,10 +844,12 @@ class WheelLegEnv:
             e = self.J[f'{leg}_wheel_joint']
             self._wheel_rps_last[leg] = float(d.qvel[e['vadr']] * self._wheel_sign.get(
                 'L' if leg in ('FL', 'RL') else 'R', 1.0))
+        te, tr, info = self._check_termination()
         self.last_drive = {'v_target': v, 'yaw_rate': w,
                            'wheel_rps_target': dict(targets),
-                           't': round(float(self.t), 4)}
-        return self._obs(), 0.0, False, False, {'reason': 'driving'}
+                           't': round(float(self.t), 4),
+                           'terminated': te, 'truncated': tr, 'reason': info.get('reason')}
+        return self._obs(), 0.0, te, tr, info or {'reason': 'driving'}
 
     def calibrate_wheel_signs(self, v_test=0.12, seconds=0.4):
         """
@@ -844,7 +870,7 @@ class WheelLegEnv:
         return {'dx_by_assumed_sign': {str(k): v for k, v in rec.items()},
                 'chosen_sign': best, 'positive_means_forward': rec[best] > 0}
 
-    def brake_step(self):
+    def brake_step(self, return_info=False):
         """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""
         for _ in range(self.substeps):
             self._soil_step() if hasattr(self, '_soil_step') else None

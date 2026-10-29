@@ -1,0 +1,19 @@
+{
+  "version": "phase-protocol/v2",
+  "frozen": "2026-10-29",
+  "note": "新协议，不覆盖旧的 12 秒运行。所有方法使用同一总体时限；观察阶段单独预算且真实计入总体。",
+  "total_task_seconds": 30.0,
+  "observation_budget_seconds": 12.0,
+  "reset_settle_seconds": 0.6,
+  "success_cost": "成功代价 = 执行结束绝对时间 - 执行开始绝对时间（不含观察）",
+  "total_cost": "总耗时 = 观察耗时 + 执行耗时；观察时间只计一次",
+  "penalties": {
+    "fail_seconds_equivalent": 60.0,
+    "abort_seconds_equivalent": 40.0,
+    "note": "固定惩罚不是实际秒数，单独记录，不冒充实测时间"
+  },
+  "termination": {
+    "reasons": ["tipped", "out_of_bounds", "out_of_field", "time_limit", "success", "abort"],
+    "rule": "超时/倾覆/越界后立即停止；A0 也必须遵守总体时限"
+  }
+}

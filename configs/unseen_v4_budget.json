@@ -1,0 +1,13 @@
+{
+  "scope": "unseen_v4_stones",
+  "authorized_on": "2026-10-29",
+  "hard_cap": 480,
+  "per_task_cap": 20,
+  "max_create_tasks": 24,
+  "credits_upper_per_task": 20,
+  "inherits": "configs/unseen_v3_pilot_budget.json",
+  "inherited_usage": {"tasks": 18, "credits_upper": 360},
+  "increment": {"tasks": 6, "credits_upper": 120},
+  "note": "同一账本累加：历史 18 任务/360 保留，新增 6 任务/120；不清空历史，核验扣费仍 unknown",
+  "source": "用户 2026-10-29 批准 plans/unseen_v4_stones.json（R01×3、R02/R03/R04 各1）"
+}

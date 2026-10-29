@@ -72,8 +72,11 @@ def main():
                                      DO.STABLE_TILT_DEG, DO.STABLE_HOLD_S)}}
 
     # ---------- 1. 首视角 + 真实行驶观察 ----------
-    env = wheelleg_env.WheelLegEnv(_spec(case['mesh'] and None or None, case) if False
-                                   else _spec_world(case))
+    PROTO = json.loads((ROOT / 'configs/unseen_phase_protocol_v2.json').read_text())
+    TOTAL_S = float(PROTO['total_task_seconds'])
+    rec['phase_protocol'] = PROTO['version']
+    rec['total_task_seconds'] = TOTAL_S
+    env = wheelleg_env.WheelLegEnv(_spec_world(case), max_seconds=TOTAL_S)
     env.reset(seed=a.seed)
     cid = DO.set_cam_height(env, a.camera_height)
     v1 = DO.capture(env, cid, out / 'view1.png')
@@ -105,7 +108,7 @@ def main():
     # ---------- 2. 用真实第二观测筛选候选 ----------
     per = []
     for c in cands:
-        e2 = wheelleg_env.WheelLegEnv(_spec(c, case))
+        e2 = wheelleg_env.WheelLegEnv(_spec(c, case), max_seconds=TOTAL_S)
         e2.reset(seed=a.seed)
         # 关键：恢复到**观察后**状态（不是出生状态）
         e2.restore_state(dict(snapshot))
@@ -139,7 +142,7 @@ def main():
                 reh.append({'candidate': c.name, 'option': o, 'not_applicable': why,
                             'success': False, 'cost': None})
                 continue
-            e3 = wheelleg_env.WheelLegEnv(_spec(c, case))
+            e3 = wheelleg_env.WheelLegEnv(_spec(c, case), max_seconds=TOTAL_S)
             e3.reset(seed=a.seed)
             e3.restore_state(dict(snapshot))        # 观察后状态
             r = EpisodeRunner(e3, skills.make_skill(o), visible=vis, seed=a.seed)
@@ -168,10 +171,21 @@ def main():
     else:
         dec = {'chosen': ACT.FALLBACK,
                'rule': 'no non-fallback option passed on every kept candidate'}
-    dec['observation_seconds'] = move_s + st['brake_seconds']
-    dec['total_cost_projection'] = round(float(dec['observation_seconds']) +
-                                        (max(x['cost'] for x in safe[dec['chosen']])
-                                         if dec['chosen'] in safe else 40.0), 3)
+    # 成本口径（修正重复计）：
+    #   成功 cost = t_end，而 t_end 是**绝对时间**（已含观察阶段），所以再加观察时间会重复。
+    #   这里明确记录三项：观察耗时、执行耗时（t_end - t_start）、总耗时（观察 + 执行）。
+    dec['observation_seconds'] = round(move_s + st['brake_seconds'], 3)
+    if dec['chosen'] in safe:
+        xs = safe[dec['chosen']]
+        exec_cost = max(x['cost'] for x in xs)
+        exec_seconds = max((x['t_end'] or 0) - (x['t_start'] or 0) for x in xs)
+        dec['exec_cost_including_observation'] = exec_cost
+        dec['exec_seconds'] = round(exec_seconds, 3)
+        dec['total_seconds'] = round(dec['observation_seconds'] + exec_seconds, 3)
+    else:
+        dec['exec_cost_including_observation'] = 40.0
+        dec['exec_seconds'] = None
+        dec['total_seconds'] = None
     decp = out / 'decision.json'
     decp.write_text(json.dumps(dec, indent=2, ensure_ascii=False))
     import hashlib
@@ -181,7 +195,7 @@ def main():
     # ---------- 5. 在真值场景**当前状态**继续执行 ----------
     ex = []
     for o in (dec['chosen'], 'R1'):
-        e4 = wheelleg_env.WheelLegEnv(_spec_truth(case))
+        e4 = wheelleg_env.WheelLegEnv(_spec_truth(case), max_seconds=TOTAL_S)
         e4.reset(seed=a.seed)
         # 执行端持有真值；状态从观察后继续（同一物理历史）
         e4.restore_state(dict(snapshot))

@@ -137,6 +137,24 @@ def box_mesh(i0, i1, j0, j1, k0, k1, grid):
     return m
 
 
+def cache_ok(outdir, mesh, pitch):
+    """已有缓存是否可用于这份源网格与这个构建分辨率。"""
+    mf = pathlib.Path(outdir) / 'manifest.json'
+    if not mf.exists():
+        return False, 'no manifest'
+    man = json.loads(mf.read_text())
+    ci = man.get('cache_identity') or {}
+    if ci.get('source_sha') != sha_file(mesh):
+        return False, 'source_sha mismatch'
+    if abs(float(ci.get('build_pitch_m', -1)) - float(pitch)) > 1e-12:
+        return False, 'pitch mismatch'
+    if ci.get('algorithm') != VERSION:
+        return False, 'algorithm mismatch'
+    if ci.get('collision_sha') != man.get('collision_sha'):
+        return False, 'collision_sha mismatch'
+    return True, 'ok'
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--mesh', required=True)
@@ -145,8 +163,18 @@ def main():
     ap.add_argument('--hypothesis-id', default='box_union')
     ap.add_argument('--max-geoms', type=int, default=0,
                     help='>0 时若超过则报错而不是悄悄降级')
+    ap.add_argument('--reuse', action='store_true',
+                    help='若缓存身份匹配则直接复用（不重建）；不匹配则报错退出')
+    ap.add_argument('--force', action='store_true', help='配合 --reuse 时强制重建')
     a = ap.parse_args()
     src = pathlib.Path(a.mesh)
+    if a.reuse and not a.force:
+        ok, why = cache_ok(a.out, src, a.pitch)
+        if ok:
+            print(json.dumps({'reused': True, 'why': why, 'out': a.out}, ensure_ascii=False))
+            return
+        # 身份不匹配时**拒绝**复用，也不覆盖旧缓存（避免一次错参数把合格缓存冲掉）
+        raise SystemExit(f'缓存身份不匹配（{why}）：拒绝复用；如确需重建请去掉 --reuse 或加 --force')
     mesh = FZ._load_mesh(src)
     occ, grid, stats = occupancy_from_mesh(mesh, a.pitch, margin=1)
     boxes = merge_boxes_greedy(occ)
@@ -179,10 +207,24 @@ def main():
         'grid_origin': [float(x) for x in grid['origin']],
         'grid_dims': [int(x) for x in grid['dims']],
         'pass': True, 'rest_pose': False, 'rescaled': False,
+        'cache_identity': {
+          'source_sha': sha_file(src),
+          'build_pitch_m': float(a.pitch),
+          'algorithm': VERSION,
+          'solid_method': stats.get('solid_method'),
+          'octree_or_parts': 'boxes',
+          'n_boxes': int(len(boxes)),
+          'collision_sha': collision_sha,
+          'cache_key': None,
+        },
         'near_convex_hull_substituted': False,
         'note': ('占据 -> 轴对齐 box 合并；不跨越空隙、不填凹槽、不改坐标。'
                  '碰撞几何与源网格仍有半体素离散误差，见 collision metrics。'),
     }
+    ci = man['cache_identity']
+    ci['cache_key'] = hashlib.sha256(json.dumps(
+        {k: ci[k] for k in ('source_sha', 'build_pitch_m', 'algorithm', 'solid_method',
+                            'n_boxes', 'collision_sha')}, sort_keys=True).encode()).hexdigest()[:32]
     (out / 'manifest.json').write_text(json.dumps(man, ensure_ascii=False, indent=2))
     if a.max_geoms and len(boxes) > a.max_geoms:
         raise SystemExit(f'box 数 {len(boxes)} 超过上限 {a.max_geoms}')

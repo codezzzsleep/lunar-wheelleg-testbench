@@ -101,6 +101,8 @@ def main():
     ap.add_argument('--goal-x', type=float, default=2.6)
     ap.add_argument('--time-limit', type=float, default=30.0)
     ap.add_argument('--max-parts', type=int, default=32)
+    ap.add_argument('--truth-collision', default=None,
+                    help='可选：真值执行用的碰撞体目录（如 box 并集），缺省则用 CoACD')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     obs = json.loads((pathlib.Path(a.observation) / 'observation.json').read_text())
@@ -110,7 +112,11 @@ def main():
     methods = [x for x in a.methods.split(',') if x]
     hyps_in = json.loads(pathlib.Path(a.hypotheses).read_text())
     truth_world, truth_sha = build_truth(a.case, out)
-    truth_col, truth_man = collize(truth_world, out / 'collision', 'TRUTH', a.max_parts)
+    if a.truth_collision and pathlib.Path(a.truth_collision).exists():
+        truth_col = pathlib.Path(a.truth_collision)
+        truth_man = json.loads((truth_col / 'manifest.json').read_text())
+    else:
+        truth_col, truth_man = collize(truth_world, out / 'collision', 'TRUTH', a.max_parts)
     truth_col_sha = truth_man.get('collision_sha')
 
     hyps = {}
@@ -127,6 +133,7 @@ def main():
 
     records = []
     decisions = []
+    pending = []
     summary_methods = []
     truth_records = {}
     for method in methods:
@@ -158,6 +165,29 @@ def main():
                 continue
             matrix = rehearse(hyps['H5_F_single'], visible, seeds, a.goal_x, a.time_limit)
             dec = decision.evaluate(matrix, OPTIONS)
+        elif method == 'H5_F_multi':
+            members = [h for h in hyps.values() if h.get('multi_member')]
+            if members:
+                # 真正的多假设：每个候选各自预演，矩阵保持 (候选 × 动作 × 初态)，
+                # 由 decision.evaluate 在假设内取最坏、再跨假设取最坏。
+                matrix = []
+                for h in sorted(members, key=lambda x: x['id']):
+                    matrix += rehearse(h, visible, seeds, a.goal_x, a.time_limit)
+                dec = decision.evaluate(matrix, OPTIONS)
+                dec['n_members'] = len(members)
+                dec['members'] = [h['id'] for h in sorted(members, key=lambda x: x['id'])]
+            elif 'H5_F_multi' in hyps:
+                matrix = rehearse(hyps['H5_F_multi'], visible, seeds, a.goal_x, a.time_limit)
+                dec = decision.evaluate(matrix, OPTIONS)
+                dec['n_members'] = 1
+                dec['members'] = ['H5_F_multi']
+            else:
+                summary_methods.append({'method': method, 'no_candidate': True,
+                                        'selected_action': None, 'n_expected': 0,
+                                        'success': 0, 'n_exec': 0, 'complete': True,
+                                        'no_robust_option': True,
+                                        'reason': 'no multi members and no H5_F_multi'})
+                continue
         elif method == 'B3_F':
             if 'B3_F' not in hyps:
                 summary_methods.append({'method': method, 'no_candidate': True,
@@ -172,10 +202,18 @@ def main():
         dec['method'] = method
         decisions.append(dec)
         records += matrix
-        if method == 'B0_blind':
-            chosen = 'R1'
-        else:
-            chosen = dec['chosen']
+        pending.append((method, dec))
+    # ---- 决策先落盘：所有方法的决策在**任何真值执行之前**写入并定身份 ----
+    import hashlib as _h, time as _t
+    _dec_payload = json.dumps(decisions, ensure_ascii=False, sort_keys=True)
+    _dec_sha = _h.sha256(_dec_payload.encode()).hexdigest()
+    _written_at = _t.time()
+    (out / 'decisions.json').write_text(json.dumps(
+        {'schema': 'decision-bundle/v6_1', 'decision_sha': _dec_sha,
+         'written_at': _written_at, 'decisions': decisions},
+        ensure_ascii=False, indent=2))
+    for method, dec in pending:
+        chosen = 'R1' if method == 'B0_blind' else dec['chosen']
         exec_rows = execute_truth(truth_col, truth_sha, method, chosen,
                                   seeds, visible, a.goal_x, a.time_limit)
         if chosen != 'R1':
@@ -184,9 +222,11 @@ def main():
         if chosen != 'A0':
             exec_rows += execute_truth(truth_col, truth_sha, method, 'A0',
                                        seeds, visible, a.goal_x, a.time_limit)
-        # validation only chosen action
         val_rows = execute_truth(truth_col, truth_sha, method, chosen,
                                  vseeds, visible, a.goal_x, a.time_limit)
+        for r in exec_rows + val_rows:
+            r['decision_sha'] = _dec_sha
+            r['decision_written_at'] = _written_at
         records += exec_rows + val_rows
         chosen_rows = [r for r in exec_rows if r.get('option') == chosen]
         val_chosen = [r for r in val_rows if r.get('option') == chosen]
@@ -204,20 +244,19 @@ def main():
             'outcomes': [r.get('reason') for r in chosen_rows],
             'validation_success': sum(1 for r in val_chosen if r.get('success')),
             'validation_n': len(val_chosen),
-            'no_candidate': False, 'no_robust_option': dec.get('no_robust_option', False),
-            'safe_set': dec.get('safe_set'), 'tie': dec.get('tie'),
-            'decision_rule': dec.get('rule'),
+            'decision_sha': _dec_sha,
+            'n_hypotheses': dec.get('n_members', 1),
         })
         truth_records[method] = exec_rows + val_rows
 
     (out / 'rehearsal.jsonl').write_text('\n'.join(json.dumps(r, ensure_ascii=False) for r in records) + '\n')
-    (out / 'decisions.json').write_text(json.dumps(decisions, ensure_ascii=False, indent=2))
     (out / 'execution.jsonl').write_text('\n'.join(
         json.dumps(r, ensure_ascii=False) for m in truth_records.values() for r in m) + '\n')
     summary = {
         'schema': 'eval-v6/v1', 'case': json.loads(pathlib.Path(a.case).read_text()).get('case_id'),
         'truth_sha': truth_sha, 'truth_collision_sha': truth_col_sha,
         'time_limit_s': a.time_limit, 'seeds': seeds, 'validation_seeds': vseeds,
+        'decision_sha': _dec_sha, 'decision_written_at': _written_at,
         'decision_rule': 'worst-case-risk/v2', 'methods': summary_methods,
         'hypotheses': [{'id': h['id'], 'kind': h.get('kind'),
                         'world_sha': sha(pathlib.Path(h['world_dir']) / 'body.stl'),

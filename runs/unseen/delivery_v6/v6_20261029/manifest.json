@@ -108,7 +108,7 @@
         "verify/report_v6.json",
         "scripts/verify_delivery_v6.py"
       ],
-      "note": "32/32 incl real negatives"
+      "note": "33/33 incl actual truth file SHA + negatives"
     }
   },
   "status": {
@@ -120,12 +120,19 @@
   "note": "V6 使用现有 V5 资产，new create=0；H5-F 可见构造通过不等于隐藏形状/碰撞保真；收益不因页面或测试升级。",
   "verify": {
     "report": "verify/report_v6.json",
-    "n_pass": 32,
-    "n_checks": 32
+    "n_pass": 33,
+    "n_checks": 33
   },
   "evaluation": {
     "dir": "evaluation/R01_matched_v2",
     "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
     "decision_rule": "worst-case-risk/v2"
+  },
+  "tests": {
+    "ran": 130,
+    "ok": true,
+    "skipped": 1,
+    "seconds": 777.748,
+    "log": "verify/unit_v6.log"
   }
 }

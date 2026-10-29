@@ -251,9 +251,17 @@ class WheelLegEnv:
                     if obj.get('quat') is not None:
                         raise ValueError('world-frame 资产禁止外部 quat')
                     obj = dict(obj); obj['_world_frame'] = True
-                res = [str((pathlib.Path(obj['posed_dir']) / p_).resolve())
-                       for p_ in _man['parts']]
-                obj = dict(obj); obj['_posed'] = True
+                if _man.get('boxes'):
+                    # 占据合并 box 表示：原生 box geom，无 mesh 资产、无二次变换
+                    obj = dict(obj); obj['_posed'] = True
+                    obj['_box_union'] = {
+                        'boxes': _man['boxes'], 'origin': _man['grid_origin'],
+                        'pitch': float(_man['pitch_m'])}
+                    res = []
+                else:
+                    res = [str((pathlib.Path(obj['posed_dir']) / p_).resolve())
+                           for p_ in _man['parts']]
+                    obj = dict(obj); obj['_posed'] = True
             elif obj.get('mesh_file'):
                 res = [str(pathlib.Path(obj['mesh_file']).resolve())]
             else:
@@ -286,7 +294,19 @@ class WheelLegEnv:
 
             # 用**旋转并缩放后的真实顶点**求落地高度：最低点贴到其正下方地面，
             # 任何顶点都不低于地形（不埋），且至少一个顶点接触（不悬空）。
-            if obj.get('_world_frame'):
+            if obj.get('_box_union'):
+                bu = obj['_box_union']
+                org = np.asarray(bu['origin'], dtype=float); pit = float(bu['pitch'])
+                corners = []
+                for (i0, i1, j0, j1, k0, k1) in bu['boxes']:
+                    lo = org + np.array([i0, j0, k0]) * pit
+                    hi = org + np.array([i1 + 1, j1 + 1, k1 + 1]) * pit
+                    for cx in (lo[0], hi[0]):
+                        for cy in (lo[1], hi[1]):
+                            for cz in (lo[2], hi[2]):
+                                corners.append([cx, cy, cz])
+                verts = np.asarray(corners, dtype=float)
+            elif obj.get('_world_frame'):
                 # 世界坐标资产：顶点即世界坐标，不做任何变换，直接读原始顶点
                 verts = np.vstack([trimesh.load(r, force='mesh',
                                                 process=False).vertices.copy()
@@ -330,6 +350,23 @@ class WheelLegEnv:
                            'z_max': float(verts[:, 2].max()) + body_z})
 
             inner = []
+            if obj.get('_box_union'):
+                bu = obj['_box_union']
+                org = np.asarray(bu['origin'], dtype=float); pit = float(bu['pitch'])
+                mat = self.spec.get('object_material')
+                mat_attr = f' material="{mat["name"]}"' if mat else ''
+                rgba = ('.72 .56 .36 1' if not mat else '1 1 1 1')
+                for bi, (i0, i1, j0, j1, k0, k1) in enumerate(bu['boxes']):
+                    lo = org + np.array([i0, j0, k0]) * pit
+                    hi = org + np.array([i1 + 1, j1 + 1, k1 + 1]) * pit
+                    c = (lo + hi) / 2.0
+                    h = np.maximum((hi - lo) / 2.0, 1e-4)
+                    inner.append(
+                        f'<geom name="obj{i}_box{bi}" type="box" '
+                        f'pos="{c[0]:.6f} {c[1]:.6f} {c[2]:.6f}" '
+                        f'size="{h[0]:.6f} {h[1]:.6f} {h[2]:.6f}" '
+                        f'rgba="{rgba}"{mat_attr} friction="0.9 0.02 0.001" '
+                        f'contype="1" conaffinity="1"/>')
             for j, p_ in enumerate(res):
                 name = f'obj{i}_{j}'
                 assets.append(f'<mesh name="{name}" file="{p_}"{scale_attr}/>')

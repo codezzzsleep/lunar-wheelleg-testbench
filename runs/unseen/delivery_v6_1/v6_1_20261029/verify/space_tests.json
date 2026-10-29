@@ -1,0 +1,67 @@
+{
+  "schema": "space-tests/v6_1",
+  "n": 12,
+  "n_pass": 12,
+  "rows": [
+    {
+      "check": "A6-1 平面(1m)前方为已知自由",
+      "pass": true,
+      "detail": "n=150 classes=[2]"
+    },
+    {
+      "check": "A6-2 平面后 3 mm 不得标为已知自由",
+      "pass": true,
+      "detail": "classes=[1] n=1"
+    },
+    {
+      "check": "A6-3 视野外体素不是已知自由",
+      "pass": true,
+      "detail": "uv=(6.9,23.7) class=2"
+    },
+    {
+      "check": "A6-4 相机后方点 depth<=0（不会被清空）",
+      "pass": true,
+      "detail": "z=-0.500"
+    },
+    {
+      "check": "A6-5 倾斜平面：表面处非自由、表面前方为自由",
+      "pass": true,
+      "detail": "at_surface=1 front=2"
+    },
+    {
+      "check": "A6-6a dilate6 不从 x=0 绕到 x=-1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A6-6b dilate6 边界外不激活对侧",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A6-6c 掩码膨胀不绕回",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A6-6d 底面 z=0 占据不绕到 z=+60mm",
+      "pass": true,
+      "detail": "zmax=0.0100"
+    },
+    {
+      "check": "A6-7 同输入可重复",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "A6-8 配置覆盖改变运行身份",
+      "pass": true,
+      "detail": "e7470418 vs b64ae846"
+    },
+    {
+      "check": "A6-8b band<pitch 被拒绝",
+      "pass": true,
+      "detail": "band_m + free_epsilon_m < pitch_m：可见面约束可能整列落空，出现缺口。band=0.0001 eps=0.001 pitch=0.005"
+    }
+  ]
+}

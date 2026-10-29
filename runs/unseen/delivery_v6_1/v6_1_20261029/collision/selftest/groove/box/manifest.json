@@ -1,0 +1,100 @@
+{
+  "schema": "asset-manifest/v1",
+  "asset_id": "box",
+  "boxes": [
+    [
+      1,
+      50,
+      1,
+      50,
+      0,
+      34
+    ],
+    [
+      1,
+      20,
+      1,
+      50,
+      35,
+      49
+    ],
+    [
+      31,
+      50,
+      1,
+      50,
+      35,
+      49
+    ]
+  ],
+  "hypothesis_id": "groove_box",
+  "version": "box-union/v1",
+  "coordinate_frame": "world",
+  "source_kind": "box_union",
+  "parts": [
+    "parts/box_0000.stl",
+    "parts/box_0001.stl",
+    "parts/box_0002.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "be1d7885fac640acae303acf2c1153d83d1293119a6bc7960feab77b77f27a11",
+  "raw_sha": "be1d7885fac640acae303acf2c1153d83d1293119a6bc7960feab77b77f27a11",
+  "collision_sha": "57efaaba37d73d2e3505ff7594ffcbb5",
+  "pitch_m": 0.004,
+  "n_boxes": 3,
+  "n_source_voxels": 117500,
+  "boxes_volume_m3": 0.00752,
+  "grid_origin": [
+    -0.10400000149011612,
+    -0.10400000149011612,
+    0.0
+  ],
+  "grid_dims": [
+    53,
+    53,
+    52
+  ],
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "note": "占据 -> 轴对齐 box 合并；不跨越空隙、不填凹槽、不改坐标。碰撞几何与源网格仍有半体素离散误差，见 collision metrics。"
+}

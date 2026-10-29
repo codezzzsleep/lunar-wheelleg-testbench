@@ -1,0 +1,45 @@
+{
+  "schema": "unseen-delivery-plan/v6_1",
+  "batch_id": "v6_1_20261029",
+  "created": "2026-10-29",
+  "review_baseline": "4109128b8a7ee4868e281e48b0321fe6558d68b5",
+  "new_create": 0,
+  "scope": "可信几何与预演链：观测融合物理语义、已知答案 fixture、源实体->占据->网格->实际碰撞、多候选与 R03、同条件比较、第二观察、页面、三层验收",
+  "source_assets": {
+    "v5_batch": "runs/unseen/delivery_v5/v5_20261029",
+    "v6_batch": "runs/unseen/delivery_v6/v6_20261029",
+    "observations": {
+      "R01": "runs/unseen/recovery_r3/obs_R01",
+      "R03": "runs/unseen/recovery_r3/obs_R03"
+    },
+    "parents": {
+      "R01": {
+        "C_R01_face12k": {"kind": "lux3d", "task_id": 4466144, "world": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align"},
+        "G_R01": {"kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01"},
+        "G_R01_rep2": {"kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep2"},
+        "G_R01_rep3": {"kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep3"}
+      },
+      "R03": {
+        "G_R03": {"kind": "lux3d", "world": "runs/unseen/recovery_r3/align_v3/world/G_R03"}
+      }
+    },
+    "truth": {
+      "R01": "cases/unseen_v1/R01_truth_base.json",
+      "R03": "cases/unseen_v1/R03.json"
+    }
+  },
+  "configs": {
+    "fusion": "configs/unseen_v6_1_fusion.json",
+    "protocol": "configs/unseen_v6_protocol.json",
+    "initial_state": "configs/unseen_initial_state_v5.json"
+  },
+  "collision": {
+    "routes": ["coacd", "box_union"],
+    "baseline_max_parts": 32,
+    "fidelity_eval_pitch_m": 0.0025,
+    "gate": {"occupancy_iou_min": 0.95, "surface_p95_max_mm": 5.0}
+  },
+  "methods": ["H5_F_single", "H5_F_multi", "B3_F", "B0_blind", "U_truth"],
+  "outputs": {"root": "runs/unseen/delivery_v6_1/v6_1_20261029"},
+  "note": "只使用本地已有资产；本批不调用任何生成 API。"
+}

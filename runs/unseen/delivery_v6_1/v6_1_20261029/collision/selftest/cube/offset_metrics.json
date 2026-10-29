@@ -1,0 +1,61 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "cube_offset",
+  "source_mesh": "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/cube/source.stl",
+  "source_sha": "b188c276b8bbec5b6476c53a2da7740baf8dbbc7f80996d0b96fefef5e7055dd",
+  "collision_dir": "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/cube/offset",
+  "representation": "parts",
+  "n_boxes": null,
+  "n_parts_declared": 1,
+  "n_parts_loaded": 1,
+  "missing_parts": [],
+  "collision_sha_manifest": null,
+  "source_status": {
+    "watertight": true,
+    "euler": 2,
+    "n_faces": 12
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 125000,
+    "collision_inside": 125000,
+    "intersection": 117500,
+    "union": 132500,
+    "collision_only": 7500,
+    "source_only": 7500,
+    "occupancy_iou": 0.8868,
+    "over_fill_frac_of_collision": 0.06,
+    "under_fill_frac_of_source": 0.06,
+    "over_fill_volume_m3": 0.00048,
+    "under_fill_volume_m3": 0.00048,
+    "source_volume_voxelised_m3": 0.008,
+    "collision_volume_voxelised_m3": 0.008,
+    "eval_pitch_m": 0.004,
+    "eval_dims": [
+      59,
+      56,
+      56
+    ],
+    "source_to_collision_mm": {
+      "n": 800,
+      "med": 0.0,
+      "p95": 12.0,
+      "max": 12.0
+    },
+    "collision_to_source_mm": {
+      "n": 800,
+      "med": 0.0,
+      "p95": 12.0,
+      "max": 12.0
+    }
+  },
+  "probe": {
+    "n_gap_rows": 0,
+    "largest": []
+  },
+  "samples": 800,
+  "seed": 0,
+  "verdict": "ATTENTION",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。"
+}

@@ -1,0 +1,24 @@
+{
+  "version": "fuse-observed/v2-config",
+  "frozen": "2026-10-29",
+  "pitch_m": 0.005,
+  "margin_cells": 3,
+  "parent_dilate_voxels": 1,
+  "mask_dilate_px": 1,
+  "fill_holes": true,
+  "notes": {
+    "grid": "cell-center; voxel i center = origin + (i+0.5)*pitch; z origin = 0",
+    "free_epsilon": "free = z < depth - free_epsilon_m (1 mm declared sensor/registration noise). Front error bound = free_epsilon_m + pitch/2 = 3.5 mm at 5 mm pitch, which is below the frozen 5 mm freespace tolerance.",
+    "band": "measurement band = [depth - free_epsilon_m, depth + band_m]; band_m >= pitch - free_epsilon_m is enforced so every valid mask column has at least one constrained solid cell (no gaps in the visible surface).",
+    "depth": "axis depth positive_camera_minus_z, same as align/freespace",
+    "morphology": "non-periodic (zero padding); outside grid = unknown/empty",
+    "no_vertex_move": true,
+    "formal_pitch_m": 0.005,
+    "convergence_pitch_m": 0.004,
+    "depth_edges": "Tested: excluding depth-discontinuity pixels from free-space and shell constraints made freespace_violation worse (0.1213 -> 0.3714 at 5 mm) because parent geometry survives at the silhouette; the flag stays available but is disabled for the frozen formal config."
+  },
+  "free_epsilon_m": 0.001,
+  "band_m": 0.0075,
+  "depth_edge_threshold_m": 0.02,
+  "use_depth_edge_exclusion": false
+}

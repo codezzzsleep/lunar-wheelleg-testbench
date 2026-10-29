@@ -1,0 +1,199 @@
+{
+  "schema": "unseen-delivery-manifest/v6_1",
+  "batch_id": "v6_1_20261029",
+  "created": "2026-10-29",
+  "review_baseline": "4109128b8a7ee4868e281e48b0321fe6558d68b5",
+  "new_create": 0,
+  "plan": {
+    "path": "plans/unseen_delivery_v6_1.json",
+    "sha256": "92baa0dbb6c8e11ddec8097d972a135e81c0485029df3cc35f8b8788a5b7ed6e"
+  },
+  "configs": {
+    "fusion": {
+      "path": "configs/unseen_v6_1_fusion.json",
+      "sha256": "243a1ab60a9f05c803f3b4ccf1db07702787a7357f74b82e74f01d0a1e783e4a"
+    }
+  },
+  "paths": {
+    "root": "runs/unseen/delivery_v6_1/v6_1_20261029",
+    "fusion": "runs/unseen/delivery_v6_1/v6_1_20261029/fusion",
+    "collision": "runs/unseen/delivery_v6_1/v6_1_20261029/collision",
+    "fixtures": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures",
+    "evaluation": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation",
+    "observation": "runs/unseen/delivery_v6_1/v6_1_20261029/observation",
+    "soil": "runs/unseen/delivery_v6_1/v6_1_20261029/soil",
+    "media": "runs/unseen/delivery_v6_1/v6_1_20261029/media",
+    "verify": "runs/unseen/delivery_v6_1/v6_1_20261029/verify"
+  },
+  "work_packages": {
+    "A": {
+      "status": "done",
+      "artifacts": [
+        "scripts/fuse_observed.py",
+        "configs/unseen_v6_1_fusion.json",
+        "scripts/v6_1_space_tests.py",
+        "verify/space_tests.json"
+      ],
+      "evidence": {
+        "known_answer_tests": "12/12",
+        "space_semantics": "free / band / unknown, FOV-gated, non-periodic morphology, cell-center grid",
+        "no_vertex_move": true,
+        "edge_exclusion_tested": "worse (freespace 0.121 -> 0.371), disabled and documented"
+      }
+    },
+    "B": {
+      "status": "partial",
+      "artifacts": [
+        "scripts/v6_1_fixtures.py"
+      ],
+      "note": "F0-F5 runner written; not yet executed to green"
+    },
+    "C": {
+      "status": "partial",
+      "artifacts": [
+        "scripts/collision_occupancy_metrics.py",
+        "scripts/collision_box_union.py",
+        "scripts/v6_1_collision_selftest.py",
+        "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/selftest.json",
+        "runs/unseen/delivery_v6_1/v6_1_20261029/collision/H5F_box_metrics.json"
+      ],
+      "evidence": {
+        "evaluator_selftest": "3/3",
+        "box_route": {
+          "n_boxes": 2780,
+          "occupancy_iou": 0.9373,
+          "s2c_p95_mm": 0.845,
+          "c2s_p95_mm": 1.287,
+          "over_fill_frac": 0.0337,
+          "under_fill_frac": 0.031,
+          "eval_pitch_m": 0.0025
+        },
+        "coacd_route": "see collision/coacd_*_metrics.json (same evaluator)"
+      },
+      "note": "box route preserves geometry to ~1 mm; IoU 0.937 at 2.5 mm evaluation vs 4 mm construction. Probes/perf/cache identity still open."
+    },
+    "D": {
+      "status": "pending"
+    },
+    "E": {
+      "status": "pending"
+    },
+    "F": {
+      "status": "pending"
+    },
+    "G": {
+      "status": "pending"
+    },
+    "H": {
+      "status": "pending"
+    }
+  },
+  "fusion": {
+    "H5F_4mm": {
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/fusion/C_R01_face12k_H5F_p004/manifest.json",
+      "world_sha": "f44cb0abc87071c133960c18f95003d84f1a6d654f2cf0190310cdbdc76beb8c",
+      "metrics": {
+        "mask_iou": 0.9551,
+        "cand_px": 9603,
+        "obs_px": 9721,
+        "n_inter": 9440,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": -0.56,
+        "depth_p95_mm": 6.99,
+        "depth_inner_rms_mm": 6.753,
+        "depth_edge_rms_mm": 20.635,
+        "freespace_violation": 0.1104,
+        "freespace_n_px": 1060,
+        "freespace_denom_px": 9603,
+        "freespace_outside_mask": 111,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.627,
+        "vis_pt_p95_mm": 1.938,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict": {
+        "pass": false,
+        "iou_min": 0.85,
+        "p95_mm_threshold": 9.957,
+        "freespace_max": 0.05,
+        "h_vis_m": 0.33188768814915476
+      },
+      "space": {
+        "n_free": 140156,
+        "n_band": 4523,
+        "n_unknown": 98051,
+        "front_error_bound_mm": 3.0
+      },
+      "retention": {
+        "unknown_core_parent_voxels": 18337,
+        "kept_voxels": 18337,
+        "removed_voxels": 0,
+        "added_voxels": 0,
+        "kept_ratio": 1.0,
+        "removed_ratio": 0.0,
+        "added_volume_m3": 0.0,
+        "carved_free_voxels": 13137,
+        "carved_free_volume_m3": 0.000840768,
+        "parent_hidden_to_fused_mm": {
+          "n": 796,
+          "med": 4.612,
+          "p95": 6.41
+        },
+        "fused_to_parent_mm": {
+          "n": 1500,
+          "med": 4.995,
+          "p95": 8.803
+        }
+      },
+      "solid_method": "shell_floodfill"
+    },
+    "H5F_5mm": {
+      "manifest": "runs/unseen/delivery_v6_1/v6_1_20261029/fusion/C_R01_face12k_H5F_formal/manifest.json",
+      "world_sha": "2d8433547ca771271e26d127321eece6cbf479092a53399deaf209bc06866d1d",
+      "metrics": {
+        "mask_iou": 0.9538,
+        "cand_px": 9737,
+        "obs_px": 9721,
+        "n_inter": 9499,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": -0.391,
+        "depth_p95_mm": 11.567,
+        "depth_inner_rms_mm": 12.156,
+        "depth_edge_rms_mm": 21.734,
+        "freespace_violation": 0.122,
+        "freespace_n_px": 1188,
+        "freespace_denom_px": 9737,
+        "freespace_outside_mask": 164,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.718,
+        "vis_pt_p95_mm": 3.379,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict": {
+        "pass": false,
+        "iou_min": 0.85,
+        "p95_mm_threshold": 9.957,
+        "freespace_max": 0.05,
+        "h_vis_m": 0.33188768814915476
+      },
+      "solid_method": "shell_floodfill"
+    },
+    "convergence": "4 mm improves vis P95 3.38 -> 1.94 mm and depth P95 11.57 -> 6.99 mm; freespace stays ~0.11 -> not discretisation-limited",
+    "known_gap": "freespace_violation 0.110 (4 mm) / 0.122 (5 mm) vs 0.05 gate; visible-point P95 passes; strict still FAIL"
+  },
+  "status": {
+    "execution_status": "PARTIAL",
+    "evidence_status": "MIXED",
+    "capability_status": "PARTIAL",
+    "benefit_status": "NOT_ESTABLISHED"
+  },
+  "note": "V6.1 只在 runs/unseen/delivery_v6_1/ 下新增；V6 目录未改动。new_create=0。本清单是进度快照，不是最终交付；B/D/E/F/G/H 未完成时不得报 COMPLETE。"
+}

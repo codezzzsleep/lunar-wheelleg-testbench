@@ -1,0 +1,80 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "channel_self",
+  "source_mesh": "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/channel/source.stl",
+  "source_sha": "24bbfe368552d39939eb03e6865d12ab4e8812b248b5dc330ad464df5e478d7f",
+  "collision_dir": "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/channel/self",
+  "representation": "parts",
+  "n_boxes": null,
+  "n_parts_declared": 1,
+  "n_parts_loaded": 1,
+  "missing_parts": [],
+  "collision_sha_manifest": null,
+  "source_status": {
+    "watertight": true,
+    "euler": 0,
+    "n_faces": 32
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 116750,
+    "collision_inside": 116750,
+    "intersection": 116750,
+    "union": 116750,
+    "collision_only": 0,
+    "source_only": 0,
+    "occupancy_iou": 1.0,
+    "over_fill_frac_of_collision": 0.0,
+    "under_fill_frac_of_source": 0.0,
+    "over_fill_volume_m3": 0.0,
+    "under_fill_volume_m3": 0.0,
+    "source_volume_voxelised_m3": 0.007472,
+    "collision_volume_voxelised_m3": 0.007472,
+    "eval_pitch_m": 0.004,
+    "eval_dims": [
+      56,
+      56,
+      56
+    ],
+    "source_to_collision_mm": {
+      "n": 800,
+      "med": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    },
+    "collision_to_source_mm": {
+      "n": 800,
+      "med": 0.0,
+      "p95": 0.0,
+      "max": 0.0
+    }
+  },
+  "probe": {
+    "n_gap_rows": 250,
+    "largest": [
+      {
+        "x_m": -0.098,
+        "z_m": 0.034,
+        "gap_m": 0.06,
+        "y_m": 0.002
+      },
+      {
+        "x_m": -0.094,
+        "z_m": 0.034,
+        "gap_m": 0.06,
+        "y_m": 0.002
+      },
+      {
+        "x_m": -0.09,
+        "z_m": 0.034,
+        "gap_m": 0.06,
+        "y_m": 0.002
+      }
+    ]
+  },
+  "samples": 800,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。"
+}

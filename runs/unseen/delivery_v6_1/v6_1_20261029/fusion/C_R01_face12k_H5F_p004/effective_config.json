@@ -1,0 +1,18 @@
+{
+  "pitch_m": 0.004,
+  "margin_cells": 3,
+  "free_epsilon_m": 0.001,
+  "band_m": 0.0075,
+  "parent_dilate_voxels": 1,
+  "mask_dilate_px": 1,
+  "fill_holes": true,
+  "depth_edge_threshold_m": 0.02,
+  "use_depth_edge_exclusion": false,
+  "version": "fuse-observed/v2",
+  "base_config": "configs/unseen_v6_1_fusion.json",
+  "base_config_sha256": "243a1ab60a9f05c803f3b4ccf1db07702787a7357f74b82e74f01d0a1e783e4a",
+  "cli_overrides": {
+    "pitch_m": 0.004
+  },
+  "sha256": "1d1496bfab77a2fe8f92eb8cbae0133d6e4711a3be8cdc13246e71236772e366"
+}

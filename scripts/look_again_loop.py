@@ -76,24 +76,36 @@ def main():
     TOTAL_S = float(PROTO['total_task_seconds'])
     rec['phase_protocol'] = PROTO['version']
     rec['total_task_seconds'] = TOTAL_S
-    env = wheelleg_env.WheelLegEnv(_spec_world(case), max_seconds=TOTAL_S)
+    truth_dir, truth_meta = build_truth_assets(case, out / 'truth')
+    rec['truth_assets'] = truth_meta
+    env = wheelleg_env.WheelLegEnv(_spec(pathlib.Path(truth_dir), case),
+                                   max_seconds=TOTAL_S)
     env.reset(seed=a.seed)
     cid = DO.set_cam_height(env, a.camera_height)
     v1 = DO.capture(env, cid, out / 'view1.png')
-    front = float(case['obstacle_x']) - float(case['D']) / 2.0
+    # 只使用**观测**得到的公开量：x_front 是首视角看到的最前沿
+    front_obs = float(vis['x_front'])
     target_y = float(np.clip(0.30, 0.10, float(case.get('channel_half', 1.2)) - 0.30))
-    move_s, move_reason = DO.drive_to_nav(env, target_y, stop_x=front - 0.42 - 0.78)
+    move_s, move_reason = DO.drive_to_nav(env, target_y, stop_x=front_obs - 0.42 - 0.70)
     st = DO.brake_and_settle(env)
     v2 = DO.capture(env, cid, out / 'view2.png')
     snapshot = env.save_state()
+    # 复用与观察脚本**同一个**可用性函数（含基线与视差），避免正式闭环少检
+    _base = float(np.linalg.norm(np.asarray(v2['snapshot']['world_pos'])
+                                 - np.asarray(v1['snapshot']['world_pos'])))
+    _anchor = np.array([front_obs, 0.0, 0.0])
+    _p1 = np.asarray(v1['snapshot']['world_pos']); _p2 = np.asarray(v2['snapshot']['world_pos'])
+    _b1 = float(np.degrees(np.arctan2(_anchor[1] - _p1[1], _anchor[0] - _p1[0])))
+    _b2 = float(np.degrees(np.arctan2(_anchor[1] - _p2[1], _anchor[0] - _p2[0])))
+    usable = DO.is_usable(st['stable'], v2['mask_px'], v2['depth_valid_frac'],
+                          _base, abs(_b2 - _b1))
     rec['observation'] = {
         'move_seconds': move_s, 'move_stop_reason': move_reason,
         'brake': st, 'view1_mask_px': v1['mask_px'], 'view2_mask_px': v2['mask_px'],
-        'cam_baseline_m': round(float(np.linalg.norm(
-            np.asarray(v2['snapshot']['world_pos']) - np.asarray(v1['snapshot']['world_pos']))), 3),
+        'cam_baseline_m': round(_base, 3),
+        'bearing_change_deg': round(abs(_b2 - _b1), 2),
         'state_hash': snapshot['state_hash'], 'env_t': snapshot['env_t']}
-    usable = (st['stable'] and v2['mask_px'] >= DO.MIN_TARGET_PX
-              and v2['depth_valid_frac'] >= DO.MIN_DEPTH_FRAC)
+    rec['observation_protocol'] = DO.observation_protocol()
     rec['observation']['usable'] = bool(usable)
 
     if not usable:
@@ -195,7 +207,7 @@ def main():
     # ---------- 5. 在真值场景**当前状态**继续执行 ----------
     ex = []
     for o in (dec['chosen'], 'R1'):
-        e4 = wheelleg_env.WheelLegEnv(_spec_truth(case), max_seconds=TOTAL_S)
+        e4 = wheelleg_env.WheelLegEnv(_spec_truth(case, truth_dir), max_seconds=TOTAL_S)
         e4.reset(seed=a.seed)
         # 执行端持有真值；状态从观察后继续（同一物理历史）
         e4.restore_state(dict(snapshot))
@@ -227,8 +239,34 @@ def _spec_world(case):
     return spec
 
 
-def _spec_truth(case):
-    return _spec_world(case)
+def build_truth_assets(case, out_dir):
+    """
+    与六方法共用同一真相资产口径：world 网格 -> 保姿态 CoACD 部件。
+    不使用"单 mesh 凸包"作为真值碰撞。
+    """
+    import subprocess, hashlib, trimesh
+    d = pathlib.Path(out_dir); d.mkdir(parents=True, exist_ok=True)
+    m = trimesh.load(str(pathlib.Path(case['mesh']).resolve()), force='mesh').copy()
+    m.apply_translation([case['obstacle_x'], 0.0, -float(m.bounds[0][2])])
+    wd = d / 'truth_world'
+    wd.mkdir(parents=True, exist_ok=True)
+    body = wd / 'body.stl'
+    m.export(body)
+    wsha = hashlib.sha256(body.read_bytes()).hexdigest()
+    (wd / 'manifest.json').write_text(json.dumps({
+        'schema': 'asset-manifest/v1', 'coordinate_frame': 'world',
+        'parts': ['body.stl'], 'world_sha': wsha, 'source_kind': 'truth'}, indent=2))
+    cd = d / 'truth_collision'
+    subprocess.run([sys.executable, str(ROOT / 'scripts/physicalize.py'),
+                    '--mesh', str(body), '--out', str(cd),
+                    '--hypothesis-id', 'TRUTH'], capture_output=True, text=True, cwd=str(ROOT))
+    man = json.loads((cd / 'manifest.json').read_text())
+    return cd, {'world_sha': wsha, 'collision_sha': man.get('collision_sha'),
+                'coacd_parts': man.get('coacd_parts')}
+
+
+def _spec_truth(case, truth_collision_dir):
+    return _spec(pathlib.Path(truth_collision_dir), case)
 
 
 if __name__ == '__main__':

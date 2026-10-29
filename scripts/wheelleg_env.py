@@ -692,6 +692,22 @@ class WheelLegEnv:
                 'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
                 'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
 
+    def robot_signature(self):
+        """机器人关节/执行器映射签名：名字+类型+地址，避免只看 nq。"""
+        import hashlib as _h
+        parts = [mujoco.__version__, str(self.model.nq), str(self.model.nv), str(self.model.na)]
+        for j in range(self.model.njnt):
+            parts.append('%s|%d|%d|%d|%d' % (
+                mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_JOINT, j) or '',
+                int(self.model.jnt_type[j]), int(self.model.jnt_qposadr[j]),
+                int(self.model.jnt_dofadr[j]), int(self.model.jnt_bodyid[j])))
+        for a_ in range(self.model.nu):
+            parts.append('%s|%d|%d' % (
+                mujoco.mj_id2name(self.model, mujoco.mjtObj.mjOBJ_ACTUATOR, a_) or '',
+                int(self.model.actuator_trnid[a_][0]),
+                int(self.model.actuator_ctrlrange[a_][1] * 1000)))
+        return _h.sha256('\n'.join(parts).encode()).hexdigest()[:32]
+
     def save_state(self):
         """
         完整状态快照（用于"保存/恢复后继续"）。
@@ -718,12 +734,22 @@ class WheelLegEnv:
             'schema': 'env-state/v1',
             'mujoco_version': mujoco.__version__,
             'nq': int(m.nq), 'nv': int(m.nv), 'na': int(m.na),
+            'robot_signature': self.robot_signature(),
             'state_flags': int(flags), 'mjstate': buf.tolist(),
             'data_time': float(d.time), 'env_t': float(self.t),
             'ctrl': [float(x) for x in d.ctrl],
             'xfrc_applied': [float(x) for x in np.asarray(d.xfrc_applied).ravel()],
             'prev_action': [float(x) for x in np.asarray(self.prev_action).ravel()],
             'prev_x': float(self.prev_x), 'n_physics': int(self.n_physics),
+            'passed_at': self.passed_at,
+            'first_contact_t': self.first_contact_t,
+            'contact_steps': int(self.contact_steps),
+            'wheel_contact_steps': int(self.wheel_contact_steps),
+            'episode_return': float(self.episode_return),
+            'drive_history': list(getattr(self, '_drive_hist', [])),
+            'wheel_sign': dict(getattr(self, '_wheel_sign', {})),
+            'geom_friction': {int(g): [float(v) for v in self.model.geom_friction[g]]
+                              for g in range(self.model.ngeom)},
             'n_control': int(self.n_control),
             'nav_target_y': float(getattr(self, 'nav_target_y', self.channel_center)),
             'soil': ({'limits': {str(k): v for k, v in (self._soil_limits or {}).items()},
@@ -748,6 +774,18 @@ class WheelLegEnv:
         """
         if rec.get('schema') != 'env-state/v1':
             raise ValueError(f"快照 schema 不符：{rec.get('schema')}")
+        # B2：重算哈希并校验，损坏或缺失立即拒绝
+        import hashlib as _h
+        h = _h.sha256()
+        h.update(np.asarray(rec['mjstate'], dtype=np.float64).tobytes())
+        h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
+                       rec.get('n_control', 0))).encode())
+        calc = h.hexdigest()[:32]
+        if rec.get('state_hash') != calc:
+            raise ValueError(f'状态哈希不符：快照 {rec.get("state_hash")} vs 重算 {calc}')
+        # B2：机器人关节/执行器兼容性签名（仅有 nq 相同不够）
+        if rec.get('robot_signature') != self.robot_signature():
+            raise ValueError('机器人关节/执行器映射不兼容，拒绝恢复')
         if rec.get('mujoco_version') != mujoco.__version__:
             if strict:
                 raise ValueError('MuJoCo 版本不符：快照 %s vs 当前 %s'
@@ -767,6 +805,25 @@ class WheelLegEnv:
         self.n_physics = int(rec['n_physics'])
         self.n_control = int(rec.get('n_control', 0))
         self.t = float(rec['env_t'])
+        self.passed_at = rec.get('passed_at')
+        self.first_contact_t = rec.get('first_contact_t')
+        self.contact_steps = int(rec.get('contact_steps', 0))
+        self.wheel_contact_steps = int(rec.get('wheel_contact_steps', 0))
+        self.episode_return = float(rec.get('episode_return', 0.0))
+        self._drive_hist = list(rec.get('drive_history') or [])
+        self._wheel_sign = dict(rec.get('wheel_sign') or self._wheel_sign)
+        # 摩擦按 geom 索引恢复；跨模型（候选场景 geom 数不同）时只恢复公共前缀，
+        # 并记录跳过数量 —— 不静默假设完全一致。
+        skipped = 0
+        for g_, fr in (rec.get('geom_friction') or {}).items():
+            gi = int(g_)
+            if gi < self.model.ngeom:
+                self.model.geom_friction[gi] = np.asarray(fr, dtype=np.float64)
+            else:
+                skipped += 1
+        self._last_restore_info = {'geom_friction_skipped': skipped,
+                                   'ngeom_snapshot': len(rec.get('geom_friction') or {}),
+                                   'ngeom_current': int(self.model.ngeom)}
         self.nav_target_y = float(rec.get('nav_target_y', self.channel_center))
         so = rec.get('soil')
         if so and self.soil_mode != 'rigid':
@@ -778,6 +835,7 @@ class WheelLegEnv:
             self._soil_stats = dict(so.get('stats') or self._soil_stats)
         mujoco.mj_forward(m, d)
         return {'restored': True, 'data_time': float(d.time), 'env_t': float(self.t),
+                **(getattr(self, '_last_restore_info', {})),
                 'n_physics': self.n_physics,
                 'time_offset': round(float(self.t - d.time), 6)}
 

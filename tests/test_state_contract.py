@@ -101,6 +101,39 @@ class TestStateContract(unittest.TestCase):
         self.assertAlmostEqual(oA['final_x'], oB['final_x'], places=6)
         self.assertAlmostEqual(float(oA['t_end']), float(oB['t_end']), places=6)
 
+    def test_corrupted_hash_rejected(self):
+        bad = copy.deepcopy(self.snap)
+        bad['state_hash'] = 'CORRUPTED_HASH'
+        with self.assertRaises(ValueError):
+            mk().restore_state(bad)
+
+    def test_wrong_robot_signature_rejected(self):
+        bad = copy.deepcopy(self.snap)
+        bad['robot_signature'] = 'other_robot'
+        with self.assertRaises(ValueError):
+            mk().restore_state(bad)
+
+    def test_missing_required_field_rejected(self):
+        bad = copy.deepcopy(self.snap)
+        bad.pop('mjstate')
+        with self.assertRaises((KeyError, ValueError)):
+            mk().restore_state(bad)
+
+    def test_stealth_reset_after_restore_detected(self):
+        """恢复后偷偷 reset -> 首帧必须不等于观察后状态。"""
+        e = mk()
+        for _ in range(40):
+            e.step_drive(v_forward_mps=0.10)
+        snap = e.save_state()
+        x_obs = float(e.data.qpos[0])
+        e.reset(seed=0)                      # 偷偷 reset
+        r = R.EpisodeRunner(e, skills.make_skill('R1'),
+                            visible={'x_front': 1.6}, seed=0)
+        # 恢复到观察后状态再继续，首帧必须对应该状态
+        e.restore_state(copy.deepcopy(snap))
+        out = r.run_from_state(copy.deepcopy(snap))
+        self.assertAlmostEqual(out['q0'][0], x_obs, places=2)
+
     def test_soil_state_included_and_restored(self):
         e = mk(soil=True)
         for _ in range(25):

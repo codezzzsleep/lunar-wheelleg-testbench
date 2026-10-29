@@ -27,6 +27,33 @@ import wheelleg_env
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 # 实测稳定包络（空场扫描）：v<=0.10 m/s、|w|<=0.35 rad/s 稳定；
 # v>=0.15 m/s 会抬头失稳并失去接触（tilt 23°、ncon=0）。观察动作据此限幅。
+# 观测协议版本（正式闭环必须复用 observation_protocol() 与 is_usable()）
+OBSERVATION_PROTOCOL_VERSION = 'observation-protocol/v1'
+
+
+def observation_protocol():
+    """把**实际使用**的全部判据集中定义，供观察与正式闭环共用。"""
+    return {
+        'version': OBSERVATION_PROTOCOL_VERSION,
+        'v_lin_max': STABLE_V_LIN, 'v_ang_max': STABLE_V_ANG,
+        'tilt_max_deg': STABLE_TILT_DEG, 'hold_s': STABLE_HOLD_S,
+        'min_target_px': MIN_TARGET_PX, 'min_depth_valid_frac': MIN_DEPTH_FRAC,
+        'min_cam_baseline_m': MIN_CAM_BASELINE_M,
+        'min_bearing_change_deg': MIN_BEARING_CHANGE_DEG,
+        'cam_forward_change_deg_diagnostic': MIN_CAM_YAW_CHANGE_DEG,
+        'note': ('旧 12° 相机前向门只作诊断；实际启用的是基线>=0.45 m 与视线角>=8°。'
+                 '旧运行保留原记录，不声称在旧门下达成 10/10'),
+    }
+
+
+def is_usable(stable, mask_px, depth_frac, baseline_m, bearing_change_deg):
+    """**唯一**可用性判定；观察脚本与正式闭环都调用它。"""
+    pr = observation_protocol()
+    return bool(stable and mask_px >= pr['min_target_px']
+                and depth_frac >= pr['min_depth_valid_frac']
+                and baseline_m >= pr['min_cam_baseline_m']
+                and bearing_change_deg >= pr['min_bearing_change_deg'])
+
 # 运行前写死的判据（不按结果调整）
 STABLE_V_LIN = 0.05          # m/s
 STABLE_V_ANG = 0.10          # rad/s
@@ -246,6 +273,7 @@ def main():
     rec = {'workflow': 'drive_observe/v1',
            'observation_target_y_m': round(target_y, 4),
            'target_basis': ('W_vis/2 + robot half width + margin；只读公开量'),
+           'observation_protocol': observation_protocol(),
            'frozen_criteria': {'v_lin': STABLE_V_LIN, 'v_ang': STABLE_V_ANG,
                                'tilt_deg': STABLE_TILT_DEG, 'hold_s': STABLE_HOLD_S,
                                'min_target_px': MIN_TARGET_PX,
@@ -275,10 +303,8 @@ def main():
         b1 = float(np.degrees(np.arctan2(anchor[1] - p1[1], anchor[0] - p1[0])))
         b2 = float(np.degrees(np.arctan2(anchor[1] - p2[1], anchor[0] - p2[0])))
         bearing_change = abs(b2 - b1)
-        usable = (st['stable'] and v2['mask_px'] >= MIN_TARGET_PX
-                  and v2['depth_valid_frac'] >= MIN_DEPTH_FRAC
-                  and baseline >= MIN_CAM_BASELINE_M
-                  and bearing_change >= MIN_BEARING_CHANGE_DEG)
+        usable = is_usable(st['stable'], v2['mask_px'], v2['depth_valid_frac'],
+                           baseline, bearing_change)
         rec['runs'].append({
             'seed': sd, 'move_seconds': move_s, 'move_stop_reason': move_stop,
             'face': face,

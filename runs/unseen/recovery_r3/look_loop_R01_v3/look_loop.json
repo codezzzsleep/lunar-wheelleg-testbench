@@ -1,0 +1,93 @@
+{
+  "workflow": "look_again_loop/v1",
+  "seed": 0,
+  "candidates_in": [
+    "FX_R01"
+  ],
+  "criteria": {
+    "iou_min": 0.85,
+    "min_target_px": 1500,
+    "stable": "v_lin<0.05 v_ang<0.10 tilt<8 hold>=0.4s"
+  },
+  "phase_protocol": "phase-protocol/v2",
+  "total_task_seconds": 30.0,
+  "truth_assets": {
+    "world_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed",
+    "collision_sha": "08fba9fe3b8ba3d88f82062540495cbd",
+    "coacd_parts": 21
+  },
+  "observation": {
+    "move_seconds": 11.6,
+    "move_stop_reason": null,
+    "brake": {
+      "stable": true,
+      "v_lin": 0.0002,
+      "v_ang": 0.0012,
+      "tilt_deg": 0.1,
+      "hold_s": 0.4,
+      "brake_seconds": 0.42
+    },
+    "view1_mask_px": 9767,
+    "view2_mask_px": 32501,
+    "cam_baseline_m": 0.529,
+    "bearing_change_deg": 11.67,
+    "state_hash": "a3405a027354c8667f9a0f532be01054",
+    "env_t": 12.019999999999833,
+    "usable": true
+  },
+  "observation_protocol": {
+    "version": "observation-protocol/v1",
+    "v_lin_max": 0.05,
+    "v_ang_max": 0.1,
+    "tilt_max_deg": 8.0,
+    "hold_s": 0.4,
+    "min_target_px": 1500,
+    "min_depth_valid_frac": 0.6,
+    "min_cam_baseline_m": 0.45,
+    "min_bearing_change_deg": 8.0,
+    "cam_forward_change_deg_diagnostic": 12.0,
+    "note": "旧 12° 相机前向门只作诊断；实际启用的是基线>=0.45 m 与视线角>=8°。旧运行保留原记录，不声称在旧门下达成 10/10"
+  },
+  "screening": [
+    {
+      "candidate": "FX_R01",
+      "mask_px": 32926,
+      "iou_vs_real_view2": 0.9348,
+      "kept": true,
+      "status": "kept"
+    }
+  ],
+  "kept": [
+    "FX_R01"
+  ],
+  "decision": {
+    "chosen": "A0",
+    "rule": "no non-fallback option passed on every kept candidate",
+    "observation_seconds": 12.02,
+    "exec_cost_including_observation": 40.0,
+    "exec_seconds": null,
+    "total_seconds": null
+  },
+  "decision_sha256": "c6017c411fc1f0767c1c610d06638637624cfc528cf62490fa29269a46ea2b95",
+  "execution": [
+    {
+      "option": "A0",
+      "reason": "abort",
+      "success": false,
+      "t_start": 12.02,
+      "t_end": 15.019999999999769,
+      "first_frame_x": 0.5175,
+      "continuing_from": "snapshot"
+    },
+    {
+      "option": "R1",
+      "reason": "tipped",
+      "success": false,
+      "t_start": 12.02,
+      "t_end": 13.38,
+      "first_frame_x": 0.5175,
+      "continuing_from": "snapshot"
+    }
+  ],
+  "outcome": "completed"
+}

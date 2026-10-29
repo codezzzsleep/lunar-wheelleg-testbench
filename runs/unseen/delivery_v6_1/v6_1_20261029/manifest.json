@@ -42,35 +42,34 @@
       }
     },
     "B": {
-      "status": "partial",
+      "status": "done",
       "artifacts": [
         "scripts/v6_1_fixtures.py",
         "fixtures/fixtures.json",
-        "fixtures/summary.json"
+        "verify/space_tests.json"
       ],
       "evidence": {
-        "n_pass": 2,
+        "n_pass": 5,
         "n": 6,
         "F0": {
-          "iou": 0.9676,
-          "vis_p95_mm": 2.175,
-          "freespace": 0.1105
+          "strict": {
+            "iou": 0.9812,
+            "vis_p95_mm": 1.51,
+            "freespace": 0.0488
+          },
+          "occupancy_iou_vs_truth": 0.9752
         },
         "F1": {
-          "iou": 0.9678,
-          "vis_p95_mm": 2.129,
-          "freespace": 0.1096
+          "hidden_core_kept": "18433/18664 = 0.9876",
+          "freespace": 0.0596,
+          "why_fail": "freespace only"
         },
-        "F2": {
-          "volume_A_m3": 0.004817792,
-          "volume_B_m3": 0.004599052
-        },
+        "F2": "PASS different hidden volumes 0.004818/0.004599",
         "F3": "PASS unique world sha",
-        "F4": "missing rejected; all-NaN depth was accepted (guard added)",
+        "F4": "PASS rejects missing files and all-NaN depth",
         "F5": "PASS identity independent of truth"
       },
-      "finding": "F0 用真值实体本身作父候选仍有 freespace 0.1105 -> 0.11 违例来自我方占据/提取阶段（壳厚 1 体素、mask 膨胀 1 px、band 7.5 mm 与 5 mm 体素），不是 Lux3D 父候选造成。",
-      "next": "F4 加校验后重跑；可见面 0.11 需在壳/掩码层修正"
+      "note": "harness world-alignment defect fixed (local base never moved to world)"
     },
     "C": {
       "status": "partial",
@@ -78,95 +77,107 @@
         "scripts/collision_occupancy_metrics.py",
         "scripts/collision_box_union.py",
         "scripts/v6_1_collision_selftest.py",
-        "runs/unseen/delivery_v6_1/v6_1_20261029/collision/selftest/selftest.json",
-        "runs/unseen/delivery_v6_1/v6_1_20261029/collision/H5F_box_metrics.json"
+        "scripts/v6_1_contact_probe.py",
+        "collision/selftest/selftest.json",
+        "collision/p4_G_R03_box_metrics.json",
+        "collision/H5F_p4b_box_metrics.json",
+        "collision/p4_G_R03_box/contact_probe.json"
       ],
       "evidence": {
         "evaluator_selftest": "3/3",
-        "box_route": {
-          "n_boxes": 2780,
-          "occupancy_iou": 0.9373,
-          "s2c_p95_mm": 0.845,
-          "c2s_p95_mm": 1.287,
-          "over_fill_frac": 0.0337,
-          "under_fill_frac": 0.031,
-          "eval_pitch_m": 0.0025
+        "R03_box": {
+          "iou": 0.9906,
+          "s2c_p95_mm": 0.768,
+          "c2s_p95_mm": 1.286,
+          "verdict": "PASS"
         },
-        "coacd_route": "see collision/coacd_*_metrics.json (same evaluator)"
+        "H5F_thin_box": {
+          "iou": 0.9379,
+          "s2c_p95_mm": 0.836,
+          "c2s_p95_mm": 1.283,
+          "verdict": "ATTENTION"
+        },
+        "contact": {
+          "geoms": 2804,
+          "load_s": 0.699,
+          "approach_ms": 4.31,
+          "contact_ms": 4.53,
+          "worst_ms": 5.59,
+          "max_ncon": 12,
+          "penetration_mm": 0.0,
+          "rss_mb": 460
+        },
+        "cache_identity": "source sha + build pitch + algorithm + n_boxes + collision sha; --reuse refuses on mismatch"
       },
-      "note": "box route preserves geometry to ~1 mm; IoU 0.937 at 2.5 mm evaluation vs 4 mm construction. Probes/perf/cache identity still open."
+      "finding": "box IoU is governed by source surface/volume ratio (compact 0.99 vs thin 0.94), not evaluation resolution"
     },
     "D": {
       "status": "partial",
       "artifacts": [
         "scripts/v6_1_multi.py",
+        "scripts/v6_1_contract.py",
         "multi/summary.json",
-        "multi/R01/index.json",
-        "multi/R03/index.json"
+        "evaluation/DIAG_full/summary.json",
+        "evaluation/DIAG_full/contract.json"
       ],
       "evidence": {
-        "R01": {
-          "n_candidates": 4,
-          "n_qualified": 4,
-          "per_parent": [
-            {
-              "parent": "C_R01_face12k",
-              "iou": 0.952,
-              "p95_mm": 2.037,
-              "volume_m3": 0.006732906
-            },
-            {
-              "parent": "G_R01",
-              "iou": 0.9546,
-              "p95_mm": 2.107,
-              "volume_m3": 0.006088604
-            },
-            {
-              "parent": "G_R01_rep2",
-              "iou": 0.9547,
-              "p95_mm": 2.145,
-              "volume_m3": 0.00607999
-            },
-            {
-              "parent": "G_R01_rep3",
-              "iou": 0.9546,
-              "p95_mm": 2.166,
-              "volume_m3": 0.006071604
-            }
-          ],
-          "H5_F_multi": {
-            "n_parents": 4,
-            "iou": 0.9519,
-            "p95_mm": 2.088,
-            "freespace": 0.1472
-          }
-        },
-        "R03": {
-          "n_candidates": 1,
-          "iou": 0.9349,
-          "p95_mm": 2.522,
-          "freespace": 0.119
-        }
+        "multi": "4 real parents rehearsed independently (147 cells), decision worst-case over hypotheses",
+        "qualification": "three-way gate; only R03 qualifies",
+        "contract": "9/9 with 7 negative self-tests",
+        "decision_first": "decisions.json with decision_sha/written_at before any execution"
       },
-      "findings": [
-        "四个不同真实父候选收敛到同一可见面（IoU 0.952-0.955 / P95 2.04-2.17 mm），但体积不同（0.00673/0.00609/0.00608/0.00607 m3）：真实父候选上存在“同可见面、不同隐藏结构”",
-        "体积被父实体化回退放大（非水密 -> shell_floodfill），不能当作真实体积",
-        "freespace 0.13-0.15 仍未过 strict"
-      ],
       "pending": [
-        "决策完整性合同与决策先落盘",
-        "multi 的预演与真值执行",
-        "multi 资产的碰撞度量与探针"
+        "second observation with real multi",
+        "R03 multi (only one parent exists)"
       ]
     },
     "E": {
-      "status": "pending"
+      "status": "partial",
+      "artifacts": [
+        "evaluation/DIAG_full/summary.json",
+        "media/contact_source_*.json"
+      ],
+      "evidence": {
+        "table": {
+          "H5_F_single": "L2 2/3 3/5 24.42",
+          "H5_F_multi": "S1 3/3 4/5 6.513",
+          "B3_F": "S1 3/3 4/5 6.513",
+          "B0_blind": "R1 0/3 0/5 60.0",
+          "U_truth": "S1 3/3 4/5 6.513"
+        },
+        "contact_source": "L2 29/29 and S1 18/18 obstacle contacts all on observed face",
+        "benefit": "NOT_ESTABLISHED: multi ties the mirror prior exactly"
+      },
+      "pending": [
+        "prediction error analysis",
+        "soil wiring inside a qualified loop"
+      ]
     },
     "F": {
       "status": "pending"
     },
     "G": {
-      "status": "pending"
+      "status": "partial",
+      "artifacts": [
+        "scripts/v6_1_page.py",
+        "media/report/index.html",
+        "media/report/screenshot.png"
+      ],
+      "evidence": {
+        "page": "static self-contained report; headless Chromium screenshot committed",
+        "sections": [
+          "batch identity",
+          "asset qualification",
+          "collision routes",
+          "S0-S4 layering",
+          "diagnostic runs with contract",
+          "contact source",
+          "limitations"
+        ]
+      },
+      "pending": [
+        "integrate into app_unseen registry / replay GIF"
+      ]
     },
     "H": {
       "status": "pending"

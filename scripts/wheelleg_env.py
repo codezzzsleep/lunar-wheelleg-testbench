@@ -691,6 +691,95 @@ class WheelLegEnv:
                 'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
                 'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
 
+    def save_state(self):
+        """
+        完整状态快照（用于"保存/恢复后继续"）。
+
+        按本机 MuJoCo 版本逐项保存，不假设 qpos/qvel 就够：
+          · mj_getState 的完整物理状态（含 act / warmstart 等存在项）
+          · data.time（原生时钟）与 env.t（控制时钟，可能因 reset 稳定化有固定偏移）
+          · ctrl、外力、上一步动作、物理/控制计数
+          · 导航目标、土壤模块的摩擦/外力贡献
+          · 模型维度与版本，供恢复时校验
+        返回结构化 dict + 状态哈希。
+        """
+        import hashlib as _h
+        d, m = self.data, self.model
+        spec = mujoco.mjtState
+        flags = 0
+        for f in ('mjSTATE_INTEGRATION', 'mjSTATE_FULLPHYSICS'):
+            if hasattr(spec, f):
+                flags |= int(getattr(spec, f))
+                break
+        buf = np.zeros(mujoco.mj_stateSize(m, flags), dtype=np.float64)
+        mujoco.mj_getState(m, d, buf, flags)
+        rec = {
+            'schema': 'env-state/v1',
+            'mujoco_version': mujoco.__version__,
+            'nq': int(m.nq), 'nv': int(m.nv), 'na': int(m.na),
+            'state_flags': int(flags), 'mjstate': buf.tolist(),
+            'data_time': float(d.time), 'env_t': float(self.t),
+            'ctrl': [float(x) for x in d.ctrl],
+            'xfrc_applied': [float(x) for x in np.asarray(d.xfrc_applied).ravel()],
+            'prev_action': [float(x) for x in np.asarray(self.prev_action).ravel()],
+            'prev_x': float(self.prev_x), 'n_physics': int(self.n_physics),
+            'n_control': int(self.n_control),
+            'nav_target_y': float(getattr(self, 'nav_target_y', self.channel_center)),
+            'soil': ({'limits': {str(k): v for k, v in (self._soil_limits or {}).items()},
+                      'prev_force': {str(k): np.asarray(v).tolist()
+                                     for k, v in (self._soil_prev_force or {}).items()},
+                      'ground_mu': {str(k): float(v)
+                                    for k, v in (self._soil_ground_mu or {}).items()},
+                      'stats': dict(self._soil_stats)}
+                     if self.soil_mode != 'rigid' else None),
+        }
+        h = _h.sha256()
+        h.update(np.asarray(rec['mjstate'], dtype=np.float64).tobytes())
+        h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
+                       rec['n_control'])).encode())
+        rec['state_hash'] = h.hexdigest()[:32]
+        return rec
+
+    def restore_state(self, rec, strict=True):
+        """
+        恢复 save_state() 的快照。strict=True 时维度/版本不符直接拒绝，
+        不静默跳过。
+        """
+        if rec.get('schema') != 'env-state/v1':
+            raise ValueError(f"快照 schema 不符：{rec.get('schema')}")
+        if rec.get('mujoco_version') != mujoco.__version__:
+            if strict:
+                raise ValueError('MuJoCo 版本不符：快照 %s vs 当前 %s'
+                                 % (rec.get('mujoco_version'), mujoco.__version__))
+        d, m = self.data, self.model
+        if (rec['nq'], rec['nv'], rec.get('na', 0)) != (m.nq, m.nv, m.na):
+            raise ValueError('模型维度不符，拒绝恢复（不能只因 nq 相同就认为同一关节排列）')
+        buf = np.asarray(rec['mjstate'], dtype=np.float64)
+        if buf.size != mujoco.mj_stateSize(m, int(rec['state_flags'])):
+            raise ValueError('状态长度不符')
+        mujoco.mj_setState(m, d, buf, int(rec['state_flags']))
+        d.ctrl[:] = np.asarray(rec['ctrl'], dtype=np.float64)
+        nf = len(rec['xfrc_applied']) // 6
+        d.xfrc_applied[:] = np.asarray(rec['xfrc_applied'], dtype=np.float64).reshape(nf, 6)
+        self.prev_action = np.asarray(rec['prev_action'], dtype=np.float64)
+        self.prev_x = float(rec['prev_x'])
+        self.n_physics = int(rec['n_physics'])
+        self.n_control = int(rec.get('n_control', 0))
+        self.t = float(rec['env_t'])
+        self.nav_target_y = float(rec.get('nav_target_y', self.channel_center))
+        so = rec.get('soil')
+        if so and self.soil_mode != 'rigid':
+            self._soil_limits = dict(so.get('limits') or {})
+            self._soil_prev_force = {int(k): np.asarray(v)
+                                     for k, v in (so.get('prev_force') or {}).items()}
+            self._soil_ground_mu = {int(k): float(v)
+                                    for k, v in (so.get('ground_mu') or {}).items()}
+            self._soil_stats = dict(so.get('stats') or self._soil_stats)
+        mujoco.mj_forward(m, d)
+        return {'restored': True, 'data_time': float(d.time), 'env_t': float(self.t),
+                'n_physics': self.n_physics,
+                'time_offset': round(float(self.t - d.time), 6)}
+
     def step_drive(self, v_forward_mps=0.0, yaw_rate_rps=0.0, max_wheel_rps=None):
         """
         语义明确的轮式驾驶接口（**不是**残差动作）。

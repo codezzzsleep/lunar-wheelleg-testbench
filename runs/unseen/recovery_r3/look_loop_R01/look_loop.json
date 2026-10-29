@@ -1,0 +1,70 @@
+{
+  "workflow": "look_again_loop/v1",
+  "seed": 0,
+  "candidates_in": [
+    "FX_R01"
+  ],
+  "criteria": {
+    "iou_min": 0.85,
+    "min_target_px": 1500,
+    "stable": "v_lin<0.05 v_ang<0.10 tilt<8 hold>=0.4s"
+  },
+  "observation": {
+    "move_seconds": 10.12,
+    "move_stop_reason": null,
+    "brake": {
+      "stable": true,
+      "v_lin": 0.001,
+      "v_ang": 0.0008,
+      "tilt_deg": 0.11,
+      "hold_s": 0.4,
+      "brake_seconds": 0.42
+    },
+    "view1_mask_px": 9737,
+    "view2_mask_px": 25976,
+    "cam_baseline_m": 0.457,
+    "state_hash": "37c9e6912840efbb3ca9f618ef2d5f2c",
+    "env_t": 10.539999999999864,
+    "usable": true
+  },
+  "screening": [
+    {
+      "candidate": "FX_R01",
+      "mask_px": 26352,
+      "iou_vs_real_view2": 0.9342,
+      "kept": true,
+      "status": "kept"
+    }
+  ],
+  "kept": [
+    "FX_R01"
+  ],
+  "decision": {
+    "chosen": "A0",
+    "rule": "no non-fallback option passed on every kept candidate",
+    "observation_seconds": 10.54,
+    "total_cost_projection": 50.54
+  },
+  "decision_sha256": "da2169471d4ec15f7fdcf8ac81eaad9bd85c91fea3c464e477159d30a08fcb62",
+  "execution": [
+    {
+      "option": "A0",
+      "reason": "abort",
+      "success": false,
+      "t_start": 10.54,
+      "t_end": 13.5399999999998,
+      "first_frame_x": 0.446,
+      "continuing_from": "snapshot"
+    },
+    {
+      "option": "R1",
+      "reason": "tipped",
+      "success": false,
+      "t_start": 10.54,
+      "t_end": 11.86,
+      "first_frame_x": 0.446,
+      "continuing_from": "snapshot"
+    }
+  ],
+  "outcome": "completed"
+}

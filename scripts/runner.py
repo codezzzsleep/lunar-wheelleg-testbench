@@ -52,21 +52,18 @@ class EpisodeRunner:
         额外带 continuing_from / t_start，便于核对"没有偷偷 reset"。
         """
         env, sk = self.env, self.skill
-        qpos = snapshot.get('qpos')
-        qvel = snapshot.get('qvel')
-        if qpos is None or qvel is None:
-            raise ValueError('snapshot 必须包含 qpos 与 qvel')
-        if len(qpos) != env.model.nq or len(qvel) != env.model.nv:
-            raise ValueError(f'状态维度不符：qpos {len(qpos)} vs nq {env.model.nq}，'
-                             f'qvel {len(qvel)} vs nv {env.model.nv}')
-        env.data.qpos[:] = qpos
-        env.data.qvel[:] = qvel
-        if snapshot.get('time') is not None:
-            env.t = float(snapshot['time'])
-        import mujoco as _mj
-        _mj.mj_forward(env.model, env.data)
+        # 完整状态恢复：走 env.restore_state（含 mj_getState 全量物理状态、
+        # ctrl/外力/计数/导航/土壤），不是只设 qpos/qvel
+        if snapshot.get('schema') == 'env-state/v1':
+            info = env.restore_state(snapshot)
+        else:
+            raise ValueError('run_from_state 需要 env-state/v1 完整快照 '
+                             '（位姿/速度续接请用 env.restore_state 的旧格式适配器）')
+        if getattr(env, 'plan_visible', None) is None:
+            env.plan_visible = dict(self.visible)
         obs = env._obs() if hasattr(env, '_obs') else None
         t_start = float(env.t)
+        self._restored = info
         out = self._loop(obs, t_start)
         out['continuing_from'] = 'snapshot'
         out['t_start'] = round(t_start, 4)

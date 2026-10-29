@@ -1,0 +1,175 @@
+{
+  "schema": "prediction-audit/v6",
+  "case": "R01",
+  "candidate": "C_R01_face12k",
+  "source": {
+    "prediction": "runs/unseen/delivery_v5/v5_20261029/evaluation/H5_R01_face12k/rehearsal.jsonl",
+    "truth_L2_R1_A0": "runs/unseen/delivery_v5/v5_20261029/evaluation/H5_R01_face12k/execution.jsonl",
+    "truth_S1": "runs/unseen/delivery_v5/v5_20261029/evaluation/six_R01_v5/records.jsonl"
+  },
+  "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+  "time_limit_s": 30.0,
+  "by_action": {
+    "A0": {
+      "n_pred": 0,
+      "n_truth": 3,
+      "pred_success": 0,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": null,
+      "truth_mean_cost": 40.0,
+      "truth_reasons": [
+        "abort",
+        "abort",
+        "abort"
+      ]
+    },
+    "D1": {
+      "n_pred": 3,
+      "n_truth": 0,
+      "pred_success": 2,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 24.427,
+      "truth_mean_cost": null,
+      "truth_reasons": []
+    },
+    "D2": {
+      "n_pred": 3,
+      "n_truth": 0,
+      "pred_success": 0,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 60.0,
+      "truth_mean_cost": null,
+      "truth_reasons": []
+    },
+    "L1": {
+      "n_pred": 3,
+      "n_truth": 0,
+      "pred_success": 0,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 60.0,
+      "truth_mean_cost": null,
+      "truth_reasons": []
+    },
+    "L2": {
+      "n_pred": 3,
+      "n_truth": 3,
+      "pred_success": 3,
+      "truth_success": 2,
+      "false_safe": 1,
+      "false_unsafe": 0,
+      "pred_mean_cost": 6.1,
+      "truth_mean_cost": 24.787,
+      "truth_reasons": [
+        "time_limit",
+        "success",
+        "success"
+      ]
+    },
+    "R1": {
+      "n_pred": 3,
+      "n_truth": 3,
+      "pred_success": 0,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 60.0,
+      "truth_mean_cost": 60.0,
+      "truth_reasons": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ]
+    },
+    "R2": {
+      "n_pred": 3,
+      "n_truth": 0,
+      "pred_success": 3,
+      "truth_success": 0,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 7.553,
+      "truth_mean_cost": null,
+      "truth_reasons": []
+    },
+    "S1": {
+      "n_pred": 3,
+      "n_truth": 3,
+      "pred_success": 3,
+      "truth_success": 3,
+      "false_safe": 0,
+      "false_unsafe": 0,
+      "pred_mean_cost": 6.407,
+      "truth_mean_cost": 6.593,
+      "truth_reasons": [
+        "success",
+        "success",
+        "success"
+      ]
+    }
+  },
+  "predicted_rank_by_mean_cost": [
+    "L2",
+    "S1",
+    "R1"
+  ],
+  "truth_rank_by_success_then_cost": [
+    "S1",
+    "L2",
+    "R1"
+  ],
+  "false_safe_total": 1,
+  "false_unsafe_total": 0,
+  "false_safe_rows": [
+    {
+      "option": "L2",
+      "seed": 0,
+      "predicted": {
+        "success": true,
+        "reason": "success",
+        "t_end": 6.1,
+        "cost": 6.1,
+        "contact": "body"
+      },
+      "truth": {
+        "success": false,
+        "reason": "time_limit",
+        "t_end": 30.02,
+        "cost": 60.0,
+        "final_x": null,
+        "contact": "body"
+      },
+      "false_safe": true,
+      "false_unsafe": false,
+      "time_residual_s": null
+    }
+  ],
+  "selected_by_v5": "L2",
+  "selected_truth": {
+    "L2": "2/3",
+    "S1": "3/3"
+  },
+  "findings": {
+    "confirmed": [
+      "L2 seed0 在候选上预测成功（6.1 s），真值 30.02 s 超时 -> 1 个 false safe。",
+      "S1 在候选上预测成功 3/3（均值 6.407 s），真值 3/3（6.54/6.52/6.72 s）-> 方向一致，成功耗时预测偏低约 0.19 s。",
+      "L2 预测均值 6.10 s 优于 S1 的 6.407 s（约 0.3 s），V5 因此选 L2；真值上 S1 更稳健。"
+    ],
+    "supported_by_records": [
+      "预测—真值差异集中在 L2 的 seed0，而不是所有动作/所有初态。",
+      "真值上 L2 失败是 time_limit（final_x=2.019），不是 tipped；与候选上“更快通过”的预测不一致。"
+    ],
+    "still_hypothesis": [
+      "seed0 的 L2 超时是否由可见面、生成隐藏面、CoACD 新造面或控制启动造成，现有记录没有接触点，不能归因。",
+      "不能因为 L2 失败就归因于隐藏背面；需要工作包 B3/E 的接触位置与碰撞保真证据。"
+    ]
+  },
+  "audio_visual": "prediction_audit/R01_L2_seed0 回放由连续轨迹阶段生成；本表只做数值"
+}

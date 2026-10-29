@@ -1,0 +1,28 @@
+{
+  "version": "fuse-observed/v1",
+  "frozen": "2026-10-29",
+  "grid_pitch_m": [0.006, 0.004],
+  "formal_pitch_m": 0.004,
+  "margin_cells": 3,
+  "free_space": {
+    "step_px": 8,
+    "n_samples": 240,
+    "start_distance_m": 0.04,
+    "surface_margin_m": 0.006
+  },
+  "observed_shell": {
+    "step_px": 2,
+    "radius_voxels": 1
+  },
+  "ground_cap_pitch": 1.5,
+  "min_component_voxels": 200,
+  "acceptance": {
+    "iou_min": 0.85,
+    "p95_mm_max": "max(5, 0.03*H_vis)",
+    "freespace_max": 0.05,
+    "watertight_required": true,
+    "hidden_faces_min": 1
+  },
+  "source_labels": ["unknown_or_unassigned", "generated_hidden", "observed_surface", "ground_cap"],
+  "note": "可见面由观测约束构造，不得写成 Lux3D 自己重建准确；H5-F 是观测约束+Lux3D 隐藏几何。"
+}

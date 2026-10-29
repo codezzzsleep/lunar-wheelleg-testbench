@@ -101,6 +101,9 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
             'sim_time_s': round(float(env.t), 4),
             'control_steps': out['steps'],
             'physics_steps': int(env.n_physics), 'q0': out['q0'],
+            'initial_full_hash': out.get('initial_full_hash'),
+            'initial_qpos': out.get('initial_qpos'),
+            'initial_qvel': out.get('initial_qvel'),
             'cost': (out['t_end'] if out['success']
                      else (ABORT if out['abort'] else FAR))}
 

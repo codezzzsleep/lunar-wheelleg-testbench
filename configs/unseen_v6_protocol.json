@@ -1,0 +1,20 @@
+{
+  "version": "unseen-v6/protocol-1",
+  "frozen": "2026-10-29",
+  "review_baseline": "2e3c5f44cefd895bf3b4503a424a0d6c55e72d6d",
+  "new_create": 0,
+  "physical_task_seconds": 30.0,
+  "observation_budget_seconds": 12.0,
+  "control_hz": 50.0,
+  "initial_state": {"config": "configs/unseen_initial_state_v5.json", "lateral_m": 0.05, "yaw_rad": 0.05},
+  "seeds_planning": [0, 1, 2],
+  "seeds_validation": [3, 4, 5, 6, 7],
+  "decision_rule": "worst-case-risk/v2: A0 excluded from safe set; all planned samples must complete; worst cost per hypothesis then max; tie-break action name",
+  "costs": {"fail": 60.0, "abort": 40.0},
+  "collision": {"algorithm": "CoACD", "max_parts_baseline": 32, "fidelity_parts": 64, "config_frozen_before_outcomes": true},
+  "strict_geometry": {"iou_min": 0.85, "p95": "max(5 mm, 0.03 H_vis)", "freespace_max": 0.05},
+  "planning_eligibility": "configs/unseen_planning_policy.json; separate from strict and from benefit",
+  "methods": ["H5_raw", "H5_F_single", "H5_F_multi", "B3_F", "B0_blind", "U_truth"],
+  "citation_policy": "V5 results retained; V6 only adds same-protocol rows; no hand-spliced main table",
+  "note": "protocol frozen before V6 truth comparisons; no threshold changes after seeing outcomes"
+}

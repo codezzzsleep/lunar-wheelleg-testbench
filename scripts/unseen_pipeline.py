@@ -135,7 +135,10 @@ def rehearse_option(posed_dir, H, x, option, seed, visible=None, time_limit=15.0
             'belly_contact': out['belly_contact'],
             'triggered': out['triggered'], 'brake_steps': out['brake_steps'],
             'action_fingerprint': out['action_fingerprint'],
-            'phases': out['phases']}
+            'phases': out['phases'],
+            'initial_full_hash': out.get('initial_full_hash'),
+            'initial_qpos': out.get('initial_qpos'),
+            'initial_qvel': out.get('initial_qvel')}
 
 
 def decide(matrix, options, tau=0.0, c_fail=60.0, c_abort=40.0):

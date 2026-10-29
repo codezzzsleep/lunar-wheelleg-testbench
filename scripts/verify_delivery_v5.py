@@ -42,9 +42,42 @@ def load_json(p):
 def load_jsonl(p):
     return [json.loads(l) for l in pathlib.Path(p).read_text().splitlines() if l.strip()]
 
+def collision_parts_sha(coll_dir, expected_parts=None):
+    """按 physicalize 的顺序重算 parts 身份；返回 (sha32, errors)。"""
+    d = pathlib.Path(coll_dir)
+    manp = d / 'manifest.json'
+    if not manp.exists():
+        return None, [f'missing collision manifest {manp}']
+    man = json.loads(manp.read_text())
+    parts = expected_parts or man.get('parts') or []
+    if not parts:
+        return None, ['collision manifest has no parts']
+    h = hashlib.sha256(); errs = []
+    for rel in parts:
+        fp = d / rel
+        if not fp.exists():
+            errs.append(f'missing part {rel}')
+            continue
+        h.update(str(rel).encode())
+        h.update(sha(fp).encode())
+    return h.hexdigest()[:32], errs
+
+
+def validate_collision(coll_dir, expected_sha=None):
+    got, errs = collision_parts_sha(coll_dir)
+    if expected_sha and got != expected_sha:
+        errs.append(f'collision_sha {got} != expected {expected_sha}')
+    manp = pathlib.Path(coll_dir) / 'manifest.json'
+    if manp.exists():
+        m = json.loads(manp.read_text())
+        if expected_sha and m.get('collision_sha') != expected_sha:
+            errs.append('manifest collision_sha != expected')
+    return errs
+
+
 
 # ---------- 纯校验函数（负例复用） ----------
-def validate_six(records, summary):
+def validate_six(records, summary, expected_truth=None):
     errs = []
     methods = [m['method'] for m in summary.get('methods', [])]
     if len(methods) != len(set(methods)):
@@ -77,6 +110,11 @@ def validate_six(records, summary):
     truth = {r.get('truth_sha') for r in ex if r.get('truth_sha')}
     if len(truth) > 1:
         errs.append(f'multiple truth_sha in execution: {truth}')
+    if expected_truth is not None:
+        if summary.get('truth_sha') != expected_truth:
+            errs.append(f'summary truth_sha != expected {expected_truth[:12]}')
+        if any(r.get('truth_sha') != expected_truth for r in ex):
+            errs.append('execution truth_sha != expected')
     # 计时：控制步 × 冻结 dt，且 t_end/sim_time 一致
     pf = load_json(ROOT / 'configs/unseen_physics_frozen.json')
     dt = float(pf['control_dt_s']); tol = float(pf['tolerance_s'])
@@ -178,8 +216,15 @@ def main():
               all(r.get('actual_charge') is None and r.get('verified') == 'unknown'
                   for r in rows),
               [r.get('verified') for r in rows])
-        check('generation: GLB SHA 与缓存一致',
-              all(r.get('glb_sha256') and len(str(r['glb_sha256'])) == 64 for r in rows))
+        glb_errs = []
+        for r in rows:
+            ident = r.get('request_identity')
+            gp = ROOT / 'runs/unseen/generation/cache' / str(ident)[:2] / str(ident) / 'model.glb'
+            if not gp.exists():
+                glb_errs.append(f'{r.get("plan_id")}: missing {gp}')
+            elif sha(gp) != r.get('glb_sha256'):
+                glb_errs.append(f'{r.get("plan_id")}: GLB SHA mismatch')
+        check('generation: GLB SHA 与缓存一致（实际重算）', not glb_errs, glb_errs)
         check('generation: 输入 SHA 与 plan 一致',
               all(r['input_sha256'] == next(i['image_sha256'] for i in plan['inputs']
                                              if i['id'] == r['plan_id']) for r in rows))
@@ -220,7 +265,7 @@ def main():
     if (r3 / 'summary.json').exists():
         s = load_json(r3 / 'summary.json')
         recs = load_jsonl(r3 / 'records.jsonl')
-        errs = validate_six(recs, s)
+        errs = validate_six(recs, s, '436b75d2ee2d3f7e' + s.get('truth_sha','')[16:])
         check('six_R03: 记录校验', not errs, errs[:6])
         check('six_R03: 六方法齐全', len(s['methods']) == 6, [m['method'] for m in s['methods']])
         check('six_R03: 30 s 协议', s.get('time_limit_s') == 30.0, s.get('time_limit_s'))
@@ -236,7 +281,7 @@ def main():
     if (r1 / 'summary.json').exists():
         s = load_json(r1 / 'summary.json')
         recs = load_jsonl(r1 / 'records.jsonl')
-        errs = validate_six(recs, s)
+        errs = validate_six(recs, s, s.get('truth_sha'))
         check('six_R01: 记录校验', not errs, errs[:6])
         h5 = next((m for m in s['methods'] if m['method'] == 'H5_lux3d'), None)
         check('six_R01: H5 记 no_candidate（不补 fixture）',
@@ -307,6 +352,13 @@ def main():
         check('H5_face12k: 真值几何与 R01 scan 一致（几何 SHA）',
               s['truth_sha'].startswith('ae1837cd'),
               s['truth_sha'])
+        cerr = validate_collision(h5 / 'truth_collision')
+        check('H5_face12k: 真值碰撞 parts 可重算', not cerr, cerr)
+        ccol = bdir / 'candidates/C_R01_face12k/collision'
+        if (ccol / 'manifest.json').exists():
+            want = json.loads((ccol / 'manifest.json').read_text()).get('collision_sha')
+            cerr = validate_collision(ccol, want)
+            check('H5_face12k: 候选碰撞 parts 可重算', not cerr, cerr)
 
     # 观察触发
     tf = bdir / 'observation/trigger_face12k/trigger.json'
@@ -379,6 +431,27 @@ def main():
             bad['rows'][0]['input_sha256'] = '0' * 64
             check('neg: 坏输入 SHA 被检出',
                   bool(validate_candidate_table(bad, plan)), 'expected non-empty')
+            # 真文件一字节变化
+            gp = ROOT / 'runs/unseen/generation/cache' / str(ct['rows'][0].get('request_identity'))[:2] / str(ct['rows'][0].get('request_identity')) / 'model.glb'
+            if gp.exists():
+                import tempfile
+                tp = pathlib.Path(tempfile.mkdtemp()) / 'flip.glb'
+                b = bytearray(gp.read_bytes()); b[len(b)//2] ^= 1; tp.write_bytes(bytes(b))
+                check('neg: 实际 GLB 一字节变化被检出', sha(tp) != ct['rows'][0].get('glb_sha256'))
+            # 缺 part
+            cdir = bdir / 'candidates/C_R01_face12k/collision'
+            if (cdir / 'manifest.json').exists():
+                man = json.loads((cdir / 'manifest.json').read_text())
+                got, errs = collision_parts_sha(cdir, man['parts'][:-1])
+                check('neg: 缺碰撞 part 被检出', bool(errs) or got != man.get('collision_sha'), errs)
+            # 全部 truth_sha 改错
+            if (r1 / 'summary.json').exists():
+                recs = load_jsonl(r1 / 'records.jsonl')
+                bad = copy.deepcopy(recs)
+                for x in bad:
+                    if x.get('truth_sha'): x['truth_sha'] = '0'*64
+                check('neg: 所有执行 truth_sha 同错被检出',
+                      bool(validate_six(bad, load_json(r1 / 'summary.json'), load_json(r1 / 'summary.json').get('truth_sha'))), 'expected non-empty')
         # 3) 伪造成功
         if (h5 / 'summary.json').exists():
             s = copy.deepcopy(load_json(h5 / 'summary.json'))

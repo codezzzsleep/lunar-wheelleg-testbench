@@ -30,7 +30,8 @@ def action_fingerprint(actions):
 
 
 class EpisodeRunner:
-    def __init__(self, env, skill, visible=None, params=None, max_steps=2000, seed=0):
+    def __init__(self, env, skill, visible=None, params=None, max_steps=2000, seed=0,
+                 record_trajectory=False):
         self.env = env
         self.skill = skill if not isinstance(skill, str) else __import__('skills').make_skill(skill)
         self.visible = visible or {}
@@ -42,6 +43,9 @@ class EpisodeRunner:
                 self.skill.params.setdefault(k, self.visible[k])
         env.nav_target_y = env.channel_center      # 每次 reset 清空导航横向目标
         self.seed = seed
+        self.record_trajectory = bool(record_trajectory)
+        self.trajectory = []
+        self.initial_full_hash = None
         self.skill.reset(params or {})
 
     def run_from_state(self, snapshot):
@@ -64,6 +68,7 @@ class EpisodeRunner:
         obs = env._obs() if hasattr(env, '_obs') else None
         t_start = float(env.t)
         self._restored = info
+        self._capture_initial()
         out = self._loop(obs, t_start)
         out['continuing_from'] = 'snapshot'
         out['t_start'] = round(t_start, 4)
@@ -72,7 +77,17 @@ class EpisodeRunner:
     def run(self):
         env, sk = self.env, self.skill
         obs, _ = env.reset(seed=self.seed)
+        self._capture_initial()
         return self._loop(obs, 0.0)
+
+    def _capture_initial(self):
+        import hashlib
+        h = hashlib.sha256()
+        h.update(np.asarray(self.env.data.qpos, dtype=np.float64).tobytes())
+        h.update(np.asarray(self.env.data.qvel, dtype=np.float64).tobytes())
+        self.initial_full_hash = h.hexdigest()
+        self.initial_qpos = [float(x) for x in self.env.data.qpos]
+        self.initial_qvel = [float(x) for x in self.env.data.qvel]
 
     def _loop(self, obs, t_start):
         env, sk = self.env, self.skill
@@ -83,6 +98,12 @@ class EpisodeRunner:
         while not done and steps < self.max_steps:
             rs = env.robot_state()
             a = sk.act(obs, rs)
+            _frame = None
+            if self.record_trajectory:
+                _frame = {'i': steps, 't': round(float(env.t), 5),
+                          'qpos': [float(x) for x in env.data.qpos],
+                          'qvel': [float(x) for x in env.data.qvel],
+                          'action': [float(x) for x in np.asarray(a).reshape(-1)]}
             # 动作可以让导航底座改横向目标（D1/D2 靠这个真正绕行）
             hint = getattr(sk, 'nav_target_hint', None)
             if hint is not None and callable(hint):
@@ -122,6 +143,9 @@ class EpisodeRunner:
                 obs, r, te, tr, info = env.step(a)
                 done = te or tr
             steps += 1
+            if _frame is not None:
+                _frame['contacts'] = self._contacts()
+                self.trajectory.append(_frame)
             ph = getattr(sk, 'phase', None)
             if ph != last_phase:
                 phases.append({'t': round(float(env.t), 3), 'phase': ph})
@@ -144,7 +168,25 @@ class EpisodeRunner:
             'triggered': len([p for p in phases if p['phase'] not in (None, 'idle')]) > 0,
             'action_fingerprint': action_fingerprint(actions),
             'n_actions': len(actions),
+            'initial_full_hash': self.initial_full_hash,
+            'initial_qpos': getattr(self, 'initial_qpos', None),
+            'initial_qvel': getattr(self, 'initial_qvel', None),
+            'trajectory': self.trajectory if self.record_trajectory else None,
         }
+
+    def _contacts(self):
+        import mujoco
+        out = []
+        d, m = self.env.data, self.env.model
+        for c in d.contact[:d.ncon]:
+            row = {'dist': round(float(c.dist), 6),
+                   'pos': [round(float(x), 5) for x in c.pos]}
+            for k, gid in (('g1', int(c.geom1)), ('g2', int(c.geom2))):
+                row[k] = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, gid) or str(gid)
+                bid = int(m.geom_bodyid[gid])
+                row[k + '_body'] = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_BODY, bid) or str(bid)
+            out.append(row)
+        return out
 
     def run_with_seed(self, seed):
         self.seed = seed

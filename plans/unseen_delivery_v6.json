@@ -1,0 +1,44 @@
+{
+  "schema": "unseen-delivery-plan/v6",
+  "batch_id": "v6_20261029",
+  "created": "2026-10-29",
+  "new_create": 0,
+  "source_batch": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+  "protocol": "configs/unseen_v6_protocol.json",
+  "fusion_config": "configs/unseen_v6_fusion.json",
+  "main_case": "R01",
+  "coverage_case": "R03",
+  "observations": {
+    "R01": "runs/unseen/recovery_r3/obs_R01",
+    "R03": "runs/unseen/recovery_r3/obs_R03"
+  },
+  "truth": {
+    "R01": "cases/unseen_v1/R01_truth_base.json",
+    "R03": "cases/unseen_v1/R03.json"
+  },
+  "parents": {
+    "R01": [
+      {"id": "C_R01_face12k", "kind": "lux3d", "task_id": 4466144, "world": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align", "collision": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/collision", "role": "H5_raw reference + H5-F single + multi pool"},
+      {"id": "G_R01", "kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01", "role": "H5-F multi pool; raw visible mismatch remains a separate record"},
+      {"id": "G_R01_rep2", "kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep2", "role": "H5-F multi pool"},
+      {"id": "G_R01_rep3", "kind": "lux3d", "world": "runs/unseen/recovery_r3/r01_recheck/align/world/G_R01_rep3", "role": "H5-F multi pool"}
+    ],
+    "R03": [
+      {"id": "G_R03", "kind": "lux3d", "world": "runs/unseen/recovery_r3/align_v3/world/G_R03", "collision": "runs/unseen/recovery_r3/pipeline_H5_R03/collision/G_R03", "role": "coverage; no diversity claim"}
+    ]
+  },
+  "methods": ["H5_raw", "H5_F_single", "H5_F_multi", "B3_F", "B0_blind", "U_truth"],
+  "outputs": {
+    "root": "runs/unseen/delivery_v6/v6_20261029",
+    "manifest": "runs/unseen/delivery_v6/v6_20261029/manifest.json",
+    "prediction_audit": "runs/unseen/delivery_v6/v6_20261029/prediction_audit",
+    "fusion": "runs/unseen/delivery_v6/v6_20261029/fusion",
+    "collision": "runs/unseen/delivery_v6/v6_20261029/collision",
+    "evaluation": "runs/unseen/delivery_v6/v6_20261029/evaluation",
+    "observation": "runs/unseen/delivery_v6/v6_20261029/observation",
+    "soil": "runs/unseen/delivery_v6/v6_20261029/soil",
+    "media": "runs/unseen/delivery_v6/v6_20261029/media",
+    "verify": "runs/unseen/delivery_v6/v6_20261029/verify"
+  },
+  "note": "No paid create in V6. Existing V5 tasks/assets only; reuse identities and record SHA."
+}

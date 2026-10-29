@@ -1,8 +1,8 @@
 {
   "manifest": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
-  "batch_id": "v5_20261029",
-  "n_checks": 73,
-  "n_pass": 73,
+  "batch_id": null,
+  "n_checks": 78,
+  "n_pass": 78,
   "n_fail": 0,
   "checks": [
     {
@@ -73,9 +73,9 @@
       ]
     },
     {
-      "check": "generation: GLB SHA 与缓存一致",
+      "check": "generation: GLB SHA 与缓存一致（实际重算）",
       "pass": true,
-      "detail": ""
+      "detail": []
     },
     {
       "check": "generation: 输入 SHA 与 plan 一致",
@@ -381,6 +381,16 @@
       "detail": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2"
     },
     {
+      "check": "H5_face12k: 真值碰撞 parts 可重算",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "H5_face12k: 候选碰撞 parts 可重算",
+      "pass": true,
+      "detail": []
+    },
+    {
       "check": "observation: 真实候选 trigger 存在",
       "pass": true,
       "detail": ""
@@ -531,6 +541,21 @@
     },
     {
       "check": "neg: 坏输入 SHA 被检出",
+      "pass": true,
+      "detail": "expected non-empty"
+    },
+    {
+      "check": "neg: 实际 GLB 一字节变化被检出",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg: 缺碰撞 part 被检出",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "neg: 所有执行 truth_sha 同错被检出",
       "pass": true,
       "detail": "expected non-empty"
     },

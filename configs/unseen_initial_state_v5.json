@@ -1,0 +1,7 @@
+{
+  "version": "initial-state/v5",
+  "frozen": "2026-10-29",
+  "lateral_m": 0.05,
+  "yaw_rad": 0.05,
+  "note": "V5 正式 H5/六方法/真值扫描共用同一初态扰动；此前 unseen_pipeline 用 gate_physics 的 yaw=0.03，eval_six 用 0.05，导致 H5 与六方法初态不一致。V5 起统一为 0.05/0.05，旧 0.03 运行保留并标注。"
+}

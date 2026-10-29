@@ -1,0 +1,164 @@
+{
+  "schema": "v5-candidate-table/v1",
+  "batch_id": "v5_20261029",
+  "generated_tasks": 3,
+  "credits_upper": 60,
+  "actual_charge": "unknown",
+  "rows": [
+    {
+      "plan_id": "C_R01_az25",
+      "stone": "R01",
+      "observation_id": "R01_az25",
+      "task_id": 4466035,
+      "request_identity": "a10375af36965df8048923848a1c98d2035d902923b033aa54f36c2670ee74d2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "change": "仅石头相对相机偏航 +25°；相机、机位、取景、模型参数不变",
+      "input_sha256": "1f7d10b46b7d0a53dde601da84d25f5294ea35404dce7a3d4ae37537570095ce",
+      "glb_sha256": "d900a4b63e80e91a0eb6664418ba1f22834d77d8c93f52ee5a579354e76a700e",
+      "provider_status": "downloaded",
+      "ledger_ts": 1793256138.570019,
+      "credits_upper": 20.0,
+      "actual_charge": null,
+      "verified": "unknown",
+      "glb_extents_m": [
+        0.022,
+        0.016167,
+        0.010308
+      ],
+      "n_faces": 28698,
+      "clean_version": "clean/v4",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.46733,
+      "clean_sha256": "b9c55eab5fbec3372b92923d45fcf108bd5d143a4f5ea731800579fa09c7b205",
+      "align_executed": true,
+      "n_coarse_evals": 1512,
+      "strict": {
+        "mask_iou": 0.5989,
+        "vis_pt_p95_mm": 19.64,
+        "freespace_violation": 0.5113,
+        "threshold_p95_mm": 9.985,
+        "pass": false
+      },
+      "orientation_ambiguous": true,
+      "align_scale": 21.71184,
+      "align_yaw": 25.0,
+      "planning_eligible": false,
+      "collision": "not_built",
+      "execution": "not_run",
+      "failure_stage": "strict_geometry",
+      "note": "",
+      "world_sha256": "52570de0e82acf9c1988c0822584a2e1a918be9f415849ae9d1e18f6c91aa794"
+    },
+    {
+      "plan_id": "C_R01_az45",
+      "stone": "R01",
+      "observation_id": "R01_az45",
+      "task_id": 4466087,
+      "request_identity": "90ccfe79cd154903922ac47ab875147216bc2718f5c212b55a1afbe1eb2639d9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "change": "仅石头相对相机偏航 +45°；相机、机位、取景、模型参数不变",
+      "input_sha256": "6ac14e8ba31eef6185d378f8f9d95e15c86b27a63ac997c596edd9b3e4339a38",
+      "glb_sha256": "f4bdb5a2f5179bc41b9f83d019781d184fe8c24bfd33e3506616638b217cd22d",
+      "provider_status": "downloaded",
+      "ledger_ts": 1793256235.0474298,
+      "credits_upper": 20.0,
+      "actual_charge": null,
+      "verified": "unknown",
+      "glb_extents_m": [
+        0.016524,
+        0.014,
+        0.006322
+      ],
+      "n_faces": 29902,
+      "clean_version": "clean/v4",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.39016,
+      "clean_sha256": "634bdf4edec1f8bebb5d274eb96313681bb6434aa0091b9acdec1a70b35cb853",
+      "align_executed": true,
+      "n_coarse_evals": 1512,
+      "strict": {
+        "mask_iou": 0.6907,
+        "vis_pt_p95_mm": 12.474,
+        "freespace_violation": 0.4957,
+        "threshold_p95_mm": 9.989,
+        "pass": false
+      },
+      "orientation_ambiguous": true,
+      "align_scale": 22.96021,
+      "align_yaw": -26.0,
+      "planning_eligible": false,
+      "collision": "not_built",
+      "execution": "not_run",
+      "failure_stage": "strict_geometry",
+      "note": "",
+      "world_sha256": "5dc655f86aa4526bb29ff9d1f3ed276f84e2c3956d8bc88a2bcb3374fbb1c0d0"
+    },
+    {
+      "plan_id": "C_R01_face12k",
+      "stone": "R01",
+      "observation_id": "R01_base",
+      "task_id": 4466144,
+      "request_identity": "38216a6c9099b1639011a133ffe3e3ccbaaa1a777f0dfe49c725c2e822a14de0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 12000
+      },
+      "change": "输入字节不变，仅面数档位 30000→12000（官方 schema 范围 10000–300000）",
+      "input_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "glb_sha256": "9deae1881f86b06c6a6e0af4acbbd46bade8b4217036586406e720db6163fc27",
+      "provider_status": "downloaded",
+      "ledger_ts": 1793256337.0391924,
+      "credits_upper": 20.0,
+      "actual_charge": null,
+      "verified": "unknown",
+      "glb_extents_m": [
+        0.01485,
+        0.022,
+        0.009753
+      ],
+      "n_faces": 11676,
+      "clean_version": "clean/v4",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.44338,
+      "clean_sha256": "ff4f79519a8c36c819dab69a1212c98a763248ef5fb208e55263c7a42cb14ddc",
+      "align_executed": true,
+      "n_coarse_evals": 1512,
+      "strict": {
+        "mask_iou": 0.8622,
+        "vis_pt_p95_mm": 11.0,
+        "freespace_violation": 0.5106,
+        "threshold_p95_mm": 9.957,
+        "pass": false
+      },
+      "orientation_ambiguous": false,
+      "align_scale": 14.63625,
+      "align_yaw": 3.5,
+      "planning_eligible": true,
+      "collision": {
+        "collision_sha": "ca155e7fd2ec3eea0048160dbdf56208",
+        "coacd_parts": 32,
+        "concavity": 0.53075,
+        "hit_part_cap": true,
+        "pass": true,
+        "rest_pose": false
+      },
+      "execution": "see evaluation/H5_R01_face12k",
+      "failure_stage": null,
+      "note": "仅过工程政策（IoU）不算 strict；CoACD 32 部件且 hit_part_cap",
+      "world_sha256": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1"
+    }
+  ],
+  "summary": {
+    "clean_ok": 3,
+    "align_completed": 3,
+    "strict_pass": 0,
+    "planning_eligible": 1,
+    "scale_note": "三份原始 GLB 仍为 1–2 cm 量级；face12k 形状 IoU 0.8622 过政策，但 strict 仍失败；不得写成“尺度问题已修复”"
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "batch_id": "v5_20261029",
+  "schema": "delivery-manifest/v1",
+  "created": "2026-10-29",
+  "baseline_commit": "e3564f02914e33d87ba32f0c693da102ae7f0684",
+  "plan": {
+    "path": "plans/unseen_delivery_v5.json",
+    "sha256": "9eb1b37838eb1c469b4c33214e58ba8f6a6354021ae8db9a1f590d230c158194"
+  },
+  "budget": {
+    "path": "configs/unseen_v5_budget.json",
+    "sha256": "d5b5a64a90443112e3d683fc64e5e917f4671e4e08fb1003ccaeeba539201eb0"
+  },
+  "ledger": {
+    "path": "runs/unseen/generation/ledger.jsonl",
+    "sha256_before": "f9b00b9e281d25e534c4fc5839fd42eb2754a8408b50231b03cc584b620d4578"
+  },
+  "environment": "environment.json",
+  "paths": {
+    "batch_dir": "runs/unseen/delivery_v5/v5_20261029",
+    "manifest": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+    "generation": "runs/unseen/delivery_v5/v5_20261029/generation",
+    "candidates": "runs/unseen/delivery_v5/v5_20261029/candidates",
+    "cases": "runs/unseen/delivery_v5/v5_20261029/cases",
+    "evaluation": "runs/unseen/delivery_v5/v5_20261029/evaluation",
+    "observation": "runs/unseen/delivery_v5/v5_20261029/observation",
+    "soil": "runs/unseen/delivery_v5/v5_20261029/soil",
+    "media": "runs/unseen/delivery_v5/v5_20261029/media",
+    "verify": "runs/unseen/delivery_v5/v5_20261029/verify",
+    "delivery": "runs/unseen/delivery_v5/v5_20261029/delivery.json"
+  },
+  "work_packages": {
+    "P0": {
+      "status": "done",
+      "artifacts": [
+        "plans/unseen_delivery_v5.json",
+        "configs/unseen_v5_budget.json",
+        "verify/preflight.json"
+      ]
+    },
+    "P1": {
+      "status": "done",
+      "artifacts": [
+        "generation/tasks.json",
+        "candidates/candidate_table.json"
+      ]
+    },
+    "P2": {
+      "status": "done",
+      "artifacts": [
+        "cases/case_registry.json",
+        "cases/case_selection.json",
+        "cases/*/summary.json",
+        "cases/twins/twins_registry.json"
+      ],
+      "coverage": "6 independent shapes, 3 API tasks, 10 twin back variants; 0 effective hidden-back tradeoffs"
+    },
+    "P3": {
+      "status": "done",
+      "artifacts": [
+        "evaluation/formal_table_v5.json",
+        "evaluation/benefit_summary.json",
+        "evaluation/state_alignment_R01.json"
+      ]
+    },
+    "P4": {
+      "status": "done",
+      "artifacts": [
+        "observation/trigger_face12k",
+        "observation/trigger_fixture_pair_box",
+        "observation/fixture_pair_full"
+      ],
+      "note": "真实 face12k 单候选 -> 不触发（chosen L2，safe L2/R2/S1）；可控 fixture（truth-shaped vs box prior）触发，观察可用、box 被第二视角淘汰、S1 真值续行成功；真实多假设观察收益 NOT_ESTABLISHED"
+    },
+    "P5": {
+      "status": "done",
+      "artifacts": [
+        "soil/acceptance.json",
+        "soil/stability_1000.jsonl",
+        "soil/stability_summary.json",
+        "soil/summary.json"
+      ],
+      "note": "A/B/C/D/E/F 有数据；G geometry_sinkage=PARTIAL_NOT_IMPLEMENTED"
+    },
+    "P6": {
+      "status": "done",
+      "artifacts": [
+        "scripts/app_unseen.py",
+        "README.md",
+        "docs/DEMO_V5.md",
+        "runs/unseen/page_registry.json",
+        "media/page"
+      ]
+    },
+    "P7": {
+      "status": "done",
+      "artifacts": [
+        "scripts/verify_delivery_v5.py",
+        "scripts/build_delivery_v5.py",
+        "verify/report.json",
+        "verify/unit_v5.log",
+        "delivery.json"
+      ]
+    }
+  },
+  "generation": {
+    "planned_tasks": 3,
+    "submitted_tasks": 3,
+    "downloaded_tasks": 3,
+    "credits_upper": 60,
+    "actual_charge": "unknown",
+    "status": "complete",
+    "table": "runs/unseen/delivery_v5/v5_20261029/generation/tasks.json",
+    "ledger": "runs/unseen/generation/ledger.jsonl"
+  },
+  "note": "manifest 是本批唯一入口；后续阶段把产物路径与 SHA 回填到这里，不靠分析器猜目录。",
+  "candidates": {
+    "table": "runs/unseen/delivery_v5/v5_20261029/candidates/candidate_table.json",
+    "clean_ok": 3,
+    "align_completed": 3,
+    "strict_pass": 0,
+    "planning_eligible": 1,
+    "note": "face12k 仅过工程政策；strict 失败"
+  },
+  "cases": {
+    "registry": "runs/unseen/delivery_v5/v5_20261029/cases/case_registry.json",
+    "selection": "runs/unseen/delivery_v5/v5_20261029/cases/case_selection.json",
+    "independent_shape_count": 6,
+    "effective_hidden_back_tradeoffs": 0
+  },
+  "observation": {
+    "summary": "runs/unseen/delivery_v5/v5_20261029/observation/summary.json",
+    "real_triggered": false,
+    "fixture_triggered": true,
+    "full_chain": "observation/fixture_pair_full"
+  },
+  "evaluation": {
+    "formal_table": "runs/unseen/delivery_v5/v5_20261029/evaluation/formal_table_v5.json",
+    "benefit": "runs/unseen/delivery_v5/v5_20261029/evaluation/benefit_summary.json",
+    "state_alignment": "runs/unseen/delivery_v5/v5_20261029/evaluation/state_alignment_R01.json",
+    "benefit_status": "NOT_ESTABLISHED"
+  },
+  "soil": {
+    "summary": "runs/unseen/delivery_v5/v5_20261029/soil/summary.json",
+    "stages": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+      "g"
+    ],
+    "stability_episodes": 1000,
+    "geometry_sinkage": "PARTIAL_NOT_IMPLEMENTED"
+  },
+  "page": {
+    "screenshots": "media/page",
+    "batch_url": "/?run=batch:v5_20261029",
+    "browser": "chrome-headless-shell 1248",
+    "note": "批次页显示 strict 0/3、planning 1/3 (IoU-only)、正式 R01 H5 2/3；soil A 验证误差 3.12–5.24%"
+  },
+  "verify": {
+    "report": "verify/report.json",
+    "self_test": true,
+    "unit_tests": {
+      "ran": 130,
+      "skipped": 1,
+      "ok": true,
+      "seconds": 777.529,
+      "log": "verify/unit_v5.log"
+    }
+  }
+}

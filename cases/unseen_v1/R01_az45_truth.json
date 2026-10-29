@@ -1,0 +1,17 @@
+{
+  "case_id": "R01_az45_truth",
+  "seed": 0,
+  "mesh": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az45/truth_world/body.stl",
+  "H": 0.3342,
+  "W": 0.246572,
+  "D": 0.243976,
+  "goal_x": 2.6,
+  "channel_half": 1.2,
+  "obstacle_x": 0.0,
+  "yaw_deg": 0.0,
+  "truth_world_sha": "ee8581c7c8c3d81ca0c48fe3cc4189357644a4cae0d4222f8169642e82cb15cd",
+  "source_case": "R01",
+  "source_mesh": "runs/unseen/recovery_r3/stone_materials/R01.stl",
+  "world_frame_mesh": true,
+  "note": "V5 方向真值实例：mesh 已经是 world frame，obstacle_x=0；下游若再平移/旋转/贴地即为重复变换"
+}

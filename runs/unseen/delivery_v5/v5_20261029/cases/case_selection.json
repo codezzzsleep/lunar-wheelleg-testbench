@@ -1,0 +1,65 @@
+{
+  "schema": "case-selection/v5",
+  "batch_id": "v5_20261029",
+  "independent_shapes": [
+    "R01 (r2_narrow_tall@1.15)",
+    "R02 (s_round@1.1)",
+    "R03 (s_flat@1.1)",
+    "R04 (s_wide@1.0)",
+    "v5twin_narrow (twins front)",
+    "v5twin_wide (twins front)"
+  ],
+  "independent_shape_count": 6,
+  "api_task_count": 3,
+  "observation_direction_count": 6,
+  "twin_back_variant_count": 10,
+  "categories": {
+    "shape_sensitive_dev": [
+      "R01_base",
+      "v5twin_narrow_drop",
+      "v5twin_narrow_ramp_s",
+      "v5twin_narrow_ramp_l",
+      "v5twin_narrow_cleft"
+    ],
+    "robust_action_cases": [
+      "R01_base",
+      "R03",
+      "v5twin_narrow_drop",
+      "v5twin_narrow_ramp_s",
+      "v5twin_narrow_ramp_l",
+      "v5twin_narrow_cleft",
+      "v5twin_wide_drop",
+      "v5twin_wide_ramp_s",
+      "v5twin_wide_ramp_l",
+      "v5twin_wide_ledge",
+      "v5twin_wide_cleft"
+    ],
+    "capability_boundary": [
+      "R02",
+      "R04"
+    ],
+    "ordinary_link": [
+      "R03"
+    ],
+    "observation_diagnostic": [
+      "R01_az25",
+      "R01_az45"
+    ]
+  },
+  "effective_hidden_back_tradeoffs": [],
+  "coverage_statement": "已登记 6 个独立完整形状、3 个本批 API 任务、6 个观测方向、10 个同正面不同背面 twins；但没有找到“简单可见规则选错且存在另一个 3/3 稳健动作”的案例。R01 是唯一有动作取舍的真实石头：R1 0/3、S1 3/3；但 W_vis=0.1558 < 净空 0.1913，宽度规则直接选 S1 3/3（与镜像、U_truth 同动作同结果），所以该案例只能支持“动作取舍存在”，不能支持“必须推断隐藏背面”。R03 无取舍（除 A0 外全 3/3）；R02/R04 全动作 0/3，是能力边界；az25/az45 是同一石头转角度，不算独立形状；twin ledge 使 S1 降到 2/3，但没有替代稳健动作。",
+  "what_the_cases_can_support": [
+    "R01：链路、动作取舍、宽度规则诊断；H5 face12k 决策 L2 3/3，盲走 R1 0/3（但 B3/宽度规则/U_truth 选 S1 也 3/3）",
+    "R03：六方法同真值、无取舍的普通覆盖；H5 与盲走/镜像同分",
+    "R02/R04：当前动作库的能力边界，不用于收益",
+    "twins：同正面不同背面的受控负结果；隐藏背面的差异未产生稳健替代动作"
+  ],
+  "what_the_cases_cannot_support": [
+    "不能声称“必须推断隐藏背面”或“Lux3D 独有收益”",
+    "不能把 R01 的 S1 成功归因于背面推断；可见宽度已足够",
+    "不能把 R01 与 dev_narrow_tall 当作独立留出案例（同一网格 SHA be4375…）",
+    "不能把 az25/az45 当作独立石头或独立 API 任务形状",
+    "不能把 H5 在 R01 的单次 L2 成功当成稳健收益；候选 strict 失败、freespace 0.51、CoACD 32 部件 hit_part_cap"
+  ],
+  "next_case_recommendation": "若要证明隐藏背面必要，需要新造一个“可见宽度不足/误导”的形状：例如可见正面窄于跨骑净空、但隐藏背面宽于净空，使宽度规则选 S1 而 S1 必然失败；同时存在另一个 3/3 稳健动作。先用 twins/程序化几何做免费真值扫描，再投入生成。"
+}

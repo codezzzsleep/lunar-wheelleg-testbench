@@ -1,0 +1,153 @@
+{
+  "candidate": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/clean/body.stl",
+  "observation": "runs/unseen/recovery_r3/obs_R01",
+  "distinct_orientations_in_top": [
+    [
+      6,
+      -7.670120963141753
+    ]
+  ],
+  "metric_version": "align-metric/v2.1",
+  "camera_schema": "camera-snapshot/v2",
+  "raw_bounds": [
+    [
+      -0.007424968760460615,
+      -0.010999999940395355,
+      0.0
+    ],
+    [
+      0.007424968760460615,
+      0.010999999940395355,
+      0.009752649813890457
+    ]
+  ],
+  "raw_extents": [
+    0.01484993752092123,
+    0.02199999988079071,
+    0.009752649813890457
+  ],
+  "n_coarse_evals": 1512,
+  "wall_s": 107.0,
+  "orientation_ambiguous": false,
+  "top": [
+    {
+      "R_index": 6,
+      "init": "W",
+      "scale": 14.37368,
+      "yaw": 0.0,
+      "quick_med_mm": 7.67,
+      "quick_cover": 0.6013333333333334
+    },
+    {
+      "R_index": 6,
+      "init": "H",
+      "scale": 15.0858,
+      "yaw": 0.0,
+      "quick_med_mm": 8.139,
+      "quick_cover": 0.624
+    },
+    {
+      "R_index": 6,
+      "init": "geo",
+      "scale": 13.96978,
+      "yaw": 0.0,
+      "quick_med_mm": 8.221,
+      "quick_cover": 0.5773333333333334
+    },
+    {
+      "R_index": 6,
+      "init": "W",
+      "scale": 14.37368,
+      "yaw": 8.33,
+      "quick_med_mm": 8.249,
+      "quick_cover": 0.5933333333333334
+    }
+  ],
+  "best": {
+    "R_index": 6,
+    "init": "H",
+    "scale_init": 15.08580408852376,
+    "yaw_init": 0.0,
+    "scale": 14.63625,
+    "yaw": 3.5,
+    "R_axis_world": [
+      [
+        0.998,
+        0.0,
+        0.061
+      ],
+      [
+        0.061,
+        0.0,
+        -0.998
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "shear_residual": 0.0,
+    "yaw_residual": 0.0,
+    "z_min_world_m": 0.0,
+    "M": [
+      [
+        14.608947575447116,
+        0.0,
+        0.8935215113554104,
+        1.745732921250155
+      ],
+      [
+        0.8935215113554105,
+        0.0,
+        -14.608947575447113,
+        0.07156328221816458
+      ],
+      [
+        0.0,
+        14.636247126685753,
+        0.0,
+        0.16099871752115497
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "native": {
+      "mask_iou": 0.8622,
+      "cand_px": 9234,
+      "obs_px": 9721,
+      "n_inter": 8776,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": -3.614,
+      "depth_p95_mm": 30.164,
+      "depth_inner_rms_mm": 13.842,
+      "depth_edge_rms_mm": 45.54,
+      "vis_pt_med_mm": 1.637,
+      "vis_pt_p95_mm": 11.0,
+      "vis_pt_n": 2500,
+      "vis_pt_total": 9721,
+      "vis_pt_strategy": "deterministic_subset(n=2500,seed=0)",
+      "metric_version": "align-metric/v2.1",
+      "freespace_violation": 0.5106,
+      "freespace_n_px": 4715,
+      "freespace_denom_px": 9234,
+      "freespace_outside_mask": 438
+    },
+    "threshold_p95_mm": 9.957,
+    "pass": false,
+    "world_dir": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align"
+  },
+  "pass": false,
+  "export_check": {
+    "max_bound_diff_m": 2.7e-08,
+    "consistent": true,
+    "world_sha": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1"
+  }
+}

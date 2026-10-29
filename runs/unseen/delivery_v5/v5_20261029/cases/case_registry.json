@@ -1,0 +1,1958 @@
+{
+  "schema": "case-registry/v5",
+  "batch_id": "v5_20261029",
+  "rows": [
+    {
+      "registry_id": "R01_base",
+      "source": "stone_materials/R01.stl（与 dev_narrow_tall 同 SHA）",
+      "case": "cases/unseen_v1/R01_truth_base.json",
+      "observation_id": "R01_base",
+      "observation": "runs/unseen/recovery_r3/obs_R01",
+      "truth_world_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+      "truth_collision_sha": "08fba9fe3b8ba3d88f82062540495cbd",
+      "coacd_parts": 21,
+      "independent_shape": true,
+      "category": "shape_sensitive_dev",
+      "visible": {
+        "x_front": 1.6357,
+        "W_vis": 0.1558,
+        "H_vis": 0.3319
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 2,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "tipped"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "time_limit"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1558,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": true,
+      "has_robust_action": true,
+      "robust_actions": [
+        "S1"
+      ],
+      "can_support": [
+        "动作取舍：R1 0/3、S1 3/3；链路与观察诊断"
+      ],
+      "cannot_support": [
+        "隐藏背面必要性：W_vis 已足够选 S1；R01 与开发案例同网格，不是留出案例"
+      ],
+      "note": "唯一稳健动作 S1 由可见宽度规则直接给出"
+    },
+    {
+      "registry_id": "R02",
+      "source": "stone_materials/R02.stl（s_round@1.1）",
+      "case": "cases/unseen_v1/R02.json",
+      "observation_id": "R02",
+      "observation": "runs/unseen/recovery_r3/obs_R02",
+      "truth_world_sha": "ddeb1722383c387b7c6743778e23c53c396e4ea920c9b93b227c77e0e00030eb",
+      "truth_collision_sha": "8bb01c6499b93feb8495fb69859bd42f",
+      "coacd_parts": 1,
+      "independent_shape": true,
+      "category": "capability_boundary",
+      "visible": {
+        "x_front": 1.6375,
+        "W_vis": 0.3907,
+        "H_vis": 0.1629
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.3907,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 0,
+        "n": 3,
+        "explains_all_robust_actions": false
+      },
+      "shape_sensitive": false,
+      "has_robust_action": false,
+      "robust_actions": [],
+      "can_support": [
+        "能力边界：所有动作 0/3"
+      ],
+      "cannot_support": [
+        "收益/动作取舍"
+      ],
+      "note": "当前动作库在该尺寸范围无法通过"
+    },
+    {
+      "registry_id": "R03",
+      "source": "stone_materials/R03.stl（s_flat@1.1）",
+      "case": "cases/unseen_v1/R03.json",
+      "observation_id": "R03",
+      "observation": "runs/unseen/recovery_r3/obs_R03",
+      "truth_world_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+      "truth_collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+      "coacd_parts": 1,
+      "independent_shape": true,
+      "category": "ordinary_link",
+      "visible": {
+        "x_front": 1.6055,
+        "W_vis": 0.4578,
+        "H_vis": 0.0821
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.4578,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "普通覆盖/链路展示；六方法同真值"
+      ],
+      "cannot_support": [
+        "收益：除 A0 外全 3/3，无取舍"
+      ],
+      "note": "无动作取舍；H5 最多与盲走同分"
+    },
+    {
+      "registry_id": "R04",
+      "source": "stone_materials/R04.stl（s_wide@1.0）",
+      "case": "cases/unseen_v1/R04.json",
+      "observation_id": "R04",
+      "observation": "runs/unseen/recovery_r3/obs_R04",
+      "truth_world_sha": "fd5a02c94aa76b5ebd8f535b8a3291a0934378bf9a7160f552e6decd462ac330",
+      "truth_collision_sha": "2d7f4c679f5cce1d4a33ca05b9aabff2",
+      "coacd_parts": 6,
+      "independent_shape": true,
+      "category": "capability_boundary",
+      "visible": {
+        "x_front": 1.5133,
+        "W_vis": 0.5713,
+        "H_vis": 0.2082
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.5713,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 0,
+        "n": 3,
+        "explains_all_robust_actions": false
+      },
+      "shape_sensitive": false,
+      "has_robust_action": false,
+      "robust_actions": [],
+      "can_support": [
+        "能力边界：所有动作 0/3"
+      ],
+      "cannot_support": [
+        "收益/动作取舍"
+      ],
+      "note": "1.0 档在 dev 可行性矩阵中没有直接行；V5 真值扫描确认全失败"
+    },
+    {
+      "registry_id": "R01_az25",
+      "source": "R01 同几何，观测偏航 +25°",
+      "case": "cases/unseen_v1/R01_az25_truth.json",
+      "observation_id": "R01_az25",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az25",
+      "truth_world_sha": "1393ab418c2fa2a14f172bc046adae7bba560063301ad45926d5056db8e31a58",
+      "truth_collision_sha": "3a413cee4c2d1e66c992eabd8d8fbef7",
+      "coacd_parts": 32,
+      "independent_shape": false,
+      "category": "observation_direction_diagnostic",
+      "visible": {
+        "x_front": 1.6549,
+        "W_vis": 0.1951,
+        "H_vis": 0.3328
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 1,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 2,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "time_limit",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1951,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 0,
+        "n": 3,
+        "explains_all_robust_actions": false
+      },
+      "shape_sensitive": false,
+      "has_robust_action": false,
+      "robust_actions": [],
+      "can_support": [
+        "不同观察方向的生成/配准诊断；简单规则在此方向失效"
+      ],
+      "cannot_support": [
+        "独立形状/收益：同一石头转角度，不算独立形状；没有稳健动作"
+      ],
+      "note": "W_vis 0.1951 略高于跨骑净空 -> S1 不适用；R1 0/3，L2 2/3，无 3/3"
+    },
+    {
+      "registry_id": "R01_az45",
+      "source": "R01 同几何，观测偏航 +45°",
+      "case": "cases/unseen_v1/R01_az45_truth.json",
+      "observation_id": "R01_az45",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az45",
+      "truth_world_sha": "f033f2e45882207bf0e7a44e82e557a3c165d335af41ea4c4a909310805f3eb5",
+      "truth_collision_sha": "11867e00249fd5050bccd313b514d06f",
+      "coacd_parts": 22,
+      "independent_shape": false,
+      "category": "observation_direction_diagnostic",
+      "visible": {
+        "x_front": 1.6854,
+        "W_vis": 0.2429,
+        "H_vis": 0.333
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "tipped"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2429,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 0,
+        "n": 3,
+        "explains_all_robust_actions": false
+      },
+      "shape_sensitive": false,
+      "has_robust_action": false,
+      "robust_actions": [],
+      "can_support": [
+        "观察方向诊断；全动作失败的能力边界"
+      ],
+      "cannot_support": [
+        "独立形状/收益：同一石头转角度；没有稳健动作"
+      ],
+      "note": "W_vis 0.2429 > 净空，S1 不适用；全动作 0/3"
+    },
+    {
+      "registry_id": "v5twin_narrow_drop",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_narrow_drop.json",
+      "observation_id": "v5twin_narrow_drop",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_narrow_drop",
+      "truth_world_sha": "15aa576f033571a010145151d0de6bfc6afecfe1a7d3cd017cce5608f37f9287",
+      "truth_collision_sha": "16d51de0a36dc7e2b6d397371a5fd871",
+      "coacd_parts": 7,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "narrow",
+      "back": "drop",
+      "visible": {
+        "x_front": 1.4889,
+        "W_vis": 0.1599,
+        "H_vis": 0.3445
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "tipped",
+            "time_limit"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "S1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 1,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1599,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": true,
+      "has_robust_action": true,
+      "robust_actions": [
+        "S1"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_narrow_ramp_s",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_narrow_ramp_s.json",
+      "observation_id": "v5twin_narrow_ramp_s",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_narrow_ramp_s",
+      "truth_world_sha": "363c0b8a3f92a970d8d0e4b848d81d36adf52883bb17ee3860c7d5c6ef85dd0a",
+      "truth_collision_sha": "41effbede26940905689dc0f74b418a9",
+      "coacd_parts": 2,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "narrow",
+      "back": "ramp_s",
+      "visible": {
+        "x_front": 1.4889,
+        "W_vis": 0.1599,
+        "H_vis": 0.3445
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "S1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1599,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": true,
+      "has_robust_action": true,
+      "robust_actions": [
+        "S1"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_narrow_ramp_l",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_narrow_ramp_l.json",
+      "observation_id": "v5twin_narrow_ramp_l",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_narrow_ramp_l",
+      "truth_world_sha": "f60d4fc6544d36dfca58238d0ae7e2222737bcb4b3759d5c9d5489be7e785d22",
+      "truth_collision_sha": "55e04668ba4308394b59379ed9fc1385",
+      "coacd_parts": 2,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "narrow",
+      "back": "ramp_l",
+      "visible": {
+        "x_front": 1.4889,
+        "W_vis": 0.1599,
+        "H_vis": 0.3445
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "S1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1599,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": true,
+      "has_robust_action": true,
+      "robust_actions": [
+        "S1"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_narrow_ledge",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_narrow_ledge.json",
+      "observation_id": "v5twin_narrow_ledge",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_narrow_ledge",
+      "truth_world_sha": "70cf365925683b316397b491afe2d0227259a060360a80e4488dd642783f76bc",
+      "truth_collision_sha": "21999cae147ec8497e627c9e338ce62c",
+      "coacd_parts": 7,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "narrow",
+      "back": "ledge",
+      "visible": {
+        "x_front": 1.4889,
+        "W_vis": 0.1599,
+        "H_vis": 0.3445
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "time_limit"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "S1": {
+          "success": 2,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1599,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 2,
+        "n": 3,
+        "explains_all_robust_actions": false
+      },
+      "shape_sensitive": false,
+      "has_robust_action": false,
+      "robust_actions": [],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_narrow_cleft",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_narrow_cleft.json",
+      "observation_id": "v5twin_narrow_cleft",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_narrow_cleft",
+      "truth_world_sha": "9babd1f1b1b9b2b14c470bcdd5303fdd097e5b7c28f81700cc6545d5645df0c2",
+      "truth_collision_sha": "27383b7738f41a2e77af6d40146aec80",
+      "coacd_parts": 4,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "narrow",
+      "back": "cleft",
+      "visible": {
+        "x_front": 1.4889,
+        "W_vis": 0.1599,
+        "H_vis": 0.3445
+      },
+      "actions": {
+        "R1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "R2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "L1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "tipped",
+            "tipped",
+            "tipped"
+          ]
+        },
+        "L2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "S1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D1": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "D2": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "time_limit",
+            "time_limit",
+            "time_limit"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.1599,
+        "S1_applicable": true,
+        "chosen": "S1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": true,
+      "has_robust_action": true,
+      "robust_actions": [
+        "S1"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_wide_drop",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_wide_drop.json",
+      "observation_id": "v5twin_wide_drop",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_wide_drop",
+      "truth_world_sha": "31fceff9468470fa1f5a4a55edba0a00f30850dacb36cad9203fced0ba9cf2fd",
+      "truth_collision_sha": "5d4b9c8297323052bf465efe79583833",
+      "coacd_parts": 12,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "wide",
+      "back": "drop",
+      "visible": {
+        "x_front": 1.55,
+        "W_vis": 0.2399,
+        "H_vis": 0.2072
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2399,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_wide_ramp_s",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_wide_ramp_s.json",
+      "observation_id": "v5twin_wide_ramp_s",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_wide_ramp_s",
+      "truth_world_sha": "2d8919b824a17e32d16c25b71703d76ba6bb710833154f65f6b2fc803c2e3621",
+      "truth_collision_sha": "a095114019ad93c63b35c37df7de006d",
+      "coacd_parts": 3,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "wide",
+      "back": "ramp_s",
+      "visible": {
+        "x_front": 1.55,
+        "W_vis": 0.2399,
+        "H_vis": 0.2072
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2399,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_wide_ramp_l",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_wide_ramp_l.json",
+      "observation_id": "v5twin_wide_ramp_l",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_wide_ramp_l",
+      "truth_world_sha": "cd81efeebbe88140fc34fdfe92fbdb73c5a7b2fbe3440ee52ca3419e734e99dc",
+      "truth_collision_sha": "479d7d7875639f94eab8a6d58f86231c",
+      "coacd_parts": 2,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "wide",
+      "back": "ramp_l",
+      "visible": {
+        "x_front": 1.55,
+        "W_vis": 0.2399,
+        "H_vis": 0.2072
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2399,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_wide_ledge",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_wide_ledge.json",
+      "observation_id": "v5twin_wide_ledge",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_wide_ledge",
+      "truth_world_sha": "359bd0020ea4d0739fb14bf092c9738bd3d74c76e233b71b77f75d3b4f22e257",
+      "truth_collision_sha": "a7aa8fba4acea4a4707f9d4f2751fe76",
+      "coacd_parts": 5,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "wide",
+      "back": "ledge",
+      "visible": {
+        "x_front": 1.55,
+        "W_vis": 0.2399,
+        "H_vis": 0.2072
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2399,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    },
+    {
+      "registry_id": "v5twin_wide_cleft",
+      "source": "twins.twin_solid 程序化双胞胎",
+      "case": "cases/unseen_v1/v5twin_wide_cleft.json",
+      "observation_id": "v5twin_wide_cleft",
+      "observation": "runs/unseen/delivery_v5/v5_20261029/cases/twins/observations/v5twin_wide_cleft",
+      "truth_world_sha": "4b3417f715e4babb1751c0b5725b1d28a69956931c1199abc25e567d729664bb",
+      "truth_collision_sha": "b07bfc8f54770c53daffd39fcc93ff68",
+      "coacd_parts": 2,
+      "independent_shape": false,
+      "category": "twin_back_type_scan",
+      "front": "wide",
+      "back": "cleft",
+      "visible": {
+        "x_front": 1.55,
+        "W_vis": 0.2399,
+        "H_vis": 0.2072
+      },
+      "actions": {
+        "R1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "R2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "L2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "S1": {
+          "success": 0,
+          "n": 0,
+          "not_applicable": "not_applicable_by_public_visibility",
+          "outcomes": []
+        },
+        "D1": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "D2": {
+          "success": 3,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "success",
+            "success",
+            "success"
+          ]
+        },
+        "A0": {
+          "success": 0,
+          "n": 3,
+          "not_applicable": null,
+          "outcomes": [
+            "abort",
+            "abort",
+            "abort"
+          ]
+        }
+      },
+      "simple_rule": {
+        "rule": "W_vis < 0.1911 -> S1 else R1",
+        "W_vis": 0.2399,
+        "S1_applicable": false,
+        "chosen": "R1",
+        "success": 3,
+        "n": 3,
+        "explains_all_robust_actions": true
+      },
+      "shape_sensitive": false,
+      "has_robust_action": true,
+      "robust_actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "D1",
+        "D2"
+      ],
+      "can_support": [
+        "同正面不同背面的受控扫描/能力边界"
+      ],
+      "cannot_support": [
+        "独立石头数量：同一 front 的 back 变体不当作多个独立石头",
+        "收益：没有找到“简单规则选错且另一动作 3/3”的组合"
+      ],
+      "note": "隐藏背面差异（ledge 使 S1 2/3）未产生稳健替代动作"
+    }
+  ],
+  "independent_shape_count": 6,
+  "independent_shape_note": "R01/R02/R03/R04 四块完整石头 + twin narrow/wide 两个 front；twin back 变体与 az25/az45 不算独立形状",
+  "independent_observation_count": 16,
+  "api_task_count": 3,
+  "coverage": {
+    "ordinary": [
+      "R03"
+    ],
+    "shape_sensitive_dev": [
+      "R01_base"
+    ],
+    "capability_boundary": [
+      "R02",
+      "R04",
+      "R01_az45"
+    ],
+    "observation_diagnostic": [
+      "R01_az25"
+    ],
+    "twin_back_scan": 10
+  },
+  "miss_reason": "在现有 4 块真实石头和 10 个同正面不同背面的 twins 中，没有找到“简单可见规则选错、且存在另一个 3/3 稳健动作”的案例；R01 的唯一稳健动作 S1 由 W_vis 直接给出；R02/R04 全失败；R03 除 A0 外全通过；twin ledge 使 S1 2/3 但没有替代稳健动作。"
+}

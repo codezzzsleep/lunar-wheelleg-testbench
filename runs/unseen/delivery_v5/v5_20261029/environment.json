@@ -1,0 +1,29 @@
+{
+  "batch_id": "v5_20261029",
+  "created": "2026-10-29T14:40:00+08:00",
+  "python": "3.12.3 (main, Jun 19 2026, 12:46:00) [GCC 13.3.0]",
+  "platform": "Linux-6.8.0-136-generic-x86_64-with-glibc2.39",
+  "mujoco": "3.17.0",
+  "numpy": "2.5.4",
+  "trimesh": "5.2.0",
+  "coacd": "unknown",
+  "MUJOCO_GL": null,
+  "LD_LIBRARY_PATH": null,
+  "control_hz": 50.0,
+  "physics": {
+    "version": "physics-frozen/v1",
+    "frozen": "2026-10-29",
+    "note": "自验时间核验的唯一依据：不得从待核验记录反推 ctrl_dt",
+    "control_hz": 50.0,
+    "substeps": 10,
+    "physics_dt_s": 0.002,
+    "control_dt_s": 0.02,
+    "reset_settle_seconds": 0.6,
+    "reset_steps_note": "reset 稳定化 0.6 s，不计入 control_steps，但计入 physics_steps",
+    "expected_physics_per_control": 10,
+    "tolerance_s": 0.06
+  },
+  "api_key_present": false,
+  "api_base": "https://api.aholo3d.cn",
+  "note": "AHOLO_API_KEY 只在执行 shell 中注入；本文件不记录其值"
+}

@@ -12,6 +12,7 @@ S0 观测包：机器人正面视角的 RGB / 深度 / 掩码 / 可见点云。
   · 明确记录 MuJoCo 相机轴约定：相机朝向 -z，图像 x 向右、y 向下。
 """
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -74,10 +75,18 @@ def main():
     ap.add_argument('--cam-height', type=float, default=None,
                     help='相机离地高度（米）。低于障碍顶部时背面不可见，P3 才可能成立')
     ap.add_argument('--pitch', type=float, default=None, help='俯角（负=向下）')
+    ap.add_argument('--azimuth', type=float, default=None,
+                    help='石头相对相机的偏航（度）；缺省读 case.yaw_deg，再缺省 0')
+    ap.add_argument('--observation-id', default=None,
+                    help='独立 observation_id；缺省 case_id 或 case_id_azNN')
     a = ap.parse_args()
 
     case = json.loads(pathlib.Path(a.case).read_text())
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
+    yaw_deg = (float(a.azimuth) if a.azimuth is not None
+               else float(case.get('yaw_deg', 0.0)))
+    obs_id = a.observation_id or (case['case_id'] +
+                                  ('' if abs(yaw_deg) < 1e-9 else f'_az{int(round(yaw_deg))}'))
 
     spec = terrain.make_spec(kind='flat', seed=case.get('seed', 0), objects=[],
                              goal_x=case.get('goal_x', 3.0), name=case['case_id'])
@@ -85,7 +94,7 @@ def main():
     spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     spec['skill_cfg'] = {'task': 'M'}
     spec['objects'] = [{'mesh_file': case['mesh'], 'x': case['obstacle_x'],
-                        'y': 0.0, 'yaw_deg': 0.0, 'target_height_m': case['H']}]
+                        'y': 0.0, 'yaw_deg': yaw_deg, 'target_height_m': case['H']}]
     # 相机必须装在机体轮廓之外，否则每根射线先生命中机器人自身几何（实测 2 cm 处）
     # 相机挂在 base_link 上，local z 由"目标离地高度 - 实际 base_link 离地高度"算出，
     # 后者在 reset 之后从 MuJoCo 实测，不写死。
@@ -213,6 +222,12 @@ def main():
 
     info = {
         'case_id': case['case_id'],
+        'observation_id': obs_id,
+        'observation_protocol': 'observation-v5/direction',
+        'object_pose': {'yaw_deg': yaw_deg, 'mesh': case['mesh'],
+                        'obstacle_x': float(case['obstacle_x']),
+                        'H': float(case['H']), 'W': float(case.get('W', 0.0)),
+                        'D': float(case.get('D', 0.0))},
         'camera_schema': camera_io.SCHEMA,
         'camera': {**snap,
                    'id': int(cam_id),
@@ -234,7 +249,32 @@ def main():
         'note': '只保存观测；真值背面不写入本文件',
     }
     (out / 'observation.json').write_text(json.dumps(info, indent=2, ensure_ascii=False))
-    print(json.dumps({'case': case['case_id'], 'mask_px': int(mask.sum()),
+
+    # ---- 独立 observation_id / observation_sha 与出生状态（V5 P0.2）----
+    birth = {'schema': 'birth-state/v1', 'observation_id': obs_id,
+             'case_id': case['case_id'], 'object_pose': info['object_pose'],
+             'qpos': [float(x) for x in d.qpos],
+             'qvel': [float(x) for x in d.qvel],
+             'data_time': float(d.time), 'env_t': float(env.t),
+             'camera': snap}
+    (out / 'birth_state.json').write_text(json.dumps(birth, indent=2, ensure_ascii=False))
+    file_names = ['rgb.png', 'depth.npy', 'mask.png', 'visible_points.npy',
+                  'crop_white.png', 'crop_raw.png', 'masked_only.png',
+                  'observation.json', 'birth_state.json']
+    file_sha = {n: hashlib.sha256((out / n).read_bytes()).hexdigest()
+                for n in file_names if (out / n).exists()}
+    canonical = {'observation_id': obs_id, 'case_id': case['case_id'],
+                 'camera': info['camera'], 'intrinsics': info['intrinsics'],
+                 'visible': info['visible'], 'object_pose': info['object_pose'],
+                 'files': file_sha}
+    obs_sha = hashlib.sha256(json.dumps(canonical, sort_keys=True,
+                                       ensure_ascii=False).encode()).hexdigest()
+    (out / 'observation_manifest.json').write_text(json.dumps({
+        'schema': 'observation-manifest/v1', 'observation_id': obs_id,
+        'observation_sha': obs_sha, 'files': file_sha,
+        'canonical': canonical}, indent=2, ensure_ascii=False))
+    print(json.dumps({'case': case['case_id'], 'observation_id': obs_id,
+                      'observation_sha': obs_sha[:16], 'mask_px': int(mask.sum()),
                       'x_front': round(x_front, 4) if x_front else None,
                       'W_vis': round(W_vis, 4) if W_vis else None,
                       'H_vis': round(H_vis, 4) if H_vis else None}, ensure_ascii=False))

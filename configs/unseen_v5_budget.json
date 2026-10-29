@@ -1,0 +1,19 @@
+{
+  "scope": "unseen_delivery_v5",
+  "authorized_on": "2026-10-29",
+  "hard_cap": 540,
+  "per_task_cap": 20,
+  "max_create_tasks": 27,
+  "credits_upper_per_task": 20,
+  "inherits": "configs/unseen_v4_budget.json",
+  "inherited_usage": {
+    "tasks": 24,
+    "credits_upper": 480
+  },
+  "increment": {
+    "tasks": 3,
+    "credits_upper": 60
+  },
+  "note": "同一账本累加：历史 24 任务/480 上界保留，新增 3 任务/60 上界；不清空历史，核验扣费仍 unknown",
+  "source": "用户 2026-10-29 下达《看不见的那一面》V5 整批执行任务书（最多 3 个 create、60 积分上界）"
+}

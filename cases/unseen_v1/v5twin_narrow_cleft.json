@@ -1,0 +1,25 @@
+{
+  "case_id": "v5twin_narrow_cleft",
+  "seed": 6606,
+  "mesh": "runs/unseen/delivery_v5/v5_20261029/cases/twins/mesh/v5twin_narrow_cleft.stl",
+  "H": 0.34639999106832886,
+  "W": 0.16,
+  "D": 1.8833873825876992,
+  "goal_x": 2.6,
+  "channel_half": 1.2,
+  "obstacle_x": 1.8,
+  "yaw_deg": 0.0,
+  "source": "twins.twin_solid",
+  "front": "narrow",
+  "back": "cleft",
+  "front_params": {
+    "H": 0.3342,
+    "W": 0.16,
+    "D": 0.3111,
+    "seed": 6606
+  },
+  "L_back": 1.5723,
+  "watertight": true,
+  "non_manifold_edges": 0,
+  "note": "同正面不同背面的程序化双胞胎；开发诊断用，不是 Lux3D 产物"
+}

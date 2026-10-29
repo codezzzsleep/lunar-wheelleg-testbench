@@ -1,0 +1,136 @@
+{
+  "plan_version": "unseen_delivery_v5",
+  "batch_id": "v5_20261029",
+  "created": "2026-10-29",
+  "status": "PREPARED",
+  "authorization": {
+    "source": "用户 2026-10-29 下达《看不见的那一面》V5 整批执行任务书",
+    "max_new_tasks": 3,
+    "credits_upper_per_task": 20,
+    "new_batch_cap": 60,
+    "note": "只含本批 3 个单图对照；不包含两图 create，不包含其他生成批次"
+  },
+  "history": {
+    "tasks_used": 24,
+    "credits_upper": 480,
+    "actual_charge": "unknown"
+  },
+  "would_be_cumulative": {
+    "tasks": 27,
+    "credits_upper": 540
+  },
+  "budget_config": "configs/unseen_v5_budget.json",
+  "ledger": "runs/unseen/generation/ledger.jsonl",
+  "cache": "runs/unseen/generation/cache",
+  "baseline_commit": "e3564f02914e33d87ba32f0c693da102ae7f0684",
+  "inputs": [
+    {
+      "id": "C_R01_az25",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "truth_case": "cases/unseen_v1/R01_az25_truth.json",
+      "observation_id": "R01_az25",
+      "observation_dir": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az25",
+      "image": "runs/unseen/recovery_r3/contrast_pkg/az25/upload_1024.png",
+      "image_sha256": "1f7d10b46b7d0a53dde601da84d25f5294ea35404dce7a3d4ae37537570095ce",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "change": "仅石头相对相机偏航 +25°；相机、机位、取景、模型参数不变",
+      "single_factor": "object_yaw_deg=+25",
+      "sample_id": "stone-R01-v5-az25",
+      "observation_sha": "11c330465337050240822f60aff75fd15407e915b0bfd076aa82058317db93f9",
+      "observation_manifest_dir": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az25",
+      "truth_world_sha": "7c1f104cd941edeef9c31177c1c1ec772cef8c4bb7af1e2132194c1b67b302bd",
+      "upload_camera_pos_diff_m": 0.0
+    },
+    {
+      "id": "C_R01_az45",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "truth_case": "cases/unseen_v1/R01_az45_truth.json",
+      "observation_id": "R01_az45",
+      "observation_dir": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az45",
+      "image": "runs/unseen/recovery_r3/contrast_pkg/az45/upload_1024.png",
+      "image_sha256": "6ac14e8ba31eef6185d378f8f9d95e15c86b27a63ac997c596edd9b3e4339a38",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "change": "仅石头相对相机偏航 +45°；相机、机位、取景、模型参数不变",
+      "single_factor": "object_yaw_deg=+45",
+      "sample_id": "stone-R01-v5-az45",
+      "observation_sha": "2733d593d358f7f40b3b054b8465b0480be137814b6cfe880057d8d0e7277aad",
+      "observation_manifest_dir": "runs/unseen/delivery_v5/v5_20261029/observations/R01_az45",
+      "truth_world_sha": "ee8581c7c8c3d81ca0c48fe3cc4189357644a4cae0d4222f8169642e82cb15cd",
+      "upload_camera_pos_diff_m": 0.0
+    },
+    {
+      "id": "C_R01_face12k",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "truth_case": "cases/unseen_v1/R01_truth_base.json",
+      "observation_id": "R01_base",
+      "observation_dir": "runs/unseen/recovery_r3/obs_R01",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R01/upload_1024.png",
+      "image_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 12000
+      },
+      "change": "输入字节不变，仅面数档位 30000→12000（官方 schema 范围 10000–300000）",
+      "single_factor": "face_count=12000",
+      "sample_id": "stone-R01-v5-face12k",
+      "observation_manifest_dir": "runs/unseen/delivery_v5/v5_20261029/observations/R01_base",
+      "observation_sha": "3c3669c61457f9afb672b84ce2bae316aac64d17f79c2d01600729c59cb05539",
+      "truth_world_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed"
+    }
+  ],
+  "single_factor_policy": "每项只改一个因素；az25/az45 是不同相对观察方向的生成诊断，不是原始 R01 单视角的重复采样；face12k 只改面数档位",
+  "perception": {
+    "rgb": "送 Lux3D 图生",
+    "depth": "用于可见几何约束、位置、尺度和配准；密集可见点云参与 align24",
+    "mask": "来自 MuJoCo 渲染与障碍移走前后深度差",
+    "hidden_truth": "不把不可见真值表面用于规划器补几何",
+    "disclosure": "不再声称“密集深度不参与规划”；也不承诺任意真实单张照片即用"
+  },
+  "work_packages": {
+    "P0": "planned",
+    "P1": "planned",
+    "P2": "planned",
+    "P3": "planned",
+    "P4": "planned",
+    "P5": "planned",
+    "P6": "planned",
+    "P7": "planned"
+  },
+  "paths": {
+    "batch_dir": "runs/unseen/delivery_v5/v5_20261029",
+    "manifest": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+    "generation": "runs/unseen/delivery_v5/v5_20261029/generation",
+    "candidates": "runs/unseen/delivery_v5/v5_20261029/candidates",
+    "cases": "runs/unseen/delivery_v5/v5_20261029/cases",
+    "evaluation": "runs/unseen/delivery_v5/v5_20261029/evaluation",
+    "observation": "runs/unseen/delivery_v5/v5_20261029/observation",
+    "soil": "runs/unseen/delivery_v5/v5_20261029/soil",
+    "media": "runs/unseen/delivery_v5/v5_20261029/media",
+    "verify": "runs/unseen/delivery_v5/v5_20261029/verify",
+    "delivery": "runs/unseen/delivery_v5/v5_20261029/delivery.json"
+  },
+  "notes": [
+    "R01 网格与 dev_narrow_tall 同源（SHA be4375…）；本批不把它当独立留出案例，只作生成对照。",
+    "R02/R04 已知动作全失败，R03 无动作取舍；P2 要另找真正形状敏感的案例。",
+    "三任务失败或不合格不停止 P2/P4/P5/P6/P7。",
+    "本批付费上界 60；实际扣费 unknown，不写成已核验。"
+  ]
+}

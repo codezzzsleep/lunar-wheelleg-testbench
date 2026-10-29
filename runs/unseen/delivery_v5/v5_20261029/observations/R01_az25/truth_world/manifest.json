@@ -1,0 +1,14 @@
+{
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "truth",
+  "parts": [
+    "body.stl"
+  ],
+  "world_sha": "7c1f104cd941edeef9c31177c1c1ec772cef8c4bb7af1e2132194c1b67b302bd",
+  "case": "R01",
+  "source_mesh": "runs/unseen/recovery_r3/stone_materials/R01.stl",
+  "yaw_deg": 25.0,
+  "obstacle_x": 1.8,
+  "note": "V5 方向真值：已按 yaw 旋转并平移到 world frame；下游必须 identity 放置，禁止再次旋转/平移/贴地"
+}

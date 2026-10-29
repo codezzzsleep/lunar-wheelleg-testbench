@@ -1,0 +1,32 @@
+{
+  "case_id": "R01",
+  "hyp_source": "H5",
+  "hyp_source_note": "真实 Lux3D 候选（本地缓存，未新建任务）",
+  "truth_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed",
+  "collision_geometry": "CoACD convex parts (world frame, posture preserved)",
+  "candidates": [
+    {
+      "hypothesis_id": "FX_R01",
+      "task_id": "fixture",
+      "world_sha": "c189cb3f7e0c59bfd7875eecfe85a7ed1a8275f028ba00b4db5dbe0f6ece7683",
+      "collision_sha": "8783ec1b28258209b772940918fab5fa",
+      "coacd_parts": 14
+    }
+  ],
+  "n_hypotheses": 1,
+  "n_seeds": 3,
+  "options": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "S1",
+    "D1",
+    "D2",
+    "A0"
+  ],
+  "chosen": "S1",
+  "no_robust_option": false,
+  "chosen_truth_success": "3/3",
+  "blind_truth_success": "0/3"
+}

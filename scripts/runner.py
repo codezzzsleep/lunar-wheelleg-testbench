@@ -36,6 +36,10 @@ class EpisodeRunner:
         self.visible = visible or {}
         self.max_steps = max_steps
         env.plan_visible = dict(self.visible)      # 关键：动作需要它才能触发
+        # 动作自己的参数也拿到公开可见量（Detour 需要 W_vis 计算绕行目标）
+        for k in ('W_vis', 'H_vis', 'x_front'):
+            if k in self.visible:
+                self.skill.params.setdefault(k, self.visible[k])
         env.nav_target_y = env.channel_center      # 每次 reset 清空导航横向目标
         self.seed = seed
         self.skill.reset(params or {})

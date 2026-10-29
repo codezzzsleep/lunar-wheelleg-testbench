@@ -521,19 +521,15 @@ class WheelLegEnv:
             v_body = np.asarray(d.cvel[b_id][3:6], dtype=float)
             v_contact = v_body[:2] + np.array([omega * R, 0.0])
             v_t = float(np.hypot(*v_contact))
-            # ---- 牵引上限：逐轮独立设置该轮接触的摩擦系数 ----
+            # ---- 牵引上限：逐轮独立 ----
+            # MuJoCo 对同优先级 geom pair 的摩擦取**逐元素最大值**。
+            # 把土壤地面摩擦置 0 后，每个 geom 都用自己的值：
+            #   轮子 = mu_eff(该轮)，其他 geom（机身/岩石）保留原值。
+            # 这样每轮上限互相独立，且与接触遍历顺序无关。
             # 用轮体 geom 的 friction；MuJoCo 对 geom pair 取逐元素较大值，
             # 因此同时把该轮接触对应的**地面 geom** 也设成同一值 —— 但只在
             # 该轮实际接触的地面 geom 上设，轮之间互不覆盖（逐接触对方案）。
             self.model.geom_friction[rec['gid']][0] = mu_eff
-            for cc in rec['con']:
-                gg1, gg2 = int(d.contact[cc].geom1), int(d.contact[cc].geom2)
-                ground_g = gg2 if gg1 == rec['gid'] else gg1
-                # 记录原始值以便 reset 恢复；同一地面 geom 被多轮共享时取**最大**
-                # 需求（保守：不让某个轻轮把地面摩擦压低到影响重轮）
-                prev = self._soil_ground_mu.get(ground_g)
-                self._soil_ground_mu[ground_g] = (mu_eff if prev is None
-                                                  else max(prev, mu_eff))
             # ---- 压实阻力 ----
             if v_t > 1e-6:
                 dirx, diry = -v_contact[0] / v_t, -v_contact[1] / v_t
@@ -548,14 +544,15 @@ class WheelLegEnv:
             stats['sum_Rc'] += Rc
             stats['sum_H'] += H_cap
             self._soil_limits[b_id] = {
+                'geom': int(rec['gid']), 'body': int(b_id),
                 'load_n': round(fz, 4), 'H_cap_n': round(H_cap, 4),
                 'mu_eff': round(mu_eff, 5), 'Rc_n': round(Rc, 4),
                 'contact_area_m2': round(A, 6),
                 'ft_measured_n': round(float(np.linalg.norm(rec['ft'])), 4),
                 'radius_m': round(R, 5), 'width_m': round(b_w, 5)}
-        # 统一把地面摩擦写成各轮需求的最大值（避免顺序依赖：先收集再写）
-        for g_, mu in self._soil_ground_mu.items():
-            self.model.geom_friction[g_][0] = mu
+        # 土壤地面摩擦保持 0（只设一次），让每个 geom 用自己的摩擦上限
+        for g_ in self._soil_ground_geoms:
+            self.model.geom_friction[g_][0] = 0.0
         if per_wheel:
             stats['wheel_contact_steps'] += 1
             stats['n_wheels'] = len(per_wheel)

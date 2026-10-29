@@ -195,7 +195,8 @@ def main():
     ap.add_argument('--hyp-source', default='H3')
     ap.add_argument('--cached-only', action='store_true')
     ap.add_argument('--out', required=True)
-    ap.add_argument('--options', default='R1,R2,L1,L2,A0')
+    ap.add_argument('--options', default=None,
+                    help='留空则使用 actions.OPTIONS（唯一动作清单，含 S1/D1/D2）')
     ap.add_argument('--seeds', default='0,1,2')
     ap.add_argument('--candidates', default=None,
                     help='candidate_store 输出的候选 JSON 列表；H4/H5 必需')
@@ -205,7 +206,11 @@ def main():
 
     case = json.loads(pathlib.Path(a.case).read_text())
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
-    options = a.options.split(',')
+    import actions as ACT
+    options = (a.options.split(',') if a.options else list(ACT.OPTIONS))
+    unknown = [o for o in options if o not in ACT.OPTIONS]
+    if unknown:
+        raise SystemExit(f'未知动作 {unknown}；合法动作 {list(ACT.OPTIONS)}')
     seeds = [int(x) for x in a.seeds.split(',')]
 
     # --- 1. 观测（已有缓存则直接读，不重复渲染） ---
@@ -281,6 +286,14 @@ def main():
             if o == 'A0':
                 continue
             for sd in seeds:
+                ok, why = ACT.applicable(o, obs['visible'],
+                                         case.get('channel_half', 1.2))
+                if not ok:
+                    matrix.append({'hypothesis_id': h['hypothesis_id'], 'option': o,
+                                   'seed': sd, 'not_applicable': why,
+                                   'success': False, 'abort': False,
+                                   'reason': why, 'cost': None})
+                    continue
                 if world_mode:
                     # 物理用 CoACD 碰撞部件（世界坐标、保姿态）；视觉网格不参与碰撞
                     m = rehearse_world(pathlib.Path(h['collision_dir']), o, sd,
@@ -290,6 +303,12 @@ def main():
                                         visible=obs['visible'])
                 m['hypothesis_id'] = h['hypothesis_id']
                 matrix.append(m)
+    (out / 'actions.json').write_text(json.dumps(
+        {'options': options, 'registry': ACT.describe(),
+         'applicability': {k: v[0] for k, v in
+                           ACT.applicable_all(obs['visible'],
+                                              case.get('channel_half', 1.2)).items()}},
+        indent=2, ensure_ascii=False))
     (out / 'rehearsal.jsonl').write_text(
         '\n'.join(json.dumps(m, ensure_ascii=False) for m in matrix) + '\n')
 

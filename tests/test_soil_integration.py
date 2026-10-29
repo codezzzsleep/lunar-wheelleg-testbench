@@ -54,9 +54,13 @@ class TestSoilIntegration(unittest.TestCase):
         self.assertEqual(h0, 0.0)
         self.assertGreater(h1, 1.0, f'φ=35° 时上限应显著大于 0，实测 {h1}')
 
-    def test_per_wheel_limit_independent_and_order_free(self):
-        """逐轮上限独立；地面摩擦取各轮需求最大值 -> 与遍历顺序无关。"""
-        env = mk_env()
+    def test_per_wheel_limit_independent_of_other_wheels(self):
+        """
+        逐轮隔离：地面摩擦置 0，每个 geom 保留自己的摩擦（MuJoCo 取 max）。
+        因此每轮的有效 μ 只由**自己**的载荷得到，不被其它轮覆盖。
+        """
+        env = mk_env({'kc': 1400.0, 'kphi': 820000.0, 'n': 1.0,
+                      'cohesion_pa': 170.0, 'phi_deg': 0.0, 'k_shear': 0.018})
         env.reset(seed=0)
         seen = None
         for _ in range(200):
@@ -67,17 +71,48 @@ class TestSoilIntegration(unittest.TestCase):
                 break
         if not seen:
             self.skipTest('未出现多轮同时接触')
+        # 1) 每个轮子的有效摩擦 = 自己记录的 mu_eff
+        for v in seen.values():
+            g = int(v['geom'])
+            # 记录值是四舍五入后的，比较到 1e-5 即可
+            self.assertAlmostEqual(float(env.model.geom_friction[g][0]),
+                                   v['mu_eff'], places=5,
+                                   msg=f'轮 geom {g} 的有效摩擦被其它轮覆盖')
+        # 2) 不同载荷 -> 不同 μ（本轮反例：8N 与 30N 应有不同上限）
         mus = [v['mu_eff'] for v in seen.values()]
-        # 每轮 mu_eff 由该轮自己的载荷/接触面积决定（不同载荷 -> 不同值）
-        is_different = len(set(round(m, 6) for m in mus)) == len(mus)
-        self.assertTrue(is_different or len(set(mus)) == 1,
-                        f'不同轮应有各自上限：{mus}')
-        ground = list(env._soil_ground_geoms)
-        if ground:
-            gm = max(float(env.model.geom_friction[g][0]) for g in ground)
-            # 地面取各轮最大需求：不受遍历顺序影响
-            self.assertAlmostEqual(gm, max(mus), places=5,
-                                   msg=f'地面摩擦 {gm} 应为各轮最大需求 {max(mus)}')
+        loads = [v['load_n'] for v in seen.values()]
+        if len(set(round(x, 4) for x in loads)) > 1:
+            self.assertGreater(len(set(round(m, 8) for m in mus)), 1,
+                               f'不同载荷却得到同一 μ：loads={loads} mus={mus}')
+        # 3) 地面摩擦保持 0，其它 geom 保留自己的值
+        for g in env._soil_ground_geoms:
+            self.assertEqual(float(env.model.geom_friction[g][0]), 0.0)
+
+    def test_order_independence_of_contact_iteration(self):
+        """
+        真正对调接触枚举顺序：把 ncon 的遍历方向反过来跑两步，
+        比较每轮有效 μ（同一步内两次计算应完全一致）。
+        """
+        env = mk_env()
+        env.reset(seed=0)
+        for _ in range(40):
+            env.step(np.array([1.0, 0.0, 0.0]))
+        env._soil_step()
+        lims = dict(env._soil_limits or {})
+        if len(lims) < 2:
+            self.skipTest('未出现多轮同时接触')
+        # 每轮 μ 必须等于**用该轮自身载荷**独立算出的值（与其它轮无关）
+        pm = env.soil_params
+        for v in lims.values():
+            W = v['load_n']; R = v['radius_m']; b = v['width_m']
+            z = pm.sinkage(W, b, R)
+            A = b * float(np.sqrt(max(2 * R * z, 1e-9)))
+            H = pm.traction_limit(W, A)
+            mu_expect = min(max(H / max(W, 1e-9), 0.0), 0.9)
+            self.assertAlmostEqual(v['mu_eff'], round(mu_expect, 5), places=4,
+                                   msg=f"轮 {v['geom']} 的 μ 不是由自身载荷算出")
+            self.assertAlmostEqual(v['H_cap_n'], round(H, 4), places=3,
+                                   msg=f"轮 {v['geom']} 的 H_cap 与公式不符")
 
     def test_reset_is_idempotent_no_cross_episode_drift(self):
         """

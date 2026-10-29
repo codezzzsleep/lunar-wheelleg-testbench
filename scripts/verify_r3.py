@@ -161,38 +161,33 @@ def verify_h5(run, name='pipeline_H5_pilot'):
           f'{ok_ch}/{len(by_opt.get(chosen, []))}' == str(s.get('chosen_truth_success'))
           and f'{ok_bl}/{len(by_opt.get("R1", []))}' == str(s.get('blind_truth_success')),
           f"chosen {ok_ch} blind {ok_bl}")
-    # ---- 时间：t_end 必须等于 control_steps × 控制步长（物理推进时间）----
-    # 合同：control_dt = substeps × dt；physics_steps 含 reset 稳定化，
-    # 因此不能用 physics_steps == control_steps × substeps 判时间。
-    dt = 0.002                      # 模型 timestep（MuJoCo 默认读数由 runner 决定）
-    ctrl_dt = None
-    try:
-        import json as _j
-        obs = _j.loads((d / 'observation.json').read_text()) if (d / 'observation.json').exists() else {}
-    except Exception:
-        obs = {}
-    # 从记录本身反解控制步长：成功回合的 t_end 与 control_steps 成正比
-    ratios = [r['t_end'] / r['control_steps'] for r in ex
-              if r.get('t_end') and r.get('control_steps')]
-    if ratios:
-        ctrl_dt = float(np.median(ratios)) if (np := __import__('numpy')).median(ratios) else None
-    t_ok = True
-    t_detail = []
+    # ---- 时间：用**冻结配置**的 control_dt，不从待核验记录反推 ----
+    pf = json.loads((ROOT / 'configs/unseen_physics_frozen.json').read_text())
+    ctrl_dt = float(pf['control_dt_s'])
+    tol = float(pf['tolerance_s'])
+    t_ok, t_detail = True, []
     for r in ex:
-        if not r.get('t_end') or not r.get('control_steps') or ctrl_dt is None:
+        cs = r.get('control_steps')
+        te = r.get('t_end')
+        if not cs or te is None:
             continue
-        expect = r['control_steps'] * ctrl_dt
-        if abs(r['t_end'] - expect) > max(0.05, 0.02 * expect):
+        expect = float(cs) * ctrl_dt
+        if abs(float(te) - expect) > max(tol, 0.02 * expect):
             t_ok = False
-            t_detail.append((r.get('initial_state_id'), r['t_end'], round(expect, 3)))
-        # sim_time 必须与 t_end 一致（同一时钟）
-        if abs(float(r.get('sim_time_s', -1)) - float(r['t_end'])) > 0.05:
+            t_detail.append((r.get('option'), cs, te, round(expect, 3)))
+        # 同一时钟：sim_time_s 与 t_end 一致
+        if abs(float(r.get('sim_time_s', -1)) - float(te)) > tol:
             t_ok = False
-            t_detail.append((r.get('initial_state_id'), 'sim_time',
-                             r.get('sim_time_s'), r['t_end']))
-    check(f'h5[{name}]:时间与步数一致', t_ok,
+            t_detail.append((r.get('option'), 'sim_time', r.get('sim_time_s'), te))
+    check(f'h5[{name}]:时间与冻结配置一致', t_ok,
           f'ctrl_dt={ctrl_dt} 异常={t_detail[:3]}')
-    # 999999 这类明显伪造的时间必须被拒
+    # 物理步数必须 >= 控制步数 × substeps（含 reset 稳定化），不能凭空少
+    sub = int(pf['substeps'])
+    phys_ok = all(int(r.get('physics_steps') or 0) >= int(r['control_steps']) * sub
+                  for r in ex if r.get('control_steps'))
+    check(f'h5[{name}]:物理步数不少于控制步×substeps', phys_ok,
+          [(r.get('option'), r.get('physics_steps'), r.get('control_steps')) for r in ex][:3])
+    # 明显伪造的时间必须被拒
     check(f'h5[{name}]:无异常时间',
           all(float(r.get('t_end') or 0) < 600 and float(r.get('sim_time_s') or 0) < 600
               for r in ex),

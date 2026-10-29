@@ -130,6 +130,18 @@ def plan_blind(env_ctx):
     return 'R1', {'rule': 'blind: always R1'}
 
 
+def plan_width_rule(env_ctx, cfg, actions_mod):
+    """
+    开发解释用的可见宽度规则：只用公开可见宽度与机器人净空决定是否跨骑。
+    不是六方法之一，不进入正式对照表；用来回答"这一例是否只靠可见宽度就能解决"。
+    """
+    ok, why = actions_mod.applicable('S1', {'W_vis': env_ctx['W_vis']})
+    if ok:
+        return 'S1', {'rule': f"W_vis {env_ctx['W_vis']:.4f} < 净空 "
+                              f"{actions_mod.describe()['straddle_threshold_m']} -> S1"}
+    return 'R1', {'rule': f"W_vis {env_ctx['W_vis']:.4f} 不小于净空 -> 回退 R1"}
+
+
 def plan_height(env_ctx, cfg):
     """可见高度规则：用公开可见高度比决定直行/抬腿/刹停（阈值在开发集冻结）。"""
     H = env_ctx['H_vis']
@@ -322,6 +334,21 @@ def main():
                         'soil_mode': phy['soil_mode']})
             rows.append(row)
         return rows
+
+    # 0) 开发解释用诊断：可见宽度规则（不进正式 methods 表）
+    import actions as ACT
+    dec_w, why_w = plan_width_rule(ctx, cfg, ACT)
+    w_rows = execute_on_truth('W_width_rule(diagnostic)', dec_w, truth_col_sha)
+    (out / 'width_rule_diagnostic.json').write_text(json.dumps({
+        'label': 'DEVELOPMENT_DIAGNOSTIC', 'not_a_formal_method': True,
+        'selected_action': dec_w, 'evidence': why_w,
+        'n_exec': len(w_rows),
+        'success': sum(1 for r in w_rows if r['success']),
+        'mean_cost': (round(float(np.mean([r['cost'] for r in w_rows])), 3)
+                      if w_rows else None),
+        'note': '只回答"是否仅靠可见宽度就能选对动作"；不替换六方法'},
+        ensure_ascii=False, indent=2))
+    records += w_rows
 
     # 1) 盲走：规则直接定动作，不需要在真值上试遍所有动作
     dec, why = plan_blind(ctx)

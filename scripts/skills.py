@@ -162,7 +162,12 @@ class Detour(Skill):
     """
     name = 'D1'
 
-    def __init__(self, side=+1, r=0.5, params=None):
+    def __init__(self, side=+1, r=None, params=None):
+        # 绕行横向目标：默认由**公开可见量**推出（可见半宽 + 机身半宽 + 余量），
+        # 不再用写死的 0.5 m —— 旧值在可见半宽 0.29 m 的宽石上超出通道可用空间，
+        # 会造成"目标本身不可达"的假失败。
+        if r is None:
+            r = None      # 运行时按 applicable/act 传入的 W_vis 计算
         self.side = side
         self.r = r
         super().__init__(params)
@@ -181,6 +186,11 @@ class Detour(Skill):
             approach = 0.6
             leave = 0.9
         else:
+            # 目标横向偏移：可见半宽 + 机体半宽 + 10 cm 余量（只读公开量）
+            w_vis = (self.params.get('W_vis')
+                     or (self.plan.get('W_vis') if self.plan else None))
+            if self.r is None and w_vis is not None:
+                self.r = float(w_vis) / 2.0 + self.ROBOT_HALF_W + 0.10
             approach = float(x_front) - 0.55
             leave = float(x_front) + 0.75
         if self.phase == 'idle' and x >= approach:

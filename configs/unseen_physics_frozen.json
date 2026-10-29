@@ -1,0 +1,13 @@
+{
+  "version": "physics-frozen/v1",
+  "frozen": "2026-10-29",
+  "note": "自验时间核验的唯一依据：不得从待核验记录反推 ctrl_dt",
+  "control_hz": 50.0,
+  "substeps": 10,
+  "physics_dt_s": 0.002,
+  "control_dt_s": 0.02,
+  "reset_settle_seconds": 0.6,
+  "reset_steps_note": "reset 稳定化 0.6 s，不计入 control_steps，但计入 physics_steps",
+  "expected_physics_per_control": 10,
+  "tolerance_s": 0.06
+}

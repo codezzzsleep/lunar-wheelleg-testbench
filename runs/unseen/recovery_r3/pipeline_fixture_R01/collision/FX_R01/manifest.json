@@ -1,0 +1,129 @@
+{
+  "asset_id": "FX_R01",
+  "hypothesis_id": "FX_R01",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl",
+    "parts/part_01.stl",
+    "parts/part_02.stl",
+    "parts/part_03.stl",
+    "parts/part_04.stl",
+    "parts/part_05.stl",
+    "parts/part_06.stl",
+    "parts/part_07.stl",
+    "parts/part_08.stl",
+    "parts/part_09.stl",
+    "parts/part_10.stl",
+    "parts/part_11.stl",
+    "parts/part_12.stl",
+    "parts/part_13.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "c189cb3f7e0c59bfd7875eecfe85a7ed1a8275f028ba00b4db5dbe0f6ece7683",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 14,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 8.97,
+  "hit_part_cap": false,
+  "height_m": 0.34757,
+  "width_x_m": 0.31105,
+  "width_y_m": 0.15519,
+  "rel_height": 4.044,
+  "rel_width": 1.806,
+  "concavity": 0.01955,
+  "convex_hull_volume_m3": 0.007537,
+  "parts_volume_m3": 0.007389,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.635677456855774,
+      -0.07133369147777557,
+      0.0
+    ],
+    [
+      1.9467304944992065,
+      0.08385727554559708,
+      0.34756892919540405
+    ]
+  ],
+  "raw_sha": "c189cb3f7e0c59bfd7875eecfe85a7ed1a8275f028ba00b4db5dbe0f6ece7683",
+  "collision_sha": "8783ec1b28258209b772940918fab5fa",
+  "concavity_probe": {
+    "hull_bottom_z": -0.00037,
+    "parts_bottom_z": -0.00037,
+    "probe_xy": [
+      1.6357,
+      -0.0713
+    ]
+  },
+  "version": "physicalize/v1"
+}

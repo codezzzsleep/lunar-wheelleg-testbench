@@ -404,7 +404,19 @@ R03 在 4 mm 修复后**三项全过**：
 因此在本案例上是「增加了信息、没有增加决策价值」。两个视角的融合资产都仍未过 strict
 （freespace 0.0666 / 0.0735），不能当合格资产。
 
-## 13. 未完成（下一轮）
+## 13. 页面接入状态（G 的收尾）
+
+- **已完成**：静态自包含报告页 `media/report/index.html`（12 张表）+ 无头浏览器截图，
+  已从根 `README.md` 与本文档入口链接；不依赖服务器、不触发任何生成。
+- **未接入** `scripts/app_unseen.py` 的注册表，原因是口径不同，需要额外视图文件：
+  - 页面按 `_detect_kind` 把带 `methods` 的 summary 判为 `kind='six'`；
+  - 该分支要求 `records.jsonl`（预演+执行合并）与 **`decisions.json` 是列表**，
+    而本批的 `decisions.json` 是带 `decision_sha/written_at` 的 bundle（合同与验收器依赖它）；
+  - 直接把 bundle 改成列表会破坏"决策先落盘可校验"，因此不做；
+  - 正确做法是另生成 `evaluation/_page/<run>/` 视图目录（`records.jsonl` + 列表版 decision），
+    页面只读该视图——列为下一轮唯一的页面收尾项。
+
+## 14. 未完成（下一轮）
 
 - B：F0/F1/F2 共有的可见面 0.11 违例（与 D 的 0.13–0.15 同源）；F4 加校验后重跑；
 - D：决策完整性合同、决策先落盘、multi 的预演与真值执行、multi 碰撞度量；

@@ -17,6 +17,16 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 - 当前状态：`docs/UNSEEN_STATUS_V6.md`
 - 关键限制：H5-F 可见几何过 strict，但 CoACD 32/64 的占据 IoU 只有 0.28，标 `COLLISION_UNRELIABLE`；H5-F 的 S1 成功不能归因于隐藏几何。第二观察真实触发但两者都保留，worst-case 选 A0；benefit=NOT_ESTABLISHED。
 
+## V6.1（2026-10-30，在途）融合修复与新发现
+
+- 批次入口：`runs/unseen/delivery_v6_1/v6_1_20261029/manifest.json`
+- **批次报告页（静态、已用无头浏览器验证）**：`runs/unseen/delivery_v6_1/v6_1_20261029/media/report/index.html`
+  （截图：`.../media/report/screenshot.png`）
+- 当前状态：`docs/UNSEEN_STATUS_V6_1.md`；交付验收器：`scripts/verify_delivery_v6_1.py`（103/103）
+- 三条要点：① 观测壳层曾无上界，把未知区填成实体（face12k 新增 40310 → 修复后 279 体素）；
+  ② 误差首次出现在**占据化+网格提取**（S2），不是相机/加载；③ 多假设达到真值上限，但**镜像先验同分**，
+  benefit 仍 `NOT_ESTABLISHED`；④ 正面可见面排序会被视角反转（F 第二观察实测）。
+
 ## 资料与项目历程
 
 - **当前执行状态**（唯一状态中心）：`docs/UNSEEN_STATUS_V6_1.md`（V6.1 在途）→ `docs/UNSEEN_STATUS_V6.md`

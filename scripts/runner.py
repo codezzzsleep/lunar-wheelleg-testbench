@@ -44,9 +44,41 @@ class EpisodeRunner:
         self.seed = seed
         self.skill.reset(params or {})
 
+    def run_from_state(self, snapshot):
+        """
+        从给定状态**继续**执行：不 reset，保留观察移动的时间与内部状态。
+
+        snapshot 至少包含 qpos/qvel；可选 time。返回结构与 run() 一致，
+        额外带 continuing_from / t_start，便于核对"没有偷偷 reset"。
+        """
+        env, sk = self.env, self.skill
+        qpos = snapshot.get('qpos')
+        qvel = snapshot.get('qvel')
+        if qpos is None or qvel is None:
+            raise ValueError('snapshot 必须包含 qpos 与 qvel')
+        if len(qpos) != env.model.nq or len(qvel) != env.model.nv:
+            raise ValueError(f'状态维度不符：qpos {len(qpos)} vs nq {env.model.nq}，'
+                             f'qvel {len(qvel)} vs nv {env.model.nv}')
+        env.data.qpos[:] = qpos
+        env.data.qvel[:] = qvel
+        if snapshot.get('time') is not None:
+            env.t = float(snapshot['time'])
+        import mujoco as _mj
+        _mj.mj_forward(env.model, env.data)
+        obs = env._obs() if hasattr(env, '_obs') else None
+        t_start = float(env.t)
+        out = self._loop(obs, t_start)
+        out['continuing_from'] = 'snapshot'
+        out['t_start'] = round(t_start, 4)
+        return out
+
     def run(self):
         env, sk = self.env, self.skill
         obs, _ = env.reset(seed=self.seed)
+        return self._loop(obs, 0.0)
+
+    def _loop(self, obs, t_start):
+        env, sk = self.env, self.skill
         q0 = [round(float(env.data.qpos[0]), 4), round(float(env.data.qpos[1]), 4)]
         actions, phases = [], []
         info, done, steps, braked = {}, False, 0, 0

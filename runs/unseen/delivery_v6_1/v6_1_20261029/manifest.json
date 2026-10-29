@@ -157,13 +157,43 @@
       "finding": "multi reaches the truth ceiling but the mirror prior ties it exactly -> benefit NOT_ESTABLISHED"
     },
     "F": {
-      "status": "blocked_by_interface",
+      "status": "done",
+      "artifacts": [
+        "observation/R01_lat30",
+        "fusion/lat30_C_R01_face12k",
+        "fusion/lat30_G_R01_rep2",
+        "evaluation/DIAG_lat30/summary.json"
+      ],
       "evidence": {
-        "trigger": "G_R01_rep2 chooses L2 while the other three choose S1: a real disagreement exists",
-        "missing": "observe.py supports camera height/pitch and object azimuth, but no lateral robot motion",
-        "decision": "not fabricating a second observation from an object rotation"
+        "interface": "observe.py --cam-lateral (camera translated in body y; object not rotated)",
+        "trigger": "front view: G_R01_rep2 -> L2, others -> S1",
+        "visible_fit_front": {
+          "C_R01_face12k": {
+            "iou": 0.9494,
+            "p95_mm": 2.24
+          },
+          "G_R01_rep2": {
+            "iou": 0.8755,
+            "p95_mm": 14.48
+          }
+        },
+        "visible_fit_lateral30": {
+          "C_R01_face12k": {
+            "iou": 0.9086,
+            "p95_mm": 2.94
+          },
+          "G_R01_rep2": {
+            "iou": 0.909,
+            "p95_mm": 2.31
+          }
+        },
+        "per_member_after": {
+          "C_R01_face12k": "S1",
+          "G_R01_rep2": "L2"
+        },
+        "combined_after": "S1, 3/3 planning, 4/5 validation (unchanged)"
       },
-      "next": "add lateral camera offset + re-registration, then re-fuse the disagreeing candidates"
+      "finding": "second view reverses the visible-fit ranking (front-view ranking is viewpoint-dependent) but the decision disagreement persists and the combined decision does not change: more information, no added decision value; neither view passes strict"
     },
     "G": {
       "status": "done",

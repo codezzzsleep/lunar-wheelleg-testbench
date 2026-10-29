@@ -75,6 +75,9 @@ def main():
     ap.add_argument('--cam-height', type=float, default=None,
                     help='相机离地高度（米）。低于障碍顶部时背面不可见，P3 才可能成立')
     ap.add_argument('--pitch', type=float, default=None, help='俯角（负=向下）')
+    ap.add_argument('--cam-lateral', type=float, default=0.0,
+                    help='相机横向偏移（米，机体坐标系 y）。等价于机器人站到侧面再看一次，'
+                         '不是把物体旋转——用于真实第二观察')
     ap.add_argument('--azimuth', type=float, default=None,
                     help='石头相对相机的偏航（度）；缺省读 case.yaw_deg，再缺省 0')
     ap.add_argument('--observation-id', default=None,
@@ -98,7 +101,7 @@ def main():
     # 相机必须装在机体轮廓之外，否则每根射线先生命中机器人自身几何（实测 2 cm 处）
     # 相机挂在 base_link 上，local z 由"目标离地高度 - 实际 base_link 离地高度"算出，
     # 后者在 reset 之后从 MuJoCo 实测，不写死。
-    spec['front_cam'] = {'pos': [0.42, 0.0, 0.0],
+    spec['front_cam'] = {'pos': [0.42, float(a.cam_lateral), 0.0],
                          'pitch_deg': a.pitch if a.pitch is not None else 0.0,
                          'fovy': a.fovy}
 
@@ -112,7 +115,7 @@ def main():
     if a.cam_height is not None:
         # 按**世界离地高度**反解 local z（含机身俯仰投影），不是硬编码
         camera_io.install_local_z_for_world_height(
-            m0, d0, cam_id, a.cam_height, local_x=0.42, local_y=0.0)
+            m0, d0, cam_id, a.cam_height, local_x=0.42, local_y=float(a.cam_lateral))
     snap = camera_io.capture(m0, d0, cam_id, a.width, a.height)
     m, d = env.model, env.data
     m.vis.global_.offwidth = a.width

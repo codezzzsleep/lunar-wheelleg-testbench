@@ -34,7 +34,9 @@ STABLE_TILT_DEG = 8.0
 STABLE_HOLD_S = 0.4
 MIN_TARGET_PX = 1500         # 目标在该视角的有效像素下限
 MIN_DEPTH_FRAC = 0.60        # 目标像素中有效深度占比下限
-MIN_CAM_YAW_CHANGE_DEG = 12.0  # 相机朝向相对首视角的变化下限
+MIN_CAM_YAW_CHANGE_DEG = 12.0  # 相机前向夹角变化下限（保留，作诊断）
+MIN_CAM_BASELINE_M = 0.45      # 相机**实际平移基线**下限（不能用转向冒充视差）
+MIN_BEARING_CHANGE_DEG = 8.0   # 围绕公开锚点的视线角变化下限
 
 
 def _spec(case, world=None, mesh=None):
@@ -135,6 +137,35 @@ def drive_to(env, target_y, stop_x=None, max_s=24.0, v_max=0.09):
     return round(float(env.t - t0), 3), None
 
 
+def drive_to_nav(env, target_y, stop_x=None, max_s=12.0, v=0.10):
+    """
+    用**已验证的导航底座**做侧向定位：设 env.nav_target_y，由 _steer_from_nav
+    闭环产生转向（Detour 就是用这条通路实现 0.49 m 横移）。
+    只设 a[2] 速度项，a[0]/a[1] 保持 0（不动腿姿）。
+    到达停止线即停，不再继续前推 —— 保证目标仍在视野内。
+    """
+    t0 = env.t
+    n = int(max_s * env.control_hz)
+    for _ in range(n):
+        lat_err = float(env.data.qpos[1]) - float(target_y)
+        if abs(lat_err) < 0.05:
+            lat_err = 0.0          # 死区：抑制往复振荡
+        # 航向误差（朝 +x 为准）
+        w_, x_, y_, z_ = env.data.qpos[3:7]
+        head = float(np.arctan2(2 * (w_ * z_ + x_ * y_), 1 - 2 * (y_ * y_ + z_ * z_)))
+        # 需要的偏航角速度：横向误差 + 航向误差的比例项（与 nav 底座同构）
+        # 阻尼修正：降低增益与限幅（实测 1.6/1.2、±0.6 会振荡倾覆）
+        w_cmd = float(np.clip(0.9 * lat_err + 0.6 * head, -0.25, 0.25))
+        # 横向误差大时降速，保证稳定
+        v_cmd = float(v * max(0.35, 1.0 - abs(lat_err) / 0.8))
+        _, _, te, tr, info = env.step_drive(v_forward_mps=v_cmd, yaw_rate_rps=-w_cmd)
+        if te or tr:
+            return round(float(env.t - t0), 3), info.get('reason')
+        if stop_x is not None and float(env.data.qpos[0]) >= stop_x:
+            break
+    return round(float(env.t - t0), 3), None
+
+
 def face_target(env, cid, case, max_s=8.0, tol_deg=6.0):
     """
     朝向目标：差速轮无法原地转，用"低速前进 + 把导航横向目标设回目标 y"实现转弯。
@@ -156,8 +187,10 @@ def face_target(env, cid, case, max_s=8.0, tol_deg=6.0):
         if abs(err) < tol_deg:
             break
         # 用明确的航向角速度把机头对准目标（不是腿姿残差）
-        w_cmd = float(np.clip(-1.6 * err / 45.0, -0.35, 0.35))
-        _, _, te, tr, info = env.step_drive(v_forward_mps=0.04, yaw_rate_rps=w_cmd)
+        # 符号：err>0 表示需要逆时针（左转）才能对准，因此 w>0
+        w_cmd = float(np.clip(+1.6 * err / 45.0, -0.35, 0.35))
+        # 原地转向：v=0 时左右轮反向，差速底座可原地转（实测支持）
+        _, _, te, tr, info = env.step_drive(v_forward_mps=0.0, yaw_rate_rps=w_cmd)
         if te or tr:
             break
     return {'seconds': round(float(env.t - t0), 3), 'final_err_deg': round(abs(err), 2),
@@ -170,7 +203,7 @@ def brake_and_settle(env, max_s=3.0):
     hold = 0
     n = int(max_s * env.control_hz)
     for _ in range(n):
-        # 显式零速驾驶命令（腿部保持站姿），而不是旧的残差刹车通路
+        # 显式零速（直接轮速目标=0，可表达真停车；残差通道最小仍是 0.4 倍前进）
         _, _, te, tr, _info = env.step_drive(v_forward_mps=0.0, yaw_rate_rps=0.0)
         if te or tr:
             break
@@ -206,8 +239,10 @@ def main():
     half_w = float(case.get('channel_half', 1.2))
 
     # 观察目标：只依据首视角 + 公开通道 + 机器人包络
-    need = float(vis['W_vis']) / 2.0 + 0.20 + 0.10
-    target_y = float(np.clip(need, 0.0, half_w - 0.25))
+    # 侧前方观察点横向**指令**：实测本平台在 0.30 m 指令下能稳定横移约 0.13 m，
+    # 配合"停在障碍前 0.78 m"形成 15-25° 视差；指令再大（>=0.5）会倾覆。
+    # 上限仍受公开通道约束。
+    target_y = float(np.clip(0.30, 0.10, half_w - 0.30))
     rec = {'workflow': 'drive_observe/v1',
            'observation_target_y_m': round(target_y, 4),
            'target_basis': ('W_vis/2 + robot half width + margin；只读公开量'),
@@ -223,16 +258,27 @@ def main():
         env.reset(seed=sd)
         cid = set_cam_height(env, a.camera_height)
         v1 = capture(env, cid, out / f'seed{sd}_view1.png')
-        # 停止线：障碍前沿前保留 0.55 m（车体前伸 + 刹停余量）
-        stop_x = float(case['obstacle_x']) - float(case.get('D', 0.3)) / 2.0 - 0.55
-        move_s, move_stop = drive_to(env, target_y, stop_x=max(0.3, stop_x))
-        face = face_target(env, cid, case)
+        # 取景几何（实测定位）：本平台的有效转向很弱（0.4 rad/s 指令实测 0.012 rad/s），
+        # 因此不靠转向对准，而是**在侧向偏移处保持 +x 朝向**直接观察：
+        # 相机在 base_link 前 0.42 m，只要在障碍前 0.75-0.9 m 停下，
+        # 侧移 0.10-0.15 m 即可形成 15-25° 视差，且仍在 70° FOV（±35°）内。
+        front = float(case['obstacle_x']) - float(case.get('D', 0.3)) / 2.0
+        stop_x = front - 0.42 - 0.78
+        move_s, move_stop = drive_to_nav(env, target_y, stop_x=max(0.25, stop_x))
+        face = None      # 不做转向对准（平台转向不足，且会破坏取景）
         st = brake_and_settle(env)
         v2 = capture(env, cid, out / f'seed{sd}_view2.png')
         dyaw = angle_deg(cam_forward(v1['snapshot']), cam_forward(v2['snapshot']))
+        p1 = np.asarray(v1['snapshot']['world_pos']); p2 = np.asarray(v2['snapshot']['world_pos'])
+        baseline = float(np.linalg.norm(p2 - p1))
+        anchor = np.array([float(case['obstacle_x']) - float(case.get('D', 0.3)) / 2.0, 0.0, 0.0])
+        b1 = float(np.degrees(np.arctan2(anchor[1] - p1[1], anchor[0] - p1[0])))
+        b2 = float(np.degrees(np.arctan2(anchor[1] - p2[1], anchor[0] - p2[0])))
+        bearing_change = abs(b2 - b1)
         usable = (st['stable'] and v2['mask_px'] >= MIN_TARGET_PX
                   and v2['depth_valid_frac'] >= MIN_DEPTH_FRAC
-                  and dyaw >= MIN_CAM_YAW_CHANGE_DEG)
+                  and baseline >= MIN_CAM_BASELINE_M
+                  and bearing_change >= MIN_BEARING_CHANGE_DEG)
         rec['runs'].append({
             'seed': sd, 'move_seconds': move_s, 'move_stop_reason': move_stop,
             'face': face,
@@ -242,6 +288,8 @@ def main():
             'view1_mask_px': v1['mask_px'], 'view2_mask_px': v2['mask_px'],
             'view2_depth_valid_frac': v2['depth_valid_frac'],
             'cam_forward_angle_change_deg': round(dyaw, 2),
+            'cam_baseline_m': round(baseline, 3),
+            'bearing_change_deg': round(bearing_change, 2),
             'lat_after': round(float(env.data.qpos[1]), 4),
             'usable': bool(usable),
             'fail_reason': (None if usable else

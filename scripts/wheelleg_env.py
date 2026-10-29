@@ -715,7 +715,9 @@ class WheelLegEnv:
         targets = {'L': float(np.clip(vL / R, -cap, cap)),
                    'R': float(np.clip(vR / R, -cap, cap))}
 
-        # 复用与 step() 完全相同的腿部控制；只把轮速目标换成显式值
+        # 直接给左右轮角速度目标（经 _apply_controls 的 wheel_rps 分支）。
+        # 不经过残差通道：ACT_SCALE 会把 a[2] 缩放成 0.6，导致"最小仍为 0.4 倍前进"，
+        # 无法表达真正的零速度；这里可以。
         self._apply_controls(np.zeros(CTRL_DIM), drive=True, wheel_rps=targets)
 
         # ---- 与 step() 相同的物理推进 ----

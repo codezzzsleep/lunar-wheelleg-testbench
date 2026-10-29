@@ -67,7 +67,7 @@ def main():
         for r in s.get('rows', []):
             coll.append([r.get('route'), r.get('repr'), r.get('n'), r.get('iou'),
                          r.get('s2c_p95'), r.get('c2s_p95'), r.get('verdict')])
-    for f in sorted(q.glob('*_metrics.json')):
+    for f in sorted(list(q.glob('*_metrics.json')) + list(q.glob('*/metrics.json'))):
         d = jl(f)
         if not d or d.get('representation') != 'box_union':
             continue

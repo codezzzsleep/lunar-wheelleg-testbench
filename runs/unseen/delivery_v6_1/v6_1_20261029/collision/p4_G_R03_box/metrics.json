@@ -1,0 +1,80 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "R03_p4_box",
+  "source_mesh": "runs/unseen/delivery_v6_1/v6_1_20261029/fusion/p4_G_R03/body.stl",
+  "source_sha": "57d2dcf764f6176ece51a5ae9ffbc13f447dc39297fdb9586a54d28de3fa1b35",
+  "collision_dir": "runs/unseen/delivery_v6_1/v6_1_20261029/collision/p4_G_R03_box",
+  "representation": "box_union",
+  "n_boxes": 1772,
+  "n_parts_declared": 1772,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "71348db09e91d31590104333231b99d8",
+  "source_status": {
+    "watertight": true,
+    "euler": -168,
+    "n_faces": 182796
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 512198,
+    "collision_inside": 512247,
+    "intersection": 509803,
+    "union": 514642,
+    "collision_only": 2444,
+    "source_only": 2395,
+    "occupancy_iou": 0.9906,
+    "over_fill_frac_of_collision": 0.0048,
+    "under_fill_frac_of_source": 0.0047,
+    "over_fill_volume_m3": 3.8188e-05,
+    "under_fill_volume_m3": 3.7422e-05,
+    "source_volume_voxelised_m3": 0.008003094,
+    "collision_volume_voxelised_m3": 0.008003859,
+    "eval_pitch_m": 0.0025,
+    "eval_dims": [
+      172,
+      174,
+      44
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 0.768,
+      "max": 0.989
+    },
+    "collision_to_source_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 1.286,
+      "max": 1.477
+    }
+  },
+  "probe": {
+    "n_gap_rows": 845,
+    "largest": [
+      {
+        "x_m": 1.6304,
+        "z_m": 0.0262,
+        "gap_m": 0.12,
+        "y_m": -0.0034
+      },
+      {
+        "x_m": 1.6204,
+        "z_m": 0.0288,
+        "gap_m": 0.09,
+        "y_m": -0.0059
+      },
+      {
+        "x_m": 1.6229,
+        "z_m": 0.0312,
+        "gap_m": 0.0875,
+        "y_m": -0.0047
+      }
+    ]
+  },
+  "samples": 1200,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。"
+}

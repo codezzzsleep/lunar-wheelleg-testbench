@@ -11,7 +11,7 @@
   "configs": {
     "fusion": {
       "path": "configs/unseen_v6_1_fusion.json",
-      "sha256": "243a1ab60a9f05c803f3b4ccf1db07702787a7357f74b82e74f01d0a1e783e4a"
+      "sha256": "81cf221c3f51117887ec74488e91f5cd440ad7c7367e48b0331c70a4e0658a7e"
     }
   },
   "paths": {
@@ -290,5 +290,17 @@
     "capability_status": "PARTIAL",
     "benefit_status": "NOT_ESTABLISHED"
   },
-  "note": "V6.1 只在 runs/unseen/delivery_v6_1/ 下新增；V6 目录未改动。new_create=0。本清单是进度快照，不是最终交付；B/D/E/F/G/H 未完成时不得报 COMPLETE。"
+  "note": "V6.1 只在 runs/unseen/delivery_v6_1/ 下新增；V6 目录未改动。new_create=0。本清单是进度快照，不是最终交付；B/D/E/F/G/H 未完成时不得报 COMPLETE。",
+  "_legacy": {
+    "note": "壳层越界修复前的资产，仅作历史对照，不参与验收",
+    "fusion": [
+      "C_R01_face12k_H5F_formal",
+      "C_R01_face12k_H5F_p004",
+      "C_R01_face12k_H5F_p4b"
+    ],
+    "collision": [
+      "H5F_box",
+      "H5F_multi_box"
+    ]
+  }
 }

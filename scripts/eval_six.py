@@ -35,7 +35,8 @@ import runner
 import skills
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-OPTIONS = ('R1', 'R2', 'L1', 'L2', 'A0')
+# 完整动作库（S1 跨骑、D1/D2 绕行按公开可见量判定适用性）
+OPTIONS = ('R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2', 'A0')
 FAR, ABORT = 60.0, 40.0
 
 
@@ -111,6 +112,9 @@ def choose_option(rehearsal, options=OPTIONS):
     safe = []
     for o, rs in by.items():
         if o == 'A0':
+            continue
+        rs = [x for x in rs if not x.get('not_applicable')]
+        if not rs:
             continue
         if all(x['success'] for x in rs):
             safe.append((o, max(x['cost'] for x in rs)))
@@ -248,11 +252,46 @@ def main():
             spec['soil'] = {'mode': phy['soil_mode']}
         return spec
 
+    def applicability():
+        """按公开可见量判定每个动作是否适用（不读隐藏背深/类型）。"""
+        out = {}
+        for o in OPTIONS:
+            if o == 'A0':
+                out[o] = (True, None)
+                continue
+            sk = skills.make_skill(o)
+            if hasattr(sk, 'applicable'):
+                try:
+                    ok = bool(sk.applicable(vis, case.get('channel_half', 1.2))) \
+                        if o.startswith('D') else bool(sk.applicable(vis))
+                except TypeError:
+                    ok = bool(sk.applicable(vis))
+                out[o] = (ok, None if ok else 'not_applicable_by_public_visibility')
+            else:
+                out[o] = (True, None)
+        return out
+
+    APPLY = applicability()
+    phy['applicability'] = {k: v[0] for k, v in APPLY.items()}
+
     def rehearse_on(world_dir, method, phase, env_kind, env_sha):
         rows = []
         for s_ in seeds:
             ish = initial_hash(world_dir, s_)
             for o in OPTIONS:
+                if not APPLY[o][0]:
+                    rows.append({'method': method, 'phase': phase,
+                                 'hypothesis': method, 'option': o,
+                                 'initial_state_id': f'seed{s_}',
+                                 'initial_state_hash': ish,
+                                 'environment_kind': env_kind,
+                                 'environment_sha': env_sha,
+                                 'truth_sha': truth_sha if env_kind == 'truth' else None,
+                                 'soil_mode': phy['soil_mode'],
+                                 'not_applicable': APPLY[o][1],
+                                 'success': False, 'abort': False,
+                                 'reason': APPLY[o][1], 'cost': None})
+                    continue
                 r = run_episode(world_dir, o, s_, vis, goal_x, soil_mode=phy['soil_mode'])
                 row = dict(r)
                 row.update({'method': method, 'phase': phase,
@@ -269,6 +308,8 @@ def main():
     def execute_on_truth(method, dec, env_sha):
         """只保存实际被选动作在真值上的回合。"""
         rows = []
+        if dec is not None and not APPLY.get(dec, (True, None))[0]:
+            return rows
         for s_ in seeds:
             ish = initial_hash(truth_col, s_)
             r = run_episode(truth_col, dec, s_, vis, goal_x, soil_mode=phy['soil_mode'])

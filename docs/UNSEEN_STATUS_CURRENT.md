@@ -102,7 +102,13 @@ R01 因此**没有可用候选** —— 而 R01 正是两轮扫描中唯一有�
 
 ## 8. 自验
 
-`verify_r3` **55/55**；全套单元测试 **130 项通过**（1 skip）。
+`verify_r3` **55/55**；全套单元测试 **130 项通过**（1 skip，含 clean/v4 尺度不变性）。
+
+## 9a. 六行候选清单
+
+`runs/unseen/recovery_r3/v4_six_rows.json`：计划ID / task_id / 输入SHA / GLB_SHA /
+provider 终态 / 清理版本与判定 / 配准是否执行 / strict / 规划资格 / 碰撞 / 执行，缺项如实写
+`not_run`。
 
 ## 9. 状态判定
 

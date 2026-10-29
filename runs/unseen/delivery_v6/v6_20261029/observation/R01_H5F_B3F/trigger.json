@@ -1,0 +1,38 @@
+{
+  "rule": "trigger/v1: 候选的稳健可行动作集合或最坏代价最优动作不一致 -> 观察",
+  "triggered": true,
+  "chosen_set": [
+    "A0",
+    "S1"
+  ],
+  "safe_sets": [
+    [],
+    [
+      "L2",
+      "S1"
+    ]
+  ],
+  "candidates": [
+    {
+      "candidate": "H5_F_single",
+      "source_kind": "H5_F",
+      "safe": {
+        "L2": 6.66,
+        "S1": 6.6
+      },
+      "chosen": "S1",
+      "safe_actions": [
+        "L2",
+        "S1"
+      ]
+    },
+    {
+      "candidate": "B3_F",
+      "source_kind": "B3_F",
+      "safe": {},
+      "chosen": "A0",
+      "safe_actions": []
+    }
+  ],
+  "reason": "候选动作分歧"
+}

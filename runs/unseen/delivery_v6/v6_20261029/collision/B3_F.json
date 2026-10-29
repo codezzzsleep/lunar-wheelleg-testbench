@@ -1,0 +1,46 @@
+{
+  "schema": "collision-fidelity/v6",
+  "label": "B3_F",
+  "source_mesh": "runs/unseen/delivery_v6/v6_20261029/fusion/B3_F_R01_p005_v5/body.stl",
+  "collision": "runs/unseen/delivery_v6/v6_20261029/evaluation/R01_matched/collision/B3_F",
+  "source_sha": "24d25ccdda927c24743626f468f68e277fe37c11116102de6009f305efba65bf",
+  "collision_sha": "f1aa8d465ce65a2aaf5b1ba7bc7a2406",
+  "parts": 16,
+  "hit_part_cap": false,
+  "surface_distance_mm": {
+    "med": 4.219,
+    "p95": 8.72,
+    "max": 11.938
+  },
+  "occupancy_iou": 0.9058,
+  "occupancy_false_inside": 117,
+  "occupancy_false_outside": 0,
+  "bounds_source": [
+    [
+      1.6375,
+      -0.07901,
+      -0.0025
+    ],
+    [
+      2.0525,
+      0.09099,
+      0.3375
+    ]
+  ],
+  "bounds_parts": [
+    [
+      1.63524,
+      -0.08129,
+      -0.00478
+    ],
+    [
+      2.05474,
+      0.09328,
+      0.33978
+    ]
+  ],
+  "volume_source_m3": 0.011259923,
+  "volume_parts_sum_m3": 0.012702142,
+  "note": "CoACD parts 的占据并集用逐 part 奇偶；parts 重叠时 sum volume 不是并集体积。达到 32 上限不自动判坏，更多 parts 也不自动判好。",
+  "verdict": "ATTENTION"
+}

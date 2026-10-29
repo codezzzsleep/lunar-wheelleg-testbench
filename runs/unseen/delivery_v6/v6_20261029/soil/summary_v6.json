@@ -1,0 +1,1667 @@
+{
+  "schema": "soil-v6/summary",
+  "H1_H2_static": {
+    "schema": "soil-static/v6",
+    "version": "v6/H1-H2",
+    "seed": 0,
+    "seconds": 3.0,
+    "steps": 150,
+    "wall_s": 0.893,
+    "mode": "soil",
+    "params": {
+      "kc": 1400.0,
+      "kphi": 820000.0,
+      "n": 1.0,
+      "cohesion_pa": 170.0,
+      "phi_deg": 35.0,
+      "k_shear": 0.018,
+      "source": "纲领名义参数（实验不确定性设定，不是月面统计分布）",
+      "version": "soil/v1",
+      "units": {
+        "kc": "N/m^(n+1)",
+        "kphi": "N/m^(n+2)",
+        "n": "-",
+        "cohesion_pa": "Pa",
+        "phi_deg": "deg",
+        "k_shear": "m"
+      }
+    },
+    "stable_window": {
+      "window_steps": 50,
+      "max_wheel_qvel": 0.001162,
+      "max_base_vx": 5.6e-05,
+      "max_base_vy": 7e-06,
+      "max_tilt_range": 0.0032999999999999974,
+      "min_ncon": 12
+    },
+    "stable_ok": true,
+    "contact_valid": true,
+    "wheels": [
+      {
+        "geom": 18,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086886,
+        "ground_z": 0.0,
+        "penetration_m": -0.000893,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000893
+      },
+      {
+        "geom": 19,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086886,
+        "ground_z": 0.0,
+        "penetration_m": -0.000893,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000893
+      },
+      {
+        "geom": 29,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086904,
+        "ground_z": 0.0,
+        "penetration_m": -0.000911,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000911
+      },
+      {
+        "geom": 30,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086904,
+        "ground_z": 0.0,
+        "penetration_m": -0.000911,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000911
+      },
+      {
+        "geom": 40,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086897,
+        "ground_z": 0.0,
+        "penetration_m": -0.000904,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000904
+      },
+      {
+        "geom": 41,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086897,
+        "ground_z": 0.0,
+        "penetration_m": -0.000904,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000904
+      },
+      {
+        "geom": 51,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086926,
+        "ground_z": 0.0,
+        "penetration_m": -0.000933,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000933
+      },
+      {
+        "geom": 52,
+        "R_m": 0.08599,
+        "width_m": 0.0526,
+        "center_z": 0.086926,
+        "ground_z": 0.0,
+        "penetration_m": -0.000933,
+        "nominal_load_n": 17.781,
+        "formula_sink_m": 0.00975,
+        "actual_penetration_m": -0.000933
+      }
+    ],
+    "formula_max_sink_m": 0.00975,
+    "actual_max_penetration_m": -0.000893,
+    "verdict": "MEASURED",
+    "note": "真正静态：brake_step 零轮速/制动保持；不是 env.step(零) 的 v_ref 驱动。公式用该轮法向载荷/轮宽/轮径；实际穿透用同一时刻轮底相对地面。未稳定或无接触时判 insufficient_evidence。",
+    "history_tail": [
+      {
+        "i": 140,
+        "t_sim": 2.82,
+        "wheel_qvel_abs": [
+          0.000857,
+          0.000969,
+          0.000432,
+          0.000582
+        ],
+        "base_vx": 4.2e-05,
+        "base_vy": 0.0,
+        "tilt_deg": 0.0715,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2010,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1802,
+          "sum_Rc": 6378.795933061751,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.03997617682673635,
+          "sum_load": 62302.1704424471,
+          "sum_H": 45626.341814053994,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.54,
+          "mean_traction_cap_n": 25.32,
+          "mean_wheel_load_n": 34.574,
+          "work_j": -0.039976,
+          "contact_fraction": 0.8965,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4871,
+              "H_cap_n": 5.517,
+              "mu_eff": 0.73687,
+              "Rc_n": 0.6681,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.8938,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6513,
+              "H_cap_n": 5.6339,
+              "mu_eff": 0.73634,
+              "Rc_n": 0.6877,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9816,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9959,
+              "H_cap_n": 5.8793,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7293,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9567,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8068,
+              "H_cap_n": 5.7447,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7064,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8689,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 141,
+        "t_sim": 2.84,
+        "wheel_qvel_abs": [
+          0.000909,
+          0.00097,
+          0.00043,
+          0.000568
+        ],
+        "base_vx": 4.2e-05,
+        "base_vy": 1e-06,
+        "tilt_deg": 0.0715,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2020,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1812,
+          "sum_Rc": 6406.7096318383055,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.039984927468395104,
+          "sum_load": 62611.57707142865,
+          "sum_H": 45854.08886905889,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.536,
+          "mean_traction_cap_n": 25.306,
+          "mean_wheel_load_n": 34.554,
+          "work_j": -0.039985,
+          "contact_fraction": 0.897,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4859,
+              "H_cap_n": 5.5161,
+              "mu_eff": 0.73687,
+              "Rc_n": 0.6679,
+              "contact_area_m2": 0.001614,
+              "ft_measured_n": 1.8971,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6514,
+              "H_cap_n": 5.6341,
+              "mu_eff": 0.73634,
+              "Rc_n": 0.6877,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9786,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9947,
+              "H_cap_n": 5.8785,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7291,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9642,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8085,
+              "H_cap_n": 5.7459,
+              "mu_eff": 0.73585,
+              "Rc_n": 0.7066,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8888,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 142,
+        "t_sim": 2.86,
+        "wheel_qvel_abs": [
+          0.000838,
+          0.000921,
+          0.000458,
+          0.00049
+        ],
+        "base_vx": 4.1e-05,
+        "base_vy": 3e-06,
+        "tilt_deg": 0.0714,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000894
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2030,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1822,
+          "sum_Rc": 6434.624129406602,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.03999351674590616,
+          "sum_load": 62920.99049649937,
+          "sum_H": 46081.84076780961,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.532,
+          "mean_traction_cap_n": 25.292,
+          "mean_wheel_load_n": 34.534,
+          "work_j": -0.039994,
+          "contact_fraction": 0.8975,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4921,
+              "H_cap_n": 5.5206,
+              "mu_eff": 0.73685,
+              "Rc_n": 0.6687,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.9008,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6459,
+              "H_cap_n": 5.6301,
+              "mu_eff": 0.73636,
+              "Rc_n": 0.687,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9757,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9981,
+              "H_cap_n": 5.8809,
+              "mu_eff": 0.73529,
+              "Rc_n": 0.7296,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9723,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8063,
+              "H_cap_n": 5.7444,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7063,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8001,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 143,
+        "t_sim": 2.88,
+        "wheel_qvel_abs": [
+          0.000881,
+          0.000897,
+          0.000461,
+          0.000677
+        ],
+        "base_vx": 2.6e-05,
+        "base_vy": 7e-06,
+        "tilt_deg": 0.0714,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2040,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1832,
+          "sum_Rc": 6462.538852225947,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.04000191463796322,
+          "sum_load": 63230.405712353546,
+          "sum_H": 46309.593940026716,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.528,
+          "mean_traction_cap_n": 25.278,
+          "mean_wheel_load_n": 34.514,
+          "work_j": -0.040002,
+          "contact_fraction": 0.898,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4953,
+              "H_cap_n": 5.5228,
+              "mu_eff": 0.73684,
+              "Rc_n": 0.669,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.912,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6398,
+              "H_cap_n": 5.6258,
+              "mu_eff": 0.73638,
+              "Rc_n": 0.6863,
+              "contact_area_m2": 0.001625,
+              "ft_measured_n": 1.9757,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 8.0032,
+              "H_cap_n": 5.8845,
+              "mu_eff": 0.73527,
+              "Rc_n": 0.7302,
+              "contact_area_m2": 0.001651,
+              "ft_measured_n": 1.9715,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8063,
+              "H_cap_n": 5.7444,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7063,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.7716,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 144,
+        "t_sim": 2.9,
+        "wheel_qvel_abs": [
+          0.000858,
+          0.000964,
+          0.00042,
+          0.000622
+        ],
+        "base_vx": 3.5e-05,
+        "base_vy": 0.0,
+        "tilt_deg": 0.0713,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2050,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1842,
+          "sum_Rc": 6490.456239932609,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.04001103216254787,
+          "sum_load": 63539.842935838074,
+          "sum_H": 46537.362781637064,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.524,
+          "mean_traction_cap_n": 25.265,
+          "mean_wheel_load_n": 34.495,
+          "work_j": -0.040011,
+          "contact_fraction": 0.8985,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4893,
+              "H_cap_n": 5.5186,
+              "mu_eff": 0.73686,
+              "Rc_n": 0.6683,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.8956,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6469,
+              "H_cap_n": 5.6308,
+              "mu_eff": 0.73635,
+              "Rc_n": 0.6872,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9774,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9956,
+              "H_cap_n": 5.8791,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7292,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9611,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8106,
+              "H_cap_n": 5.7474,
+              "mu_eff": 0.73585,
+              "Rc_n": 0.7068,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8459,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 145,
+        "t_sim": 2.92,
+        "wheel_qvel_abs": [
+          0.000825,
+          0.000958,
+          0.000413,
+          0.00057
+        ],
+        "base_vx": 3.7e-05,
+        "base_vy": 1e-06,
+        "tilt_deg": 0.0713,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2060,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1852,
+          "sum_Rc": 6518.371997751232,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.04002009214088595,
+          "sum_load": 63849.26708438926,
+          "sum_H": 46765.1223234195,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.52,
+          "mean_traction_cap_n": 25.251,
+          "mean_wheel_load_n": 34.476,
+          "work_j": -0.04002,
+          "contact_fraction": 0.899,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.495,
+              "H_cap_n": 5.5226,
+              "mu_eff": 0.73684,
+              "Rc_n": 0.669,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.9121,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6435,
+              "H_cap_n": 5.6284,
+              "mu_eff": 0.73637,
+              "Rc_n": 0.6867,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9788,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9987,
+              "H_cap_n": 5.8814,
+              "mu_eff": 0.73529,
+              "Rc_n": 0.7296,
+              "contact_area_m2": 0.001651,
+              "ft_measured_n": 1.9562,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8036,
+              "H_cap_n": 5.7425,
+              "mu_eff": 0.73587,
+              "Rc_n": 0.706,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8378,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 146,
+        "t_sim": 2.94,
+        "wheel_qvel_abs": [
+          0.000858,
+          0.000996,
+          0.000354,
+          0.000499
+        ],
+        "base_vx": 3.8e-05,
+        "base_vy": 3e-06,
+        "tilt_deg": 0.0712,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2070,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1862,
+          "sum_Rc": 6546.284919570059,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.04002877410800143,
+          "sum_load": 64158.66769371113,
+          "sum_H": 46992.86510228895,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.516,
+          "mean_traction_cap_n": 25.238,
+          "mean_wheel_load_n": 34.457,
+          "work_j": -0.040029,
+          "contact_fraction": 0.8995,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4918,
+              "H_cap_n": 5.5203,
+              "mu_eff": 0.73685,
+              "Rc_n": 0.6686,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.9135,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6461,
+              "H_cap_n": 5.6302,
+              "mu_eff": 0.73636,
+              "Rc_n": 0.6871,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9773,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.996,
+              "H_cap_n": 5.8794,
+              "mu_eff": 0.73529,
+              "Rc_n": 0.7293,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9631,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8048,
+              "H_cap_n": 5.7433,
+              "mu_eff": 0.73587,
+              "Rc_n": 0.7061,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8585,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 147,
+        "t_sim": 2.96,
+        "wheel_qvel_abs": [
+          0.000847,
+          0.000937,
+          0.000452,
+          0.000531
+        ],
+        "base_vx": 3.8e-05,
+        "base_vy": 2e-06,
+        "tilt_deg": 0.0712,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2080,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1872,
+          "sum_Rc": 6574.198361778673,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.040037259589943926,
+          "sum_load": 64468.07273018931,
+          "sum_H": 47220.61103644732,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.512,
+          "mean_traction_cap_n": 25.225,
+          "mean_wheel_load_n": 34.438,
+          "work_j": -0.040037,
+          "contact_fraction": 0.9,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4927,
+              "H_cap_n": 5.521,
+              "mu_eff": 0.73685,
+              "Rc_n": 0.6687,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.9011,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6455,
+              "H_cap_n": 5.6298,
+              "mu_eff": 0.73636,
+              "Rc_n": 0.687,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.975,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9957,
+              "H_cap_n": 5.8792,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7293,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.965,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8059,
+              "H_cap_n": 5.7441,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7063,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8764,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 148,
+        "t_sim": 2.98,
+        "wheel_qvel_abs": [
+          0.000869,
+          0.000981,
+          0.000369,
+          0.000534
+        ],
+        "base_vx": 3.9e-05,
+        "base_vy": 3e-06,
+        "tilt_deg": 0.0711,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2090,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1882,
+          "sum_Rc": 6602.110981944872,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.040045959334867785,
+          "sum_load": 64777.47087651023,
+          "sum_H": 47448.35206228514,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.508,
+          "mean_traction_cap_n": 25.212,
+          "mean_wheel_load_n": 34.419,
+          "work_j": -0.040046,
+          "contact_fraction": 0.9005,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4924,
+              "H_cap_n": 5.5207,
+              "mu_eff": 0.73685,
+              "Rc_n": 0.6687,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.9017,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6456,
+              "H_cap_n": 5.6299,
+              "mu_eff": 0.73636,
+              "Rc_n": 0.687,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.9733,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9953,
+              "H_cap_n": 5.8789,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7292,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.969,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8064,
+              "H_cap_n": 5.7444,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7063,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8773,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      },
+      {
+        "i": 149,
+        "t_sim": 3.0,
+        "wheel_qvel_abs": [
+          0.000838,
+          0.000959,
+          0.000405,
+          0.000572
+        ],
+        "base_vx": 3.9e-05,
+        "base_vy": 2e-06,
+        "tilt_deg": 0.0711,
+        "ncon": 12,
+        "wheels": [
+          {
+            "geom": 18,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 19,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086886,
+            "ground_z": 0.0,
+            "penetration_m": -0.000893
+          },
+          {
+            "geom": 29,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 30,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086904,
+            "ground_z": 0.0,
+            "penetration_m": -0.000911
+          },
+          {
+            "geom": 40,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 41,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086897,
+            "ground_z": 0.0,
+            "penetration_m": -0.000904
+          },
+          {
+            "geom": 51,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          },
+          {
+            "geom": 52,
+            "R_m": 0.08599,
+            "width_m": 0.0526,
+            "center_z": 0.086926,
+            "ground_z": 0.0,
+            "penetration_m": -0.000933
+          }
+        ],
+        "soil": {
+          "steps": 2100,
+          "max_sink_m": 0.027214539101792078,
+          "resistance_n": 0.0,
+          "traction_n": 0.0,
+          "load_n": 0.0,
+          "n_wheels": 4,
+          "wheel_contact_steps": 1892,
+          "sum_Rc": 6630.023719035425,
+          "sum_Ft": 0.0,
+          "sum_work_j": -0.04005453057024862,
+          "sum_load": 65086.87005611778,
+          "sum_H": 47676.09382544508,
+          "excess_traction_n": 0.0,
+          "mode": "rigid-contact + Bekker compaction resistance + equivalent-Coulomb traction cap (per wheel, order independent)",
+          "mean_resistance_n": 3.504,
+          "mean_traction_cap_n": 25.199,
+          "mean_wheel_load_n": 34.401,
+          "work_j": -0.040055,
+          "contact_fraction": 0.901,
+          "limits": {
+            "5": {
+              "geom": 18,
+              "body": 5,
+              "load_n": 7.4928,
+              "H_cap_n": 5.5211,
+              "mu_eff": 0.73685,
+              "Rc_n": 0.6688,
+              "contact_area_m2": 0.001615,
+              "ft_measured_n": 1.8991,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "9": {
+              "geom": 29,
+              "body": 9,
+              "load_n": 7.6459,
+              "H_cap_n": 5.6301,
+              "mu_eff": 0.73636,
+              "Rc_n": 0.687,
+              "contact_area_m2": 0.001626,
+              "ft_measured_n": 1.974,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "13": {
+              "geom": 40,
+              "body": 13,
+              "load_n": 7.9949,
+              "H_cap_n": 5.8786,
+              "mu_eff": 0.7353,
+              "Rc_n": 0.7292,
+              "contact_area_m2": 0.00165,
+              "ft_measured_n": 1.9641,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            },
+            "17": {
+              "geom": 51,
+              "body": 17,
+              "load_n": 7.8067,
+              "H_cap_n": 5.7446,
+              "mu_eff": 0.73586,
+              "Rc_n": 0.7064,
+              "contact_area_m2": 0.001637,
+              "ft_measured_n": 1.8707,
+              "radius_m": 0.08599,
+              "width_m": 0.0526
+            }
+          }
+        }
+      }
+    ]
+  },
+  "reuse_v5": {
+    "stability_1000": "../delivery_v5/v5_20261029/soil/stability_1000.jsonl",
+    "note": "物理实现未改变；V5 1000 回合可复用，逐行统计已重算，不重复跑绿灯"
+  },
+  "motion_measurement": {
+    "v5_C_rows": "../delivery_v5/v5_20261029/soil/acceptance.json#stages.c",
+    "correction": "V5 0.655/1.172 s 是 wall time，不是机器人通行时间；V6 不把它当速度。坡面 6 s 超时不是绝对最大坡度。"
+  },
+  "throughput": {
+    "v5_ratio_soil_over_rigid": 1.768,
+    "equivalent_throughput": 0.566,
+    "note": "1.768 是土壤/刚性 wall-time 比，不是“吞吐提高 1.768 倍”；相同控制步条件需核对。"
+  },
+  "capability": "PARTIAL: 静载测量修正为真正静态；整机几何下陷仍未实现；坡面仅有限样本。",
+  "verdict": {
+    "static": "MEASURED",
+    "formula_max_sink_m": 0.00975,
+    "actual_max_penetration_m": -0.000893,
+    "stable_ok": true,
+    "contact_valid": true
+  }
+}

@@ -1,0 +1,195 @@
+{
+  "schema": "collision-fidelity-summary/v6",
+  "threshold_note": "surface p95<=5mm 且 occupancy IoU>=0.95 才算保真；否则标 ATTENTION/collision_unreliable",
+  "H5_raw": {
+    "schema": "collision-fidelity/v6",
+    "label": "H5_raw",
+    "source_mesh": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align/body.stl",
+    "collision": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/collision",
+    "source_sha": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1",
+    "collision_sha": "ca155e7fd2ec3eea0048160dbdf56208",
+    "parts": 32,
+    "hit_part_cap": true,
+    "surface_distance_mm": {
+      "med": 2.84,
+      "p95": 6.608,
+      "max": 12.849
+    },
+    "occupancy_iou": 0.1917,
+    "occupancy_false_inside": 409,
+    "occupancy_false_outside": 0,
+    "bounds_source": [
+      [
+        1.64229,
+        -0.07013,
+        0.0
+      ],
+      [
+        1.85965,
+        0.07231,
+        0.322
+      ]
+    ],
+    "bounds_parts": [
+      [
+        1.64071,
+        -0.07178,
+        -0.0011
+      ],
+      [
+        1.86134,
+        0.07387,
+        0.32341
+      ]
+    ],
+    "volume_source_m3": null,
+    "volume_parts_sum_m3": 0.002164945,
+    "note": "CoACD parts 的占据并集用逐 part 奇偶；parts 重叠时 sum volume 不是并集体积。达到 32 上限不自动判坏，更多 parts 也不自动判好。",
+    "verdict": "ATTENTION"
+  },
+  "H5_F_32": {
+    "schema": "collision-fidelity/v6",
+    "label": "H5_F_single",
+    "source_mesh": "runs/unseen/delivery_v6/v6_20261029/fusion/C_R01_face12k_H5F_p005_v5/body.stl",
+    "collision": "runs/unseen/delivery_v6/v6_20261029/evaluation/R01_matched/collision/H5_F_single",
+    "source_sha": "1e0bf3ef55c39d8d316bff0214dde6cef6bd5ebbd08d94d2b022e104e865cd6a",
+    "collision_sha": "921042baff31bc1dab8689b6bb9a29e7",
+    "parts": 32,
+    "hit_part_cap": true,
+    "surface_distance_mm": {
+      "med": 2.868,
+      "p95": 8.054,
+      "max": 19.684
+    },
+    "occupancy_iou": 0.2837,
+    "occupancy_false_inside": 755,
+    "occupancy_false_outside": 0,
+    "bounds_source": [
+      [
+        1.6375,
+        -0.07401,
+        -0.0025
+      ],
+      [
+        1.8625,
+        0.07746,
+        0.33287
+      ]
+    ],
+    "bounds_parts": [
+      [
+        1.63566,
+        -0.07585,
+        -0.00324
+      ],
+      [
+        1.86434,
+        0.07893,
+        0.33434
+      ]
+    ],
+    "volume_source_m3": 0.001448623,
+    "volume_parts_sum_m3": 0.005047698,
+    "note": "CoACD parts 的占据并集用逐 part 奇偶；parts 重叠时 sum volume 不是并集体积。达到 32 上限不自动判坏，更多 parts 也不自动判好。",
+    "verdict": "ATTENTION"
+  },
+  "H5_F_64": {
+    "schema": "collision-fidelity/v6",
+    "label": "H5_F_64",
+    "source_mesh": "runs/unseen/delivery_v6/v6_20261029/fusion/C_R01_face12k_H5F_p005_v5/body.stl",
+    "collision": "runs/unseen/delivery_v6/v6_20261029/collision/H5_F_64",
+    "source_sha": "1e0bf3ef55c39d8d316bff0214dde6cef6bd5ebbd08d94d2b022e104e865cd6a",
+    "collision_sha": "a67dcbb5585b3f5a5045f2a82bf22982",
+    "parts": 44,
+    "hit_part_cap": false,
+    "surface_distance_mm": {
+      "med": 2.373,
+      "p95": 7.627,
+      "max": 18.543
+    },
+    "occupancy_iou": 0.2861,
+    "occupancy_false_inside": 746,
+    "occupancy_false_outside": 0,
+    "bounds_source": [
+      [
+        1.6375,
+        -0.07401,
+        -0.0025
+      ],
+      [
+        1.8625,
+        0.07746,
+        0.33287
+      ]
+    ],
+    "bounds_parts": [
+      [
+        1.63566,
+        -0.07585,
+        -0.00324
+      ],
+      [
+        1.86434,
+        0.07893,
+        0.33434
+      ]
+    ],
+    "volume_source_m3": 0.001448623,
+    "volume_parts_sum_m3": 0.00502214,
+    "note": "CoACD parts 的占据并集用逐 part 奇偶；parts 重叠时 sum volume 不是并集体积。达到 32 上限不自动判坏，更多 parts 也不自动判好。",
+    "verdict": "ATTENTION"
+  },
+  "B3_F_32": {
+    "schema": "collision-fidelity/v6",
+    "label": "B3_F",
+    "source_mesh": "runs/unseen/delivery_v6/v6_20261029/fusion/B3_F_R01_p005_v5/body.stl",
+    "collision": "runs/unseen/delivery_v6/v6_20261029/evaluation/R01_matched/collision/B3_F",
+    "source_sha": "24d25ccdda927c24743626f468f68e277fe37c11116102de6009f305efba65bf",
+    "collision_sha": "f1aa8d465ce65a2aaf5b1ba7bc7a2406",
+    "parts": 16,
+    "hit_part_cap": false,
+    "surface_distance_mm": {
+      "med": 4.219,
+      "p95": 8.72,
+      "max": 11.938
+    },
+    "occupancy_iou": 0.9058,
+    "occupancy_false_inside": 117,
+    "occupancy_false_outside": 0,
+    "bounds_source": [
+      [
+        1.6375,
+        -0.07901,
+        -0.0025
+      ],
+      [
+        2.0525,
+        0.09099,
+        0.3375
+      ]
+    ],
+    "bounds_parts": [
+      [
+        1.63524,
+        -0.08129,
+        -0.00478
+      ],
+      [
+        2.05474,
+        0.09328,
+        0.33978
+      ]
+    ],
+    "volume_source_m3": 0.011259923,
+    "volume_parts_sum_m3": 0.012702142,
+    "note": "CoACD parts 的占据并集用逐 part 奇偶；parts 重叠时 sum volume 不是并集体积。达到 32 上限不自动判坏，更多 parts 也不自动判好。",
+    "verdict": "ATTENTION"
+  },
+  "verdict": {
+    "H5_F": "COLLISION_UNRELIABLE",
+    "H5_raw": "COLLISION_UNRELIABLE",
+    "B3_F": "COLLISION_APPROXIMATE_ATTENTION",
+    "why": "H5-F 32/64 部件占据 IoU 0.28/0.29，表面 p95 8.0/7.6 mm；32 上限不是主因。由 H5-F 碰撞体得出的 S1 成功不能当作隐藏几何结论。B3-F 0.906 也低于 0.95，但明显更好；同样只作近似。"
+  },
+  "contact_attribution": "未完成逐接触点到融合区域映射；不声称接触 generated_hidden。"
+}

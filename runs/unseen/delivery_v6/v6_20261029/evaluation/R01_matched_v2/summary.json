@@ -1,0 +1,178 @@
+{
+  "schema": "eval-v6/v1",
+  "case": "R01_truth_base",
+  "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+  "truth_collision_sha": "08fba9fe3b8ba3d88f82062540495cbd",
+  "time_limit_s": 30.0,
+  "seeds": [
+    0,
+    1,
+    2
+  ],
+  "validation_seeds": [
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "decision_rule": "worst-case-risk/v2",
+  "methods": [
+    {
+      "method": "H5_raw",
+      "selected_action": "L2",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 2,
+      "abort": 0,
+      "fail": 1,
+      "mean_cost": 24.787,
+      "outcomes": [
+        "time_limit",
+        "success",
+        "success"
+      ],
+      "validation_success": 3,
+      "validation_n": 5,
+      "no_candidate": false,
+      "no_robust_option": false,
+      "safe_set": [
+        "L2",
+        "S1",
+        "R2"
+      ],
+      "tie": false,
+      "decision_rule": "worst-case-risk/v2"
+    },
+    {
+      "method": "H5_F_single",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.593,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 5,
+      "validation_n": 5,
+      "no_candidate": false,
+      "no_robust_option": false,
+      "safe_set": [
+        "S1",
+        "L2"
+      ],
+      "tie": false,
+      "decision_rule": "worst-case-risk/v2"
+    },
+    {
+      "method": "B3_F",
+      "selected_action": "A0",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 3,
+      "fail": 0,
+      "mean_cost": 40.0,
+      "outcomes": [
+        "abort",
+        "abort",
+        "abort"
+      ],
+      "validation_success": 0,
+      "validation_n": 5,
+      "no_candidate": false,
+      "no_robust_option": true,
+      "safe_set": [],
+      "tie": false,
+      "decision_rule": "worst-case-risk/v2"
+    },
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 0,
+      "abort": 0,
+      "fail": 3,
+      "mean_cost": 60.0,
+      "outcomes": [
+        "tipped",
+        "tipped",
+        "tipped"
+      ],
+      "validation_success": 0,
+      "validation_n": 5,
+      "no_candidate": false,
+      "no_robust_option": false,
+      "safe_set": [
+        "R1"
+      ],
+      "tie": null,
+      "decision_rule": "B0_blind"
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "S1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.593,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "validation_success": 5,
+      "validation_n": 5,
+      "no_candidate": false,
+      "no_robust_option": false,
+      "safe_set": [
+        "S1"
+      ],
+      "tie": false,
+      "decision_rule": "worst-case-risk/v2"
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "H5_raw",
+      "kind": "raw",
+      "world_sha": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1",
+      "collision_sha": "ca155e7fd2ec3eea0048160dbdf56208",
+      "parts": 32,
+      "strict_pass": false,
+      "source_kind": "lux3d"
+    },
+    {
+      "id": "H5_F_single",
+      "kind": "H5_F",
+      "world_sha": "1e0bf3ef55c39d8d316bff0214dde6cef6bd5ebbd08d94d2b022e104e865cd6a",
+      "collision_sha": "921042baff31bc1dab8689b6bb9a29e7",
+      "parts": 32,
+      "strict_pass": true,
+      "source_kind": "H5_F"
+    },
+    {
+      "id": "B3_F",
+      "kind": "B3_F",
+      "world_sha": "24d25ccdda927c24743626f468f68e277fe37c11116102de6009f305efba65bf",
+      "collision_sha": "f1aa8d465ce65a2aaf5b1ba7bc7a2406",
+      "parts": 16,
+      "strict_pass": true,
+      "source_kind": "B3_F"
+    }
+  ],
+  "note": "H5_F/B3_F 的可见面由观测约束构造；visible strict pass 不等于 Lux3D 原始模型通过。U_truth 是上限参考，不冒充真实可用方法。"
+}

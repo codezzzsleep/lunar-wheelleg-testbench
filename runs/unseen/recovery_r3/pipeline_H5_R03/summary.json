@@ -1,0 +1,33 @@
+{
+  "case_id": "R03",
+  "hyp_source": "H5",
+  "hyp_source_note": "真实 Lux3D 候选（本地缓存，未新建任务）",
+  "truth_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+  "collision_geometry": "CoACD convex parts (world frame, posture preserved)",
+  "candidates": [
+    {
+      "hypothesis_id": "G_R03",
+      "source_kind": "lux3d",
+      "task_id": 4463082,
+      "world_sha": "9ba4924394b766df637350a79ad21964791b79a5854294d901fa3765f8325e26",
+      "collision_sha": "59ba750ddc4b600e8a46afb42987684d",
+      "coacd_parts": 2
+    }
+  ],
+  "n_hypotheses": 1,
+  "n_seeds": 3,
+  "options": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "S1",
+    "D1",
+    "D2",
+    "A0"
+  ],
+  "chosen": "R1",
+  "no_robust_option": false,
+  "chosen_truth_success": "3/3",
+  "blind_truth_success": "3/3"
+}

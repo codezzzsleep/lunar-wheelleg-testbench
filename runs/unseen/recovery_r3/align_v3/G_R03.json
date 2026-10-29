@@ -1,0 +1,153 @@
+{
+  "candidate": "runs/unseen/recovery_r3/clean_v3/G_R03/body.stl",
+  "observation": "runs/unseen/recovery_r3/obs_R03",
+  "distinct_orientations_in_top": [
+    [
+      6,
+      -7.988251166583801
+    ],
+    [
+      7,
+      -7.936164157771514
+    ],
+    [
+      17,
+      -7.878830778431871
+    ]
+  ],
+  "metric_version": "align-metric/v2.1",
+  "camera_schema": "camera-snapshot/v2",
+  "raw_bounds": [
+    [
+      -0.07500000298023224,
+      -0.017164912074804306,
+      0.0
+    ],
+    [
+      0.07500000298023224,
+      0.017164912074804306,
+      0.15013553202152252
+    ]
+  ],
+  "raw_extents": [
+    0.15000000596046448,
+    0.03432982414960861,
+    0.15013553202152252
+  ],
+  "n_coarse_evals": 1512,
+  "wall_s": 126.8,
+  "orientation_ambiguous": true,
+  "top": [
+    {
+      "R_index": 17,
+      "init": "W",
+      "scale": 2.74695,
+      "yaw": 25.0,
+      "quick_med_mm": 7.879,
+      "quick_cover": 0.36933333333333335
+    },
+    {
+      "R_index": 7,
+      "init": "W",
+      "scale": 2.74447,
+      "yaw": 0.0,
+      "quick_med_mm": 7.936,
+      "quick_cover": 0.3546666666666667
+    },
+    {
+      "R_index": 6,
+      "init": "W",
+      "scale": 2.74447,
+      "yaw": 0.0,
+      "quick_med_mm": 7.988,
+      "quick_cover": 0.38466666666666666
+    }
+  ],
+  "best": {
+    "R_index": 6,
+    "init": "W",
+    "scale_init": 2.744472304856975,
+    "yaw_init": 0.0,
+    "scale": 2.78522,
+    "yaw": 0.5,
+    "R_axis_world": [
+      [
+        1.0,
+        0.0,
+        0.009
+      ],
+      [
+        0.009,
+        0.0,
+        -1.0
+      ],
+      [
+        0.0,
+        1.0,
+        0.0
+      ]
+    ],
+    "shear_residual": 0.0,
+    "yaw_residual": 0.0,
+    "z_min_world_m": 0.0,
+    "M": [
+      [
+        2.785118921279188,
+        0.0,
+        0.02430536460754421,
+        1.8113515648241079
+      ],
+      [
+        0.02430536460754421,
+        0.0,
+        -2.785118921279188,
+        0.21102140480401804
+      ],
+      [
+        0.0,
+        2.7852249741117956,
+        0.0,
+        0.04780814178917807
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "native": {
+      "mask_iou": 0.8847,
+      "cand_px": 9733,
+      "obs_px": 10767,
+      "n_inter": 9623,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 1.639,
+      "depth_p95_mm": 28.783,
+      "depth_inner_rms_mm": 12.325,
+      "depth_edge_rms_mm": 23.939,
+      "vis_pt_med_mm": 3.58,
+      "vis_pt_p95_mm": 7.938,
+      "vis_pt_n": 2500,
+      "vis_pt_total": 10767,
+      "vis_pt_strategy": "deterministic_subset(n=2500,seed=0)",
+      "metric_version": "align-metric/v2.1",
+      "freespace_violation": 0.1818,
+      "freespace_n_px": 1769,
+      "freespace_denom_px": 9733,
+      "freespace_outside_mask": 110
+    },
+    "threshold_p95_mm": 5.0,
+    "pass": false,
+    "world_dir": "runs/unseen/recovery_r3/align_v3/world/G_R03"
+  },
+  "pass": false,
+  "export_check": {
+    "max_bound_diff_m": 9.5e-08,
+    "consistent": true,
+    "world_sha": "9ba4924394b766df637350a79ad21964791b79a5854294d901fa3765f8325e26"
+  }
+}

@@ -1,0 +1,153 @@
+{
+  "version": "clean/v3",
+  "nodes": 1,
+  "components_before": 2,
+  "components": [
+    {
+      "index": 0,
+      "faces": 14580,
+      "verts": 7292,
+      "area_m2": 0.039145735,
+      "area_frac": 0.50588,
+      "extents_m": [
+        0.15,
+        0.03433,
+        0.150136
+      ],
+      "principal_spans_m": [
+        0.149921,
+        0.150462,
+        0.034328
+      ],
+      "pca_axes": [
+        [
+          0.6242,
+          -0.001,
+          -0.7812
+        ],
+        [
+          -0.7812,
+          0.0004,
+          -0.6242
+        ],
+        [
+          -0.0009,
+          -1.0,
+          0.0005
+        ]
+      ],
+      "max_span_m": 0.150462,
+      "thin_ratio": 0.22815,
+      "watertight": true,
+      "bounds_min": [
+        -0.075,
+        -0.017165,
+        -0.075068
+      ],
+      "bounds_max": [
+        0.075,
+        0.017165,
+        0.075068
+      ]
+    },
+    {
+      "index": 1,
+      "faces": 14500,
+      "verts": 7252,
+      "area_m2": 0.038235667,
+      "area_frac": 0.49412,
+      "extents_m": [
+        0.148715,
+        0.033231,
+        0.148922
+      ],
+      "principal_spans_m": [
+        0.149215,
+        0.149352,
+        0.033231
+      ],
+      "pca_axes": [
+        [
+          -0.1425,
+          -0.0005,
+          -0.9898
+        ],
+        [
+          -0.9898,
+          -0.002,
+          0.1425
+        ],
+        [
+          0.002,
+          -1.0,
+          0.0003
+        ]
+      ],
+      "max_span_m": 0.149352,
+      "thin_ratio": 0.2225,
+      "watertight": true,
+      "bounds_min": [
+        -0.074334,
+        -0.016618,
+        -0.074478
+      ],
+      "bounds_max": [
+        0.074381,
+        0.016614,
+        0.074445
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "index": 0,
+      "decision": "keep",
+      "reason": "main body: largest area, not floating, thickness ok"
+    },
+    {
+      "index": 1,
+      "decision": "drop",
+      "reason": "secondary shell/duplicate (only main body kept)"
+    }
+  ],
+  "kept_indices": [
+    0
+  ],
+  "containment_status": "ok",
+  "total_area_m2": 0.0773814,
+  "candidate": "runs/unseen/generation/cache/50/50af18107e41b495f612400923da5d85f1157c8a4b44f88cc408394cad7f3e30/model.glb",
+  "id": "G_R03",
+  "raw_sha": "e867ad365a74e790e0e0361c24257d4a3164ccf00ad8944e16e7b2134fb02540",
+  "clean_path": "runs/unseen/recovery_r3/clean_v3/G_R03/body.stl",
+  "clean_sha": "622962781d5961e950a0758409b1030f510492ecc5f71ca66f70317e270fb7d5",
+  "verify": {
+    "components_after": 1,
+    "faces_after": 14580,
+    "extents_m": [
+      0.15,
+      0.03433,
+      0.150136
+    ],
+    "principal_spans_m": [
+      0.149921,
+      0.150462,
+      0.034328
+    ],
+    "thin_ratio": 0.22815,
+    "z_min_m": 0.0,
+    "kept_expected": 1,
+    "matches_decisions": true
+  },
+  "components_after": 1,
+  "precheck": {
+    "thin": false,
+    "verdict": "ok",
+    "criteria": {
+      "thin_ratio_min": 0.2,
+      "fragment_area_frac": 0.01,
+      "floating_thick_m": 0.001,
+      "weld_tol_m": 1e-06
+    }
+  },
+  "coordinate_frame": "local (z_min=0); downstream applies T once"
+}

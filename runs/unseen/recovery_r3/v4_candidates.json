@@ -1,0 +1,91 @@
+{
+  "batch": "unseen_v4_stones",
+  "rows": [
+    {
+      "candidate": "G_R01",
+      "task_id": 4463022,
+      "stone": "R01",
+      "glb_extents_m": [
+        0.00771,
+        0.012,
+        0.00494
+      ],
+      "n_faces": 29420,
+      "clean_verdict": "cleanup_failed",
+      "thin_ratio": null,
+      "verdict": "degenerate_scale"
+    },
+    {
+      "candidate": "G_R02",
+      "task_id": 4463077,
+      "stone": "R02",
+      "glb_extents_m": [
+        0.12,
+        0.0386,
+        0.10908
+      ],
+      "n_faces": 27868,
+      "clean_verdict": "ok",
+      "thin_ratio": 0.31568,
+      "verdict": "ok"
+    },
+    {
+      "candidate": "G_R03",
+      "task_id": 4463082,
+      "stone": "R03",
+      "glb_extents_m": [
+        0.15,
+        0.03433,
+        0.15014
+      ],
+      "n_faces": 29080,
+      "clean_verdict": "ok",
+      "thin_ratio": 0.22815,
+      "verdict": "ok"
+    },
+    {
+      "candidate": "G_R04",
+      "task_id": 4463091,
+      "stone": "R04",
+      "glb_extents_m": [
+        0.12,
+        0.04637,
+        0.12013
+      ],
+      "n_faces": 28521,
+      "clean_verdict": "ok",
+      "thin_ratio": 0.38575,
+      "verdict": "ok"
+    },
+    {
+      "candidate": "G_R01_rep2",
+      "task_id": 4463124,
+      "stone": "R01",
+      "glb_extents_m": [
+        0.012,
+        0.02258,
+        0.00947
+      ],
+      "n_faces": 28848,
+      "clean_verdict": "ok",
+      "thin_ratio": 0.4117,
+      "verdict": "degenerate_scale"
+    },
+    {
+      "candidate": "G_R01_rep3",
+      "task_id": 4463154,
+      "stone": "R01",
+      "glb_extents_m": [
+        0.01299,
+        0.022,
+        0.00948
+      ],
+      "n_faces": 29966,
+      "clean_verdict": "ok",
+      "thin_ratio": 0.43197,
+      "verdict": "degenerate_scale"
+    }
+  ],
+  "finding": "R01 的三个独立任务（4463022/4463124/4463154）输出都是约 1 cm 的退化几何，跨三个独立采样一致 -> 是系统性的输入-模型行为，不是随机波动",
+  "note": "任务数不等于独特几何；重复/退化如实记录"
+}

@@ -1,0 +1,117 @@
+{
+  "asset_id": "G_R03",
+  "hypothesis_id": "G_R03",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl",
+    "parts/part_01.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "9ba4924394b766df637350a79ad21964791b79a5854294d901fa3765f8325e26",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 2,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 4.48,
+  "hit_part_cap": false,
+  "height_m": 0.09562,
+  "width_x_m": 0.41799,
+  "width_y_m": 0.41816,
+  "rel_height": 1.113,
+  "rel_width": 4.865,
+  "concavity": 0.00058,
+  "convex_hull_volume_m3": 0.008097,
+  "parts_volume_m3": 0.008093,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.604166865348816,
+      -0.2071155607700348,
+      0.0
+    ],
+    [
+      2.022153854370117,
+      0.21104581654071808,
+      0.09561628103256226
+    ]
+  ],
+  "raw_sha": "9ba4924394b766df637350a79ad21964791b79a5854294d901fa3765f8325e26",
+  "collision_sha": "59ba750ddc4b600e8a46afb42987684d",
+  "concavity_probe": {
+    "hull_bottom_z": -0.00037,
+    "parts_bottom_z": -0.00037,
+    "probe_xy": [
+      1.6042,
+      -0.2071
+    ]
+  },
+  "version": "physicalize/v1"
+}

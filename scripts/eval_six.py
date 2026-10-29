@@ -404,9 +404,11 @@ def main():
         merged = []
         for o in OPTIONS:
             rows_o = [r for r in reh_all if r['option'] == o]
+            # not_applicable 行的 cost 是 None，必须排除后再取最大值
+            costs = [r['cost'] for r in rows_o if r.get('cost') is not None]
             merged.append({'option': o,
-                           'success': all(r['success'] for r in rows_o),
-                           'cost': max((r['cost'] for r in rows_o), default=FAR)})
+                           'success': bool(rows_o) and all(r['success'] for r in rows_o),
+                           'cost': (max(costs) if costs else FAR)})
         dec, why, tied = choose_option(merged)
         decisions.append({'method': 'H5_lux3d', 'selected_action': dec, 'evidence': why,
                           'tied': tied, 'candidates': [c['candidate_id'] for c in cands],

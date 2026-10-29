@@ -1,0 +1,553 @@
+{
+  "manifest": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+  "batch_id": "v5_20261029",
+  "n_checks": 73,
+  "n_pass": 73,
+  "n_fail": 0,
+  "checks": [
+    {
+      "check": "manifest: plan SHA 一致",
+      "pass": true,
+      "detail": {
+        "file": "9eb1b37838eb1c469b4c33214e58ba8f6a6354021ae8db9a1f590d230c158194",
+        "manifest": "9eb1b37838eb1c469b4c33214e58ba8f6a6354021ae8db9a1f590d230c158194"
+      }
+    },
+    {
+      "check": "plan: 三项/60 上界",
+      "pass": true,
+      "detail": [
+        "C_R01_az25",
+        "C_R01_az45",
+        "C_R01_face12k"
+      ]
+    },
+    {
+      "check": "plan: 模型参数合法",
+      "pass": true,
+      "detail": [
+        {
+          "version": "G1-Turbo",
+          "face_count": 30000
+        },
+        {
+          "version": "G1-Turbo",
+          "face_count": 30000
+        },
+        {
+          "version": "G1-Turbo",
+          "face_count": 12000
+        }
+      ]
+    },
+    {
+      "check": "generation: tasks.json 存在",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v5/v5_20261029/generation/tasks.json"
+    },
+    {
+      "check": "generation: 3 任务全部 downloaded",
+      "pass": true,
+      "detail": [
+        "downloaded",
+        "downloaded",
+        "downloaded"
+      ]
+    },
+    {
+      "check": "generation: task_id 唯一且非空",
+      "pass": true,
+      "detail": [
+        4466035,
+        4466087,
+        4466144
+      ]
+    },
+    {
+      "check": "generation: 扣费 unknown 不写成已核验",
+      "pass": true,
+      "detail": [
+        "unknown",
+        "unknown",
+        "unknown"
+      ]
+    },
+    {
+      "check": "generation: GLB SHA 与缓存一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "generation: 输入 SHA 与 plan 一致",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "candidates: 表存在",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v5/v5_20261029/candidates/candidate_table.json"
+    },
+    {
+      "check": "candidates: 表校验",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "candidates: 3/3 清理通过",
+      "pass": true,
+      "detail": [
+        "ok",
+        "ok",
+        "ok"
+      ]
+    },
+    {
+      "check": "candidates: 3/3 完成配准",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "candidates: strict 与 planning 分开",
+      "pass": true,
+      "detail": {
+        "clean_ok": 3,
+        "align_completed": 3,
+        "strict_pass": 0,
+        "planning_eligible": 1,
+        "scale_note": "三份原始 GLB 仍为 1–2 cm 量级；face12k 形状 IoU 0.8622 过政策，但 strict 仍失败；不得写成“尺度问题已修复”"
+      }
+    },
+    {
+      "check": "candidates: face12k 仅过工程政策（strict=false）",
+      "pass": true,
+      "detail": {
+        "mask_iou": 0.8622,
+        "vis_pt_p95_mm": 11.0,
+        "freespace_violation": 0.5106,
+        "threshold_p95_mm": 9.957,
+        "pass": false
+      }
+    },
+    {
+      "check": "candidates: face12k 碰撞 manifest 存在且 pass",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/collision/manifest.json"
+    },
+    {
+      "check": "candidates: face12k world_sha 与 collision manifest 一致",
+      "pass": true,
+      "detail": {
+        "collision": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1",
+        "table": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1"
+      }
+    },
+    {
+      "check": "evaluation: six_R03_v5 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_R03: 记录校验",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "six_R03: 六方法齐全",
+      "pass": true,
+      "detail": [
+        "B0_blind",
+        "B1_height",
+        "B2_box",
+        "B3_mirror",
+        "H5_lux3d",
+        "U_truth"
+      ]
+    },
+    {
+      "check": "six_R03: 30 s 协议",
+      "pass": true,
+      "detail": 30.0
+    },
+    {
+      "check": "six_R03: 共同真值 436b…",
+      "pass": true,
+      "detail": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0"
+    },
+    {
+      "check": "six_R03: H5 有真实候选",
+      "pass": true,
+      "detail": {
+        "method": "H5_lux3d",
+        "selected_action": "R1",
+        "n_exec": 3,
+        "n_expected": 3,
+        "complete": true,
+        "success": 3,
+        "abort": 0,
+        "fail": 0,
+        "mean_cost": 6.42,
+        "outcomes": [
+          "success",
+          "success",
+          "success"
+        ],
+        "no_candidate": false
+      }
+    },
+    {
+      "check": "evaluation: six_R01_v5 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_R01: 记录校验",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "six_R01: H5 记 no_candidate（不补 fixture）",
+      "pass": true,
+      "detail": {
+        "method": "H5_lux3d",
+        "selected_action": null,
+        "n_exec": 0,
+        "n_expected": 0,
+        "complete": true,
+        "success": 0,
+        "abort": 0,
+        "fail": 0,
+        "mean_cost": null,
+        "outcomes": [],
+        "no_candidate": true
+      }
+    },
+    {
+      "check": "six_R01: 30 s 协议",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_R01: 共同真值 ae18…",
+      "pass": true,
+      "detail": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2"
+    },
+    {
+      "check": "evaluation: six_R02_v5 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_R02: 记录校验",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "six_R02: H5 记 no_candidate",
+      "pass": true,
+      "detail": {
+        "method": "H5_lux3d",
+        "selected_action": null,
+        "n_exec": 0,
+        "n_expected": 0,
+        "complete": true,
+        "success": 0,
+        "abort": 0,
+        "fail": 0,
+        "mean_cost": null,
+        "outcomes": [],
+        "no_candidate": true
+      }
+    },
+    {
+      "check": "six_R02: 30 s 协议",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "evaluation: six_R04_v5 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "six_R04: 记录校验",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "six_R04: H5 记 no_candidate",
+      "pass": true,
+      "detail": {
+        "method": "H5_lux3d",
+        "selected_action": null,
+        "n_exec": 0,
+        "n_expected": 0,
+        "complete": true,
+        "success": 0,
+        "abort": 0,
+        "fail": 0,
+        "mean_cost": null,
+        "outcomes": [],
+        "no_candidate": true
+      }
+    },
+    {
+      "check": "six_R04: 30 s 协议",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "evaluation: 正式比较表存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "正式表: 4 个案例/24 行",
+      "pass": true,
+      "detail": {
+        "cases": 4,
+        "rows": 24
+      }
+    },
+    {
+      "check": "正式表: benefit=NOT_ESTABLISHED",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "初态对齐: H5 与 six_R01 全匹配",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "案例: 真实覆盖报告存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "案例: 独立形状 >=4",
+      "pass": true,
+      "detail": 6
+    },
+    {
+      "check": "案例: 未命中隐藏背面取舍已如实写",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "observation: fixture 全链路结果存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "observation: fixture 全链路触发/筛选/续行",
+      "pass": true,
+      "detail": {
+        "kept": [
+          "FX_truth"
+        ],
+        "chosen": "S1"
+      }
+    },
+    {
+      "check": "evaluation: H5_R01_face12k 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H5_face12k: 决策/执行可复算",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "H5_face12k: 30 s 协议",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H5_face12k: 真值与候选分离",
+      "pass": true,
+      "detail": {
+        "truth": "ae1837cd3114b90e"
+      }
+    },
+    {
+      "check": "H5_face12k: 决策先于执行（mtime）",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H5_face12k: 真值几何与 R01 scan 一致（几何 SHA）",
+      "pass": true,
+      "detail": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2"
+    },
+    {
+      "check": "observation: 真实候选 trigger 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "observation: 真实候选一致 -> 不触发",
+      "pass": true,
+      "detail": {
+        "triggered": false,
+        "chosen": [
+          "L2"
+        ]
+      }
+    },
+    {
+      "check": "observation: 触发来源为真实 Lux3D",
+      "pass": true,
+      "detail": [
+        "lux3d"
+      ]
+    },
+    {
+      "check": "observation: 可控 fixture trigger 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "observation: fixture 分歧 -> 触发",
+      "pass": true,
+      "detail": {
+        "rule": "trigger/v1: 候选的稳健可行动作集合或最坏代价最优动作不一致 -> 观察",
+        "triggered": true,
+        "chosen_set": [
+          "A0",
+          "S1"
+        ],
+        "safe_sets": [
+          [],
+          [
+            "S1"
+          ]
+        ],
+        "candidates": [
+          {
+            "candidate": "FX_truth",
+            "source_kind": "fixture",
+            "safe": {
+              "S1": 6.7
+            },
+            "chosen": "S1",
+            "safe_actions": [
+              "S1"
+            ]
+          },
+          {
+            "candidate": "FX_box",
+            "source_kind": "fixture",
+            "safe": {},
+            "chosen": "A0",
+            "safe_actions": []
+          }
+        ],
+        "reason": "候选动作分歧"
+      }
+    },
+    {
+      "check": "observation: fixture 来源醒目标注",
+      "pass": true,
+      "detail": [
+        "fixture",
+        "fixture"
+      ]
+    },
+    {
+      "check": "observation: 既有完整链路保留（fixture）",
+      "pass": true,
+      "detail": [
+        "FX_R01"
+      ]
+    },
+    {
+      "check": "soil: acceptance.json 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "soil: A-F 阶段齐全",
+      "pass": true,
+      "detail": [
+        "a",
+        "b",
+        "c",
+        "d",
+        "e",
+        "f",
+        "g"
+      ]
+    },
+    {
+      "check": "soil: 标定/验证载荷分开",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "soil: 验证误差 <=30%",
+      "pass": true,
+      "detail": [
+        0.0524,
+        0.044,
+        0.0364,
+        0.0312
+      ]
+    },
+    {
+      "check": "soil: 几何下陷 verdict 明确",
+      "pass": true,
+      "detail": "PARTIAL_NOT_IMPLEMENTED"
+    },
+    {
+      "check": "soil: 稳定性 >=1000 回合",
+      "pass": true,
+      "detail": 1000
+    },
+    {
+      "check": "soil: 稳定性无异常",
+      "pass": true,
+      "detail": 0
+    },
+    {
+      "check": "page: 浏览器截图存在",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v5/v5_20261029/media/page"
+    },
+    {
+      "check": "page: 演示脚本存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "page: README 当前方向",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg: 重复初态被检出",
+      "pass": true,
+      "detail": "expected non-empty"
+    },
+    {
+      "check": "neg: 坏输入 SHA 被检出",
+      "pass": true,
+      "detail": "expected non-empty"
+    },
+    {
+      "check": "neg: 伪造成功率被检出",
+      "pass": true,
+      "detail": "expected non-empty"
+    },
+    {
+      "check": "neg: 候选/真值同 SHA 被检出",
+      "pass": true,
+      "detail": "expected non-empty"
+    },
+    {
+      "check": "neg: no_candidate 校验可用",
+      "pass": true,
+      "detail": "expected empty"
+    }
+  ]
+}

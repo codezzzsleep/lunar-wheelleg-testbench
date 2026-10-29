@@ -1,0 +1,297 @@
+./var/lib/deepseek-harness/lunar-lab/scripts/imagine.py:77: ResourceWarning: unclosed file <_io.BufferedReader name='/tmp/tmpkde2i98t/cache/ca/cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9/model.glb'>
+  head = glb.open('rb').read(4)
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+.............................[2026-10-29 15:23:23.452] [CoACD] [info] threshold               0.05
+[2026-10-29 15:23:23.452] [CoACD] [info] max # convex hull       32
+[2026-10-29 15:23:23.452] [CoACD] [info] preprocess mode         auto
+[2026-10-29 15:23:23.452] [CoACD] [info] preprocess resolution   50
+[2026-10-29 15:23:23.452] [CoACD] [info] pca                     false
+[2026-10-29 15:23:23.452] [CoACD] [info] mcts max depth          3
+[2026-10-29 15:23:23.452] [CoACD] [info] mcts nodes              20
+[2026-10-29 15:23:23.452] [CoACD] [info] mcts iterations         150
+[2026-10-29 15:23:23.452] [CoACD] [info] merge                   true
+[2026-10-29 15:23:23.452] [CoACD] [info] decimate                false
+[2026-10-29 15:23:23.452] [CoACD] [info] max_ch_vertex           256
+[2026-10-29 15:23:23.452] [CoACD] [info] extrude                 false
+[2026-10-29 15:23:23.452] [CoACD] [info] extrude margin          0.01
+[2026-10-29 15:23:23.452] [CoACD] [info] approximate mode        ch
+[2026-10-29 15:23:23.452] [CoACD] [info] seed                    0
+[2026-10-29 15:23:23.452] [CoACD] [info]  - Manifold Check
+[2026-10-29 15:23:23.453] [CoACD] [info] [1/3] Edge check finish
+[2026-10-29 15:23:23.458] [CoACD] [info] [2/3] Self-intersection check finish
+[2026-10-29 15:23:23.459] [CoACD] [info] [3/3] Triangle orientation check finish. Reversed: false
+[2026-10-29 15:23:23.459] [CoACD] [info] Manifold Check Time: 0.006702s
+[2026-10-29 15:23:23.459] [CoACD] [info] Mesh Manifoldness: true
+[2026-10-29 15:23:23.459] [CoACD] [info] # Points: 1024
+[2026-10-29 15:23:23.459] [CoACD] [info] # Triangles: 2048
+[2026-10-29 15:23:23.459] [CoACD] [info]  - Decomposition (MCTS)
+[2026-10-29 15:23:23.459] [CoACD] [info] iter 0 ---- waiting pool: 1
+[2026-10-29 15:23:23.459] [CoACD] [info] Processing [0.0%]
+[2026-10-29 15:23:24.477] [CoACD] [info] Processing [100.0%]
+[2026-10-29 15:23:24.477] [CoACD] [info] iter 1 ---- waiting pool: 2
+[2026-10-29 15:23:24.477] [CoACD] [info] Processing [0.0%]
+[2026-10-29 15:23:24.477] [CoACD] [info] Processing [50.0%]
+[2026-10-29 15:23:25.135] [CoACD] [info] Processing [100.0%]
+[2026-10-29 15:23:25.135] [CoACD] [info] iter 2 ---- waiting pool: 4
+[2026-10-29 15:23:25.135] [CoACD] [info] Processing [0.0%]
+[2026-10-29 15:23:25.135] [CoACD] [info] Processing [25.0%]
+[2026-10-29 15:23:25.135] [CoACD] [info] Processing [50.0%]
+[2026-10-29 15:23:25.135] [CoACD] [info] Processing [75.0%]
+[2026-10-29 15:23:25.653] [CoACD] [info] Processing [100.0%]
+[2026-10-29 15:23:25.653] [CoACD] [info] iter 3 ---- waiting pool: 8
+[2026-10-29 15:23:25.653] [CoACD] [info] Processing [0.0%]
+[2026-10-29 15:23:25.653] [CoACD] [info] Processing [50.0%]
+[2026-10-29 15:23:25.653] [CoACD] [info] Processing [25.0%]
+[2026-10-29 15:23:25.653] [CoACD] [info] Processing [75.0%]
+[2026-10-29 15:23:25.672] [CoACD] [info] Processing [12.5%]
+[2026-10-29 15:23:26.046] [CoACD] [info] Processing [62.5%]
+[2026-10-29 15:23:26.052] [CoACD] [info] Processing [37.5%]
+[2026-10-29 15:23:26.069] [CoACD] [info] Processing [87.5%]
+[2026-10-29 15:23:26.079] [CoACD] [info] Processing [100.0%]
+[2026-10-29 15:23:26.079] [CoACD] [info] iter 4 ---- waiting pool: 8
+[2026-10-29 15:23:26.079] [CoACD] [info] Processing [75.0%]
+[2026-10-29 15:23:26.079] [CoACD] [info] Processing [0.0%]
+[2026-10-29 15:23:26.079] [CoACD] [info] Processing [50.0%]
+[2026-10-29 15:23:26.079] [CoACD] [info] Processing [25.0%]
+[2026-10-29 15:23:26.087] [CoACD] [info] Processing [87.5%]
+[2026-10-29 15:23:26.089] [CoACD] [info] Processing [62.5%]
+[2026-10-29 15:23:26.090] [CoACD] [info] Processing [37.5%]
+[2026-10-29 15:23:26.092] [CoACD] [info] Processing [12.5%]
+[2026-10-29 15:23:26.096] [CoACD] [info] Processing [100.0%]
+[2026-10-29 15:23:26.096] [CoACD] [info]  - Merge Convex Hulls
+[2026-10-29 15:23:26.168] [CoACD] [info] Compute Time: 2.7090178090147674s
+[2026-10-29 15:23:26.168] [CoACD] [info] # Convex Hulls: 12
+...........................{"case": "fs", "observation_id": "fs", "observation_sha": "0962977f9bfbb5fa", "mask_px": 35634, "x_front": 1.7, "W_vis": 0.3999, "H_vis": 0.2992}
+-> /tmp/tmppxfy46gt/obs
+.............................................s...........................
+----------------------------------------------------------------------
+Ran 130 tests in 777.529s
+
+OK (skipped=1)
+{
+  "mode": "cached_only",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9",
+      "task_id": null,
+      "img_sha": "5158ccdeb93a5397",
+      "variant": "orig"
+    }
+  ]
+}
+
+[cached-only] 未满足：1 项无有效缓存 -> ['X1']
+{
+  "mode": "submit",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9",
+      "task_id": null,
+      "img_sha": "5158ccdeb93a5397",
+      "variant": "orig"
+    }
+  ]
+}
+[uncertain] X1: boom —— 不重提，先查询
+{"created_tasks": 1, "held_credits_upper": 20.0, "verified_charge": 0, "charge_unknown": 1, "remaining_credits": 280.0, "remaining_tasks": 14, "hard_cap": 300, "per_task_cap": 20, "max_create_tasks": 15}
+{
+  "mode": "submit",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9",
+      "task_id": null,
+      "img_sha": "5158ccdeb93a5397",
+      "variant": "orig"
+    }
+  ]
+}
+[upload-failed] X1: OSError
+{"created_tasks": 0, "held_credits_upper": 0, "verified_charge": 0, "charge_unknown": 1, "remaining_credits": 300.0, "remaining_tasks": 15, "hard_cap": 300, "per_task_cap": 20, "max_create_tasks": 15}
+{
+  "mode": "resume",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9",
+      "task_id": null,
+      "img_sha": "5158ccdeb93a5397",
+      "variant": "orig"
+    }
+  ]
+}
+{"created_tasks": 0, "held_credits_upper": 0, "verified_charge": 0, "charge_unknown": 0, "remaining_credits": 300.0, "remaining_tasks": 15, "hard_cap": 300, "per_task_cap": 20, "max_create_tasks": 15}
+{
+  "mode": "dry_run",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "cae5b12fb465056bc45a5ce64d2f3226a2cc00bf566dca1b1412aabfc8e9cdb9",
+      "task_id": null,
+      "img_sha": "5158ccdeb93a5397",
+      "variant": "orig"
+    }
+  ]
+}
+
+[dry_run] 不联网、不上传、不 create。加 --submit 才会创建付费任务。
+{
+  "error": "plan has duplicate request identity",
+  "duplicates": [
+    {
+      "identity": "9be91e7ff4ed4343d243af992ed5a0f082e73459ed33b10b415c49a1834d47dd",
+      "ids": [
+        "X1",
+        "X2"
+      ]
+    }
+  ]
+}
+{
+  "mode": "submit",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 1,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 20.0,
+  "budget_report": {
+    "created_tasks": 0,
+    "held_credits_upper": 0,
+    "verified_charge": 0,
+    "charge_unknown": 0,
+    "remaining_credits": 300.0,
+    "remaining_tasks": 15,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "need_create",
+      "identity": "9be91e7ff4ed4343d243af992ed5a0f082e73459ed33b10b415c49a1834d47dd",
+      "task_id": null,
+      "img_sha": "ca1ca5daab751e71",
+      "variant": "orig"
+    }
+  ]
+}
+[uncertain] X1: t —— 不重提，先查询
+{"created_tasks": 1, "held_credits_upper": 20.0, "verified_charge": 0, "charge_unknown": 1, "remaining_credits": 280.0, "remaining_tasks": 14, "hard_cap": 300, "per_task_cap": 20, "max_create_tasks": 15}
+{
+  "mode": "submit",
+  "n_inputs": 1,
+  "n_cached": 0,
+  "n_need_create": 0,
+  "n_has_task": 0,
+  "planned_new_credits_upper": 0.0,
+  "budget_report": {
+    "created_tasks": 1,
+    "held_credits_upper": 20.0,
+    "verified_charge": 0,
+    "charge_unknown": 1,
+    "remaining_credits": 280.0,
+    "remaining_tasks": 14,
+    "hard_cap": 300,
+    "per_task_cap": 20,
+    "max_create_tasks": 15
+  },
+  "entries": [
+    {
+      "id": "X1",
+      "state": "uncertain_no_task",
+      "identity": "9be91e7ff4ed4343d243af992ed5a0f082e73459ed33b10b415c49a1834d47dd",
+      "task_id": null,
+      "img_sha": "ca1ca5daab751e71",
+      "variant": "orig"
+    }
+  ]
+}
+{"created_tasks": 1, "held_credits_upper": 20.0, "verified_charge": 0, "charge_unknown": 1, "remaining_credits": 280.0, "remaining_tasks": 14, "hard_cap": 300, "per_task_cap": 20, "max_create_tasks": 15}

@@ -2,6 +2,10 @@
 
 main 见 `git log`；已推送。旧报告保留原样。
 
+> **V5（2026-10-29）当前状态：见 [`docs/UNSEEN_STATUS_V5.md`](UNSEEN_STATUS_V5.md)。**
+> 本文件以下 V4 段落保留为历史；V5 的 3 任务/60 上界、初态统一修正、
+> R01 H5 2/3 与 benefit=NOT_ESTABLISHED 以 V5 文件为准。
+
 ## 1. 本批：真实 Lux3D 批次（6 任务已全部终态）
 
 | 计划项 | task_id | 石头 | GLB 尺寸 (m) | 判定 |

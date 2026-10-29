@@ -1,0 +1,114 @@
+{
+  "schema": "delivery/v5",
+  "batch_id": "v5_20261029",
+  "delivery_status": "COMPLETE",
+  "evidence_status": "MIXED",
+  "evidence_note": "核心批次数据、身份链、同初态配对和负例已核验；旧 H5 init003(0.03) / six_v4(15 s) / pipeline_H5_R03(0.03) 被统一初态/30 s 版本取代；R01 与 dev_narrow_tall 同网格，不是独立留出；页面视觉状态见 page。",
+  "capability_status": {
+    "real_generation": "PARTIAL：3/3 生成并下载；3/3 clean/v4 通过；3/3 完成 1512 次配准搜索；0/3 strict；1/3 planning eligible（C_R01_face12k，仅 IoU 过政策，P95/freespace 失败，CoACD 32 部件 hit_part_cap）；原始 GLB 仍为 1–2 cm 量级，尺度问题未修复。",
+    "h5_truth_execution": "PARTIAL：R01 H5 L2 2/3（seed0 30.02 s timeout），盲走 R1 0/3；B3 镜像/U_truth/宽度规则 S1 3/3；R03 H5=盲走=3/3；R02/R04 无候选且全动作 0/3。",
+    "multi_hypothesis_observation": "NOT_ESTABLISHED：真实 face12k 单候选不触发（L2 一致）；可控 fixture（truth vs box）触发、第二视角筛掉 box、S1 真值续行成功；真实多假设观察收益未建立。",
+    "soil": "PARTIAL：A 单轮 5 标定 + 4 验证 ≤5.24%；B 平地刚性/土壤；C 坡面 0–20°；D 零牵引；E 1000 组合 0 NaN/Inf/异常；F 吞吐比 1.768；G 整机几何下陷 PARTIAL_NOT_IMPLEMENTED（公式 26.5 mm vs 实测约 −0.97 mm）。",
+    "page_browser": "VERIFIED：11 张真实浏览器截图",
+    "verifier": "73/73，含真实负例",
+    "case_coverage": "6 个独立完整形状、3 个 API 任务、6 个观测方向、10 个 twin 背面变体；有效隐藏背面取舍 0 个；R01 仅支持宽度规则诊断。"
+  },
+  "benefit_status": "NOT_ESTABLISHED",
+  "key_numbers": {
+    "generation_tasks": 3,
+    "credits_upper": 60,
+    "actual_charge": "unknown",
+    "cumulative_tasks": 27,
+    "cumulative_credits_upper": 540,
+    "strict_pass": 0,
+    "planning_eligible": 1,
+    "R01_H5": {
+      "action": "L2",
+      "success": "2/3",
+      "mean_cost": 24.787,
+      "timeout": 1
+    },
+    "R01_B3": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "R01_U_truth": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "R01_width_rule": {
+      "action": "S1",
+      "success": "3/3",
+      "mean_cost": 6.593
+    },
+    "R03": {
+      "H5": {
+        "action": "R1",
+        "success": "3/3",
+        "mean_cost": 6.42
+      },
+      "B0_blind": {
+        "action": "R1",
+        "success": "3/3",
+        "mean_cost": 6.42
+      },
+      "conclusion": "H5 与盲走同分同代价；无收益"
+    },
+    "soil_stability_episodes": 1000,
+    "soil_geometry_sinkage": "PARTIAL_NOT_IMPLEMENTED",
+    "initial_state_config": "configs/unseen_initial_state_v5.json",
+    "state_alignment_R01": true,
+    "unit_tests": "Ran 130 tests in 777.529s: OK (skipped=1)",
+    "verify": "73/73 incl. real negative cases",
+    "page_screenshots": 11
+  },
+  "products": {
+    "manifest": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+    "formal_table": "runs/unseen/delivery_v5/v5_20261029/evaluation/formal_table_v5.json",
+    "candidate_table": "runs/unseen/delivery_v5/v5_20261029/candidates/candidate_table.json",
+    "observation": "runs/unseen/delivery_v5/v5_20261029/observation/summary.json",
+    "soil": "runs/unseen/delivery_v5/v5_20261029/soil/summary.json",
+    "verify": "runs/unseen/delivery_v5/v5_20261029/verify/report.json",
+    "page_screenshots": [
+      "runs/unseen/delivery_v5/v5_20261029/media/page/01_pipeline_H5_R03.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/02_six_v4.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/03_look_loop_R01_v3.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/04_H5_R01_face12k.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/04_H5_R01_face12k_init003.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/05_trigger_face12k.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/06_v5_batch_status.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/07_six_R01_v5.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/08_six_R03_v5.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/09_six_R02_v5.png",
+      "runs/unseen/delivery_v5/v5_20261029/media/page/10_six_R04_v5.png"
+    ]
+  },
+  "commands": {
+    "verify": ".venv/bin/python scripts/verify_delivery_v5.py --manifest runs/unseen/delivery_v5/v5_20261029/manifest.json --out runs/unseen/delivery_v5/v5_20261029/verify/report.json --self-test",
+    "page": ".venv/bin/python scripts/app_unseen.py --port 8091",
+    "tests": ".venv/bin/python -m unittest discover -s tests",
+    "dry_run": ".venv/bin/python scripts/imagine.py --plan plans/unseen_delivery_v5.json --dry-run",
+    "resume_no_create": ".venv/bin/python scripts/imagine.py --plan plans/unseen_delivery_v5.json --resume --budget configs/unseen_v5_budget.json",
+    "preflight": ".venv/bin/python scripts/preflight_delivery_v5.py --plan plans/unseen_delivery_v5.json --budget configs/unseen_v5_budget.json --ledger runs/unseen/generation/ledger.jsonl --cache runs/unseen/generation/cache --out runs/unseen/delivery_v5/v5_20261029/verify/preflight.json",
+    "soil": ".venv/bin/python scripts/soil_acceptance_v5.py --out runs/unseen/delivery_v5/v5_20261029/soil --stages a,b,c,d,f,g"
+  },
+  "remaining": [
+    "隐藏背面必要的案例：需新造“可见宽度不足/误导、隐藏背面使 S1 必败、另有 3/3 稳健动作”的几何；先用 twins 免费扫描，再决定付费生成。",
+    "真实多假设第二观察收益：当前真实候选无分歧；fixture 只验证接口。",
+    "整机几何下陷：PARTIAL_NOT_IMPLEMENTED；坡面滑转/参数随机化仍有限。",
+    "R01 与 dev_narrow_tall 同网格，不是独立留出；不能用于泛化主张。",
+    "实际扣费 unknown；累计 27 任务/540 上界，不再新增付费 create。",
+    "旧 H5 init003(0.03) 与 six_v4(15 s) 保留为 superseded，不用于正式比较。"
+  ],
+  "git_commit": {
+    "P0_P2": "827a73b",
+    "P3_P4": "7a037aa",
+    "P5": "5bf5401",
+    "P6": "3b5d2be",
+    "P7": "this commit; see git log after it",
+    "note": "工作区干净后 push main；不以 amend 改历史"
+  },
+  "note": "delivery_status 只表示本批工程交付；benefit_status 由 formal/benefit 结果决定，不因测试绿灯升级。"
+}

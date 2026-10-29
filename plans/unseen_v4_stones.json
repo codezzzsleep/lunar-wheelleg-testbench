@@ -1,0 +1,153 @@
+{
+  "plan_version": "unseen_v4_stones",
+  "created": "2026-10-29",
+  "status": "PREPARED_NOT_SUBMITTED",
+  "requires_user_confirmation": true,
+  "credits_upper_per_task": 20,
+  "max_new_tasks": 6,
+  "new_batch_cap": 120,
+  "history": {
+    "tasks_used": 18,
+    "credits_upper_used": 360,
+    "actual_charge": "unknown"
+  },
+  "would_be_cumulative": {
+    "tasks": 24,
+    "credits_upper": 480
+  },
+  "camera": {
+    "world_height_m": 0.32,
+    "pitch_deg": 0.0,
+    "fovy_deg": 70
+  },
+  "texture": {
+    "file": "assets/textures/rock_v1.png",
+    "seed": 7,
+    "uv": "三平面 UV OBJ"
+  },
+  "feasibility_note": "四块石头的动作可行性来自两轮有界开发扫描（devscan/devscan_r2）；R01 有明确取舍（R1 0/3、S1 3/3），R02/R03/R04 的取舍仍在扫描记录中",
+  "inputs": [
+    {
+      "id": "G_R01",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R01/upload_1024.png",
+      "image_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "stone_extents_m": [
+        0.3111,
+        0.16,
+        0.3342
+      ],
+      "stone_volume_m3": 0.007211,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "程序化独立石头（非扫描件）；标签如实写"
+    },
+    {
+      "id": "G_R02",
+      "stone": "R02",
+      "case": "cases/unseen_v1/R02.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R02/upload_1024.png",
+      "image_sha256": "becab345a5f519028e6fec73d65be10850106dd0e7f2a2cf11b79fe2f059901b",
+      "stone_extents_m": [
+        0.328,
+        0.3939,
+        0.1695
+      ],
+      "stone_volume_m3": 0.01131,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "程序化独立石头（非扫描件）；标签如实写"
+    },
+    {
+      "id": "G_R03",
+      "stone": "R03",
+      "case": "cases/unseen_v1/R03.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R03/upload_1024.png",
+      "image_sha256": "1e8193d264b25d80368f3de14e82f5c8e15c9e7e9e07e5c591a230fb46cb05a2",
+      "stone_extents_m": [
+        0.3751,
+        0.4654,
+        0.0965
+      ],
+      "stone_volume_m3": 0.008462,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "程序化独立石头（非扫描件）；标签如实写"
+    },
+    {
+      "id": "G_R04",
+      "stone": "R04",
+      "case": "cases/unseen_v1/R04.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R04/upload_1024.png",
+      "image_sha256": "83a34f227c84fa9530e0d8b3faf158998017bf83cf2afa8142cf82a35fa8d847",
+      "stone_extents_m": [
+        0.5355,
+        0.5813,
+        0.2308
+      ],
+      "stone_volume_m3": 0.033256,
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 0,
+      "credits_upper": 20,
+      "note": "程序化独立石头（非扫描件）；标签如实写"
+    },
+    {
+      "id": "G_R01_rep2",
+      "stone": "R01",
+      "case": "cases/unseen_v1/R01.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R01/upload_1024.png",
+      "image_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 1,
+      "credits_upper": 20,
+      "sample_id": "stone-R01-rep2",
+      "extra": {
+        "sample_nonce": "20261029-R01"
+      },
+      "note": "与首个采样完全相同字节与参数；用 sample_id/nonce 区分请求身份"
+    },
+    {
+      "id": "G_R04_rep2",
+      "stone": "R04",
+      "case": "cases/unseen_v1/R04.json",
+      "image": "runs/unseen/recovery_r3/upload_pkg/R04/upload_1024.png",
+      "image_sha256": "83a34f227c84fa9530e0d8b3faf158998017bf83cf2afa8142cf82a35fa8d847",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "variant": "orig",
+      "repeat_idx": 1,
+      "credits_upper": 20,
+      "sample_id": "stone-R04-rep2",
+      "extra": {
+        "sample_nonce": "20261029-R04"
+      },
+      "note": "与首个采样完全相同字节与参数；用 sample_id/nonce 区分请求身份"
+    }
+  ]
+}

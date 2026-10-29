@@ -182,15 +182,20 @@ class Detour(Skill):
         x = rs.get('x', 0.0)
         x_front = rs.get('x_front')
         # 用可见前沿决定三个阶段：接近前切入、绕过障碍、越过回位
+        # 目标横向偏移：优先用调用方显式给的 r；
+        # 否则按公开可见宽度推出（可见半宽 + 机体半宽 + 10 cm 余量）；
+        # 都没有时退回保守常数 0.5 m（保持旧行为，便于回归测试）。
+        if self.r is None:
+            w_vis = (self.params.get('W_vis')
+                     or (self.plan.get('W_vis') if self.plan else None))
+            if w_vis is not None:
+                self.r = float(w_vis) / 2.0 + self.ROBOT_HALF_W + 0.10
+            else:
+                self.r = 0.5
         if x_front is None:
             approach = 0.6
             leave = 0.9
         else:
-            # 目标横向偏移：可见半宽 + 机体半宽 + 10 cm 余量（只读公开量）
-            w_vis = (self.params.get('W_vis')
-                     or (self.plan.get('W_vis') if self.plan else None))
-            if self.r is None and w_vis is not None:
-                self.r = float(w_vis) / 2.0 + self.ROBOT_HALF_W + 0.10
             approach = float(x_front) - 0.55
             leave = float(x_front) + 0.75
         if self.phase == 'idle' and x >= approach:

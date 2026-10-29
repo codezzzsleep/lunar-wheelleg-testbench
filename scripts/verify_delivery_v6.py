@@ -84,6 +84,8 @@ def main():
     s=j(ev/'summary.json'); rows=jl(ev/'execution.jsonl'); truth=j(b/'collision/TRUTH/manifest.json')['world_sha'] if False else s['truth_sha']
     e=validate_eval(rows,s,truth); ck('正式比较记录/初态/真值',not e,e[:5])
     ck('方法数 5',len(s['methods'])==5,[m['method'] for m in s['methods']])
+    tw=ev/'truth_world/body.stl'
+    ck('正式比较真值文件 SHA',tw.exists() and sha(tw)==s['truth_sha'],str(tw))
     # G
     g=j(b/'observation/summary.json'); ck('第二观察真实触发',g['triggered'] is True and g['no_rejection'] is True)
     ck('第二观察 A0',g['decision']['chosen']=='A0')

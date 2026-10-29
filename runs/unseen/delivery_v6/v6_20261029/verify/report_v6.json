@@ -1,8 +1,8 @@
 {
   "manifest": "runs/unseen/delivery_v6/v6_20261029/manifest.json",
   "batch_id": "v6_20261029",
-  "n_checks": 32,
-  "n_pass": 32,
+  "n_checks": 33,
+  "n_pass": 33,
   "n_fail": 0,
   "checks": [
     {
@@ -80,6 +80,11 @@
         "B0_blind",
         "U_truth"
       ]
+    },
+    {
+      "check": "正式比较真值文件 SHA",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v6/v6_20261029/evaluation/R01_matched_v2/truth_world/body.stl"
     },
     {
       "check": "第二观察真实触发",

@@ -139,6 +139,14 @@ def common_grid(meshes, pitch, margin=3):
             'zs': zs, 'X': X, 'Y': Y, 'Z': Z}
 
 
+def to_world(mesh, x=1.8):
+    """把局部网格放到与观测一致的世界位置（贴地）。"""
+    m = mesh.copy()
+    m.apply_translation([float(x), 0.0, 0.0])
+    m.apply_translation([0, 0, -float(m.bounds[0][2])])
+    return m
+
+
 def occ_on(mesh, grid):
     return FZ.parent_solid(mesh, grid, 1)[0]
 
@@ -184,8 +192,9 @@ def main():
     obs = observe(case, f0 / 'observation')
     fus = fuse_one(obs, truth_world, 'F0_parent', f0 / 'fusion', a.config, a.pitch)
     fused0 = trimesh.load(f0 / 'fusion/body.stl', force='mesh')
-    grid = common_grid([base, fused0], pitch)
-    occ_t = occ_on(base, grid); occ_f = occ_on(fused0, grid)
+    base_w = to_world(base)
+    grid = common_grid([base_w, fused0], pitch)
+    occ_t = occ_on(base_w, grid); occ_f = occ_on(fused0, grid)
     inter = int((occ_t & occ_f).sum()); union = int((occ_t | occ_f).sum())
     results['rows'].append({
         'id': 'F0', 'status': 'PASS' if fus['strict']['pass'] and inter / union >= 0.9 else 'FAIL',
@@ -212,9 +221,10 @@ def main():
     fus1 = fuse_one(obs1, parent_w, 'F1_parent', f1 / 'fusion', a.config, a.pitch)
     # 隐藏核心：x > 物体中位面（远离可见面与测量带）
     fused1 = trimesh.load(f1 / 'fusion/body.stl', force='mesh')
-    grid1 = common_grid([base, m, fused1], pitch)
-    occ_t1 = occ_on(base, grid1); occ_f1 = occ_on(fused1, grid1)
-    xmid = float(np.median(base.bounds[:, 0]))
+    base_w1 = to_world(base)
+    grid1 = common_grid([base_w1, m, fused1], pitch)
+    occ_t1 = occ_on(base_w1, grid1); occ_f1 = occ_on(fused1, grid1)
+    xmid = float(np.median(base_w1.bounds[:, 0]))
     hid = grid1['X'] > xmid
     hid_core = occ_t1 & hid
     kept = hid_core & occ_f1

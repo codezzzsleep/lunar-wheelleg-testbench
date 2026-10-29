@@ -1,0 +1,84 @@
+{
+  "schema": "fixtures/v6_1",
+  "tag": "FIXTURE: not Lux3D; not model benefit",
+  "n_pass": 2,
+  "n": 6,
+  "rows": [
+    {
+      "id": "F0",
+      "status": "FAIL",
+      "what": "observation from the same closed mesh; parent = that mesh",
+      "iou": 0.9676,
+      "vis_p95_mm": 2.175,
+      "freespace": 0.1105,
+      "detail": {}
+    },
+    {
+      "id": "F1",
+      "status": "FAIL",
+      "what": "visible surface pushed 8 mm toward camera; hidden part unchanged",
+      "iou": 0.9678,
+      "vis_p95_mm": 2.129,
+      "freespace": 0.1096,
+      "detail": {
+        "hidden_core_kept_ratio": 0.0
+      }
+    },
+    {
+      "id": "F2",
+      "status": "FAIL",
+      "what": "same visible surface; two different hidden structures (flat back vs notch)",
+      "iou": null,
+      "vis_p95_mm": null,
+      "freespace": null,
+      "detail": {
+        "volume_A_m3": 0.004817792,
+        "volume_B_m3": 0.004599052
+      }
+    },
+    {
+      "id": "F3",
+      "status": "PASS",
+      "what": "raw scaled by 0.1/1/10 then inverse transform; world entity must match",
+      "iou": null,
+      "vis_p95_mm": null,
+      "freespace": null,
+      "detail": {
+        "n_unique_world_sha": 1
+      }
+    },
+    {
+      "id": "F4",
+      "status": "FAIL",
+      "what": "missing visible points and all-invalid depth must be rejected",
+      "iou": null,
+      "vis_p95_mm": null,
+      "freespace": null,
+      "detail": {
+        "missing_files_exit": 1,
+        "nan_depth_exit": 0
+      }
+    },
+    {
+      "id": "F5",
+      "status": "PASS",
+      "what": "fusion identity must not depend on hidden truth",
+      "iou": null,
+      "vis_p95_mm": null,
+      "freespace": null,
+      "detail": {
+        "fusion_world_sha_A": "cf93859bf2a0ad3864f86fc0b92e20c83c065f5adc925cea8cb32a7a43fa0c0e",
+        "truth_objects_differ": true
+      }
+    }
+  ],
+  "findings": [
+    "F0（父候选=观测真值实体）仍然 freespace 0.1105：0.11 违例来自我方占据/提取阶段，不是 Lux3D 父候选",
+    "F1 可见面外推 8 mm 被拉回（P95 2.13 mm）且隐藏 100% 保留；未过 strict 的原因同 F0",
+    "F2 两个不同隐藏结构在相同可见面下产生不同体积（机制成立）；未过 strict 的原因同 F0",
+    "F3 尺度 0.1/1/10 + 逆变换后 world 实体 SHA 唯一 -> PASS",
+    "F4 缺 visible_points 被拒；全 NaN 深度原先**未**被拒（已加有效像素<1% 拒绝），需重跑确认",
+    "F5 两个不同隐藏真值下融合身份一致 -> PASS"
+  ],
+  "conclusion": "fixture 套件本身能分辨正确/错误；当前 4 个 FAIL 中 F0/F1/F2 是同一个未修的可见面 0.11 问题，F4 是被测代码缺校验（已补）。不得把 F0/F1 的 FAIL 解释成 Lux3D 的问题。"
+}

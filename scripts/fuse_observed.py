@@ -400,6 +400,11 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     if vis.ndim != 2 or vis.shape[1] != 3 or len(vis) < 10:
         raise SystemExit(f'visible_points 形状异常 {getattr(vis, "shape", None)}')
     grid = make_grid(parent, vis, pitch, int(cfg['margin_cells']))
+    _d = np.load(observation / 'depth.npy')
+    _valid = np.isfinite(_d) & (_d > 0) & (_d < 100.0)
+    if _valid.mean() < 0.01:
+        raise SystemExit(
+            f'深度图有效像素比例 {_valid.mean():.4f} < 1%，拒绝融合（不要把坏观测当成全未知）')
     space, space_stats = classify_space(observation, grid,
                                         float(cfg['free_epsilon_m']),
                                         float(cfg['band_m']),

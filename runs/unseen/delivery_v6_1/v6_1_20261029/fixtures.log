@@ -1,11 +1,7 @@
-fuse 失败 F2_flat_back: ipts/fuse_observed.py", line 443, in fuse
-    tmp = out / '_metric.stl'; mesh.export(tmp)
-                               ^^^^^^^^^^^^^^^^
-  File "/var/lib/deepseek-harness/lunar-lab/.venv/lib/python3.12/site-packages/trimesh/base.py", line 3042, in export
-    return export_mesh(mesh=self, file_obj=file_obj, file_type=file_type, **kwargs)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "/var/lib/deepseek-harness/lunar-lab/.venv/lib/python3.12/site-packages/trimesh/exchange/export.py", line 55, in export_mesh
-    file_obj = open(file_path, "wb")
-               ^^^^^^^^^^^^^^^^^^^^^
-FileNotFoundError: [Errno 2] No such file or directory: '/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F2/fusion_flat/_metric.stl'
-
+F0 FAIL | observation from the same closed mesh; parent = that mesh
+F1 FAIL | visible surface pushed 8 mm toward camera; hidden part unchanged
+F2 FAIL | same visible surface; two different hidden structures (flat back vs notch)
+F3 PASS | raw scaled by 0.1/1/10 then inverse transform; world entity must match
+F4 FAIL | missing visible points and all-invalid depth must be rejected
+F5 PASS | fusion identity must not depend on hidden truth
+{"n": 6, "fail": ["F0", "F1", "F2", "F4"]}

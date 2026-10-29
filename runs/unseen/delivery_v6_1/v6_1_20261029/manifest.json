@@ -45,37 +45,32 @@
       "status": "partial",
       "artifacts": [
         "scripts/v6_1_fixtures.py",
-        "fixtures/fixtures_partial.json"
+        "fixtures/fixtures.json",
+        "fixtures/summary.json"
       ],
       "evidence": {
-        "completed": [
-          "F0",
-          "F1"
-        ],
-        "not_run": [
-          "F2",
-          "F3",
-          "F4",
-          "F5"
-        ],
+        "n_pass": 2,
+        "n": 6,
         "F0": {
-          "parent_is_truth": true,
           "iou": 0.9676,
           "vis_p95_mm": 2.175,
-          "freespace": 0.1105,
-          "hidden_kept_ratio": 1.0
+          "freespace": 0.1105
         },
         "F1": {
-          "visible_shift_mm": 8,
           "iou": 0.9678,
           "vis_p95_mm": 2.129,
-          "freespace": 0.1096,
-          "hidden_kept_ratio": 1.0,
-          "carved_free_voxels": 1206
-        }
+          "freespace": 0.1096
+        },
+        "F2": {
+          "volume_A_m3": 0.004817792,
+          "volume_B_m3": 0.004599052
+        },
+        "F3": "PASS unique world sha",
+        "F4": "missing rejected; all-NaN depth was accepted (guard added)",
+        "F5": "PASS identity independent of truth"
       },
-      "finding": "F0 用真值实体本身作父候选仍有 freespace 0.1105：该违例来自我方占据/提取阶段（壳厚、mask 膨胀、体素量化），不是 Lux3D 父候选造成；F1 证明可见面被拉回且隐藏 100% 保留。",
-      "blocker": "F2 起 fuse 子进程导出阶段报目录不存在（harness 路径缺陷），未跑不伪造"
+      "finding": "F0 用真值实体本身作父候选仍有 freespace 0.1105 -> 0.11 违例来自我方占据/提取阶段（壳厚 1 体素、mask 膨胀 1 px、band 7.5 mm 与 5 mm 体素），不是 Lux3D 父候选造成。",
+      "next": "F4 加校验后重跑；可见面 0.11 需在壳/掩码层修正"
     },
     "C": {
       "status": "partial",

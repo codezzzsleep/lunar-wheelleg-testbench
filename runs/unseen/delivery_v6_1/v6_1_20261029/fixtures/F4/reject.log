@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 589, in <module>
+    main()
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 580, in main
+    man = fuse(a.observation, a.parent_world, a.parent_id, a.out, cfg,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py", line 399, in fuse
+    vis = np.load(observation / 'visible_points.npy')
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/.venv/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py", line 454, in load
+    fid = stack.enter_context(open(os.fspath(file), "rb"))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F4/bad_obs/visible_points.npy'

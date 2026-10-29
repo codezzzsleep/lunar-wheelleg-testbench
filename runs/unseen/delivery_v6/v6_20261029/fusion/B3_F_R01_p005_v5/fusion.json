@@ -1,0 +1,93 @@
+{
+  "schema": "fused-asset/v1",
+  "method": "B3_F",
+  "parent_id": "B3_F_R01",
+  "source_kind": "B3_F",
+  "parent_source_kind": "mirror",
+  "coordinate_frame": "world",
+  "parts": [
+    "body.stl"
+  ],
+  "world_sha": "24d25ccdda927c24743626f468f68e277fe37c11116102de6009f305efba65bf",
+  "pitch_m": 0.005,
+  "fusion_version": "fuse-observed/v1",
+  "inputs": {
+    "observation": "runs/unseen/recovery_r3/obs_R01",
+    "observation_sha": null,
+    "parent_world": "runs/unseen/delivery_v6/v6_20261029/fusion/B3F_parent",
+    "parent_world_sha": "948bca7d6facd1b88ef1716a8bca3287887219a0e55526683f746e5c4443e03e",
+    "parent_mesh_sha": "948bca7d6facd1b88ef1716a8bca3287887219a0e55526683f746e5c4443e03e"
+  },
+  "grid": {
+    "origin": [
+      -0.015,
+      -0.08650567322969437,
+      0.0
+    ],
+    "dims": [
+      417,
+      39,
+      71
+    ],
+    "pitch_m": 0.005,
+    "n_voxels": 1154673
+  },
+  "regions": {
+    "vertex_counts": {
+      "0": 14762,
+      "1": 24948,
+      "2": 18506,
+      "3": 0
+    },
+    "face_counts": {
+      "0": 28892,
+      "1": 50394,
+      "2": 37178,
+      "3": 0
+    },
+    "observed_surface": "camera-constrained shell",
+    "generated_hidden": "parent interior outside observed free space",
+    "ground_cap": "z<=1.5 pitch",
+    "unknown_or_unassigned": "else"
+  },
+  "watertight": true,
+  "volume_m3": 0.011259923,
+  "bounds": [
+    [
+      1.6375000000000002,
+      -0.07900567322969437,
+      -0.0025
+    ],
+    [
+      2.0524999999999998,
+      0.09099432677030563,
+      0.3375
+    ]
+  ],
+  "metrics": {
+    "mask_iou": 0.9386,
+    "cand_px": 10353,
+    "obs_px": 9721,
+    "n_inter": 9719,
+    "resolution": [
+      1280,
+      960
+    ],
+    "depth_med_mm": 3.489,
+    "depth_p95_mm": 9.256,
+    "depth_inner_rms_mm": 5.489,
+    "depth_edge_rms_mm": 13.397,
+    "freespace_violation": 0.0463,
+    "freespace_n_px": 479,
+    "freespace_denom_px": 10353,
+    "freespace_outside_mask": 228,
+    "metric_version": "align-metric/v2.1",
+    "vis_pt_med_mm": 1.062,
+    "vis_pt_p95_mm": 2.863,
+    "vis_pt_n": 1200,
+    "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+  },
+  "no_generated_hidden_contribution": false,
+  "seconds": 98.14,
+  "note": "B3-F：镜像先验 + 同一观测约束。镜像来自可见点云，不是 Lux3D 生成。"
+}

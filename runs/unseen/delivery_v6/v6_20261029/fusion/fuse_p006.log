@@ -1,0 +1,5 @@
+/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py:291: RuntimeWarning: invalid value encountered in cast
+  ui = np.clip(np.round(u).astype(int), 0, depth.shape[1] - 1)
+/var/lib/deepseek-harness/lunar-lab/scripts/fuse_observed.py:292: RuntimeWarning: invalid value encountered in cast
+  vi = np.clip(np.round(v).astype(int), 0, depth.shape[0] - 1)
+{"method": "H5_F", "parent_id": "C_R01_face12k", "world_sha": "574f36c65d235bc2fc05a96ac3338fd9e85cbf585af57bf59e98cc7c74905647", "watertight": true, "volume_m3": 0.013479444, "regions": {"vertex_counts": {"0": 13219, "1": 1185, "2": 14082, "3": 95934}, "face_counts": {"0": 26606, "1": 2212, "2": 28266, "3": 191868}, "observed_surface": "camera-constrained shell", "generated_hidden": "parent interior outside observed free space", "ground_cap": "z<=1.5 pitch", "unknown_or_unassigned": "else"}, "no_generated_hidden_contribution": false, "seconds": 47.34}

@@ -1,0 +1,93 @@
+{
+  "schema": "fused-asset/v1",
+  "method": "H5_F",
+  "parent_id": "C_R01_face12k",
+  "source_kind": "H5_F",
+  "parent_source_kind": "lux3d",
+  "coordinate_frame": "world",
+  "parts": [
+    "body.stl"
+  ],
+  "world_sha": "c43e2e64f5f12d8ce2c827cee81a5d2619eeb8756b1166ce8077291bd5b42c38",
+  "pitch_m": 0.006,
+  "fusion_version": "fuse-observed/v1",
+  "inputs": {
+    "observation": "runs/unseen/recovery_r3/obs_R01",
+    "observation_sha": null,
+    "parent_world": "runs/unseen/delivery_v5/v5_20261029/candidates/C_R01_face12k/world/align",
+    "parent_world_sha": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1",
+    "parent_mesh_sha": "64443c9be5f5c5d8107d513bcfa16c7adb185e63d2d1d371f5f4404764773ea1"
+  },
+  "grid": {
+    "origin": [
+      -0.018000000000000002,
+      -0.08950566965394215,
+      0.0
+    ],
+    "dims": [
+      317,
+      33,
+      60
+    ],
+    "pitch_m": 0.006,
+    "n_voxels": 627660
+  },
+  "regions": {
+    "vertex_counts": {
+      "0": 9859,
+      "1": 10269,
+      "2": 15248,
+      "3": 0
+    },
+    "face_counts": {
+      "0": 19844,
+      "1": 20402,
+      "2": 30882,
+      "3": 0
+    },
+    "observed_surface": "camera-constrained shell",
+    "generated_hidden": "parent interior outside observed free space",
+    "ground_cap": "z<=1.5 pitch",
+    "unknown_or_unassigned": "else"
+  },
+  "watertight": true,
+  "volume_m3": 0.001785051,
+  "bounds": [
+    [
+      1.635,
+      -0.07450566965394215,
+      -0.003
+    ],
+    [
+      1.863,
+      0.08240130116900464,
+      0.3332680476023382
+    ]
+  ],
+  "metrics": {
+    "mask_iou": 0.9362,
+    "cand_px": 10257,
+    "obs_px": 9721,
+    "n_inter": 9660,
+    "resolution": [
+      1280,
+      960
+    ],
+    "depth_med_mm": 2.204,
+    "depth_p95_mm": 6.788,
+    "depth_inner_rms_mm": 4.396,
+    "depth_edge_rms_mm": 17.406,
+    "freespace_violation": 0.0744,
+    "freespace_n_px": 763,
+    "freespace_denom_px": 10257,
+    "freespace_outside_mask": 284,
+    "metric_version": "align-metric/v2.1",
+    "vis_pt_med_mm": 0.807,
+    "vis_pt_p95_mm": 1.925,
+    "vis_pt_n": 1200,
+    "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+  },
+  "no_generated_hidden_contribution": false,
+  "seconds": 60.01,
+  "note": "H5-F：观测约束 + Lux3D 父候选隐藏几何；可见面部分由构造得到，不证明 Lux3D 自己重建准确。不能标成纯 lux3d strict pass。"
+}

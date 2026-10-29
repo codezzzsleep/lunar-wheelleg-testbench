@@ -1,0 +1,94 @@
+{
+  "schema": "fused-asset/v1",
+  "method": "H5_F",
+  "parent_id": "F0_truth",
+  "source_kind": "fixture_truth",
+  "parent_source_kind": "lux3d",
+  "coordinate_frame": "world",
+  "parts": [
+    "body.stl"
+  ],
+  "world_sha": "8fe00d1cbc546df0d3946de889da48051d187a5f6cd6eb2c5c3048c87c1df281",
+  "pitch_m": 0.005,
+  "fusion_version": "fuse-observed/v1",
+  "inputs": {
+    "observation": "runs/unseen/recovery_r3/obs_R01",
+    "observation_sha": null,
+    "parent_world": "runs/unseen/recovery_r3/look_loop_R01_v3/truth/truth_world",
+    "parent_world_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed",
+    "parent_mesh_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed"
+  },
+  "grid": {
+    "origin": [
+      -0.015,
+      -0.08853989034891128,
+      0.0
+    ],
+    "dims": [
+      397,
+      39,
+      71
+    ],
+    "pitch_m": 0.005,
+    "n_voxels": 1099293
+  },
+  "regions": {
+    "vertex_counts": {
+      "0": 9058,
+      "1": 17185,
+      "2": 18607,
+      "3": 0
+    },
+    "face_counts": {
+      "0": 17514,
+      "1": 34760,
+      "2": 37470,
+      "3": 0
+    },
+    "observed_surface": "camera-constrained shell",
+    "generated_hidden": "parent interior outside observed free space",
+    "ground_cap": "z<=1.5 pitch",
+    "unknown_or_unassigned": "else"
+  },
+  "watertight": true,
+  "volume_m3": 0.007584979,
+  "bounds": [
+    [
+      1.6375000000000002,
+      -0.07603989034891129,
+      -0.0025
+    ],
+    [
+      1.9525000000000001,
+      0.0889601096510887,
+      0.3375
+    ]
+  ],
+  "metrics": {
+    "mask_iou": 0.9439,
+    "cand_px": 10295,
+    "obs_px": 9721,
+    "n_inter": 9719,
+    "resolution": [
+      1280,
+      960
+    ],
+    "depth_med_mm": 3.562,
+    "depth_p95_mm": 9.197,
+    "depth_inner_rms_mm": 5.502,
+    "depth_edge_rms_mm": 12.159,
+    "freespace_violation": 0.0444,
+    "freespace_n_px": 457,
+    "freespace_denom_px": 10295,
+    "freespace_outside_mask": 197,
+    "metric_version": "align-metric/v2.1",
+    "vis_pt_med_mm": 1.014,
+    "vis_pt_p95_mm": 3.024,
+    "vis_pt_n": 1200,
+    "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+  },
+  "no_generated_hidden_contribution": false,
+  "seconds": 90.13,
+  "note": "F0 fixture: truth parent, not Lux3D; only fusion correctness",
+  "fixture": true
+}

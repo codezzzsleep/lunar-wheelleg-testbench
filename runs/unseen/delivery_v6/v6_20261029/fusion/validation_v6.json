@@ -1,0 +1,160 @@
+{
+  "schema": "fusion-validation/v6",
+  "main_case": "R01",
+  "observation": "runs/unseen/recovery_r3/obs_R01",
+  "H5_F": {
+    "formal_5mm": {
+      "manifest": "fusion/C_R01_face12k_H5F_p005_v5/manifest.json",
+      "world_sha": "1e0bf3ef55c39d8d316bff0214dde6cef6bd5ebbd08d94d2b022e104e865cd6a",
+      "watertight": true,
+      "metrics": {
+        "mask_iou": 0.9475,
+        "cand_px": 9884,
+        "obs_px": 9721,
+        "n_inter": 9538,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 3.488,
+        "depth_p95_mm": 9.141,
+        "depth_inner_rms_mm": 5.466,
+        "depth_edge_rms_mm": 11.78,
+        "freespace_violation": 0.0376,
+        "freespace_n_px": 372,
+        "freespace_denom_px": 9884,
+        "freespace_outside_mask": 160,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 1.019,
+        "vis_pt_p95_mm": 2.823,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "hidden_face_count": 29796,
+      "strict_pass": true
+    },
+    "convergence_4mm": {
+      "manifest": "fusion/C_R01_face12k_H5F_p004_v11/manifest.json",
+      "world_sha": "834985ca996f83174abb802a362e7c95624aec006afc7a507fbd1992cf2b1039",
+      "metrics": {
+        "mask_iou": 0.9425,
+        "cand_px": 9848,
+        "obs_px": 9721,
+        "n_inter": 9495,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 1.67,
+        "depth_p95_mm": 5.041,
+        "depth_inner_rms_mm": 4.788,
+        "depth_edge_rms_mm": 10.99,
+        "freespace_violation": 0.0375,
+        "freespace_n_px": 369,
+        "freespace_denom_px": 9848,
+        "freespace_outside_mask": 149,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.632,
+        "vis_pt_p95_mm": 1.743,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict_pass": true
+    },
+    "coarse_6mm": {
+      "manifest": "fusion/C_R01_face12k_H5F_p006_converge/manifest.json",
+      "world_sha": "c43e2e64f5f12d8ce2c827cee81a5d2619eeb8756b1166ce8077291bd5b42c38",
+      "metrics": {
+        "mask_iou": 0.9362,
+        "cand_px": 10257,
+        "obs_px": 9721,
+        "n_inter": 9660,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 2.204,
+        "depth_p95_mm": 6.788,
+        "depth_inner_rms_mm": 4.396,
+        "depth_edge_rms_mm": 17.406,
+        "freespace_violation": 0.0744,
+        "freespace_n_px": 763,
+        "freespace_denom_px": 10257,
+        "freespace_outside_mask": 284,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 0.807,
+        "vis_pt_p95_mm": 1.925,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "strict_pass": false
+    },
+    "note": "4 mm 与 5 mm 过 strict；6 mm freespace 0.0744 未过。可见面部分由构造得到。"
+  },
+  "B3_F": {
+    "formal_5mm": {
+      "manifest": "fusion/B3_F_R01_p005_v5/manifest.json",
+      "world_sha": "24d25ccdda927c24743626f468f68e277fe37c11116102de6009f305efba65bf",
+      "watertight": true,
+      "metrics": {
+        "mask_iou": 0.9386,
+        "cand_px": 10353,
+        "obs_px": 9721,
+        "n_inter": 9719,
+        "resolution": [
+          1280,
+          960
+        ],
+        "depth_med_mm": 3.489,
+        "depth_p95_mm": 9.256,
+        "depth_inner_rms_mm": 5.489,
+        "depth_edge_rms_mm": 13.397,
+        "freespace_violation": 0.0463,
+        "freespace_n_px": 479,
+        "freespace_denom_px": 10353,
+        "freespace_outside_mask": 228,
+        "metric_version": "align-metric/v2.1",
+        "vis_pt_med_mm": 1.062,
+        "vis_pt_p95_mm": 2.863,
+        "vis_pt_n": 1200,
+        "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+      },
+      "hidden_face_count": 50394,
+      "strict_pass": true
+    }
+  },
+  "F0_fixture": {
+    "manifest": "fusion/F0_truth_p005/manifest.json",
+    "metrics": {
+      "mask_iou": 0.9439,
+      "cand_px": 10295,
+      "obs_px": 9721,
+      "n_inter": 9719,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 3.562,
+      "depth_p95_mm": 9.197,
+      "depth_inner_rms_mm": 5.502,
+      "depth_edge_rms_mm": 12.159,
+      "freespace_violation": 0.0444,
+      "freespace_n_px": 457,
+      "freespace_denom_px": 10295,
+      "freespace_outside_mask": 197,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 1.014,
+      "vis_pt_p95_mm": 3.024,
+      "vis_pt_n": 1200,
+      "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+    },
+    "strict_pass": true,
+    "note": "fixture: truth parent, 不计 Lux3D 收益"
+  },
+  "thresholds": {
+    "iou_min": 0.85,
+    "p95_mm": "max(5, 0.03*H_vis)",
+    "freespace_max": 0.05
+  },
+  "conclusion": "H5-F 可见几何可运行并通过页内 strict；B3-F 同融合器也通过。构造成功不等于隐藏形状正确；碰撞保真见 collision/summary.json。"
+}

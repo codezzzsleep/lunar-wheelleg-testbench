@@ -1,0 +1,140 @@
+{
+  "version": "candidate-ledger/v1",
+  "rows": [
+    {
+      "plan_id": "G_R01",
+      "task_id": 4463022,
+      "stone": "R01",
+      "input_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "glb_sha256": "cf9202582dbbc5ee012b31e8a916e46f6177b2a8ceff4b911598c0af589e40b6",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "cleanup_failed",
+      "thin_ratio": null,
+      "main_span_m": null,
+      "align_run": false,
+      "strict_pass": null,
+      "mask_iou": null,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    },
+    {
+      "plan_id": "G_R02",
+      "task_id": 4463077,
+      "stone": "R02",
+      "input_sha256": "becab345a5f519028e6fec73d65be10850106dd0e7f2a2cf11b79fe2f059901b",
+      "glb_sha256": "972fe39d491373e1b9ddc2770de24aaddaa5e9a71ff482da36e1a86940ff8255",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.31568,
+      "main_span_m": [
+        0.121786,
+        0.108463,
+        0.038446
+      ],
+      "align_run": true,
+      "strict_pass": false,
+      "mask_iou": 0.7447,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    },
+    {
+      "plan_id": "G_R03",
+      "task_id": 4463082,
+      "stone": "R03",
+      "input_sha256": "1e8193d264b25d80368f3de14e82f5c8e15c9e7e9e07e5c591a230fb46cb05a2",
+      "glb_sha256": "e867ad365a74e790e0e0361c24257d4a3164ccf00ad8944e16e7b2134fb02540",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.22815,
+      "main_span_m": [
+        0.149921,
+        0.150462,
+        0.034328
+      ],
+      "align_run": true,
+      "strict_pass": false,
+      "mask_iou": 0.8847,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    },
+    {
+      "plan_id": "G_R04",
+      "task_id": 4463091,
+      "stone": "R04",
+      "input_sha256": "83a34f227c84fa9530e0d8b3faf158998017bf83cf2afa8142cf82a35fa8d847",
+      "glb_sha256": "b770e9c415f399bd8c68e896c49e1536d0e47e9c87a2affe2dd430331998d66f",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.38575,
+      "main_span_m": [
+        0.120281,
+        0.120154,
+        0.046398
+      ],
+      "align_run": true,
+      "strict_pass": false,
+      "mask_iou": 0.7684,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    },
+    {
+      "plan_id": "G_R01_rep2",
+      "task_id": 4463124,
+      "stone": "R01",
+      "input_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "glb_sha256": "866f62087d483b2d0b1c00f59e194888356b3b8b82ec36b12d38c537ac71da73",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.4117,
+      "main_span_m": [
+        0.022583,
+        0.012009,
+        0.009297
+      ],
+      "align_run": false,
+      "strict_pass": null,
+      "mask_iou": null,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    },
+    {
+      "plan_id": "G_R01_rep3",
+      "task_id": 4463154,
+      "stone": "R01",
+      "input_sha256": "3d9b732eeff24e458e573824c0ae5424c733aa42a2e61a868f9600c126db5a33",
+      "glb_sha256": "6416b4aa29733474bc7e2fe1091124deaa762334e8674aebce3aa48dce56508a",
+      "provider_status": "downloaded",
+      "clean_version": "clean/v3",
+      "clean_verdict": "ok",
+      "thin_ratio": 0.43197,
+      "main_span_m": [
+        0.022015,
+        0.012995,
+        0.00951
+      ],
+      "align_run": false,
+      "strict_pass": null,
+      "mask_iou": null,
+      "planning_eligible": null,
+      "collision": null,
+      "execution": null
+    }
+  ],
+  "budget": {
+    "tasks_used": 24,
+    "credits_upper": 480,
+    "actual_charge": "unknown",
+    "this_round_new_creates": 0
+  },
+  "note": "缺一步写 pending/not_run，不写成生成失败；三份 R01 各一行，重复采样不是独立石头"
+}

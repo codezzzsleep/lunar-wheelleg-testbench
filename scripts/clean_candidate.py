@@ -24,11 +24,11 @@ import sys
 import numpy as np
 import trimesh
 
-VERSION = 'clean/v3'
-WELD_TOL = 1e-6
+VERSION = 'clean/v4'
+WELD_TOL_REL = 1e-5        # 焊接容差：相对**规范化后**对象尺度（不再是绝对 1e-6 m）
 THIN_RATIO_MIN = 0.2
 FRAGMENT_AREA_FRAC = 0.01
-FLOATING_THICK_M = 0.001
+FLOATING_THICK_REL = 0.01  # 浮空面判据：最小主轴跨度 / 最大主轴跨度
 FLOATING_AREA_FRAC = 0.03
 CONTAIN_FRAC = 0.90
 
@@ -69,7 +69,10 @@ def _weld(m):
     verts = np.asarray(m.vertices, dtype=np.float64)
     if len(verts) == 0 or len(m.faces) == 0:
         return m
-    key = np.round(verts / WELD_TOL).astype(np.int64)
+    # 焊接容差按对象尺度归一化：先算包围盒对角，再取相对容差
+    diag = float(np.linalg.norm(verts.max(0) - verts.min(0))) or 1.0
+    tol = max(diag * WELD_TOL_REL, 1e-12)
+    key = np.round(verts / tol).astype(np.int64)
     uniq, inv = np.unique(key, axis=0, return_inverse=True)
     rep = np.zeros((len(uniq), 3)); cnt = np.zeros(len(uniq))
     np.add.at(rep, inv, verts); np.add.at(cnt, inv, 1)
@@ -117,15 +120,18 @@ def analyse(path):
             'bounds_max': [round(float(x), 6) for x in b[1]],
         })
 
+    overall_max_span = max((i['max_span_m'] for i in infos), default=1.0) or 1.0
     by_area = sorted(range(len(infos)), key=lambda i: -infos[i]['area_frac'])
     keep, contain_status = None, 'ok'
     for i in by_area:
         x = infos[i]
         if x['area_frac'] < FRAGMENT_AREA_FRAC:
             continue
-        if x['max_span_m'] < 0.02:
+        # 不再用 2 cm **绝对**长度门（会随单位尺度改变判决）。
+        # 改为主体的最大跨度须占整体最大跨度的 >=15%（相对判据，尺度不变）。
+        if x['max_span_m'] < 0.15 * overall_max_span:
             continue
-        if min(x['principal_spans_m']) < FLOATING_THICK_M and x['area_frac'] >= FLOATING_AREA_FRAC:
+        if x['thin_ratio'] < FLOATING_THICK_REL and x['area_frac'] >= FLOATING_AREA_FRAC:
             continue
         keep = i
         break
@@ -152,9 +158,10 @@ def analyse(path):
         elif x['area_frac'] < FRAGMENT_AREA_FRAC:
             decisions.append({'index': i, 'decision': 'drop',
                               'reason': f"fragment: area_frac {x['area_frac']} < {FRAGMENT_AREA_FRAC}"})
-        elif min(spans) < FLOATING_THICK_M:
+        elif x['thin_ratio'] < FLOATING_THICK_REL:
             decisions.append({'index': i, 'decision': 'drop',
-                              'reason': f"floating plane: min span {min(spans)*1000:.3f} mm < 1 mm"})
+                              'reason': f"floating plane: thin_ratio {x['thin_ratio']} "
+                                        f"< {FLOATING_THICK_REL}"})
         elif x['thin_ratio'] < THIN_RATIO_MIN:
             decisions.append({'index': i, 'decision': 'drop',
                               'reason': f"thin shell: thin_ratio {x['thin_ratio']} < {THIN_RATIO_MIN}"})
@@ -220,8 +227,10 @@ def main():
             'verdict': 'rejected_thin' if thin else 'ok',
             'criteria': {'thin_ratio_min': THIN_RATIO_MIN,
                          'fragment_area_frac': FRAGMENT_AREA_FRAC,
-                         'floating_thick_m': FLOATING_THICK_M,
-                         'weld_tol_m': WELD_TOL},
+                         'floating_thin_ratio': FLOATING_THICK_REL,
+                         'weld_tol_rel': WELD_TOL_REL,
+                         'main_span_rel_min': 0.15,
+                         'note': '全部为相对判据，整体等比缩放不改变判决'},
         }
         rec['coordinate_frame'] = 'local (z_min=0); downstream applies T once'
     else:

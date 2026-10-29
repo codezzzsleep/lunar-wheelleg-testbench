@@ -7,6 +7,16 @@ worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。�
 
 > 页面是当前主入口；旧的考场与 RL/训练路线已降为历史，数据与报告仍保留在仓库里。
 
+
+## V6（2026-10-29）观测约束融合与连续回放
+
+V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可见面作为约束，与 face12k / 镜像父候选融合，得到 H5-F / B3-F；再做同真值、同初态、30 s 的匹配比较。
+
+- 入口：`runs/unseen/delivery_v6/v6_20261029/manifest.json`
+- 连续回放页：`runs/unseen/delivery_v6/v6_20261029/media/replay/index.html`
+- 当前状态：`docs/UNSEEN_STATUS_V6.md`
+- 关键限制：H5-F 可见几何过 strict，但 CoACD 32/64 的占据 IoU 只有 0.28，标 `COLLISION_UNRELIABLE`；H5-F 的 S1 成功不能归因于隐藏几何。第二观察真实触发但两者都保留，worst-case 选 A0；benefit=NOT_ESTABLISHED。
+
 ## 当前入口 / 先看什么
 
 ```bash

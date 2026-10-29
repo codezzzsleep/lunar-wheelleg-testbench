@@ -1,0 +1,131 @@
+{
+  "schema": "unseen-delivery-manifest/v6",
+  "batch_id": "v6_20261029",
+  "created": "2026-10-29",
+  "review_baseline": "2e3c5f44cefd895bf3b4503a424a0d6c55e72d6d",
+  "new_create": 0,
+  "plan": {
+    "path": "plans/unseen_delivery_v6.json",
+    "sha256": "e532518ab0392f56a12dbfc8d14171c98fb38c6e4b1c5123652652f2415396c7"
+  },
+  "protocol": {
+    "path": "configs/unseen_v6_protocol.json",
+    "sha256": "7c84cd5237b72c4732693128f62a8df8b3466d26e00444768fae882f560bd4c0"
+  },
+  "fusion_config": {
+    "path": "configs/unseen_v6_fusion.json",
+    "sha256": "e885bf5be7b379c4fc15afa087e44f89aa845015a101cc66f17fd4a269c8d110"
+  },
+  "v5_baseline": "runs/unseen/delivery_v5/v5_20261029/manifest.json",
+  "paths": {
+    "batch_dir": "runs/unseen/delivery_v6/v6_20261029",
+    "observations": "runs/unseen/recovery_r3/obs_R01",
+    "truth": "cases/unseen_v1/R01_truth_base.json",
+    "prediction_audit": "runs/unseen/delivery_v6/v6_20261029/prediction_audit",
+    "fusion": "runs/unseen/delivery_v6/v6_20261029/fusion",
+    "collision": "runs/unseen/delivery_v6/v6_20261029/collision",
+    "evaluation": "runs/unseen/delivery_v6/v6_20261029/evaluation/R01_matched_v2",
+    "observation": "runs/unseen/delivery_v6/v6_20261029/observation/R01_H5F_B3F",
+    "soil": "runs/unseen/delivery_v6/v6_20261029/soil",
+    "media": "runs/unseen/delivery_v6/v6_20261029/media",
+    "verify": "runs/unseen/delivery_v6/v6_20261029/verify",
+    "delivery": "runs/unseen/delivery_v6/v6_20261029/delivery.json"
+  },
+  "work_packages": {
+    "A": {
+      "status": "done",
+      "artifacts": [
+        "scripts/verify_delivery_v5.py",
+        "scripts/decision.py"
+      ],
+      "note": "实际 GLB/parts SHA、truth 交叉核对、统一 worst-case v2"
+    },
+    "B": {
+      "status": "done",
+      "artifacts": [
+        "prediction_audit/prediction_audit.json"
+      ],
+      "note": "R01 false safe=1; pred L2>S1, truth S1>L2"
+    },
+    "C": {
+      "status": "done",
+      "artifacts": [
+        "fusion/C_R01_face12k_H5F_p005_v5",
+        "fusion/B3_F_R01_p005_v5",
+        "fusion/validation_v6.json"
+      ],
+      "note": "H5-F/B3-F 5mm strict pass; 4mm pass; 6mm freespace fail"
+    },
+    "D": {
+      "status": "partial",
+      "artifacts": [
+        "fusion/fixtures_v6.json"
+      ],
+      "note": "F0/F2/F4/F5; F1/F3 not_run"
+    },
+    "E": {
+      "status": "done",
+      "artifacts": [
+        "collision/summary.json"
+      ],
+      "note": "H5-F 32/64 occupancy .284/.286 -> collision_unreliable; B3 .906"
+    },
+    "F": {
+      "status": "partial",
+      "artifacts": [
+        "evaluation/R01_matched_v2"
+      ],
+      "note": "H5_raw/H5_F/B3_F/B0/U 单候选；multi 未跑"
+    },
+    "G": {
+      "status": "done",
+      "artifacts": [
+        "observation/summary.json",
+        "observation/R01_H5F_B3F"
+      ],
+      "note": "triggered; both kept; A0; no_rejection"
+    },
+    "H": {
+      "status": "done",
+      "artifacts": [
+        "soil/static_v6.json",
+        "soil/summary_v6.json"
+      ],
+      "note": "真正静态 stable/contact；公式 vs 实测；V5 stability 复用"
+    },
+    "I": {
+      "status": "done",
+      "artifacts": [
+        "media/replay/index.html",
+        "media/trajectories",
+        "media/page/v6_replay_page.png"
+      ],
+      "note": "3 条真实轨迹 GIF + 页面截图"
+    },
+    "J": {
+      "status": "done",
+      "artifacts": [
+        "verify/report_v6.json",
+        "scripts/verify_delivery_v6.py"
+      ],
+      "note": "32/32 incl real negatives"
+    }
+  },
+  "status": {
+    "execution_status": "PARTIAL",
+    "evidence_status": "MIXED",
+    "capability_status": "PARTIAL",
+    "benefit_status": "NOT_ESTABLISHED"
+  },
+  "note": "V6 使用现有 V5 资产，new create=0；H5-F 可见构造通过不等于隐藏形状/碰撞保真；收益不因页面或测试升级。",
+  "verify": {
+    "report": "verify/report_v6.json",
+    "n_pass": 32,
+    "n_checks": 32
+  },
+  "evaluation": {
+    "dir": "evaluation/R01_matched_v2",
+    "truth_sha": "ae1837cd3114b90e895c9f593704dbda05bf8f717c5179b9cc544ee42b24ebe2",
+    "decision_rule": "worst-case-risk/v2"
+  }
+}

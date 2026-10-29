@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><title>V6 · 观测约束融合与连续回放</title>
+<style>
+body{margin:0;background:#0d1117;color:#e6edf3;font:15px/1.55 -apple-system,Segoe UI,Roboto,Noto Sans CJK SC,sans-serif}
+header{padding:22px 30px 10px;border-bottom:1px solid #30363d}
+h1{font-size:24px;margin:0 0 6px}h2{font-size:18px;margin:0 0 10px;color:#f0f6fc}
+.sub{color:#8b949e}.wrap{padding:18px 30px 50px;max-width:1440px;margin:auto}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px}
+img{max-width:100%;border-radius:5px;background:#000}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.gold{color:#d29922}.ok{color:#3fb950}.bad{color:#f85149}.small{font-size:12.5px}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{border-bottom:1px solid #30363d;padding:6px;text-align:left}
+th{color:#8b949e}.tag{display:inline-block;border:1px solid #30363d;border-radius:99px;padding:1px 8px;font-size:12px;color:#8b949e}
+</style></head><body>
+<header><h1>V6 · 观测约束融合与连续回放</h1>
+<div class="sub">raw H5 / H5-F / B3-F 同观测约束 · 独立仿真真值 · 30 s 协议 · 无新增付费 create</div></header>
+<div class="wrap">
+
+<div class="card"><h2>0 · 当前结论（证据边界）</h2>
+<p>H5-F 是<strong>观测约束 + Lux3D 父候选隐藏几何</strong>，不是原始 Lux3D strict pass；可见面一致性部分由构造得到。
+B3-F 用镜像先验 + 同一融合器。当前主案例 R01 的 H5-F 可见几何已过 strict。
+<span class="tag">输入=仿真 RGB-D</span> <span class="tag">执行=独立仿真</span> <span class="tag">不是真实机器人</span></p>
+<p class="small">收益、第二观察和最终比较必须以真实执行记录为准；页面不把预演动画冒称真值成功。</p></div>
+
+<h2 style="margin-top:22px">1 · 看见</h2>
+<div class="grid">
+<div class="card"><h3>机器人首视角 RGB</h3><img src="../assets/observation_rgb.png" alt="R01 RGB"></div>
+<div class="card"><h3>可见面 mask</h3><img src="../assets/observation_mask.png" alt="R01 mask"></div>
+<div class="card"><h3>公开可见量</h3><p class="mono">x_front = 1.6357 m<br>W_vis = 0.1558 m<br>H_vis = 0.3319 m<br>camera = (0.417, -0.000, 0.320)<br>observation = obs_R01</p>
+<p class="small">深度只用于可见面分割、位置/尺度；不把隐藏真值写入规划器。</p></div></div>
+
+<h2 style="margin-top:22px">2 · 生成与融合</h2>
+<div class="grid">
+<div class="card"><h3>raw H5 · face12k</h3><img src="../assets/raw_face12k.png" alt="raw"><p class="small">真实 Lux3D 父候选；strict fail（P95 11.0 mm、freespace 0.5106）。</p></div>
+<div class="card"><h3>H5-F · 5 mm 融合</h3><img src="../assets/H5F_R01_v5.png" onerror="this.src='../assets/H5F_R01.png'" alt="H5-F"><p class="small">观测约束可见面 + 父候选 generated_hidden；<b class="ok">可见几何 strict pass</b>（m 值见下表）。</p></div>
+<div class="card"><h3>B3-F · 镜像 + 同一约束</h3><img src="../assets/B3F_R01_v5.png" onerror="this.src='../assets/B3F_R01.png'" alt="B3-F"><p class="small">镜像先验不是 Lux3D；用来看“可见面处理相同，隐藏先验不同”的作用。</p></div></div>
+
+<div class="card" style="margin-top:14px"><h3>融合几何验收（同一原生分辨率/同一相机）</h3>
+<table><tr><th>method</th><th>IoU</th><th>P95</th><th>freespace</th><th>watertight</th><th>hidden faces</th><th>status</th></tr>
+<tr><td>H5-F 5 mm</td><td>0.9475</td><td>2.82 mm</td><td>0.0376</td><td>true</td><td>~49k</td><td class="ok">strict pass</td></tr>
+<tr><td>H5-F 4 mm（收敛检查）</td><td>0.9425</td><td>1.74 mm</td><td>0.0375</td><td>true</td><td>~49k</td><td class="ok">strict pass</td></tr>
+<tr><td>B3-F 5 mm</td><td>0.9386</td><td>2.86 mm</td><td>0.0463</td><td>true</td><td>~50k</td><td class="ok">strict pass</td></tr>
+<tr><td>raw H5</td><td>0.8622</td><td>11.0 mm</td><td>0.5106</td><td>—</td><td>—</td><td class="bad">strict fail</td></tr></table>
+<p class="small">H5-F 可见面一致性由观测约束构造；hidden faces 表示输出中仍保留的父候选隐藏区域，不等于隐藏形状正确。B3-F 用同一融合器；0.0463 是当前通过值，不代表隐藏先验更好。</p></div>
+
+<h2 style="margin-top:22px">3 · 试走：候选预演不是真值</h2>
+<div class="card"><h3>raw H5 · 候选上 L2（预测成功，6.10 s）</h3>
+<img src="./H5_raw_L2_seed0.gif" alt="raw candidate L2"><p class="small">这是<b>候选预演</b>，不是独立真值成功；用于对照下一屏。</p></div>
+
+<h2 style="margin-top:22px">4 · 决定与揭晓：同初态真值</h2>
+<div class="grid">
+<div class="card"><h3>真值 L2 · seed0（30.02 s 超时）</h3><img src="./truth_L2_seed0.gif" alt="truth L2"><p class="small bad">与候选预测相反：真值未在 30 s 内通过。</p></div>
+<div class="card"><h3>真值 S1 · seed0（6.54 s 成功）</h3><img src="./truth_S1_seed0.gif" alt="truth S1"><p class="small ok">同初态下 S1 成功；V5 的 L2 选择被真值推翻。</p></div>
+<div class="card"><h3>预测误差</h3><p class="mono">L2: pred 3/3 · truth 2/3<br>S1: pred 3/3 · truth 3/3<br>false safe = 1 (L2 seed0)<br>pred rank L2 &gt; S1<br>truth rank S1 &gt; L2</p>
+<p class="small">0.3 s 的预测优势不足以支持 L2；V6 统一决策与验证初态后才可谈收益。</p></div></div>
+
+<h2 style="margin-top:22px">5 · 月壤静载（V6 修正）</h2>
+<div class="card">
+<table><tr><th>项</th><th>结果</th><th>说明</th></tr>
+<tr><td>真正静态</td><td>stable_ok=true，min_ncon=12</td><td>brake_step 零轮速/制动保持，不是 env.step(零) 的 v_ref 驱动</td></tr>
+<tr><td>公式下陷</td><td>9.75 mm</td><td>该轮法向载荷/轮宽/轮径；Bekker 估计</td></tr>
+<tr><td>实测轮底穿透</td><td>−0.89 mm</td><td>同一时刻轮底相对地面；几何下陷仍未实现</td></tr></table>
+<p class="small">整机几何下陷仍是项目已知缺口；不把公式估计写成物理实现。</p></div>
+
+<div class="card" style="margin-top:14px"><h3>证据入口</h3>
+<p class="small">manifest：<span class="mono">runs/unseen/delivery_v6/v6_20261029/manifest.json</span><br>
+融合：<span class="mono">fusion/*/manifest.json</span> · 预测误差：<span class="mono">prediction_audit/prediction_audit.json</span><br>
+轨迹：<span class="mono">media/trajectories/*.json</span> · 验收：<span class="mono">verify/</span></p></div>
+
+</div></body></html>

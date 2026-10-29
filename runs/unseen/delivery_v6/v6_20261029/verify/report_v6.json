@@ -1,0 +1,186 @@
+{
+  "manifest": "runs/unseen/delivery_v6/v6_20261029/manifest.json",
+  "batch_id": "v6_20261029",
+  "n_checks": 32,
+  "n_pass": 32,
+  "n_fail": 0,
+  "checks": [
+    {
+      "check": "manifest 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "plan SHA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "protocol SHA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "new create=0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "V5 ledger 27 任务 / 540 上界",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "无 V6 create 行",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "H5-F 几何/来源",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "H5-F 父候选 SHA",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B3-F 几何/来源",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "碰撞保真 H5-F 标 unreliable",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "碰撞 64 部件未改善",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "B3-F 碰撞近似",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "正式比较记录/初态/真值",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "方法数 5",
+      "pass": true,
+      "detail": [
+        "H5_raw",
+        "H5_F_single",
+        "B3_F",
+        "B0_blind",
+        "U_truth"
+      ]
+    },
+    {
+      "check": "第二观察真实触发",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "第二观察 A0",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "月壤真正静态",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "预测误差 false safe=1",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "fixture F0/F2/F4/F5 已跑",
+      "pass": true,
+      "detail": {
+        "F0": "PASS",
+        "F1": "NOT_RUN",
+        "F2": "PASS",
+        "F3": "NOT_RUN",
+        "F4": "PASS",
+        "F5": "PASS"
+      }
+    },
+    {
+      "check": "fixture F1/F3 如实 not_run",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "连续 GIF 3 条",
+      "pass": true,
+      "detail": [
+        "truth_L2_seed0.gif",
+        "truth_S1_seed0.gif",
+        "H5_raw_L2_seed0.gif"
+      ]
+    },
+    {
+      "check": "页面 HTML 存在",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "真实浏览器截图",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "轨迹一致 H5_raw_L2_seed0.json",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "轨迹一致 truth_S1_seed0.json",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "轨迹一致 truth_L2_seed0.json",
+      "pass": true,
+      "detail": []
+    },
+    {
+      "check": "neg 重复执行键",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg truth 同错",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg 隐藏贡献伪造",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg 静态仍驱动",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg 动画终态不符",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "neg fixture 冒充 H5-F",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

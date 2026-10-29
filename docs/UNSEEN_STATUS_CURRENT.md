@@ -1,5 +1,8 @@
 # 当前状态入口（唯一）
 
+> **V6（2026-10-29）当前状态：见 [`docs/UNSEEN_STATUS_V6.md`](UNSEEN_STATUS_V6.md)。**
+> V5 段落保留为历史；V6 的 H5-F/B3-F、碰撞不可靠、第二观察 A0 以 V6 文件为准。
+
 main 见 `git log`；已推送。旧报告保留原样。
 
 > **V5（2026-10-29）当前状态：见 [`docs/UNSEEN_STATUS_V5.md`](UNSEEN_STATUS_V5.md)。**

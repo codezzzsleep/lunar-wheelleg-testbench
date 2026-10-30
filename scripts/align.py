@@ -80,7 +80,8 @@ def _edge_band(mask, k=EDGE_BAND_PX):
     return mask & ~inner
 
 
-def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
+def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None,
+                posed_dir=None, want_arrays=False):
     """
     用与观测**同一相机、同一初态、原生分辨率**重渲染候选，输出分区域、分定义的指标。
 
@@ -113,10 +114,14 @@ def render_eval(mesh_world, obs, tmpdir=None, W=None, H=None, want_vis_pt=None):
     # MuJoCo 3.x 会按文件名缓存网格资产：同一个路径写不同网格会拿到旧的几何。
     # 因此每次调用用唯一目录名，绝不复用 posed_tmp/mesh.stl。
     import uuid as _uuid
-    pd = pathlib.Path(tmpdir).parent / f'posed_{_uuid.uuid4().hex[:12]}'
-    pd.mkdir(parents=True, exist_ok=True)
-    (pd / 'mesh.stl').write_bytes(pathlib.Path(tmpdir).read_bytes())
-    (pd / 'manifest.json').write_text(json.dumps({'parts': ['mesh.stl']}))
+    if posed_dir is not None:
+        # 多视觉 mesh：直接用已写好的 posed world（parts 列表），不复制单文件
+        pd = pathlib.Path(posed_dir)
+    else:
+        pd = pathlib.Path(tmpdir).parent / f'posed_{_uuid.uuid4().hex[:12]}'
+        pd.mkdir(parents=True, exist_ok=True)
+        (pd / 'mesh.stl').write_bytes(pathlib.Path(tmpdir).read_bytes())
+        (pd / 'manifest.json').write_text(json.dumps({'parts': ['mesh.stl']}))
 
     spec = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.8, name='align')
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}

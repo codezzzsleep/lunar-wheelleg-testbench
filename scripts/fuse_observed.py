@@ -489,8 +489,22 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     metrics = {}
     try:
         import align
+        # 面数超过 MuJoCo 单 mesh 上限时，用同场景多视觉 mesh 渲染（§11.3）：
+        # 几何不变、相机不变，只是把同一个网格拆成若干块放进同一场景。
+        _posed = None
+        try:
+            import v7_multimesh as _MM
+            if len(mesh.faces) > _MM.MAX_FACES_DEFAULT:
+                _pd = out / '_visual_parts'
+                _parts, _meta = _MM.split_mesh(mesh, _MM.MAX_FACES_DEFAULT)
+                _MM.write_world(_parts, _pd, sha_file(body), len(mesh.faces), {'split': _meta})
+                _posed = str(_pd)
+                metrics['visual_parts'] = _meta
+        except Exception as _e:
+            metrics['visual_parts_error'] = f'{type(_e).__name__}: {_e}'
         metrics = align.render_eval(mesh, str(observation), tmpdir=str(tmp),
-                                    W=None, H=None, want_vis_pt=False)
+                                    W=None, H=None, want_vis_pt=False,
+                                    posed_dir=_posed)
         from meshdist import point_to_mesh_distance
         pw = vis
         if len(pw) > 1200:

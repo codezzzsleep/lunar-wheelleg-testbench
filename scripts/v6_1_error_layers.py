@@ -113,7 +113,8 @@ def residual_heatmap(mesh, observation, out_png, W=None, H=None):
 def build_variants(observation, parent_world, cfg, ablate):
     parent = FZ._load_mesh(parent_world / 'body.stl')
     vis = np.load(pathlib.Path(observation) / 'visible_points.npy')
-    pitch = float(cfg['pitch_m'])
+    pitch = float(a.pitch if a.pitch is not None else cfg['pitch_m'])
+    print(json.dumps({'pitch_m': pitch}, ensure_ascii=False))
     grid = FZ.make_grid(parent, vis, pitch, int(cfg['margin_cells']))
     space, space_stats = FZ.classify_space(observation, grid,
                                            float(cfg['free_epsilon_m']),
@@ -168,6 +169,8 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--config', default='configs/unseen_v6_1_fusion.json')
     ap.add_argument('--label', default='S0-S4')
+    ap.add_argument('--pitch', type=float, default=None,
+                    help='覆盖配置里的 pitch_m（用于 4mm/2.5mm 收敛对照）')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     cfg = FZ.load_effective_config(a.config)

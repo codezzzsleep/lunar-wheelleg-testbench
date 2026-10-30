@@ -121,5 +121,26 @@
       "N12 strict 重算",
       "N15 重复 attempt"
     ]
+  },
+  "multimesh": {
+    "script": "scripts/v7_multimesh.py",
+    "max_faces_per_part": 100000,
+    "validation": {
+      "world": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/mm_V7_R03_s2",
+      "faces": 181412,
+      "n_parts": 2,
+      "single": {
+        "iou": 0.9551,
+        "depth_p95_mm": 7.12,
+        "freespace": 0.0473
+      },
+      "multi": {
+        "iou": 0.9551,
+        "depth_p95_mm": 7.12,
+        "freespace": 0.0473
+      },
+      "pass": true
+    },
+    "note": "同一场景多视觉 mesh，解除单 mesh 20 万面上限；分块前后指标一致"
   }
 }

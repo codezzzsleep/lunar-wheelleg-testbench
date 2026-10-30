@@ -192,7 +192,38 @@ def probe_gaps(occ, grid, top_n=3):
     return {'n_gap_rows': len(found), 'largest': found[:top_n]}
 
 
-PARITY_FACE_LIMIT = 120000
+PARITY_FACE_LIMIT = 5000
+
+
+def vertex_cluster(mesh, limit):
+    """纯 numpy 顶点聚类降采样：把顶点吸附到粗网格、重建面、去掉退化面。
+
+    只用于**射线占据化**的外廓近似；表面距离仍用完整源网格。确定性、无第三方依赖。
+    """
+    v = np.asarray(mesh.vertices, dtype=np.float64)
+    f = np.asarray(mesh.faces)
+    ext = float(np.max(mesh.extents))
+    pitch = max(ext / 90.0, 1e-4)
+    for _ in range(8):
+        key = np.round(v / pitch).astype(np.int64)
+        uniq, inv = np.unique(key, axis=0, return_inverse=True)
+        nf = inv[f]
+        good = ((nf[:, 0] != nf[:, 1]) & (nf[:, 1] != nf[:, 2]) & (nf[:, 0] != nf[:, 2]))
+        nf = nf[good]
+        # 去掉重复面
+        _, idx = np.unique(np.sort(nf, axis=1), axis=0, return_index=True)
+        nf = nf[np.sort(idx)]
+        if len(nf) <= limit or pitch > ext:
+            break
+        pitch *= 1.35
+        ext *= 0.999   # 允许继续加粗
+    if len(nf) == 0:
+        raise ValueError('vertex_cluster 产出空网格')
+    # 顶点取聚类中心（吸附网格），保持世界坐标
+    verts = uniq.astype(np.float64) * pitch
+    return trimesh.Trimesh(verts, nf, process=False), {
+        'method': 'vertex_cluster', 'pitch_m': round(pitch, 5),
+        'from_faces': int(len(f)), 'to_faces': int(len(nf))}
 
 
 def clustered_downsample(mesh, limit):
@@ -201,20 +232,35 @@ def clustered_downsample(mesh, limit):
     n = len(mesh.faces)
     if n <= limit:
         return mesh, None
-    # 用体素化重建：分辨率由目标面数估计；不改变世界坐标
-    ext = float(np.max(mesh.extents))
-    pitch = max(ext / 80.0, 1e-4)
+    # 优先用纯 numpy 顶点聚类（不依赖 scipy/skimage），失败再退回体素重建/凸包
     try:
-        v = mesh.voxelized(pitch=pitch).fill()
-        m2 = v.marching_cubes
-        if len(m2.faces) > limit:
-            pitch *= 1.5
+        return vertex_cluster(mesh, limit)
+    except Exception:
+        pass
+    # 射线奇偶判据对「射线数 × 面数」很敏感：先用**粗体素重建**把面数压到万级以下，
+    # 再逐步加密，直到落在 limit 以内（不改变世界坐标）。
+    ext = float(np.max(mesh.extents))
+    pitch = max(ext / 60.0, 1e-4)
+    try:
+        for _ in range(6):
             v = mesh.voxelized(pitch=pitch).fill()
             m2 = v.marching_cubes
+            if len(m2.faces) <= limit:
+                return m2, {'method': 'voxel_cluster', 'pitch_m': round(pitch, 5),
+                            'from_faces': int(n), 'to_faces': int(len(m2.faces))}
+            pitch *= 1.4
         return m2, {'method': 'voxel_cluster', 'pitch_m': round(pitch, 5),
-                    'from_faces': int(n), 'to_faces': int(len(m2.faces))}
+                    'from_faces': int(n), 'to_faces': int(len(m2.faces)),
+                    'note': 'still above limit after refinement'}
     except Exception as e:
-        return mesh, {'method': 'none', 'error': f'{type(e).__name__}: {e}'}
+        # 退路：用采样点的凸包（只用于占据化的近似外廓，真实距离仍用完整网格）
+        try:
+            pts, _ = trimesh.sample.sample_surface(mesh, 20000, seed=0)
+            m2 = trimesh.convex.convex_hull(pts)
+            return m2, {'method': 'convex_fallback', 'from_faces': int(n),
+                        'to_faces': int(len(m2.faces))}
+        except Exception as e2:
+            return mesh, {'method': 'none', 'error': f'{type(e).__name__}: {e} / {e2}'}
 
 
 def main():
@@ -309,16 +355,18 @@ def main():
            'source_volume_voxelised_m3': round(float(o_src.sum()) * vox, 9),
            'collision_volume_voxelised_m3': round(float(o_col.sum()) * vox, 9),
            'eval_pitch_m': grid['pitch'], 'eval_dims': [int(x) for x in grid['dims']]}
+    # 距离分块按面数自适应：块×面保持 ~2M 元素，避免一次性 128×N 面矩阵把内存打爆
+    _chunk = max(1, int(2_000_000 // max(1, len(src.faces))))
     ps, _ = trimesh.sample.sample_surface(src, a.samples, seed=a.seed)
     if boxes:
         d_sc = box_surface_distance(ps, boxes, origin, bpitch) * 1000
         cs = sample_box_surfaces(boxes, origin, bpitch, a.samples, rng)
-        d_cs = point_to_mesh_distance(src, cs, chunk=128) * 1000
+        d_cs = point_to_mesh_distance(src, cs, chunk=_chunk) * 1000
     else:
         d_sc = convex_surface_distance(ps, parts) * 1000
         cs = np.vstack([trimesh.sample.sample_surface(p, max(50, a.samples // len(parts)),
                                                       seed=a.seed)[0] for p in parts])
-        d_cs = point_to_mesh_distance(src, cs, chunk=128) * 1000
+        d_cs = point_to_mesh_distance(src, cs, chunk=_chunk) * 1000
     geo['source_to_collision_mm'] = {'n': int(len(d_sc)),
                                      'med': round(float(np.median(d_sc)), 3),
                                      'p95': round(float(np.percentile(d_sc, 95)), 3),

@@ -10,8 +10,8 @@
     "path": "configs/unseen_v7_budget.json",
     "sha256": "7588c54e43119e49eaba8ca64a59d0041a64b25b3f29baff332e0c5ffcde6d74",
     "ledger": "runs/unseen/delivery_v7/v7_20261030/generation/ledger.jsonl",
-    "tasks_created": 9,
-    "held_credits_upper": 180.0,
+    "tasks_created": 10,
+    "held_credits_upper": 200.0,
     "actual_charge": "unknown"
   },
   "protocol": {
@@ -34,10 +34,10 @@
     "verify": "runs/unseen/delivery_v7/v7_20261030/verify"
   },
   "generation": {
-    "n_tasks": 9,
+    "n_tasks": 10,
     "by_mode": {
       "single_image": 8,
-      "two_image": 1
+      "two_image": 2
     },
     "objects": [
       "R01",
@@ -108,6 +108,13 @@
         "sample": "v7s2",
         "mode": "single_image",
         "glb_sha": "26377bbd3094ec85b2e91e4daa7e92600a55d85134cf248dc1a0b4f75b419d06"
+      },
+      {
+        "task_id": 4489794,
+        "object": "R01",
+        "sample": "drive_tv",
+        "mode": "two_image",
+        "glb_sha": "4c06642fdd50"
       }
     ]
   },
@@ -123,7 +130,7 @@
     "n_single": 8,
     "n_two_image": 1,
     "credits_held": 180.0,
-    "n_candidates_processed": 8,
+    "n_candidates_processed": 9,
     "n_qualified": 1,
     "qualified": [
       {
@@ -207,7 +214,26 @@
       "self_test_negatives": 6,
       "all_detected": true
     },
-    "page": "runs/unseen/delivery_v7/v7_20261030/media/report/index.html"
+    "page": "runs/unseen/delivery_v7/v7_20261030/media/report/index.html",
+    "two_image_comparison": {
+      "R01_s1_single": {
+        "iou": 0.9498,
+        "freespace": 0.1122
+      },
+      "R01_s2_single": {
+        "iou": 0.9404,
+        "freespace": 0.1029
+      },
+      "R01_tv1_camera_translated": {
+        "iou": 0.9545,
+        "freespace": 0.0935
+      },
+      "R01_dtv_real_driven_view": {
+        "iou": 0.9532,
+        "freespace": 0.1057
+      },
+      "conclusion": "both two-image variants lift visible IoU to 0.953-0.955 and lower freespace to 0.094-0.106, none passes the 0.05 gate; real driven view is not better than the camera-translated view"
+    }
   },
   "limits": [
     "可见面由观测约束构造，不等于 Lux3D 原始精度",

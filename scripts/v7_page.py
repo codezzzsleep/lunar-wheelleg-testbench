@@ -120,6 +120,20 @@ def main():
                           m.get('freespace_violation'),
                           '面数超限' if m.get('error') else '已测'])
 
+    # 主动观察
+    drive = j(B / 'observation/drive_R01/drive_observe.json', {}) or {}
+    screen = j(B / 'observation/second_view_screen.json', {}) or {}
+    drive_rows = []
+    for r in (drive.get('runs') or [])[:3]:
+        drive_rows.append([r.get('seed'), r.get('move_seconds'), r.get('cam_baseline_m'),
+                          r.get('bearing_change_deg'), r.get('view1_mask_px'),
+                          r.get('view2_mask_px'), r.get('usable')])
+    screen_rows = []
+    for r in (screen.get('rows') or []):
+        o1 = r.get('obs1_front') or {}; o2 = r.get('obs2_driven') or {}
+        screen_rows.append([r.get('candidate'), o1.get('mask_iou'), o1.get('freespace_violation'),
+                            o2.get('mask_iou'), o2.get('freespace_violation'),
+                            '保留' if r.get('kept_by_second_view') else '不保留'])
     status = man.get('status', {})
     parts = [f"""<!doctype html><html lang="zh"><head><meta charset="utf-8">
 <title>V7 · 看不见的那一面</title>
@@ -152,9 +166,15 @@ benefit <code>{html.escape(str(status.get('benefit_status','')))}</code></div>
 历史账本 <code>runs/unseen/generation/ledger.jsonl</code> 只读保留。</div>
 """ + tbl(['任务 ID', '对象', '模式', '采样', 'GLB SHA', '上界'], task_rows) + """
 
-<h2>2. 九个真实候选与三门槛</h2>
+<h2>2. 生成候选与三门槛（10 个任务，8 个可测）</h2>
 <div class="note">门槛：可见 IoU ≥ 0.90、可见点 P95 ≤ 5 mm、freespace ≤ 0.05、碰撞 IoU ≥ 0.95。</div>
 """ + tbl(['候选', '网格 m', 'IoU', 'P95 mm', 'freespace', '碰撞 IoU', '资格'], cand_rows) + """
+
+<h2>2b. 主动观察闭环（真实行驶 → 第二视角 → 筛候选）</h2>
+""" + (tbl(['seed', '行驶 s', '相机基线 m', '视线角 °', '首视角 px', '第二视角 px', '可用'], drive_rows) if drive_rows else '') + """
+<div class="note">停稳判据：v_lin ≤0.05、v_ang ≤0.1、倾角 ≤8°、保持 0.4 s。第二视角来自真实 qpos/qvel 恢复后取景。</div>
+""" + (tbl(['候选', '首视角 IoU', '首视角 freespace', '第二视角 IoU', '第二视角 freespace', '第二视角结论'], screen_rows) if screen_rows else '') + """
+<div class="note">固定候选几何与位姿，只用第二相机评价，未重新配准。</div>
 
 <h2>3. 六方法正式比较（R03，rigid）</h2>
 """ + tbl(['方法', '选择动作', '成功'], six_rows) + """

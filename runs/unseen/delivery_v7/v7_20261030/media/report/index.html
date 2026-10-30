@@ -18,20 +18,26 @@ code{background:#171b23;padding:1px 5px;border-radius:4px}
 基线 <code>fdd2a27b</code> ·
 协议 <code>configs/unseen_v7_protocol.json</code></div>
 <div class="card"><b>四类状态</b>：
-execution <code>IN_PROGRESS</code> ·
-evidence <code>PENDING</code> ·
-capability <code>PENDING</code> ·
+execution <code>PARTIAL</code> ·
+evidence <code>PARTIAL</code> ·
+capability <code>PARTIAL</code> ·
 benefit <code>NOT_ESTABLISHED</code></div>
 
 <h2>1. 预算与生成任务</h2>
 <div class="card">本批新增授权 <b>500</b> 积分；
-已建任务 <b>9</b>，占用上界 <b>180.0</b>；实际扣费 <code>unknown</code>。
+已建任务 <b>10</b>，占用上界 <b>200.0</b>；实际扣费 <code>unknown</code>。
 历史账本 <code>runs/unseen/generation/ledger.jsonl</code> 只读保留。</div>
-<table class=""><thead><tr><th>任务 ID</th><th>对象</th><th>模式</th><th>采样</th><th>GLB SHA</th><th>上界</th></tr></thead><tbody><tr><td>4484069</td><td>R02</td><td>single_image</td><td>s1</td><td>dbe440554b9e</td><td>20.0</td></tr><tr><td>4484076</td><td>R02</td><td>single_image</td><td>s2</td><td>750132e7d77a</td><td>20.0</td></tr><tr><td>4484079</td><td>R04</td><td>single_image</td><td>s1</td><td>ac904b61e721</td><td>20.0</td></tr><tr><td>4484082</td><td>R04</td><td>single_image</td><td>s2</td><td>a2509285c8bb</td><td>20.0</td></tr><tr><td>4486935</td><td>R01</td><td>two_image</td><td>tv1</td><td>86bc56ce68a1</td><td>20.0</td></tr><tr><td>4486948</td><td>R01</td><td>single_image</td><td>v7s1</td><td>746d5978cd96</td><td>20.0</td></tr><tr><td>4486951</td><td>R01</td><td>single_image</td><td>v7s2</td><td>e9fd390e2c0b</td><td>20.0</td></tr><tr><td>4486954</td><td>R03</td><td>single_image</td><td>v7s1</td><td>caa49c5edaa0</td><td>20.0</td></tr><tr><td>4486957</td><td>R03</td><td>single_image</td><td>v7s2</td><td>26377bbd3094</td><td>20.0</td></tr></tbody></table>
+<table class=""><thead><tr><th>任务 ID</th><th>对象</th><th>模式</th><th>采样</th><th>GLB SHA</th><th>上界</th></tr></thead><tbody><tr><td>4484069</td><td>R02</td><td>single_image</td><td>s1</td><td>dbe440554b9e</td><td>20.0</td></tr><tr><td>4484076</td><td>R02</td><td>single_image</td><td>s2</td><td>750132e7d77a</td><td>20.0</td></tr><tr><td>4484079</td><td>R04</td><td>single_image</td><td>s1</td><td>ac904b61e721</td><td>20.0</td></tr><tr><td>4484082</td><td>R04</td><td>single_image</td><td>s2</td><td>a2509285c8bb</td><td>20.0</td></tr><tr><td>4486935</td><td>R01</td><td>two_image</td><td>tv1</td><td>86bc56ce68a1</td><td>20.0</td></tr><tr><td>4486948</td><td>R01</td><td>single_image</td><td>v7s1</td><td>746d5978cd96</td><td>20.0</td></tr><tr><td>4486951</td><td>R01</td><td>single_image</td><td>v7s2</td><td>e9fd390e2c0b</td><td>20.0</td></tr><tr><td>4486954</td><td>R03</td><td>single_image</td><td>v7s1</td><td>caa49c5edaa0</td><td>20.0</td></tr><tr><td>4486957</td><td>R03</td><td>single_image</td><td>v7s2</td><td>26377bbd3094</td><td>20.0</td></tr><tr><td>4489794</td><td>R01</td><td>two_image</td><td>drive_tv</td><td>4c06642fdd50</td><td>20.0</td></tr></tbody></table>
 
-<h2>2. 九个真实候选与三门槛</h2>
+<h2>2. 生成候选与三门槛（10 个任务，8 个可测）</h2>
 <div class="note">门槛：可见 IoU ≥ 0.90、可见点 P95 ≤ 5 mm、freespace ≤ 0.05、碰撞 IoU ≥ 0.95。</div>
 <table class=""><thead><tr><th>候选</th><th>网格 m</th><th>IoU</th><th>P95 mm</th><th>freespace</th><th>碰撞 IoU</th><th>资格</th></tr></thead><tbody><tr><td>V7_R01_s1</td><td>0.004</td><td>0.9498</td><td>2.211</td><td>0.1122</td><td>0.9864</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R01_s2</td><td>0.004</td><td>0.9404</td><td>2.31</td><td>0.1029</td><td>0.9848</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R01_tv1</td><td>0.004</td><td>0.9545</td><td>2.24</td><td>0.0935</td><td>0.9373</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R02_s1</td><td>0.006</td><td>0.9512</td><td>3.006</td><td>0.149</td><td>0.9923</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R02_s2</td><td>0.006</td><td>0.9542</td><td>3.457</td><td>0.1162</td><td>0.9916</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R03_s1</td><td>0.004</td><td>0.953</td><td>2.093</td><td>0.0842</td><td>0.9927</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R03_s2</td><td>0.004</td><td>0.9551</td><td>2.654</td><td>0.0473</td><td>0.9918</td><td class="good">✓ 通过</td></tr><tr><td>V7_R04_s2</td><td>0.006</td><td>0.9165</td><td>11.388</td><td>0.1156</td><td>0.9912</td><td class="bad">✗ 未通过</td></tr></tbody></table>
+
+<h2>2b. 主动观察闭环（真实行驶 → 第二视角 → 筛候选）</h2>
+<table class=""><thead><tr><th>seed</th><th>行驶 s</th><th>相机基线 m</th><th>视线角 °</th><th>首视角 px</th><th>第二视角 px</th><th>可用</th></tr></thead><tbody><tr><td>0</td><td>10.12</td><td>0.457</td><td>9.11</td><td>9737</td><td>25976</td><td>True</td></tr><tr><td>1</td><td>11.22</td><td>0.46</td><td>9.62</td><td>9724</td><td>26002</td><td>True</td></tr><tr><td>2</td><td>10.62</td><td>0.458</td><td>9.13</td><td>9714</td><td>25618</td><td>True</td></tr></tbody></table>
+<div class="note">停稳判据：v_lin ≤0.05、v_ang ≤0.1、倾角 ≤8°、保持 0.4 s。第二视角来自真实 qpos/qvel 恢复后取景。</div>
+<table class=""><thead><tr><th>候选</th><th>首视角 IoU</th><th>首视角 freespace</th><th>第二视角 IoU</th><th>第二视角 freespace</th><th>第二视角结论</th></tr></thead><tbody><tr><td>V7_R01_s1</td><td>0.9498</td><td>0.1122</td><td>0.9023</td><td>0.0825</td><td>不保留</td></tr><tr><td>V7_R01_s2</td><td>0.9404</td><td>0.1029</td><td>0.9149</td><td>0.0785</td><td>不保留</td></tr><tr><td>V7_R01_tv1</td><td>0.9545</td><td>0.0935</td><td>0.9154</td><td>0.0759</td><td>不保留</td></tr></tbody></table>
+<div class="note">固定候选几何与位姿，只用第二相机评价，未重新配准。</div>
 
 <h2>3. 六方法正式比较（R03，rigid）</h2>
 <table class=""><thead><tr><th>方法</th><th>选择动作</th><th>成功</th></tr></thead><tbody><tr><td>B0_blind</td><td>R1</td><td>3/3</td></tr><tr><td>B1_height</td><td>R1</td><td>3/3</td></tr><tr><td>B2_box</td><td>D1</td><td>3/3</td></tr><tr><td>B3_mirror</td><td>R1</td><td>3/3</td></tr><tr><td>H5_lux3d</td><td>D1</td><td>3/3</td></tr><tr><td>U_truth</td><td>D1</td><td>3/3</td></tr></tbody></table>
@@ -43,7 +49,7 @@ benefit <code>NOT_ESTABLISHED</code></div>
 但在低牵引/高阻力下与真值上限不一致。</div>
 
 <h2>4. freespace 侵入定位（第一轮）</h2>
-<table class=""><thead><tr><th>变体</th><th>网格</th><th>IoU</th><th>P95 mm</th><th>freespace</th><th>状态</th></tr></thead><tbody><tr><td>fs_base</td><td>4.0 mm</td><td>0.9498</td><td>2.211</td><td>0.1122</td><td>已测</td></tr><tr><td>fs_fine</td><td>2.5 mm</td><td></td><td></td><td></td><td>面数超限</td></tr><tr><td>fs_noshell</td><td>4.0 mm</td><td>0.951</td><td>2.17</td><td>0.1105</td><td>已测</td></tr></tbody></table>
+<table class=""><thead><tr><th>变体</th><th>网格</th><th>IoU</th><th>P95 mm</th><th>freespace</th><th>状态</th></tr></thead><tbody><tr><td>fs_base</td><td>4.0 mm</td><td>0.9498</td><td>2.211</td><td>0.1122</td><td>已测</td></tr><tr><td>fs_fine</td><td>2.5 mm</td><td></td><td></td><td></td><td>面数超限</td></tr><tr><td>fs_noband</td><td>4.0 mm</td><td>0.8958</td><td>5.477</td><td>0.311</td><td>已测</td></tr><tr><td>fs_noshell</td><td>4.0 mm</td><td>0.951</td><td>2.17</td><td>0.1105</td><td>已测</td></tr></tbody></table>
 <div class="note">壳体偏移已排除；收窄 band 会恶化；细网格对照被 MuJoCo 20 万面上限挡住，根因<b>尚未定位</b>。</div>
 
 <h2>5. 限制</h2>

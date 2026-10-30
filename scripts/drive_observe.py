@@ -326,6 +326,9 @@ def main():
             'state_snapshot': {'qpos': [round(float(x), 6) for x in env.data.qpos],
                                'qvel': [round(float(x), 6) for x in env.data.qvel],
                                'time': round(float(env.t), 4)},
+            # 完整状态合同（含 mjstate/ctrl/时钟/计数器/导航目标/土壤贡献 + 哈希），
+            # 供"观察后重规划并从同一状态续行"使用；不是只存 qpos/qvel
+            'env_state': env.save_state(),
             'view2_snapshot': v2['snapshot'],
         })
         (out / 'drive_observe.json').write_text(json.dumps(rec, indent=2, ensure_ascii=False))

@@ -233,6 +233,23 @@
         "freespace": 0.1057
       },
       "conclusion": "both two-image variants lift visible IoU to 0.953-0.955 and lower freespace to 0.094-0.106, none passes the 0.05 gate; real driven view is not better than the camera-translated view"
+    },
+    "closed_loop": {
+      "case": "R01",
+      "seed": 0,
+      "restored_state_hash": "691b35232271624c57b12cc05e1756b7",
+      "hypotheses_after_second_view": 0,
+      "decision": "A0",
+      "safe_set": [],
+      "continuation": {
+        "sim_time_s": 3.0,
+        "final_x": -0.003,
+        "max_tilt_rad": 0.0465,
+        "contact": null,
+        "counts_as_success": false
+      },
+      "interpretation": "diagnostic; the chain observation->screening->re-decision->continuation runs on real state, and shows R01 candidates cannot support a traversal decision",
+      "R03_drive_observe": "0/3 usable (viewpoint_change_too_small) - platform limit for this wide flat stone, recorded as boundary"
     }
   },
   "limits": [

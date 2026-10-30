@@ -112,6 +112,34 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
                      else (ABORT if out['abort'] else FAR))}
 
 
+def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
+                         hid='episode', soil_mode='rigid', resume_state=None,
+                         skill=None):
+    """在**给定 env** 上跑一段（可先 restore_state 再续行，不 reset）。
+
+    与 run_episode 共用同一 EpisodeRunner / skill / 记录字段，保证"预演与执行同一套"。
+    """
+    if resume_state is not None:
+        env.restore_state(resume_state, strict=True)
+    opt = option or 'A0'
+    r = runner.EpisodeRunner(env, skill or skills.make_skill(opt),
+                             visible=visible or {}, seed=seed)
+    started_at = time.time()
+    out = r.run_with_seed(seed)
+    finished_at = time.time()
+    return [{'phase': 'rehearsal', 'hypothesis_id': hid, 'option': opt, 'seed': seed,
+             'started_at': started_at, 'finished_at': finished_at,
+             'sim_time_s_': round(float(env.t), 4), 'reason': out['reason'],
+             'success': out['success'], 'abort': out['abort'], 't_end': out['t_end'],
+             'final_x': out['final_x'], 'max_tilt': out['max_tilt'],
+             'contact': out['contact'], 'triggered': out['triggered'],
+             'phases': out['phases'], 'action_fingerprint': out['action_fingerprint'],
+             'control_steps': out['steps'], 'physics_steps': int(env.n_physics),
+             'q0': out['q0'], 'initial_full_hash': out.get('initial_full_hash'),
+             'cost': (out['t_end'] if out['success']
+                      else (ABORT if out['abort'] else FAR))}]
+
+
 def choose_option(rehearsal, options=OPTIONS):
     """最坏情形规则：任一初态失败即不选；并列按名称排序（tie-break 不宣称更优）。"""
     by = {}

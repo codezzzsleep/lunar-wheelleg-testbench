@@ -271,6 +271,9 @@ def main():
     ap.add_argument('--label', default='')
     ap.add_argument('--eval-pitch', type=float, default=0.004)
     ap.add_argument('--samples', type=int, default=1200)
+    ap.add_argument('--parity', choices=['full', 'approx'], default='full',
+                    help='占据化用的源网格：full=完整网格（默认，语义不变）；'
+                         'approx=顶点聚类近似（更快但会改变 IoU，结果会标注）')
     ap.add_argument('--max-points', type=int, default=2_000_000,
                     help='评价网格点数上限；超过则按固定种子确定性子采样，并记录实际点数')
     ap.add_argument('--seed', type=int, default=0)
@@ -295,8 +298,10 @@ def main():
     # 只为把射线求交的内存/时间压到可完成；表面距离仍用完整源网格，且记录实际面数。
     src_parity = src
     parity_note = None
-    if len(src.faces) > PARITY_FACE_LIMIT:
+    if a.parity == 'approx' and len(src.faces) > PARITY_FACE_LIMIT:
         src_parity, parity_note = clustered_downsample(src, PARITY_FACE_LIMIT)
+    elif a.parity == 'full':
+        parity_note = {'method': 'full_mesh', 'faces': int(len(src.faces))}
     grid = make_grid([src] + parts, a.eval_pitch)
     pts_total = int(grid['pts'].shape[0])
     sampled = False

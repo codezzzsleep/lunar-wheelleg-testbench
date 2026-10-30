@@ -1,0 +1,287 @@
+{
+  "schema": "verify-delivery/v7-r1",
+  "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
+  "n_checks": 44,
+  "n_pass": 44,
+  "by_layer": {
+    "integrity": {
+      "n": 13,
+      "n_pass": 13
+    },
+    "function": {
+      "n": 26,
+      "n_pass": 26
+    },
+    "goal": {
+      "n": 5,
+      "n_pass": 5
+    }
+  },
+  "checks": [
+    {
+      "layer": "integrity",
+      "check": "batch_manifest",
+      "pass": true,
+      "detail": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/manifest.json"
+    },
+    {
+      "layer": "integrity",
+      "check": "batch_id",
+      "pass": true,
+      "detail": "v7_20261030_r1"
+    },
+    {
+      "layer": "integrity",
+      "check": "status_fields_complete",
+      "pass": true,
+      "detail": "{'execution_status': 'PARTIAL', 'evidence_status': 'PARTIAL', 'capability_status': 'PARTIAL', 'benefit_status': 'NOT_ESTABLISHED', 'claim_level': 'NOT_REACHED'}"
+    },
+    {
+      "layer": "integrity",
+      "check": "review_baseline_recorded",
+      "pass": true,
+      "detail": "4fe5281fe46b56cc295980ca024e4626a8886374"
+    },
+    {
+      "layer": "integrity",
+      "check": "budget_config",
+      "pass": true,
+      "detail": "configs/unseen_v7_r1_budget.json"
+    },
+    {
+      "layer": "integrity",
+      "check": "authorization_500",
+      "pass": true,
+      "detail": "{'new_total_credits': 500.0, 'note': '沿用 V7 新增授权 500，不是再获得 500；账户余额 1042 是另一件事，分列。'}"
+    },
+    {
+      "layer": "integrity",
+      "check": "price_not_claimed_verified",
+      "pass": true,
+      "detail": "{'product': 'Lux3D 图生网格（极速版 / G1-Turbo）', 'price_expected': 1.0, 'price_basis': '用户提供的价目截图：Lux3D 图生网格极速版优惠 1 积分/次；仅该产品行，未证明所有版本与两图任务同价', 'price_verified': False, 'actual_charge': 'unknown', 'note': 'API 不返回实际扣费；不得把 price_expected 写成已核验支出。'}"
+    },
+    {
+      "layer": "integrity",
+      "check": "reserved_current_reported",
+      "pass": true,
+      "detail": "10.0"
+    },
+    {
+      "layer": "integrity",
+      "check": "generation_records_present",
+      "pass": true,
+      "detail": "4"
+    },
+    {
+      "layer": "integrity",
+      "check": "generation_identities_consistent",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "layer": "integrity",
+      "check": "soil_params_recorded",
+      "pass": true,
+      "detail": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/soil/params.json"
+    },
+    {
+      "layer": "integrity",
+      "check": "soil_params_distinct",
+      "pass": true,
+      "detail": "{'nominal': '55848f80956792b4704ff3ec83678bf7', 'low_traction': '8a0a23fd8d02ed03dc35d336aaf51464', 'high_drag': '14363ee041a1bc07a40f6f1381d67441'}"
+    },
+    {
+      "layer": "integrity",
+      "check": "soil_discrimination_pass",
+      "pass": true,
+      "detail": "{'low_traction_H_lower': True, 'high_drag_Rc_higher_at_own_z': True, 'high_drag_Rc_higher_at_same_z': False, 'params_hashes_distinct': True}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_runs",
+      "pass": true,
+      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_scene2']"
+    },
+    {
+      "layer": "function",
+      "check": "branch_a0_exists",
+      "pass": true,
+      "detail": "['closed_loop_R01_a0']"
+    },
+    {
+      "layer": "function",
+      "check": "branch_traversal_exists",
+      "pass": true,
+      "detail": "['closed_loop_R01_matrix', 'closed_loop_R03_scene2']"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_a0:execution_present",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_a0:no_reset",
+      "pass": true,
+      "detail": "[10.54, 11.62, 11.02]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_a0:displacement_from_start",
+      "pass": true,
+      "detail": "[1.4e-05, 1.3e-05, 1e-05]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_a0:decision_before_execution",
+      "pass": true,
+      "detail": "{'written': [1793341105.2194617], 'started': [1793341105.4895554]}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_matrix:execution_present",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_matrix:no_reset",
+      "pass": true,
+      "detail": "[10.54, 11.62, 11.02]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_matrix:displacement_from_start",
+      "pass": true,
+      "detail": "[1.4e-05, 1.3e-05, 1e-05]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R01_matrix:decision_before_execution",
+      "pass": true,
+      "detail": "{'written': [1793341374.5861518], 'started': [1793341374.708408]}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_scene2:execution_present",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_scene2:no_reset",
+      "pass": true,
+      "detail": "[9.84, 10.88, 10.32]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_scene2:displacement_from_start",
+      "pass": true,
+      "detail": "[1.6e-05, -4.3e-05, -9e-06]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_scene2:decision_before_execution",
+      "pass": true,
+      "detail": "{'written': [1793350255.8087814], 'started': [1793350255.9737217]}"
+    },
+    {
+      "layer": "function",
+      "check": "decision_matrix_contract",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "layer": "function",
+      "check": "six_methods_three_soils",
+      "pass": true,
+      "detail": "['high_drag', 'low_traction', 'nominal']"
+    },
+    {
+      "layer": "function",
+      "check": "six_nominal:six_methods",
+      "pass": true,
+      "detail": "['B0_blind', 'B1_height', 'B2_box', 'B3_mirror', 'H5_lux3d', 'U_truth']"
+    },
+    {
+      "layer": "function",
+      "check": "six_nominal:validation_executed",
+      "pass": true,
+      "detail": "6"
+    },
+    {
+      "layer": "function",
+      "check": "six_low_traction:six_methods",
+      "pass": true,
+      "detail": "['B0_blind', 'B1_height', 'B2_box', 'B3_mirror', 'H5_lux3d', 'U_truth']"
+    },
+    {
+      "layer": "function",
+      "check": "six_low_traction:validation_executed",
+      "pass": true,
+      "detail": "6"
+    },
+    {
+      "layer": "function",
+      "check": "six_high_drag:six_methods",
+      "pass": true,
+      "detail": "['B0_blind', 'B1_height', 'B2_box', 'B3_mirror', 'H5_lux3d', 'U_truth']"
+    },
+    {
+      "layer": "function",
+      "check": "six_high_drag:validation_executed",
+      "pass": true,
+      "detail": "6"
+    },
+    {
+      "layer": "function",
+      "check": "multimesh_split_equivalence",
+      "pass": true,
+      "detail": "{'mask_iou_within': True, 'depth_p95_within': True}"
+    },
+    {
+      "layer": "function",
+      "check": "state_contract_ab",
+      "pass": true,
+      "detail": "{'schema': 'state-contract-test/v7', 'scene_sig': '254262bcd7706cb67338f60f8ea3f1c8', 'A_same_scene_ok': True, 'B_same_scene_rejected': True, 'B_message': '场景签名不符：同场景恢复被拒绝（跨候选请显式用 mode=\"project\"）', 'C_project_ok': True, 'C_material_not_transferred': True, 'D_soil_changes_scene_sig': True, 'all_pass': True}"
+    },
+    {
+      "layer": "function",
+      "check": "negative_selftest",
+      "pass": true,
+      "detail": "12"
+    },
+    {
+      "layer": "goal",
+      "check": "processed_candidates",
+      "pass": true,
+      "detail": "2"
+    },
+    {
+      "layer": "goal",
+      "check": "qualified_candidates",
+      "pass": true,
+      "detail": "{'qualified': ['V7_R03_s2'], 'examined': ['V7_R02_g1', 'V7_R02_g2', 'V7_R03_s2']}"
+    },
+    {
+      "layer": "goal",
+      "check": "page_exists",
+      "pass": true,
+      "detail": "runs/unseen/delivery_v7/v7_20261030_r1/media/report/index.html"
+    },
+    {
+      "layer": "goal",
+      "check": "page_has_two_modes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "layer": "goal",
+      "check": "page_no_auto_paid_call",
+      "pass": true,
+      "detail": ""
+    }
+  ],
+  "verdict": "PASS"
+}

@@ -67,16 +67,39 @@ def _closest_on_triangle(P, A, B, C):
     return dist
 
 
-def point_to_mesh_distance(mesh, points, chunk=256):
-    """返回每个点到网格表面的精确最近距离（米）。"""
+def point_to_mesh_distance(mesh, points, chunk=256, face_chunk=None,
+                           max_cells=2_000_000, return_stats=False):
+    """返回每个点到网格表面的精确最近距离（米）。
+
+    内存受控：**两级分块**（点块 × 面块），任何时刻只持有 `max_cells` 量级的
+    「点 × 面」临时数组；逐面向最小值归约并立即释放。语义与不分块的实现完全一致
+    （P95 由完整距离数组计算，不能对各块 P95 求平均）。
+    """
     V = np.asarray(mesh.vertices, dtype=np.float64)
     F = np.asarray(mesh.faces)
-    A = V[F[:, 0]][None, :, :]
-    B = V[F[:, 1]][None, :, :]
-    C = V[F[:, 2]][None, :, :]
+    M = len(F)
     P = np.asarray(points, dtype=np.float64)
     out = np.empty(len(P))
+    # 面块大小：让 点块 × 面块 <= max_cells
+    if face_chunk is None:
+        face_chunk = max(1, int(max_cells // max(1, chunk)))
+        face_chunk = min(face_chunk, M)
+    peak_cells = 0
     for i in range(0, len(P), chunk):
         blk = P[i:i + chunk][:, None, :]
-        out[i:i + chunk] = _closest_on_triangle(blk, A, B, C).min(axis=1)
+        best = np.full(blk.shape[0], np.inf)
+        for j in range(0, M, face_chunk):
+            A = V[F[j:j + face_chunk, 0]][None, :, :]
+            B = V[F[j:j + face_chunk, 1]][None, :, :]
+            C = V[F[j:j + face_chunk, 2]][None, :, :]
+            d = _closest_on_triangle(blk, A, B, C)
+            peak_cells = max(peak_cells, int(d.size))
+            best = np.minimum(best, d.min(axis=1))
+            del d, A, B, C
+        out[i:i + chunk] = best
+    if return_stats:
+        return out, {'n_points': int(len(P)), 'n_faces': int(M),
+                     'chunk': int(chunk), 'face_chunk': int(face_chunk),
+                     'max_cells': int(max_cells), 'peak_cells': int(peak_cells),
+                     'peak_cells_bytes': int(peak_cells * 8)}
     return out

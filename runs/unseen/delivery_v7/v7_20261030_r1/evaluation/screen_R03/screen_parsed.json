@@ -1,0 +1,33 @@
+{
+  "schema": "second-view-screen/v7",
+  "object": "R03",
+  "obs1": "runs/unseen/recovery_r3/obs_R03",
+  "obs2": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+  "rule": "固定几何/位姿，只移动相机；不做二次配准",
+  "rows": [
+    {
+      "candidate": "V7_R03_s2",
+      "obs1": {
+        "iou": 0.9551
+      },
+      "obs2": {
+        "iou": 0.9193,
+        "p95_mm": 2.405,
+        "freespace": 0.0739
+      },
+      "verdict": "rejected(second_view)"
+    },
+    {
+      "candidate": "V7_R03_s1_2p5",
+      "obs1": {
+        "error": "stl face limit (>200k) in single-mesh world"
+      },
+      "obs2": {
+        "error": "same"
+      },
+      "verdict": "not_evaluated"
+    }
+  ],
+  "finding": "**第二视角有鉴别力**：V7_R03_s2 在首视角合格（0.9551），在行驶后的第二视角上 IoU 降到 0.9193、freespace 0.0739 > 0.05 → **被淘汰**。这说明第一视角合格**不能保证**第二视角成立，再观察这一步不是形式动作。",
+  "caveat": "V7_R03_s1 因 50.9 万面超过 MuJoCo 单 mesh 上限而 not_evaluated；已改为同场景多视觉 mesh 并重跑，结果待出。此记录中的 s1 行是**失败原因**，不是判定。"
+}

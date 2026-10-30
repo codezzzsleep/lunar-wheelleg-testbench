@@ -53,12 +53,27 @@ def main():
              'fusion_input_observation': h.get('fusion_obs'),
              'metric_version': 'align-metric/v2.1'}
         import tempfile
-        tmp = pathlib.Path(tempfile.mkdtemp(prefix='v7screen_')) / 'cand.stl'
+        tmpdir = pathlib.Path(tempfile.mkdtemp(prefix='v7screen_'))
+        tmp = tmpdir / 'cand.stl'
         mesh.export(tmp)
+        # 面数超 20 万时必须走同场景多视觉 mesh，否则 MuJoCo 直接拒绝加载
+        posed = None
+        try:
+            import v7_multimesh as MM
+            if len(mesh.faces) > MM.MAX_FACES_DEFAULT:
+                parts, meta = MM.split_mesh(mesh, MM.MAX_FACES_DEFAULT)
+                wdir = tmpdir / 'world'
+                MM.write_world(parts, wdir, sha(str(tmp)), len(mesh.faces), {'split': meta})
+                posed = wdir
+                r['render_mode'] = 'multimesh'
+        except Exception as e:
+            r['render_mode_error'] = f'{type(e).__name__}: {e}'
         for tag, obs in (('obs1_front', a.obs1), ('obs2_driven', a.obs2)):
             try:
                 # 必须显式计算可见点 P95；缺测一律 not_evaluated，不能用默认大误差代替
-                ev = align.render_eval(mesh, ROOT / obs, tmpdir=tmp, want_vis_pt=True)
+                ev = align.render_eval(mesh, ROOT / obs, tmpdir=tmp,
+                                       posed_dir=str(posed) if posed else None,
+                                       want_vis_pt=True)
                 r[tag] = {k: ev.get(k) for k in ('mask_iou', 'vis_pt_med_mm',
                                                  'vis_pt_p95_mm', 'freespace_violation',
                                                  'freespace_n_px', 'freespace_denom_px',
@@ -98,6 +113,8 @@ def main():
            'rule': 'fixed geometry/pose; second camera only; no re-registration',
            'rows': rows}
     p = ROOT / a.out
+    if p.suffix != '.json':
+        p = p / 'screen.json'      # 允许传目录
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(json.dumps(out, ensure_ascii=False, indent=2))
     return 0

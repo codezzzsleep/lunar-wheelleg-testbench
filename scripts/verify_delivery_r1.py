@@ -201,6 +201,24 @@ def main():
                 next((r for r in scr['rows'] if r['candidate'] == k), {}))
                 for k, v in verdicts.items()), verdicts)
 
+    # 真值对照：第二观察本身必须被真值验证为可用
+    tc = jl(B / 'evaluation/truth_control_second_view.json')
+    add('function', 'truth_control_on_second_view',
+        bool(tc) and float((tc.get('obs2') or {}).get('freespace_violation') or 1) <= 0.05,
+        (tc or {}).get('obs2'))
+    # 筛选后闭环（空集合应走 A0 且写明原因）
+    psc = jl(B / 'evaluation/closed_loop_R03_after_screen/closed_loop.json')
+    add('function', 'post_screen_a0_branch',
+        bool(psc) and psc.get('branch') == 'a0_fallback_no_candidate'
+        and (psc.get('decision') or {}).get('chosen') == 'A0'
+        and bool((psc.get('decision') or {}).get('reason')),
+        {'branch': (psc or {}).get('branch'),
+         'reason': ((psc or {}).get('decision') or {}).get('reason')})
+    if psc:
+        add('function', 'post_screen_state_mode_recorded',
+            all(e.get('state_mode') in ('same_scene', 'project') for e in psc.get('execution') or []),
+            [e.get('state_mode') for e in psc.get('execution') or []])
+
     # 状态合同（生产函数）
     scp = jl(B / 'verify/state_contract.json')
     add('function', 'state_contract_ab', bool(scp and scp.get('all_pass')),

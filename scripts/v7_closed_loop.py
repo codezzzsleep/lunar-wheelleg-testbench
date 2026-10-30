@@ -129,6 +129,8 @@ def main():
                 bad.append((h['id'], round(d, 3)))
         if bad:
             raise SystemExit(f'候选与真值不是同一物理布置（包围盒中心差 >0.40 m）：{bad}')
+    _tw_dir = ROOT / a.truth_world if a.truth_world else None
+    truth_world_exists = bool(_tw_dir and _tw_dir.exists() and any(_tw_dir.glob('*.stl')))
     matrix, skipped = [], []
     for h in hyps:
         col = h.get('collision') or h['world']
@@ -225,7 +227,10 @@ def main():
         for r in rows:
             r.update({'method': 'closed_loop', 'phase': 'execution',
                       'decision_sha': dec_sha, 'execution_started_at': started,
-                      'truth_world': a.truth_world,
+                      'truth_world': (a.truth_world if truth_world_exists else None),
+                      'truth_world_note': ('visual world 存在' if truth_world_exists else
+                                           '指定的 truth_world 不存在；环境仅由 truth_collision 构建，'
+                                           '记录里不再声称使用它'),
                       'truth_collision': a.truth_collision,
                       'start_x': st['start_x'], 'state_hash': st['state_hash'],
                       'state_seed': st['seed'], 'state_mode': mode_used,
@@ -262,7 +267,8 @@ def main():
                      '位移 = final_x - start_x；不适用单元格显式保留。'),
     }
     (out / 'closed_loop.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
-    print(json.dumps({'chosen': chosen, 'branch': branch, 'n_cells': len(matrix),
+    print(json.dumps({'truth_world_exists': truth_world_exists,
+                      'chosen': chosen, 'branch': branch, 'n_cells': len(matrix),
                       'n_skipped': len(skipped),
                       'n_states': len(states), 'n_hypotheses': len(hyps),
                       'exec': [{k: r.get(k) for k in ('option', 'success', 'reason',

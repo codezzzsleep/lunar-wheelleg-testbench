@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 56,
-  "n_pass": 56,
+  "n_checks": 63,
+  "n_pass": 63,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 38,
-      "n_pass": 38
+      "n": 45,
+      "n_pass": 45
     },
     "goal": {
       "n": 5,
@@ -100,13 +100,13 @@
       "layer": "function",
       "check": "closed_loop_runs",
       "pass": true,
-      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
+      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_after_screen', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
     },
     {
       "layer": "function",
       "check": "branch_a0_exists",
       "pass": true,
-      "detail": "['closed_loop_R01_a0']"
+      "detail": "['closed_loop_R01_a0', 'closed_loop_R03_after_screen']"
     },
     {
       "layer": "function",
@@ -161,6 +161,30 @@
       "check": "closed_loop_R01_matrix:decision_before_execution",
       "pass": true,
       "detail": "{'written': [1793341374.5861518], 'started': [1793341374.708408]}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_after_screen:execution_present",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_after_screen:no_reset",
+      "pass": true,
+      "detail": "[11.94]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_after_screen:displacement_from_start",
+      "pass": true,
+      "detail": "[-3.5e-05]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_after_screen:decision_before_execution",
+      "pass": true,
+      "detail": "{'written': [1793364753.4485638], 'started': [1793364753.703007]}"
     },
     {
       "layer": "function",
@@ -311,6 +335,24 @@
       "check": "second_view_no_silent_pass",
       "pass": true,
       "detail": "{'V7_R03_s2': 'rejected(second_view)', 'V7_R03_s1_2p5': 'not_evaluated'}"
+    },
+    {
+      "layer": "function",
+      "check": "truth_control_on_second_view",
+      "pass": true,
+      "detail": "{'mask_iou': 0.9997, 'vis_pt_p95_mm': 0.645, 'freespace_violation': 0.0199, 'freespace_n_px': 982, 'freespace_denom_px': 49228}"
+    },
+    {
+      "layer": "function",
+      "check": "post_screen_a0_branch",
+      "pass": true,
+      "detail": "{'branch': 'a0_fallback_no_candidate', 'reason': 'no_candidates_after_second_view'}"
+    },
+    {
+      "layer": "function",
+      "check": "post_screen_state_mode_recorded",
+      "pass": true,
+      "detail": "['project']"
     },
     {
       "layer": "function",

@@ -1,0 +1,29 @@
+{
+  "schema": "distance-block-equivalence/v7-r1",
+  "mesh_faces": 20480,
+  "n_points": 3000,
+  "cases": [
+    {
+      "max_cells": 2000000,
+      "face_chunk": 20480,
+      "peak_cells": 1310720,
+      "peak_bytes": 10485760,
+      "maxdiff": 0.0
+    },
+    {
+      "max_cells": 200000,
+      "face_chunk": 3125,
+      "peak_cells": 200000,
+      "peak_bytes": 1600000,
+      "maxdiff": 0.0
+    },
+    {
+      "max_cells": 20000,
+      "face_chunk": 312,
+      "peak_cells": 19968,
+      "peak_bytes": 159744,
+      "maxdiff": 0.0
+    }
+  ],
+  "all_zero": true
+}

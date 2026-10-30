@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 44,
-  "n_pass": 44,
+  "n_checks": 48,
+  "n_pass": 48,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 26,
-      "n_pass": 26
+      "n": 30,
+      "n_pass": 30
     },
     "goal": {
       "n": 5,
@@ -239,6 +239,30 @@
       "check": "multimesh_split_equivalence",
       "pass": true,
       "detail": "{'mask_iou_within': True, 'depth_p95_within': True}"
+    },
+    {
+      "layer": "function",
+      "check": "collision_metric_full_parity",
+      "pass": true,
+      "detail": "{'method': 'full_mesh', 'faces': 509408}"
+    },
+    {
+      "layer": "function",
+      "check": "collision_metric_memory_recorded",
+      "pass": true,
+      "detail": "{'peak_rss_mb': 756.7}"
+    },
+    {
+      "layer": "function",
+      "check": "collision_metric_no_subsampling",
+      "pass": true,
+      "detail": "{'total': 414180, 'used': 414180, 'sampled': False, 'max_points': 2000000, 'seed': 0}"
+    },
+    {
+      "layer": "function",
+      "check": "distance_block_equivalence",
+      "pass": true,
+      "detail": "[{'max_cells': 2000000, 'face_chunk': 20480, 'peak_cells': 1310720, 'peak_bytes': 10485760, 'maxdiff': 0.0}, {'max_cells': 200000, 'face_chunk': 3125, 'peak_cells': 200000, 'peak_bytes': 1600000, 'maxdiff': 0.0}, {'max_cells': 20000, 'face_chunk': 312, 'peak_cells': 19968, 'peak_bytes': 159744, 'maxdiff': 0.0}]"
     },
     {
       "layer": "function",

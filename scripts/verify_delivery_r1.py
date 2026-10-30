@@ -168,6 +168,22 @@ def main():
     add('function', 'multimesh_split_equivalence', bool(mm and mm.get('pass')),
         (mm or {}).get('checks'))
 
+    # 碰撞测量的内存与等价性证据（本轮修正必须有记录，否则无法解释口径变化）
+    mf = jl(B / 'fusion_diagnostics/off1_R03_s1/collision/metrics_full.json')
+    add('function', 'collision_metric_full_parity',
+        bool(mf) and (mf.get('parity_source') or {}).get('method') == 'full_mesh',
+        (mf or {}).get('parity_source'))
+    add('function', 'collision_metric_memory_recorded',
+        bool(mf) and float(mf.get('peak_rss_mb') or 0) > 0
+        and float(mf.get('peak_rss_mb') or 0) < 8000,
+        {'peak_rss_mb': (mf or {}).get('peak_rss_mb')})
+    add('function', 'collision_metric_no_subsampling',
+        bool(mf) and not (mf.get('evaluation_points') or {}).get('sampled'),
+        (mf or {}).get('evaluation_points'))
+    eq = jl(ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/verify/distance_block_equivalence.json')
+    add('function', 'distance_block_equivalence', bool(eq and eq.get('all_zero')),
+        (eq or {}).get('cases'))
+
     # 状态合同（生产函数）
     scp = jl(B / 'verify/state_contract.json')
     add('function', 'state_contract_ab', bool(scp and scp.get('all_pass')),

@@ -161,6 +161,13 @@ def main():
 
     dec = decision.evaluate([r for r in matrix if r.get('option') != 'A0'],
                             [x for x in ACT.OPTIONS if x != 'A0'])
+    if not hyps:
+        # 无候选分支：必须在**写盘之前**就把 A0 与原因写进 decision，
+        # 否则写出的 decisions.json 缺原因，合同会（正确地）拒绝它。
+        dec.update({'chosen': 'A0', 'safe_set': [],
+                    'reason': 'no_candidates_after_second_view',
+                    'no_candidate': True,
+                    'reason_detail': '两视角筛选后保留集合为空，禁止通行，固定 A0'})
     # 决策矩阵合同校验（重复/缺格/A0 入安全集/无候选未写原因 -> 直接失败）
     import v7_decision_contract as DC
     _exp = {'candidates': [h['id'] for h in hyps], 'actions': acts,
@@ -199,17 +206,32 @@ def main():
     for st in states:
         tenv = build_env(ROOT / a.truth_collision, a.goal_x, a.time_limit, soil_cfgs[0])
         started = time.time()
-        rows = eval_six.run_episode_from_env(
-            tenv, chosen, st['seed'], vis, a.goal_x, a.time_limit,
-            hid='TRUTH_continue', snapshot=st['snapshot'],
-            state_mode='same_scene')   # 同一真值场景：完整恢复
+        # 优先同场景完整恢复；若快照来自观测场景（与真值场景签名不同），
+        # 退化为 project 并**记录原因**，不假装是同场景恢复。
+        mode_used = 'same_scene'
+        try:
+            rows = eval_six.run_episode_from_env(
+                tenv, chosen, st['seed'], vis, a.goal_x, a.time_limit,
+                hid='TRUTH_continue', snapshot=st['snapshot'],
+                state_mode=mode_used)
+        except ValueError as _e:
+            if '场景签名不符' not in str(_e):
+                raise
+            mode_used = 'project'
+            rows = eval_six.run_episode_from_env(
+                tenv, chosen, st['seed'], vis, a.goal_x, a.time_limit,
+                hid='TRUTH_continue', snapshot=st['snapshot'],
+                state_mode=mode_used)
         for r in rows:
             r.update({'method': 'closed_loop', 'phase': 'execution',
                       'decision_sha': dec_sha, 'execution_started_at': started,
                       'truth_world': a.truth_world,
                       'truth_collision': a.truth_collision,
                       'start_x': st['start_x'], 'state_hash': st['state_hash'],
-                      'state_seed': st['seed']})
+                      'state_seed': st['seed'], 'state_mode': mode_used,
+                      'state_mode_note': ('snapshot 来自观测场景，按 robot-state 投影到真值场景；'
+                                          '不传碰撞材质、不传土壤内部量'
+                                          if mode_used == 'project' else '同一场景完整恢复')})
             r['displacement_x'] = round(float(r['final_x']) - float(st['start_x']), 4)
         exec_rows += rows
         events.append({'event': 'execution_started', 'decision_sha': dec_sha,

@@ -1,0 +1,48 @@
+{
+  "schema": "closed-loop-decisions/v7",
+  "decision_sha": "abd35d439078229c0ac4174c1e3d073e364487e7ceeb418b434b28e874cf07d2",
+  "written_at": 1793364753.4485638,
+  "decision": {
+    "rule": "worst-case-risk/v2",
+    "insufficient_evidence": true,
+    "missing": "no hypotheses",
+    "options": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "chosen": "A0",
+    "safe_set": [],
+    "reason": "no_candidates_after_second_view",
+    "no_candidate": true,
+    "reason_detail": "两视角筛选后保留集合为空，禁止通行，固定 A0",
+    "contract": {
+      "n_cells": 0,
+      "n_unique": 0,
+      "n_dup": 0,
+      "n_missing": 0,
+      "n_not_applicable": 0,
+      "n_states": 0,
+      "n_expected_cells": 0
+    },
+    "n_cells": 0,
+    "n_skipped": 0,
+    "n_states": 1,
+    "n_candidates": 0,
+    "n_soil": 1,
+    "actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "decision_rule": "worst-case-risk/v2"
+  }
+}

@@ -39,8 +39,20 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 def eval_mesh(mesh, observation, tag, outdir):
     """冻结评价器：与正式融合完全相同的调用路径。"""
     tmp = outdir / f'{tag}.stl'; mesh.export(tmp)
+    # 面数超 MuJoCo 单 mesh 上限时用同场景多视觉 mesh（§11.3），几何与相机不变
+    posed = None
+    try:
+        import v7_multimesh as _MM
+        if len(mesh.faces) > _MM.MAX_FACES_DEFAULT:
+            pd = outdir / f'{tag}.parts'
+            parts, meta = _MM.split_mesh(mesh, _MM.MAX_FACES_DEFAULT)
+            _MM.write_world(parts, pd, FZ.sha_file(tmp), len(mesh.faces), {'split': meta})
+            posed = str(pd)
+    except Exception as _e:
+        print(json.dumps({'multimesh_error': f'{type(_e).__name__}: {_e}'}, ensure_ascii=False))
+        posed = None
     m = align.render_eval(mesh, str(observation), tmpdir=str(tmp), W=None, H=None,
-                          want_vis_pt=False)
+                          want_vis_pt=False, posed_dir=posed)
     vis = np.load(pathlib.Path(observation) / 'visible_points.npy')
     if len(vis) > 1200:
         vis = vis[np.random.default_rng(0).choice(len(vis), 1200, replace=False)]
@@ -110,10 +122,10 @@ def residual_heatmap(mesh, observation, out_png, W=None, H=None):
                              if sel.any() else None)}
 
 
-def build_variants(observation, parent_world, cfg, ablate):
+def build_variants(observation, parent_world, cfg, ablate, pitch_override=None):
     parent = FZ._load_mesh(parent_world / 'body.stl')
     vis = np.load(pathlib.Path(observation) / 'visible_points.npy')
-    pitch = float(a.pitch if a.pitch is not None else cfg['pitch_m'])
+    pitch = float(pitch_override if pitch_override is not None else cfg['pitch_m'])
     print(json.dumps({'pitch_m': pitch}, ensure_ascii=False))
     grid = FZ.make_grid(parent, vis, pitch, int(cfg['margin_cells']))
     space, space_stats = FZ.classify_space(observation, grid,
@@ -191,7 +203,8 @@ def main():
                  **eval_mesh(m1, a.observation, 'S1', out)})
     rows[-1]['heatmap'] = residual_heatmap(m1, a.observation, out / 'heat_S1.png')
     # S2/S3/S4：占据化 / 加雕刻 / 加壳
-    meshes, info = build_variants(a.observation, pathlib.Path(a.parent_world), cfg, None)
+    meshes, info = build_variants(a.observation, pathlib.Path(a.parent_world), cfg, None,
+                                  pitch_override=a.pitch)
     for k, mesh in meshes.items():
         rows.append({'step': k, 'what': ('父候选仅占据化+网格提取' if k == 'S2_parent_only'
                                          else ('加自由空间雕刻' if k == 'S3_carved'

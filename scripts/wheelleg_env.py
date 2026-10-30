@@ -729,6 +729,32 @@ class WheelLegEnv:
                 'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
                 'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
 
+    def scene_signature(self):
+        """场景身份：障碍碰撞内容、地形、土壤参数、通道与目标。
+
+        用于区分「同场景完整恢复」与「跨候选状态投射」；不含机器人部分。
+        """
+        import hashlib as _h, json as _j
+        parts = []
+        for obj in (self.spec.get('objects') or []):
+            pd = obj.get('posed_dir')
+            if pd:
+                man = {}
+                try:
+                    man = _j.loads((pathlib.Path(pd) / 'manifest.json').read_text())
+                except Exception:
+                    man = {}
+                parts.append('|'.join(str(man.get(k)) for k in
+                                      ('world_sha', 'collision_sha', 'n_parts', 'parts')))
+            else:
+                parts.append(str(obj.get('mesh_file') or obj.get('asset') or '?'))
+        soil = self.spec.get('soil') or {}
+        parts.append(_j.dumps(soil.get('params') or {}, sort_keys=True))
+        parts.append(str(self.spec.get('terrain') or self.spec.get('kind') or ''))
+        parts.append(str(self.spec.get('goal_x')))
+        parts.append(str((self.spec.get('channel') or {})))
+        return _h.sha256('\n'.join(parts).encode()).hexdigest()[:32]
+
     def robot_signature(self):
         """机器人关节/执行器映射签名：名字+类型+地址，避免只看 nq。"""
         import hashlib as _h
@@ -772,6 +798,7 @@ class WheelLegEnv:
             'mujoco_version': mujoco.__version__,
             'nq': int(m.nq), 'nv': int(m.nv), 'na': int(m.na),
             'robot_signature': self.robot_signature(),
+            'scene_signature': self.scene_signature(),
             'state_flags': int(flags), 'mjstate': buf.tolist(),
             'data_time': float(d.time), 'env_t': float(self.t),
             'ctrl': [float(x) for x in d.ctrl],
@@ -804,7 +831,7 @@ class WheelLegEnv:
         rec['state_hash'] = h.hexdigest()[:32]
         return rec
 
-    def restore_state(self, rec, strict=True):
+    def restore_state(self, rec, strict=True, mode='same_scene'):
         """
         恢复 save_state() 的快照。strict=True 时维度/版本不符直接拒绝，
         不静默跳过。
@@ -827,6 +854,11 @@ class WheelLegEnv:
             if strict:
                 raise ValueError('MuJoCo 版本不符：快照 %s vs 当前 %s'
                                  % (rec.get('mujoco_version'), mujoco.__version__))
+        cross = (mode == 'project')
+        if not cross:
+            if rec.get('scene_signature') and rec['scene_signature'] != self.scene_signature():
+                raise ValueError('场景签名不符：同场景恢复被拒绝'
+                                 '（跨候选请显式用 mode="project"）')
         d, m = self.data, self.model
         if (rec['nq'], rec['nv'], rec.get('na', 0)) != (m.nq, m.nv, m.na):
             raise ValueError('模型维度不符，拒绝恢复（不能只因 nq 相同就认为同一关节排列）')
@@ -852,24 +884,36 @@ class WheelLegEnv:
         # 摩擦按 geom 索引恢复；跨模型（候选场景 geom 数不同）时只恢复公共前缀，
         # 并记录跳过数量 —— 不静默假设完全一致。
         skipped = 0
-        for g_, fr in (rec.get('geom_friction') or {}).items():
-            gi = int(g_)
-            if gi < self.model.ngeom:
-                self.model.geom_friction[gi] = np.asarray(fr, dtype=np.float64)
-            else:
-                skipped += 1
-        self._last_restore_info = {'geom_friction_skipped': skipped,
+        if not cross:
+            for g_, fr in (rec.get('geom_friction') or {}).items():
+                gi = int(g_)
+                if gi < self.model.ngeom:
+                    self.model.geom_friction[gi] = np.asarray(fr, dtype=np.float64)
+                else:
+                    skipped += 1
+        else:
+            skipped = len(rec.get('geom_friction') or {})   # 跨场景一律不搬材质
+        self._last_restore_info = {'mode': mode,
+                                   'source_scene_sha': rec.get('scene_signature'),
+                                   'target_scene_sha': self.scene_signature(),
+                                   'collision_material_transferred': not cross,
+                                   'geom_friction_skipped': skipped,
                                    'ngeom_snapshot': len(rec.get('geom_friction') or {}),
                                    'ngeom_current': int(self.model.ngeom)}
         self.nav_target_y = float(rec.get('nav_target_y', self.channel_center))
         so = rec.get('soil')
-        if so and self.soil_mode != 'rigid':
+        if (not cross) and so and self.soil_mode != 'rigid':
             self._soil_limits = dict(so.get('limits') or {})
             self._soil_prev_force = {int(k): np.asarray(v)
                                      for k, v in (so.get('prev_force') or {}).items()}
             self._soil_ground_mu = {int(k): float(v)
                                     for k, v in (so.get('ground_mu') or {}).items()}
             self._soil_stats = dict(so.get('stats') or self._soil_stats)
+        if cross:
+            try:
+                d.qacc_warmstart[:] = 0.0
+            except Exception:
+                pass
         mujoco.mj_forward(m, d)
         return {'restored': True, 'data_time': float(d.time), 'env_t': float(self.t),
                 **(getattr(self, '_last_restore_info', {})),

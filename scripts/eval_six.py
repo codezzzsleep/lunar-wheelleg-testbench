@@ -116,7 +116,7 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
 
 def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
                          hid='episode', soil_mode='rigid', snapshot=None,
-                         skill=None):
+                         skill=None, state_mode='project'):
     """在**给定 env** 上跑一段；给了 snapshot 就从该快照续行（不 reset）。
 
     两种语义显式分开（任务书 §6.1）：
@@ -130,7 +130,7 @@ def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
                              visible=visible or {}, seed=seed)
     started_at = time.time()
     if snapshot is not None:
-        out = r.run_from_state(snapshot)
+        out = r.run_from_state(snapshot, mode=state_mode)
         resumed = True
     else:
         env.reset(seed=seed)

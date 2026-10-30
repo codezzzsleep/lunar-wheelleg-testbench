@@ -114,7 +114,8 @@ def main():
                         env = build_env(ROOT / col, a.goal_x, a.time_limit, soil_label)
                         rows = eval_six.run_episode_from_env(
                             env, act, st['seed'], vis, a.goal_x, a.time_limit,
-                            hid=h['id'], snapshot=st['snapshot'])
+                            hid=h['id'], snapshot=st['snapshot'],
+                            state_mode='project')   # 跨候选场景：只投射机器人状态
                         for r in rows:
                             r.update({'soil_config': soil_label,
                                       'state_hash': st['state_hash'],
@@ -161,7 +162,8 @@ def main():
         started = time.time()
         rows = eval_six.run_episode_from_env(
             tenv, chosen, st['seed'], vis, a.goal_x, a.time_limit,
-            hid='TRUTH_continue', snapshot=st['snapshot'])
+            hid='TRUTH_continue', snapshot=st['snapshot'],
+            state_mode='same_scene')   # 同一真值场景：完整恢复
         for r in rows:
             r.update({'method': 'closed_loop', 'phase': 'execution',
                       'decision_sha': dec_sha, 'execution_started_at': started,

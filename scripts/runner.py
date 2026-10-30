@@ -48,7 +48,7 @@ class EpisodeRunner:
         self.initial_full_hash = None
         self.skill.reset(params or {})
 
-    def run_from_state(self, snapshot):
+    def run_from_state(self, snapshot, mode='same_scene'):
         """
         从给定状态**继续**执行：不 reset，保留观察移动的时间与内部状态。
 
@@ -59,7 +59,7 @@ class EpisodeRunner:
         # 完整状态恢复：走 env.restore_state（含 mj_getState 全量物理状态、
         # ctrl/外力/计数/导航/土壤），不是只设 qpos/qvel
         if snapshot.get('schema') == 'env-state/v1':
-            info = env.restore_state(snapshot)
+            info = env.restore_state(snapshot, mode=mode)
         else:
             raise ValueError('run_from_state 需要 env-state/v1 完整快照 '
                              '（位姿/速度续接请用 env.restore_state 的旧格式适配器）')
@@ -71,6 +71,8 @@ class EpisodeRunner:
         self._capture_initial()
         out = self._loop(obs, t_start)
         out['continuing_from'] = 'snapshot'
+        out['state_mode'] = mode
+        out['restore_info'] = info
         out['t_start'] = round(t_start, 4)
         return out
 

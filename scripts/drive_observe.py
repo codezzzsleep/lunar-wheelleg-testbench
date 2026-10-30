@@ -258,6 +258,11 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--camera-height', type=float, default=0.32)
     ap.add_argument('--seeds', type=int, nargs='+', default=[0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+    ap.add_argument('--stop-margin', type=float, default=0.78,
+                    help='停在障碍前多远（米）。越小基线越长，但取景会变紧；'
+                         '默认 0.78 是本平台实测的安全取景距离')
+    ap.add_argument('--lateral-command', type=float, default=0.30,
+                    help='横向指令上限（米）；实测 0.30 指令≈0.13 m 位移，>0.5 会倾覆')
     a = ap.parse_args()
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     case = json.loads(pathlib.Path(a.case).read_text())
@@ -269,8 +274,13 @@ def main():
     # 侧前方观察点横向**指令**：实测本平台在 0.30 m 指令下能稳定横移约 0.13 m，
     # 配合"停在障碍前 0.78 m"形成 15-25° 视差；指令再大（>=0.5）会倾覆。
     # 上限仍受公开通道约束。
-    target_y = float(np.clip(0.30, 0.10, half_w - 0.30))
+    target_y = float(np.clip(a.lateral_command, 0.10, half_w - 0.30))
     rec = {'workflow': 'drive_observe/v1',
+           'stop_margin_m': float(a.stop_margin),
+           'lateral_command_m': float(target_y),
+           'note': ('阈值仍是冻结值（基线>=0.45 m、视线角>=8°）；本参数只改**驾驶策略**，'
+                    '不改判据。改小 stop_margin 会拉长基线但取景更紧，必须同时检查'
+                    'target_px/depth_frac 是否仍达标。'),
            'observation_target_y_m': round(target_y, 4),
            'target_basis': ('W_vis/2 + robot half width + margin；只读公开量'),
            'observation_protocol': observation_protocol(),
@@ -291,7 +301,7 @@ def main():
         # 相机在 base_link 前 0.42 m，只要在障碍前 0.75-0.9 m 停下，
         # 侧移 0.10-0.15 m 即可形成 15-25° 视差，且仍在 70° FOV（±35°）内。
         front = float(case['obstacle_x']) - float(case.get('D', 0.3)) / 2.0
-        stop_x = front - 0.42 - 0.78
+        stop_x = front - 0.42 - float(a.stop_margin)
         move_s, move_stop = drive_to_nav(env, target_y, stop_x=max(0.25, stop_x))
         face = None      # 不做转向对准（平台转向不足，且会破坏取景）
         st = brake_and_settle(env)

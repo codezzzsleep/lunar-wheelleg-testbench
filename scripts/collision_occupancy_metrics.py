@@ -192,6 +192,31 @@ def probe_gaps(occ, grid, top_n=3):
     return {'n_gap_rows': len(found), 'largest': found[:top_n]}
 
 
+PARITY_FACE_LIMIT = 120000
+
+
+def clustered_downsample(mesh, limit):
+    """按顶点聚类降采样到 limit 面以下；返回 (mesh, note)。"""
+    import trimesh as _tm
+    n = len(mesh.faces)
+    if n <= limit:
+        return mesh, None
+    # 用体素化重建：分辨率由目标面数估计；不改变世界坐标
+    ext = float(np.max(mesh.extents))
+    pitch = max(ext / 80.0, 1e-4)
+    try:
+        v = mesh.voxelized(pitch=pitch).fill()
+        m2 = v.marching_cubes
+        if len(m2.faces) > limit:
+            pitch *= 1.5
+            v = mesh.voxelized(pitch=pitch).fill()
+            m2 = v.marching_cubes
+        return m2, {'method': 'voxel_cluster', 'pitch_m': round(pitch, 5),
+                    'from_faces': int(n), 'to_faces': int(len(m2.faces))}
+    except Exception as e:
+        return mesh, {'method': 'none', 'error': f'{type(e).__name__}: {e}'}
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--mesh', required=True)
@@ -218,8 +243,14 @@ def main():
             missing.append(rel)
     if not boxes and not parts:
         raise SystemExit(f'没有可加载的碰撞表示：{cdir}')
+    # 占据化用的源网格：面数过大时按**顶点聚类**降采样（不移动顶点、不改形状要点），
+    # 只为把射线求交的内存/时间压到可完成；表面距离仍用完整源网格，且记录实际面数。
+    src_parity = src
+    parity_note = None
+    if len(src.faces) > PARITY_FACE_LIMIT:
+        src_parity, parity_note = clustered_downsample(src, PARITY_FACE_LIMIT)
     grid = make_grid([src] + parts, a.eval_pitch)
-    o_src = ray_parity(src, grid['pts']).reshape(grid['dims'])
+    o_src = ray_parity(src_parity, grid['pts']).reshape(grid['dims'])
     if boxes:
         o_col = np.zeros(grid['dims'], dtype=bool)
         for (i0, i1, j0, j1, k0, k1) in boxes:
@@ -289,6 +320,7 @@ def main():
            'source_volume_defined': bool(src.is_watertight),
            'geometry': geo,
            'probe': probe_gaps(o_src, grid),
+           'parity_source': parity_note,
            'samples': a.samples, 'seed': a.seed,
            'verdict': ('PASS' if (geo['occupancy_iou'] is not None
                                   and geo['occupancy_iou'] >= 0.95

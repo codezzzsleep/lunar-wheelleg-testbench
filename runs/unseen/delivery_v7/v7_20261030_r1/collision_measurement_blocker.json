@@ -1,0 +1,28 @@
+{
+  "schema": "collision-measurement-blocker/v7-r1",
+  "candidate": "V7_R03_s1 (2.5mm, shell_offset 1.0)",
+  "visible": {
+    "iou": 0.9737,
+    "p95_mm": 1.702,
+    "freespace": 0.0392,
+    "pass": true
+  },
+  "collision": {
+    "n_boxes": 4567,
+    "collision_sha": "32075c548a5231596a190996fb177881",
+    "manifest_atomic": true
+  },
+  "blocker": {
+    "symptom": "collision_occupancy_metrics 反复 exit=137 (OOM)",
+    "tried_eval_pitches_m": [
+      0.0025,
+      0.004,
+      0.006,
+      0.008
+    ],
+    "tried": "射线占据化的源网格聚类降采样到 12 万面以内（parity_source 已记录）",
+    "remaining_suspect": "几何距离阶段对 1M 面源网格与 4567 个 box 的一次性大数组"
+  },
+  "consequence": "V7_R03_s1 **可见三门槛通过**，但碰撞保真未测到 → 按冻结资格定义**仍不算合格**",
+  "next": "把距离阶段改成分块/流式，或对源表面做确定性抽样并记录样本量；不得用未测数据宣称合格"
+}

@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 63,
-  "n_pass": 63,
+  "n_checks": 67,
+  "n_pass": 66,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 45,
-      "n_pass": 45
+      "n": 49,
+      "n_pass": 48
     },
     "goal": {
       "n": 5,
@@ -356,6 +356,30 @@
     },
     {
       "layer": "function",
+      "check": "decision_aggregates_soil",
+      "pass": true,
+      "detail": "{'fails': 2, 'risk': 0.333, 'missing_detected': True}"
+    },
+    {
+      "layer": "function",
+      "check": "validation_continuation_run",
+      "pass": false,
+      "detail": "six_R03_nominal_v2"
+    },
+    {
+      "layer": "function",
+      "check": "user_entry_point_exists",
+      "pass": true,
+      "detail": "scripts/run_r1.py"
+    },
+    {
+      "layer": "function",
+      "check": "user_entry_lists_stages",
+      "pass": true,
+      "detail": "{'rc': 0, 'missing': []}"
+    },
+    {
+      "layer": "function",
       "check": "state_contract_ab",
       "pass": true,
       "detail": "{'schema': 'state-contract-test/v7', 'scene_sig': '254262bcd7706cb67338f60f8ea3f1c8', 'A_same_scene_ok': True, 'B_same_scene_rejected': True, 'B_message': '场景签名不符：同场景恢复被拒绝（跨候选请显式用 mode=\"project\"）', 'C_project_ok': True, 'C_material_not_transferred': True, 'D_soil_changes_scene_sig': True, 'all_pass': True}"
@@ -397,5 +421,5 @@
       "detail": ""
     }
   ],
-  "verdict": "PASS"
+  "verdict": "FAIL"
 }

@@ -76,6 +76,22 @@ def collisionize(world_body, out_dir, hid):
     return d, man
 
 
+def build_env(world_dir, goal_x, time_limit, soil_mode='rigid', seed=0):
+    """构造环境（不跑），供"从快照续接"的调用方复用；与 run_episode 完全同一 spec。"""
+    spec = terrain.make_spec(kind='flat', seed=seed, objects=[], goal_x=goal_x,
+                             name=pathlib.Path(world_dir).name)
+    spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
+    spec['init_perturbation'] = {'lateral_m': 0.05, 'yaw_rad': 0.05}
+    spec['skill_cfg'] = {'task': 'M', 'require_contact': False, 'settle_seconds': 1.0}
+    spec['objects'] = [{'posed_dir': str(world_dir)}]
+    if soil_mode != 'rigid':
+        import v7_soil
+        _r = v7_soil.resolve(soil_mode)
+        spec['soil'] = {'mode': 'soil', 'label': _r.get('label'), 'params': _r['params']}
+    return wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=time_limit,
+                                    v_ref=1.0, tip_deg=60.0)
+
+
 def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
                 soil_mode='rigid'):
     """统一执行器：与 Gate P、H5 预演、真值执行完全同一套。"""
@@ -279,6 +295,13 @@ def main():
     seeds = proto['initial_states']
     val_seeds = proto.get('validation_states') or []
     run_val = bool(val_seeds) and not proto.get('disable_validation')
+    # 验证初态的续接合同：若协议提供快照文件，验证必须从快照恢复（真实续接）；
+    # 未提供时如实标记 seed_reset，不得让"重置后跑一遍"冒充续接。
+    val_snaps = {}
+    _vs = proto.get('validation_state_snapshots')
+    if _vs:
+        _p = ROOT / _vs if not str(_vs).startswith('/') else pathlib.Path(_vs)
+        val_snaps = json.loads(_p.read_text())
     ctx = {'obs_dir': str(obs_dir), 'H_vis': float(vis['H_vis']),
            'W_vis': float(vis['W_vis']), 'x_front': float(vis['x_front'])}
 
@@ -512,8 +535,32 @@ def main():
             return out_rows
         for method, dec in pending:
             for s_ in val_seeds:
-                r = run_episode(truth_col, dec, s_, vis, goal_x, time_limit=a.time_limit,
-                                soil_mode=phy['soil_mode'])
+                snap = val_snaps.get(str(s_)) if val_snaps else None
+                if snap is not None:
+                    # 合同要求：验证初态必须是**真实续接**（从快照恢复），并记录 state_mode
+                    r, mode = None, None
+                    env = build_env(truth_col, goal_x, a.time_limit, phy['soil_mode'])
+                    try:
+                        rows = run_episode_from_env(
+                            env, dec.get('action') or dec.get('chosen'), s_, vis, goal_x,
+                            a.time_limit, hid=method, snapshot=snap, state_mode='same_scene')
+                        mode = 'same_scene'
+                    except ValueError as e:
+                        if '场景签名不符' not in str(e):
+                            raise
+                        env = build_env(truth_col, goal_x, a.time_limit, phy['soil_mode'])
+                        rows = run_episode_from_env(
+                            env, dec.get('action') or dec.get('chosen'), s_, vis, goal_x,
+                            a.time_limit, hid=method, snapshot=snap, state_mode='project')
+                        mode = 'project'
+                    r = rows[0] if rows else {}
+                    r['validation_continuation'] = True
+                    r['state_mode'] = mode
+                else:
+                    r = run_episode(truth_col, dec, s_, vis, goal_x, time_limit=a.time_limit,
+                                    soil_mode=phy['soil_mode'])
+                    r['validation_continuation'] = False
+                    r['state_mode'] = 'seed_reset'
                 row = dict(r)
                 row.update({'method': method, 'phase': 'validation',
                             'hypothesis': method, 'initial_state_id': f'val_seed{s_}',

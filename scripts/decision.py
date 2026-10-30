@@ -31,10 +31,16 @@ def _clean(rows):
     return out
 
 
-def evaluate(matrix, options, c_fail=FAR, c_abort=ABORT):
+def evaluate(matrix, options, c_fail=FAR, c_abort=ABORT, extra_keys=('soil_config',)):
+    """按 (候选 × 动作 × 状态 × 额外维) 聚合。
+
+    extra_keys 默认把 soil_config 纳入聚合维度：同一 (候选,状态) 在不同土壤下是**不同的格**，
+    不能互相覆盖；缺失任何一格都算证据不足（保守判为不安全）。
+    """
     rows = _clean(matrix)
     hyps = sorted({r.get('hypothesis_id') for r in rows})
-    seeds = sorted({r.get('seed') for r in rows})
+    keys = [(r.get('seed'),) + tuple(r.get(k) for k in extra_keys) for r in rows]
+    seeds = sorted(set(keys), key=lambda t: tuple(str(x) for x in t))
     if not hyps:
         return {'rule': RULE, 'insufficient_evidence': True,
                 'missing': 'no hypotheses', 'options': list(options)}
@@ -46,7 +52,7 @@ def evaluate(matrix, options, c_fail=FAR, c_abort=ABORT):
         missing = []
         for h in hyps:
             cells = [r for r in rows if r.get('option') == o and r.get('hypothesis_id') == h]
-            by_seed = {r.get('seed'): r for r in cells}
+            by_seed = {(r.get('seed'),) + tuple(r.get(k) for k in extra_keys): r for r in cells}
             miss = [sd for sd in seeds if sd not in by_seed]
             if miss:
                 missing.append(f'{o}/{h}: missing seeds {miss}')

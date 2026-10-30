@@ -219,6 +219,62 @@ def main():
             all(e.get('state_mode') in ('same_scene', 'project') for e in psc.get('execution') or []),
             [e.get('state_mode') for e in psc.get('execution') or []])
 
+    # 多土壤决策聚合：同一 (候选,状态) 在不同土壤下必须是不同的格，缺一格即证据不足
+    try:
+        import decision as _D
+        rows = []
+        for cand in ('H1', 'H2'):
+            for sd in (0, 1):
+                for soil, ok in (('nominal', True), ('low_traction', False), ('high_drag', True)):
+                    rows.append({'hypothesis_id': cand, 'option': 'R1', 'seed': sd,
+                                 'soil_config': soil, 'success': ok,
+                                 't_end': 10.0 if ok else None, 'abort': not ok})
+        d_ok = _D.evaluate(rows, ['R1'])
+        n_fail = d_ok['stats']['R1']['per_hypothesis']['H1']['fails']
+        drop = [r for r in rows if not (r['hypothesis_id'] == 'H2' and r['seed'] == 1
+                                        and r['soil_config'] == 'high_drag')]
+        d_miss = _D.evaluate(drop, ['R1'])
+        add('function', 'decision_aggregates_soil',
+            n_fail == 2 and d_ok['stats']['R1']['risk'] == 0.333
+            and d_miss['stats']['R1']['insufficient'] and not d_miss['stats']['R1']['safe'],
+            {'fails': n_fail, 'risk': d_ok['stats']['R1']['risk'],
+             'missing_detected': d_miss['stats']['R1']['insufficient']})
+    except Exception as e:
+        add('function', 'decision_aggregates_soil', False, f'{type(e).__name__}: {e}')
+
+    # 验证状态续接合同：协议带快照 -> 验证行必须标 continuation=true 且记 state_mode
+    v2 = jl(B / 'evaluation/six_R03_nominal_v2/summary.json')
+    add('function', 'validation_continuation_run', bool(v2), 'six_R03_nominal_v2')
+    if v2:
+        rp = B / 'evaluation/six_R03_nominal_v2/records.jsonl'
+        rows2 = ([json.loads(l) for l in rp.read_text().splitlines() if l.strip()]
+                 if rp.exists() else [])
+        val = [r for r in rows2 if r.get('phase') == 'validation']
+        add('function', 'validation_continuation_contract',
+            bool(val) and all(r.get('validation_continuation') is True
+                              and r.get('state_mode') in ('same_scene', 'project')
+                              for r in val),
+            {'n': len(val),
+             'modes': sorted({r.get('state_mode') for r in val}),
+             'continuation': sorted({r.get('validation_continuation') for r in val},
+                                    key=str)})
+
+    # 用户入口：必须存在且能列出八个阶段
+    ent = ROOT / 'scripts/run_r1.py'
+    add('function', 'user_entry_point_exists', ent.exists(), 'scripts/run_r1.py')
+    if ent.exists():
+        try:
+            out = subprocess.run([sys.executable, str(ent), '--dry-run'],
+                                 cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+            stages = ['observe', 'candidate', 'fuse', 'measure', 'closed_loop', 'six',
+                      'page', 'verify']
+            add('function', 'user_entry_lists_stages',
+                out.returncode == 0 and all(st in out.stdout for st in stages),
+                {'rc': out.returncode, 'missing': [st for st in stages
+                                                   if st not in out.stdout]})
+        except Exception as e:
+            add('function', 'user_entry_lists_stages', False, f'{type(e).__name__}: {e}')
+
     # 状态合同（生产函数）
     scp = jl(B / 'verify/state_contract.json')
     add('function', 'state_contract_ab', bool(scp and scp.get('all_pass')),

@@ -53,6 +53,37 @@ export MUJOCO_GL=osmesa
 .venv/bin/python scripts/verify_delivery_r1.py
 ```
 
+## 1b. 一条命令的用户入口
+
+```bash
+.venv/bin/python scripts/run_r1.py --dry-run      # 只打印将执行的命令（可复制）
+.venv/bin/python scripts/run_r1.py --stage all    # 全流程；已有产物的阶段自动跳过
+.venv/bin/python scripts/run_r1.py --stage six --force   # 只重跑某阶段
+```
+
+八个阶段固定顺序：`observe → candidate → fuse → measure → closed_loop → six → page → verify`。
+两条硬约束：**云端生成必须显式 `--allow-generate`**（默认不花钱）；**产物存在即跳过、不覆盖**
+（`--force` 才重跑），避免静默替换证据。
+
+## 1c. 多土壤决策聚合（已修）
+
+原实现只按 `(候选, 状态)` 聚合，同一候选同一状态在不同土壤下的行会**互相覆盖**——
+多土壤跑出来的证据被静默丢弃。
+
+现在 `decision.evaluate(extra_keys=('soil_config',))` 按 **(候选 × 动作 × 状态 × 土壤)** 聚合：
+
+- 同一格在不同土壤下是**不同格**，缺失任何一格 → `insufficient` → **不安全**（保守）；
+- 单元验证：2 候选 × 2 状态 × 3 土壤 = 12 格，两个候选各 2 次失败 → `risk = 0.333`；
+  删掉任一土壤格 → `insufficient=True, safe=False`。
+
+## 1d. 验证状态续接合同（已修）
+
+`eval_six` 的验证初态此前是**按 seed 重置**再跑一遍，冒充"续接"。现在：
+
+- 协议可给 `validation_state_snapshots`（R03 已导出 3/4/5 三条行驶后快照）；
+- 验证行必须带 `validation_continuation` 与 `state_mode`（`same_scene`，签名不符则 `project` 并记录）；
+- 没给快照时如实标 `seed_reset`——**不允许**重置后跑一遍算作续接。
+
 ## 2. 已验证的能力
 
 | 能力 | 证据 | 结论 |

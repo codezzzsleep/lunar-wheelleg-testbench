@@ -1,0 +1,18 @@
+<!doctype html><meta charset="utf-8"><title>回放 · closed_loop_R03_three_soils</title>
+<style>body{background:#0f1116;color:#dfe3ea;font:14px/1.6 sans-serif;margin:24px}
+table{border-collapse:collapse;margin:8px 0}th,td{border:1px solid #2a2f3a;padding:4px 8px}
+th{background:#171b23}a{color:#8fd3ff}code{background:#171b23;padding:1px 4px}</style>
+<h1>回放 · closed_loop_R03_three_soils</h1>
+<p class="note">分支 <code>matrix_decision</code> · 决策 <code>D1</code>
+ · 矩阵格 <code>42</code> · 状态数 <code>1</code></p>
+<h2>① 决策先落盘（事件顺序）</h2>
+<table><thead><tr><th>事件</th><th>时间</th><th>decision_sha</th></tr></thead><tbody><tr><td>decisions_written</td><td>1793368329.675842</td><td>2bf1260252b9</td></tr><tr><td>execution_started</td><td>1793368329.8179588</td><td>2bf1260252b9</td></tr></tbody></table>
+<h2>② 逐动作预演汇总</h2>
+<table><thead><tr><th>动作</th><th>格数</th><th>成功</th><th>最坏代价</th></tr></thead><tbody><tr><td>D1</td><td>6</td><td>6</td><td>17.22</td></tr><tr><td>D2</td><td>6</td><td>6</td><td>18.36</td></tr><tr><td>L1</td><td>6</td><td>6</td><td>17.66</td></tr><tr><td>L2</td><td>6</td><td>4</td><td>60.0</td></tr><tr><td>R1</td><td>6</td><td>5</td><td>60.0</td></tr><tr><td>R2</td><td>6</td><td>6</td><td>18.72</td></tr><tr><td>S1</td><td>6</td><td>6</td><td>17.52</td></tr></tbody></table>
+<h2>③ 真值续行（独立执行）</h2>
+<table><thead><tr><th>状态</th><th>动作</th><th>成功</th><th>原因</th><th>位移 m</th><th>t_start s</th></tr></thead><tbody><tr><td>0</td><td>D1</td><td>True</td><td>success</td><td>3.0895</td><td>11.94</td></tr></tbody></table>
+<h2>④ 重新运行（缓存资产，会真的跑一次 MuJoCo）</h2>
+<pre><code>.venv/bin/python scripts/v7_rerun.py --case R03 \
+  --hypothesis runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/collision \
+  --action R1 --seed 0 --out runs/unseen/delivery_v7/v7_20261030_r1/evaluation/rerun_manual</code></pre>
+<p><a href="index.html">← 返回总览</a></p>

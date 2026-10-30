@@ -2,7 +2,7 @@
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
   "n_checks": 72,
-  "n_pass": 71,
+  "n_pass": 72,
   "by_layer": {
     "integrity": {
       "n": 13,
@@ -10,7 +10,7 @@
     },
     "function": {
       "n": 54,
-      "n_pass": 53
+      "n_pass": 54
     },
     "goal": {
       "n": 5,
@@ -231,8 +231,8 @@
     {
       "layer": "function",
       "check": "closed_loop_R03_three_soils:decision_before_execution",
-      "pass": false,
-      "detail": "{'written': [], 'started': []}"
+      "pass": true,
+      "detail": "{'written': [1793368329.675842], 'started': [1793368329.8179588]}"
     },
     {
       "layer": "function",
@@ -451,5 +451,5 @@
       "detail": ""
     }
   ],
-  "verdict": "FAIL"
+  "verdict": "PASS"
 }

@@ -534,6 +534,8 @@ def main():
         if not run_val:
             return out_rows
         for method, dec in pending:
+            # 规划器可能返回动作字符串，也可能返回决策 dict —— 统一成 dict 再取动作
+            _d = dec if isinstance(dec, dict) else {'chosen': dec, 'action': dec}
             for s_ in val_seeds:
                 snap = val_snaps.get(str(s_)) if val_snaps else None
                 if snap is not None:
@@ -542,7 +544,7 @@ def main():
                     env = build_env(truth_col, goal_x, a.time_limit, phy['soil_mode'])
                     try:
                         rows = run_episode_from_env(
-                            env, dec.get('action') or dec.get('chosen'), s_, vis, goal_x,
+                            env, _d.get('action') or _d.get('chosen'), s_, vis, goal_x,
                             a.time_limit, hid=method, snapshot=snap, state_mode='same_scene')
                         mode = 'same_scene'
                     except ValueError as e:
@@ -550,7 +552,7 @@ def main():
                             raise
                         env = build_env(truth_col, goal_x, a.time_limit, phy['soil_mode'])
                         rows = run_episode_from_env(
-                            env, dec.get('action') or dec.get('chosen'), s_, vis, goal_x,
+                            env, _d.get('action') or _d.get('chosen'), s_, vis, goal_x,
                             a.time_limit, hid=method, snapshot=snap, state_mode='project')
                         mode = 'project'
                     r = rows[0] if rows else {}

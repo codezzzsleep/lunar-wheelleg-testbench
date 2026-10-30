@@ -351,6 +351,12 @@ ssh <remoteSsh> 'nproc; /opt/lunar/bin/python -c "import mujoco;print(mujoco.__v
 实测：8 核 / 16 GB / 512 GB 盘；`/opt/lunar/bin/python` 里已有 mujoco 3.17.0、numpy 2.5.4、
 trimesh 5.2.0；代码用 `tar | ssh` 同步（源 385 MB，几分钟）。
 
+一条命令跑完整沙箱任务（起环境 → 保活 → 同步 → 跑两视角更新 → 回传）：
+
+```bash
+CNB_TOKEN=... bash scripts/cnb_run.sh --repo ycyc755/lunar-lab-r1
+```
+
 **限制（踩过）**：
 - 工作区在**无活动连接**约 10–12 分钟后被回收，后台任务会随之消失；
   要长时间跑必须保持 SSH 会话（`ssh -o ServerAliveInterval=30 ... 'while true; do sleep 60; done'`）。

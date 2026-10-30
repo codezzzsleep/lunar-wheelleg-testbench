@@ -1,0 +1,18 @@
+{
+  "schema": "second-view-screen/v7",
+  "object": "R03",
+  "incident": {
+    "symptom": "FileExistsError: .../screen_R03 在写入阶段失败",
+    "cause": "我把 --out 改成\"目录\"语义后，该路径此前已被第一次运行写成**文件**；于是 p.parent.mkdir 撞上同名文件，运行在**算完之后**才崩。",
+    "fix": "旧文件改名为 screen_R03_firstrun.json，重跑时 --out 直接给 .json 文件路径",
+    "lesson": "重跑前必须先确认输出路径的类型，否则会白跑一次全量计算"
+  },
+  "s2": {
+    "obs1_iou": 0.9551,
+    "obs2_iou": 0.9193,
+    "obs2_p95_mm": 2.405,
+    "obs2_freespace": 0.0739,
+    "verdict": "rejected(second_view)"
+  },
+  "s1": "pending（原网格多视觉 mesh 路径重新执行中）"
+}

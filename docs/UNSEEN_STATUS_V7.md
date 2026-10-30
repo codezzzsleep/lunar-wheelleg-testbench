@@ -1,21 +1,62 @@
-# V7 当前状态（唯一入口）
+# V7 当前状态（唯一入口，R1 修正批）
 
-**批次**：`v7_20261030`｜**基线**：`fdd2a27b`｜**方向**：项目纲领 v2.1
-**批次入口**：`runs/unseen/delivery_v7/v7_20261030/manifest.json`（生成中）
-**预算**：`configs/unseen_v7_budget.json`（本批新增 500，独立账本）｜**协议**：`configs/unseen_v7_protocol.json`
-**计划**：`plans/unseen_v7_delivery.json`
-
-> 本文件是 V7 的唯一当前状态入口。历史状态见 `docs/UNSEEN_STATUS_V6_1.md`（已归档为上一批）。
+**当前批次**：`v7_20261030_r1`｜**审查基线**：`4fe5281f`｜**方向**：纲领 v2.1
+**批次入口**：`runs/unseen/delivery_v7/v7_20261030_r1/manifest.json`
+**预算口径**：`configs/unseen_v7_r1_budget.json`（500 授权 / 旧 200 预留 / 当前 10 / 实际 unknown）
+**旧批 `v7_20261030` 保留为历史诊断，不再作为当前状态。**
 
 ## 0. 四类状态
 
 | 状态 | 值 |
 | --- | --- |
-| execution_status | **PARTIAL**：生成/处理/比较/月壤/页面/验收已执行；主动观察闭环未跑完 |
-| evidence_status | **PARTIAL**：候选、六方法、月壤、验收可从原始文件复算；观察闭环缺真实续行 |
-| capability_status | **PARTIAL**：9 个真实生成候选里 1 个过三门槛（R03_s2） |
-| benefit_status | **NOT_ESTABLISHED**：六方法在 R03 上全部成功，无法证明生成假设有增量 |
-| 纲领层级 | A 层（能否提出形状假设）**部分支持**；B 层（是否改善行动）**未建立**；C 层**未到** |
+| execution_status | **PARTIAL** |
+| evidence_status | **PARTIAL** |
+| capability_status | **PARTIAL** |
+| benefit_status | **NOT_ESTABLISHED** |
+| claim_level | **NOT_REACHED** |
+
+## 1. 本轮修复的阻断缺陷（P0-1..P0-7）
+
+| 编号 | 修复 | 证据 |
+| --- | --- | --- |
+| P0-1 续行会 reset | `eval_six.run_episode_from_env` 给了 snapshot 就走 `runner.run_from_state`（不 reset）；action_id 不允许 None | 续行首帧 `t_start` = **10.54 / 11.62 / 11.02 s**、`start_x` = **0.446 m**，不是 0 |
+| P0-2 候选分支只跑 A0 | 重写 `v7_closed_loop.py`：候选 × 7 动作 × 真实状态 × 土壤配置的完整矩阵，逐格从快照重启 | 矩阵分支实跑 **63 格**（3 候选 × 7 动作 × 3 状态 × 1 土壤） |
+| P0-3 同一快照贴三个 seed | 按 `state_hash` 去重；只有一份就报 n=1 | 本批 3 个 seed 各自真实驾驶，基线 0.457/0.460/0.458 m，快照互异 |
+| P0-4 缺测 P95 当大误差 | 筛选强制 `want_vis_pt=True`；三态判定 `kept / rejected / not_evaluated`，`or 99` 全部删除 | `v7_second_view_screen.py` |
+| P0-5 月壤只换名字 | `v7_soil.resolve()` 解析真实参数并传入 `spec['soil']['params']` | 判别：low_traction H_cap **69.4 < 84.2**；high_drag Rc（各自下陷）**35.8 > 28.4**；三者参数哈希互异 |
+| P0-6 决策后写 | `eval_six` 改为两阶段：先写 `decisions.json`+`decision_sha`+`decision_events.jsonl`，再执行，执行行引用该 sha | 执行事件 `after_decision_write=true` |
+| P0-7 验收器查旧路径 | 见 §4（本轮扩展中） | — |
+
+## 2. 两条后半段分支都实跑了
+
+**A0 分支（第二观察后无候选保留）**
+
+| seed | t_start (s) | start_x (m) | 动作 | 位移 (m) | 结果 |
+| --- | --- | --- | --- | --- | --- |
+| 0 | 10.54 | 0.4460 | A0 | 0.0000 | 制动停稳，不计通行成功 |
+| 1 | 11.62 | 0.4463 | A0 | −0.0003 | 同上 |
+| 2 | 11.02 | 0.4463 | A0 | −0.0003 | 同上 |
+
+**矩阵分支（候选保留）**：63 格，`safe_set` 为空 → **A0**。逐动作成功数：
+
+| 动作 | 成功 | 主要失败原因 |
+| --- | --- | --- |
+| D1 / D2 | 2/9、2/9 | time_limit、tipped |
+| L1 / L2 | 1/9、1/9 | time_limit |
+| R1 | 1/9 | time_limit、tipped |
+| R2 / S1 | 0/9 | time_limit |
+
+**为什么会空集**：观察本身吃掉约 10.5 s，剩余约 19.5 s（不免费续满 30 s，符合 §8.2），
+较多动作直接在时限内跑不完；这不是"候选被证伪"，而是**观察成本 + 候选保守**共同导致。
+
+## 3. 已撤回/降级的旧结论
+
+- 旧 `closed_loop_R01` 记录（t 从 0 开始、`final_x=-0.003`）**作废**：旧封装会 reset；
+- "R03 观察失败即平台上限"**撤回**（需分清启用判据与诊断量）；
+- "壳体偏移已排除""band 是保护项"降级为单次变体观察；
+- "2.5 mm 面数上限=表示到顶"撤回（待解除的工程限制）；
+- "两图更有效/两种机位无差别"撤回（样本少、无重复）；
+- "R01–R04 是新增留出对象"撤回（已有对象，非独立于开发过程）。
 
 ## 1. 已完成（可复核）
 

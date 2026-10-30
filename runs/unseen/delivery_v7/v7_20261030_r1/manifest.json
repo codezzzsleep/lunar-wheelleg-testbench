@@ -1,0 +1,108 @@
+{
+  "schema": "delivery-manifest/v1",
+  "batch_version": "v7-r1",
+  "batch_id": "v7_20261030_r1",
+  "created": "2026-10-30",
+  "review_baseline": "4fe5281fe46b56cc295980ca024e4626a8886374",
+  "supersedes_batch": "v7_20261030（保留为历史，不再作为当前状态）",
+  "budget": {
+    "path": "configs/unseen_v7_r1_budget.json",
+    "sha256": "74ec35d145101f1035621ed67b537a59c170f7b5ed6a9273ea34543ebe5ed0c7",
+    "authorization_total": 500.0,
+    "legacy_estimate_upper": 200.0,
+    "price_expected_per_task": 1.0,
+    "price_verified": false,
+    "reserved_current": 10.0,
+    "actual_charge": "unknown"
+  },
+  "soil": {
+    "path": "runs/unseen/delivery_v7/v7_20261030_r1/soil/params.json",
+    "sha256": "a37fee6fe8e6cea76d691b8b621efb7a230c9d66255877ec39461fe3140fc3c2",
+    "discrimination_pass": true
+  },
+  "observations": {
+    "drive_R01": "runs/unseen/delivery_v7/v7_20261030_r1/observations/drive_R01/drive_observe.json",
+    "n_usable": 3,
+    "cam_baseline_m": [
+      0.457,
+      0.46,
+      0.458
+    ],
+    "env_state_contract": "env-state/v1 全量快照（mjstate/ctrl/时钟/计数/导航/土壤）"
+  },
+  "closed_loop": {
+    "a0_branch": {
+      "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/closed_loop_R01_a0/closed_loop.json",
+      "branch": "a0_fallback_no_candidate",
+      "n_cells": 0,
+      "n_states": 3,
+      "t_start_s": [
+        10.54,
+        11.62,
+        11.02
+      ],
+      "start_x_m": [
+        0.446,
+        0.4463,
+        0.4463
+      ],
+      "displacement_x_m": [
+        0.0,
+        -0.0003,
+        -0.0003
+      ],
+      "counts_as_success": false
+    },
+    "matrix_branch": {
+      "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/closed_loop_R01_matrix/closed_loop.json",
+      "branch": "matrix_decision",
+      "n_cells": 63,
+      "n_states": 3,
+      "candidates": [
+        "V7_R01_s1",
+        "V7_R01_s2",
+        "V7_R01_tv1"
+      ],
+      "actions": [
+        "R1",
+        "R2",
+        "L1",
+        "L2",
+        "S1",
+        "D1",
+        "D2"
+      ],
+      "safe_set": [],
+      "chosen": "A0",
+      "per_action_success": {
+        "D1": "2/9",
+        "D2": "2/9",
+        "L1": "1/9",
+        "L2": "1/9",
+        "R1": "1/9",
+        "R2": "0/9",
+        "S1": "0/9"
+      },
+      "reason_summary": "没有动作在全部 3 候选 × 3 状态下成功；多数失败是 time_limit（观察已吃掉约 10.5 s，剩约 19.5 s）"
+    }
+  },
+  "status": {
+    "execution_status": "PARTIAL",
+    "evidence_status": "PARTIAL",
+    "capability_status": "PARTIAL",
+    "benefit_status": "NOT_ESTABLISHED",
+    "claim_level": "NOT_REACHED"
+  },
+  "retractions": [
+    "旧 closed_loop_R01 的续行记录（t 从 0 开始、final_x -0.003）作废：旧封装会 reset",
+    "“R03 观察失败=平台上限”撤回：需先分清启用判据（基线/视线角）与诊断量（相机前向角）",
+    "“壳体偏移已排除”“band 是保护项”降级为单次变体观察，不作为结论",
+    "“2.5 mm 被面数上限挡住=表示到顶”撤回：这是待解除的工程限制",
+    "“两图更有效/两种第二视角无差别”撤回：样本少且无重复",
+    "“R01–R04 是新增留出对象”撤回：它们是已有对象，非独立于开发过程"
+  ],
+  "paths": {
+    "root": "runs/unseen/delivery_v7/v7_20261030_r1"
+  },
+  "note": "本批为 R1 修正批：P0-1..P0-7 的修复与证据在此，旧批次保留但不再作为当前状态。"
+}

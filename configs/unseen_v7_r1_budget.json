@@ -1,0 +1,47 @@
+{
+  "schema": "batch-budget/v7-r1",
+  "batch_id": "v7_20261030_r1",
+  "created": "2026-10-30",
+  "authorization": {
+    "new_total_credits": 500.0,
+    "note": "沿用 V7 新增授权 500，不是再获得 500；账户余额 1042 是另一件事，分列。"
+  },
+  "account": {
+    "balance_reported_by_user": 1042,
+    "unit": "credits",
+    "note": "账户余额与本批授权余量分列，不混算。"
+  },
+  "price": {
+    "product": "Lux3D 图生网格（极速版 / G1-Turbo）",
+    "price_expected": 1.0,
+    "price_basis": "用户提供的价目截图：Lux3D 图生网格极速版优惠 1 积分/次；仅该产品行，未证明所有版本与两图任务同价",
+    "price_verified": false,
+    "actual_charge": "unknown",
+    "note": "API 不返回实际扣费；不得把 price_expected 写成已核验支出。"
+  },
+  "ledger": {
+    "path": "runs/unseen/delivery_v7/v7_20261030/generation/ledger.jsonl",
+    "n_tasks": 10,
+    "legacy_estimate_upper_sum": 200.0,
+    "reserved_current": 10.0,
+    "correction": {
+      "from": 200.0,
+      "to": 10.0,
+      "released": 190.0,
+      "reason": "旧预留沿用历史 20 积分/任务口径，按当前价目与产品行更正；历史记录保留，不改写为已核验支出"
+    },
+    "actual_charge_verified_total": null
+  },
+  "remaining": {
+    "authorized_minus_current_reserved": 490.0,
+    "authorized_minus_legacy_upper": 300.0,
+    "note": "两个口径都列出；实际扣费未知时不得声称精确剩余。"
+  },
+  "constraints": {
+    "max_create_tasks_note": "删除 budget_total // 20 这种由旧估价推导的硬任务数限制；保留计划级防无限重复（同 identity 不重复创建）。",
+    "resume_never_creates": true,
+    "timeout_first_query": true,
+    "repeated_sampling_needs_new_sample_id": true
+  },
+  "created_at": 1793341346.7165432
+}

@@ -1,0 +1,336 @@
+{
+  "schema": "closed-loop-decisions/v7",
+  "decision_sha": "125174f5fd976464c74a52e8eb8c84b0162a5f2b04c8067d4441f460e2dbb495",
+  "written_at": 1793341374.5861518,
+  "decision": {
+    "rule": "worst-case-risk/v2",
+    "tau": 0.0,
+    "c_fail": 60.0,
+    "c_abort": 40.0,
+    "hypotheses": [
+      "V7_R01_s1",
+      "V7_R01_s2",
+      "V7_R01_tv1"
+    ],
+    "n_seeds": 3,
+    "stats": {
+      "R1": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              20.56,
+              60.0
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "R2": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "L1": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              20.5
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "L2": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              29.94,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "S1": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "D1": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              17.6,
+              60.0
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              17.12
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      },
+      "D2": {
+        "per_hypothesis": {
+          "V7_R01_s1": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              20.8
+            ]
+          },
+          "V7_R01_s2": {
+            "fails": 2,
+            "n": 3,
+            "f": 0.667,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              21.0
+            ]
+          },
+          "V7_R01_tv1": {
+            "fails": 3,
+            "n": 3,
+            "f": 1.0,
+            "max_cost": 60.0,
+            "costs": [
+              60.0,
+              60.0,
+              60.0
+            ]
+          }
+        },
+        "risk": 1.0,
+        "worst_cost": 60.0,
+        "safe": false,
+        "missing": [],
+        "insufficient": false
+      }
+    },
+    "safe_set": [],
+    "chosen": "A0",
+    "no_robust_option": true,
+    "tie": false,
+    "tied_options": [],
+    "insufficient_evidence": false,
+    "missing": [],
+    "reason_text": "没有在所有冻结样本上完成的动作 -> A0",
+    "n_cells": 63,
+    "n_skipped": 0,
+    "n_states": 3,
+    "n_candidates": 3,
+    "n_soil": 1,
+    "actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "decision_rule": "worst-case-risk/v2"
+  }
+}

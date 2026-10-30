@@ -46,17 +46,44 @@ def main():
         mesh.export(tmp)
         for tag, obs in (('obs1_front', a.obs1), ('obs2_driven', a.obs2)):
             try:
-                ev = align.render_eval(mesh, ROOT / obs, tmpdir=tmp)
-                r[tag] = {k: ev.get(k) for k in ('mask_iou', 'vis_pt_p95_mm',
-                                                 'freespace_violation', 'depth_p95_mm')}
+                # 必须显式计算可见点 P95；缺测一律 not_evaluated，不能用默认大误差代替
+                ev = align.render_eval(mesh, ROOT / obs, tmpdir=tmp, want_vis_pt=True)
+                r[tag] = {k: ev.get(k) for k in ('mask_iou', 'vis_pt_med_mm',
+                                                 'vis_pt_p95_mm', 'freespace_violation',
+                                                 'freespace_n_px', 'freespace_denom_px',
+                                                 'depth_p95_mm')}
                 r[tag]['observation'] = obs
+                r[tag]['metric_version'] = ev.get('metric_version')
+                r[tag]['measurement_status'] = 'measured'
+                if ev.get('freespace_violation') is None or ev.get('vis_pt_p95_mm') is None:
+                    r[tag]['measurement_status'] = 'not_evaluated'
             except Exception as e:
-                r[tag] = {'error': f'{type(e).__name__}: {e}'}
+                r[tag] = {'error': f'{type(e).__name__}: {e}',
+                          'measurement_status': 'not_evaluated'}
         o1, o2 = r['obs1_front'], r['obs2_driven']
-        r['kept_by_second_view'] = (
-            None if ('error' in o2) else
-            bool((o2.get('mask_iou') or 0) >= 0.90 and (o2.get('vis_pt_p95_mm') or 99) <= 5.0
-                 and (o2.get('freespace_violation') if o2.get('freespace_violation') is not None else 1) <= 0.05))
+
+        def _verdict(v):
+            # 缺测 = not_evaluated（不是 rejected）；零误差是合法值，不能被 `or` 吃掉
+            if v.get('measurement_status') != 'measured':
+                return 'not_evaluated'
+            iou = v.get('mask_iou'); p95 = v.get('vis_pt_p95_mm'); free = v.get('freespace_violation')
+            if iou is None or p95 is None or free is None:
+                return 'not_evaluated'
+            ok = (float(iou) >= 0.90 and float(p95) <= 5.0 and float(free) <= 0.05)
+            return 'kept' if ok else 'rejected'
+
+        r['verdict_first_view'] = _verdict(o1)
+        r['verdict_second_view'] = _verdict(o2)
+        # 第一视角已不合格 -> 只能进诊断池；第二视角好不能抵消第一视角冲突
+        if r['verdict_first_view'] == 'rejected':
+            r['verdict_final'] = 'rejected(first_view)'
+        elif r['verdict_second_view'] == 'not_evaluated' or r['verdict_first_view'] == 'not_evaluated':
+            r['verdict_final'] = 'not_evaluated'
+        elif r['verdict_second_view'] == 'rejected':
+            r['verdict_final'] = 'rejected(second_view)'
+        else:
+            r['verdict_final'] = 'kept'
+        r['kept_by_second_view'] = (r['verdict_final'] == 'kept')
         r['note'] = ('固定候选几何与位姿，只用第二相机评价；未重新配准。'
                      '两个视角的指标分开报告，不合并。')
         rows.append(r)
@@ -65,7 +92,7 @@ def main():
                           'obs2_iou': (o2 or {}).get('mask_iou'),
                           'obs2_p95': (o2 or {}).get('vis_pt_p95_mm'),
                           'obs2_free': (o2 or {}).get('freespace_violation'),
-                          'kept': r['kept_by_second_view']}, ensure_ascii=False))
+                          'verdict': r['verdict_final']}, ensure_ascii=False))
     out = {'schema': 'second-view-screen/v7', 'obs1': a.obs1, 'obs2': a.obs2,
            'rule': 'fixed geometry/pose; second camera only; no re-registration',
            'rows': rows}

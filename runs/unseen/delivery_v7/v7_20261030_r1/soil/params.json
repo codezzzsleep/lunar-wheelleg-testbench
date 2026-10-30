@@ -1,0 +1,72 @@
+{
+  "schema": "soil-config/v7",
+  "note": "纲领范围内的实验配置（同轮载同轮宽扫描），不是实测月壤统计分布；n 固定为 1，kc/kphi 单位分别为 N/m²、N/m³。",
+  "configs": {
+    "nominal": {
+      "n": 1.0,
+      "kc": 1400.0,
+      "kphi": 820000.0,
+      "cohesion_pa": 170.0,
+      "phi_deg": 35.0,
+      "k_shear": 0.018,
+      "params_sha": "55848f80956792b4704ff3ec83678bf7"
+    },
+    "low_traction": {
+      "n": 1.0,
+      "kc": 1400.0,
+      "kphi": 820000.0,
+      "cohesion_pa": 100.0,
+      "phi_deg": 30.0,
+      "k_shear": 0.018,
+      "params_sha": "8a0a23fd8d02ed03dc35d336aaf51464"
+    },
+    "high_drag": {
+      "n": 1.0,
+      "kc": 700.0,
+      "kphi": 410000.0,
+      "cohesion_pa": 170.0,
+      "phi_deg": 35.0,
+      "k_shear": 0.018,
+      "params_sha": "14363ee041a1bc07a40f6f1381d67441"
+    }
+  },
+  "discrimination": {
+    "nominal": {
+      "H_cap_n": 84.229,
+      "sinkage_mm": 38.5091,
+      "Rc_n_at_own_z": 28.3985,
+      "Rc_n_at_5mm": 0.4788,
+      "params_sha": "55848f80956792b4704ff3ec83678bf7"
+    },
+    "low_traction": {
+      "H_cap_n": 69.402,
+      "sinkage_mm": 38.5091,
+      "Rc_n_at_own_z": 28.3985,
+      "Rc_n_at_5mm": 0.4788,
+      "params_sha": "8a0a23fd8d02ed03dc35d336aaf51464"
+    },
+    "high_drag": {
+      "H_cap_n": 84.229,
+      "sinkage_mm": 61.1293,
+      "Rc_n_at_own_z": 35.7798,
+      "Rc_n_at_5mm": 0.2394,
+      "params_sha": "14363ee041a1bc07a40f6f1381d67441"
+    }
+  },
+  "checks": {
+    "low_traction_H_lower": true,
+    "high_drag_Rc_higher_at_own_z": true,
+    "high_drag_Rc_higher_at_same_z": false,
+    "params_hashes_distinct": true
+  },
+  "all_pass": true,
+  "required_checks": [
+    "low_traction_H_lower",
+    "high_drag_Rc_higher_at_own_z",
+    "params_hashes_distinct"
+  ],
+  "informational": {
+    "high_drag_Rc_higher_at_same_z": false,
+    "note": "same-z 对照会得到相反结论：更软的参数在固定下陷下阻力更低；真实工况是\"更软→更深下陷→更高压实阻力\"，判据取真实工况。"
+  }
+}

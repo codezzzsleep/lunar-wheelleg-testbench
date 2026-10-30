@@ -46,13 +46,21 @@ def main():
     ap.add_argument('--download', action='store_true', help='只下载已成功的输出，不创建')
     ap.add_argument('--version', default=MODEL_VERSION)
     ap.add_argument('--budget-total', type=float, default=500.0)
+    ap.add_argument('--credit-upper', type=float, default=CREDIT_UPPER,
+                    help='单任务预留上界（当前价目口径，默认 1.0 需显式传）')
+    ap.add_argument('--max-tasks', type=int, default=200,
+                    help='计划级防无限重复的任务上限，不由旧估价推导')
+    ap.add_argument('--scope', default='v7_r1')
     a = ap.parse_args()
     B = ROOT / a.batch_dir
     gen = B / 'generation'
     gen.mkdir(parents=True, exist_ok=True)
     led = budget.BudgetLedger(str(gen / 'ledger.jsonl'))
-    bud = {'hard_cap': a.budget_total, 'per_task_cap': CREDIT_UPPER,
-           'max_create_tasks': int(a.budget_total // CREDIT_UPPER), 'scope': 'v7_20261030'}
+    # 单价与任务数解耦：hard_cap 仍是授权总额，per_task_cap 是单任务预留上界；
+    # 不再用 budget_total // 25 之类由旧估价推导的硬任务数限制（任务书 §3.2）
+    bud = {'hard_cap': a.budget_total,
+           'per_task_cap': float(a.credit_upper),
+           'max_create_tasks': int(a.max_tasks), 'scope': a.scope}
 
     if a.download:
         import urllib.request
@@ -122,7 +130,7 @@ def main():
     mode = 'img-to-3d-multi' if len(imgs) >= 2 else 'img-to-3d'
     ident = LC.request_identity(mode, imgs, a.version, FACE_COUNT, {'sample': a.sample})
     attempt = hashlib.sha256(f'{ident}|{a.sample}'.encode()).hexdigest()[:32]
-    ok, why = led.reserve(ident, attempt, CREDIT_UPPER, bud)
+    ok, why = led.reserve(ident, attempt, float(a.credit_upper), bud)
     rep = led.report(bud)
     print(json.dumps({'reserve': ok, 'why': why, 'held': rep['held_credits_upper'],
                       'remaining': rep['remaining_credits']}, ensure_ascii=False))
@@ -145,7 +153,13 @@ def main():
            'version': a.version, 'face_count': FACE_COUNT,
            'request_identity': ident, 'attempt_id': attempt, 'task_id': tid,
            'submitted_at': t0, 'status': 'submitted',
-           'estimate_upper': CREDIT_UPPER, 'actual_charge': None, 'verified': 'unknown',
+           'legacy_estimate_upper': CREDIT_UPPER,
+           'price_expected': float(a.credit_upper),
+           'price_basis': 'Lux3D 图生网格极速版 1 积分/次（用户价目截图；未与 API 扣费核对）',
+           'price_verified': False,
+           'reserved_current': float(a.credit_upper),
+           'estimate_upper': float(a.credit_upper),
+           'actual_charge': None, 'actual_charge_verified': False, 'verified': 'unknown',
            'batch': B.name}
     f = gen / f'task_{tid}.json'
     f.write_text(json.dumps(rec, ensure_ascii=False, indent=2))

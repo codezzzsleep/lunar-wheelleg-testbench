@@ -86,7 +86,9 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
     spec['skill_cfg'] = {'task': 'M', 'require_contact': False, 'settle_seconds': 1.0}
     spec['objects'] = [{'posed_dir': str(world_dir)}]
     if soil_mode != 'rigid':
-        spec['soil'] = {'mode': soil_mode}
+        import v7_soil
+        _r = v7_soil.resolve(soil_mode)
+        spec['soil'] = {'mode': 'soil', 'label': _r.get('label'), 'params': _r['params']}
     env = wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=time_limit,
                                    v_ref=1.0, tip_deg=60.0)
     r = runner.EpisodeRunner(env, skills.make_skill(option),
@@ -113,21 +115,30 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
 
 
 def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
-                         hid='episode', soil_mode='rigid', resume_state=None,
+                         hid='episode', soil_mode='rigid', snapshot=None,
                          skill=None):
-    """在**给定 env** 上跑一段（可先 restore_state 再续行，不 reset）。
+    """在**给定 env** 上跑一段；给了 snapshot 就从该快照续行（不 reset）。
 
-    与 run_episode 共用同一 EpisodeRunner / skill / 记录字段，保证"预演与执行同一套"。
+    两种语义显式分开（任务书 §6.1）：
+      · snapshot=None -> 新建 episode（会 reset）
+      · snapshot 给了 -> 调用 runner.run_from_state，恢复后到第一执行帧之间不 reset
+    action_id 不允许缺失：None 直接报错，不能悄悄变成 A0。
     """
-    if resume_state is not None:
-        env.restore_state(resume_state, strict=True)
-    opt = option or 'A0'
-    r = runner.EpisodeRunner(env, skill or skills.make_skill(opt),
+    if option is None:
+        raise ValueError('action_id 不能为 None（不能把 None 悄悄转成 A0）')
+    r = runner.EpisodeRunner(env, skill or skills.make_skill(option),
                              visible=visible or {}, seed=seed)
     started_at = time.time()
-    out = r.run_with_seed(seed)
+    if snapshot is not None:
+        out = r.run_from_state(snapshot)
+        resumed = True
+    else:
+        env.reset(seed=seed)
+        out = r.run()
+        resumed = False
     finished_at = time.time()
-    return [{'phase': 'rehearsal', 'hypothesis_id': hid, 'option': opt, 'seed': seed,
+    return [{'phase': 'rehearsal', 'hypothesis_id': hid, 'option': option, 'seed': seed,
+             'resumed': resumed,
              'started_at': started_at, 'finished_at': finished_at,
              'sim_time_s_': round(float(env.t), 4), 'reason': out['reason'],
              'success': out['success'], 'abort': out['abort'], 't_end': out['t_end'],
@@ -135,7 +146,8 @@ def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
              'contact': out['contact'], 'triggered': out['triggered'],
              'phases': out['phases'], 'action_fingerprint': out['action_fingerprint'],
              'control_steps': out['steps'], 'physics_steps': int(env.n_physics),
-             'q0': out['q0'], 'initial_full_hash': out.get('initial_full_hash'),
+             'q0': out['q0'], 't_start': out.get('t_start'),
+             'initial_full_hash': out.get('initial_full_hash'),
              'cost': (out['t_end'] if out['success']
                       else (ABORT if out['abort'] else FAR))}]
 
@@ -309,7 +321,9 @@ def main():
                              'settle_seconds': 1.0}
         spec['objects'] = [{'posed_dir': str(world_dir)}]
         if phy['soil_mode'] != 'rigid':
-            spec['soil'] = {'mode': phy['soil_mode']}
+            import v7_soil
+            _r = v7_soil.resolve(phy['soil_mode'])
+            spec['soil'] = {'mode': 'soil', 'label': _r.get('label'), 'params': _r['params']}
         return spec
 
     def applicability():
@@ -390,6 +404,9 @@ def main():
             rows.append(row)
         return rows
 
+    pending = []          # (method, action) 待执行；决策全部落盘后才执行真值
+    dec_sha_holder = {}
+
     # 0) 开发解释用诊断：可见宽度规则（不进正式 methods 表）
     import actions as ACT
     dec_w, why_w = plan_width_rule(ctx, cfg, ACT)
@@ -409,13 +426,13 @@ def main():
     dec, why = plan_blind(ctx)
     decisions.append({'method': 'B0_blind', 'selected_action': dec, 'evidence': why,
                       'planning_inputs': ['no candidate']})
-    records += execute_on_truth('B0_blind', dec, truth_col_sha)
+    pending.append(('B0_blind', dec))
 
     # 2) 可见高度规则
     dec, why = plan_height(ctx, cfg)
     decisions.append({'method': 'B1_height', 'selected_action': dec, 'evidence': why,
                       'planning_inputs': ['H_vis', 'wheel_r', 'frozen thresholds']})
-    records += execute_on_truth('B1_height', dec, truth_col_sha)
+    pending.append(('B1_height', dec))
 
     # 3) 方盒子：盒子前表面与观测前沿对齐
     box_wd, box_meta = plan_box(ctx, cfg, out / 'hyps')
@@ -428,7 +445,7 @@ def main():
                       'hypothesis_geometry': box_meta,
                       'planning_inputs': ['W_vis', 'H_vis', 'x_front', 'frozen depth prior']})
     records += reh
-    records += execute_on_truth('B2_box', dec, truth_col_sha)
+    pending.append(('B2_box', dec))
 
     # 4) 镜像补全：保留观测前表面，未知部分补向遮挡侧
     mir_wd, mir_meta = plan_mirror(ctx, out / 'hyps')
@@ -442,7 +459,7 @@ def main():
                       'hypothesis_geometry': mir_meta,
                       'planning_inputs': ['visible point cloud (disclosed)']})
     records += reh
-    records += execute_on_truth('B3_mirror', dec, truth_col_sha)
+    pending.append(('B3_mirror', dec))
 
     # 5) Lux3D 多候选
     cands = proto.get('candidates') or []
@@ -470,7 +487,7 @@ def main():
                           'rehearsal_on': 'independent Lux3D candidates',
                           'planning_inputs': ['RGB observation', 'candidate meshes']})
         records += reh_all
-        records += execute_on_truth('H5_lux3d', dec, truth_col_sha)
+        pending.append(('H5_lux3d', dec))
     else:
         decisions.append({'method': 'H5_lux3d', 'selected_action': None,
                           'evidence': 'no planning_eligible Lux3D candidate',
@@ -483,7 +500,35 @@ def main():
                       'tied': tied, 'rehearsal_on': 'full truth geometry',
                       'planning_inputs': ['full truth geometry (ceiling only)']})
     records += reh
-    records += execute_on_truth('U_truth', dec, truth_col_sha)
+    pending.append(('U_truth', dec))
+
+    # ---- 两阶段：决策先落盘并定身份，之后才允许真值执行（任务书 §8.1）----
+    import hashlib as _h, time as _t
+    _payload = json.dumps(decisions, ensure_ascii=False, sort_keys=True)
+    dec_sha = _h.sha256(_payload.encode()).hexdigest()
+    dec_written_at = _t.time()
+    (out / 'decisions.json').write_text(json.dumps(
+        {'schema': 'decision-list/v7', 'decision_sha': dec_sha,
+         'written_at': dec_written_at, 'decisions': decisions},
+        ensure_ascii=False, indent=2))
+    dec_sha_holder['sha'] = dec_sha
+    with (out / 'decision_events.jsonl').open('w') as f:
+        f.write(json.dumps({'event': 'decisions_written', 'decision_sha': dec_sha,
+                            'written_at': dec_written_at,
+                            'n_methods': len(decisions)}, ensure_ascii=False) + '\n')
+
+    for method, dec in pending:
+        started = _t.time()
+        rows = execute_on_truth(method, dec, truth_col_sha)
+        for r in rows:
+            r['decision_sha'] = dec_sha
+            r['execution_started_at'] = started
+        records += rows
+        with (out / 'decision_events.jsonl').open('a') as f:
+            f.write(json.dumps({'event': 'execution_started', 'decision_sha': dec_sha,
+                                'method': method, 'started_at': started,
+                                'after_decision_write': started > dec_written_at},
+                               ensure_ascii=False) + '\n')
 
     # ---- 汇总：只统计 phase=execution ----
     summary = []
@@ -503,7 +548,8 @@ def main():
                         'no_candidate': d_.get('no_candidate', False)})
     (out / 'records.jsonl').write_text(
         '\n'.join(json.dumps(r, ensure_ascii=False) for r in records) + '\n')
-    (out / 'decisions.json').write_text(json.dumps(decisions, ensure_ascii=False, indent=2))
+    _now = json.loads((out / 'decisions.json').read_text())
+    assert _now.get('decision_sha') == dec_sha, '决策文件在执行期间被改写'
     (out / 'summary.json').write_text(json.dumps({
         'protocol': a.protocol, 'truth_sha': truth_sha,
         'truth_collision_sha': truth_col_sha,

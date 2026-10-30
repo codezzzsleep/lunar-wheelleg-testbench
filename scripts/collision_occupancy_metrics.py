@@ -408,6 +408,12 @@ def main():
                        else 'ATTENTION'),
            'note': ('双向距离用并集表面（box 解析距离 / 凸 part 距离）；'
                     '源网格非水密时 source_volume_defined=false，内部量只作诊断。')}
+    # 自带峰值内存记录（不依赖 /usr/bin/time，很多环境没有）
+    try:
+        import resource as _res
+        out['peak_rss_mb'] = round(_res.getrusage(_res.RUSAGE_SELF).ru_maxrss / 1024.0, 1)
+    except Exception:
+        pass
     op = pathlib.Path(a.out); op.parent.mkdir(parents=True, exist_ok=True)
     op.write_text(json.dumps(out, ensure_ascii=False, indent=2))
     print(json.dumps({'label': a.label, 'repr': out['representation'], 'verdict': out['verdict'],

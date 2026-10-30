@@ -22,9 +22,67 @@ def j(p, d=None):
 
 def rows_tbl(headers, rows):
     h = ''.join(f'<th>{html.escape(str(x))}</th>' for x in headers)
-    body = ''.join('<tr>' + ''.join(f'<td>{html.escape(str(c))}</td>' for c in r) + '</tr>'
-                   for r in rows)
+    def cell(c):
+        t = str(c)
+        # 只放行本页自己生成的 <a href="...">，其余一律转义
+        if t.startswith('<a href="') and t.endswith('</a>') and '<script' not in t.lower():
+            return t
+        return html.escape(t)
+    body = ''.join('<tr>' + ''.join(f'<td>{cell(c)}</td>' for c in r) + '</tr>' for r in rows)
     return f'<table><thead><tr>{h}</tr></thead><tbody>{body}</tbody></table>'
+
+
+def loop_detail(B, name):
+    """单次闭环的回放页：把决策事件、矩阵格、执行行按真实顺序渲染出来。"""
+    d = B / 'evaluation' / name
+    loop = j(d / 'closed_loop.json') or {}
+    dec = j(d / 'decisions.json') or {}
+    rows = []
+    mp = d / 'matrix.jsonl'
+    if mp.exists():
+        rows = [json.loads(l) for l in mp.read_text().splitlines() if l.strip()]
+    ev = []
+    ep = d / 'decision_events.jsonl'
+    if ep.exists():
+        ev = [json.loads(l) for l in ep.read_text().splitlines() if l.strip()]
+    ex = loop.get('execution') or []
+    per_opt = {}
+    for r in rows:
+        per_opt.setdefault(r.get('option'), {'n': 0, 'ok': 0})
+        per_opt[r.get('option')]['n'] += 1
+        per_opt[r.get('option')]['ok'] += 1 if r.get('success') else 0
+    h = ['<table><thead><tr><th>动作</th><th>格数</th><th>成功</th><th>最坏代价</th></tr></thead><tbody>']
+    stats = (dec.get('decision') or {}).get('stats') or {}
+    for o in sorted(per_opt):
+        st = stats.get(o) or {}
+        h.append(f"<tr><td>{o}</td><td>{per_opt[o]['n']}</td><td>{per_opt[o]['ok']}</td>"
+                 f"<td>{st.get('worst_cost', '—')}</td></tr>")
+    h.append('</tbody></table>')
+    ev_rows = [[e.get('event'), e.get('at') or e.get('written_at') or e.get('started_at'),
+                str(e.get('decision_sha') or '')[:12]] for e in ev]
+    ex_rows = [[e.get('state_seed'), e.get('option'), e.get('success'), e.get('reason'),
+                e.get('displacement_x'), e.get('t_start')] for e in ex]
+    body = f"""<!doctype html><meta charset="utf-8"><title>回放 · {name}</title>
+<style>body{{background:#0f1116;color:#dfe3ea;font:14px/1.6 sans-serif;margin:24px}}
+table{{border-collapse:collapse;margin:8px 0}}th,td{{border:1px solid #2a2f3a;padding:4px 8px}}
+th{{background:#171b23}}a{{color:#8fd3ff}}code{{background:#171b23;padding:1px 4px}}</style>
+<h1>回放 · {name}</h1>
+<p class="note">分支 <code>{loop.get('branch')}</code> · 决策 <code>{(loop.get('decision') or {}).get('chosen')}</code>
+ · 矩阵格 <code>{loop.get('n_cells')}</code> · 状态数 <code>{loop.get('n_states')}</code></p>
+<h2>① 决策先落盘（事件顺序）</h2>
+{rows_tbl(['事件', '时间', 'decision_sha'], ev_rows)}
+<h2>② 逐动作预演汇总</h2>
+{''.join(h)}
+<h2>③ 真值续行（独立执行）</h2>
+{rows_tbl(['状态', '动作', '成功', '原因', '位移 m', 't_start s'], ex_rows)}
+<h2>④ 重新运行（缓存资产，会真的跑一次 MuJoCo）</h2>
+<pre><code>.venv/bin/python scripts/v7_rerun.py --case R03 \\
+  --hypothesis runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/collision \\
+  --action R1 --seed 0 --out runs/unseen/delivery_v7/v7_20261030_r1/evaluation/rerun_manual</code></pre>
+<p><a href="index.html">← 返回总览</a></p>"""
+    out = B / 'media' / 'report' / f'{name}.html'
+    out.write_text(body)
+    return out
 
 
 def main():
@@ -46,6 +104,12 @@ def main():
                         f"{m.get('success')}/{m.get('n_exec')}",
                         f"{(m.get('validation') or {}).get('success')}/{(m.get('validation') or {}).get('n')}",
                         (s.get('n_initial_states') or '')])
+    details = []
+    for c in cand:
+        try:
+            details.append(loop_detail(B, c['name']).name)
+        except Exception:
+            pass
     page = f"""<!doctype html><html lang="zh"><head><meta charset="utf-8">
 <title>V7-R1 · 看不见的那一面</title><style>
 body{{background:#0f1116;color:#dfe3ea;font:14px/1.65 -apple-system,Segoe UI,sans-serif;margin:24px}}
@@ -71,8 +135,9 @@ code{{background:#171b23;padding:1px 5px;border-radius:4px}} .note{{color:#8a93a
 <div class="note">首视角与上传图 → 候选与未知区 → 动作矩阵/预演 → 真实行驶第二视角（或标 not_evaluated）→ 续行执行与真值揭晓。</div>
 
 <h2>闭环分支（两条都实跑）</h2>
-{rows_tbl(['运行', '分支', '矩阵格', '决策', '状态数', '真值续行成功'], [
-  [c['name'], c['branch'], c['cells'], c['chosen'], c['states'], f"{c['success']}/{c['n_exec']}"]
+{rows_tbl(['运行（点开回放）', '分支', '矩阵格', '决策', '状态数', '真值续行成功'], [
+  [f'<a href="{c["name"]}.html">{c["name"]}</a>', c['branch'], c['cells'], c['chosen'],
+   c['states'], f"{c['success']}/{c['n_exec']}"]
   for c in cand])}
 
 <h2>六方法主表（含验证初态）</h2>

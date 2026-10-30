@@ -1,0 +1,58 @@
+{
+  "protocol_version": "unseen-six/v7",
+  "frozen": "2026-10-30",
+  "note": "V7 六方法正式协议。各方法用各自允许的信息独立规划，全部在共同真值、相同实际初态上执行；阈值来自开发集冻结，不按结果调整。",
+  "case": "cases/unseen_v1/R02.json",
+  "observation_dir": "runs/unseen/recovery_r3/obs_R02",
+  "goal_x": 2.6,
+  "initial_states": [
+    0,
+    1,
+    2
+  ],
+  "validation_states": [
+    3,
+    4,
+    5
+  ],
+  "methods": [
+    "B0_blind",
+    "B1_height",
+    "B2_box",
+    "B3_mirror",
+    "H5_lux3d",
+    "U_truth"
+  ],
+  "height_rule": {
+    "frozen_from": "plans/unseen_v2_protocol.json（开发集冻结，不重调）",
+    "wheel_r": 0.08595,
+    "climb_direct": 1.0,
+    "climb_leg": 1.6,
+    "box_depth_m": 0.22
+  },
+  "candidates": [
+    {
+      "candidate_id": "V7_R02_s2",
+      "task_id": 4497125,
+      "sample_id": "g2",
+      "world_dir": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R02_s2",
+      "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R02_s2/collision",
+      "planning_eligible": true,
+      "strict_pass": true,
+      "note": "2.5mm + shell_offset 1.0；可见 0.9841/2.042/0.0461，碰撞 0.9893/0.504/0.792"
+    }
+  ],
+  "diagnostic_candidates": [
+    {
+      "candidate_id": "V7_R02_g1",
+      "task_id": 4497119,
+      "sample_id": "g1",
+      "world_dir": "runs/unseen/delivery_v7/v7_20261030_r1/processed/V7_R02_g1/fusion",
+      "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/processed/V7_R02_g1/collision",
+      "planning_eligible": false,
+      "strict_pass": false,
+      "note": "4mm，freespace 0.0978 未过"
+    }
+  ],
+  "soil_mode": "high_drag"
+}

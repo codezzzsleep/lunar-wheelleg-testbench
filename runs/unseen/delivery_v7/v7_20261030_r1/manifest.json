@@ -219,7 +219,20 @@
       "iou": 0.9737,
       "p95_mm": 1.702,
       "freespace": 0.0392,
-      "visible_pass": true
+      "visible_pass": true,
+      "qualified": true,
+      "collision": {
+        "occupancy_iou": 0.9852,
+        "s2c_p95_mm": 0.492,
+        "c2s_p95_mm": 0.774,
+        "eval_pitch_m": 0.004,
+        "parity": "full_mesh(509408 faces)"
+      },
+      "measurement": {
+        "peak_rss_mb": 756.7,
+        "n_points": 414180,
+        "sampled": false
+      }
     },
     "V7_R01_tv1": {
       "iou": 0.9548,
@@ -227,6 +240,18 @@
       "freespace": 0.0875,
       "visible_pass": false
     },
-    "finding": "the representation floor is ~0.04; passing the gate after the fix tracks shape fit, not pipeline loss"
+    "finding": "修好表示（2.5mm + shell_offset 1.0）后 R03_s1 双门槛合格：可见 0.9737/1.702/0.0392，碰撞 0.9852/0.492/0.774；R01_tv1 仍 0.0875 不过，差异来自父形状是否贴合观测（表示下限 ≈0.040）"
+  },
+  "memory_audit": {
+    "machine": "8 vCPU / 16 GB",
+    "limit": "cgroup memory.max = max (无硬限)",
+    "earlier_failures": [
+      "point_to_mesh_distance 用固定 chunk=128 对 509k 面 → 每块 128×509k 点×面矩阵，多块叠加导致 SIGKILL 137",
+      "/usr/bin/time 不存在导致一次\"看似失败\"的启动",
+      "parity 降采样隐式依赖 scipy/skimage，缺失时静默退回 509k 面网格"
+    ],
+    "fix": "两级分块（点块×面块 ≤2M 元素，逐面归约并释放）+ 纯 numpy 顶点聚类 + parity 默认 full_mesh",
+    "peak_rss_mb_after_fix": 756.7,
+    "equivalence": "小网格 20480 面/3000 点，maxdiff 0.0（2M/200k/20k 三档）"
   }
 }

@@ -225,7 +225,10 @@ def main():
     ci['cache_key'] = hashlib.sha256(json.dumps(
         {k: ci[k] for k in ('source_sha', 'build_pitch_m', 'algorithm', 'solid_method',
                             'n_boxes', 'collision_sha')}, sort_keys=True).encode()).hexdigest()[:32]
-    (out / 'manifest.json').write_text(json.dumps(man, ensure_ascii=False, indent=2))
+    # 原子写：进程被杀时不能留下半截 JSON（曾导致 metrics 反复失败却看不出原因）
+    _tmp = out / 'manifest.json.tmp'
+    _tmp.write_text(json.dumps(man, ensure_ascii=False, indent=2))
+    _tmp.replace(out / 'manifest.json')
     if a.max_geoms and len(boxes) > a.max_geoms:
         raise SystemExit(f'box 数 {len(boxes)} 超过上限 {a.max_geoms}')
     print(json.dumps({'n_boxes': len(boxes), 'collision_sha': collision_sha,

@@ -106,6 +106,43 @@ def main():
     ok2, why2 = led.reserve(ident, 'a1', 1.0, bud)
     add('N15_duplicate_attempt_rejected', ok1 and not ok2, why2)
 
+    # N18：机器人/场景签名不符却恢复 -> 必须拒绝（调用生产 restore_state）
+    try:
+        import terrain as _T
+        import wheelleg_env as _W
+        def _env(col):
+            sp = _T.make_spec(kind='flat', seed=0, objects=[], goal_x=2.6, name='n18')
+            sp['channel'] = {'center_y': 0.0, 'half_width': 1.2}
+            sp['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
+            sp['skill_cfg'] = {'task': 'M'}
+            sp['objects'] = [{'posed_dir': str(ROOT / col)}]
+            return _W.WheelLegEnv(sp)
+        tcol = 'runs/unseen/recovery_r3/look_loop_R01_v3/truth/truth_world'
+        ccol = 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s2/collision'
+        e1 = _env(tcol); e1.reset(seed=0)
+        for _ in range(30):
+            e1.step([0.0, 0.0, 0.0])
+        snap = e1.save_state()
+        e2 = _env(tcol); e2.reset(seed=0)
+        ok_same = True
+        try:
+            e2.restore_state(snap, mode='same_scene')
+        except Exception:
+            ok_same = False
+        e3 = _env(ccol); e3.reset(seed=0)
+        rejected = False
+        try:
+            e3.restore_state(snap, mode='same_scene')
+        except ValueError:
+            rejected = True
+        info = e3.restore_state(snap, mode='project')
+        proj_ok = (not info['collision_material_transferred']) and info['mode'] == 'project'
+        add('N18_state_contract', ok_same and rejected and proj_ok,
+            f'same_ok={ok_same} wrong_scene_rejected={rejected} '
+            f'project_no_material={not info["collision_material_transferred"]}')
+    except Exception as e:
+        add('N18_state_contract', False, f'{type(e).__name__}: {e}')
+
     rep = {'schema': 'selftest/v7-r1', 'n': len(res),
            'n_pass': sum(1 for r in res if r['pass']), 'rows': res}
     if a.out:

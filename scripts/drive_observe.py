@@ -321,8 +321,19 @@ def main():
             'fail_reason': (None if usable else
                             ('unstable' if not st['stable'] else
                              ('target_too_small' if v2['mask_px'] < MIN_TARGET_PX else
-                              ('depth_invalid' if v2['depth_valid_frac'] < MIN_DEPTH_FRAC
-                               else 'viewpoint_change_too_small')))),
+                              ('depth_invalid' if v2['depth_valid_frac'] < MIN_DEPTH_FRAC else
+                               ('baseline_too_small'
+                                if baseline < MIN_CAM_BASELINE_M
+                                else ('bearing_too_small'
+                                      if bearing_change < MIN_BEARING_CHANGE_DEG
+                                      else 'viewpoint_change_too_small')))))),
+            'fail_detail': (None if usable else {
+                'baseline_m': round(baseline, 4),
+                'baseline_required_m': MIN_CAM_BASELINE_M,
+                'bearing_deg': round(bearing_change, 3),
+                'bearing_required_deg': MIN_BEARING_CHANGE_DEG,
+                'cam_forward_change_deg_diagnostic': round(dyaw, 3),
+                'note': '启用判据是基线+视线角；相机前向夹角只作诊断，不参与判定'}),
             'state_snapshot': {'qpos': [round(float(x), 6) for x in env.data.qpos],
                                'qvel': [round(float(x), 6) for x in env.data.qvel],
                                'time': round(float(env.t), 4)},

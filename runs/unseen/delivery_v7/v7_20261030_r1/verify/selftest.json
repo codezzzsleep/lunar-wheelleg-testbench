@@ -1,7 +1,7 @@
 {
   "schema": "selftest/v7-r1",
-  "n": 11,
-  "n_pass": 11,
+  "n": 12,
+  "n_pass": 12,
   "rows": [
     {
       "check": "N01_no_hidden_reset",
@@ -57,6 +57,11 @@
       "check": "N15_duplicate_attempt_rejected",
       "pass": true,
       "detail": "attempt_id a1 已存在：拒绝重复预留（有意重复采样请使用新的 sample_id/attempt_id）"
+    },
+    {
+      "check": "N18_state_contract",
+      "pass": true,
+      "detail": "same_ok=True wrong_scene_rejected=True project_no_material=True"
     }
   ]
 }

@@ -1,0 +1,67 @@
+{
+  "schema": "collision-known-answers/v7-r1",
+  "n": 8,
+  "n_pass": 8,
+  "cases": [
+    {
+      "case": "single_box_center",
+      "pass": true,
+      "detail": {
+        "d": 0.5
+      }
+    },
+    {
+      "case": "seam_is_not_surface",
+      "pass": true,
+      "detail": {
+        "d_at_1.0": 0.5,
+        "d_at_1.01": 0.5
+      }
+    },
+    {
+      "case": "partial_exposure_kept",
+      "pass": true,
+      "detail": {
+        "exposed_faces": 14,
+        "max_possible": 18
+      }
+    },
+    {
+      "case": "groove_not_filled",
+      "pass": true,
+      "detail": {
+        "d": 0.5
+      }
+    },
+    {
+      "case": "channel_open",
+      "pass": true,
+      "detail": {
+        "d": 0.5
+      }
+    },
+    {
+      "case": "translation_invariant",
+      "pass": true,
+      "detail": {
+        "d": 0.5
+      }
+    },
+    {
+      "case": "scale_linear",
+      "pass": true,
+      "detail": {
+        "d": 0.85,
+        "expect": 0.85
+      }
+    },
+    {
+      "case": "block_equivalence",
+      "pass": true,
+      "detail": {
+        "maxdiff": 0.0
+      }
+    }
+  ],
+  "verdict": "PASS"
+}

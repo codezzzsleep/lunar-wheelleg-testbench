@@ -1,10 +1,10 @@
 {
   "schema": "collision-metrics/v2",
   "version": "collision-metrics/v2",
-  "label": "R03_s1_off1_full",
-  "source_mesh": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/body.stl",
+  "label": "off1_R03_s1",
+  "source_mesh": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/body.stl",
   "source_sha": "d63a39482bd6095cb2a145681df193e9fce47a14f3cea0eb82e97805b44794a0",
-  "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/collision",
+  "collision_dir": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/collision",
   "representation": "box_union",
   "n_boxes": 4567,
   "n_parts_declared": 4567,
@@ -40,14 +40,14 @@
     "source_to_collision_mm": {
       "n": 1200,
       "med": 0.0,
-      "p95": 0.492,
-      "max": 0.644
+      "p95": 0.623,
+      "max": 5.0
     },
     "collision_to_source_mm": {
-      "n": 1200,
+      "n": 97,
       "med": 0.0,
-      "p95": 0.774,
-      "max": 0.983
+      "p95": 0.74,
+      "max": 0.883
     }
   },
   "probe": {
@@ -88,5 +88,5 @@
   "seed": 0,
   "verdict": "PASS",
   "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。",
-  "peak_rss_mb": 756.7
+  "peak_rss_mb": 731.1
 }

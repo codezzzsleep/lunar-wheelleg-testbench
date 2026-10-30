@@ -1,0 +1,28 @@
+{
+  "schema": "validation-states/v7-r1",
+  "planning_states": {
+    "0": "drive seed 0（观测后用于预演与续行）"
+  },
+  "validation_states": {
+    "3": {
+      "derived_from": "drive seed 0",
+      "settled": true,
+      "independent_of_planning": false
+    },
+    "4": {
+      "derived_from": "drive seed 1",
+      "settled": false,
+      "independent_of_planning": false
+    },
+    "5": {
+      "derived_from": "drive seed 2",
+      "settled": false,
+      "independent_of_planning": false
+    }
+  },
+  "honest_label": "验证编号 3/4/5 是**对 drive 三个 seed 的重新编号**，不是新采样的独立初态；seed 1/2 未通过停稳判据（unstable），只作\"未停稳\"记录，不当作有效验证初态。",
+  "unsettled": [
+    "drive seed 1 (v_lin/tilt 未达标)",
+    "drive seed 2 (unstable)"
+  ]
+}

@@ -94,18 +94,66 @@ def convex_inside(mesh, pts):
     return inside
 
 
-def box_surface_distance(pts, boxes, origin, pitch):
-    """点到 box 并集表面的解析距离（box 为 cell 闭区间）。"""
-    best = np.full(len(pts), np.inf)
+def exposed_faces(boxes, origin, pitch):
+    """并集**外边界**的 cell 面：某侧相邻格为空才算暴露；内部接缝被排除。
+
+    支持 cell 索引为负（把索引平移到非负再建占据数组），坐标仍按原 origin 输出。
+    """
+    if not boxes:
+        return []
+    i_min = min(b[0] for b in boxes)
+    j_min = min(b[2] for b in boxes)
+    k_min = min(b[4] for b in boxes)
+    i_max = max(b[1] for b in boxes)
+    j_max = max(b[3] for b in boxes)
+    k_max = max(b[5] for b in boxes)
+    dims = (i_max - i_min + 3, j_max - j_min + 3, k_max - k_min + 3)
+    occ = np.zeros(dims, dtype=bool)
+    for (i0, i1, j0, j1, k0, k1) in boxes:
+        occ[i0 - i_min + 1:i1 - i_min + 2,
+            j0 - j_min + 1:j1 - j_min + 2,
+            k0 - k_min + 1:k1 - k_min + 2] = True
+
+    def occ_at(i, j, k):
+        a, b, c = i - i_min + 1, j - j_min + 1, k - k_min + 1
+        if 0 <= a < dims[0] and 0 <= b < dims[1] and 0 <= c < dims[2]:
+            return bool(occ[a, b, c])
+        return False
+
+    faces = []
     for (i0, i1, j0, j1, k0, k1) in boxes:
         lo = origin + np.array([i0, j0, k0]) * pitch
         hi = origin + np.array([i1 + 1, j1 + 1, k1 + 1]) * pitch
-        c = (lo + hi) / 2.0
-        h = (hi - lo) / 2.0
-        q = np.abs(pts - c) - h
-        outside = np.linalg.norm(np.maximum(q, 0.0), axis=1)
-        inside = np.minimum(np.max(q, axis=1), 0.0)
-        d = np.abs(outside + inside)
+        idx_lo = [i0, j0, k0]
+        idx_hi = [i1, j1, k1]
+        for ax in range(3):
+            for side in (-1, +1):
+                nb = list(idx_hi if side > 0 else idx_lo)
+                nb[ax] += side
+                if not occ_at(*nb):
+                    f_lo = lo.copy(); f_hi = hi.copy()
+                    if side < 0:
+                        f_hi[ax] = f_lo[ax]
+                    else:
+                        f_lo[ax] = f_hi[ax]
+                    faces.append((f_lo, f_hi))
+    return faces
+
+
+def box_surface_distance(pts, boxes, origin, pitch, faces=None):
+    """点到**并集外边界**的距离（米）。
+
+    只对暴露面求距离：内部接缝（两侧都被占据的面）不计入，因此
+    两个相邻单位盒在 (1, 0.5, 0.5) 处的距离是 0.5 而不是 0。
+    """
+    pts = np.asarray(pts, dtype=float)
+    if faces is None:
+        faces = exposed_faces(boxes, origin, pitch)
+    best = np.full(len(pts), np.inf)
+    for (lo, hi) in faces:
+        # 点到轴对齐矩形的精确距离：各轴夹到 [lo, hi] 后取欧氏距离
+        clamped = np.clip(pts, lo, hi)
+        d = np.linalg.norm(pts - clamped, axis=1)
         best = np.minimum(best, d)
     return best
 

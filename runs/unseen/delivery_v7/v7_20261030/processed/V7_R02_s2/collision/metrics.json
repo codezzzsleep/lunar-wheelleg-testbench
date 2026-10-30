@@ -1,0 +1,80 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "V7_R02_s2_box",
+  "source_mesh": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s2/fusion/body.stl",
+  "source_sha": "4bffdd5424ba0c585d3d57824bdca7f2fe69e47c09c26a09dbb44cd85c6afbbb",
+  "collision_dir": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s2/collision",
+  "representation": "box_union",
+  "n_boxes": 3039,
+  "n_parts_declared": 3039,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "f491b61c795a4ab602c8d583638bfc11",
+  "source_status": {
+    "watertight": true,
+    "euler": -52,
+    "n_faces": 246716
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 1201723,
+    "collision_inside": 1201663,
+    "intersection": 1198145,
+    "union": 1205241,
+    "collision_only": 3518,
+    "source_only": 3578,
+    "occupancy_iou": 0.9941,
+    "over_fill_frac_of_collision": 0.0029,
+    "under_fill_frac_of_source": 0.003,
+    "over_fill_volume_m3": 5.4969e-05,
+    "under_fill_volume_m3": 5.5906e-05,
+    "source_volume_voxelised_m3": 0.018776922,
+    "collision_volume_voxelised_m3": 0.018775984,
+    "eval_pitch_m": 0.0025,
+    "eval_dims": [
+      198,
+      181,
+      73
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 0.789,
+      "max": 1.113
+    },
+    "collision_to_source_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 1.284,
+      "max": 1.57
+    }
+  },
+  "probe": {
+    "n_gap_rows": 176,
+    "largest": [
+      {
+        "x_m": 1.7713,
+        "z_m": 0.0112,
+        "gap_m": 0.1675,
+        "y_m": -0.0036
+      },
+      {
+        "x_m": 1.8288,
+        "z_m": 0.1613,
+        "gap_m": 0.165,
+        "y_m": -0.0173
+      },
+      {
+        "x_m": 1.8263,
+        "z_m": 0.1613,
+        "gap_m": 0.1625,
+        "y_m": -0.0186
+      }
+    ]
+  },
+  "samples": 1200,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。"
+}

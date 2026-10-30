@@ -1,0 +1,987 @@
+{
+  "version": "clean/v4",
+  "nodes": 1,
+  "components_before": 18,
+  "components": [
+    {
+      "index": 0,
+      "faces": 22156,
+      "verts": 11034,
+      "area_m2": 0.075093881,
+      "area_frac": 0.75983,
+      "extents_m": [
+        0.12,
+        0.039616,
+        0.119963
+      ],
+      "principal_spans_m": [
+        0.119473,
+        0.119401,
+        0.039654
+      ],
+      "pca_axes": [
+        [
+          -0.9933,
+          -0.002,
+          0.1154
+        ],
+        [
+          -0.1154,
+          -0.0029,
+          -0.9933
+        ],
+        [
+          -0.0023,
+          1.0,
+          -0.0026
+        ]
+      ],
+      "max_span_m": 0.119473,
+      "thin_ratio": 0.33191,
+      "watertight": false,
+      "bounds_min": [
+        -0.06,
+        -0.019808,
+        -0.059981
+      ],
+      "bounds_max": [
+        0.06,
+        0.019808,
+        0.059981
+      ]
+    },
+    {
+      "index": 1,
+      "faces": 6948,
+      "verts": 3476,
+      "area_m2": 0.023732003,
+      "area_frac": 0.24013,
+      "extents_m": [
+        0.116487,
+        0.036443,
+        0.116486
+      ],
+      "principal_spans_m": [
+        0.109752,
+        0.11003,
+        0.036557
+      ],
+      "pca_axes": [
+        [
+          -0.9059,
+          0.0025,
+          -0.4236
+        ],
+        [
+          0.4236,
+          0.0038,
+          -0.9058
+        ],
+        [
+          0.0007,
+          1.0,
+          0.0045
+        ]
+      ],
+      "max_span_m": 0.11003,
+      "thin_ratio": 0.33224,
+      "watertight": true,
+      "bounds_min": [
+        -0.058187,
+        -0.018065,
+        -0.058272
+      ],
+      "bounds_max": [
+        0.058299,
+        0.018378,
+        0.058214
+      ]
+    },
+    {
+      "index": 2,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 1.17e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000427,
+        0.000267,
+        0.00014
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.005186,
+        0.017919,
+        0.002109
+      ],
+      "bounds_max": [
+        -0.004759,
+        0.018186,
+        0.002249
+      ]
+    },
+    {
+      "index": 3,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 1.55e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000551,
+        0.000235,
+        0.000256
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.005192,
+        0.018144,
+        0.001386
+      ],
+      "bounds_max": [
+        -0.004641,
+        0.018379,
+        0.001642
+      ]
+    },
+    {
+      "index": 4,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 1.27e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000799,
+        0.000239,
+        0.00027
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.004929,
+        0.017883,
+        -0.001999
+      ],
+      "bounds_max": [
+        -0.00413,
+        0.018122,
+        -0.001729
+      ]
+    },
+    {
+      "index": 5,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 1.38e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000526,
+        0.000201,
+        0.00033
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.003917,
+        0.01797,
+        0.001433
+      ],
+      "bounds_max": [
+        -0.003391,
+        0.018172,
+        0.001763
+      ]
+    },
+    {
+      "index": 6,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 1.72e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000585,
+        0.000256,
+        0.000439
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.001235,
+        0.018146,
+        -0.00508
+      ],
+      "bounds_max": [
+        -0.00065,
+        0.018402,
+        -0.004641
+      ]
+    },
+    {
+      "index": 7,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 6.1e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000362,
+        0.000165,
+        0.000331
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        -0.000432,
+        0.01794,
+        -0.003752
+      ],
+      "bounds_max": [
+        -7e-05,
+        0.018105,
+        -0.003421
+      ]
+    },
+    {
+      "index": 8,
+      "faces": 4,
+      "verts": 4,
+      "area_m2": 8.54e-07,
+      "area_frac": 1e-05,
+      "extents_m": [
+        0.001172,
+        2.1e-05,
+        0.0007
+      ],
+      "principal_spans_m": [
+        0.001195,
+        0.000489,
+        5e-06
+      ],
+      "pca_axes": [
+        [
+          -0.9559,
+          0.0079,
+          0.2935
+        ],
+        [
+          0.2936,
+          0.0318,
+          0.9554
+        ],
+        [
+          0.0017,
+          -0.9995,
+          0.0327
+        ]
+      ],
+      "max_span_m": 0.001195,
+      "thin_ratio": 0.00453,
+      "watertight": true,
+      "bounds_min": [
+        -0.000315,
+        0.017718,
+        -0.002805
+      ],
+      "bounds_max": [
+        0.000857,
+        0.017739,
+        -0.002105
+      ]
+    },
+    {
+      "index": 9,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 8.8e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000357,
+        0.000213,
+        0.00019
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.001746,
+        0.018231,
+        0.005628
+      ],
+      "bounds_max": [
+        0.002102,
+        0.018444,
+        0.005818
+      ]
+    },
+    {
+      "index": 10,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 4.88e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000691,
+        7.1e-05,
+        0.001196
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.002081,
+        0.017935,
+        -0.001142
+      ],
+      "bounds_max": [
+        0.002772,
+        0.018006,
+        5.4e-05
+      ]
+    },
+    {
+      "index": 11,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 3.38e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000566,
+        0.000245,
+        0.000688
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.00227,
+        0.017735,
+        -0.001664
+      ],
+      "bounds_max": [
+        0.002836,
+        0.017979,
+        -0.000977
+      ]
+    },
+    {
+      "index": 12,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 4.7e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000796,
+        0.000236,
+        0.001196
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.002081,
+        0.017935,
+        -0.001142
+      ],
+      "bounds_max": [
+        0.002877,
+        0.018171,
+        5.4e-05
+      ]
+    },
+    {
+      "index": 13,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 7.3e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000345,
+        0.000185,
+        0.000133
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.003393,
+        0.018222,
+        -0.000921
+      ],
+      "bounds_max": [
+        0.003738,
+        0.018407,
+        -0.000788
+      ]
+    },
+    {
+      "index": 14,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 5.5e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000233,
+        0.000141,
+        0.000287
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.003912,
+        0.018059,
+        0.001632
+      ],
+      "bounds_max": [
+        0.004145,
+        0.0182,
+        0.001919
+      ]
+    },
+    {
+      "index": 15,
+      "faces": 2,
+      "verts": 3,
+      "area_m2": 2.03e-07,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.001127,
+        0.000138,
+        0.000605
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": true,
+      "bounds_min": [
+        0.003664,
+        0.018285,
+        0.001002
+      ],
+      "bounds_max": [
+        0.00479,
+        0.018424,
+        0.001607
+      ]
+    },
+    {
+      "index": 16,
+      "faces": 1,
+      "verts": 3,
+      "area_m2": 8.7e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000566,
+        4.4e-05,
+        0.00053
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": false,
+      "bounds_min": [
+        0.00227,
+        0.017935,
+        -0.001507
+      ],
+      "bounds_max": [
+        0.002836,
+        0.017979,
+        -0.000977
+      ]
+    },
+    {
+      "index": 17,
+      "faces": 1,
+      "verts": 3,
+      "area_m2": 8.7e-08,
+      "area_frac": 0.0,
+      "extents_m": [
+        0.000566,
+        4.4e-05,
+        0.00053
+      ],
+      "principal_spans_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "pca_axes": [
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "max_span_m": 0.0,
+      "thin_ratio": 0.0,
+      "watertight": false,
+      "bounds_min": [
+        0.00227,
+        0.017935,
+        -0.001507
+      ],
+      "bounds_max": [
+        0.002836,
+        0.017979,
+        -0.000977
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "index": 0,
+      "decision": "keep",
+      "reason": "main body: largest area, not floating, thickness ok"
+    },
+    {
+      "index": 1,
+      "decision": "drop",
+      "reason": "secondary shell/duplicate (only main body kept)"
+    },
+    {
+      "index": 2,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 3,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 4,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 5,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 6,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 7,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 8,
+      "decision": "drop",
+      "reason": "fragment: area_frac 1e-05 < 0.01"
+    },
+    {
+      "index": 9,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 10,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 11,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 12,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 13,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 14,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 15,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 16,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    },
+    {
+      "index": 17,
+      "decision": "drop",
+      "reason": "fragment: area_frac 0.0 < 0.01"
+    }
+  ],
+  "kept_indices": [
+    0
+  ],
+  "containment_status": "ok",
+  "total_area_m2": 0.0988294,
+  "candidate": "runs/unseen/delivery_v7/v7_20261030/generation/task_4484069/mesh/tex_mesh.glb",
+  "id": "V7_R02_s1",
+  "raw_sha": "dbe440554b9e00fdeb4591c84f6cd04e5f7cc063ce75085d7db009200c6428b9",
+  "clean_path": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R02_s1/clean/body.stl",
+  "clean_sha": "08115118e3a3558cd80180796f70c91e1c9fd0a42ae039bbd0345c4d8ee6d1e6",
+  "verify": {
+    "components_after": 1,
+    "faces_after": 22156,
+    "extents_m": [
+      0.12,
+      0.039616,
+      0.119963
+    ],
+    "principal_spans_m": [
+      0.119473,
+      0.119401,
+      0.039654
+    ],
+    "thin_ratio": 0.33191,
+    "z_min_m": 0.0,
+    "kept_expected": 1,
+    "matches_decisions": true
+  },
+  "components_after": 1,
+  "precheck": {
+    "thin": false,
+    "verdict": "ok",
+    "criteria": {
+      "thin_ratio_min": 0.2,
+      "fragment_area_frac": 0.01,
+      "floating_thin_ratio": 0.01,
+      "weld_tol_rel": 1e-05,
+      "main_span_rel_min": 0.15,
+      "note": "全部为相对判据，整体等比缩放不改变判决"
+    }
+  },
+  "coordinate_frame": "local (z_min=0); downstream applies T once"
+}

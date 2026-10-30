@@ -1,0 +1,131 @@
+{
+  "schema": "fused-asset/v2",
+  "version": "fuse-observed/v2",
+  "method": "H5_F",
+  "parent_id": "V7_R02_s1",
+  "source_kind": "H5_F",
+  "parent_source_kind": "lux3d",
+  "coordinate_frame": "world",
+  "parts": [
+    "body.stl"
+  ],
+  "world_sha": "1f4267632a5b12cbafea5d50b7ca5af2d39f1bafc469bcccab05fed0ddc0e524",
+  "inputs": {
+    "observation": "runs/unseen/recovery_r3/obs_R02",
+    "parent_world": [
+      "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/candidates/V7_R02_s1/world/align"
+    ],
+    "parent_mesh_sha": [
+      "150fb8eacae7ed8a14805fa2cc0cc1d5cdcaa3ef58bf099557947b5b3ab14e69"
+    ],
+    "effective_config_sha": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274"
+  },
+  "grid": {
+    "convention": "cell-center",
+    "origin": [
+      1.6242686157226562,
+      -0.2313477600812912,
+      0.0
+    ],
+    "pitch_m": 0.004,
+    "dims": [
+      119,
+      118,
+      46
+    ],
+    "n_voxels": 645932
+  },
+  "space": {
+    "n_voxels": 645932,
+    "n_free": 280559,
+    "n_band": 6506,
+    "n_unknown": 358867,
+    "n_in_fov": 645932,
+    "n_valid_depth": 637522,
+    "n_depth_edge_px": 0,
+    "n_constrained_px": 637522,
+    "depth_edge_threshold_m": 0.0,
+    "valid_depth_frac": 0.98698,
+    "depth_convention": "positive_camera_minus_z (axis depth)",
+    "free_eps_m": 0.001,
+    "band_m": 0.0075,
+    "front_error_bound_mm": 3.0
+  },
+  "parent_solid": {
+    "parents": [
+      "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/candidates/V7_R02_s1/world/align"
+    ],
+    "solid_method": [
+      "shell_floodfill"
+    ],
+    "watertight_parent": false,
+    "n_inside_voxels": 329489,
+    "n_parents": 1
+  },
+  "growth": {
+    "component_removed_voxels": 42,
+    "component_kept_voxels": 295590,
+    "shell_voxels": 6566,
+    "filled_holes": false,
+    "volume_before_repair_m3": 0.018916549333333327,
+    "volume_after_repair_m3": 0.018916549333333327
+  },
+  "retention": {
+    "unknown_core_parent_voxels": 289361,
+    "kept_voxels": 289361,
+    "removed_voxels": 0,
+    "added_voxels": 309,
+    "kept_ratio": 1.0,
+    "removed_ratio": 0.0,
+    "added_volume_m3": 1.9776e-05,
+    "carved_free_voxels": 35561,
+    "carved_free_volume_m3": 0.002275904,
+    "parent_hidden_to_fused_mm": {
+      "n": 952,
+      "med": 5.724,
+      "p95": 9.843
+    },
+    "fused_to_parent_mm": {
+      "n": 1500,
+      "med": 4.633,
+      "p95": 11.481
+    },
+    "n_parents": 1,
+    "shell_rule": {
+      "lower": "depth - eps + offset",
+      "upper": "depth + band + offset",
+      "eps_m": 0.001,
+      "band_m": 0.0075,
+      "offset_m": 0.002
+    },
+    "shell_voxels": 6566,
+    "shell_outside_parent_voxels": 1704
+  },
+  "watertight": true,
+  "volume_m3": 0.018916549,
+  "bounds": [
+    [
+      1.6362686157226562,
+      -0.2193477600812912,
+      0.0
+    ],
+    [
+      2.092268615722656,
+      0.2166522399187088,
+      0.168
+    ]
+  ],
+  "metrics": {
+    "error": "ValueError: Error: stl_decoder: number of faces should be between 1 and 200000 in STL file '/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/fusion/posed_8f9627583c8e/mesh.stl'; perhaps this is an ASCII file?\nElement name 'obj0_0', id 0, line 39"
+  },
+  "strict": {
+    "pass": false,
+    "iou_min": 0.85,
+    "p95_mm_threshold": 5.0,
+    "freespace_max": 0.05,
+    "h_vis_m": 0.16293855317268352
+  },
+  "no_generated_hidden_contribution": false,
+  "seconds": 164.78,
+  "note": "H5-F = 观测约束 + Lux3D 父候选隐藏几何；可见面由构造得到，不证明 Lux3D 自己重建准确。"
+}

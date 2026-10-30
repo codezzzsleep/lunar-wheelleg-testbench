@@ -209,5 +209,24 @@
     ],
     "result": "box prior degrades to A0 in nominal/high_drag (0/3); H5 D1 in nominal, R1 in both soil modes, all 3/3; truth ceiling R1 everywhere",
     "benefit": "still not established on R03 (all methods succeed except B2_box)"
+  },
+  "representation_fix": {
+    "fusion_config": "configs/unseen_v7_r1_fusion_offset1.json",
+    "pitch_m": 0.0025,
+    "shell_offset_voxels": 1.0,
+    "known_answer_floor_freespace": 0.0399,
+    "V7_R03_s1": {
+      "iou": 0.9737,
+      "p95_mm": 1.702,
+      "freespace": 0.0392,
+      "visible_pass": true
+    },
+    "V7_R01_tv1": {
+      "iou": 0.9548,
+      "p95_mm": 1.835,
+      "freespace": 0.0875,
+      "visible_pass": false
+    },
+    "finding": "the representation floor is ~0.04; passing the gate after the fix tracks shape fit, not pipeline loss"
   }
 }

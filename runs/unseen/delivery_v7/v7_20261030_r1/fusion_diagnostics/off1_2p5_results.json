@@ -1,0 +1,35 @@
+{
+  "schema": "off1-2p5-results/v7-r1",
+  "rows": [
+    {
+      "candidate": "V7_R03_s1",
+      "before_4mm_off05": {
+        "iou": 0.953,
+        "p95_mm": 2.09,
+        "freespace": 0.0842
+      },
+      "after_2p5mm_off1": {
+        "iou": 0.9737,
+        "p95_mm": 1.702,
+        "freespace": 0.0392
+      },
+      "visible_pass": true
+    },
+    {
+      "candidate": "V7_R01_tv1",
+      "before_4mm_off05": {
+        "iou": 0.9545,
+        "p95_mm": 2.24,
+        "freespace": 0.0935
+      },
+      "after_2p5mm_off1": {
+        "iou": 0.9548,
+        "p95_mm": 1.835,
+        "freespace": 0.0875
+      },
+      "visible_pass": false
+    }
+  ],
+  "finding": "同一表示修正下：R03_s1 的 freespace 从 0.0842 降到 **0.0392**（通过），而 R01_tv1 只从 0.0935 降到 0.0875（不通过）。差别来自候选形状本身是否贴合观测 —— 与\"表示下限 0.0399\"一致。",
+  "next": "为 R03_s1 的 2.5 mm 融合重建 box 碰撞并测量；通过则成为 R03 的第二个合格假设"
+}

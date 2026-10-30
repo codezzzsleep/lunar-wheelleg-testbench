@@ -1,0 +1,20 @@
+{
+  "schema": "truth-on-second-view/v7-r1",
+  "truth_collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+  "result": {
+    "obs1_first_view": {
+      "mask_iou": 0.9994,
+      "vis_pt_p95_mm": 0.462,
+      "freespace_violation": 0.0321,
+      "freespace_n_px": 345,
+      "freespace_denom_px": 10761
+    },
+    "obs2_driven": {
+      "mask_iou": 0.9997,
+      "vis_pt_p95_mm": 0.645,
+      "freespace_violation": 0.0199,
+      "freespace_n_px": 982,
+      "freespace_denom_px": 49228
+    }
+  }
+}

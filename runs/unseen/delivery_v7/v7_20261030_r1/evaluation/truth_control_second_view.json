@@ -1,0 +1,21 @@
+{
+  "schema": "truth-control-second-view/v7-r1",
+  "truth_collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+  "obs1": {
+    "mask_iou": 0.9994,
+    "vis_pt_p95_mm": 0.462,
+    "freespace_violation": 0.0321,
+    "freespace_n_px": 345,
+    "freespace_denom_px": 10761
+  },
+  "obs2": {
+    "mask_iou": 0.9997,
+    "vis_pt_p95_mm": 0.645,
+    "freespace_violation": 0.0199,
+    "freespace_n_px": 982,
+    "freespace_denom_px": 49228
+  },
+  "reading": "真值网格在**同一第二观察**上是 IoU 0.9997 / P95 0.645 mm / freespace 0.0199（通过）。所以第二观察的帧与配准没有问题，两个候选的 0.0737 / 0.0739 是**真实的形状误差**，不是观测帧的系统性偏差。",
+  "refuted": "我此前的\"第二观察帧/配准系统性偏差\"假设被这个对照**否定**。",
+  "still_true": "第二视角把两个候选都淘汰，因此它**不能区分这两个候选谁更好**；它能区分的是\"候选 vs 真值\"，这一层已被证明有效。"
+}

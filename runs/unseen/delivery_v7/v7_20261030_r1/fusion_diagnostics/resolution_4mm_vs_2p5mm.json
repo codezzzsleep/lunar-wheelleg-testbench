@@ -1,0 +1,26 @@
+{
+  "schema": "resolution-convergence/v7",
+  "parent": "V7_R01_s1",
+  "observation": "obs_R01",
+  "rows": [
+    {
+      "dir": "R01_s1_p0.0025",
+      "pitch_m": 0.0025,
+      "iou": 0.9609,
+      "vis_p95_mm": 1.541,
+      "freespace": 0.0799,
+      "volume_m3": 0.001033117,
+      "visual_parts": null
+    },
+    {
+      "dir": "R01_s1_p0.004",
+      "pitch_m": 0.004,
+      "iou": 0.9498,
+      "vis_p95_mm": 2.211,
+      "freespace": 0.1122,
+      "volume_m3": 0.003705712,
+      "visual_parts": null
+    }
+  ],
+  "note": "同一父候选、同一观测、同一冻结配置，只改构建分辨率；面数超限自动用同场景多视觉 mesh"
+}

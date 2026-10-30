@@ -128,6 +128,17 @@ def main():
 
     dec = decision.evaluate([r for r in matrix if r.get('option') != 'A0'],
                             [x for x in ACT.OPTIONS if x != 'A0'])
+    # 决策矩阵合同校验（重复/缺格/A0 入安全集/无候选未写原因 -> 直接失败）
+    import v7_decision_contract as DC
+    _exp = {'candidates': [h['id'] for h in hyps], 'actions': acts,
+            'states': [s_['state_hash'] for s_ in states], 'soil_configs': soil_cfgs}
+    _chk = DC.validate(matrix, dict(dec, safe_set=dec.get('safe_set') or [],
+                                    reason=dec.get('reason') or (
+                                        'no_candidate_after_second_view' if not hyps else '')),
+                       _exp, not_applicable=skipped)
+    if not _chk['ok']:
+        raise SystemExit(f'决策矩阵合同失败：{_chk["errors"][:3]}')
+    dec['contract'] = _chk['stats']
     dec.update({'n_cells': len(matrix), 'n_skipped': len(skipped),
                 'n_states': len(states), 'n_candidates': len(hyps),
                 'n_soil': len(soil_cfgs), 'actions': acts,

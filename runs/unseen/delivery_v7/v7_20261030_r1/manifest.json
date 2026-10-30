@@ -142,5 +142,20 @@
       "pass": true
     },
     "note": "同一场景多视觉 mesh，解除单 mesh 20 万面上限；分块前后指标一致"
+  },
+  "resolution_diagnostic": {
+    "path": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/resolution_4mm_vs_2p5mm.json",
+    "parent": "V7_R01_s1",
+    "pitch_4mm": {
+      "iou": 0.9498,
+      "p95_mm": 2.211,
+      "freespace": 0.1122
+    },
+    "pitch_2p5mm": {
+      "iou": 0.9609,
+      "p95_mm": 1.541,
+      "freespace": 0.0799
+    },
+    "finding": "resolution explains part of the freespace error (-29%) but not all; still above 0.05"
   }
 }

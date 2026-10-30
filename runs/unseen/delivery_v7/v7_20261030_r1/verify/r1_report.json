@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 52,
-  "n_pass": 52,
+  "n_checks": 56,
+  "n_pass": 56,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 34,
-      "n_pass": 34
+      "n": 38,
+      "n_pass": 38
     },
     "goal": {
       "n": 5,
@@ -287,6 +287,30 @@
       "check": "distance_block_equivalence",
       "pass": true,
       "detail": "[{'max_cells': 2000000, 'face_chunk': 20480, 'peak_cells': 1310720, 'peak_bytes': 10485760, 'maxdiff': 0.0}, {'max_cells': 200000, 'face_chunk': 3125, 'peak_cells': 200000, 'peak_bytes': 1600000, 'maxdiff': 0.0}, {'max_cells': 20000, 'face_chunk': 312, 'peak_cells': 19968, 'peak_bytes': 159744, 'maxdiff': 0.0}]"
+    },
+    {
+      "layer": "function",
+      "check": "second_observation_usable",
+      "pass": true,
+      "detail": "['0:0.525m/11.95deg/True', '1:0.496m/11.25deg/False', '2:0.524m/11.78deg/False']"
+    },
+    {
+      "layer": "function",
+      "check": "second_view_screen_recorded",
+      "pass": true,
+      "detail": "固定几何/位姿，只移动相机；不做二次配准"
+    },
+    {
+      "layer": "function",
+      "check": "second_view_discriminates",
+      "pass": true,
+      "detail": "{'V7_R03_s2': 'rejected(second_view)', 'V7_R03_s1_2p5': 'not_evaluated'}"
+    },
+    {
+      "layer": "function",
+      "check": "second_view_no_silent_pass",
+      "pass": true,
+      "detail": "{'V7_R03_s2': 'rejected(second_view)', 'V7_R03_s1_2p5': 'not_evaluated'}"
     },
     {
       "layer": "function",

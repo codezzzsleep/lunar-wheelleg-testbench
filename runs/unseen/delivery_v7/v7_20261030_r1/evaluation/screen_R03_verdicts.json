@@ -1,0 +1,33 @@
+{
+  "schema": "second-view-screen/v7",
+  "object": "R03",
+  "real_geometry": {
+    "candidate": "V7_R03_s2",
+    "obs1_iou": 0.9551,
+    "obs2": {
+      "iou": 0.9193,
+      "p95_mm": 2.405,
+      "freespace": 0.0739
+    },
+    "verdict": "rejected(second_view)"
+  },
+  "decimated_proxy": {
+    "candidate": "V7_R03_s1_decim",
+    "decimation": {
+      "from_faces": 509408,
+      "to_faces": 36398,
+      "pitch_m": 0.005
+    },
+    "obs1_iou": 0.9366,
+    "obs2": {
+      "iou": 0.9074,
+      "p95_mm": 2.76,
+      "freespace": 0.1434
+    },
+    "verdict": "rejected(first_view)",
+    "usable_as_verdict": false,
+    "why_not": "这是 5 mm 顶点聚类的**代理网格**，不是 2.5 mm 原候选：降采样本身把首视角 IoU 从 0.9737 压到 0.9366。它只能证明渲染通路可用，**不能**用来判 s1 合格与否。"
+  },
+  "s1_status": "pending",
+  "s1_reason": "50.9 万面原网格走多视觉 mesh 的渲染路径仍在执行；在它出结果前不写成通过、也不写成淘汰，也不拿代理网格顶替。"
+}

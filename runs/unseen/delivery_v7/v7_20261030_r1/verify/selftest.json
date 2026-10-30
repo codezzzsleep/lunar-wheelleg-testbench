@@ -1,0 +1,62 @@
+{
+  "schema": "selftest/v7-r1",
+  "n": 11,
+  "n_pass": 11,
+  "rows": [
+    {
+      "check": "N01_no_hidden_reset",
+      "pass": true,
+      "detail": "[10.54, 11.62, 11.02]"
+    },
+    {
+      "check": "N03_states_deduped",
+      "pass": true,
+      "detail": "n_states=3 unique=3"
+    },
+    {
+      "check": "N04_matrix_complete",
+      "pass": true,
+      "detail": "cells+skipped=63 expected=63"
+    },
+    {
+      "check": "N05_missing_p95_not_rejected",
+      "pass": true,
+      "detail": "not_evaluated"
+    },
+    {
+      "check": "N06_zero_p95_kept",
+      "pass": true,
+      "detail": "kept"
+    },
+    {
+      "check": "N05b_real_violation_rejected",
+      "pass": true,
+      "detail": "rejected"
+    },
+    {
+      "check": "N07_soil_params_distinct",
+      "pass": true,
+      "detail": "{'nominal': '55848f80956792b4704ff3ec83678bf7', 'low_traction': '8a0a23fd8d02ed03dc35d336aaf51464', 'high_drag': '14363ee041a1bc07a40f6f1381d67441'} discrimination=True"
+    },
+    {
+      "check": "N08_decision_before_execution",
+      "pass": true,
+      "detail": "written=[1793341374.5861518] started=[1793341374.708408]"
+    },
+    {
+      "check": "N11_missing_collision_rejected",
+      "pass": true,
+      "detail": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/nonexistent_hyp.json'"
+    },
+    {
+      "check": "N12_strict_recomputed",
+      "pass": true,
+      "detail": "freespace 0.20 / p95 9.0 与 strict=true 矛盾"
+    },
+    {
+      "check": "N15_duplicate_attempt_rejected",
+      "pass": true,
+      "detail": "attempt_id a1 已存在：拒绝重复预留（有意重复采样请使用新的 sample_id/attempt_id）"
+    }
+  ]
+}

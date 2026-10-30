@@ -20,6 +20,17 @@ import align
 import trimesh
 
 
+def verdict_of(v):
+    """三态判定：kept / rejected / not_evaluated（缺测不是 rejected；0 是合法值）。"""
+    if not isinstance(v, dict) or v.get('measurement_status') != 'measured':
+        return 'not_evaluated'
+    iou, p95, free = v.get('mask_iou'), v.get('vis_pt_p95_mm'), v.get('freespace_violation')
+    if iou is None or p95 is None or free is None:
+        return 'not_evaluated'
+    ok = (float(iou) >= 0.90 and float(p95) <= 5.0 and float(free) <= 0.05)
+    return 'kept' if ok else 'rejected'
+
+
 def sha(p):
     import hashlib
     return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
@@ -62,18 +73,8 @@ def main():
                           'measurement_status': 'not_evaluated'}
         o1, o2 = r['obs1_front'], r['obs2_driven']
 
-        def _verdict(v):
-            # 缺测 = not_evaluated（不是 rejected）；零误差是合法值，不能被 `or` 吃掉
-            if v.get('measurement_status') != 'measured':
-                return 'not_evaluated'
-            iou = v.get('mask_iou'); p95 = v.get('vis_pt_p95_mm'); free = v.get('freespace_violation')
-            if iou is None or p95 is None or free is None:
-                return 'not_evaluated'
-            ok = (float(iou) >= 0.90 and float(p95) <= 5.0 and float(free) <= 0.05)
-            return 'kept' if ok else 'rejected'
-
-        r['verdict_first_view'] = _verdict(o1)
-        r['verdict_second_view'] = _verdict(o2)
+        r['verdict_first_view'] = verdict_of(o1)
+        r['verdict_second_view'] = verdict_of(o2)
         # 第一视角已不合格 -> 只能进诊断池；第二视角好不能抵消第一视角冲突
         if r['verdict_first_view'] == 'rejected':
             r['verdict_final'] = 'rejected(first_view)'

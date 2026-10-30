@@ -104,5 +104,22 @@
   "paths": {
     "root": "runs/unseen/delivery_v7/v7_20261030_r1"
   },
-  "note": "本批为 R1 修正批：P0-1..P0-7 的修复与证据在此，旧批次保留但不再作为当前状态。"
+  "note": "本批为 R1 修正批：P0-1..P0-7 的修复与证据在此，旧批次保留但不再作为当前状态。",
+  "verify": {
+    "selftest": "runs/unseen/delivery_v7/v7_20261030_r1/verify/selftest.json",
+    "n_checks": 11,
+    "n_pass": 11,
+    "covers": [
+      "N01 偷偷reset",
+      "N03 同快照多seed",
+      "N04 矩阵缺格",
+      "N05 缺测≠rejected",
+      "N06 P95=0 合法",
+      "N07 土壤参数判别",
+      "N08 决策先落盘",
+      "N11 路径缺失拒绝",
+      "N12 strict 重算",
+      "N15 重复 attempt"
+    ]
+  }
 }

@@ -40,22 +40,28 @@ def main():
         spec['soil'] = {'mode': 'soil', 'label': r.get('label'), 'params': r['params']}
     env = wheelleg_env.WheelLegEnv(spec, control_hz=50.0, max_seconds=a.time_limit,
                                    v_ref=1.0, tip_deg=60.0)
-    r = runner.EpisodeRunner(env, skills.make_skill(a.action), visible={}, seed=a.seed)
+    r = runner.EpisodeRunner(env, skills.make_skill(a.action), visible={}, seed=a.seed,
+                             record_trajectory=True)
     started = time.time()
     o = r.run()
+    traj = (o.get('trajectory') if isinstance(o, dict) else None) or \
+           (getattr(r, 'trajectory', None) or [])
     rec = {'schema': 'rerun/v7-r1', 'mode': 'rerun_not_replay', 'run_id': run_id,
            'case': a.case, 'hypothesis': a.hypothesis, 'action': a.action,
            'seed': a.seed, 'soil': a.soil, 'started_at': started,
            'finished_at': time.time(), 'success': o['success'], 'reason': o['reason'],
            'final_x': o['final_x'], 't_end': o['t_end'], 'max_tilt': o['max_tilt'],
-           'n_physics': int(env.n_physics),
+           'n_physics': int(env.n_physics), 'n_frames': len(traj),
            'note': '真实 MuJoCo 运行，不是回放；不调用云端、不产生生成费用'}
     (out / 'rerun.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
     with (out / 'rerun_trajectory.jsonl').open('w') as f:
-        for fr in (getattr(r, 'trajectory', None) or []):
+        for fr in traj:
             f.write(json.dumps(fr) + '\n')
+    if not traj:
+        raise SystemExit('轨迹为空：EpisodeRunner 未记录帧，拒绝声称已有回放数据')
     print(json.dumps({'run_id': run_id, 'success': rec['success'], 'reason': rec['reason'],
-                      'out': str(out.relative_to(ROOT))}, ensure_ascii=False))
+                      'out': str(out.relative_to(ROOT)) if out.is_relative_to(ROOT)
+                      else str(out), 'n_frames': len(traj)}, ensure_ascii=False))
     return 0
 
 

@@ -333,3 +333,33 @@ bash <skill>/scripts/cnb_api.sh stages --repo <org>/<repo> --sn <sn>
 
 **口径说明**：CNB 里跑的是**源码快照**的结构性验收；完整 73 项验收需要 `runs/` 证据包，
 仍在证据所在机器上执行。
+
+## 11. 用 CNB 沙箱当算力（SSH）
+
+CNB 云原生开发环境可以直接 SSH 进去当 8 核 16 GB 的算力机用：
+
+```bash
+# 启动（API）→ 取详情 → SSH
+curl -s -X POST -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' \
+  -H 'Content-Type: application/json' -d '{"branch":"main"}' \
+  https://api.cnb.cool/ycyc755/lunar-lab-r1/-/workspace/start
+curl -s -H "Authorization: Bearer $CNB_TOKEN" -H 'Accept: application/vnd.cnb.api+json' \
+  https://api.cnb.cool/ycyc755/lunar-lab-r1/-/workspace/detail/<sn>   # remoteSsh 字段
+ssh <remoteSsh> 'nproc; /opt/lunar/bin/python -c "import mujoco;print(mujoco.__version__)"'
+```
+
+实测：8 核 / 16 GB / 512 GB 盘；`/opt/lunar/bin/python` 里已有 mujoco 3.17.0、numpy 2.5.4、
+trimesh 5.2.0；代码用 `tar | ssh` 同步（源 385 MB，几分钟）。
+
+**限制（踩过）**：
+- 工作区在**无活动连接**约 10–12 分钟后被回收，后台任务会随之消失；
+  要长时间跑必须保持 SSH 会话（`ssh -o ServerAliveInterval=30 ... 'while true; do sleep 60; done'`）。
+- 镜像缺 `rtree`（trimesh 布尔求交需要）→ 已在 `.ide/Dockerfile` 里补装。
+- 令牌偶发 401（`errcode 16`），短时间高频调用容易触发；拉开间隔即可恢复。
+
+## 12. 轨迹记录修复（§11.2）
+
+审查基线里 `rerun_trajectory.jsonl` 是 0 字节——`v7_rerun.py` 建 `EpisodeRunner` 时没开
+`record_trajectory`。已修：开记录、把帧写进 jsonl，并在**帧为空时直接失败**（不谎称有轨迹）。
+
+实测（R03 / V7_R03_s2 / R1 / seed 0）：`{"success": true, "n_frames": 327}`。

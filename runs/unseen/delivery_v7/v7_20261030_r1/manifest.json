@@ -313,5 +313,26 @@
     "safe_set_size": 7,
     "chosen": "R1",
     "truth": "3/3 success, displacement 3.1915/3.1971/3.1906 m, t_start 9.84/10.88/10.32 s"
-  }
+  },
+  "candidate_status": {
+    "V7_R04_s2": {
+      "pitch_m": 0.0025,
+      "shell_offset_voxels": 1.0,
+      "visible": {
+        "iou": 0.9654,
+        "p95_mm": 1.979,
+        "freespace": 0.0339,
+        "pass": true
+      },
+      "collision": {
+        "status": "not_measured",
+        "reason": "box union 2.5mm 在 8v16 未完成，进程静默退出"
+      },
+      "qualified": false,
+      "note": "可见通过但碰撞未测 → 按冻结定义不合格"
+    }
+  },
+  "open_items": [
+    "V7_R04_s2：换 0.003 m 体素或分块并集后重测碰撞"
+  ]
 }

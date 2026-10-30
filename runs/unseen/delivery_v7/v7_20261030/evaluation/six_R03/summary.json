@@ -1,0 +1,210 @@
+{
+  "protocol": "plans/unseen_v7_protocol_six.json",
+  "truth_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+  "truth_collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+  "soil_mode": "rigid",
+  "time_limit_s": 30.0,
+  "expected_keys": [
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B0_blind",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B1_height",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B2_box",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "B3_mirror",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "H5_lux3d",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed0",
+      "n_expected": 3
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed1",
+      "n_expected": 3
+    },
+    {
+      "method": "U_truth",
+      "initial_state_id": "seed2",
+      "n_expected": 3
+    }
+  ],
+  "initial_states": [
+    0,
+    1,
+    2
+  ],
+  "n_initial_states": 3,
+  "methods": [
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "D1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.387,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "R1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.42,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": "D1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.387,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "D1",
+      "n_exec": 3,
+      "n_expected": 3,
+      "complete": true,
+      "success": 3,
+      "abort": 0,
+      "fail": 0,
+      "mean_cost": 6.387,
+      "outcomes": [
+        "success",
+        "success",
+        "success"
+      ],
+      "no_candidate": false
+    }
+  ],
+  "note": "所有方法在同一 truth_sha 上执行；预演只在各自假设上进行，不计入执行成绩"
+}

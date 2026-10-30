@@ -1,4 +1,7 @@
-{"job":"remote_off1_R03_s1","state":"running","note":"2.5mm shell_offset=1.0 fusion for R03_s1"}
-{"job":"remote_off1_R02_s2","state":"killed_oom","note":"2.5mm fusion OOM-killed earlier; pending re-run one-at-a-time"}
-{"job":"remote_off1_R02_g1","state":"pending","note":"waits for R03_s1"}
-{"job":"local_push","state":"running","note":"git push origin main (4+1 commits, large repo)"}
+{"job":"push_main","state":"running","note":"git push origin main; ~206 MB pack queued since 17:10; repo 2.6 GB; gitignore now blocks heavy meshes"}
+{"job":"off1_R03_s1_fusion","state":"done","note":"2.5mm offset1.0: IoU 0.9737 P95 1.702 free 0.0392 (visible gates pass)"}
+{"job":"off1_R03_s1_collision","state":"done","note":"4567 boxes, collision_sha 32075c548a52"}
+{"job":"off1_R03_s1_metrics","state":"running","note":"collision occupancy metrics at 2.5mm eval pitch; first attempt OOM-killed, retried alone"}
+{"job":"off1_R01_tv1_fusion","state":"done","note":"2.5mm offset1.0: IoU 0.9548 P95 1.835 free 0.0875 (fails freespace)"}
+{"job":"off1_R02_s2_fusion","state":"pending","note":"OOM-killed earlier; rerun serially"}
+{"job":"off1_R02_g1_fusion","state":"pending","note":"waits behind R02_s2"}

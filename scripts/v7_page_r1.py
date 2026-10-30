@@ -148,6 +148,10 @@ code{{background:#171b23;padding:1px 5px;border-radius:4px}} .note{{color:#8a93a
   [t.get('task_id'), t.get('object'), t.get('mode'), t.get('sample_id'),
    (t.get('glb_sha') or '—')[:12], t.get('status')] for t in tasks])}
 
+<h2>连续回放（真实轨迹）</h2>
+<div class="note">数据来自实际运行的逐帧记录；支持播放/暂停/进度/速度。
+<a href="player.html">打开播放器</a> · 原始帧：<code>media/report/rerun_trajectory.jsonl</code></div>
+
 <h2>限制</h2>
 <ul class="note">
 <li>可见面由观测约束构造，不等于 Lux3D 原始模型精度；H5-F = 观测约束 + 隐藏几何先验。</li>

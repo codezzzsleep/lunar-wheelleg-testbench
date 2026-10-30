@@ -31,6 +31,10 @@ code{background:#171b23;padding:1px 5px;border-radius:4px} .note{color:#8a93a3;f
 <h2>生成任务（回放用，不含付费操作）</h2>
 <table><thead><tr><th>task_id</th><th>对象</th><th>模式</th><th>采样</th><th>GLB SHA</th><th>状态</th></tr></thead><tbody><tr><td>4484069</td><td>R02</td><td>single_image</td><td>s1</td><td>dbe440554b9e</td><td>3</td></tr><tr><td>4484076</td><td>R02</td><td>single_image</td><td>s2</td><td>750132e7d77a</td><td>3</td></tr><tr><td>4484079</td><td>R04</td><td>single_image</td><td>s1</td><td>ac904b61e721</td><td>3</td></tr><tr><td>4484082</td><td>R04</td><td>single_image</td><td>s2</td><td>a2509285c8bb</td><td>3</td></tr><tr><td>4486935</td><td>R01</td><td>two_image</td><td>tv1</td><td>86bc56ce68a1</td><td>3</td></tr><tr><td>4486948</td><td>R01</td><td>single_image</td><td>v7s1</td><td>746d5978cd96</td><td>3</td></tr><tr><td>4486951</td><td>R01</td><td>single_image</td><td>v7s2</td><td>e9fd390e2c0b</td><td>3</td></tr><tr><td>4486954</td><td>R03</td><td>single_image</td><td>v7s1</td><td>caa49c5edaa0</td><td>3</td></tr><tr><td>4486957</td><td>R03</td><td>single_image</td><td>v7s2</td><td>26377bbd3094</td><td>3</td></tr><tr><td>4489794</td><td>R01</td><td>two_image</td><td>drive_tv</td><td>4c06642fdd50</td><td>3</td></tr></tbody></table>
 
+<h2>连续回放（真实轨迹）</h2>
+<div class="note">数据来自实际运行的逐帧记录；支持播放/暂停/进度/速度。
+<a href="player.html">打开播放器</a> · 原始帧：<code>media/report/rerun_trajectory.jsonl</code></div>
+
 <h2>限制</h2>
 <ul class="note">
 <li>可见面由观测约束构造，不等于 Lux3D 原始模型精度；H5-F = 观测约束 + 隐藏几何先验。</li>

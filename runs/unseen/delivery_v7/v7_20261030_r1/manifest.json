@@ -189,5 +189,25 @@
       "freespace": 0.0799
     },
     "finding": "resolution explains part of the freespace error (-29%) but not all; still above 0.05"
+  },
+  "six_method_soils": {
+    "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/six_R03_all_soils.json",
+    "soil_configs": [
+      "nominal",
+      "low_traction",
+      "high_drag"
+    ],
+    "planning_states": [
+      0,
+      1,
+      2
+    ],
+    "validation_states": [
+      3,
+      4,
+      5
+    ],
+    "result": "box prior degrades to A0 in nominal/high_drag (0/3); H5 D1 in nominal, R1 in both soil modes, all 3/3; truth ceiling R1 everywhere",
+    "benefit": "still not established on R03 (all methods succeed except B2_box)"
   }
 }

@@ -76,8 +76,21 @@ def residual_heatmap(mesh, observation, out_png, W=None, H=None):
     W = W or int(obs['image']['W']); H = H or int(obs['image']['H'])
     spec = {'objects': [{'posed_dir': str(out_png.with_suffix('.meshdir'))}], 'seed': 0}
     d = out_png.with_suffix('.meshdir'); d.mkdir(parents=True, exist_ok=True)
-    mesh.export(d / 'body.stl')
-    (d / 'manifest.json').write_text(json.dumps({'parts': ['body.stl']}))
+    # 面数超限时同样用同场景多视觉 mesh（否则热图渲染会先被 20 万面上限挡住）
+    try:
+        import v7_multimesh as _MM
+        if len(mesh.faces) > _MM.MAX_FACES_DEFAULT:
+            parts, meta = _MM.split_mesh(mesh, _MM.MAX_FACES_DEFAULT)
+            _MM.write_world(parts, d, FZ.sha_file(d / 'body.stl') if (d / 'body.stl').exists()
+                            else 'multimesh', len(mesh.faces), {'split': meta})
+        else:
+            mesh.export(d / 'body.stl')
+            (d / 'manifest.json').write_text(json.dumps({'parts': ['body.stl']}))
+    except Exception as _e:
+        print(json.dumps({'heatmap_multimesh_error': f'{type(_e).__name__}: {_e}'},
+                         ensure_ascii=False))
+        mesh.export(d / 'body.stl')
+        (d / 'manifest.json').write_text(json.dumps({'parts': ['body.stl']}))
     import terrain, wheelleg_env
     s = terrain.make_spec(kind='flat', seed=0, objects=[], goal_x=2.8, name='resid')
     s['channel'] = {'center_y': 0.0, 'half_width': 1.2}

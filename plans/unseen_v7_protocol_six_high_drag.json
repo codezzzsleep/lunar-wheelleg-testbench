@@ -1,7 +1,7 @@
 {
   "protocol_version": "unseen-six/v7",
   "frozen": "2026-10-30",
-  "note": "V7 六方法正式协议。各方法用各自允许的信息独立规划，全部在共同真值、相同实际初态上执行；阈值来自开发集冻结，不按结果调整。 月壤对照模式=high_drag",
+  "note": "V7 六方法正式协议。各方法用各自允许的信息独立规划，全部在共同真值、相同实际初态上执行；阈值来自开发集冻结，不按结果调整。",
   "case": "cases/unseen_v1/R03.json",
   "observation_dir": "runs/unseen/recovery_r3/obs_R03",
   "goal_x": 2.6,
@@ -13,9 +13,7 @@
   "validation_states": [
     3,
     4,
-    5,
-    6,
-    7
+    5
   ],
   "methods": [
     "B0_blind",

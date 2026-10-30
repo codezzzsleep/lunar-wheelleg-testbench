@@ -1,0 +1,115 @@
+{
+  "schema": "six-method/v7-r1",
+  "object": "R03",
+  "truth_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+  "soil_params": {
+    "nominal": "55848f80956792b4704ff3ec83678bf7",
+    "low_traction": "8a0a23fd8d02ed03dc35d336aaf51464",
+    "high_drag": "14363ee041a1bc07a40f6f1381d67441"
+  },
+  "table": {
+    "B0_blind": {
+      "nominal": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "low_traction": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      }
+    },
+    "B1_height": {
+      "nominal": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "low_traction": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      }
+    },
+    "B2_box": {
+      "nominal": {
+        "action": "A0",
+        "success": "0/3",
+        "validation": "0/3"
+      },
+      "low_traction": {
+        "action": "D1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "A0",
+        "success": "0/3",
+        "validation": "0/3"
+      }
+    },
+    "B3_mirror": {
+      "nominal": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "low_traction": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      }
+    },
+    "H5_lux3d": {
+      "nominal": {
+        "action": "D1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "low_traction": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      }
+    },
+    "U_truth": {
+      "nominal": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "low_traction": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      },
+      "high_drag": {
+        "action": "R1",
+        "success": "3/3",
+        "validation": "3/3"
+      }
+    }
+  },
+  "note": "三种土壤配置的**真实参数**已传入环境（不是只换标签）；规划初态 0,1,2；验证初态 3,4,5（决策冻结后执行）"
+}

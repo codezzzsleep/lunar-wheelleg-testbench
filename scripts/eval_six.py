@@ -277,6 +277,8 @@ def main():
     case = json.loads(pathlib.Path(proto['case']).read_text())
     goal_x = proto.get('goal_x', 2.6)
     seeds = proto['initial_states']
+    val_seeds = proto.get('validation_states') or []
+    run_val = bool(val_seeds) and not proto.get('disable_validation')
     ctx = {'obs_dir': str(obs_dir), 'H_vis': float(vis['H_vis']),
            'W_vis': float(vis['W_vis']), 'x_front': float(vis['x_front'])}
 
@@ -502,6 +504,25 @@ def main():
     records += reh
     pending.append(('U_truth', dec))
 
+    # ---- 验证初态（§15.3）：决策冻结后，在**未参与规划**的初态上执行同一批动作 ----
+    def run_validation(dec_sha):
+        """决策冻结后，在未参与规划的验证初态上执行同一批动作。"""
+        out_rows = []
+        if not run_val:
+            return out_rows
+        for method, dec in pending:
+            for s_ in val_seeds:
+                r = run_episode(truth_col, dec, s_, vis, goal_x, time_limit=a.time_limit,
+                                soil_mode=phy['soil_mode'])
+                row = dict(r)
+                row.update({'method': method, 'phase': 'validation',
+                            'hypothesis': method, 'initial_state_id': f'val_seed{s_}',
+                            'environment_kind': 'truth', 'environment_sha': truth_sha,
+                            'truth_sha': truth_sha, 'truth_collision_sha': truth_col_sha,
+                            'soil_mode': phy['soil_mode'], 'decision_sha': dec_sha})
+                out_rows.append(row)
+        return out_rows
+
     # ---- 两阶段：决策先落盘并定身份，之后才允许真值执行（任务书 §8.1）----
     import hashlib as _h, time as _t
     _payload = json.dumps(decisions, ensure_ascii=False, sort_keys=True)
@@ -530,6 +551,8 @@ def main():
                                 'after_decision_write': started > dec_written_at},
                                ensure_ascii=False) + '\n')
 
+    records += run_validation(dec_sha)
+
     # ---- 汇总：只统计 phase=execution ----
     summary = []
     for d_ in decisions:
@@ -540,6 +563,13 @@ def main():
                         'n_exec': len(ex), 'n_expected': n_exp,
                         'complete': len(ex) == n_exp,
                         'success': sum(1 for r in ex if r['success']),
+                        'validation': {'n': sum(1 for r in records
+                                                if r['method'] == m and r['phase'] == 'validation'),
+                                       'success': sum(1 for r in records
+                                                      if r['method'] == m
+                                                      and r['phase'] == 'validation'
+                                                      and r['success'])},
+                        'n_validation_states': len(val_seeds),
                         'abort': sum(1 for r in ex if r['abort']),
                         'fail': sum(1 for r in ex if not r['success'] and not r['abort']),
                         'mean_cost': (round(float(np.mean([r['cost'] for r in ex])), 3)

@@ -343,5 +343,35 @@
   "open_items": [
     "V7_R04_s2：换 0.003 m 体素或分块并集后重测碰撞",
     "R04_s2 需要更细或自适应的碰撞表示（薄/凹结构），3 mm 体素不够；这是表示限制，不是评分错误"
-  ]
+  ],
+  "evaluator_version": {
+    "collision_metric": "union-outer-boundary/v2",
+    "changed_at": "2026-10-31",
+    "what_changed": "box_surface_distance 由\"对所有 box 表面取最小\"改为\"对并集暴露面取最小\"；sample_box_surfaces 同步使用暴露面规则（部分暴露面不再整面删除）",
+    "known_answers": "verify/collision_known_answers.json（8/8）"
+  },
+  "qualification_by_caliber": {
+    "new_caliber_union_boundary": {
+      "V7_R03_s1": {
+        "iou": 0.9852,
+        "s2c_mm": 0.623,
+        "c2s_mm": 0.74,
+        "pass": true,
+        "evidence": "fusion_diagnostics/off1_R03_s1/collision/metrics_full.json"
+      }
+    },
+    "old_caliber_min_over_boxes": {
+      "V7_R02_s2": {
+        "note": "旧口径测得的合格标签，需按新口径重测；网格资产不在本机"
+      },
+      "V7_R04_s2": {
+        "note": "同上；旧口径 c2s 37.63 mm 的结论需按新口径复核"
+      }
+    },
+    "asset_availability": {
+      "json_evidence": "git 已跟踪（metrics/decisions/closed_loop/summary 等）",
+      "mesh_assets": "gitignore 排除（*.stl/parts/），原远端主机已回收 → 需从父候选+观测重新融合生成",
+      "impact": "资格 JSON 可读，但重测必须先重建网格；重建依赖 candidates/*/world/align 与 obs，需一并恢复"
+    }
+  }
 }

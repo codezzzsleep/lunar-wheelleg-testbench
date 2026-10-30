@@ -2,74 +2,74 @@
   "schema": "collision-metrics/v2",
   "version": "collision-metrics/v2",
   "label": "V7_R02_s1_box",
-  "source_mesh": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/fusion/body.stl",
-  "source_sha": "1f4267632a5b12cbafea5d50b7ca5af2d39f1bafc469bcccab05fed0ddc0e524",
-  "collision_dir": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision",
+  "source_mesh": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/fusion/body.stl",
+  "source_sha": "8726fc912755fea993be5cc8545d1404a448cd473f2d2e108b72bcaebbcd1f75",
+  "collision_dir": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision",
   "representation": "box_union",
-  "n_boxes": 3188,
-  "n_parts_declared": 3188,
+  "n_boxes": 1271,
+  "n_parts_declared": 1271,
   "n_parts_loaded": null,
   "missing_parts": [],
-  "collision_sha_manifest": "f1b80ab1aa0323972e25fb76c05aa3b2",
+  "collision_sha_manifest": "343f26d1e09ace2ab8d1491179ed6510",
   "source_status": {
     "watertight": true,
-    "euler": -58,
-    "n_faces": 241268
+    "euler": -8,
+    "n_faces": 104764
   },
   "source_volume_defined": true,
   "geometry": {
-    "source_inside": 1210722,
-    "collision_inside": 1210550,
-    "intersection": 1207037,
-    "union": 1214235,
-    "collision_only": 3513,
-    "source_only": 3685,
-    "occupancy_iou": 0.9941,
-    "over_fill_frac_of_collision": 0.0029,
-    "under_fill_frac_of_source": 0.003,
-    "over_fill_volume_m3": 5.4891e-05,
-    "under_fill_volume_m3": 5.7578e-05,
-    "source_volume_voxelised_m3": 0.018917531,
-    "collision_volume_voxelised_m3": 0.018914844,
+    "source_inside": 1235999,
+    "collision_inside": 1236649,
+    "intersection": 1231539,
+    "union": 1241109,
+    "collision_only": 5110,
+    "source_only": 4460,
+    "occupancy_iou": 0.9923,
+    "over_fill_frac_of_collision": 0.0041,
+    "under_fill_frac_of_source": 0.0036,
+    "over_fill_volume_m3": 7.9844e-05,
+    "under_fill_volume_m3": 6.9688e-05,
+    "source_volume_voxelised_m3": 0.019312484,
+    "collision_volume_voxelised_m3": 0.019322641,
     "eval_pitch_m": 0.0025,
     "eval_dims": [
       188,
-      180,
+      181,
       73
     ],
     "source_to_collision_mm": {
       "n": 1200,
       "med": 0.0,
-      "p95": 0.787,
-      "max": 0.999
+      "p95": 1.098,
+      "max": 1.499
     },
     "collision_to_source_mm": {
       "n": 1200,
       "med": 0.0,
-      "p95": 1.242,
-      "max": 1.511
+      "p95": 1.741,
+      "max": 2.264
     }
   },
   "probe": {
-    "n_gap_rows": 330,
+    "n_gap_rows": 163,
     "largest": [
       {
-        "x_m": 1.9475,
-        "z_m": 0.0038,
+        "x_m": 1.96,
+        "z_m": 0.1537,
         "gap_m": 0.045,
-        "y_m": -0.0343
+        "y_m": -0.0118
       },
       {
-        "x_m": 1.9425,
-        "z_m": 0.0038,
+        "x_m": 1.9925,
+        "z_m": 0.1462,
         "gap_m": 0.0425,
-        "y_m": -0.0331
+        "y_m": -0.0131
       },
       {
-        "x_m": 1.945,
-        "z_m": 0.0038,
+        "x_m": 1.995,
+        "z_m": 0.1462,
         "gap_m": 0.0425,
-        "y_m": -0.0331
+        "y_m": -0.0131
       }
     ]
   },

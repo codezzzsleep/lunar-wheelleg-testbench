@@ -1,0 +1,48 @@
+{
+  "schema": "v7-candidate-process/v1",
+  "candidate": "V7_R03_s1",
+  "observation": "runs/unseen/recovery_r3/obs_R03",
+  "source_world_sha": "ad63d9c20d28d08f7f19884f3d122ed485c6dd119756ca1a5d4c5f8c967cf138",
+  "fusion_world_sha": "1b3a0ba6bbf6cc70004032326bf852be22bb4cc36ad25658189a74f6c0a3a7ff",
+  "fusion_metrics": {
+    "mask_iou": 0.953,
+    "vis_pt_p95_mm": 2.093,
+    "freespace_violation": 0.0842,
+    "depth_p95_mm": 7.176
+  },
+  "fusion_strict": {
+    "pass": false,
+    "iou_min": 0.85,
+    "p95_mm_threshold": 5.0,
+    "freespace_max": 0.05,
+    "h_vis_m": 0.08212880883027526
+  },
+  "collision_representation": "box_union",
+  "collision_content_sha": "e1173a2aea9060737a8cd9e91ae6393b",
+  "n_boxes": 1744,
+  "physics_config_sha": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274",
+  "fusion_pitch_m": 0.004,
+  "collision_metrics_identity": {
+    "label": "V7_R03_s1_box",
+    "eval_pitch_m": 0.0025,
+    "source_sha": "1b3a0ba6bbf6cc70004032326bf852be22bb4cc36ad25658189a74f6c0a3a7ff",
+    "collision_sha_manifest": "e1173a2aea9060737a8cd9e91ae6393b"
+  },
+  "collision_verdict": "PASS",
+  "collision_geometry": {
+    "occupancy_iou": 0.9927,
+    "over_fill_frac_of_collision": 0.0038,
+    "under_fill_frac_of_source": 0.0036
+  },
+  "collision_surface_mm": {
+    "s2c_p95": 0.762,
+    "c2s_p95": 1.245
+  },
+  "qualified_visible": false,
+  "qualified_collision": true,
+  "paths": {
+    "fusion": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s1/fusion",
+    "collision": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s1/collision"
+  },
+  "qualified": false
+}

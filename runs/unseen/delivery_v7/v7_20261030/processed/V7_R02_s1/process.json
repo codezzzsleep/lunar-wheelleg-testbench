@@ -3,12 +3,12 @@
   "candidate": "V7_R02_s1",
   "observation": "runs/unseen/recovery_r3/obs_R02",
   "source_world_sha": "150fb8eacae7ed8a14805fa2cc0cc1d5cdcaa3ef58bf099557947b5b3ab14e69",
-  "fusion_world_sha": "1f4267632a5b12cbafea5d50b7ca5af2d39f1bafc469bcccab05fed0ddc0e524",
+  "fusion_world_sha": "8726fc912755fea993be5cc8545d1404a448cd473f2d2e108b72bcaebbcd1f75",
   "fusion_metrics": {
-    "mask_iou": null,
-    "vis_pt_p95_mm": null,
-    "freespace_violation": null,
-    "depth_p95_mm": null
+    "mask_iou": 0.9512,
+    "vis_pt_p95_mm": 3.006,
+    "freespace_violation": 0.149,
+    "depth_p95_mm": 7.684
   },
   "fusion_strict": {
     "pass": false,
@@ -18,30 +18,31 @@
     "h_vis_m": 0.16293855317268352
   },
   "collision_representation": "box_union",
-  "collision_content_sha": "f1b80ab1aa0323972e25fb76c05aa3b2",
-  "n_boxes": 3188,
-  "physics_config_sha": "a78ef05753690d0d90624843a907b81e4354a3ef5ca9bd6aaad85f1b83ee9274",
+  "collision_content_sha": "343f26d1e09ace2ab8d1491179ed6510",
+  "n_boxes": 1271,
+  "physics_config_sha": "402dbc778095212e7e6f0bcff93acc28c61b1e4f75c23258b403e406b7ed3a05",
+  "fusion_pitch_m": 0.006,
   "collision_metrics_identity": {
     "label": "V7_R02_s1_box",
     "eval_pitch_m": 0.0025,
-    "source_sha": "1f4267632a5b12cbafea5d50b7ca5af2d39f1bafc469bcccab05fed0ddc0e524",
-    "collision_sha_manifest": "f1b80ab1aa0323972e25fb76c05aa3b2"
+    "source_sha": "8726fc912755fea993be5cc8545d1404a448cd473f2d2e108b72bcaebbcd1f75",
+    "collision_sha_manifest": "343f26d1e09ace2ab8d1491179ed6510"
   },
   "collision_verdict": "PASS",
   "collision_geometry": {
-    "occupancy_iou": 0.9941,
-    "over_fill_frac_of_collision": 0.0029,
-    "under_fill_frac_of_source": 0.003
+    "occupancy_iou": 0.9923,
+    "over_fill_frac_of_collision": 0.0041,
+    "under_fill_frac_of_source": 0.0036
   },
   "collision_surface_mm": {
-    "s2c_p95": 0.787,
-    "c2s_p95": 1.242
+    "s2c_p95": 1.098,
+    "c2s_p95": 1.741
   },
   "qualified_visible": false,
   "qualified_collision": true,
   "paths": {
-    "fusion": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/fusion",
-    "collision": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision"
+    "fusion": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/fusion",
+    "collision": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision"
   },
   "qualified": false
 }

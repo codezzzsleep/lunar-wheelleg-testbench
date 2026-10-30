@@ -1,0 +1,80 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "V7_R04_s2_box",
+  "source_mesh": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s2/fusion/body.stl",
+  "source_sha": "bd10bcb37a765a7e1f4b7ed78b248248672c27055322a1c3e4868f71a2f7f8a9",
+  "collision_dir": "/root/lunar-lab/runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s2/collision",
+  "representation": "box_union",
+  "n_boxes": 2021,
+  "n_parts_declared": 2021,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "328aaa499efa77d66a4d9873221049f0",
+  "source_status": {
+    "watertight": true,
+    "euler": -4,
+    "n_faces": 132384
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 1768278,
+    "collision_inside": 1768674,
+    "intersection": 1760628,
+    "union": 1776324,
+    "collision_only": 8046,
+    "source_only": 7650,
+    "occupancy_iou": 0.9912,
+    "over_fill_frac_of_collision": 0.0045,
+    "under_fill_frac_of_source": 0.0043,
+    "over_fill_volume_m3": 0.000125719,
+    "under_fill_volume_m3": 0.000119531,
+    "source_volume_voxelised_m3": 0.027629344,
+    "collision_volume_voxelised_m3": 0.027635531,
+    "eval_pitch_m": 0.0025,
+    "eval_dims": [
+      212,
+      219,
+      87
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 1.249,
+      "max": 1.635
+    },
+    "collision_to_source_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 1.91,
+      "max": 2.265
+    }
+  },
+  "probe": {
+    "n_gap_rows": 254,
+    "largest": [
+      {
+        "x_m": 1.7121,
+        "z_m": 0.1988,
+        "gap_m": 0.2175,
+        "y_m": 0.0009
+      },
+      {
+        "x_m": 1.7146,
+        "z_m": 0.1988,
+        "gap_m": 0.2175,
+        "y_m": 0.0009
+      },
+      {
+        "x_m": 1.7096,
+        "z_m": 0.1988,
+        "gap_m": 0.11,
+        "y_m": 0.0522
+      }
+    ]
+  },
+  "samples": 1200,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。"
+}

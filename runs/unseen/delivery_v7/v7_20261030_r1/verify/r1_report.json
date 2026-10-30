@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 72,
-  "n_pass": 72,
+  "n_checks": 73,
+  "n_pass": 73,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 54,
-      "n_pass": 54
+      "n": 55,
+      "n_pass": 55
     },
     "goal": {
       "n": 5,
@@ -401,6 +401,12 @@
       "check": "user_entry_point_exists",
       "pass": true,
       "detail": "scripts/run_r1.py"
+    },
+    {
+      "layer": "function",
+      "check": "user_entry_inputs_audit",
+      "pass": true,
+      "detail": "[]"
     },
     {
       "layer": "function",

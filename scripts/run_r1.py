@@ -39,6 +39,32 @@ def sh(cmd, dry=False, env_extra=None):
     return subprocess.call(cmd, cwd=str(ROOT), env=env)
 
 
+INPUTS = {   # 每个阶段必须存在的输入（缺一个就说明入口已经和实际产物脱节）
+    'observe': ['cases/unseen_v1/R03.json', f'{BATCH}/observation/drive_R03_b/drive_observe.json'],
+    'candidate': ['runs/unseen/recovery_r3/upload_pkg/R02/upload_with_ground_1024.png'],
+    'fuse': ['runs/unseen/recovery_r3/obs_R03',
+             'runs/unseen/delivery_v7/v7_20261030/candidates/V7_R03_s1/world/align'],
+    'measure': [f'{BATCH}/fusion_diagnostics/off1_R03_s1/body.stl'],
+    'closed_loop': [f'{BATCH}/cases/R03_two_qualified.json',
+                    'runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH'],
+    'six': ['plans/unseen_v7_protocol_six_nominal.json'],
+    'page': [],
+    'verify': [],
+}
+
+
+def audit():
+    bad = 0
+    for name, ins in INPUTS.items():
+        for rel in ins:
+            ok = (ROOT / rel).exists()
+            if not ok:
+                bad += 1
+            print(f'{"OK  " if ok else "MISS"} [{name}] {rel}')
+    print(f'\n缺少 {bad} 个输入' if bad else '\n全部输入存在')
+    return 1 if bad else 0
+
+
 def exists(*rel):
     return all((ROOT / r).exists() for r in rel)
 
@@ -140,7 +166,11 @@ def main():
     ap.add_argument('--allow-generate', action='store_true',
                     help='允许调用云端生成（会花钱）；默认不调用')
     ap.add_argument('--stop-on-fail', action='store_true', default=True)
+    ap.add_argument('--audit', action='store_true',
+                    help='只检查各阶段声明的输入是否存在（入口与实际产物是否脱节）')
     a = ap.parse_args()
+    if a.audit:
+        return audit()
     order = ['observe', 'candidate', 'fuse', 'measure', 'closed_loop', 'six', 'page', 'verify']
     todo = order if a.stage == 'all' else [a.stage]
     print('阶段顺序：' + ' → '.join(order))

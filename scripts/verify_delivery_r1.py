@@ -268,11 +268,19 @@ def main():
                                  cwd=str(ROOT), capture_output=True, text=True, timeout=120)
             stages = ['observe', 'candidate', 'fuse', 'measure', 'closed_loop', 'six',
                       'page', 'verify']
+            au = subprocess.run([sys.executable, str(ent), '--audit'],
+                                cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+            add('function', 'user_entry_inputs_audit', au.returncode == 0,
+                [l for l in au.stdout.splitlines() if l.startswith('MISS')][:5])
             add('function', 'user_entry_lists_stages',
                 out.returncode == 0 and all(st in out.stdout for st in stages),
                 {'rc': out.returncode, 'missing': [st for st in stages
                                                    if st not in out.stdout]})
         except Exception as e:
+            au = subprocess.run([sys.executable, str(ent), '--audit'],
+                                cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+            add('function', 'user_entry_inputs_audit', au.returncode == 0,
+                [l for l in au.stdout.splitlines() if l.startswith('MISS')][:5])
             add('function', 'user_entry_lists_stages', False, f'{type(e).__name__}: {e}')
 
     # 状态合同（生产函数）

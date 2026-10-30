@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 48,
-  "n_pass": 48,
+  "n_checks": 52,
+  "n_pass": 52,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 30,
-      "n_pass": 30
+      "n": 34,
+      "n_pass": 34
     },
     "goal": {
       "n": 5,
@@ -100,7 +100,7 @@
       "layer": "function",
       "check": "closed_loop_runs",
       "pass": true,
-      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_scene2']"
+      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
     },
     {
       "layer": "function",
@@ -112,7 +112,7 @@
       "layer": "function",
       "check": "branch_traversal_exists",
       "pass": true,
-      "detail": "['closed_loop_R01_matrix', 'closed_loop_R03_scene2']"
+      "detail": "['closed_loop_R01_matrix', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
     },
     {
       "layer": "function",
@@ -185,6 +185,30 @@
       "check": "closed_loop_R03_scene2:decision_before_execution",
       "pass": true,
       "detail": "{'written': [1793350255.8087814], 'started': [1793350255.9737217]}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_two_qualified:execution_present",
+      "pass": true,
+      "detail": "3"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_two_qualified:no_reset",
+      "pass": true,
+      "detail": "[9.84, 10.88, 10.32]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_two_qualified:displacement_from_start",
+      "pass": true,
+      "detail": "[1.6e-05, -4.3e-05, -9e-06]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_two_qualified:decision_before_execution",
+      "pass": true,
+      "detail": "{'written': [1793360116.3745213], 'started': [1793360116.4938967]}"
     },
     {
       "layer": "function",

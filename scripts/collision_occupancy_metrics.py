@@ -225,6 +225,8 @@ def main():
     ap.add_argument('--label', default='')
     ap.add_argument('--eval-pitch', type=float, default=0.004)
     ap.add_argument('--samples', type=int, default=1200)
+    ap.add_argument('--max-points', type=int, default=2_000_000,
+                    help='评价网格点数上限；超过则按固定种子确定性子采样，并记录实际点数')
     ap.add_argument('--seed', type=int, default=0)
     a = ap.parse_args()
     rng = np.random.default_rng(a.seed)
@@ -250,9 +252,23 @@ def main():
     if len(src.faces) > PARITY_FACE_LIMIT:
         src_parity, parity_note = clustered_downsample(src, PARITY_FACE_LIMIT)
     grid = make_grid([src] + parts, a.eval_pitch)
-    o_src = ray_parity(src_parity, grid['pts']).reshape(grid['dims'])
+    pts_total = int(grid['pts'].shape[0])
+    sampled = False
+    if pts_total > a.max_points:
+        # 记忆有界：按固定种子确定性子采样，IoU/距离都在同一子集上算，并如实记录
+        idx = np.random.default_rng(a.seed).choice(pts_total, a.max_points, replace=False)
+        idx.sort()
+        grid['pts'] = grid['pts'][idx]
+        sampled = True
+    # 采样后无法 reshape 回体素网格：此时全部用**扁平点集**计算（IoU/距离都不依赖形状），
+    # 并跳过体素探针（probe_gaps）。
+    def _vol(flat):
+        return flat if sampled else flat.reshape(grid['dims'])
+
+    o_src = _vol(ray_parity(src_parity, grid['pts']))
+    _shape = (len(grid['pts']),) if sampled else tuple(grid['dims'])
     if boxes:
-        o_col = np.zeros(grid['dims'], dtype=bool)
+        o_col = np.zeros(_shape, dtype=bool)
         for (i0, i1, j0, j1, k0, k1) in boxes:
             lo = origin + np.array([i0, j0, k0]) * bpitch
             hi = origin + np.array([i1 + 1, j1 + 1, k1 + 1]) * bpitch
@@ -260,9 +276,15 @@ def main():
             jj = np.nonzero((grid['ys'] >= lo[1]) & (grid['ys'] < hi[1]))[0]
             kk = np.nonzero((grid['zs'] >= lo[2]) & (grid['zs'] < hi[2]))[0]
             if len(ii) and len(jj) and len(kk):
-                o_col[np.ix_(ii, jj, kk)] = True
+                if sampled:
+                    sel = ((grid['pts'][:, 0] >= lo[0]) & (grid['pts'][:, 0] < hi[0]) &
+                           (grid['pts'][:, 1] >= lo[1]) & (grid['pts'][:, 1] < hi[1]) &
+                           (grid['pts'][:, 2] >= lo[2]) & (grid['pts'][:, 2] < hi[2]))
+                    o_col[sel] = True
+                elif not sampled:
+                    o_col[np.ix_(ii, jj, kk)] = True
     else:
-        o_col = np.zeros(grid['dims'], dtype=bool)
+        o_col = np.zeros(_shape, dtype=bool)
         for p in parts:
             use_convex = False
             try:
@@ -270,9 +292,9 @@ def main():
             except Exception:
                 use_convex = False
             if use_convex:
-                o_col |= convex_inside(p, grid['pts']).reshape(grid['dims'])
+                o_col |= _vol(convex_inside(p, grid['pts']))
             else:
-                o_col |= ray_parity(p, grid['pts']).reshape(grid['dims'])
+                o_col |= _vol(ray_parity(p, grid['pts']))
     inter = int((o_src & o_col).sum()); union = int((o_src | o_col).sum())
     vox = grid['pitch'] ** 3
     over = int((~o_src & o_col).sum()); under = int((o_src & ~o_col).sum())
@@ -319,8 +341,12 @@ def main():
                              'n_faces': int(len(src.faces))},
            'source_volume_defined': bool(src.is_watertight),
            'geometry': geo,
-           'probe': probe_gaps(o_src, grid),
+           'probe': (None if sampled else probe_gaps(o_src, grid)),
            'parity_source': parity_note,
+           'evaluation_points': {'total': pts_total,
+                                 'used': int(grid['pts'].shape[0]),
+                                 'sampled': bool(sampled),
+                                 'max_points': int(a.max_points), 'seed': int(a.seed)},
            'samples': a.samples, 'seed': a.seed,
            'verdict': ('PASS' if (geo['occupancy_iou'] is not None
                                   and geo['occupancy_iou'] >= 0.95

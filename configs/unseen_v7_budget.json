@@ -1,0 +1,32 @@
+{
+  "schema": "batch-budget/v7",
+  "batch_id": "v7_20261030",
+  "created": "2026-10-30",
+  "note": "V7 新增授权 500 积分，独立核算；历史账本只读保留，不清空、不改写。",
+  "new_authorization_credits": 500,
+  "history": {
+    "ledger": "runs/unseen/generation/ledger.jsonl",
+    "recorded_tasks": 27,
+    "recorded_estimate_upper_sum": 540.0,
+    "interpretation": "历史占用按 27 条记录 × 20 上界估算；这是历史口径，不是本批余额，也不表示已超额。"
+  },
+  "reserve_plan": [
+    {"purpose": "new_object_single_view_and_coverage", "credits": 240},
+    {"purpose": "two_view_generation_after_real_second_observation", "credits": 120},
+    {"purpose": "input_variant_timeout_and_replacements", "credits": 140}
+  ],
+  "unit_price": {
+    "source": "本仓库既有账本口径（estimate_upper=20/任务，27 个任务全部按此上界记录）与客户端注释（g1-turbo 文生实测 13）",
+    "single_image_upper": 20.0,
+    "two_image_upper": 20.0,
+    "note": "API 不返回实际扣费；实际扣费一律记 unknown。无法确认某档位费用范围时跳过该付费调用。"
+  },
+  "ledger_v7": "runs/unseen/delivery_v7/v7_20261030/generation/ledger.jsonl",
+  "rules": [
+    "每次提交前先 reserve，把 est_upper 写入本批账本",
+    "resume 只查询/下载，不 create",
+    "超时先查状态，不重复 create",
+    "重复采样必须有独立 sample_id",
+    "创建失败或状态不明保留占用，除非有证据证明未发出"
+  ]
+}

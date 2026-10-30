@@ -161,6 +161,10 @@ class BudgetLedger:
             return False, f'单任务 {credits_upper} > 上限 {budget["per_task_cap"]}'
         with Lock(self.lockpath):
             rows = self.rows()
+            # 同一 attempt_id 只能预留一次：重复提交/重放必须在预算层被挡住
+            if any(r.get('attempt_id') == attempt_id for r in rows):
+                return False, (f'attempt_id {attempt_id} 已存在：拒绝重复预留'
+                               '（有意重复采样请使用新的 sample_id/attempt_id）')
             held_c = sum(float(r.get('estimate_upper') or 0)
                          for r in rows if self.is_held(r))
             seen = set()

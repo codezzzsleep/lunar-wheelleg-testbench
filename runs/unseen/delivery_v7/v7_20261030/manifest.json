@@ -1,0 +1,121 @@
+{
+  "schema": "delivery-manifest/v1",
+  "batch_version": "v7",
+  "batch_id": "v7_20261030",
+  "created": "2026-10-30",
+  "review_baseline": "fdd2a27b",
+  "direction": "项目纲领 v2.1",
+  "new_create_authorized_credits": 500,
+  "budget": {
+    "path": "configs/unseen_v7_budget.json",
+    "sha256": "7588c54e43119e49eaba8ca64a59d0041a64b25b3f29baff332e0c5ffcde6d74",
+    "ledger": "runs/unseen/delivery_v7/v7_20261030/generation/ledger.jsonl",
+    "tasks_created": 9,
+    "held_credits_upper": 180.0,
+    "actual_charge": "unknown"
+  },
+  "protocol": {
+    "path": "configs/unseen_v7_protocol.json",
+    "sha256": "c8581424acdc8192c730fb31e1a39d85e06008bd8d86fd290cde547ad2204c6e"
+  },
+  "plan": {
+    "path": "plans/unseen_v7_delivery.json",
+    "sha256": "19f9947ffb2d8c78ced04aa893e544ca9fd789ba76219339d62f56181c3820f9"
+  },
+  "paths": {
+    "root": "runs/unseen/delivery_v7/v7_20261030",
+    "generation": "runs/unseen/delivery_v7/v7_20261030/generation",
+    "candidates": "runs/unseen/delivery_v7/v7_20261030/candidates",
+    "processed": "runs/unseen/delivery_v7/v7_20261030/processed",
+    "cases": "runs/unseen/delivery_v7/v7_20261030/cases",
+    "evaluation": "runs/unseen/delivery_v7/v7_20261030/evaluation",
+    "observation": "runs/unseen/delivery_v7/v7_20261030/observation",
+    "media": "runs/unseen/delivery_v7/v7_20261030/media",
+    "verify": "runs/unseen/delivery_v7/v7_20261030/verify"
+  },
+  "generation": {
+    "n_tasks": 9,
+    "by_mode": {
+      "single_image": 8,
+      "two_image": 1
+    },
+    "objects": [
+      "R01",
+      "R02",
+      "R03",
+      "R04"
+    ],
+    "tasks": [
+      {
+        "task_id": 4484069,
+        "object": "R02",
+        "sample": "s1",
+        "mode": "single_image",
+        "glb_sha": "dbe440554b9e00fdeb4591c84f6cd04e5f7cc063ce75085d7db009200c6428b9"
+      },
+      {
+        "task_id": 4484076,
+        "object": "R02",
+        "sample": "s2",
+        "mode": "single_image",
+        "glb_sha": "750132e7d77ac36395663321a4876c81d014d14c0deb32db1ec7827a5555200c"
+      },
+      {
+        "task_id": 4484079,
+        "object": "R04",
+        "sample": "s1",
+        "mode": "single_image",
+        "glb_sha": "ac904b61e721a84418c9fd93fd3f8b4d2f341edd895eb8dcb968b61b43e2f6cd"
+      },
+      {
+        "task_id": 4484082,
+        "object": "R04",
+        "sample": "s2",
+        "mode": "single_image",
+        "glb_sha": "a2509285c8bb818c1cb09d9037a0a72d2301188d26afbe4ea9ccf660024e009a"
+      },
+      {
+        "task_id": 4486935,
+        "object": "R01",
+        "sample": "tv1",
+        "mode": "two_image",
+        "glb_sha": "86bc56ce68a1aec6736fd36ad8095a6ec62735900260fed97a23f255576e6d64"
+      },
+      {
+        "task_id": 4486948,
+        "object": "R01",
+        "sample": "v7s1",
+        "mode": "single_image",
+        "glb_sha": "746d5978cd968493d2d3067052dc39042b27e5ecda612e6af69460ae9ba39d80"
+      },
+      {
+        "task_id": 4486951,
+        "object": "R01",
+        "sample": "v7s2",
+        "mode": "single_image",
+        "glb_sha": "e9fd390e2c0b7ba78c5c8239673cc327cec60c3a28a7cee4b0c02fc0eb76db51"
+      },
+      {
+        "task_id": 4486954,
+        "object": "R03",
+        "sample": "v7s1",
+        "mode": "single_image",
+        "glb_sha": "caa49c5edaa04737dd9d5303bf73b915f6e549d7899068eefd7e3d2c0f00d528"
+      },
+      {
+        "task_id": 4486957,
+        "object": "R03",
+        "sample": "v7s2",
+        "mode": "single_image",
+        "glb_sha": "26377bbd3094ec85b2e91e4daa7e92600a55d85134cf248dc1a0b4f75b419d06"
+      }
+    ]
+  },
+  "status": {
+    "execution_status": "IN_PROGRESS",
+    "evidence_status": "PENDING",
+    "capability_status": "PENDING",
+    "benefit_status": "NOT_ESTABLISHED"
+  },
+  "note": "V7 批次。生成任务已提交并下载；候选处理与主比较进行中。历史账本 runs/unseen/generation/ledger.jsonl 只读保留，本批独立核算。"
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "eval-protocol/v7",
+  "batch_id": "v7_20261030",
+  "frozen": true,
+  "task_seconds": 30.0,
+  "observation_seconds": 12.0,
+  "initial_perturbation": {"lateral_m": 0.05, "yaw_rad": 0.05, "source": "configs/unseen_initial_state_v5.json"},
+  "planning_seeds": [0, 1, 2],
+  "validation_seeds": [3, 4, 5, 6, 7],
+  "decision_rule": "worst-case-risk/v2",
+  "methods": ["B0_blind", "B1_height", "B0_box", "B3_F", "H5_F_single", "H5_F_multi", "U_truth"],
+  "diagnostic_only": ["width_rule"],
+  "soil": {
+    "modes": ["nominal", "low_traction", "high_drag"],
+    "paired": true,
+    "planning_uses_public_set": true,
+    "episode_fixed": true
+  },
+  "gates": {
+    "visible": {"iou_min": 0.90, "vis_p95_mm_max": 5.0, "freespace_max": 0.05},
+    "collision": {"occupancy_iou_min": 0.95, "s2c_p95_mm_max": 5.0, "c2s_p95_mm_max": 5.0}
+  },
+  "note": "阈值按冻结指标版本读取；不允许为了通过而放宽。"
+}

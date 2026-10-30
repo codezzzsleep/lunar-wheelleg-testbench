@@ -1,0 +1,28 @@
+{
+  "schema": "v7-second-view-upload/v1",
+  "observation": "runs/unseen/delivery_v6_1/v6_1_20261029/observation/R01_lat30",
+  "source_rgb_sha": "0436c9d23258d86559f9501f4cd6acc26f125087ca13f168391cde3b7806f61d",
+  "n_mask_px": 10678,
+  "crop": {
+    "crop_box_px": [
+      680,
+      450,
+      214,
+      214
+    ],
+    "object_bbox_px": [
+      744,
+      474,
+      87,
+      167
+    ],
+    "longest_side_fraction": 0.7804,
+    "resized_to": [
+      1024,
+      1024
+    ],
+    "pad_px": 0
+  },
+  "note": "第二视角来自真实相机横向位移渲染（observe.py --cam-lateral），不是生成视图；只做白底与同一裁剪编码。",
+  "out_sha": "fae8972212513c3cac19d99ae1a154e677ea35f9b182fc8e115458dd680e1ecd"
+}

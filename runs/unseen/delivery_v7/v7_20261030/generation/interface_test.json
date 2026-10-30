@@ -1,0 +1,62 @@
+{
+  "schema": "gen-interface-test/v7",
+  "n": 11,
+  "n_pass": 11,
+  "rows": [
+    {
+      "check": "R2_order_changes_identity",
+      "pass": true,
+      "detail": "4203b5fd vs 0c7227c6"
+    },
+    {
+      "check": "R3_second_image_changes_identity",
+      "pass": true,
+      "detail": "4203b5fd vs 29178f06"
+    },
+    {
+      "check": "R1_multi_sends_imgs_two",
+      "pass": true,
+      "detail": "['/tmp/v7gen_tty9r741/v1.png', '/tmp/v7gen_tty9r741/v2.png']"
+    },
+    {
+      "check": "R1_no_img_field",
+      "pass": true,
+      "detail": "['aiPredictSize', 'faceCount', 'imgs', 'version']"
+    },
+    {
+      "check": "R1_version_explicit",
+      "pass": true,
+      "detail": "G1-Turbo"
+    },
+    {
+      "check": "R4_single_keeps_img",
+      "pass": true,
+      "detail": "['aiPredictSize', 'faceCount', 'img', 'version']"
+    },
+    {
+      "check": "R6_multi_rejects_single",
+      "pass": true,
+      "detail": "rejected"
+    },
+    {
+      "check": "R5_resume_only_queries",
+      "pass": true,
+      "detail": "['/lux3d/v1/generate/task/get?taskid=123456']"
+    },
+    {
+      "check": "R5_resume_no_create",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "check": "R7_reserve_once",
+      "pass": true,
+      "detail": "True/reserved then False/attempt_id attempt-1 已存在：拒绝重复预留（有意重复采样请使用新的 sample_id/attempt_id）"
+    },
+    {
+      "check": "R7_budget_not_double_counted",
+      "pass": true,
+      "detail": "20.0"
+    }
+  ]
+}

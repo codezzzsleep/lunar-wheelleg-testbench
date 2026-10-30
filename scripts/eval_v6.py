@@ -122,8 +122,24 @@ def main():
     hyps = {}
     for h in hyps_in:
         wd = pathlib.Path(h['world'])
-        if h.get('collision') and pathlib.Path(h['collision']).exists():
-            cd = pathlib.Path(h['collision']); cm = json.loads((cd / 'manifest.json').read_text())
+        if h.get('collision'):
+            # 显式指定碰撞目录时必须可用；不允许静默换成 CoACD 继续比较
+            cd = pathlib.Path(h['collision'])
+            if not cd.exists():
+                raise SystemExit(f'指定的碰撞目录不存在：{cd}（拒绝回退到 CoACD）')
+            mf = cd / 'manifest.json'
+            if not mf.exists():
+                raise SystemExit(f'碰撞目录缺少 manifest.json：{cd}')
+            cm = json.loads(mf.read_text())
+            if not (cm.get('boxes') or cm.get('parts')):
+                raise SystemExit(f'碰撞 manifest 没有几何：{cd}')
+            if not cm.get('collision_sha'):
+                raise SystemExit(f'碰撞 manifest 缺少 collision_sha：{cd}')
+            src_sha = (cm.get('cache_identity') or {}).get('source_sha') or cm.get('world_sha')
+            world_sha = sha(pathlib.Path(h['world']) / 'body.stl')
+            if src_sha and src_sha != world_sha:
+                raise SystemExit(
+                    f'碰撞与源实体不匹配：collision 来自 {src_sha[:12]}，候选是 {world_sha[:12]}')
         else:
             cd, cm = collize(wd, out / 'collision', h['id'], a.max_parts)
         hyps[h['id']] = {**h, 'world_dir': str(wd), 'collision': str(cd),
@@ -213,6 +229,7 @@ def main():
          'written_at': _written_at, 'decisions': decisions},
         ensure_ascii=False, indent=2))
     for method, dec in pending:
+        _exec_started_at = __import__('time').time()
         chosen = 'R1' if method == 'B0_blind' else dec['chosen']
         exec_rows = execute_truth(truth_col, truth_sha, method, chosen,
                                   seeds, visible, a.goal_x, a.time_limit)
@@ -227,7 +244,7 @@ def main():
         for r in exec_rows + val_rows:
             r['decision_sha'] = _dec_sha
             r['decision_written_at'] = _written_at
-            r.setdefault('started_at', _written_at + 1e-3)
+            r.setdefault('started_at', _exec_started_at)
         records += exec_rows + val_rows
         chosen_rows = [r for r in exec_rows if r.get('option') == chosen]
         val_chosen = [r for r in val_rows if r.get('option') == chosen]

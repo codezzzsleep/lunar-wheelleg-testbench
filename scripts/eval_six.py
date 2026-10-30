@@ -24,6 +24,7 @@ import json
 import pathlib
 import subprocess
 import sys
+import time
 
 import numpy as np
 
@@ -90,8 +91,11 @@ def run_episode(world_dir, option, seed, visible, goal_x, time_limit=15.0,
                                    v_ref=1.0, tip_deg=60.0)
     r = runner.EpisodeRunner(env, skills.make_skill(option),
                              visible=visible or {}, seed=seed)
+    started_at = time.time()
     out = r.run_with_seed(seed)
+    finished_at = time.time()
     return {'phase': 'rehearsal', 'option': option, 'seed': seed,
+            'started_at': started_at, 'finished_at': finished_at,
             'sim_time_s_': round(float(env.t), 4), 'reason': out['reason'],
             'success': out['success'], 'abort': out['abort'],
             't_end': out['t_end'], 'final_x': out['final_x'],

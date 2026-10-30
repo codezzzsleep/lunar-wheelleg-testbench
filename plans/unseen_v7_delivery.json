@@ -1,0 +1,21 @@
+{
+  "schema": "unseen-delivery-plan/v7",
+  "batch_id": "v7_20261030",
+  "created": "2026-10-30",
+  "review_baseline": "fdd2a27b",
+  "direction": "项目纲领 v2.1",
+  "new_create_authorized_credits": 500,
+  "goal": "把观察→生成假设→观测约束与物理化→预演(含月壤参数)→决策→真实再观察→更新→观察后续行→揭晓 的闭环做成可操作、可解释、可复核的系统；并扩大独立对象覆盖",
+  "work_lines": {
+    "trust": ["碰撞加载 fail-fast", "决策先落盘且无补写时间", "状态续接 A/B", "验收器补 12 类真实错误"],
+    "cases_generation": ["4 个独立对象清单", "有界免费扫描", "分批单图生成", "两图生成实测"],
+    "product": ["页面适配视图", "回放与截图", "复现入口"]
+  },
+  "deliverables": {
+    "batch_dir": "runs/unseen/delivery_v7/v7_20261030",
+    "status": "docs/UNSEEN_STATUS_V7.md",
+    "budget": "configs/unseen_v7_budget.json",
+    "protocol": "configs/unseen_v7_protocol.json"
+  },
+  "not_allowed": ["改写历史账本", "放宽门槛换通过", "把 fixture/镜像冒充 Lux3D", "把生成视图当真实第二观察"]
+}

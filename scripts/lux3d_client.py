@@ -79,6 +79,37 @@ def submit_img_to_3d(img_url, version='G1-Turbo', face_count=30000):
     return d if isinstance(d, dict) else {'taskId': int(d)}
 
 
+def submit_img_to_3d_multi(img_urls, version='G1-Turbo', face_count=30000):
+    """真实两图/多图路径：发送有序 imgs 列表，**不同时**发送 img。
+
+    V7 要求：显式模型版本、顺序参与请求身份、单图路径保持兼容。
+    """
+    urls = [str(u) for u in img_urls]
+    if len(urls) < 2:
+        raise SystemExit('submit_img_to_3d_multi 需要至少两张图；单图请用 submit_img_to_3d')
+    body = {'imgs': urls, 'version': version, 'faceCount': face_count,
+            'aiPredictSize': True}
+    if 'img' in body:
+        raise SystemExit('多图请求不允许同时携带 img')
+    r = _req('POST', '/lux3d/v1/generate/img-to-3d/task/create', body)
+    if r.get('c') != '0':
+        raise RuntimeError(f'创建任务失败: {r.get("m") or r}')
+    d = r['d']
+    return d if isinstance(d, dict) else {'taskId': int(d)}
+
+
+def request_identity(mode, items, version, face_count=30000, extra=None):
+    """请求身份 = 模式 + 全部图片字节/顺序 + 实际参数。换序或换图必须变身份。"""
+    import hashlib as _h
+    parts = [mode, str(version), str(int(face_count))]
+    for it in items:
+        p = pathlib.Path(it)
+        parts.append(_h.sha256(p.read_bytes()).hexdigest() if p.exists() else str(it))
+    if extra:
+        parts.append(json.dumps(extra, sort_keys=True))
+    return _h.sha256('\n'.join(parts).encode()).hexdigest()
+
+
 def get_task(task_id):
     r = _req('GET', f'/lux3d/v1/generate/task/get?taskid={task_id}')
     if r.get('c') != '0':

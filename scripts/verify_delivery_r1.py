@@ -184,6 +184,23 @@ def main():
     add('function', 'distance_block_equivalence', bool(eq and eq.get('all_zero')),
         (eq or {}).get('cases'))
 
+    # 第二观察与再观察筛选（本轮新增能力，必须有证据）
+    cap = jl(B / 'observation/drive_R03_b/capability.json')
+    add('function', 'second_observation_usable',
+        bool(cap) and any(r.get('usable') for r in (cap.get('runs') or [])),
+        [f"{r['seed']}:{r.get('baseline_m')}m/{r.get('bearing_deg')}deg/{r.get('usable')}"
+         for r in (cap or {}).get('runs', [])])
+    scr = jl(B / 'evaluation/screen_R03/screen_parsed.json')
+    add('function', 'second_view_screen_recorded', bool(scr), (scr or {}).get('rule'))
+    if scr:
+        verdicts = {r['candidate']: r['verdict'] for r in scr.get('rows', [])}
+        add('function', 'second_view_discriminates',
+            any('rejected' in str(v) for v in verdicts.values()), verdicts)
+        add('function', 'second_view_no_silent_pass',
+            all(v != 'not_evaluated' or 'error' in json.dumps(
+                next((r for r in scr['rows'] if r['candidate'] == k), {}))
+                for k, v in verdicts.items()), verdicts)
+
     # 状态合同（生产函数）
     scp = jl(B / 'verify/state_contract.json')
     add('function', 'state_contract_ab', bool(scp and scp.get('all_pass')),

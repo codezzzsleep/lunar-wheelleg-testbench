@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 67,
-  "n_pass": 66,
+  "n_checks": 68,
+  "n_pass": 68,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 49,
-      "n_pass": 48
+      "n": 50,
+      "n_pass": 50
     },
     "goal": {
       "n": 5,
@@ -363,8 +363,14 @@
     {
       "layer": "function",
       "check": "validation_continuation_run",
-      "pass": false,
+      "pass": true,
       "detail": "six_R03_nominal_v2"
+    },
+    {
+      "layer": "function",
+      "check": "validation_continuation_contract",
+      "pass": true,
+      "detail": "{'n': 18, 'modes': ['project'], 'continuation': [True]}"
     },
     {
       "layer": "function",
@@ -421,5 +427,5 @@
       "detail": ""
     }
   ],
-  "verdict": "FAIL"
+  "verdict": "PASS"
 }

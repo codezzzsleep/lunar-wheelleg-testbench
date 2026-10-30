@@ -84,6 +84,11 @@ export MUJOCO_GL=osmesa
 - 验证行必须带 `validation_continuation` 与 `state_mode`（`same_scene`，签名不符则 `project` 并记录）；
 - 没给快照时如实标 `seed_reset`——**不允许**重置后跑一遍算作续接。
 
+**实测（R03 nominal，`six_R03_nominal_v2`）**：验证行 **18 条全部 `validation_continuation=true`**，
+`state_mode` 全为 **`project`**（快照来自观测场景，与真值碰撞场景签名不同 → 显式投影并记录）。
+规划结果与旧口径一致：B2_box 仍 A0 0/3（验证 0/3），其余 5 个方法 3/3（验证 3/3）。
+即：**续接没有改变结论，但现在有据可查**，不再用"重置后跑一遍"顶着续接的名义。
+
 ## 2. 已验证的能力
 
 | 能力 | 证据 | 结论 |

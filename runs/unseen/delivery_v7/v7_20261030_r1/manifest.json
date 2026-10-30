@@ -325,14 +325,23 @@
         "pass": true
       },
       "collision": {
-        "status": "not_measured",
-        "reason": "box union 2.5mm 在 8v16 未完成，进程静默退出"
+        "voxel_pitch_m": 0.003,
+        "n_boxes": 10939,
+        "collision_sha": "6a42e86a6375",
+        "iou": 0.9776,
+        "s2c_p95_mm": 1.357,
+        "c2s_p95_mm": 37.626,
+        "pass": false,
+        "eval_pitch_m": 0.004,
+        "parity": "full_mesh",
+        "peak_rss_mb": 1073.4
       },
       "qualified": false,
-      "note": "可见通过但碰撞未测 → 按冻结定义不合格"
+      "reason": "可见门槛通过，但碰撞保真 c2s P95 = 37.6 mm ≫ 5 mm：3 mm 体素下的盒并集**漏掉薄/凹结构**，源表面有大片区域离最近盒面 37 mm。2.5 mm 体素则跑不完（内存）。"
     }
   },
   "open_items": [
-    "V7_R04_s2：换 0.003 m 体素或分块并集后重测碰撞"
+    "V7_R04_s2：换 0.003 m 体素或分块并集后重测碰撞",
+    "R04_s2 需要更细或自适应的碰撞表示（薄/凹结构），3 mm 体素不够；这是表示限制，不是评分错误"
   ]
 }

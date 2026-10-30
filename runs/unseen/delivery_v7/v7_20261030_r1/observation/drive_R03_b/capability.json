@@ -1,0 +1,36 @@
+{
+  "schema": "observation-capability/v7-r1",
+  "object": "R03",
+  "protocol": "observation-protocol/v1（阈值未改）",
+  "strategy_change": {
+    "stop_margin_m": {
+      "old": 0.78,
+      "new": 0.68
+    },
+    "lateral_command_m": 0.3
+  },
+  "runs": [
+    {
+      "seed": 0,
+      "baseline_m": 0.525,
+      "bearing_deg": 11.95,
+      "usable": true
+    },
+    {
+      "seed": 1,
+      "baseline_m": 0.496,
+      "bearing_deg": 11.25,
+      "usable": false,
+      "fail_reason": "unstable"
+    },
+    {
+      "seed": 2,
+      "baseline_m": 0.524,
+      "bearing_deg": 11.78,
+      "usable": false,
+      "fail_reason": "unstable"
+    }
+  ],
+  "result": "1/3 可用（seed 0）；0.78 停距下为 0/3",
+  "reading": "基线达标、视线角达标、取景充足；失败是停稳判据不是视差"
+}

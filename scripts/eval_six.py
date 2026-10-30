@@ -564,7 +564,13 @@ def main():
                     r['validation_continuation'] = False
                     r['state_mode'] = 'seed_reset'
                 row = dict(r)
-                row.update({'method': method, 'phase': 'validation',
+                row.update({'validation_state_source': (
+                                'driven_snapshot' if snap is not None else 'seed_reset'),
+                            'validation_state_independent': False,
+                            'validation_state_note': (
+                                '验证编号是对 drive seed 的重新编号；不宣称独立采样'
+                                if snap is not None else '未提供快照：这是重置后重跑，不是续接'),
+                            'method': method, 'phase': 'validation',
                             'hypothesis': method, 'initial_state_id': f'val_seed{s_}',
                             'environment_kind': 'truth', 'environment_sha': truth_sha,
                             'truth_sha': truth_sha, 'truth_collision_sha': truth_col_sha,

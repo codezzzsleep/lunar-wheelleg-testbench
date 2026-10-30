@@ -3,16 +3,17 @@
 set -e
 cd "$(dirname "$0")/.."
 
-if [ ! -x .venv/bin/python ]; then
+# 沙箱里直接用镜像的 /opt/lunar 解释器（venv-of-venv 的 --system-site-packages 不会链到它）
+if [ -x /opt/lunar/bin/python ]; then
+  PATH="/opt/lunar/bin:$PATH"; export PATH
+fi
+python3 -c "import mujoco" 2>/dev/null || {
+  echo "镜像解释器没有 mujoco：尝试在仓库内装依赖"
   python3 -m venv .venv
-fi
-if [ -f .venv/bin/activate ]; then . .venv/bin/activate; else PATH="$PWD/.venv/bin:$PATH"; export PATH; fi
-
-# 依赖在镜像里已装好；venv 里补一份，保证仓库自带环境可独立运行
-python -m pip install -q --upgrade pip
-if [ -f requirements.txt ]; then
+  if [ -f .venv/bin/activate ]; then . .venv/bin/activate; fi
   python -m pip install -q -r requirements.txt
-fi
+}
+
 python - <<'PY'
 import json, pathlib, sys
 from importlib import metadata

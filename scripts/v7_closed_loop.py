@@ -156,10 +156,19 @@ def main():
                                       'state_seed': st['seed'], 'candidate': h['id']})
                         matrix += rows
                     except Exception as e:
+                        # 预演失败**不能**让该格从风险集合里消失：
+                        # 记成失败行（保守），同时保留 skipped 里的原因供审计。
+                        err = f'{type(e).__name__}: {e}'
                         skipped.append({'candidate': h['id'], 'action': act,
                                         'state_hash': st['state_hash'],
                                         'soil_config': soil_label,
-                                        'error': f'{type(e).__name__}: {e}'})
+                                        'error': err, 'counted_as_failure': True})
+                        matrix.append({'option': act, 'hypothesis_id': h['id'],
+                                       'seed': st['seed'], 'soil_config': soil_label,
+                                       'state_hash': st['state_hash'],
+                                       'success': False, 'abort': True,
+                                       'reason': 'rehearsal_error', 'error': err,
+                                       't_end': None, 'final_x': None})
 
     dec = decision.evaluate([r for r in matrix if r.get('option') != 'A0'],
                             [x for x in ACT.OPTIONS if x != 'A0'])

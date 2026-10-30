@@ -304,3 +304,32 @@ bash <skill>/scripts/cnb_api.sh start  --repo <org>/<repo> --branch main
 bash <skill>/scripts/cnb_api.sh wait   --repo <org>/<repo> --branch main --timeout 900
 bash <skill>/scripts/cnb_api.sh stages --repo <org>/<repo> --sn <sn>
 ```
+
+## 10. 沙箱实测（CNB，2026-10-31）
+
+仓库 `ycyc755/lunar-lab-r1`（源码快照）已跑通，六个 stage 全绿：
+
+| 阶段 | 耗时 |
+| --- | --- |
+| Prepare（镜像，缓存命中） | **15.2 s** |
+| 1. 镜像自检 | 1.3 s |
+| 2. 就位（复用工作区，不 clone GitHub） | 3.0 s |
+| 3. bootstrap | 0.8 s |
+| 4. MuJoCo + OSMesa 烟测 | 1.2 s |
+| 5. 结构验收 | 0.8 s |
+| 6. 判定快照 | 0.9 s |
+
+快照断言（写进构建日志，无需 SSH）：`Python 3.12.16 / mujoco 3.17.0 / numpy 2.5.4 / trimesh 5.2.0`。
+
+**复用规律（实测）**：镜像按 Dockerfile 内容 hash 缓存 —— 改 Dockerfile 的冷启动 **68 s**，
+不改则 **15 s**；改 `.cnb/*.sh` 或 `.cnb.yml` 不触发镜像重建。工作区不必反复重启，
+闲置约 10–12 分钟才回收。
+
+**踩过的坑（都已修）**：
+1. 基础镜像 PEP 668 禁 pip → 依赖装进 `/opt/lunar` venv；
+2. 仓库 `.venv` 用系统 python 建 → 看不到镜像依赖 → 不再建仓库 venv，直接用镜像解释器；
+3. stage 写死 `.venv/bin/python` → 改 `python3`；
+4. stage 2 从 GitHub clone（慢/可能失败）→ 改为复用工作区 checkout，缺失才从 cnb.cool 拉。
+
+**口径说明**：CNB 里跑的是**源码快照**的结构性验收；完整 73 项验收需要 `runs/` 证据包，
+仍在证据所在机器上执行。

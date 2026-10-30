@@ -65,6 +65,25 @@ def audit():
     return 1 if bad else 0
 
 
+def stage_ok(name, st):
+    """续跑必须看**结果状态**，不能只看文件存在（已有 FAIL 报告不得被当作成功跳过）。"""
+    if not exists(*st['evidence']):
+        return False
+    if name == 'verify':
+        try:
+            rep = json.loads((B / 'verify/r1_report.json').read_text())
+            return rep.get('verdict') == 'PASS'
+        except Exception:
+            return False
+    if name == 'page':
+        try:
+            html = (B / 'media/report/index.html').read_text()
+            return '回放已有运行' in html and '重新运行' in html and 'play(' in html
+        except Exception:
+            return False
+    return True
+
+
 def exists(*rel):
     return all((ROOT / r).exists() for r in rel)
 
@@ -177,10 +196,12 @@ def main():
     rc_all = 0
     for name in todo:
         st = STAGES[name]
-        done = exists(*st['evidence'])
+        done = stage_ok(name, st)
         if done and not a.force:
-            print(f'\n[{name}] 已有产物，跳过（--force 可重跑）：{st["evidence"][0]}')
+            print(f'\n[{name}] 已有产物且状态正常，跳过（--force 可重跑）：{st["evidence"][0]}')
             continue
+        if not done and exists(*st['evidence']):
+            print(f'\n[{name}] 产物存在但状态不通过（例如上次 FAIL），重跑')
         rc = st['fn'](a)
         if rc:
             print(f'\n[{name}] 失败，退出码 {rc}')

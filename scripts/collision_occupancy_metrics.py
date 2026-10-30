@@ -125,9 +125,13 @@ def boxes_to_array(boxes, dims):
 
 
 def sample_box_surfaces(boxes, origin, pitch, n_total, rng):
-    """
-    只在**暴露面**上采样（相邻单元为空的那一侧），排除被其他 box 包住的内面。
-    这正是“碰撞并集外边界”的定义。
+    """在**并集外边界**上采样。
+
+    规则（与"内部接缝不算外表面、部分暴露面不能整面删除"一致）：
+      1. 每个 box 的 6 个面都参与候选（**不因相邻格存在就整面删除**）；
+      2. 采样后逐点判定：若该点落在**另一个 box 内部**（即相邻格被占据、点进入内部），
+         则丢弃——这排除了内部接缝；
+      3. 部分暴露的面因此只保留真正暴露的那部分采样点。
     """
     if not boxes:
         return np.zeros((0, 3))
@@ -139,25 +143,17 @@ def sample_box_surfaces(boxes, origin, pitch, n_total, rng):
         lo = origin + np.array([i0, j0, k0]) * pitch
         hi = origin + np.array([i1 + 1, j1 + 1, k1 + 1]) * pitch
         e = hi - lo
-        # -x / +x
-        if i0 - 1 < 0 or not occ[i0 - 1, j0:j1 + 1, k0:k1 + 1].any():
-            faces.append((lo, e, 0, -1))
-        if i1 + 1 >= dims[0] or not occ[i1 + 1, j0:j1 + 1, k0:k1 + 1].any():
-            faces.append((lo, e, 0, +1))
-        if j0 - 1 < 0 or not occ[i0:i1 + 1, j0 - 1, k0:k1 + 1].any():
-            faces.append((lo, e, 1, -1))
-        if j1 + 1 >= dims[1] or not occ[i0:i1 + 1, j1 + 1, k0:k1 + 1].any():
-            faces.append((lo, e, 1, +1))
-        if k0 - 1 < 0 or not occ[i0:i1 + 1, j0:j1 + 1, k0 - 1].any():
-            faces.append((lo, e, 2, -1))
-        if k1 + 1 >= dims[2] or not occ[i0:i1 + 1, j0:j1 + 1, k1 + 1].any():
-            faces.append((lo, e, 2, +1))
+        for ax in range(3):
+            for side in (-1, +1):
+                faces.append((lo, e, ax, side))
     if not faces:
         return np.zeros((0, 3))
     areas = np.array([2 * (e[(a + 1) % 3] * e[(a + 2) % 3]) for (_l, e, a, _s) in faces])
     p_ = areas / areas.sum()
-    pick = rng.choice(len(faces), size=n_total, p=p_)
-    out = []
+    # 多采一倍再过滤，保证过滤后仍有足够点
+    pick = rng.choice(len(faces), size=int(n_total * 2), p=p_)
+    keep = []
+    eps = 1e-9
     for idx in pick:
         lo, e, ax, side = faces[idx]
         u, w = rng.random(2)
@@ -166,8 +162,17 @@ def sample_box_surfaces(boxes, origin, pitch, n_total, rng):
         pt[b1] += u * e[b1]
         pt[b2] += w * e[b2]
         pt[ax] += e[ax] if side > 0 else 0.0
-        out.append(pt)
-    return np.asarray(out)
+        # 向**外侧**挪半格：外侧 cell 若被占据，说明这是内部接缝 -> 丢弃
+        probe = pt.copy()
+        probe[ax] += (0.5 if side > 0 else -0.5) * pitch
+        ijk = np.floor((probe - origin) / pitch).astype(int)
+        inside = (0 <= ijk[0] < dims[0] and 0 <= ijk[1] < dims[1]
+                  and 0 <= ijk[2] < dims[2] and occ[ijk[0], ijk[1], ijk[2]])
+        if not inside:
+            keep.append(pt)
+        if len(keep) >= n_total:
+            break
+    return np.asarray(keep) if keep else np.zeros((0, 3))
 
 
 def probe_gaps(occ, grid, top_n=3):

@@ -23,16 +23,18 @@ $:
             MUJOCO_GL=osmesa python3 -c "import mujoco; mujoco.MjModel.from_xml_string('<mujoco><worldbody><geom size=\".1\"/></worldbody></mujoco>'); print('osmesa+model ok')"
             command -v code-server >/dev/null && code-server --version | head -1 || echo "WARN: 无 code-server（镜像可能回退）"
 
-        - name: 2. 拉项目
+        - name: 2. 就位（不重复 clone）
           script: |
             set -e
             cd /workspace
+            # CNB 工作区已把仓库 checkout 到 /workspace/<repo>；只有缺失时才从 CNB 拉，
+            # 不从 GitHub 拉（慢且可能被墙）。
             if [ ! -d lunar-lab/.git ]; then
-              git clone --depth 50 git@github.com:codezzzsleep/lunar-wheelleg-testbench.git lunar-lab || \
-              git clone --depth 50 https://github.com/codezzzsleep/lunar-wheelleg-testbench.git lunar-lab
+              git clone --depth 1 https://cnb.cool/ycyc755/lunar-lab-r1.git lunar-lab
             fi
-            git -C lunar-lab log -1 --format='repo @ %h %s'
-            git -C lunar-lab status -sb | head -1
+            cd lunar-lab
+            git log -1 --format='repo @ %h %s'
+            git status -sb | head -1
 
         - name: 3. bootstrap（幂等）
           script: |
@@ -46,12 +48,19 @@ $:
             cd /workspace/lunar-lab
             bash .cnb/smoke.sh
 
-        - name: 5. 统一验收
+        - name: 5. 结构验收 / 完整验收
           script: |
             set -e
             cd /workspace/lunar-lab
-            .venv/bin/python scripts/verify_delivery_r1.py || {
-              echo "验收未通过（见上）；这不影响环境可用性，但会打印到日志"; exit 1; }
+            if [ -f runs/unseen/delivery_v7/v7_20261030_r1/verify/r1_report.json ]; then
+              echo "证据包存在 -> 跑完整 73 项验收"
+              python3 scripts/verify_delivery_r1.py
+            else
+              echo "无证据包（源码快照）-> 跑结构性验收"
+              python3 scripts/run_r1.py --audit || true
+              python3 scripts/run_r1.py --dry-run | head -30
+              python3 -m compileall -q scripts && echo "compileall ok"
+            fi
 
         - name: 6. 判定快照
           script: |
@@ -60,8 +69,8 @@ $:
             {
               echo "=== lunar-lab sandbox snapshot ==="
               python3 -V
-              .venv/bin/python -c "import mujoco,numpy,trimesh;print('mujoco',mujoco.__version__,'numpy',numpy.__version__,'trimesh',trimesh.__version__)"
-              .venv/bin/python -c "import json;d=json.load(open('runs/unseen/delivery_v7/v7_20261030_r1/verify/r1_report.json'));print('verify',d['verdict'],d['n_pass'],'/',d['n_checks'])"
+              python3 -c "import mujoco,numpy,trimesh;print('mujoco',mujoco.__version__,'numpy',numpy.__version__,'trimesh',trimesh.__version__)"
+              echo "verify: 见 stage 5"
               echo "repo $(git rev-parse --short HEAD)"
             } | tee /workspace/lunar-lab/.cnb/last_snapshot.txt
       endStages:

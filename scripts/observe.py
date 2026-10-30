@@ -80,6 +80,10 @@ def main():
                          '不是把物体旋转——用于真实第二观察')
     ap.add_argument('--azimuth', type=float, default=None,
                     help='石头相对相机的偏航（度）；缺省读 case.yaw_deg，再缺省 0')
+    ap.add_argument('--state-json', default=None,
+                    help='从 drive_observe.json 恢复行驶后的真实状态（qpos/qvel）再取景；'
+                         '这是"机器人实际移动后停稳"的第二观察，不是相机平移')
+    ap.add_argument('--state-seed', type=int, default=0, help='--state-json 里取哪一条 seed 的状态')
     ap.add_argument('--observation-id', default=None,
                     help='独立 observation_id；缺省 case_id 或 case_id_azNN')
     a = ap.parse_args()
@@ -107,6 +111,19 @@ def main():
 
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
+    if a.state_json:
+        _dj = json.loads(pathlib.Path(a.state_json).read_text())
+        _runs = _dj.get('runs') or []
+        _rec = next((r for r in _runs if int(r.get('seed', -1)) == int(a.state_seed)), None)
+        if _rec is None:
+            raise SystemExit(f'--state-json 里没有 seed {a.state_seed} 的记录')
+        _snap = _rec['state_snapshot']
+        env.data.qpos[:] = np.asarray(_snap['qpos'], dtype=float)
+        env.data.qvel[:] = np.asarray(_snap['qvel'], dtype=float)
+        env.model.opt.timestep = env.model.opt.timestep
+        mujoco.mj_forward(env.model, env.data)
+        print(json.dumps({'restored_state_seed': a.state_seed,
+                          'qpos_n': len(_snap['qpos'])}, ensure_ascii=False))
     cam_id = cam_id_of(env)
     m0, d0 = env.model, env.data
     mujoco.mj_forward(m0, d0)

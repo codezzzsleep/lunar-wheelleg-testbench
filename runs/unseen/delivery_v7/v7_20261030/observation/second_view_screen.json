@@ -1,0 +1,77 @@
+{
+  "schema": "second-view-screen/v7",
+  "obs1": "runs/unseen/recovery_r3/obs_R01",
+  "obs2": "runs/unseen/delivery_v7/v7_20261030/observation/R01_drive_after",
+  "rule": "fixed geometry/pose; second camera only; no re-registration",
+  "rows": [
+    {
+      "candidate": "V7_R01_s1",
+      "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s1/fusion",
+      "world_sha": "8b546a3475b7947d1f5edbb94ff1e8f4cdfa2ecced144aafb816cc4712705994",
+      "fusion_input_observation": "runs/unseen/recovery_r3/obs_R01",
+      "metric_version": "align-metric/v2.1",
+      "obs1_front": {
+        "mask_iou": 0.9498,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.1122,
+        "depth_p95_mm": 6.335,
+        "observation": "runs/unseen/recovery_r3/obs_R01"
+      },
+      "obs2_driven": {
+        "mask_iou": 0.9023,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.0825,
+        "depth_p95_mm": 4.591,
+        "observation": "runs/unseen/delivery_v7/v7_20261030/observation/R01_drive_after"
+      },
+      "kept_by_second_view": false,
+      "note": "固定候选几何与位姿，只用第二相机评价；未重新配准。两个视角的指标分开报告，不合并。"
+    },
+    {
+      "candidate": "V7_R01_s2",
+      "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s2/fusion",
+      "world_sha": "2487e6bb27305b220cc64c12c698fe0a66c36fe9c583c79277c0fd5dd0b35c79",
+      "fusion_input_observation": "runs/unseen/recovery_r3/obs_R01",
+      "metric_version": "align-metric/v2.1",
+      "obs1_front": {
+        "mask_iou": 0.9404,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.1029,
+        "depth_p95_mm": 6.159,
+        "observation": "runs/unseen/recovery_r3/obs_R01"
+      },
+      "obs2_driven": {
+        "mask_iou": 0.9149,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.0785,
+        "depth_p95_mm": 4.752,
+        "observation": "runs/unseen/delivery_v7/v7_20261030/observation/R01_drive_after"
+      },
+      "kept_by_second_view": false,
+      "note": "固定候选几何与位姿，只用第二相机评价；未重新配准。两个视角的指标分开报告，不合并。"
+    },
+    {
+      "candidate": "V7_R01_tv1",
+      "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_tv1/fusion",
+      "world_sha": "4eb7a208c2ce84030fc8f10bf1e96be95a4b491751394d290eba7a2299c7c09b",
+      "fusion_input_observation": "runs/unseen/recovery_r3/obs_R01",
+      "metric_version": "align-metric/v2.1",
+      "obs1_front": {
+        "mask_iou": 0.9545,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.0935,
+        "depth_p95_mm": 7.665,
+        "observation": "runs/unseen/recovery_r3/obs_R01"
+      },
+      "obs2_driven": {
+        "mask_iou": 0.9154,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": 0.0759,
+        "depth_p95_mm": 5.017,
+        "observation": "runs/unseen/delivery_v7/v7_20261030/observation/R01_drive_after"
+      },
+      "kept_by_second_view": false,
+      "note": "固定候选几何与位姿，只用第二相机评价；未重新配准。两个视角的指标分开报告，不合并。"
+    }
+  ]
+}

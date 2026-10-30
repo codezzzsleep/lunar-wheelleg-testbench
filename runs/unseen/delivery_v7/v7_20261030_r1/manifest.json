@@ -84,6 +84,38 @@
         "S1": "0/9"
       },
       "reason_summary": "没有动作在全部 3 候选 × 3 状态下成功；多数失败是 time_limit（观察已吃掉约 10.5 s，剩约 19.5 s）"
+    },
+    "r03_matrix": {
+      "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/closed_loop_R03_scene2/closed_loop.json",
+      "cells": 42,
+      "candidates": [
+        "V7_R03_s2",
+        "R03_engine"
+      ],
+      "states": 3,
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "L1",
+        "S1",
+        "D2",
+        "R2"
+      ],
+      "chosen": "R1",
+      "t_start_s": [
+        9.84,
+        10.88,
+        10.32
+      ],
+      "success": "3/3",
+      "displacement_x_m": [
+        3.1915,
+        3.1971,
+        3.1906
+      ],
+      "truth_world_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+      "note": "有候选分支；观察标 not_evaluated（基线不足）但状态真实；场景守卫确认与真值同一布置"
     }
   },
   "status": {

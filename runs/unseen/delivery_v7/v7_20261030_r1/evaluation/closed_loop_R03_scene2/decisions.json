@@ -1,0 +1,277 @@
+{
+  "schema": "closed-loop-decisions/v7",
+  "decision_sha": "bc443a673b7fe59ea291cd36bdb716b26b21514a97b72806a9e0bc52a8996aac",
+  "written_at": 1793350255.8087814,
+  "decision": {
+    "rule": "worst-case-risk/v2",
+    "tau": 0.0,
+    "c_fail": 60.0,
+    "c_abort": 40.0,
+    "hypotheses": [
+      "R03_engine",
+      "V7_R03_s2"
+    ],
+    "n_seeds": 3,
+    "stats": {
+      "R1": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 15.84,
+            "costs": [
+              14.86,
+              15.84,
+              15.38
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 15.88,
+            "costs": [
+              14.84,
+              15.88,
+              15.42
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 15.88,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "R2": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.84,
+            "costs": [
+              16.86,
+              17.84,
+              17.26
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.52,
+            "costs": [
+              16.5,
+              17.52,
+              17.18
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 17.84,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "L1": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.48,
+            "costs": [
+              15.4,
+              16.48,
+              15.7
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.52,
+            "costs": [
+              15.3,
+              16.52,
+              15.64
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 16.52,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "L2": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.26,
+            "costs": [
+              15.24,
+              16.26,
+              15.26
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.18,
+            "costs": [
+              15.18,
+              16.18,
+              15.26
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 16.26,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "S1": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.54,
+            "costs": [
+              15.48,
+              16.54,
+              15.96
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.48,
+            "costs": [
+              15.44,
+              16.48,
+              15.9
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 16.54,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "D1": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.1,
+            "costs": [
+              15.06,
+              16.1,
+              15.48
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.14,
+            "costs": [
+              15.12,
+              16.14,
+              15.5
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 16.14,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "D2": {
+        "per_hypothesis": {
+          "R03_engine": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.68,
+            "costs": [
+              15.74,
+              16.68,
+              16.32
+            ]
+          },
+          "V7_R03_s2": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 16.4,
+            "costs": [
+              15.54,
+              16.4,
+              16.38
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 16.68,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      }
+    },
+    "safe_set": [
+      "R1",
+      "D1",
+      "L2",
+      "L1",
+      "S1",
+      "D2",
+      "R2"
+    ],
+    "chosen": "R1",
+    "no_robust_option": false,
+    "tie": false,
+    "tied_options": [
+      "R1"
+    ],
+    "insufficient_evidence": false,
+    "missing": [],
+    "reason_text": "在 2 个候选 × 3 个冻结初态上均完成；按最坏代价选 R1（tie=False）",
+    "contract": {
+      "n_cells": 42,
+      "n_unique": 42,
+      "n_dup": 0,
+      "n_missing": 0,
+      "n_not_applicable": 0,
+      "n_states": 3,
+      "n_expected_cells": 42
+    },
+    "n_cells": 42,
+    "n_skipped": 0,
+    "n_states": 3,
+    "n_candidates": 2,
+    "n_soil": 1,
+    "actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "decision_rule": "worst-case-risk/v2"
+  }
+}

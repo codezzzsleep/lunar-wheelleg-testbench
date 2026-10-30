@@ -278,3 +278,29 @@ freespace **0.0199**（通过）。
 {"execution_status":"PARTIAL","evidence_status":"PARTIAL","capability_status":"PARTIAL",
  "benefit_status":"NOT_ESTABLISHED","claim_level":"NOT_REACHED"}
 ```
+
+## 9. CNB 打开即用沙箱
+
+仓库根目录已含沙箱配置，点开「云原生开发」即得可用环境：
+
+| 文件 | 作用 |
+| --- | --- |
+| `.ide/Dockerfile` | 基于 `cnbcool/default-dev-env`，装 OSMesa/GL 与锁定依赖（mujoco 3.17.0、numpy 2.5.4、trimesh 5.2.0、coacd、manifold3d、pillow、pyyaml）；**无任何 COPY**（构建上下文只有 Dockerfile 本身） |
+| `.cnb.yml` | `vscode` 事件，8 vCPU；六个 stage：镜像自检 → 拉项目 → bootstrap → 烟测 → 统一验收 → 判定快照；带 `endStages` 留档 |
+| `.cnb/bootstrap.sh` | 建 venv、装锁定依赖、用 `importlib.metadata` 逐项核对版本（不一致即失败） |
+| `.cnb/smoke.sh` | MuJoCo 建模 + **OSMesa 出图断言**（64×64 非空）+ 仓库模块可导入 |
+| `.cnb/welcome.sh` | 打开终端打印入口/验收/页面命令 |
+
+**本地已验证**：`sh .cnb/smoke.sh` → `render (64,64,3) uint8 159486`、`imports ok`、`smoke ok`；
+`bootstrap.sh` 的版本核对 → `{"checked": 6, "mismatch": []}`。
+
+**未验证（缺外部资源）**：镜像构建与真实启动需要 CNB 项目与令牌
+（`repo-cnb-trigger:rw` 用于 start、`account-engage:r` 用于 list、`repo-cnb-detail:r` 用于 detail）。
+拿到令牌后：
+
+```bash
+export CNB_TOKEN=...
+bash <skill>/scripts/cnb_api.sh start  --repo <org>/<repo> --branch main
+bash <skill>/scripts/cnb_api.sh wait   --repo <org>/<repo> --branch main --timeout 900
+bash <skill>/scripts/cnb_api.sh stages --repo <org>/<repo> --sn <sn>
+```

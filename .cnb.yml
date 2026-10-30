@@ -1,0 +1,72 @@
+# CNB 云原生开发：打开即用的 lunar-lab 沙箱
+# 结构：镜像自检 → 拉项目 → bootstrap → 确定性检查 → 统一验收 → 判定快照
+$:
+  vscode:
+    - name: lunar-lab-sandbox
+      runner:
+        cpus: 8
+        tags: cnb:arch:amd64
+      docker:
+        build: .ide/Dockerfile
+        image: cnbcool/default-dev-env:latest   # 回退，必写；stage 1 会断言镜像是否生效
+      services:
+        - vscode
+      env:
+        MUJOCO_GL: osmesa
+        CNB_WELCOME_CMD: bash /workspace/lunar-lab/.cnb/welcome.sh
+      stages:
+        - name: 1. 镜像自检
+          script: |
+            set -e
+            python3 -V
+            python3 -c "import mujoco, numpy, trimesh; print('deps ok', mujoco.__version__, numpy.__version__, trimesh.__version__)"
+            MUJOCO_GL=osmesa python3 -c "import mujoco; mujoco.MjModel.from_xml_string('<mujoco><worldbody><geom size=\".1\"/></worldbody></mujoco>'); print('osmesa+model ok')"
+            command -v code-server >/dev/null && code-server --version | head -1 || echo "WARN: 无 code-server（镜像可能回退）"
+
+        - name: 2. 拉项目
+          script: |
+            set -e
+            cd /workspace
+            if [ ! -d lunar-lab/.git ]; then
+              git clone --depth 50 git@github.com:codezzzsleep/lunar-wheelleg-testbench.git lunar-lab || \
+              git clone --depth 50 https://github.com/codezzzsleep/lunar-wheelleg-testbench.git lunar-lab
+            fi
+            git -C lunar-lab log -1 --format='repo @ %h %s'
+            git -C lunar-lab status -sb | head -1
+
+        - name: 3. bootstrap（幂等）
+          script: |
+            set -e
+            cd /workspace/lunar-lab
+            bash .cnb/bootstrap.sh
+
+        - name: 4. 渲染与仿真烟测
+          script: |
+            set -e
+            cd /workspace/lunar-lab
+            bash .cnb/smoke.sh
+
+        - name: 5. 统一验收
+          script: |
+            set -e
+            cd /workspace/lunar-lab
+            .venv/bin/python scripts/verify_delivery_r1.py || {
+              echo "验收未通过（见上）；这不影响环境可用性，但会打印到日志"; exit 1; }
+
+        - name: 6. 判定快照
+          script: |
+            set -e
+            cd /workspace/lunar-lab
+            {
+              echo "=== lunar-lab sandbox snapshot ==="
+              python3 -V
+              .venv/bin/python -c "import mujoco,numpy,trimesh;print('mujoco',mujoco.__version__,'numpy',numpy.__version__,'trimesh',trimesh.__version__)"
+              .venv/bin/python -c "import json;d=json.load(open('runs/unseen/delivery_v7/v7_20261030_r1/verify/r1_report.json'));print('verify',d['verdict'],d['n_pass'],'/',d['n_checks'])"
+              echo "repo $(git rev-parse --short HEAD)"
+            } | tee /workspace/lunar-lab/.cnb/last_snapshot.txt
+      endStages:
+        - name: 销毁前留档
+          script: |
+            cd /workspace/lunar-lab 2>/dev/null || exit 0
+            git status --porcelain | head -20
+            cp -f .cnb/last_snapshot.txt /workspace/last_snapshot.txt 2>/dev/null || true

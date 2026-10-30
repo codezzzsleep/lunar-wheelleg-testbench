@@ -1,0 +1,70 @@
+{
+  "schema": "s0-s4-convergence/v7-r1",
+  "fixture": "F0 (known answer)",
+  "pitch_5mm": [
+    {
+      "step": "S0_raw_direct",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S1_reload",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S2_parent_only",
+      "iou": 0.9718,
+      "p95_mm": 1.635,
+      "freespace": 0.0587
+    },
+    {
+      "step": "S3_carved",
+      "iou": 0.9736,
+      "p95_mm": 1.806,
+      "freespace": 0.0524
+    },
+    {
+      "step": "S4_carved_plus_shell",
+      "iou": 0.9672,
+      "p95_mm": 1.855,
+      "freespace": 0.0698
+    }
+  ],
+  "pitch_2p5mm": [
+    {
+      "step": "S0_raw_direct",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S1_reload",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S2_parent_only",
+      "iou": 0.9853,
+      "p95_mm": 0.864,
+      "freespace": 0.0234
+    },
+    {
+      "step": "S3_carved",
+      "iou": 0.9898,
+      "p95_mm": 0.951,
+      "freespace": 0.0157
+    },
+    {
+      "step": "S4_carved_plus_shell",
+      "iou": 0.9809,
+      "p95_mm": 0.995,
+      "freespace": 0.051
+    }
+  ],
+  "finding": "2.5 mm 下 S2/S3 的 freespace 降到 0.0234/0.0157（都低于 0.05），但 S4 加观测壳后又回到 0.0510 —— 细分辨率下**剩余误差主要来自观测壳**，不是占据化或相机。4–5 mm 时占据化占主导（S2 0.0587）。",
+  "next_fix": "壳体几何（shell_offset/band 的放置）是下一处要收紧的地方，而不是放宽门槛"
+}

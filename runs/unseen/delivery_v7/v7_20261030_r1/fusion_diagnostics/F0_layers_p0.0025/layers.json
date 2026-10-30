@@ -1,0 +1,304 @@
+{
+  "schema": "error-layers/v6_1",
+  "label": "F0-2.5mm",
+  "observation": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/observation",
+  "parent_world": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/truth",
+  "config": {
+    "pitch_m": 0.005,
+    "margin_cells": 3,
+    "free_epsilon_m": 0.001,
+    "band_m": 0.0075,
+    "parent_dilate_voxels": 1,
+    "mask_dilate_px": 0,
+    "fill_holes": true,
+    "depth_edge_threshold_m": 0.02,
+    "use_depth_edge_exclusion": false,
+    "shell_offset_voxels": 0.5,
+    "version": "fuse-observed/v2",
+    "base_config": "configs/unseen_v6_1_fusion.json",
+    "base_config_sha256": "81cf221c3f51117887ec74488e91f5cd440ad7c7367e48b0331c70a4e0658a7e",
+    "cli_overrides": {},
+    "sha256": "caa7cd542fce9d9562a26658e26c2eb6795922d085b91b3018ff3c6eb5f056a0"
+  },
+  "grid_info": {
+    "space": {
+      "n_voxels": 730568,
+      "n_free": 310006,
+      "n_band": 16312,
+      "n_unknown": 404250,
+      "n_in_fov": 730568,
+      "n_valid_depth": 616783,
+      "n_depth_edge_px": 0,
+      "n_constrained_px": 616783,
+      "depth_edge_threshold_m": 0.0,
+      "valid_depth_frac": 0.844251,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    },
+    "parent": {
+      "solid_method": "ray_parity",
+      "watertight_parent": true,
+      "n_inside_voxels": 307040
+    },
+    "n_shell": 16315,
+    "n_parent_inside": 307040,
+    "n_carved": 305697,
+    "n_shell_outside_parent": 1275
+  },
+  "camera_sha": "9219149422abd937d091f3747b27d6a5d9387b5aed32b551ab226fd409c6cdb2",
+  "rows": [
+    {
+      "step": "S0_raw_direct",
+      "what": "原文件直接加载评价，无复制、无融合",
+      "mask_iou": 1.0,
+      "cand_px": 8163,
+      "obs_px": 8163,
+      "n_inter": 8163,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 0.0,
+      "depth_p95_mm": 0.0,
+      "depth_inner_rms_mm": 0.0,
+      "depth_edge_rms_mm": 0.0,
+      "freespace_violation": 0.0,
+      "freespace_n_px": 0,
+      "freespace_denom_px": 8163,
+      "freespace_outside_mask": 0,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 0.0,
+      "vis_pt_p95_mm": 0.0,
+      "vis_pt_n": 1200,
+      "watertight": true,
+      "volume_m3": 0.004796416,
+      "n_faces": 1280,
+      "bounds": [
+        [
+          1.69,
+          -0.075,
+          0.0
+        ],
+        [
+          1.91,
+          0.075,
+          0.28
+        ]
+      ],
+      "heatmap": {
+        "png": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/F0_layers_p0.0025/heat_S0.png",
+        "n_cand_px": 8163,
+        "resid_pct_mm": [
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "step": "S1_reload",
+      "what": "导出→重载→正式 posed 路径加载，无融合",
+      "sha_equal": false,
+      "mask_iou": 1.0,
+      "cand_px": 8163,
+      "obs_px": 8163,
+      "n_inter": 8163,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 0.0,
+      "depth_p95_mm": 0.0,
+      "depth_inner_rms_mm": 0.0,
+      "depth_edge_rms_mm": 0.0,
+      "freespace_violation": 0.0,
+      "freespace_n_px": 0,
+      "freespace_denom_px": 8163,
+      "freespace_outside_mask": 0,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 0.0,
+      "vis_pt_p95_mm": 0.0,
+      "vis_pt_n": 1200,
+      "watertight": true,
+      "volume_m3": 0.004796416,
+      "n_faces": 1280,
+      "bounds": [
+        [
+          1.69,
+          -0.075,
+          0.0
+        ],
+        [
+          1.91,
+          0.075,
+          0.28
+        ]
+      ],
+      "heatmap": {
+        "png": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/F0_layers_p0.0025/heat_S1.png",
+        "n_cand_px": 8163,
+        "resid_pct_mm": [
+          -0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      }
+    },
+    {
+      "step": "S2_parent_only",
+      "what": "父候选仅占据化+网格提取",
+      "mask_iou": 0.9853,
+      "cand_px": 8285,
+      "obs_px": 8163,
+      "n_inter": 8163,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": -0.035,
+      "depth_p95_mm": 1.821,
+      "depth_inner_rms_mm": 0.904,
+      "depth_edge_rms_mm": 3.827,
+      "freespace_violation": 0.0234,
+      "freespace_n_px": 194,
+      "freespace_denom_px": 8285,
+      "freespace_outside_mask": 94,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 0.323,
+      "vis_pt_p95_mm": 0.864,
+      "vis_pt_n": 1200,
+      "watertight": true,
+      "volume_m3": 0.004796673,
+      "n_faces": 208104,
+      "bounds": [
+        [
+          1.69,
+          -0.075,
+          0.0
+        ],
+        [
+          1.91,
+          0.075,
+          0.28
+        ]
+      ],
+      "heatmap": {
+        "png": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/F0_layers_p0.0025/heat_S2_parent_only.png",
+        "n_cand_px": 8285,
+        "resid_pct_mm": [
+          -3.013,
+          -0.766,
+          -0.095,
+          0.553,
+          1.549
+        ]
+      }
+    },
+    {
+      "step": "S3_carved",
+      "what": "加自由空间雕刻",
+      "mask_iou": 0.9898,
+      "cand_px": 8215,
+      "obs_px": 8163,
+      "n_inter": 8147,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": 0.109,
+      "depth_p95_mm": 2.444,
+      "depth_inner_rms_mm": 1.169,
+      "depth_edge_rms_mm": 6.017,
+      "freespace_violation": 0.0157,
+      "freespace_n_px": 129,
+      "freespace_denom_px": 8215,
+      "freespace_outside_mask": 61,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 0.365,
+      "vis_pt_p95_mm": 0.951,
+      "vis_pt_n": 1200,
+      "watertight": true,
+      "volume_m3": 0.004775687,
+      "n_faces": 208232,
+      "bounds": [
+        [
+          1.69,
+          -0.075,
+          0.0
+        ],
+        [
+          1.91,
+          0.075,
+          0.28
+        ]
+      ],
+      "heatmap": {
+        "png": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/F0_layers_p0.0025/heat_S3_carved.png",
+        "n_cand_px": 8215,
+        "resid_pct_mm": [
+          -2.047,
+          -0.573,
+          0.098,
+          0.802,
+          3.158
+        ]
+      }
+    },
+    {
+      "step": "S4_carved_plus_shell",
+      "what": "再加观测壳（正式融合规则）",
+      "mask_iou": 0.9809,
+      "cand_px": 8290,
+      "obs_px": 8163,
+      "n_inter": 8147,
+      "resolution": [
+        1280,
+        960
+      ],
+      "depth_med_mm": -0.065,
+      "depth_p95_mm": 3.289,
+      "depth_inner_rms_mm": 1.438,
+      "depth_edge_rms_mm": 7.414,
+      "freespace_violation": 0.051,
+      "freespace_n_px": 423,
+      "freespace_denom_px": 8290,
+      "freespace_outside_mask": 127,
+      "metric_version": "align-metric/v2.1",
+      "vis_pt_med_mm": 0.422,
+      "vis_pt_p95_mm": 0.995,
+      "vis_pt_n": 1200,
+      "watertight": true,
+      "volume_m3": 0.004795572,
+      "n_faces": 209592,
+      "bounds": [
+        [
+          1.69,
+          -0.075,
+          0.0
+        ],
+        [
+          1.91,
+          0.075,
+          0.28
+        ]
+      ],
+      "heatmap": {
+        "png": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/F0_layers_p0.0025/heat_S4_carved_plus_shell.png",
+        "n_cand_px": 8290,
+        "resid_pct_mm": [
+          -5.417,
+          -0.903,
+          -0.105,
+          0.616,
+          2.849
+        ]
+      }
+    }
+  ],
+  "reading": "S0/S1 正常而 S2 开始变差 -> 离散化；S2/S3 正常而 S4 变差 -> 观测壳；S0 已异常 -> 观测/评价一致性"
+}

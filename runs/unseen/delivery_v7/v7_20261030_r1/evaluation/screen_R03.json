@@ -1,0 +1,82 @@
+{
+  "schema": "second-view-screen/v7",
+  "obs1": "runs/unseen/recovery_r3/obs_R03",
+  "obs2": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+  "rule": "fixed geometry/pose; second camera only; no re-registration",
+  "rows": [
+    {
+      "candidate": "V7_R03_s1_2p5",
+      "world": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1",
+      "world_sha": "d63a39482bd6095cb2a145681df193e9fce47a14f3cea0eb82e97805b44794a0",
+      "fusion_input_observation": "runs/unseen/recovery_r3/obs_R03",
+      "metric_version": "align-metric/v2.1",
+      "render_mode": "multimesh",
+      "obs1_front": {
+        "mask_iou": 0.9737,
+        "vis_pt_med_mm": 0.619,
+        "vis_pt_p95_mm": 1.743,
+        "freespace_violation": 0.0392,
+        "freespace_n_px": 429,
+        "freespace_denom_px": 10938,
+        "depth_p95_mm": 5.665,
+        "observation": "runs/unseen/recovery_r3/obs_R03",
+        "metric_version": "align-metric/v2.1",
+        "measurement_status": "measured"
+      },
+      "obs2_driven": {
+        "mask_iou": 0.9268,
+        "vis_pt_med_mm": 0.626,
+        "vis_pt_p95_mm": 1.819,
+        "freespace_violation": 0.0737,
+        "freespace_n_px": 3876,
+        "freespace_denom_px": 52615,
+        "depth_p95_mm": 4.145,
+        "observation": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+        "metric_version": "align-metric/v2.1",
+        "measurement_status": "measured"
+      },
+      "verdict_first_view": "kept",
+      "verdict_second_view": "rejected",
+      "verdict_final": "rejected(second_view)",
+      "kept_by_second_view": false,
+      "note": "固定候选几何与位姿，只用第二相机评价；未重新配准。两个视角的指标分开报告，不合并。"
+    },
+    {
+      "candidate": "V7_R03_s2",
+      "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/fusion",
+      "world_sha": "091d00e098c542052e8c958d43f9442dcb5069a7832f175ba33ea74405f10dc6",
+      "fusion_input_observation": "runs/unseen/recovery_r3/obs_R03",
+      "metric_version": "align-metric/v2.1",
+      "render_mode": "multimesh",
+      "obs1_front": {
+        "mask_iou": 0.9551,
+        "vis_pt_med_mm": 0.792,
+        "vis_pt_p95_mm": 2.737,
+        "freespace_violation": 0.0473,
+        "freespace_n_px": 497,
+        "freespace_denom_px": 10508,
+        "depth_p95_mm": 7.12,
+        "observation": "runs/unseen/recovery_r3/obs_R03",
+        "metric_version": "align-metric/v2.1",
+        "measurement_status": "measured"
+      },
+      "obs2_driven": {
+        "mask_iou": 0.9193,
+        "vis_pt_med_mm": 0.778,
+        "vis_pt_p95_mm": 2.405,
+        "freespace_violation": 0.0739,
+        "freespace_n_px": 3797,
+        "freespace_denom_px": 51375,
+        "depth_p95_mm": 5.215,
+        "observation": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+        "metric_version": "align-metric/v2.1",
+        "measurement_status": "measured"
+      },
+      "verdict_first_view": "kept",
+      "verdict_second_view": "rejected",
+      "verdict_final": "rejected(second_view)",
+      "kept_by_second_view": false,
+      "note": "固定候选几何与位姿，只用第二相机评价；未重新配准。两个视角的指标分开报告，不合并。"
+    }
+  ]
+}

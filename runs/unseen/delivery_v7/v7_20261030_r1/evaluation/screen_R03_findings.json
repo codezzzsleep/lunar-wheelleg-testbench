@@ -1,0 +1,29 @@
+{
+  "schema": "second-view-finding/v7-r1",
+  "object": "R03",
+  "rows": [
+    {
+      "candidate": "V7_R03_s1_2p5",
+      "obs1_iou": 0.9737,
+      "obs2_iou": 0.9268,
+      "obs2_p95_mm": 1.819,
+      "obs2_freespace": 0.0737,
+      "verdict": "rejected(second_view)"
+    },
+    {
+      "candidate": "V7_R03_s2",
+      "obs1_iou": 0.9551,
+      "obs2_iou": 0.9193,
+      "obs2_p95_mm": 2.405,
+      "obs2_freespace": 0.0739,
+      "verdict": "rejected(second_view)"
+    }
+  ],
+  "finding": "两个候选在第二视角都被淘汰，freespace 几乎相同（0.0737 / 0.0739）；形状差异明显的两个候选给出同值 → 更像**第二观察帧/配准的系统性偏差**，不是候选各自的形状误差。",
+  "retraction": "撤回\"第二视角有鉴别力\"这一说法：它把两个候选全部淘汰，不构成鉴别证据。",
+  "next": [
+    "用真值网格在同一第二观察上测一次（若真值也 ≈0.073 则确定是观测帧问题）",
+    "检查 obs_R03_at_driven 的 x_front 与首视角是否一致",
+    "修好第二观察后再评估鉴别力"
+  ]
+}

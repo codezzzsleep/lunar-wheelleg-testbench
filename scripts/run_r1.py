@@ -96,10 +96,10 @@ def s_measure(a):
               a.dry_run)
 
 
-@stage('closed_loop', [f'{BATCH}/evaluation/closed_loop_R03_two_qualified/closed_loop.json'])
+@stage('closed_loop', [f'{BATCH}/evaluation/closed_loop_R03_three_soils/closed_loop.json'])
 def s_closed_loop(a):
     return sh([PY, 'scripts/v7_closed_loop.py',
-               '--drive', f'{BATCH}/observation/drive_R03/drive_observe.json',
+               '--drive', f'{BATCH}/observation/drive_R03_b/drive_observe.json',
                '--hypotheses', f'{BATCH}/cases/R03_two_qualified.json',
                '--truth-collision',
                'runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH',
@@ -107,7 +107,7 @@ def s_closed_loop(a):
                'runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/truth_world',
                '--visible-json', f'{BATCH}/observations/R01_visible_public.json',
                '--soil-configs', 'nominal,low_traction,high_drag',
-               '--out', f'{BATCH}/evaluation/closed_loop_R03_two_qualified'], a.dry_run)
+               '--out', f'{BATCH}/evaluation/closed_loop_R03_three_soils'], a.dry_run)
 
 
 @stage('six', [f'{BATCH}/evaluation/six_R03_nominal/summary.json'])

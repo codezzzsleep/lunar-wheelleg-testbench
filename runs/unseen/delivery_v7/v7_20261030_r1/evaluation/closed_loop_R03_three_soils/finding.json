@@ -1,0 +1,43 @@
+{
+  "schema": "closed-loop-three-soils/v7-r1",
+  "object": "R03",
+  "cells": 42,
+  "states": 1,
+  "candidates": 2,
+  "actions": 7,
+  "soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "safe_set": [
+    "D1",
+    "S1",
+    "L1",
+    "D2",
+    "R2"
+  ],
+  "chosen": "D1",
+  "truth_execution": {
+    "success": true,
+    "displacement_x_m": 3.0895,
+    "t_start_s": 11.94,
+    "state_mode": "project"
+  },
+  "contrast": {
+    "single_soil_nominal": {
+      "safe_set_size": 7,
+      "chosen": "R1",
+      "success": true,
+      "displacement_x_m": 3.1915
+    },
+    "three_soils": {
+      "safe_set_size": 5,
+      "chosen": "D1",
+      "success": true,
+      "displacement_x_m": 3.0895
+    }
+  },
+  "reading": "把土壤不确定性纳入聚合后，**R1 掉出安全集**（在某种土壤下失败），按最坏情况规则改选 **D1**，真值执行仍然成功（3.0895 m）。这证明多土壤聚合真的改变了决策，而不是换个口径记同一件事。",
+  "note": "只有 1 个初态参与（drive_R03_b 中仅 seed 0 通过停稳判据），因此本表是\"2 候选 × 7 动作 × 1 状态 × 3 土壤 = 42 格\"，不是 126 格。"
+}

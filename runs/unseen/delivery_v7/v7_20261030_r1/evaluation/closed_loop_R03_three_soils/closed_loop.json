@@ -1,0 +1,104 @@
+{
+  "schema": "closed-loop/v7",
+  "drive": "runs/unseen/delivery_v7/v7_20261030_r1/observation/drive_R03_b/drive_observe.json",
+  "hypotheses": [
+    "V7_R03_s1_2p5",
+    "V7_R03_s2"
+  ],
+  "n_states": 1,
+  "state_hashes": [
+    "98e5ae7d36427db9566fde42ce45798b"
+  ],
+  "observation_usable": [
+    true
+  ],
+  "observation_note": "第二观察若基线/视线角不达标，则标 not_evaluated：状态仍可用（真实行驶后停稳），但不据该观察淘汰候选",
+  "n_cells": 42,
+  "n_skipped": 0,
+  "soil_configs": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "actions": [
+    "R1",
+    "R2",
+    "L1",
+    "L2",
+    "S1",
+    "D1",
+    "D2"
+  ],
+  "decision": {
+    "chosen": "D1",
+    "safe_set": [
+      "D1",
+      "S1",
+      "L1",
+      "D2",
+      "R2"
+    ],
+    "reason": null,
+    "n_cells": 42
+  },
+  "decision_sha": "2bf1260252b9367c13fbe5f11eb87acf4f0b5e97104e5c1c1e6ad53f46537a49",
+  "decision_written_at": 1793368329.675842,
+  "branch": "matrix_decision",
+  "execution": [
+    {
+      "phase": "execution",
+      "hypothesis_id": "TRUTH_continue",
+      "option": "D1",
+      "seed": 0,
+      "resumed": true,
+      "started_at": 1793368329.8183055,
+      "finished_at": 1793368330.527204,
+      "sim_time_s_": 16.96,
+      "reason": "success",
+      "success": true,
+      "abort": false,
+      "t_end": 16.96,
+      "final_x": 3.603,
+      "max_tilt": 0.09,
+      "contact": "wheel",
+      "triggered": true,
+      "phases": [
+        {
+          "t": 13.24,
+          "phase": "shift"
+        },
+        {
+          "t": 15.36,
+          "phase": "return"
+        },
+        {
+          "t": 16.16,
+          "phase": "done"
+        }
+      ],
+      "action_fingerprint": "f9588c00bc31c942",
+      "control_steps": 251,
+      "physics_steps": 8780,
+      "q0": [
+        0.5135,
+        0.1009
+      ],
+      "t_start": 11.94,
+      "initial_full_hash": "b92d025025009c34d145d7eb77c9057b3f71b1e6151bd421321adbf308e3dbf8",
+      "cost": 16.96,
+      "method": "closed_loop",
+      "decision_sha": "2bf1260252b9367c13fbe5f11eb87acf4f0b5e97104e5c1c1e6ad53f46537a49",
+      "execution_started_at": 1793368329.8179588,
+      "truth_world": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/truth_world",
+      "truth_collision": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH",
+      "start_x": 0.513535,
+      "state_hash": "98e5ae7d36427db9566fde42ce45798b",
+      "state_seed": 0,
+      "state_mode": "project",
+      "state_mode_note": "snapshot 来自观测场景，按 robot-state 投影到真值场景；不传碰撞材质、不传土壤内部量",
+      "displacement_x": 3.0895
+    }
+  ],
+  "skipped": [],
+  "contract": "续行走 runner.run_from_state（不 reset）；每个单元格各自从快照重启；决策先落盘并定身份，执行行引用 decision_sha；A0 不计任务成功；位移 = final_x - start_x；不适用单元格显式保留。"
+}

@@ -1,16 +1,16 @@
 {
   "schema": "verify-delivery/v7-r1",
   "batch": "runs/unseen/delivery_v7/v7_20261030_r1",
-  "n_checks": 68,
-  "n_pass": 68,
+  "n_checks": 72,
+  "n_pass": 71,
   "by_layer": {
     "integrity": {
       "n": 13,
       "n_pass": 13
     },
     "function": {
-      "n": 50,
-      "n_pass": 50
+      "n": 54,
+      "n_pass": 53
     },
     "goal": {
       "n": 5,
@@ -100,7 +100,7 @@
       "layer": "function",
       "check": "closed_loop_runs",
       "pass": true,
-      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_after_screen', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
+      "detail": "['closed_loop_R01_a0', 'closed_loop_R01_matrix', 'closed_loop_R03_after_screen', 'closed_loop_R03_scene2', 'closed_loop_R03_three_soils', 'closed_loop_R03_two_qualified']"
     },
     {
       "layer": "function",
@@ -112,7 +112,7 @@
       "layer": "function",
       "check": "branch_traversal_exists",
       "pass": true,
-      "detail": "['closed_loop_R01_matrix', 'closed_loop_R03_scene2', 'closed_loop_R03_two_qualified']"
+      "detail": "['closed_loop_R01_matrix', 'closed_loop_R03_scene2', 'closed_loop_R03_three_soils', 'closed_loop_R03_two_qualified']"
     },
     {
       "layer": "function",
@@ -209,6 +209,30 @@
       "check": "closed_loop_R03_scene2:decision_before_execution",
       "pass": true,
       "detail": "{'written': [1793350255.8087814], 'started': [1793350255.9737217]}"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_three_soils:execution_present",
+      "pass": true,
+      "detail": "1"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_three_soils:no_reset",
+      "pass": true,
+      "detail": "[11.94]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_three_soils:displacement_from_start",
+      "pass": true,
+      "detail": "[-3.5e-05]"
+    },
+    {
+      "layer": "function",
+      "check": "closed_loop_R03_three_soils:decision_before_execution",
+      "pass": false,
+      "detail": "{'written': [], 'started': []}"
     },
     {
       "layer": "function",
@@ -427,5 +451,5 @@
       "detail": ""
     }
   ],
-  "verdict": "PASS"
+  "verdict": "FAIL"
 }

@@ -10,7 +10,7 @@
     "H5_lux3d": "A0 0/3",
     "U_truth": "A0 0/3"
   },
-  "finding": "R02 上**连真值上限 U_truth 也 0/3**（选 A0），说明从冻结初态 + 30 s 预算在该对象上本身不可达；因此这是**能力边界**，不是方法差异。 low_traction 同样全部 0/3（含真值），进一步确认是任务不可达而非方法差异。",
+  "finding": "R02 三种土壤下六个方法全部 0/3，包括真值上限；机制是障碍过高导致所有动作 abort。这是**几何能力边界**，与重建质量无关；V7_R02_s2 仍是合格重建。",
   "implication": "资格（重建是否合格）与可通行（任务能否完成）必须分列：V7_R02_s2 是合格重建，但 R02 的通行任务在该预算下不可解。六方法对比在 R02 上不可用于判断收益。",
   "low_traction": {
     "B0_blind": "R1 0/3",
@@ -19,5 +19,23 @@
     "B3_mirror": "A0 0/3",
     "H5_lux3d": "A0 0/3",
     "U_truth": "A0 0/3"
+  },
+  "high_drag": {
+    "B0_blind": "R1 0/3",
+    "B1_height": "A0 0/3",
+    "B2_box": "A0 0/3",
+    "B3_mirror": "A0 0/3",
+    "H5_lux3d": "A0 0/3",
+    "U_truth": "A0 0/3"
+  },
+  "mechanism": {
+    "object_height_m": 0.1695,
+    "r03_height_m": 0.0965,
+    "U_truth_outcomes": [
+      "abort",
+      "abort",
+      "abort"
+    ],
+    "reading": "R02 的障碍高 0.1695 m（R03 为 0.0965 m），U_truth 预演中所有动作都是 abort，即平台**翻不过这个高度**；不是时间不够（不是 time_limit）。"
   }
 }

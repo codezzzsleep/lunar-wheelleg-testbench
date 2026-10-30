@@ -470,6 +470,14 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     vol_after = abs(float(mesh.volume)) if mesh.is_watertight else None
     body = out / 'body.stl'
     mesh.export(body)
+    # 检查点：网格一落盘就写 partial，进程在后面的度量/渲染里挂掉也能续跑
+    (out / 'partial.json').write_text(json.dumps(
+        {'schema': 'fusion-partial/v1', 'world_sha': sha_file(body),
+         'pitch_m': pitch, 'parent_id': parent_id, 'method': method,
+         'effective_config_sha': cfg.get('_sha'), 'ts': time.time(),
+         'n_faces': int(len(mesh.faces)),
+         'note': '网格已导出；manifest 尚未写出。可据此续跑度量而不重算融合。'},
+        ensure_ascii=False, indent=2))
     retention = hidden_retention(parent, mesh, grid, space, parent_inside, occ)
     retention['n_parents'] = len(meshes)
     retention['shell_rule'] = {'lower': 'depth - eps + offset', 'upper': 'depth + band + offset',
@@ -501,6 +509,11 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     strict = (metrics.get('mask_iou', 0) >= 0.85
               and metrics.get('vis_pt_p95_mm', 1e9) <= thr_p95
               and metrics.get('freespace_violation', 1) <= 0.05)
+    if (out / 'partial.json').exists():
+        try:
+            (out / 'partial.json').unlink()
+        except OSError:
+            pass
     man = {
         'schema': 'fused-asset/v2', 'version': VERSION, 'method': method,
         'parent_id': parent_id, 'source_kind': method,

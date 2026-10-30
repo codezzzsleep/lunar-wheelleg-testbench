@@ -52,6 +52,11 @@ def main():
         raise SystemExit(f'找不到世界资产：{world}/body.stl')
     fus = out / 'fusion'
     box = out / 'collision'
+    resume = (fus / 'body.stl').exists() and not (fus / 'manifest.json').exists()
+    if resume:
+        part = json.loads((fus / 'partial.json').read_text()) if (fus / 'partial.json').exists() else {}
+        print(json.dumps({'resume_from_partial': str(fus / 'body.stl'),
+                          'world_sha': part.get('world_sha')}, ensure_ascii=False))
     pitches = [a.pitch] + [p for p in (0.006, 0.008, 0.010) if p > a.pitch]
     fm = None
     used_pitch = None

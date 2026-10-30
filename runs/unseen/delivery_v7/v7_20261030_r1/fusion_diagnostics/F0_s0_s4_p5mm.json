@@ -1,0 +1,41 @@
+{
+  "schema": "s0-s4/v7-r1",
+  "label": "F0 已知答案夹具 S0–S4",
+  "pitch_m": 0.005,
+  "observation": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/observation",
+  "parent_world": "runs/unseen/delivery_v6_1/v6_1_20261029/fixtures/F0/truth",
+  "rows": [
+    {
+      "step": "S0_raw_direct",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S1_reload",
+      "iou": 1.0,
+      "p95_mm": 0.0,
+      "freespace": 0.0
+    },
+    {
+      "step": "S2_parent_only",
+      "iou": 0.9718,
+      "p95_mm": 1.635,
+      "freespace": 0.0587
+    },
+    {
+      "step": "S3_carved",
+      "iou": 0.9736,
+      "p95_mm": 1.806,
+      "freespace": 0.0524
+    },
+    {
+      "step": "S4_carved_plus_shell",
+      "iou": 0.9672,
+      "p95_mm": 1.855,
+      "freespace": 0.0698
+    }
+  ],
+  "reading": "S0/S1 严格为 0（相机、加载、导出都不是误差源）；误差**首次出现在 S2**（占据化+网格提取），freespace 0.0587 已高于 0.05；S3 雕刻略降(0.0524)，S4 加观测壳回升(0.0698)。",
+  "finding": "已知答案下，4–5 mm 的表示层本身就会与 freespace 门槛冲突；这与真实候选上 0.08–0.11 的差额，必须再由父形状不一致解释，而不是相机或加载。"
+}

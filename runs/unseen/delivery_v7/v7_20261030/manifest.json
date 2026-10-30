@@ -112,10 +112,109 @@
     ]
   },
   "status": {
-    "execution_status": "IN_PROGRESS",
-    "evidence_status": "PENDING",
-    "capability_status": "PENDING",
+    "execution_status": "PARTIAL",
+    "evidence_status": "PARTIAL",
+    "capability_status": "PARTIAL",
     "benefit_status": "NOT_ESTABLISHED"
   },
-  "note": "V7 批次。生成任务已提交并下载；候选处理与主比较进行中。历史账本 runs/unseen/generation/ledger.jsonl 只读保留，本批独立核算。"
+  "note": "V7 批次。生成任务已提交并下载；候选处理与主比较进行中。历史账本 runs/unseen/generation/ledger.jsonl 只读保留，本批独立核算。",
+  "results": {
+    "n_tasks": 9,
+    "n_single": 8,
+    "n_two_image": 1,
+    "credits_held": 180.0,
+    "n_candidates_processed": 8,
+    "n_qualified": 1,
+    "qualified": [
+      {
+        "candidate": "V7_R03_s2",
+        "object": "R03",
+        "iou": 0.9551,
+        "p95_mm": 2.65,
+        "freespace": 0.0473,
+        "collision_iou": 0.9918
+      }
+    ],
+    "six_method_rigid": {
+      "B0_blind": [
+        "R1",
+        3,
+        3
+      ],
+      "B1_height": [
+        "R1",
+        3,
+        3
+      ],
+      "B2_box": [
+        "D1",
+        3,
+        3
+      ],
+      "B3_mirror": [
+        "R1",
+        3,
+        3
+      ],
+      "H5_lux3d": [
+        "D1",
+        3,
+        3
+      ],
+      "U_truth": [
+        "D1",
+        3,
+        3
+      ]
+    },
+    "six_method_low_traction": {
+      "B2_box": [
+        "A0",
+        0,
+        3
+      ],
+      "H5_lux3d": [
+        "D1",
+        3,
+        3
+      ],
+      "U_truth": [
+        "R1",
+        3,
+        3
+      ]
+    },
+    "six_method_high_drag": {
+      "B2_box": [
+        "A0",
+        0,
+        3
+      ],
+      "H5_lux3d": [
+        "D1",
+        3,
+        3
+      ],
+      "U_truth": [
+        "R1",
+        3,
+        3
+      ]
+    },
+    "verifier": {
+      "n_checks": 56,
+      "n_pass": 56,
+      "self_test_negatives": 6,
+      "all_detected": true
+    },
+    "page": "runs/unseen/delivery_v7/v7_20261030/media/report/index.html"
+  },
+  "limits": [
+    "可见面由观测约束构造，不等于 Lux3D 原始精度",
+    "R01 是开发诊断对象，不计作留出对象",
+    "同一对象的多次采样是同源变体，不是独立物体",
+    "执行是独立仿真，不是真实机器人",
+    "月壤只接入阻力/牵引限制，无整机几何下陷",
+    "主动观察闭环（真实行驶取景→第二观测→重规划→续行）尚未在本批跑完"
+  ]
 }

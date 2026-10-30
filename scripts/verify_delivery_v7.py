@@ -126,6 +126,8 @@ def verify(batch):
         if not sm:
             continue
         dv = jl(d / 'decisions.json', {}) or {}
+        if isinstance(dv, list):          # eval_six 写的是列表，没有 bundle 身份
+            dv = {'decisions': dv}
         ex = []
         ep = d / 'execution.jsonl'
         if ep.exists():

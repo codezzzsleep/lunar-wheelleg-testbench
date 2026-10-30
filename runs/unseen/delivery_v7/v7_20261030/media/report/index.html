@@ -1,0 +1,56 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8">
+<title>V7 · 看不见的那一面</title>
+<style>
+:root{color-scheme:dark}
+body{background:#0f1116;color:#dfe3ea;font:14px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;margin:24px}
+h1{font-size:22px;margin:0 0 4px} h2{font-size:16px;margin:26px 0 8px;color:#8fd3ff}
+.meta{color:#8a93a3;font-size:12px;margin-bottom:16px}
+table{border-collapse:collapse;margin:8px 0 18px;font-size:13px}
+th,td{border:1px solid #2a2f3a;padding:5px 9px;text-align:left}
+th{background:#171b23;color:#a9b3c4;font-weight:600}
+td.good{color:#7ee787} td.bad{color:#ff8a80}
+.card{border:1px solid #232832;border-radius:8px;padding:14px 16px;background:#12151c;margin:10px 0}
+code{background:#171b23;padding:1px 5px;border-radius:4px}
+.note{color:#8a93a3;font-size:12px}
+</style></head><body>
+<h1>看不见的那一面 · V7 批次</h1>
+<div class="meta">批次 <code>v7_20261030</code> ·
+基线 <code>fdd2a27b</code> ·
+协议 <code>configs/unseen_v7_protocol.json</code></div>
+<div class="card"><b>四类状态</b>：
+execution <code>IN_PROGRESS</code> ·
+evidence <code>PENDING</code> ·
+capability <code>PENDING</code> ·
+benefit <code>NOT_ESTABLISHED</code></div>
+
+<h2>1. 预算与生成任务</h2>
+<div class="card">本批新增授权 <b>500</b> 积分；
+已建任务 <b>9</b>，占用上界 <b>180.0</b>；实际扣费 <code>unknown</code>。
+历史账本 <code>runs/unseen/generation/ledger.jsonl</code> 只读保留。</div>
+<table class=""><thead><tr><th>任务 ID</th><th>对象</th><th>模式</th><th>采样</th><th>GLB SHA</th><th>上界</th></tr></thead><tbody><tr><td>4484069</td><td>R02</td><td>single_image</td><td>s1</td><td>dbe440554b9e</td><td>20.0</td></tr><tr><td>4484076</td><td>R02</td><td>single_image</td><td>s2</td><td>750132e7d77a</td><td>20.0</td></tr><tr><td>4484079</td><td>R04</td><td>single_image</td><td>s1</td><td>ac904b61e721</td><td>20.0</td></tr><tr><td>4484082</td><td>R04</td><td>single_image</td><td>s2</td><td>a2509285c8bb</td><td>20.0</td></tr><tr><td>4486935</td><td>R01</td><td>two_image</td><td>tv1</td><td>86bc56ce68a1</td><td>20.0</td></tr><tr><td>4486948</td><td>R01</td><td>single_image</td><td>v7s1</td><td>746d5978cd96</td><td>20.0</td></tr><tr><td>4486951</td><td>R01</td><td>single_image</td><td>v7s2</td><td>e9fd390e2c0b</td><td>20.0</td></tr><tr><td>4486954</td><td>R03</td><td>single_image</td><td>v7s1</td><td>caa49c5edaa0</td><td>20.0</td></tr><tr><td>4486957</td><td>R03</td><td>single_image</td><td>v7s2</td><td>26377bbd3094</td><td>20.0</td></tr></tbody></table>
+
+<h2>2. 九个真实候选与三门槛</h2>
+<div class="note">门槛：可见 IoU ≥ 0.90、可见点 P95 ≤ 5 mm、freespace ≤ 0.05、碰撞 IoU ≥ 0.95。</div>
+<table class=""><thead><tr><th>候选</th><th>网格 m</th><th>IoU</th><th>P95 mm</th><th>freespace</th><th>碰撞 IoU</th><th>资格</th></tr></thead><tbody><tr><td>V7_R01_s1</td><td>0.004</td><td>0.9498</td><td>2.211</td><td>0.1122</td><td>0.9864</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R01_s2</td><td>0.004</td><td>0.9404</td><td>2.31</td><td>0.1029</td><td>0.9848</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R01_tv1</td><td>0.004</td><td>0.9545</td><td>2.24</td><td>0.0935</td><td>0.9373</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R02_s1</td><td>0.006</td><td>0.9512</td><td>3.006</td><td>0.149</td><td>0.9923</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R02_s2</td><td>0.006</td><td>0.9542</td><td>3.457</td><td>0.1162</td><td>0.9916</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R03_s1</td><td>0.004</td><td>0.953</td><td>2.093</td><td>0.0842</td><td>0.9927</td><td class="bad">✗ 未通过</td></tr><tr><td>V7_R03_s2</td><td>0.004</td><td>0.9551</td><td>2.654</td><td>0.0473</td><td>0.9918</td><td class="good">✓ 通过</td></tr><tr><td>V7_R04_s2</td><td>0.006</td><td>0.9165</td><td>11.388</td><td>0.1156</td><td>0.9912</td><td class="bad">✗ 未通过</td></tr></tbody></table>
+
+<h2>3. 六方法正式比较（R03，rigid）</h2>
+<table class=""><thead><tr><th>方法</th><th>选择动作</th><th>成功</th></tr></thead><tbody><tr><td>B0_blind</td><td>R1</td><td>3/3</td></tr><tr><td>B1_height</td><td>R1</td><td>3/3</td></tr><tr><td>B2_box</td><td>D1</td><td>3/3</td></tr><tr><td>B3_mirror</td><td>R1</td><td>3/3</td></tr><tr><td>H5_lux3d</td><td>D1</td><td>3/3</td></tr><tr><td>U_truth</td><td>D1</td><td>3/3</td></tr></tbody></table>
+<div class="note">六个方法全部成功，因此成功数不能证明生成假设有用；只有动作选择（D1 vs R1）有区分。</div>
+
+<h2>3b. 月壤 rigid / soil 对照（R03）</h2>
+<table class=""><thead><tr><th>方法</th><th>rigid</th><th>low_traction</th><th>high_drag</th></tr></thead><tbody><tr><td>B0_blind</td><td>R1 3/3</td><td>R1 3/3</td><td>R1 3/3</td></tr><tr><td>B1_height</td><td>R1 3/3</td><td>R1 3/3</td><td>R1 3/3</td></tr><tr><td>B2_box</td><td>D1 3/3</td><td>A0 0/3</td><td>A0 0/3</td></tr><tr><td>B3_mirror</td><td>R1 3/3</td><td>R1 3/3</td><td>R1 3/3</td></tr><tr><td>H5_lux3d</td><td>D1 3/3</td><td>D1 3/3</td><td>D1 3/3</td></tr><tr><td>U_truth</td><td>D1 3/3</td><td>R1 3/3</td><td>R1 3/3</td></tr></tbody></table>
+<div class="note">月壤改变了盒先验（退化为 A0）与真值上限（D1→R1）的选择；H5 动作不变且仍成功，
+但在低牵引/高阻力下与真值上限不一致。</div>
+
+<h2>4. freespace 侵入定位（第一轮）</h2>
+<table class=""><thead><tr><th>变体</th><th>网格</th><th>IoU</th><th>P95 mm</th><th>freespace</th><th>状态</th></tr></thead><tbody><tr><td>fs_base</td><td>4.0 mm</td><td>0.9498</td><td>2.211</td><td>0.1122</td><td>已测</td></tr><tr><td>fs_fine</td><td>2.5 mm</td><td></td><td></td><td></td><td>面数超限</td></tr><tr><td>fs_noshell</td><td>4.0 mm</td><td>0.951</td><td>2.17</td><td>0.1105</td><td>已测</td></tr></tbody></table>
+<div class="note">壳体偏移已排除；收窄 band 会恶化；细网格对照被 MuJoCo 20 万面上限挡住，根因<b>尚未定位</b>。</div>
+
+<h2>5. 限制</h2>
+<ul class="note">
+<li>可见面由观测约束构造，不等于 Lux3D 原始模型精度。</li>
+<li>R01 是开发诊断对象，不计作留出对象；R02/R03/R04 才是新增独立对象。</li>
+<li>四个候选来自同一对象的多次采样，属同源变体，不是独立物体。</li>
+<li>执行是独立仿真，不是真实机器人；月壤只接入阻力/牵引限制模型，无整机几何下陷。</li>
+</ul>
+</body></html>

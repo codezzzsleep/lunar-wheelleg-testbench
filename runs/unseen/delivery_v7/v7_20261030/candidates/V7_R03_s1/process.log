@@ -1,0 +1,6 @@
+失败 scripts/collision_occupancy_metrics.py: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/var/lib/deepseek-harness/lunar-lab/scripts/meshdist.py", line 38, in _closest_on_triangle
+    dist = np.sqrt(((P - (A + ab * v[..., None] + ac * w[..., None])) ** 2).sum(-1))
+                              ~~~^~~~~~~~~~~~~~
+numpy._core._exceptions._ArrayMemoryError: Unable to allocate 568. MiB for an array with shape (128, 193960, 3) and data type float64
+

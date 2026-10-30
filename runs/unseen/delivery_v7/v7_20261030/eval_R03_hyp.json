@@ -1,0 +1,28 @@
+[
+  {
+    "id": "V7_R03_s1",
+    "kind": "fused",
+    "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s1/fusion",
+    "collision": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s1/collision",
+    "source_kind": "lux3d",
+    "strict_pass": false
+  },
+  {
+    "id": "V7_R03_s2",
+    "kind": "fused",
+    "world": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/fusion",
+    "collision": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/collision",
+    "source_kind": "lux3d",
+    "strict_pass": true,
+    "multi_member": true
+  },
+  {
+    "id": "R03_engine",
+    "kind": "fused",
+    "world": "runs/unseen/recovery_r3/align_v3/world/G_R03",
+    "collision": "runs/unseen/delivery_v7/v7_20261030/processed/R03_engine/collision",
+    "source_kind": "lux3d",
+    "strict_pass": true,
+    "multi_member": true
+  }
+]

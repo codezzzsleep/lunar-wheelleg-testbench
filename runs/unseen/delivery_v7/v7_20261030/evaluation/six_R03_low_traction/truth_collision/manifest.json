@@ -1,0 +1,109 @@
+{
+  "asset_id": "truth_collision",
+  "hypothesis_id": "truth_collision",
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "source_kind": "posed",
+  "parts": [
+    "parts/part_00.stl"
+  ],
+  "T_world_from_asset": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "body_pose_expected": {
+    "pos": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "quat": [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ]
+  },
+  "world_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+  "pass": true,
+  "rest_pose": false,
+  "rescaled": false,
+  "near_convex_hull_substituted": false,
+  "coacd_parts": 1,
+  "coacd_threshold": 0.04,
+  "coacd_max_parts": 32,
+  "coacd_seconds": 0.07,
+  "hit_part_cap": false,
+  "height_m": 0.0965,
+  "width_x_m": 0.37511,
+  "width_y_m": 0.46539,
+  "rel_height": 1.123,
+  "rel_width": 5.415,
+  "concavity": 0.00044,
+  "convex_hull_volume_m3": 0.00849,
+  "parts_volume_m3": 0.008486,
+  "pose_world": [
+    [
+      1.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "bounds": [
+    [
+      1.6053760051727295,
+      -0.23194968700408936,
+      0.0
+    ],
+    [
+      1.9804857969284058,
+      0.23343589901924133,
+      0.09650133550167084
+    ]
+  ],
+  "raw_sha": "436b75d2ee2d3f7e479073506932e3b8bea8c646b4e6deb919d05e82f4dba2d0",
+  "collision_sha": "7fa4539a7a448e17d3583c32015a3b3e",
+  "concavity_probe": null,
+  "version": "physicalize/v1"
+}

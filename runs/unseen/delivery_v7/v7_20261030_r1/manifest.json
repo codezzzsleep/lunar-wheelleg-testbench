@@ -253,5 +253,65 @@
     "fix": "两级分块（点块×面块 ≤2M 元素，逐面归约并释放）+ 纯 numpy 顶点聚类 + parity 默认 full_mesh",
     "peak_rss_mb_after_fix": 756.7,
     "equivalence": "小网格 20480 面/3000 点，maxdiff 0.0（2M/200k/20k 三档）"
+  },
+  "qualified_candidates": {
+    "V7_R03_s1": {
+      "visible": {
+        "iou": 0.9737,
+        "p95_mm": 1.702,
+        "freespace": 0.0392
+      },
+      "collision": {
+        "iou": 0.9852,
+        "s2c_p95_mm": 0.492,
+        "c2s_p95_mm": 0.774
+      },
+      "pitch_m": 0.0025,
+      "shell_offset_voxels": 1.0,
+      "qualified": true
+    },
+    "V7_R03_s2": {
+      "visible": {
+        "iou": 0.9551,
+        "p95_mm": 2.65,
+        "freespace": 0.0473
+      },
+      "collision": {
+        "iou": 0.9918
+      },
+      "pitch_m": 0.004,
+      "qualified": true,
+      "batch": "v7_20261030"
+    },
+    "V7_R02_s2": {
+      "visible": {
+        "iou": 0.9841,
+        "p95_mm": 2.042,
+        "freespace": 0.0461
+      },
+      "collision": {
+        "iou": 0.9893,
+        "s2c_p95_mm": 0.504,
+        "c2s_p95_mm": 0.792
+      },
+      "pitch_m": 0.0025,
+      "shell_offset_voxels": 1.0,
+      "qualified": true
+    }
+  },
+  "objects_qualified": [
+    "R02",
+    "R03"
+  ],
+  "closed_loop_two_qualified": {
+    "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/closed_loop_R03_two_qualified/closed_loop.json",
+    "cells": 42,
+    "hypotheses": [
+      "V7_R03_s1_2p5",
+      "V7_R03_s2"
+    ],
+    "safe_set_size": 7,
+    "chosen": "R1",
+    "truth": "3/3 success, displacement 3.1915/3.1971/3.1906 m, t_start 9.84/10.88/10.32 s"
   }
 }

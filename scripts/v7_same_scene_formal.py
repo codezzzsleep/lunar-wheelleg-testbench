@@ -80,22 +80,28 @@ def main():
     chosen = dec['decision']['chosen']
 
     env.restore_state(snap, mode='same_scene')
-    res = runner.EpisodeRunner(env, skills.make_skill(chosen), visible={}, seed=0,
+    # 3.4：执行前立即记录时钟/位置/身份；3.2：执行与预演用同一份公开可见量
+    vis_exec = json.loads(vis_out.read_text())
+    exec_start = {'env_t': float(env.t), 'data_time': float(env.data.time),
+                  'x': float(env.data.qpos[0]), 'state_hash': snap.get('state_hash')}
+    res = runner.EpisodeRunner(env, skills.make_skill(chosen), visible=vis_exec, seed=0,
                                record_trajectory=True).run_current()
+    exec_end = {'env_t': float(env.t), 'data_time': float(env.data.time),
+                'x': float(env.data.qpos[0])}
     frames = res.get('trajectory') or []
     rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
            'budget_s': a.budget, 'drive_seconds': round(drive_seconds, 4),
            'observation_seconds': 0.0,
            'remaining_before_exec_s': round(remaining, 4),
-           'env_t_before_exec': round(float(env.t), 4),
+           'env_t_before_exec': round(exec_start['env_t'], 4),
            'decision': {'chosen': chosen, 'safe_set': dec['decision'].get('safe_set'),
                         'decision_sha': dec.get('decision_sha'),
                         'cells': sum(1 for _ in (out / 'rehearsal' / 'matrix.jsonl')
                                        .read_text().splitlines())},
+           'execution_start': exec_start, 'execution_end': exec_end,
            'execution': {'success': res.get('success'), 'reason': res.get('reason'),
-                         'final_x': round(float(env.data.qpos[0]), 6),
-                         'displacement_x': round(float(env.data.qpos[0]) - float(snap.get('qpos', [0])[0])
-                                                 if snap.get('qpos') else float('nan'), 6),
+                         'final_x': round(exec_end['x'], 6),
+                         'displacement_x': round(exec_end['x'] - exec_start['x'], 6),
                          'control_steps': res.get('steps'), 'frames': len(frames),
                          'state_mode': 'same_scene', 'fallback': False}}
     (out / 'same_scene_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))

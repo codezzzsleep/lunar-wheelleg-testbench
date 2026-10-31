@@ -50,6 +50,19 @@ def sha_obj(o):
                                      ensure_ascii=False).encode()).hexdigest()
 
 
+def _sha_dir(d):
+    """目录内容哈希：文件名+内容，按名排序，用于观测包身份。"""
+    d = pathlib.Path(d)
+    h = hashlib.sha256()
+    for f in sorted(d.rglob('*')):
+        if not f.is_file():
+            continue
+        h.update(str(f.relative_to(d)).encode())
+        h.update(f.read_bytes() if f.stat().st_size < 8 << 20 else
+                 hashlib.sha256(f.read_bytes()).digest())
+    return h.hexdigest()
+
+
 def _load_mesh(p):
     # process=True 合并重复顶点：闭合性判定与射线奇偶都依赖边/面一致性
     m = trimesh.load(str(p), force='mesh', process=True)
@@ -458,6 +471,31 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     before = occ.copy()
     occ, _ = largest_component(occ)
     comp_removed = int(before.sum() - occ.sum())
+    obs_sha = _sha_dir(observation)
+    _cfg_sha = hashlib.sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False)
+                              .encode()).hexdigest()
+    occ_hash = hashlib.sha256(np.ascontiguousarray(occ).tobytes()).hexdigest()
+    # 在**提取网格之前**保存占据实体：后续碰撞与显示都从这一份派生，
+    # 避免 融合占据 → 网格 → 导出/读回 → 再次占据化 的转换损失。
+    try:
+        occ_file = pathlib.Path(out) / 'occ.npz'
+        occ_file.parent.mkdir(parents=True, exist_ok=True)
+        _tmp = occ_file.parent / (occ_file.name + '.tmp.npz')
+        np.savez_compressed(
+            _tmp, occupied=occ.astype(bool),
+            origin=np.asarray(grid['origin'], dtype=float),
+            pitch=np.float64(grid['pitch']),
+            dims=np.asarray(occ.shape, dtype=int),
+            convention=np.array('voxel_center = origin + (index + 0.5) * pitch'),
+            algorithm=np.array('fuse-observed/v2+occ-artifact/v1'),
+            parent_id=np.array(str(parent_id)),
+            observation_sha=np.array(str(obs_sha)),
+            config_sha=np.array(str(_cfg_sha)),
+            content_sha=np.array(occ_hash))
+        _tmp.replace(occ_file)
+        _occ_saved = str(occ_file)
+    except Exception as _e:      # 保存失败必须显式失败，不能悄悄跳过
+        raise SystemExit(f'占据实体保存失败：{type(_e).__name__}: {_e}')
     mesh = marching_tets(occ, grid)
     if len(mesh.faces) == 0:
         raise SystemExit('融合后没有面')

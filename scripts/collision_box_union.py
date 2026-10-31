@@ -173,11 +173,33 @@ def cache_ok(outdir, mesh, pitch):
     return True, 'ok'
 
 
+def verify_boxes_cover(boxes, occ):
+    """把每个 box 覆盖的格子展开，与输入占据逐格比对。
+
+    返回 {'identical': bool, 'gaps': int, 'extra': int, 'overlap_cells': int}。
+    漏格/多格/重叠都说明合并破坏了实体，不能拿去当碰撞体。
+    """
+    exp = np.zeros(occ.shape, dtype=np.int16)
+    overlap = 0
+    for (i0, i1, j0, j1, k0, k1) in boxes:
+        sl = (slice(i0, i1 + 1), slice(j0, j1 + 1), slice(k0, k1 + 1))
+        sub = exp[sl]
+        overlap += int((sub > 0).sum())
+        sub += 1
+    got = exp > 0
+    gaps = int((occ & ~got).sum())
+    extra = int((~occ & got).sum())
+    return {'identical': bool(gaps == 0 and extra == 0 and overlap == 0),
+            'gaps': gaps, 'extra': extra, 'overlap_cells': overlap}
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--occupancy', default=None,
+                    help='直接读取融合保存的 occ.npz（不再重新采样/膨胀/填充）')
     ap.add_argument('--solid-from-mesh', action='store_true',
                     help='直接对水密网格体素化并填内部（细网格上更稳）')
-    ap.add_argument('--mesh', required=True)
+    ap.add_argument('--mesh', required=False)
     ap.add_argument('--out', required=True)
     ap.add_argument('--pitch', type=float, default=0.005)
     ap.add_argument('--hypothesis-id', default='box_union')
@@ -187,7 +209,7 @@ def main():
                     help='若缓存身份匹配则直接复用（不重建）；不匹配则报错退出')
     ap.add_argument('--force', action='store_true', help='配合 --reuse 时强制重建')
     a = ap.parse_args()
-    src = pathlib.Path(a.mesh)
+    src = pathlib.Path(a.mesh) if a.mesh else None
     if a.reuse and not a.force:
         ok, why = cache_ok(a.out, src, a.pitch)
         if ok:
@@ -195,7 +217,19 @@ def main():
             return
         # 身份不匹配时**拒绝**复用，也不覆盖旧缓存（避免一次错参数把合格缓存冲掉）
         raise SystemExit(f'缓存身份不匹配（{why}）：拒绝复用；如确需重建请去掉 --reuse 或加 --force')
-    mesh = FZ._load_mesh(src)
+    if getattr(a, 'occupancy', None):
+        z = np.load(a.occupancy, allow_pickle=False)
+        occ_in = np.asarray(z['occupied'], dtype=bool)
+        origin_in = np.asarray(z['origin'], dtype=float)
+        pitch_in = float(z['pitch'])
+        conv = str(z['convention'])
+        grid = {'origin': origin_in, 'pitch': pitch_in, 'dims': occ_in.shape}
+        occ = occ_in
+        stats = {'solid_method': 'occupancy_file', 'occupancy_sha': str(z['content_sha']),
+                 'convention': conv}
+        mesh = None
+    else:
+        mesh = FZ._load_mesh(src)
     if getattr(a, 'solid_from_mesh', False) and not mesh.is_watertight:
         # 浮点往返可能让边配对失效：按容差合并顶点后再判一次
         mesh.merge_vertices()
@@ -203,9 +237,14 @@ def main():
         trimesh.repair.fix_normals(mesh)
         print(json.dumps({'note': 'merged vertices to recover watertightness',
                           'watertight': bool(mesh.is_watertight)}, ensure_ascii=False))
-    occ, grid, stats = occupancy_from_mesh(mesh, a.pitch, margin=1,
-                                           solid_from_mesh=getattr(a, 'solid_from_mesh', False))
+    if not getattr(a, 'occupancy', None):
+        occ, grid, stats = occupancy_from_mesh(mesh, a.pitch, margin=1,
+                                               solid_from_mesh=getattr(a, 'solid_from_mesh', False))
     boxes = merge_boxes_greedy(occ)
+    # 实体化自检：合并必须与输入占据逐格一致（无漏格、无新增、无重复覆盖）
+    cover = verify_boxes_cover(boxes, occ)
+    if not cover['identical']:
+        raise SystemExit(f'合并后的 box 与输入占据不一致：{cover}')
     out = pathlib.Path(a.out); (out / 'parts').mkdir(parents=True, exist_ok=True)
     files = []
     total = 0.0
@@ -227,7 +266,9 @@ def main():
         'coordinate_frame': 'world', 'source_kind': 'box_union',
         'parts': files, 'T_world_from_asset': np.eye(4).tolist(),
         'body_pose_expected': {'pos': [0.0, 0.0, 0.0], 'quat': [1.0, 0.0, 0.0, 0.0]},
-        'world_sha': sha_file(src), 'raw_sha': sha_file(src),
+        'world_sha': sha_file(src) if src else None,
+                      'raw_sha': sha_file(src) if src else None,
+                      'source_kind': 'occupancy' if getattr(a, 'occupancy', None) else 'mesh',
         'collision_sha': collision_sha,
         'pitch_m': a.pitch, 'n_boxes': len(boxes),
         'n_source_voxels': int(occ.sum()),
@@ -236,7 +277,7 @@ def main():
         'grid_dims': [int(x) for x in grid['dims']],
         'pass': True, 'rest_pose': False, 'rescaled': False,
         'cache_identity': {
-          'source_sha': sha_file(src),
+          'source_sha': sha_file(src) if src else stats.get('occupancy_sha'),
           'build_pitch_m': float(a.pitch),
           'algorithm': VERSION,
           'solid_method': stats.get('solid_method'),
@@ -261,7 +302,8 @@ def main():
         raise SystemExit(f'box 数 {len(boxes)} 超过上限 {a.max_geoms}')
     print(json.dumps({'n_boxes': len(boxes), 'collision_sha': collision_sha,
                       'boxes_volume_m3': man['boxes_volume_m3'],
-                      'source_voxels': man['n_source_voxels']}, ensure_ascii=False))
+                      'source_voxels': man['n_source_voxels'],
+                      'cover_check': cover}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

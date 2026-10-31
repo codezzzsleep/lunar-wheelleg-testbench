@@ -1,0 +1,69 @@
+{
+  "schema": "two-view-occupancy/v1",
+  "parent_id": "V7_R03_s1",
+  "obs1": "runs/unseen/recovery_r3/obs_R03",
+  "obs2": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+  "pitch_m": 0.0025,
+  "occupancy": {
+    "n_voxels": 1546336,
+    "n_occupied": 618441,
+    "content_sha": "307f272559b15d36c63c7b59955ad788d554bd9cf04b4166f15ecd6ef899a85a",
+    "parent_voxels": 656147,
+    "shell1": 17742,
+    "shell2": 30073,
+    "free1": 703233,
+    "free2": 757080
+  },
+  "conflict": {
+    "shell1_into_free2": 54,
+    "shell2_into_free1": 2,
+    "free1_free2_agree": 686864,
+    "unknown_both": 741504,
+    "parent_kept_where_unknown": 587082,
+    "carved_by_free1": 22446,
+    "carved_by_free2": 46212
+  },
+  "space_stats": {
+    "obs1": {
+      "n_voxels": 1546336,
+      "n_free": 703233,
+      "n_band": 17742,
+      "n_unknown": 825361,
+      "n_in_fov": 1546336,
+      "n_valid_depth": 1546336,
+      "n_depth_edge_px": 60845,
+      "n_constrained_px": 1199008,
+      "depth_edge_threshold_m": 0.02,
+      "valid_depth_frac": 1.0,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    },
+    "obs2": {
+      "n_voxels": 1546336,
+      "n_free": 757080,
+      "n_band": 30073,
+      "n_unknown": 759183,
+      "n_in_fov": 1546336,
+      "n_valid_depth": 1546336,
+      "n_depth_edge_px": 44768,
+      "n_constrained_px": 1496691,
+      "depth_edge_threshold_m": 0.02,
+      "valid_depth_frac": 1.0,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    }
+  },
+  "parent_stats": {
+    "solid_method": "ray_parity",
+    "watertight_parent": true,
+    "n_inside_voxels": 656147
+  },
+  "mesh": {
+    "faces": 507344,
+    "watertight": true,
+    "volume_m3": 0.009664550781249994
+  },
+  "formula": "O = (P | S1 | S2) & ~(F1 | F2)"
+}

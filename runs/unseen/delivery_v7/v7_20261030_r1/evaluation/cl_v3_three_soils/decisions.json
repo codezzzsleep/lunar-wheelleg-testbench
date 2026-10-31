@@ -1,0 +1,187 @@
+{
+  "schema": "closed-loop-decisions/v7",
+  "decision_sha": "f418de778d2a8e9e93804280bade0c071942a3fb74b4740bee3c6c4c804ec78c",
+  "written_at": 1793445094.0803216,
+  "decision": {
+    "rule": "worst-case-risk/v2",
+    "tau": 0.0,
+    "c_fail": 60.0,
+    "c_abort": 40.0,
+    "hypotheses": [
+      "tvocc_R03_s1_v3"
+    ],
+    "n_seeds": 3,
+    "stats": {
+      "R1": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.2,
+            "costs": [
+              16.92,
+              17.2,
+              16.74
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 17.2,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "R2": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 18.66,
+            "costs": [
+              18.34,
+              18.66,
+              18.4
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 18.66,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "L1": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.68,
+            "costs": [
+              17.64,
+              17.68,
+              17.4
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 17.68,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "L2": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.3,
+            "costs": [
+              17.3,
+              17.2,
+              16.74
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 17.3,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "S1": {
+        "missing": [
+          "S1/tvocc_R03_s1_v3: missing seeds [(0, 'high_drag'), (0, 'low_traction'), (0, 'nominal')]"
+        ],
+        "safe": false,
+        "insufficient": true
+      },
+      "D1": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 17.24,
+            "costs": [
+              17.24,
+              17.16,
+              17.08
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 17.24,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      },
+      "D2": {
+        "per_hypothesis": {
+          "tvocc_R03_s1_v3": {
+            "fails": 0,
+            "n": 3,
+            "f": 0.0,
+            "max_cost": 18.3,
+            "costs": [
+              17.58,
+              18.08,
+              18.3
+            ]
+          }
+        },
+        "risk": 0.0,
+        "worst_cost": 18.3,
+        "safe": true,
+        "missing": [],
+        "insufficient": false
+      }
+    },
+    "safe_set": [
+      "R1",
+      "D1",
+      "L2",
+      "L1",
+      "D2",
+      "R2"
+    ],
+    "chosen": "R1",
+    "no_robust_option": false,
+    "tie": false,
+    "tied_options": [
+      "R1"
+    ],
+    "insufficient_evidence": false,
+    "missing": [
+      "S1/tvocc_R03_s1_v3: missing seeds [(0, 'high_drag'), (0, 'low_traction'), (0, 'nominal')]"
+    ],
+    "reason_text": "在 1 个候选 × 3 个冻结初态上均完成；按最坏代价选 R1（tie=False）",
+    "contract": {
+      "n_cells": 18,
+      "n_unique": 18,
+      "n_dup": 0,
+      "n_missing": 0,
+      "n_not_applicable": 3,
+      "n_states": 1,
+      "n_expected_cells": 21
+    },
+    "n_cells": 18,
+    "n_skipped": 3,
+    "n_states": 1,
+    "n_candidates": 1,
+    "n_soil": 3,
+    "actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "decision_rule": "worst-case-risk/v2"
+  }
+}

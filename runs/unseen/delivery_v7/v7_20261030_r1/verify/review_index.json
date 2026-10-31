@@ -210,5 +210,14 @@
   },
   "consistency": {
     "file": "runs/unseen/delivery_v7/v7_20261030_r1/verify/consistency_checks.json"
-  }
+  },
+  "open_items": [
+    {
+      "id": "closed_loop_identical_final_x",
+      "what": "两个不同决策的闭环（D1 与 R1）真值执行记录 final_x 都是 3.603、displacement 3.0895，但 option/action_fingerprint/control_steps(251 vs 240)/decision_sha 都不同，initial_full_hash 相同",
+      "status": "unresolved",
+      "why_it_matters": "若 final_x 由固定边界或缓存决定，则两条执行不是独立证据；先不宣称\"两种动作都成功\"",
+      "next": "在读 truth 执行结果的位置打印 final_x 的来源与终止条件，确认是否撞同一终止边界"
+    }
+  ]
 }

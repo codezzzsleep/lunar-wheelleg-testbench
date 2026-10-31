@@ -1,0 +1,104 @@
+{
+  "schema": "demo-pack/v1",
+  "name": "r1_r03_two_view",
+  "case": "R03 two-view update",
+  "code_head": "294105d2e22efaf6fd59f5ecaec3ac9bc389316e",
+  "rebuild_steps": [
+    "python scripts/v7_rebuild_from_occ.py --occ inputs/occ_two_view.npz --out rebuilt",
+    "python scripts/collision_box_union.py --occupancy inputs/occ_two_view.npz --out rebuilt/collision --pitch 0.0025 --hypothesis-id demo",
+    "python scripts/collision_occupancy_metrics.py --mesh rebuilt/body.stl --collision rebuilt/collision --out rebuilt/collision/metrics.json --parity full"
+  ],
+  "items": [
+    {
+      "path": "inputs/case.json",
+      "kind": "file",
+      "bytes": 312,
+      "sha256": "2814a8eea6273a29e230d525b73dbbe4d5ad84fb227210ce0ab4605b8fc1ad6f",
+      "note": "案例描述（对象、位置、可见量来源）"
+    },
+    {
+      "path": "inputs/obs_first",
+      "kind": "dir",
+      "n_files": 9,
+      "sha256_tree": "9506595c5726566cd6a016ace35871ff51c0f46c67534bc454549de86d6850ae",
+      "note": "第一视角观测包"
+    },
+    {
+      "path": "inputs/obs_second",
+      "kind": "dir",
+      "n_files": 11,
+      "sha256_tree": "a1506d32c1c38b87bc179e32a337dc32c0046929d03ecba1f0f2f6bfb2dd5600",
+      "note": "真实行驶后第二视角观测"
+    },
+    {
+      "path": "inputs/parent/body.stl",
+      "kind": "file",
+      "bytes": 705584,
+      "sha256": "ad63d9c20d28d08f7f19884f3d122ed485c6dd119756ca1a5d4c5f8c967cf138",
+      "note": "Lux3D 父候选网格"
+    },
+    {
+      "path": "inputs/config_fusion.json",
+      "kind": "file",
+      "bytes": 1723,
+      "sha256": "48c514cf53575c4c4dc5d385afde8a18f9343b6ec8ebd14c43f79fe1a4b795e8",
+      "note": "有效融合配置"
+    },
+    {
+      "path": "inputs/occ_two_view.npz",
+      "kind": "file",
+      "bytes": 28473,
+      "sha256": "778d504a8859b47c08baacc17dbb7d5e910bfb13d431e4952725cc115b579beb",
+      "note": "两视角占据实体（坐标约定写在文件内）"
+    },
+    {
+      "path": "inputs/collision_manifest.json",
+      "kind": "file",
+      "bytes": 461803,
+      "sha256": "1e3d2dd8d80982ef59dbf6d07dc38f19d9e2f7efc45a95931b29d19a29850537",
+      "note": "碰撞构建清单（box 定义，STL 可重建）"
+    },
+    {
+      "path": "acceptance/visible.json",
+      "kind": "file",
+      "bytes": 226,
+      "sha256": "68c5ab6b0d2bf40ccd388bb199a115f90a3ba5f4dce981ab5e47a46bb8d798aa",
+      "note": "可见双视角验收"
+    },
+    {
+      "path": "acceptance/collision.json",
+      "kind": "file",
+      "bytes": 2998,
+      "sha256": "73a6ec92d75d91be3eddf06c974bcc4008c9a9d456af7f572ee7afca1a948114",
+      "note": "碰撞保真验收"
+    },
+    {
+      "path": "closed_loop/matrix.jsonl",
+      "kind": "file",
+      "bytes": 13747,
+      "sha256": "fc8fd15b5aad064e1db42deb7c161815a709707f6ae9c966c30047406bb19269",
+      "note": "闭环原始证据"
+    },
+    {
+      "path": "closed_loop/decisions.json",
+      "kind": "file",
+      "bytes": 4026,
+      "sha256": "977adad659eb2d0ad26c35adbe81adf18ac660f389f551e19bbd456ac0548240",
+      "note": "闭环原始证据"
+    },
+    {
+      "path": "closed_loop/decision_events.jsonl",
+      "kind": "file",
+      "bytes": 370,
+      "sha256": "ac14118ae95925e800571f9d240873ff619994196f06a71187f249bd7092a849",
+      "note": "闭环原始证据"
+    },
+    {
+      "path": "closed_loop/closed_loop.json",
+      "kind": "file",
+      "bytes": 3678,
+      "sha256": "273ee2666b5cd9796a93c5dbd6e8e6283fb1f747b7c5f892dcd324224c971277",
+      "note": "闭环原始证据"
+    }
+  ]
+}

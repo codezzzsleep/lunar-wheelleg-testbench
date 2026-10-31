@@ -194,3 +194,28 @@ CNB 沙箱：8 核 / 16 GB / 512 GB 盘，镜像自带 mujoco 3.17.0 + OSMesa；
 
 **判定依据**：执行代码、入口、矩阵与状态合同、两视角更新、播放器、负例、验收均已落地并有证据；
 但「碰撞表示」与「重规划/真值续行」未闭合，且数据层不可复现，故 execution/evidence/capability 均为 PARTIAL。
+
+---
+
+## 十三、交接状态（写作时仍在运行）
+
+| 任务 | 状态 | 日志 / 产物 |
+| --- | --- | --- |
+| R02_s2 按新口径重测 | **融合完成**（12:11，`recal_V7_R02_s2/body.stl` 32 MB），碰撞测量运行中 | 日志 `/tmp/refuse2.log`；产物 `runs/.../fusion_diagnostics/recal_V7_R02_s2/` |
+| R04_s2 按新口径重测 | 排队（脚本第二个） | 同上 |
+| 页面后端 | 已完成并实测 | `scripts/v7_server.py`，run_id `20261031T120326-e01aec` |
+
+重跑命令：
+
+```bash
+cd /var/lib/deepseek-harness/lunar-lab
+export LD_LIBRARY_PATH=/tmp/sysroot/usr/lib/x86_64-linux-gnu:/tmp/sysroot/lib/x86_64-linux-gnu MUJOCO_GL=osmesa
+.venv/bin/python scripts/fuse_observed.py --observation runs/unseen/recovery_r3/obs_R02 \
+  --parent-world runs/unseen/delivery_v7/v7_20261030/candidates/V7_R02_s2/world/align \
+  --parent-id V7_R02_s2 --method H5_F \
+  --out runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2 \
+  --pitch 0.0025 --config configs/unseen_v7_r1_fusion_offset1.json
+.venv/bin/python scripts/v7_measure_candidate.py \
+  --fusion runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2 \
+  --pitch 0.0025 --eval-pitch 0.004
+```

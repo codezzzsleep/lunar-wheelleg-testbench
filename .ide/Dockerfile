@@ -23,7 +23,9 @@ RUN python3 -m venv /opt/lunar \
         coacd==1.0.14 \
         manifold3d==3.5.4 \
         pillow==13.0.0 \
-        pyyaml==6.0.2
+        pyyaml==6.0.2 \
+        rtree==1.4.1 \
+        networkx==3.7
 ENV PATH=/opt/lunar/bin:$PATH \
     VIRTUAL_ENV=/opt/lunar
 

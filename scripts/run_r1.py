@@ -177,6 +177,10 @@ def s_verify(a):
     return sh([PY, 'scripts/verify_delivery_r1.py'], a.dry_run)
 
 
+def order_all():
+    return ['observe', 'candidate', 'fuse', 'measure', 'closed_loop', 'six', 'page', 'verify']
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--stage', default='all',
@@ -186,13 +190,30 @@ def main():
     ap.add_argument('--allow-generate', action='store_true',
                     help='允许调用云端生成（会花钱）；默认不调用')
     ap.add_argument('--stop-on-fail', action='store_true', default=True)
+    ap.add_argument('--manifest', default=None,
+                    help='按权威运行清单执行：先校验清单，再跑对应阶段')
     ap.add_argument('--audit', action='store_true',
                     help='只检查各阶段声明的输入是否存在（入口与实际产物是否脱节）')
     a = ap.parse_args()
+    if a.manifest:
+        # 清单驱动的薄编排：先校验清单（缺文件即失败），再按清单里的阶段跑
+        import subprocess as _sp
+        chk = _sp.run([PY, 'scripts/v7_run_manifest.py', '--manifest', a.manifest, '--check'],
+                      capture_output=True, text=True)
+        if chk.returncode != 0:
+            print(chk.stdout[-2000:])
+            raise SystemExit('清单校验失败：拒绝执行')
+        man = json.loads((ROOT / a.manifest).read_text())
+        want = man.get('run', {}).get('stages') or order_all()
+        print('清单校验通过；阶段：' + ' → '.join(want))
+        a.stage = 'all'
+        todo_from_manifest = [x for x in want if x in STAGES]
+    else:
+        todo_from_manifest = None
     if a.audit:
         return audit()
     order = ['observe', 'candidate', 'fuse', 'measure', 'closed_loop', 'six', 'page', 'verify']
-    todo = order if a.stage == 'all' else [a.stage]
+    todo = todo_from_manifest or (order if a.stage == 'all' else [a.stage])
     print('阶段顺序：' + ' → '.join(order))
     rc_all = 0
     for name in todo:

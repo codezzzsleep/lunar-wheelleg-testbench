@@ -1,0 +1,176 @@
+{
+  "schema": "six-smoke/v1",
+  "rows": {
+    "W_width_rule(diagnostic)": {
+      "seed0": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed1": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed2": {
+        "n": 1,
+        "ok": 0
+      }
+    },
+    "B2_box": {
+      "seed0": {
+        "n": 9,
+        "ok": 0
+      },
+      "seed1": {
+        "n": 9,
+        "ok": 0
+      },
+      "seed2": {
+        "n": 9,
+        "ok": 0
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 0
+      }
+    },
+    "B3_mirror": {
+      "seed0": {
+        "n": 9,
+        "ok": 0
+      },
+      "seed1": {
+        "n": 9,
+        "ok": 0
+      },
+      "seed2": {
+        "n": 9,
+        "ok": 0
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 0
+      }
+    },
+    "H5_lux3d": {
+      "seed0": {
+        "n": 17,
+        "ok": 6
+      },
+      "seed1": {
+        "n": 17,
+        "ok": 4
+      },
+      "seed2": {
+        "n": 17,
+        "ok": 5
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 1
+      }
+    },
+    "U_truth": {
+      "seed0": {
+        "n": 9,
+        "ok": 2
+      },
+      "seed1": {
+        "n": 9,
+        "ok": 2
+      },
+      "seed2": {
+        "n": 9,
+        "ok": 2
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 1
+      }
+    },
+    "B0_blind": {
+      "seed0": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed1": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed2": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 0
+      }
+    },
+    "B1_height": {
+      "seed0": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed1": {
+        "n": 1,
+        "ok": 0
+      },
+      "seed2": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed3": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed4": {
+        "n": 1,
+        "ok": 0
+      },
+      "val_seed5": {
+        "n": 1,
+        "ok": 0
+      }
+    }
+  },
+  "caveat": "冒烟用；各方法分母不同（H5 多候选展开），不能直接横向比较，正式比较需对齐同一键集"
+}

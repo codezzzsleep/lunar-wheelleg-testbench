@@ -34,6 +34,8 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--config', default='configs/unseen_v6_1_fusion.json')
     ap.add_argument('--pitch', type=float, default=None)
+    ap.add_argument('--reuse', action='store_true',
+                    help='若 view1_fusion/view2_fusion 已存在则复用，不重复融合')
     a = ap.parse_args()
     cfg = json.loads((ROOT / a.config).read_text())
     if a.pitch:
@@ -42,14 +44,37 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     tmp1 = out / 'view1_fusion'
     tmp2 = out / 'view2_fusion'
-    FZ.fuse(str(ROOT / a.obs1), str(ROOT / a.parent), a.parent_id, str(tmp1), cfg)
-    FZ.fuse(str(ROOT / a.obs2), str(ROOT / a.parent), a.parent_id, str(tmp2), cfg)
+    if not (a.reuse and (tmp1 / 'body.stl').exists()):
+        FZ.fuse(str(ROOT / a.obs1), str(ROOT / a.parent), a.parent_id, str(tmp1), cfg)
+    if not (a.reuse and (tmp2 / 'body.stl').exists()):
+        FZ.fuse(str(ROOT / a.obs2), str(ROOT / a.parent), a.parent_id, str(tmp2), cfg)
     m1 = trimesh.load(str(tmp1 / 'body.stl'), force='mesh', process=False)
     m2 = trimesh.load(str(tmp2 / 'body.stl'), force='mesh', process=False)
-    inter = m1.intersection(m2)
-    if inter is None or len(inter.faces) == 0:
-        raise SystemExit('两视角交集为空（两个融合体没有共同部分），拒绝产出空候选')
+    # 布尔引擎要求水密体积，而 marching cubes 出来的融合体不一定水密。
+    # 改用**体素求交**：两个融合体各自占据化，取交集再 marching cubes。
+    import collision_occupancy_metrics as M
+    lo = np.minimum(m1.bounds[0], m2.bounds[0]) - 2 * cfg['pitch_m']
+    hi = np.maximum(m1.bounds[1], m2.bounds[1]) + 2 * cfg['pitch_m']
+    dims = np.ceil((hi - lo) / cfg['pitch_m']).astype(int) + 1
+    xs = lo[0] + (np.arange(dims[0]) + 0.5) * cfg['pitch_m']
+    ys = lo[1] + (np.arange(dims[1]) + 0.5) * cfg['pitch_m']
+    zs = lo[2] + (np.arange(dims[2]) + 0.5) * cfg['pitch_m']
+    X, Y, Z = np.meshgrid(xs, ys, zs, indexing='ij')
+    pts = np.stack([X.ravel(), Y.ravel(), Z.ravel()], axis=1)
+    o1 = M.ray_parity(m1, pts).reshape(dims)
+    o2 = M.ray_parity(m2, pts).reshape(dims)
+    both = o1 & o2
+    if int(both.sum()) < 100:
+        raise SystemExit(f'两视角交集过小（{int(both.sum())} 体素），拒绝产出空候选')
+    inter = trimesh.voxel.ops.matrix_to_marching_cubes(both, pitch=cfg['pitch_m'])
+    inter.apply_translation(lo + cfg['pitch_m'] / 2.0)
+    if len(inter.faces) == 0:
+        raise SystemExit('两视角交集为空（marching cubes 无面）')
     inter.export(out / 'body.stl')
+    print(json.dumps({'voxels_view1': int(o1.sum()), 'voxels_view2': int(o2.sum()),
+                      'voxels_both': int(both.sum()),
+                      'only_view1': int((o1 & ~o2).sum()),
+                      'only_view2': int((o2 & ~o1).sum())}, ensure_ascii=False))
     # 两视角验收：交集必须是 m1 的子集，v1 的侵入不应增加
     rep = {'schema': 'two-view-update/v7-r1', 'parent_id': a.parent_id,
            'obs1': a.obs1, 'obs2': a.obs2, 'pitch_m': cfg['pitch_m'],

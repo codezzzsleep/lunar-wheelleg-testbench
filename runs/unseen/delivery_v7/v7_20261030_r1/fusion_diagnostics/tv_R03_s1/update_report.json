@@ -1,0 +1,29 @@
+{
+  "schema": "two-view-update/v7-r1",
+  "parent_id": "V7_R03_s1",
+  "obs1": {
+    "mask_iou": 0.9803,
+    "vis_pt_med_mm": 0.551,
+    "vis_pt_p95_mm": 1.669,
+    "freespace_violation": 0.0126
+  },
+  "obs2": {
+    "mask_iou": 0.9836,
+    "vis_pt_med_mm": 0.587,
+    "vis_pt_p95_mm": 1.761,
+    "freespace_violation": 0.0108
+  },
+  "pitch_m": 0.0025,
+  "faces": {
+    "view1": 513704,
+    "view2": 499144,
+    "intersection": 155078
+  },
+  "volume_m3": {
+    "view1": 0.009748799,
+    "view2": 0.009472633,
+    "intersection": 0.009384878
+  },
+  "construction": "intersection(view1_fusion, view2_fusion)",
+  "passes_both_views": true
+}

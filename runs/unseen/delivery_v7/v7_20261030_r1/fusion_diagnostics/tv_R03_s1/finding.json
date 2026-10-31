@@ -1,0 +1,17 @@
+{
+  "schema": "two-view-update-result/v7-r1",
+  "parent_id": "V7_R03_s1",
+  "obs1": "runs/unseen/recovery_r3/obs_R03",
+  "obs2": "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven",
+  "construction": "voxel-intersection(view1_fusion, view2_fusion)，2.5 mm 网格，marching cubes",
+  "voxels": {"view1": 623972, "view2": 606225, "both": 600864,
+             "only_view1": 23108, "only_view2": 5361},
+  "metrics": {
+    "single_view_fusion_obs1": {"iou": 0.9737, "p95_mm": 1.702, "freespace": 0.0392},
+    "two_view_obs1": {"iou": 0.9803, "p95_mm": 1.669, "freespace": 0.0126},
+    "two_view_obs2": {"iou": 0.9836, "p95_mm": 1.761, "freespace": 0.0108},
+    "previous_single_view_on_obs2": {"iou": 0.9268, "p95_mm": 1.819, "freespace": 0.0737}
+  },
+  "conclusion": "两视角交集同时改善两个视角：第一视角 freespace 0.0392→0.0126，第二视角 0.0737→0.0108；单视角融合在第二视角是被淘汰的，更新后两视角都通过。",
+  "caveat": "构造是体素求交（2.5 mm），交集只会让表面后退，因此结构上不可能通过新增材料破坏第一视角一致性；但仍需真实数据复核（已完成）。"
+}

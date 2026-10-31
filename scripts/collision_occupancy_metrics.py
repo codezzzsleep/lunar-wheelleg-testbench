@@ -96,48 +96,43 @@ def convex_inside(mesh, pts):
 
 
 def exposed_faces(boxes, origin, pitch):
-    """并集**外边界**的 cell 面：某侧相邻格为空才算暴露；内部接缝被排除。
+    """并集**外边界**的 cell 面（逐 cell 判定，支持多 cell 合并盒）。
 
-    支持 cell 索引为负（把索引平移到非负再建占据数组），坐标仍按原 origin 输出。
+    早期实现按"整个 box 的整张面"判断：只要该面外侧有一个邻格为空就整面算暴露，
+    于是**多 cell 合并盒**与相邻盒之间的内部接缝会被当作外表面
+    （任务书 §四.2：两个合并盒 [(0,0,0,1,0,0),(1,1,0,0,0,0)] 与三个单位盒描述同一实体，
+    点 (1,0.5,0.5) 的距离都应为 0.5，旧实现给出 0.0）。
     """
     if not boxes:
         return []
-    i_min = min(b[0] for b in boxes)
-    j_min = min(b[2] for b in boxes)
-    k_min = min(b[4] for b in boxes)
-    i_max = max(b[1] for b in boxes)
-    j_max = max(b[3] for b in boxes)
-    k_max = max(b[5] for b in boxes)
-    dims = (i_max - i_min + 3, j_max - j_min + 3, k_max - k_min + 3)
-    occ = np.zeros(dims, dtype=bool)
+    filled = set()
     for (i0, i1, j0, j1, k0, k1) in boxes:
-        occ[i0 - i_min + 1:i1 - i_min + 2,
-            j0 - j_min + 1:j1 - j_min + 2,
-            k0 - k_min + 1:k1 - k_min + 2] = True
-
-    def occ_at(i, j, k):
-        a, b, c = i - i_min + 1, j - j_min + 1, k - k_min + 1
-        if 0 <= a < dims[0] and 0 <= b < dims[1] and 0 <= c < dims[2]:
-            return bool(occ[a, b, c])
-        return False
-
+        for i in range(i0, i1 + 1):
+            for j in range(j0, j1 + 1):
+                for k in range(k0, k1 + 1):
+                    filled.add((i, j, k))
     faces = []
-    for (i0, i1, j0, j1, k0, k1) in boxes:
-        lo = origin + np.array([i0, j0, k0]) * pitch
-        hi = origin + np.array([i1 + 1, j1 + 1, k1 + 1]) * pitch
-        idx_lo = [i0, j0, k0]
-        idx_hi = [i1, j1, k1]
-        for ax in range(3):
-            for side in (-1, +1):
-                nb = list(idx_hi if side > 0 else idx_lo)
-                nb[ax] += side
-                if not occ_at(*nb):
-                    f_lo = lo.copy(); f_hi = hi.copy()
-                    if side < 0:
-                        f_hi[ax] = f_lo[ax]
-                    else:
-                        f_lo[ax] = f_hi[ax]
-                    faces.append((f_lo, f_hi))
+    for (i, j, k) in filled:
+        for (di, dj, dk) in ((1, 0, 0), (-1, 0, 0), (0, 1, 0),
+                             (0, -1, 0), (0, 0, 1), (0, 0, -1)):
+            if (i + di, j + dj, k + dk) in filled:
+                continue
+            lo = origin + np.array([i, j, k], dtype=float) * pitch
+            hi = lo + pitch
+            f_lo, f_hi = lo.copy(), hi.copy()
+            if di > 0:
+                f_lo[0] = f_hi[0]
+            elif di < 0:
+                f_hi[0] = f_lo[0]
+            elif dj > 0:
+                f_lo[1] = f_hi[1]
+            elif dj < 0:
+                f_hi[1] = f_lo[1]
+            elif dk > 0:
+                f_lo[2] = f_hi[2]
+            else:
+                f_hi[2] = f_lo[2]
+            faces.append((f_lo, f_hi))
     return faces
 
 

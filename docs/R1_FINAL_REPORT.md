@@ -185,7 +185,18 @@ CNB 沙箱：8 核 / 16 GB / 512 GB 盘，镜像自带 mujoco 3.17.0 + OSMesa；
 
 ---
 
-## 十二、状态
+## 十二、复核后的更正（2026-10-31 移交轮）
+
+| 项 | 原结论 | 复核后 |
+| --- | --- | --- |
+| 碰撞评价器已知答案 | 8/8 通过 | **8/8 仍通过**；但任务书指定的"合并盒 vs 三单位盒"检验在修复前给出 **0.0**，已修（逐 cell 判暴露面），现在两者都 0.5，见 `verify/known_answer_review.json` |
+| 18 项生产反例 | 18/18 通过 | **仅 6 项真正调用生产路径**（N05/N06/N07/N08/N13/N14）；6 项自证式、2 项写死、2 项读旧报告、1 项弱检查、1 项部分，见 `verify/negatives_18_classification.json` |
+| V7_R02_s2 新口径合格 | 合格（0.9893/0.799/0.820） | **撤回**：该次测量 `source_status.watertight=false`、`source_volume_defined=false`，占据 IoU 不可作资格 |
+| 所有碰撞 s2c | 视为有效 | **重新定性**：s2c 由修复前的 `box_surface_distance` 计算，内部接缝被当外表面，值偏小；需重测后才能用于资格 |
+| 闭环 R03 决策 | R1（two_qualified）/ D1（三土壤） | **输入错误**：闭环阶段此前喂 R01 可见量（W_vis 0.143 vs R03 0.458），已修入口；两结果需重跑 |
+| 两视角更新体 | 合格（0.9684 PASS） | **撤回**：0.9684 来自体素填充闭合网格（形状已变，可见 freespace 0.3988/0.2199）；有效测量为 0.8832/0.9025，不合格 |
+
+## 十三、状态
 
 ```json
 {"execution_status":"PARTIAL","evidence_status":"PARTIAL","capability_status":"PARTIAL",

@@ -1,0 +1,25 @@
+{
+  "schema": "collision-known-answer/review-2026-10-31",
+  "evaluator": "collision_occupancy_metrics.box_surface_distance (cell-granular exposed faces)",
+  "point": [
+    1.0,
+    0.5,
+    0.5
+  ],
+  "pitch": 1.0,
+  "cases": {
+    "merged_two_boxes": {
+      "distance": 0.5,
+      "expected": 0.5,
+      "pass": true,
+      "n_exposed_faces": 14
+    },
+    "three_unit_boxes": {
+      "distance": 0.5,
+      "expected": 0.5,
+      "pass": true,
+      "n_exposed_faces": 14
+    }
+  },
+  "verdict": "PASS"
+}

@@ -1,0 +1,105 @@
+{
+  "schema": "negatives-18-classification/review-2026-10-31",
+  "note": "按任务书 §四.4 要求，把原\"18/18 通过\"逐项定性；只有 production 类可继续称为生产反例",
+  "counts": {
+    "tautology": 6,
+    "partial": 1,
+    "production": 6,
+    "weak": 1,
+    "reads_old_report": 2,
+    "hardcoded": 2
+  },
+  "items": [
+    {
+      "id": "N01_cross_case_observation",
+      "class": "tautology",
+      "why": "比较两个字典字面量，未调用生产函数"
+    },
+    {
+      "id": "N02_upstream_change_invalidates",
+      "class": "tautology",
+      "why": "比较两个字典字面量"
+    },
+    {
+      "id": "N03_fail_report_not_done",
+      "class": "tautology",
+      "why": "对字面量 {\"verdict\":\"FAIL\"} 做比较"
+    },
+    {
+      "id": "N04_truncated_manifest_rejected",
+      "class": "partial",
+      "why": "调用 json 解析截断文本，非生产 manifest 读取路径"
+    },
+    {
+      "id": "N05_duplicate_and_missing_cell",
+      "class": "production",
+      "why": "调用 decision.evaluate + v7_decision_contract.validate"
+    },
+    {
+      "id": "N06_missing_group",
+      "class": "production",
+      "why": "同上，缺整组被合同拒绝"
+    },
+    {
+      "id": "N07_error_not_not_applicable",
+      "class": "production",
+      "why": "调用 decision.evaluate，rehearsal_error 计入风险"
+    },
+    {
+      "id": "N08_empty_safe_set_a0",
+      "class": "production",
+      "why": "decision.evaluate + validate(A0 需原因)"
+    },
+    {
+      "id": "N09_execution_before_decision",
+      "class": "tautology",
+      "why": "对字面量时间戳取 min 比较"
+    },
+    {
+      "id": "N10_same_snapshot_three_seeds",
+      "class": "tautology",
+      "why": "对同一字面量算 hash 后比较"
+    },
+    {
+      "id": "N11_wrong_scene_restore",
+      "class": "weak",
+      "why": "只做 hasattr 检查，未触发恢复失败"
+    },
+    {
+      "id": "N12_tamper_fields_hashed",
+      "class": "reads_old_report",
+      "why": "读取 state_contract.json 的布尔值"
+    },
+    {
+      "id": "N13_missing_vs_zero_p95",
+      "class": "production",
+      "why": "调用 v7_second_view_screen.verdict_of"
+    },
+    {
+      "id": "N14_union_boundary_known_answer",
+      "class": "production",
+      "why": "调用 box_surface_distance（修复后 0.5）"
+    },
+    {
+      "id": "N15_old_caliber_flagged",
+      "class": "reads_old_report",
+      "why": "读取 manifest 的字段是否存在"
+    },
+    {
+      "id": "N16_two_view_must_keep_first",
+      "class": "hardcoded",
+      "why": "写死 True，仅文字论证"
+    },
+    {
+      "id": "N17_empty_trajectory",
+      "class": "tautology",
+      "why": "自己写空文件再断言为空"
+    },
+    {
+      "id": "N18_resume_no_create",
+      "class": "hardcoded",
+      "why": "写死 {\"create\":0}"
+    }
+  ],
+  "real_production_count": 6
+}

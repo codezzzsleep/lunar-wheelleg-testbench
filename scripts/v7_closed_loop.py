@@ -165,7 +165,8 @@ def main():
                                         'state_hash': st['state_hash'],
                                         'soil_config': soil_label,
                                         'error': err, 'counted_as_failure': True})
-                        matrix.append({'option': act, 'hypothesis_id': h['id'],
+                        matrix.append({'option': act, 'candidate': h['id'],
+                                       'hypothesis_id': h['id'],
                                        'seed': st['seed'], 'soil_config': soil_label,
                                        'state_hash': st['state_hash'],
                                        'success': False, 'abort': True,

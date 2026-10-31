@@ -1,0 +1,62 @@
+{
+  "svd_false_but_pass": [
+    {
+      "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2/collision/metrics_full.json",
+      "verdict": "PASS",
+      "iou": 0.9893,
+      "svd": false
+    }
+  ],
+  "sample_counts": [],
+  "protocol_mentions_old_or_revoked": [
+    {
+      "file": "plans/unseen_v7_protocol_six.json",
+      "mentions": [
+        "V7_R03_s2",
+        "R03_engine"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_R02_high_drag.json",
+      "mentions": [
+        "V7_R02_s2"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_R02_low_traction.json",
+      "mentions": [
+        "V7_R02_s2"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_R02_nominal.json",
+      "mentions": [
+        "V7_R02_s2"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_high_drag.json",
+      "mentions": [
+        "V7_R03_s2",
+        "R03_engine"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_low_traction.json",
+      "mentions": [
+        "V7_R03_s2",
+        "R03_engine"
+      ]
+    },
+    {
+      "file": "plans/unseen_v7_protocol_six_nominal.json",
+      "mentions": [
+        "V7_R03_s2",
+        "R03_engine"
+      ]
+    }
+  ],
+  "r03_engine_refs": [
+    "runs/unseen/delivery_v7/v7_20261030_r1/cases/R03_qualified_hyps.json"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "attribution/v1",
+  "config": "R01@1.0 nominal",
+  "question": "成功是否依赖多假设，还是单候选就够",
+  "rows": [
+    {
+      "variant": "both_candidates",
+      "exec_n": 3,
+      "exec_ok": 3,
+      "val_n": 3,
+      "val_ok": 1,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "variant": "single_s1",
+      "exec_n": 3,
+      "exec_ok": 3,
+      "val_n": 3,
+      "val_ok": 1,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "variant": "single_s2",
+      "exec_n": 3,
+      "exec_ok": 0,
+      "val_n": 3,
+      "val_ok": 0,
+      "actions": [
+        "S1"
+      ]
+    }
+  ],
+  "reading": {
+    "multi_vs_single": "两候选与只用 V7_R01_s1 完全同分（3/3 执行、1/3 验证，都选 R2）→ 多假设在此格没有带来收益",
+    "wrong_single": "只用 V7_R01_s2 时 0/3，选择 S1 → 单候选若选错会失败",
+    "procedural_equal_count": "程序化先验 B2_box、B3_mirror 在同样初态上也是 0/3，说明差异来自候选质量而非假设数量",
+    "conclusion": "本格的成功归因于 V7_R01_s1 这个具体候选的几何质量；增加候选数量（s2）没有改变决策，也没有提升成功率"
+  }
+}

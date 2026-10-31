@@ -1,0 +1,228 @@
+{
+  "schema": "truth-scan-summary/v2",
+  "source": "case truth meshes stone_materials/R0X.stl scaled 0.9/1.0/1.1",
+  "n_rows": 168,
+  "n_episodes": 150,
+  "n_not_applicable": 18,
+  "by_outcome": {
+    "tipped": 81,
+    "success": 58,
+    "timeout": 11,
+    "not_applicable": 18
+  },
+  "per_config": {
+    "R01@0.9": {
+      "success": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "tipped": 3,
+      "timeout": 1,
+      "not_applicable": 0
+    },
+    "R01@1.0": {
+      "success": [
+        "L2",
+        "S1"
+      ],
+      "tipped": 8,
+      "timeout": 2,
+      "not_applicable": 0
+    },
+    "R01@1.1": {
+      "success": [],
+      "tipped": 8,
+      "timeout": 6,
+      "not_applicable": 0
+    },
+    "R02@0.9": {
+      "success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "tipped": 0,
+      "timeout": 2,
+      "not_applicable": 2
+    },
+    "R02@1.0": {
+      "success": [],
+      "tipped": 12,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R02@1.1": {
+      "success": [],
+      "tipped": 12,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R03@0.9": {
+      "success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "tipped": 0,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R03@1.0": {
+      "success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "tipped": 0,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R03@1.1": {
+      "success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "tipped": 2,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R04@0.9": {
+      "success": [],
+      "tipped": 12,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R04@1.0": {
+      "success": [],
+      "tipped": 12,
+      "timeout": 0,
+      "not_applicable": 2
+    },
+    "R04@1.1": {
+      "success": [],
+      "tipped": 12,
+      "timeout": 0,
+      "not_applicable": 2
+    }
+  },
+  "discriminating_scenes": [
+    {
+      "scene": "R01@0.9",
+      "seed": 0,
+      "ok": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "fail": [
+        "L1",
+        "R1"
+      ]
+    },
+    {
+      "scene": "R01@0.9",
+      "seed": 1,
+      "ok": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "fail": [
+        "L1",
+        "R1"
+      ]
+    },
+    {
+      "scene": "R01@1.0",
+      "seed": 0,
+      "ok": [
+        "L2",
+        "S1"
+      ],
+      "fail": [
+        "D1",
+        "D2",
+        "L1",
+        "R1",
+        "R2"
+      ]
+    },
+    {
+      "scene": "R01@1.0",
+      "seed": 1,
+      "ok": [
+        "L2",
+        "S1"
+      ],
+      "fail": [
+        "D1",
+        "D2",
+        "L1",
+        "R1",
+        "R2"
+      ]
+    },
+    {
+      "scene": "R02@0.9",
+      "seed": 0,
+      "ok": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "fail": [
+        "L1",
+        "R1"
+      ]
+    },
+    {
+      "scene": "R03@1.1",
+      "seed": 0,
+      "ok": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "fail": [
+        "L1"
+      ]
+    },
+    {
+      "scene": "R03@1.1",
+      "seed": 1,
+      "ok": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R2"
+      ],
+      "fail": [
+        "R1"
+      ]
+    }
+  ]
+}

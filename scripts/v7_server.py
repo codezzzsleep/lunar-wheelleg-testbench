@@ -55,6 +55,17 @@ def start_job(payload):
             job['success'] = last.get('success')
             job['n_frames'] = last.get('n_frames')
             job['state'] = 'done' if p.returncode == 0 else 'failed'
+            # 完成后立即生成该 run 的播放器，并给出可直接打开的地址
+            trail = out / 'rerun_trajectory.jsonl'
+            if trail.exists() and trail.stat().st_size > 0:
+                pl = subprocess.run([sys.executable, str(ROOT / 'scripts/v7_player.py'),
+                                     '--traj', str(trail), '--out', str(out / 'player.html'),
+                                     '--title', f"{case} {action} {job.get('run_id') or ''}"],
+                                    cwd=str(ROOT), capture_output=True, text=True)
+                if pl.returncode == 0:
+                    job['player'] = f"/player?run={out.relative_to(ROOT)}"
+                else:
+                    job['player_error'] = (pl.stderr or '').strip().splitlines()[-1:]
         except Exception as e:  # noqa: BLE001
             job['state'] = 'failed'
             job['log'] = [f'{type(e).__name__}: {e}']
@@ -227,6 +238,13 @@ class Handler(BaseHTTPRequestHandler):
             if not f.exists():
                 return self._send(404, '报告页不存在，先跑 v7_page_r1.py', 'text/plain; charset=utf-8')
             return self._send(200, inject_rerun(f.read_text()), 'text/html; charset=utf-8')
+        if p.path.startswith('/player') and 'run=' in p.query:
+            from urllib.parse import parse_qs
+            rel = parse_qs(p.query).get('run', [''])[0]
+            f = ROOT / rel / 'player.html'
+            if not f.exists():
+                return self._send(404, '该 run 还没有播放器', 'text/plain; charset=utf-8')
+            return self._send(200, inject_player_selftest(f.read_text()), 'text/html; charset=utf-8')
         if p.path.startswith('/player'):
             f = BATCH / 'media/report/player.html'
             if not f.exists():

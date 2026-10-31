@@ -31,7 +31,21 @@
     "R02": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision",
     "default_R03_removed": true
   },
-  "open_items": [
-    "重仿真完成后的\"自动打开新 run 回放\"尚未连线（目前报告无逐帧轨迹，播放器需单独的 trajectory）"
-  ]
+  "open_items": [],
+  "rerun_with_playback": {
+    "job": "eac6137b1eff",
+    "case": "R03",
+    "action": "R1",
+    "new_run_id": "20261101T024453-26bac4",
+    "frames": 327,
+    "player_url": "/player?run=runs/unseen/delivery_v7/v7_20261030_r1/evaluation/rerun_page_eac6137b1eff",
+    "browser_check": {
+      "status": 200,
+      "play_advanced": true,
+      "seek_moved": true,
+      "reached_s": 0.6,
+      "seek_to_s": 3.26
+    },
+    "note": "重仿真完成后自动生成播放器并给出可直接打开的地址，页面按钮在真实浏览器里验证通过"
+  }
 }

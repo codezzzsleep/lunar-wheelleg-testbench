@@ -53,5 +53,16 @@
     "conclusion": "碰撞资格**尚未有效测量**：需要先把更新体修成水密（补洞/闭运算）再测，不能拿非水密网格上的 IoU 说它不合格，也不能说它合格。"
   },
   "two_view_qualified": null,
-  "why_not_qualified": "collision 未有效测量（源网格非水密），需修复后重测"
+  "why_not_qualified": "collision 未有效测量（源网格非水密），需修复后重测",
+  "collision_blocker": {
+    "symptom": "修好的内存网格 watertight=True，但导出 STL 再读回变成 watertight=False、volume=0、is_volume=False；评价器因此给 source_volume_defined=false",
+    "cause": "STL 是三角面片汤且坐标按 float32 存；导出/读回后共享顶点不再精确重合，边配对失败 → 判为非水密。这不是网格真的破了，是**格式精度**问题。",
+    "tried": [
+      "process=False 读入（保留拓扑）",
+      "merge_vertices 后再判（仍非水密）",
+      "fill_holes + fix_winding + fix_normals（内存里 True，落盘后 False）"
+    ],
+    "fix_next": "把水密更新体存成**无损格式**（PLY/GLB）或按 digits 容差合并后立即测量，不要用 STL 作为\"修好之后\"的中间格式",
+    "impact": "两视角更新的碰撞资格仍未测量；0.89 / 0.8832 / 0.0939 三个数都不可作为判定"
+  }
 }

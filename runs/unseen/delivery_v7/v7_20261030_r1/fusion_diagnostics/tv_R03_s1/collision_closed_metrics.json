@@ -1,0 +1,92 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "tv_R03_s1_closed",
+  "source_mesh": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tv_R03_s1/body_closed.ply",
+  "source_sha": "2b9bc169692de74ffdc27d467772398f906358ccf88754291a1a5f7ffe173948",
+  "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tv_R03_s1/collision_closed",
+  "representation": "box_union",
+  "n_boxes": 3617,
+  "n_parts_declared": 3617,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "15666224b235f7a2d757a29338eb569c",
+  "source_status": {
+    "watertight": true,
+    "euler": -22,
+    "n_faces": 148430
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 154175,
+    "collision_inside": 156304,
+    "intersection": 152746,
+    "union": 157733,
+    "collision_only": 3558,
+    "source_only": 1429,
+    "occupancy_iou": 0.9684,
+    "over_fill_frac_of_collision": 0.0228,
+    "under_fill_frac_of_source": 0.0093,
+    "over_fill_volume_m3": 0.000227712,
+    "under_fill_volume_m3": 9.1456e-05,
+    "source_volume_voxelised_m3": 0.0098672,
+    "collision_volume_voxelised_m3": 0.010003456,
+    "eval_pitch_m": 0.004,
+    "eval_dims": [
+      117,
+      117,
+      31
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 1.035,
+      "p95": 1.25,
+      "max": 2.334
+    },
+    "collision_to_source_mm": {
+      "n": 102,
+      "med": 1.25,
+      "p95": 1.299,
+      "max": 1.608
+    }
+  },
+  "probe": {
+    "n_gap_rows": 41,
+    "largest": [
+      {
+        "x_m": 1.7297,
+        "z_m": 0.0888,
+        "gap_m": 0.056,
+        "y_m": -0.0052
+      },
+      {
+        "x_m": 1.7497,
+        "z_m": 0.0928,
+        "gap_m": 0.044,
+        "y_m": -0.0072
+      },
+      {
+        "x_m": 1.7577,
+        "z_m": 0.0928,
+        "gap_m": 0.028,
+        "y_m": -0.0032
+      }
+    ]
+  },
+  "parity_source": {
+    "method": "full_mesh",
+    "faces": 148430
+  },
+  "evaluation_points": {
+    "total": 424359,
+    "used": 424359,
+    "sampled": false,
+    "max_points": 2000000,
+    "seed": 0
+  },
+  "samples": 1200,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。",
+  "peak_rss_mb": 694.7
+}

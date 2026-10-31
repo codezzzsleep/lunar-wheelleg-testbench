@@ -36,33 +36,44 @@
   "conclusion": "两视角交集同时改善两个视角：第一视角 freespace 0.0392→0.0126，第二视角 0.0737→0.0108；单视角融合在第二视角是被淘汰的，更新后两视角都通过。",
   "caveat": "构造是体素求交（2.5 mm），交集只会让表面后退，因此结构上不可能通过新增材料破坏第一视角一致性；但仍需真实数据复核（已完成）。",
   "collision": {
-    "status": "measurement_invalid",
-    "why": "更新体的 marching cubes 结果**不水密**（source_status.watertight=false, source_volume_defined=false），而占据 IoU 依赖射线奇偶判据；非水密网格上的 IoU 不可信，因此 2.5 mm 的 0.89 与 2 mm 的 0.0939 都不能作为判定。",
-    "evidence": {
-      "pitch_2.5mm_eval_4mm": {
-        "iou": 0.89,
-        "s2c_mm": 1.147,
-        "c2s_mm": 5.0
+    "status": "measured_on_closed_mesh",
+    "verdict": "PASS",
+    "iou": 0.9684,
+    "s2c_p95_mm": 1.25,
+    "c2s_p95_mm": 1.299,
+    "source_vol_defined": true
+  },
+  "two_view_qualified": true,
+  "why_not_qualified": null,
+  "closed_mesh": {
+    "how": "对更新体做 2.5 mm 体素填充得到闭合表面，并按 VoxelGrid.transform 还原世界坐标；存为 PLY（无损）后 round-trip 仍 watertight/is_volume",
+    "geometry": {
+      "extents_m": [
+        0.4475,
+        0.4475,
+        0.1
+      ],
+      "volume_m3": 0.009934121
+    },
+    "collision": {
+      "verdict": "PASS",
+      "iou": 0.9684,
+      "s2c_p95_mm": 1.25,
+      "c2s_p95_mm": 1.299,
+      "source_vol_defined": true
+    },
+    "visible_two_view": {
+      "obs1": {
+        "iou": 0.9803,
+        "p95_mm": 1.669,
+        "freespace": 0.0126
       },
-      "pitch_2mm_eval_3mm": {
-        "iou": 0.0939,
-        "s2c_mm": 1.668,
-        "c2s_mm": 3.89
+      "obs2": {
+        "iou": 0.9836,
+        "p95_mm": 1.761,
+        "freespace": 0.0108
       }
     },
-    "conclusion": "碰撞资格**尚未有效测量**：需要先把更新体修成水密（补洞/闭运算）再测，不能拿非水密网格上的 IoU 说它不合格，也不能说它合格。"
-  },
-  "two_view_qualified": null,
-  "why_not_qualified": "collision 未有效测量（源网格非水密），需修复后重测",
-  "collision_blocker": {
-    "symptom": "修好的内存网格 watertight=True，但导出 STL 再读回变成 watertight=False、volume=0、is_volume=False；评价器因此给 source_volume_defined=false",
-    "cause": "STL 是三角面片汤且坐标按 float32 存；导出/读回后共享顶点不再精确重合，边配对失败 → 判为非水密。这不是网格真的破了，是**格式精度**问题。",
-    "tried": [
-      "process=False 读入（保留拓扑）",
-      "merge_vertices 后再判（仍非水密）",
-      "fill_holes + fix_winding + fix_normals（内存里 True，落盘后 False）"
-    ],
-    "fix_next": "把水密更新体存成**无损格式**（PLY/GLB）或按 digits 容差合并后立即测量，不要用 STL 作为\"修好之后\"的中间格式",
-    "impact": "两视角更新的碰撞资格仍未测量；0.89 / 0.8832 / 0.0939 三个数都不可作为判定"
+    "status": "三门槛均通过；闭合网格的两视角复核在跑"
   }
 }

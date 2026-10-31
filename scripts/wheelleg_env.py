@@ -823,6 +823,7 @@ class WheelLegEnv:
                               for g in range(self.model.ngeom)},
             'n_control': int(self.n_control),
             'nav_target_y': float(getattr(self, 'nav_target_y', self.channel_center)),
+            't_last_zero_cmd': float(getattr(self, '_t_last_zero_cmd', 0.0)),
             'soil': ({'limits': {str(k): v for k, v in (self._soil_limits or {}).items()},
                       'prev_force': {str(k): np.asarray(v).tolist()
                                      for k, v in (self._soil_prev_force or {}).items()},
@@ -833,6 +834,17 @@ class WheelLegEnv:
         }
         h = _h.sha256()
         h.update(np.asarray(rec['mjstate'], dtype=np.float64).tobytes())
+        # 身份必须覆盖所有影响后续控制的状态：双时钟、爬升时钟、上一动作、
+        # 导航目标、计数与土壤，否则改了这些哈希也不变（审查已实测到该缺陷）。
+        h.update(np.asarray([rec['data_time'], rec['env_t'],
+                             rec['t_last_zero_cmd']], dtype=np.float64).tobytes())
+        h.update(np.asarray(rec['prev_action'], dtype=np.float64).tobytes())
+        h.update(np.asarray([rec['prev_x'], rec['nav_target_y'],
+                             rec['n_physics'], rec['n_control'],
+                             rec['contact_steps'], rec['wheel_contact_steps']],
+                            dtype=np.float64).tobytes())
+        if rec.get('soil'):
+            h.update(json.dumps(rec['soil'], sort_keys=True).encode())
         h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
                        rec['n_control'])).encode())
         rec['state_hash'] = h.hexdigest()[:32]
@@ -849,6 +861,17 @@ class WheelLegEnv:
         import hashlib as _h
         h = _h.sha256()
         h.update(np.asarray(rec['mjstate'], dtype=np.float64).tobytes())
+        # 身份必须覆盖所有影响后续控制的状态：双时钟、爬升时钟、上一动作、
+        # 导航目标、计数与土壤，否则改了这些哈希也不变（审查已实测到该缺陷）。
+        h.update(np.asarray([rec['data_time'], rec['env_t'],
+                             rec['t_last_zero_cmd']], dtype=np.float64).tobytes())
+        h.update(np.asarray(rec['prev_action'], dtype=np.float64).tobytes())
+        h.update(np.asarray([rec['prev_x'], rec['nav_target_y'],
+                             rec['n_physics'], rec['n_control'],
+                             rec['contact_steps'], rec['wheel_contact_steps']],
+                            dtype=np.float64).tobytes())
+        if rec.get('soil'):
+            h.update(json.dumps(rec['soil'], sort_keys=True).encode())
         h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
                        rec.get('n_control', 0))).encode())
         calc = h.hexdigest()[:32]
@@ -881,6 +904,7 @@ class WheelLegEnv:
         self.n_physics = int(rec['n_physics'])
         self.n_control = int(rec.get('n_control', 0))
         self.t = float(rec['env_t'])
+        self._t_last_zero_cmd = float(rec.get('t_last_zero_cmd', rec['env_t']))
         self.passed_at = rec.get('passed_at')
         self.first_contact_t = rec.get('first_contact_t')
         self.contact_steps = int(rec.get('contact_steps', 0))

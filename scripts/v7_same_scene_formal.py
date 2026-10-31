@@ -42,11 +42,54 @@ def main():
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=a.budget)
     env.reset(seed=0)
 
+    # 3.1：驾驶前后都记录相机世界位姿与机器人状态，观察条件全部来自实测
+    import mujoco as _mj
+    cam_id = observe.cam_id_of(env)
+    _mj.mj_forward(env.model, env.data)
+    cam0 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
+    q0 = np.array(env.data.qpos, dtype=float).copy()
+    t_drive0 = float(env.t)
     DO.drive_to_nav(env, a.drive_target_y, stop_x=a.drive_stop_x, max_s=8.0, v=0.10)
     _st = DO.brake_and_settle(env)
-    drive_seconds = float(env.t)
+    drive_seconds = float(env.t) - t_drive0
+    _mj.mj_forward(env.model, env.data)
+    cam1 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
+    cam_baseline = float(np.linalg.norm(cam1 - cam0))
+    obs_pos = np.array([float(case['obstacle_x']), 0.0, float(case['H']) / 2.0])
+    v0, v1 = obs_pos - cam0, obs_pos - cam1
+    cosang = float(np.dot(v0, v1) / max(1e-9, np.linalg.norm(v0) * np.linalg.norm(v1)))
+    bearing_change_deg = float(np.degrees(np.arccos(np.clip(cosang, -1.0, 1.0))))
+    stable = bool(_st.get('stable'))
+    settle_hold_s = float(_st.get('hold_s', _st.get('seconds', 0.0)) or 0.0)
     observe.capture_observation(env, out / 'obs_after_drive',
                                 obs_id=f'{case["case_id"]}_same_scene')
+    # 观察质量：像素数、有效深度比例、速度、角速度、倾角
+    _depth = np.load(out / 'obs_after_drive' / 'depth.npy')
+    valid_frac = float(np.isfinite(_depth).mean())
+    _obsj = json.loads((out / 'obs_after_drive' / 'observation.json').read_text())
+    mask_px = int(_obsj.get('mask_px') or (_obsj.get('visible') or {}).get('mask_px') or 0)
+    speed = float(np.linalg.norm(np.asarray(env.data.qvel[:3])))
+    omega = float(np.linalg.norm(np.asarray(env.data.qvel[3:6])))
+    tilt = float(env._tilt())
+    OBS_CRIT = {'stable': True, 'min_baseline_m': 0.20, 'min_bearing_deg': 5.0,
+                'min_mask_px': 500, 'min_valid_depth_frac': 0.5,
+                'max_speed': 0.05, 'max_omega': 0.5, 'max_tilt_deg': 5.0}
+    reasons = []
+    if not stable: reasons.append('not_stable')
+    if cam_baseline < OBS_CRIT['min_baseline_m']: reasons.append('baseline_too_small')
+    if bearing_change_deg < OBS_CRIT['min_bearing_deg']: reasons.append('bearing_change_too_small')
+    if mask_px < OBS_CRIT['min_mask_px']: reasons.append('target_too_small')
+    if valid_frac < OBS_CRIT['min_valid_depth_frac']: reasons.append('depth_invalid')
+    if speed > OBS_CRIT['max_speed']: reasons.append('still_moving')
+    if omega > OBS_CRIT['max_omega']: reasons.append('still_rotating')
+    if tilt > OBS_CRIT['max_tilt_deg']: reasons.append('tilted')
+    observation = {'stable': stable, 'settle_hold_s': settle_hold_s,
+                   'cam_baseline_m': round(cam_baseline, 4),
+                   'bearing_change_deg': round(bearing_change_deg, 3),
+                   'mask_px': mask_px, 'valid_depth_frac': round(valid_frac, 4),
+                   'speed_mps': round(speed, 4), 'omega_rps': round(omega, 4),
+                   'tilt_deg': round(tilt, 3), 'criteria': OBS_CRIT,
+                   'usable': not reasons, 'reasons': reasons}
     snap = env.save_state()
     (out / 'state_snapshot.json').write_text(json.dumps(snap, ensure_ascii=False, indent=2))
     remaining = max(1.0, a.budget - float(env.t))
@@ -58,11 +101,27 @@ def main():
                         cwd=str(ROOT), capture_output=True, text=True)
     if vr.returncode != 0:
         raise SystemExit(f'可见量导出失败：{vr.stderr.strip().splitlines()[-2:]}')
+    if not observation['usable']:
+        # 观察不合格：不进筛选/更新，候选标 not_evaluated，走安全回退并记录原因
+        rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
+               'observation_acceptance': observation, 'budget_s': a.budget,
+               'drive_seconds': round(drive_seconds, 4), 'observation_seconds': 0.0,
+               'decision': {'chosen': 'A0', 'reason': 'observation_not_usable',
+                            'reasons': observation['reasons']},
+               'execution': {'success': False, 'reason': 'observation_not_usable',
+                             'state_mode': 'same_scene', 'fallback': True,
+                             'executed': False},
+               'candidates': 'not_evaluated'}
+        (out / 'same_scene_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
+        print(json.dumps(rep, ensure_ascii=False))
+        return
+
     drive_json = out / 'drive_for_rehearsal.json'
     # 闭环的 --drive 需要 env_state/stable 等字段（drive_observe 的产物结构）
     drive_json.write_text(json.dumps({'runs': [{
         'seed': 0, 'stable': True, 'env_state': snap, 'state_snapshot': snap,
-        'cam_baseline_m': 0.5, 'bearing_change_deg': 10.0}]}, ensure_ascii=False))
+        'cam_baseline_m': observation['cam_baseline_m'],
+        'bearing_change_deg': observation['bearing_change_deg']}]}, ensure_ascii=False))
     cli = [sys.executable, str(ROOT / 'scripts/v7_closed_loop.py'),
            '--drive', str(drive_json.relative_to(ROOT)),
            '--hypotheses', a.hypotheses,
@@ -90,6 +149,7 @@ def main():
                 'x': float(env.data.qpos[0])}
     frames = res.get('trajectory') or []
     rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
+           'observation_acceptance': observation,
            'budget_s': a.budget, 'drive_seconds': round(drive_seconds, 4),
            'observation_seconds': 0.0,
            'remaining_before_exec_s': round(remaining, 4),

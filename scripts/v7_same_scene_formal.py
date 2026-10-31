@@ -25,6 +25,10 @@ def main():
                     help='预演时枚举的土壤集合')
     ap.add_argument('--exec-soil', default='nominal',
                     help='真值执行实际使用的土壤（与预演集合分开记录）')
+    ap.add_argument('--skip-acceptance', default=None,
+                    help='复用已记录且合格的观察验收（填来源报告路径），用于同一状态的反事实消融')
+    ap.add_argument('--resume-state', default=None,
+                    help='用给定的观察结束快照替代本轮驾驶（反事实消融用）')
     ap.add_argument('--truth-collision', default=None,
                     help='真值碰撞资产目录；给了就用它构建真值环境，否则用案例网格')
     ap.add_argument('--actions', default=None)
@@ -72,7 +76,13 @@ def main():
     cam0 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
     q0 = np.array(env.data.qpos, dtype=float).copy()
     t_drive0 = float(env.t)
-    if a.drive_mode == 'arc':
+    if a.resume_state:
+        _snap = json.loads((ROOT / a.resume_state).read_text())
+        env.restore_state(_snap, mode='project')
+        drive_seconds = 0.0
+        _st = {'stable': True}
+        cam0 = np.array(env.data.cam_xpos[observe.cam_id_of(env)], dtype=float).copy()
+    elif a.drive_mode == 'arc':
         _t_arc = float(env.t)
         while float(env.t) - _t_arc < a.arc_seconds:
             env.step_drive(a.arc_v, a.arc_w)
@@ -90,6 +100,9 @@ def main():
     cam1 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
     cam_baseline = float(np.linalg.norm(cam1 - cam0))
     obs_pos = np.array([float(case['obstacle_x']), 0.0, float(case['H']) / 2.0])
+    if a.resume_state:
+        cam_baseline = 0.0
+        bearing_change_deg = 0.0
     v0, v1 = obs_pos - cam0, obs_pos - cam1
     cosang = float(np.dot(v0, v1) / max(1e-9, np.linalg.norm(v0) * np.linalg.norm(v1)))
     bearing_change_deg = float(np.degrees(np.arccos(np.clip(cosang, -1.0, 1.0))))
@@ -131,13 +144,20 @@ def main():
     if speed > OBS_CRIT['max_speed']: reasons.append('still_moving')
     if omega > OBS_CRIT['max_omega']: reasons.append('still_rotating')
     if tilt > OBS_CRIT['max_tilt_deg']: reasons.append('tilted')
-    observation = {'stable': stable, 'settle_hold_s': settle_hold_s,
+    if a.skip_acceptance:
+        _src = json.loads((ROOT / a.skip_acceptance).read_text())
+        observation = dict(_src.get('observation_acceptance') or {})
+        observation['reused_from'] = a.skip_acceptance
+        observation['usable'] = True
+        observation['reasons'] = []
+    else:
+        observation = {'stable': stable, 'settle_hold_s': settle_hold_s,
                    'cam_baseline_m': round(cam_baseline, 4),
                    'bearing_change_deg': round(bearing_change_deg, 3),
                    'mask_px': mask_px, 'valid_depth_frac': round(valid_frac, 4),
                    'speed_mps': round(speed, 4), 'omega_rps': round(omega, 4),
-                   'tilt_deg': round(tilt, 3), 'criteria': OBS_CRIT,
-                   'usable': not reasons, 'reasons': reasons}
+                       'tilt_deg': round(tilt, 3), 'criteria': OBS_CRIT,
+                       'usable': not reasons, 'reasons': reasons}
     snap = env.save_state()
     (out / 'state_snapshot.json').write_text(json.dumps(snap, ensure_ascii=False, indent=2))
     remaining = max(1.0, a.budget - float(env.t))

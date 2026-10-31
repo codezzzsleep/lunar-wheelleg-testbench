@@ -973,6 +973,11 @@ class WheelLegEnv:
         cap = max_wheel_rps if max_wheel_rps is not None else self.DRIVE_RPS_MAX
         targets = {'L': float(np.clip(vL / R, -cap, cap)),
                    'R': float(np.clip(vR / R, -cap, cap))}
+        # 驾驶/停稳走的是 wheel_rps 分支，不经过 _apply_controls 的坡升逻辑；
+        # 这里必须同样维护"最近一次零指令时刻"，否则从驾驶切到动作时
+        # ramp 会按全局 env.t 直接饱和 -> 满速接管 -> 翻车（实测 x≈0.73）。
+        if max(abs(targets['L']), abs(targets['R'])) < 1e-9:
+            self._t_last_zero_cmd = self.t
 
         # 直接给左右轮角速度目标（经 _apply_controls 的 wheel_rps 分支）。
         # 不经过残差通道：ACT_SCALE 会把 a[2] 缩放成 0.6，导致"最小仍为 0.4 倍前进"，

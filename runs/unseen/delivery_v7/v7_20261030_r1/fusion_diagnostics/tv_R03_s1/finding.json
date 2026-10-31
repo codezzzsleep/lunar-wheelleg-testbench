@@ -43,8 +43,8 @@
     "c2s_p95_mm": 1.299,
     "source_vol_defined": true
   },
-  "two_view_qualified": true,
-  "why_not_qualified": null,
+  "two_view_qualified": null,
+  "why_not_qualified": "碰撞资格仍未在\"形状不变且水密\"的同一网格上测到；两种闭合方式各有问题，见 watertight_dilemma",
   "closed_mesh": {
     "how": "对更新体做 2.5 mm 体素填充得到闭合表面，并按 VoxelGrid.transform 还原世界坐标；存为 PLY（无损）后 round-trip 仍 watertight/is_volume",
     "geometry": {
@@ -75,5 +75,55 @@
       }
     },
     "status": "三门槛均通过；闭合网格的两视角复核在跑"
+  },
+  "watertight_dilemma": {
+    "open_mesh": {
+      "faces": 509408,
+      "watertight": false,
+      "visible": {
+        "obs1": [
+          0.9803,
+          1.669,
+          0.0126
+        ],
+        "obs2": [
+          0.9836,
+          1.761,
+          0.0108
+        ]
+      },
+      "collision": "不可测（非水密，占据判据失效）"
+    },
+    "voxel_fill_close": {
+      "faces": 148430,
+      "watertight": true,
+      "volume_m3": 0.009934121,
+      "collision": {
+        "iou": 0.9684,
+        "s2c": 1.25,
+        "c2s": 1.299,
+        "pass": true
+      },
+      "visible": {
+        "obs1": [
+          0.9599,
+          2.305,
+          0.3988
+        ],
+        "obs2": [
+          0.9626,
+          2.308,
+          0.2199
+        ]
+      },
+      "problem": "体素填充把凹处填平，可见 freespace 0.40/0.22，形状被改变"
+    },
+    "fill_holes_only": {
+      "faces": 310156,
+      "watertight": true,
+      "problem": "面数 31 万 > MuJoCo 单 mesh 20 万上限，必须走多视觉 mesh 才能评价",
+      "status": "评价因面数上限中断，需用多 mesh 渲染路径重跑"
+    },
+    "next": "用多视觉 mesh 路径评价 fill_holes 后的 PLY，若可见仍通过再测碰撞；这是\"形状保持不变且水密\"的唯一候选路径"
   }
 }

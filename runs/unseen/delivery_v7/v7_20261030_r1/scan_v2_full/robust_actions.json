@@ -1,0 +1,137 @@
+{
+  "schema": "scan-robust/v1",
+  "source": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/scan_v2.jsonl",
+  "definition": "any_success = 至少一个初态成功；robust_all_states = 所有被测试初态都成功；两者不得混用",
+  "per_config": {
+    "R01@0.9": {
+      "any_success": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "robust_all_states": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "n_states": 2
+    },
+    "R01@1.0": {
+      "any_success": [
+        "L2",
+        "S1"
+      ],
+      "robust_all_states": [
+        "L2",
+        "S1"
+      ],
+      "n_states": 2
+    },
+    "R01@1.1": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    },
+    "R02@0.9": {
+      "any_success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "robust_all_states": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "n_states": 2
+    },
+    "R02@1.0": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    },
+    "R02@1.1": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    },
+    "R03@0.9": {
+      "any_success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "robust_all_states": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "n_states": 2
+    },
+    "R03@1.0": {
+      "any_success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "robust_all_states": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "n_states": 2
+    },
+    "R03@1.1": {
+      "any_success": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "robust_all_states": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "n_states": 2
+    },
+    "R04@0.9": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    },
+    "R04@1.0": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    },
+    "R04@1.1": {
+      "any_success": [],
+      "robust_all_states": [],
+      "n_states": 2
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schema": "run-manifest/v1",
+  "run": {
+    "batch_id": "v7_20261030_r1",
+    "run_id": "R03_same_scene_usable",
+    "code_commit": "05baf855",
+    "protocol_sha": "plans/r1_controller_freeze.json"
+  },
+  "case": {
+    "object_id": "R03",
+    "case_config": "cases/unseen_v1/R03.json"
+  },
+  "observation": {
+    "package": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/obs_after_drive",
+    "public_visibility": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/visible_public.json"
+  },
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/state_snapshot.json",
+    "controller_freeze": "plans/r1_controller_freeze.json"
+  },
+  "hypothesis": {
+    "parent_id": "V7_R03_s1",
+    "parent_sha": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R03_s1/world/align/body.stl",
+    "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/occ.npz",
+    "collision": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/collision/manifest.json"
+  },
+  "physics": {
+    "truth_collision": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH",
+    "exec_soil": "nominal",
+    "rehearsal_soils": [
+      "nominal",
+      "low_traction",
+      "high_drag"
+    ]
+  },
+  "decision": {
+    "decision_sha": "9da6f222bc61c58508284b9972ec04042cfc109e89293dd79be291200c15725d",
+    "matrix": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/rehearsal/matrix.jsonl",
+    "events": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/rehearsal/decision_events.jsonl",
+    "decisions_file": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/rehearsal/decisions.json"
+  },
+  "execution": {
+    "trajectory": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/same_scene_report.json",
+    "result": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/same_scene_report.json"
+  },
+  "limits": {
+    "missing": [],
+    "disqualified": []
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "same-scene-formal/v1",
+  "case": "R03",
+  "truth_identity": {
+    "case": "cases/unseen_v1/R03.json",
+    "truth_collision": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH",
+    "exec_soil": "nominal",
+    "rehearsal_soils": [
+      "nominal",
+      "low_traction",
+      "high_drag"
+    ],
+    "goal_x": 2.6,
+    "budget_s": 30.0
+  },
+  "observation_acceptance": {
+    "stable": true,
+    "settle_hold_s": 0.4,
+    "cam_baseline_m": 0.404,
+    "bearing_change_deg": 7.823,
+    "mask_px": 31928,
+    "valid_depth_frac": 1.0,
+    "speed_mps": 0.0019,
+    "omega_rps": 0.0012,
+    "tilt_deg": 0.143,
+    "criteria": {
+      "stable": true,
+      "min_baseline_m": 0.2,
+      "min_bearing_deg": 5.0,
+      "min_mask_px": 500,
+      "min_valid_depth_frac": 0.5,
+      "max_speed": 0.05,
+      "max_omega": 0.5,
+      "max_tilt_deg": 5.0
+    },
+    "usable": true,
+    "reasons": []
+  },
+  "budget_s": 30.0,
+  "drive_seconds": 10.4,
+  "observation_seconds": 0.0,
+  "remaining_before_exec_s": 19.6,
+  "env_t_before_exec": 10.4,
+  "decision": {
+    "chosen": "D1",
+    "safe_set": [
+      "D1",
+      "R1",
+      "L2",
+      "L1",
+      "D2",
+      "R2"
+    ],
+    "decision_sha": "9da6f222bc61c58508284b9972ec04042cfc109e89293dd79be291200c15725d",
+    "cells": 18
+  },
+  "execution_start": {
+    "env_t": 10.399999999999867,
+    "data_time": 10.400000000000142,
+    "x": 0.3911074281794711,
+    "state_hash": "a9f8f23a6ef7a2915f63c2c97a51410e"
+  },
+  "execution_end": {
+    "env_t": 16.039999999999747,
+    "data_time": 16.04000000000199,
+    "x": 3.6662240088000364
+  },
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.666224,
+    "displacement_x": 3.275117,
+    "control_steps": 282,
+    "frames": 282,
+    "state_mode": "same_scene",
+    "fallback": false
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schema": "controller-freeze/v1",
+  "frozen_from_commit": "05baf855971f3facc5319bba7bafbae0ecd82ecd",
+  "env": {
+    "class": "wheelleg_env.WheelLegEnv",
+    "control_hz": 50.0,
+    "max_seconds_default": 30.0,
+    "obs": "_obs()"
+  },
+  "actions": {
+    "registry": "actions.OPTIONS",
+    "options": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2",
+      "A0"
+    ],
+    "rule_version": "actions/applicability/v2"
+  },
+  "runner": {
+    "class": "runner.EpisodeRunner",
+    "entry": "_loop",
+    "direct_continue": "run_current()",
+    "record_trajectory": true
+  },
+  "drive_policy": {
+    "mode": "nav",
+    "target_y": 0.3,
+    "stop_x": 1.3,
+    "v": 0.1,
+    "max_s": 10.0,
+    "settle_max_s": 6.0,
+    "evidence": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_usable"
+  },
+  "file_shas": {
+    "scripts/wheelleg_env.py": "3b71a88142701837",
+    "scripts/skills.py": "ab1303f6d21ceba5",
+    "scripts/actions.py": "82697b2b098dbad0",
+    "scripts/runner.py": "5fa8adbcb8cfcf11",
+    "scripts/drive_observe.py": "0bbd060c95af6775"
+  },
+  "note": "后续正式比较必须引用本清单；更换控制器需新建冻结文件并记录更正，旧表格保留为历史记录。"
+}

@@ -13,7 +13,8 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-PY = str(ROOT / '.venv/bin/python')
+PY = str(ROOT / '.venv/bin/python') if (ROOT / '.venv/bin/python').exists() \
+     else sys.executable
 
 
 def run(cmd):

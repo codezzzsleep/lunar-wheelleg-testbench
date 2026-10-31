@@ -22,7 +22,8 @@ import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-PY = str(ROOT / '.venv/bin/python')
+PY = str(ROOT / '.venv/bin/python') if (ROOT / '.venv/bin/python').exists() \
+     else sys.executable
 BATCH = 'runs/unseen/delivery_v7/v7_20261030_r1'
 B = ROOT / BATCH
 

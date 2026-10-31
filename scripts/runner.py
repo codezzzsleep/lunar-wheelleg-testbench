@@ -89,11 +89,8 @@ class EpisodeRunner:
         用于"同一环境实例内直接继续"，与 restore_state 后的继续做逐帧对照。
         """
         env = self.env
-        obs = None
-        try:
-            obs = env.observation()
-        except Exception:
-            obs = None
+        # 统一用生产观测接口；不再调用不存在的 env.observation() 后吞异常
+        obs = env._obs()
         self._capture_initial()
         return self._loop(obs, float(getattr(env, 't', 0.0)))
 

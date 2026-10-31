@@ -1,0 +1,101 @@
+{
+  "schema": "decision-list/v7",
+  "decision_sha": "69d4095bd6e5a7e5376a754850aff549d45b978f0fdbf3595e08fd5f989cb94a",
+  "written_at": 1793472819.4474962,
+  "decisions": [
+    {
+      "method": "B0_blind",
+      "selected_action": "R1",
+      "evidence": {
+        "rule": "blind: always R1"
+      },
+      "planning_inputs": [
+        "no candidate"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "selected_action": "A0",
+      "evidence": {
+        "rule": "visible height ratio 1.67 > 1.6"
+      },
+      "planning_inputs": [
+        "H_vis",
+        "wheel_r",
+        "frozen thresholds"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "selected_action": "A0",
+      "evidence": "no non-A0 option succeeded in every initial state",
+      "tied": [],
+      "rehearsal_on": "box_prior",
+      "rehearsal_environment_sha": "94d5ddefd872a8fab9b8648dc25e7b09",
+      "hypothesis_geometry": {
+        "depth_prior_m": 0.22,
+        "front_face_x": 1.65379,
+        "center_x": 1.76379,
+        "back_face_x": 1.87379,
+        "note": "前表面与观测前沿对齐；背深来自冻结先验，不读真值"
+      },
+      "planning_inputs": [
+        "W_vis",
+        "H_vis",
+        "x_front",
+        "frozen depth prior"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "selected_action": "R1",
+      "evidence": "worst-case min cost 6.840; tied=['R1']",
+      "tied": [
+        "R1"
+      ],
+      "rehearsal_on": "mirror_hypothesis",
+      "rehearsal_environment_sha": "a44c2dea518a90efee99a718018e5e9c",
+      "hypothesis_geometry": {
+        "split_plane_x": 1.85494,
+        "front_x": 1.65379,
+        "visible_depth_m": 0.20116,
+        "min_x_before": 1.65379,
+        "mirrored_min_x": 1.85494,
+        "note": "保留观测前表面；未知部分关于最深可见点补向 +x（遮挡侧），不读真值中心/背深",
+        "hull_min_x": 1.65379,
+        "hull_max_x": 2.0561
+      },
+      "planning_inputs": [
+        "visible point cloud (disclosed)"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "selected_action": "A0",
+      "evidence": "no non-A0 option succeeded in every initial state",
+      "tied": [],
+      "candidates": [
+        "V7_R02_s1",
+        "V7_R02_s2"
+      ],
+      "rehearsal_on": "independent Lux3D candidates",
+      "planning_inputs": [
+        "RGB observation",
+        "candidate meshes"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "selected_action": "L1",
+      "evidence": "worst-case min cost 7.440; tied=['L1', 'R1']",
+      "tied": [
+        "L1",
+        "R1"
+      ],
+      "rehearsal_on": "full truth geometry",
+      "planning_inputs": [
+        "full truth geometry (ceiling only)"
+      ]
+    }
+  ]
+}

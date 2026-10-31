@@ -1,0 +1,147 @@
+{
+  "schema": "simple-baselines/v1",
+  "thresholds": {
+    "frozen_from": "plans/unseen_v2_protocol.json（开发集冻结，不重调）",
+    "wheel_r": 0.08595,
+    "climb_direct": 1.0,
+    "climb_leg": 1.6,
+    "box_depth_m": 0.22
+  },
+  "note": "只做规则选动作与稳健集的对照，不替代真值执行；规则命中稳健集 = 简单方法已足够，命中失败动作 = 存在取舍",
+  "rows": [
+    {
+      "config": "R01@0.9",
+      "H_vis": 0.2991,
+      "W_vis": 0.1411,
+      "height_ratio": 3.479,
+      "B0_blind": "R1",
+      "B1_height": "A0",
+      "R2_fixed_slow": "R2",
+      "width_rule": "R1",
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "any_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "B1_in_robust": false,
+      "R2_in_robust": true,
+      "R1_in_robust": false
+    },
+    {
+      "config": "R01@1.0",
+      "H_vis": 0.3338,
+      "W_vis": 0.1554,
+      "height_ratio": 3.884,
+      "B0_blind": "R1",
+      "B1_height": "A0",
+      "R2_fixed_slow": "R2",
+      "width_rule": "R1",
+      "robust_actions": [
+        "L2",
+        "S1"
+      ],
+      "any_actions": [
+        "L2",
+        "S1"
+      ],
+      "B1_in_robust": false,
+      "R2_in_robust": false,
+      "R1_in_robust": false
+    },
+    {
+      "config": "R01@1.1",
+      "H_vis": 0.3655,
+      "W_vis": 0.1747,
+      "height_ratio": 4.252,
+      "B0_blind": "R1",
+      "B1_height": "A0",
+      "R2_fixed_slow": "R2",
+      "width_rule": "R1",
+      "robust_actions": [],
+      "any_actions": [],
+      "B1_in_robust": false,
+      "R2_in_robust": false,
+      "R1_in_robust": false
+    },
+    {
+      "config": "R02@0.9",
+      "H_vis": 0.144,
+      "W_vis": 0.3508,
+      "height_ratio": 1.675,
+      "B0_blind": "R1",
+      "B1_height": "A0",
+      "R2_fixed_slow": "R2",
+      "width_rule": "S1",
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "any_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "B1_in_robust": false,
+      "R2_in_robust": true,
+      "R1_in_robust": false
+    },
+    {
+      "config": "R02@1.0",
+      "H_vis": 0.1601,
+      "W_vis": 0.3896,
+      "height_ratio": 1.863,
+      "B0_blind": "R1",
+      "B1_height": "A0",
+      "R2_fixed_slow": "R2",
+      "width_rule": "S1",
+      "robust_actions": [],
+      "any_actions": [],
+      "B1_in_robust": false,
+      "R2_in_robust": false,
+      "R1_in_robust": false
+    },
+    {
+      "config": "R03@1.0",
+      "H_vis": 0.0791,
+      "W_vis": 0.4587,
+      "height_ratio": 0.92,
+      "B0_blind": "R1",
+      "B1_height": "R1",
+      "R2_fixed_slow": "R2",
+      "width_rule": "S1",
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "any_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "B1_in_robust": true,
+      "R2_in_robust": true,
+      "R1_in_robust": true
+    }
+  ]
+}

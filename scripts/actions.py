@@ -19,6 +19,8 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import skills
 
 # 唯一动作清单：A0 是回退，不参与"可完成通行"的安全集合
+RULE_VERSION = 'actions/applicability/v2'
+
 OPTIONS = ('R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2', 'A0')
 TRAVERSE = tuple(o for o in OPTIONS if o != 'A0')
 FALLBACK = 'A0'

@@ -227,7 +227,7 @@ def min_filter3(depth):
     return out
 
 
-def classify_space(obs_dir, grid, free_eps_m, band_m, edge_thr=0.02):
+def classify_space(obs_dir, grid, free_eps_m, band_m, edge_thr=0.02, offset_m=0.0):
     """0=未知 1=测量带 2=已知自由。"""
     obsd = json.loads((pathlib.Path(obs_dir) / 'observation.json').read_text())
     depth = np.load(pathlib.Path(obs_dir) / 'depth.npy').astype(np.float64)
@@ -250,7 +250,8 @@ def classify_space(obs_dir, grid, free_eps_m, band_m, edge_thr=0.02):
     # 自由空间：到较近表面为止（不连续处保守），用 d_near
     cls[near_ok & (z < d_near - free_eps_m)] = 2
     # 测量带（表面约束）：只在非不连续像素上，用 d
-    cls[constrained & (z >= d - free_eps_m) & (z <= d + band_m)] = 1
+    # 与融合一致：壳层整体放在测量面**之后** offset_m，避免等值面长到观测面前方
+    cls[constrained & (z >= d - free_eps_m + offset_m) & (z <= d + band_m + offset_m)] = 1
     out = cls.reshape(dims)
     stats = {'n_voxels': int(np.prod(dims)),
              'n_free': int((out == 2).sum()), 'n_band': int((out == 1).sum()),
@@ -258,7 +259,7 @@ def classify_space(obs_dir, grid, free_eps_m, band_m, edge_thr=0.02):
              'n_in_fov': int(in_fov.sum()), 'n_valid_depth': int(valid.sum()),
              'n_depth_edge_px': int(edge.sum()),
              'n_constrained_px': int(constrained.sum()),
-             'depth_edge_threshold_m': float(edge_thr),
+             'depth_edge_threshold_m': (None if edge_thr is None else float(edge_thr)),
              'valid_depth_frac': round(float(valid.mean()), 6),
              'depth_convention': 'positive_camera_minus_z (axis depth)',
              'free_eps_m': round(float(free_eps_m), 6),

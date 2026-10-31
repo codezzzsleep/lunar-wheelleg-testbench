@@ -144,7 +144,9 @@ def main():
                         skipped.append({'candidate': h['id'], 'action': act,
                                         'state_hash': st['state_hash'],
                                         'soil_config': soil_label,
-                                        'not_applicable': True, 'reason': why})
+                                        'not_applicable': True, 'reason': why,
+                                        'rule_version': getattr(ACT, 'RULE_VERSION',
+                                                                'actions/applicability/v2')})
                         continue
                     try:
                         env = build_env(ROOT / col, a.goal_x, a.time_limit, soil_label)

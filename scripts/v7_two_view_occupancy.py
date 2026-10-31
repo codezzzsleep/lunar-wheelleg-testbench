@@ -37,6 +37,8 @@ def main():
     ap.add_argument('--parent-id', required=True)
     ap.add_argument('--pitch', type=float, default=None)
     ap.add_argument('--config', default='configs/unseen_v7_r1_fusion_offset1.json')
+    ap.add_argument('--edge-thr', type=float, default=0.02,
+                    help='深度不连续阈值；0 表示不做不连续剔除（自由空间用精确深度，更激进地挖）')
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
 
@@ -52,8 +54,10 @@ def main():
     grid = FZ.make_grid(parent, vis, pitch, int(cfg.get('margin_cells', 3)))
 
     P, pstats = FZ.parent_solid(parent, grid, 1)
-    space1, st1 = FZ.classify_space(ROOT / a.obs1, grid, free_eps, band)
-    space2, st2 = FZ.classify_space(ROOT / a.obs2, grid, free_eps, band)
+    off = float(cfg.get('shell_offset_voxels', 0.5)) * pitch
+    ethr = None if float(a.edge_thr) <= 0 else float(a.edge_thr)
+    space1, st1 = FZ.classify_space(ROOT / a.obs1, grid, free_eps, band, edge_thr=ethr, offset_m=off)
+    space2, st2 = FZ.classify_space(ROOT / a.obs2, grid, free_eps, band, edge_thr=ethr, offset_m=off)
     S1, F1 = (space1 == 1), (space1 == 2)
     S2, F2 = (space2 == 1), (space2 == 2)
 
@@ -103,7 +107,7 @@ def main():
            'parent_stats': pstats,
            'mesh': {'faces': int(len(mesh.faces)), 'watertight': bool(mesh.is_watertight),
                     'volume_m3': float(abs(mesh.volume)) if mesh.is_watertight else None},
-           'formula': 'O = (P | S1 | S2) & ~(F1 | F2)'}
+           'formula': 'O = (P | S1 | S2) & ~(F1 | F2)', 'shell_offset_m': off, 'edge_thr': a.edge_thr}
     (out / 'two_view_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
     print(json.dumps({'answer': {'occupancy': rep['occupancy']['n_occupied'],
                                  'conflict': conflict,

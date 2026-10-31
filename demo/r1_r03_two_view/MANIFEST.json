@@ -149,6 +149,30 @@
       "s2c": true,
       "c2s": true
     },
-    "note": "与 acceptance/collision.json 完全一致，说明演示包能从占据独立重建该候选"
+    "note": "与 acceptance/collision.json 完全一致，说明演示包能从占据独立重建该候选",
+    "full_run": {
+      "where": "fresh directory /tmp/demo_run2, only pack inputs plus the repository code",
+      "steps_done": [
+        "input validation",
+        "rebuild mesh and boxes from occ.npz",
+        "acceptance metrics re-run",
+        "new rehearsal (18 cells)",
+        "new decision written first",
+        "truth execution on inputs/truth_collision"
+      ],
+      "result": {
+        "observation_usable": true,
+        "decision": "D1",
+        "cells": 18,
+        "success": true,
+        "final_x": 3.666224,
+        "displacement_x": 3.275117,
+        "control_steps": 282,
+        "state_mode": "same_scene",
+        "fallback": false
+      },
+      "playback": "本次运行的报告未包含逐帧轨迹，播放器跳过；如需回放应在执行时开启 trajectory 记录（run_current 已支持）",
+      "note": "整链不使用 API key，不触发 create"
+    }
   }
 }

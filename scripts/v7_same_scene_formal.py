@@ -10,6 +10,12 @@
 """
 import argparse, json, pathlib, subprocess, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+
+
+def _rel(p):
+    """仓内路径用相对形式，仓外（例如演示包的新输出目录）保留绝对路径。"""
+    p = pathlib.Path(p)
+    return str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else str(p)
 sys.path.insert(0, str(ROOT / 'scripts'))
 import numpy as np
 import terrain, wheelleg_env, observe, skills, runner, drive_observe as DO
@@ -192,12 +198,12 @@ def main():
         'cam_baseline_m': observation['cam_baseline_m'],
         'bearing_change_deg': observation['bearing_change_deg']}]}, ensure_ascii=False))
     cli = [sys.executable, str(ROOT / 'scripts/v7_closed_loop.py'),
-           '--drive', str(drive_json.relative_to(ROOT)),
+           '--drive', _rel(drive_json),
            '--hypotheses', a.hypotheses,
-           '--visible-json', str(vis_out.relative_to(ROOT)),
+           '--visible-json', _rel(vis_out),
            '--soil-configs', a.soils, '--no-truth',
            '--goal-x', str(a.goal_x), '--time-limit', str(a.budget),
-           '--out', str((out / 'rehearsal').relative_to(ROOT))]
+           '--out', _rel(out / 'rehearsal')]
     if a.actions:
         cli[cli.index('--soil-configs'):cli.index('--soil-configs')] = ['--actions', a.actions]
     r = subprocess.run(cli, cwd=str(ROOT), capture_output=True, text=True)

@@ -1,0 +1,92 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "recal_V7_R02_s2",
+  "source_mesh": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2/body.stl",
+  "source_sha": "7c54bd07063bb9c877f1f3f29bddc4468d60e3b2157958470e8780bea1f6cce0",
+  "collision_dir": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2/collision",
+  "representation": "box_union",
+  "n_boxes": 7984,
+  "n_parts_declared": 7984,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "715072f14c76d773897f48c506492684",
+  "source_status": {
+    "watertight": false,
+    "euler": 655328,
+    "n_faces": 655328
+  },
+  "source_volume_defined": false,
+  "geometry": {
+    "source_inside": 293385,
+    "collision_inside": 293387,
+    "intersection": 291813,
+    "union": 294959,
+    "collision_only": 1574,
+    "source_only": 1572,
+    "occupancy_iou": 0.9893,
+    "over_fill_frac_of_collision": 0.0054,
+    "under_fill_frac_of_source": 0.0054,
+    "over_fill_volume_m3": 0.000100736,
+    "under_fill_volume_m3": 0.000100608,
+    "source_volume_voxelised_m3": 0.01877664,
+    "collision_volume_voxelised_m3": 0.018776768,
+    "eval_pitch_m": 0.004,
+    "eval_dims": [
+      125,
+      116,
+      48
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 0.0,
+      "p95": 0.799,
+      "max": 3.12
+    },
+    "collision_to_source_mm": {
+      "n": 81,
+      "med": 0.0,
+      "p95": 0.82,
+      "max": 0.912
+    }
+  },
+  "probe": {
+    "n_gap_rows": 108,
+    "largest": [
+      {
+        "x_m": 1.89,
+        "z_m": 0.002,
+        "gap_m": 0.176,
+        "y_m": -0.0013
+      },
+      {
+        "x_m": 1.766,
+        "z_m": 0.01,
+        "gap_m": 0.16,
+        "y_m": -0.0053
+      },
+      {
+        "x_m": 1.826,
+        "z_m": 0.162,
+        "gap_m": 0.16,
+        "y_m": -0.0173
+      }
+    ]
+  },
+  "parity_source": {
+    "method": "full_mesh",
+    "faces": 655328
+  },
+  "evaluation_points": {
+    "total": 696000,
+    "used": 696000,
+    "sampled": false,
+    "max_points": 2000000,
+    "seed": 0
+  },
+  "samples": 1200,
+  "seed": 0,
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。",
+  "peak_rss_mb": 968.7
+}

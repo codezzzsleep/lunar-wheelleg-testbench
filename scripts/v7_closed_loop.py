@@ -196,7 +196,10 @@ def main():
     _chk = DC.validate(matrix, dict(dec, safe_set=dec.get('safe_set') or [],
                                     reason=dec.get('reason') or (
                                         'no_candidate_after_second_view' if not hyps else '')),
-                       _exp, not_applicable=skipped)
+                       _exp,
+                       # 只把**真正的 NOT_APPLICABLE** 交给合同；
+                       # 预演异常行属于失败证据，不能借 NA 入口补齐缺格
+                       not_applicable=[x for x in skipped if x.get('not_applicable')])
     if not _chk['ok']:
         raise SystemExit(f'决策矩阵合同失败：{_chk["errors"][:3]}')
     dec['contract'] = _chk['stats']

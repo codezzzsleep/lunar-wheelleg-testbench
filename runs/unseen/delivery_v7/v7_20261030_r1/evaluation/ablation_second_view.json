@@ -1,21 +1,26 @@
 {
-  "schema": "second-observation-ablation/v1",
+  "schema": "second-observation-ablation/v2",
   "state": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/state_snapshot.json",
+  "same_state": true,
   "arms": {
+    "without_second_image": {
+      "candidate": "off1_R03_s1 (单视角)",
+      "decision": "R1",
+      "cells": 18,
+      "success": true,
+      "final_x": 3.682372,
+      "displacement_x": 3.291496,
+      "steps": 268
+    },
     "with_second_image": {
-      "candidates": "tvocc_R03_s1_v3 (两视角单网格)",
+      "candidate": "tvocc_R03_s1_v3 (两视角单网格)",
       "decision": "D1",
+      "cells": 18,
       "success": true,
       "final_x": 3.656856,
       "displacement_x": 3.265979,
-      "report": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/ablation_with_second/same_scene_report.json"
-    },
-    "without_second_image": {
-      "candidates": "off1_R03_s1 (单视角)",
-      "status": "blocked",
-      "error": "决策矩阵合同失败：18 条 NOT_APPLICABLE 缺理由 —— 单视角候选在同一预演里全部被判不适用，原因未定位",
-      "note": "同一状态、同一可见量下 applicability 单独测试是正常的（只有 S1 不适用）"
+      "steps": 282
     }
   },
-  "open": "无第二张图那一臂尚未跑通，需要定位为什么该候选的预演全部被标成不适用"
+  "reading": "同一观察后状态下，第二张图把决策从 R1 改成 D1，但两臂都成功；位移 3.2915 vs 3.2660（R1 略远），所以此状态上第二观察没有提升成功率，只改变了选择，并额外消耗了观察时间"
 }

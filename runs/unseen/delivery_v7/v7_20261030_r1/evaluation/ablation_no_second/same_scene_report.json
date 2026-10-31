@@ -1,0 +1,79 @@
+{
+  "schema": "same-scene-formal/v1",
+  "case": "R03",
+  "truth_identity": {
+    "case": "cases/unseen_v1/R03.json",
+    "truth_collision": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH",
+    "exec_soil": "nominal",
+    "rehearsal_soils": [
+      "nominal",
+      "low_traction",
+      "high_drag"
+    ],
+    "goal_x": 2.6,
+    "budget_s": 30.0
+  },
+  "observation_acceptance": {
+    "stable": true,
+    "settle_hold_s": 0.4,
+    "cam_baseline_m": 0.404,
+    "bearing_change_deg": 7.823,
+    "mask_px": 31928,
+    "valid_depth_frac": 1.0,
+    "speed_mps": 0.0019,
+    "omega_rps": 0.0012,
+    "tilt_deg": 0.143,
+    "criteria": {
+      "stable": true,
+      "min_baseline_m": 0.2,
+      "min_bearing_deg": 5.0,
+      "min_mask_px": 500,
+      "min_valid_depth_frac": 0.5,
+      "max_speed": 0.05,
+      "max_omega": 0.5,
+      "max_tilt_deg": 5.0
+    },
+    "usable": true,
+    "reasons": [],
+    "reused_from": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_truth/same_scene_report.json"
+  },
+  "budget_s": 30.0,
+  "drive_seconds": 10.8,
+  "observation_seconds": 0.0,
+  "remaining_before_exec_s": 19.2,
+  "env_t_before_exec": 10.8,
+  "decision": {
+    "chosen": "R1",
+    "safe_set": [
+      "R1",
+      "D1",
+      "L2",
+      "L1",
+      "D2",
+      "R2"
+    ],
+    "decision_sha": "c91a4b6c36234bf859e0f1d2094770d4790c67037bd564bc2a599d58f82a7b68",
+    "cells": 18
+  },
+  "execution_start": {
+    "env_t": 10.799999999999859,
+    "data_time": 10.800000000000276,
+    "x": 0.39087671903703103,
+    "state_hash": "7db767adf091febeab2b9600bbadfb2d"
+  },
+  "execution_end": {
+    "env_t": 16.159999999999744,
+    "data_time": 16.160000000001922,
+    "x": 3.6823722683100013
+  },
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.682372,
+    "displacement_x": 3.291496,
+    "control_steps": 268,
+    "frames": 268,
+    "state_mode": "same_scene",
+    "fallback": false
+  }
+}

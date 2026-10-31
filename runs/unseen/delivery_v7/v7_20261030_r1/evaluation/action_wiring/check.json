@@ -1,0 +1,129 @@
+{
+  "n": 5,
+  "items": [
+    {
+      "action": "L1",
+      "applicable": true,
+      "reason": null,
+      "phases": [
+        {
+          "t": 12.6,
+          "phase": "lift"
+        },
+        {
+          "t": 13.32,
+          "phase": "recover"
+        },
+        {
+          "t": 13.68,
+          "phase": "done"
+        }
+      ],
+      "triggered": true,
+      "success": true,
+      "reason_out": "success",
+      "action_first": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visible_sensitive": true,
+      "contract": "actions/applicability/v2"
+    },
+    {
+      "action": "L2",
+      "applicable": true,
+      "reason": null,
+      "phases": [
+        {
+          "t": 12.6,
+          "phase": "lift"
+        },
+        {
+          "t": 13.32,
+          "phase": "recover"
+        },
+        {
+          "t": 13.68,
+          "phase": "done"
+        }
+      ],
+      "triggered": true,
+      "success": true,
+      "reason_out": "success",
+      "action_first": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visible_sensitive": true,
+      "contract": "actions/applicability/v2"
+    },
+    {
+      "action": "D1",
+      "applicable": true,
+      "reason": null,
+      "phases": [
+        {
+          "t": 12.46,
+          "phase": "shift"
+        },
+        {
+          "t": 14.74,
+          "phase": "return"
+        }
+      ],
+      "triggered": true,
+      "success": true,
+      "reason_out": "success",
+      "action_first": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visible_sensitive": true,
+      "contract": "actions/applicability/v2"
+    },
+    {
+      "action": "D2",
+      "applicable": true,
+      "reason": null,
+      "phases": [
+        {
+          "t": 12.46,
+          "phase": "shift"
+        },
+        {
+          "t": 15.42,
+          "phase": "return"
+        }
+      ],
+      "triggered": true,
+      "success": true,
+      "reason_out": "success",
+      "action_first": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "visible_sensitive": true,
+      "contract": "actions/applicability/v2"
+    },
+    {
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility",
+      "phases": [],
+      "triggered": false,
+      "success": true,
+      "reason_out": "success",
+      "action_first": [
+        -0.6,
+        0.6,
+        -0.15
+      ],
+      "visible_sensitive": false,
+      "contract": "actions/applicability/v2"
+    }
+  ]
+}

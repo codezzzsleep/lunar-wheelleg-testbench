@@ -21,7 +21,12 @@ def main():
     ap.add_argument('--hypotheses', required=True)
     ap.add_argument('--budget', type=float, default=30.0)
     ap.add_argument('--goal-x', type=float, default=2.6)
-    ap.add_argument('--soils', default='nominal,low_traction,high_drag')
+    ap.add_argument('--soils', default='nominal,low_traction,high_drag',
+                    help='预演时枚举的土壤集合')
+    ap.add_argument('--exec-soil', default='nominal',
+                    help='真值执行实际使用的土壤（与预演集合分开记录）')
+    ap.add_argument('--truth-collision', default=None,
+                    help='真值碰撞资产目录；给了就用它构建真值环境，否则用案例网格')
     ap.add_argument('--actions', default=None)
     ap.add_argument('--drive-mode', choices=['nav', 'arc'], default='nav',
                     help='nav=侧向导航驾驶；arc=前进+偏航弧线（真实改变视角）')
@@ -44,6 +49,19 @@ def main():
                         'yaw_deg': float(case.get('yaw_deg', 0.0)),
                         'target_height_m': case['H']}]
     spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
+    if a.truth_collision:
+        # 真值身份：显式引用经核验的碰撞资产，而不是临时由案例网格重建
+        _tc = ROOT / a.truth_collision
+        if not (_tc / 'manifest.json').exists():
+            raise SystemExit(f'真值碰撞资产缺 manifest：{_tc}')
+        spec['objects'] = [{'posed_dir': str(_tc)}]
+    if a.exec_soil != 'nominal':
+        import v7_soil
+        _r = v7_soil.resolve(a.exec_soil)
+        spec['soil'] = {'mode': 'soil', 'label': _r.get('label'), 'params': _r['params']}
+    truth_identity = {'case': str(a.case), 'truth_collision': a.truth_collision,
+                      'exec_soil': a.exec_soil, 'rehearsal_soils': a.soils.split(','),
+                      'goal_x': a.goal_x, 'budget_s': a.budget}
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=a.budget)
     env.reset(seed=0)
 
@@ -134,7 +152,8 @@ def main():
     if not observation['usable']:
         # 观察不合格：不进筛选/更新，候选标 not_evaluated，走安全回退并记录原因
         rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
-               'observation_acceptance': observation, 'budget_s': a.budget,
+               'truth_identity': truth_identity,
+           'observation_acceptance': observation, 'budget_s': a.budget,
                'drive_seconds': round(drive_seconds, 4), 'observation_seconds': 0.0,
                'decision': {'chosen': 'A0', 'reason': 'observation_not_usable',
                             'reasons': observation['reasons']},
@@ -179,6 +198,7 @@ def main():
                 'x': float(env.data.qpos[0])}
     frames = res.get('trajectory') or []
     rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
+           'truth_identity': truth_identity,
            'observation_acceptance': observation,
            'budget_s': a.budget, 'drive_seconds': round(drive_seconds, 4),
            'observation_seconds': 0.0,

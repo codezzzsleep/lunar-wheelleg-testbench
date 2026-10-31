@@ -43,8 +43,8 @@
     "c2s_p95_mm": 1.299,
     "source_vol_defined": true
   },
-  "two_view_qualified": null,
-  "why_not_qualified": "碰撞资格仍未在\"形状不变且水密\"的同一网格上测到；两种闭合方式各有问题，见 watertight_dilemma",
+  "two_view_qualified": false,
+  "why_not_qualified": "可见双视角通过；碰撞 IoU 0.8832 < 0.95（c2s 5.026 mm）→ 不合格",
   "closed_mesh": {
     "how": "对更新体做 2.5 mm 体素填充得到闭合表面，并按 VoxelGrid.transform 还原世界坐标；存为 PLY（无损）后 round-trip 仍 watertight/is_volume",
     "geometry": {
@@ -125,5 +125,33 @@
       "status": "评价因面数上限中断，需用多 mesh 渲染路径重跑"
     },
     "next": "用多视觉 mesh 路径评价 fill_holes 后的 PLY，若可见仍通过再测碰撞；这是\"形状保持不变且水密\"的唯一候选路径"
+  },
+  "fillholes_result": {
+    "mesh": "body_fillholes.ply (310156 faces, watertight, volume-defined)",
+    "visible": {
+      "obs1": {
+        "iou": 0.9803,
+        "p95_mm": 1.669,
+        "freespace": 0.0126
+      },
+      "obs2": {
+        "iou": 0.9837,
+        "p95_mm": 1.761,
+        "freespace": 0.0108
+      },
+      "both_views": true
+    },
+    "note": "补洞后可见指标与原网格完全一致 → 补洞是形状保持的，且水密",
+    "collision": {
+      "verdict": "ATTENTION",
+      "iou": 0.8832,
+      "s2c_p95_mm": 1.123,
+      "c2s_p95_mm": 5.026,
+      "source_vol_defined": true,
+      "n_boxes": 5383
+    },
+    "conclusion": "碰撞这次是**有效测量**（source_vol_defined=true），IoU 0.8832 < 0.95 → 不合格。所以两视角候选：可见双视角通过、碰撞不通过。",
+    "retraction": "先前\"0.9684 通过\"是在**体素填充闭合**的网格上测的；那个网格凹处被填平，可见 freespace 0.40/0.22，形状已变，不能代表本候选，已作废。",
+    "why_collision_fails": "交集网格有细碎结构，2.5 mm 体素并集覆盖不足（IoU 0.88，c2s 5.03 mm 正好越过 5 mm 门槛）；下一步按 §5.4 做更细构建（1.5–2 mm）。"
   }
 }

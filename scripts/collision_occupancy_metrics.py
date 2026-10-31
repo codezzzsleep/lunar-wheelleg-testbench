@@ -40,12 +40,20 @@ def sha_file(p):
     return h.hexdigest()
 
 
-def load_mesh(p):
-    # process=False：不要合并顶点/去重，否则会把水密网格改成非水密，占据判据随之失效
+def load_mesh(p, weld=False):
+    """读网格。
+
+    weld=False：保持文件里的拓扑（PLY/GLB 会保留索引，STL 是面片汤）。
+    weld=True ：只合并**同位置顶点**，用于区分"STL 面片汤导致的边不配对"与"真的破洞"。
+                焊接后仍不水密 → 是真缺陷；焊接后水密 → 只是未焊接。
+    """
     m = trimesh.load(str(p), force='mesh', process=False)
     if isinstance(m, trimesh.Scene):
         geoms = [g for g in m.geometry.values() if len(g.faces) > 0]
         m = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]
+    if weld:
+        m = m.copy()
+        m.merge_vertices()
     return m
 
 
@@ -112,7 +120,7 @@ def exposed_faces(boxes, origin, pitch):
                 for k in range(k0, k1 + 1):
                     filled.add((i, j, k))
     faces = []
-    for (i, j, k) in filled:
+    for (i, j, k) in sorted(filled):
         for (di, dj, dk) in ((1, 0, 0), (-1, 0, 0), (0, 1, 0),
                              (0, -1, 0), (0, 0, 1), (0, 0, -1)):
             if (i + di, j + dj, k + dk) in filled:
@@ -168,55 +176,52 @@ def boxes_to_array(boxes, dims):
     return occ
 
 
-def sample_box_surfaces(boxes, origin, pitch, n_total, rng):
-    """在**并集外边界**上采样。
+SAMPLER_VERSION = 'exposed-face-area/uniform/v1'
 
-    规则（与"内部接缝不算外表面、部分暴露面不能整面删除"一致）：
-      1. 每个 box 的 6 个面都参与候选（**不因相邻格存在就整面删除**）；
-      2. 采样后逐点判定：若该点落在**另一个 box 内部**（即相邻格被占据、点进入内部），
-         则丢弃——这排除了内部接缝；
-      3. 部分暴露的面因此只保留真正暴露的那部分采样点。
+
+def sample_box_surfaces(boxes, origin, pitch, n_total, rng, return_meta=False):
+    """在**并集外边界**上按面积采样，**保证返回请求数量**（否则明确失败）。
+
+    与旧实现的区别：旧版"采两倍再逐点过滤"不能保证数量（请求 1200 实得 292）。
+    现在先从逐 cell 暴露面得到确定性的面集合，再按面积加权选面、面内均匀取点，
+    每个点都落在外边界上，因此不需要过滤，数量精确可控。
+
+    返回 (n_total, 3) 的点；`return_meta=True` 时附带 requested/used/seed 等元数据。
     """
-    if not boxes:
-        return np.zeros((0, 3))
-    dims = (max(b[1] for b in boxes) + 2, max(b[3] for b in boxes) + 2,
-            max(b[5] for b in boxes) + 2)
-    occ = boxes_to_array(boxes, dims)
-    faces = []      # (lo, extent, axis, side)
-    for (i0, i1, j0, j1, k0, k1) in boxes:
-        lo = origin + np.array([i0, j0, k0]) * pitch
-        hi = origin + np.array([i1 + 1, j1 + 1, k1 + 1]) * pitch
-        e = hi - lo
-        for ax in range(3):
-            for side in (-1, +1):
-                faces.append((lo, e, ax, side))
+    n_total = int(n_total)
+    if n_total <= 0:
+        raise ValueError('n_total 必须为正')
+    faces = exposed_faces(boxes, origin, pitch)
     if not faces:
-        return np.zeros((0, 3))
-    areas = np.array([2 * (e[(a + 1) % 3] * e[(a + 2) % 3]) for (_l, e, a, _s) in faces])
-    p_ = areas / areas.sum()
-    # 多采一倍再过滤，保证过滤后仍有足够点
-    pick = rng.choice(len(faces), size=int(n_total * 2), p=p_)
-    keep = []
-    eps = 1e-9
-    for idx in pick:
-        lo, e, ax, side = faces[idx]
-        u, w = rng.random(2)
-        pt = lo.copy()
+        raise ValueError('并集没有暴露面：无法采样（拒绝返回空集冒充完成）')
+    lo = np.array([f[0] for f in faces], dtype=float)
+    hi = np.array([f[1] for f in faces], dtype=float)
+    ext = hi - lo
+    # 每个 unit cell 面的面积 = pitch^2；多 cell 面已拆成 unit 面，此处仍按实际面积算
+    areas = np.prod(np.sort(ext, axis=1)[:, 1:], axis=1)
+    total = float(areas.sum())
+    if total <= 0:
+        raise ValueError('暴露面总面积为 0：拒绝采样')
+    pick = rng.choice(len(faces), size=n_total, p=areas / total)
+    u = rng.random(n_total)
+    w = rng.random(n_total)
+    pts = np.empty((n_total, 3), dtype=float)
+    for n, idx in enumerate(pick):
+        e = ext[idx]
+        flat = np.flatnonzero(e < 1e-12)          # 该面上法向轴（厚度为 0）
+        ax = int(flat[0]) if flat.size else 0
         b1, b2 = (ax + 1) % 3, (ax + 2) % 3
-        pt[b1] += u * e[b1]
-        pt[b2] += w * e[b2]
-        pt[ax] += e[ax] if side > 0 else 0.0
-        # 向**外侧**挪半格：外侧 cell 若被占据，说明这是内部接缝 -> 丢弃
-        probe = pt.copy()
-        probe[ax] += (0.5 if side > 0 else -0.5) * pitch
-        ijk = np.floor((probe - origin) / pitch).astype(int)
-        inside = (0 <= ijk[0] < dims[0] and 0 <= ijk[1] < dims[1]
-                  and 0 <= ijk[2] < dims[2] and occ[ijk[0], ijk[1], ijk[2]])
-        if not inside:
-            keep.append(pt)
-        if len(keep) >= n_total:
-            break
-    return np.asarray(keep) if keep else np.zeros((0, 3))
+        p0 = lo[idx].copy()
+        p0[b1] += u[n] * e[b1]
+        p0[b2] += w[n] * e[b2]
+        p0[ax] = lo[idx][ax]
+        pts[n] = p0
+    if return_meta:
+        meta = {'algorithm': SAMPLER_VERSION, 'requested': n_total, 'used': int(len(pts)),
+                'n_faces': int(len(faces)), 'total_area_m2': round(total, 12),
+                'seed': getattr(rng, '_seed_hint', None)}
+        return pts, meta
+    return pts
 
 
 def probe_gaps(occ, grid, top_n=3):
@@ -354,7 +359,12 @@ def main():
     a = ap.parse_args()
     require_memory(allow_local=getattr(a, 'allow_local', False))
     rng = np.random.default_rng(a.seed)
-    src = load_mesh(a.mesh)
+    src_raw = load_mesh(a.mesh, weld=False)
+    src = load_mesh(a.mesh, weld=True)
+    topology = {'weld_applied': True,
+                'watertight_before_weld': bool(src_raw.is_watertight),
+                'watertight_after_weld': bool(src.is_watertight),
+                'duplicate_vertices_welded': int(src_raw.vertices.shape[0] - src.vertices.shape[0])}
     cdir = pathlib.Path(a.collision)
     man = json.loads((cdir / 'manifest.json').read_text()) if (cdir / 'manifest.json').exists() else {}
     boxes = man.get('boxes')
@@ -438,9 +448,16 @@ def main():
     # 距离分块按面数自适应：块×面保持 ~2M 元素，避免一次性 128×N 面矩阵把内存打爆
     _chunk = max(1, int(2_000_000 // max(1, len(src.faces))))
     ps, _ = trimesh.sample.sample_surface(src, a.samples, seed=a.seed)
+    sampling = {}
     if boxes:
         d_sc = box_surface_distance(ps, boxes, origin, bpitch) * 1000
-        cs = sample_box_surfaces(boxes, origin, bpitch, a.samples, rng)
+        cs, _smeta = sample_box_surfaces(boxes, origin, bpitch, a.samples, rng,
+                                         return_meta=True)
+        _smeta['seed'] = int(a.seed)
+        sampling['collision_to_source'] = _smeta
+        sampling['source_to_collision'] = {'algorithm': 'surface_uniform/v1',
+                                           'requested': int(a.samples),
+                                           'used': int(len(ps)), 'seed': int(a.seed)}
         d_cs = point_to_mesh_distance(src, cs, chunk=_chunk) * 1000
     else:
         d_sc = convex_surface_distance(ps, parts) * 1000
@@ -455,6 +472,28 @@ def main():
                                      'med': round(float(np.median(d_cs)), 3),
                                      'p95': round(float(np.percentile(d_cs, 95)), 3),
                                      'max': round(float(np.max(d_cs)), 3)}
+    # --- 有效测量判据：源实体未定义/采样未完成/关键指标缺测时，不允许给 PASS ---
+    _svd = bool(src.is_watertight)
+    _need = [geo.get('occupancy_iou'),
+             (geo.get('source_to_collision_mm') or {}).get('p95'),
+             (geo.get('collision_to_source_mm') or {}).get('p95')]
+    _samp_ok = True
+    if boxes:
+        _samp_ok = all(m.get('used') == m.get('requested')
+                       for m in sampling.values()) if sampling else False
+    _validity = {'source_volume_defined': bool(_svd),
+                 'metrics_present': all(v is not None for v in _need),
+                 'sampling_complete': bool(_samp_ok),
+                 'valid': bool(_svd and all(v is not None for v in _need) and _samp_ok)}
+    if not _validity['valid']:
+        _verdict = 'INVALID_MEASUREMENT'
+    elif (geo['occupancy_iou'] >= 0.95
+          and geo['source_to_collision_mm']['p95'] <= 5.0
+          and geo['collision_to_source_mm']['p95'] <= 5.0):
+        _verdict = 'PASS'
+    else:
+        _verdict = 'ATTENTION'
+
     out = {'schema': 'collision-metrics/v2', 'version': VERSION, 'label': a.label,
            'source_mesh': str(a.mesh), 'source_sha': sha_file(a.mesh),
            'collision_dir': str(cdir),
@@ -476,11 +515,10 @@ def main():
                                  'sampled': bool(sampled),
                                  'max_points': int(a.max_points), 'seed': int(a.seed)},
            'samples': a.samples, 'seed': a.seed,
-           'verdict': ('PASS' if (geo['occupancy_iou'] is not None
-                                  and geo['occupancy_iou'] >= 0.95
-                                  and geo['source_to_collision_mm']['p95'] <= 5.0
-                                  and geo['collision_to_source_mm']['p95'] <= 5.0)
-                       else 'ATTENTION'),
+           'topology': topology,
+           'sampling': sampling,
+           'measurement_validity': _validity,
+           'verdict': _verdict,
            'note': ('双向距离用并集表面（box 解析距离 / 凸 part 距离）；'
                     '源网格非水密时 source_volume_defined=false，内部量只作诊断。')}
     # 自带峰值内存记录（不依赖 /usr/bin/time，很多环境没有）

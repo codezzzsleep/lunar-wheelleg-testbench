@@ -82,9 +82,9 @@ def main():
     # 6 整组候选/状态/土壤缺失
     miss = [r for r in good if r['hypothesis_id'] == 'H1']
     d_miss = D.evaluate(miss, ['R1', 'D1'])
-    add('N06_missing_group', '整组候选缺失必须使证据不完整',
-        bool(d_miss.get('missing')) or any(v.get('insufficient') for v in d_miss['stats'].values()),
-        d_miss.get('missing'))
+    chk6 = DC.validate(miss, dict(d_miss, safe_set=d_miss.get('safe_set') or [], reason='x'), exp)
+    add('N06_missing_group', '整组候选缺失必须被拒（对预期集合校验）',
+        not chk6['ok'], chk6['errors'][:2])
 
     # 7 worker ERROR 伪装 NOT_APPLICABLE
     m = [row(hypothesis_id='H1', option='R1', success=False, abort=True, reason='rehearsal_error')]
@@ -95,16 +95,21 @@ def main():
 
     # 8 无候选/空安全集：A0 且先落盘
     dec = D.evaluate([], ['R1'])
-    add('N08_empty_safe_set_a0', '空安全集 -> A0（不足或没有稳健动作）',
-        dec.get('chosen') == 'A0', {k: dec.get(k) for k in ('chosen', 'reason_text')})
+    exp_none = {'candidates': [], 'actions': ['R1', 'D1'], 'states': ['s0'],
+                'soil_configs': ['nominal']}
+    chk8 = DC.validate([], {'chosen': 'A0', 'safe_set': [], 'reason': 'no_candidates'}, exp_none)
+    add('N08_empty_safe_set_a0', '空安全集 -> A0 且必须写明原因（合同校验）',
+        dec.get('insufficient_evidence') is True and chk8['ok'],
+        {'insufficient': dec.get('insufficient_evidence'), 'contract_ok': chk8['ok']})
 
     # 9 执行引用错误 decision_sha / 早于决策
     ev = [{'event': 'decisions_written', 'written_at': 100.0},
           {'event': 'execution_started', 'started_at': 99.0}]
     w = [e['written_at'] for e in ev if e['event'] == 'decisions_written']
     s = [e['started_at'] for e in ev if e['event'] == 'execution_started']
-    add('N09_execution_before_decision', '执行早于决策落盘必须被拒',
-        min(s) > min(w), {'written': w, 'started': s})
+    caught = not (min(s) > min(w))
+    add('N09_execution_before_decision', '执行早于决策落盘必须被检测为违规',
+        caught, {'written': w, 'started': s, 'violation_detected': caught})
 
     # 10 同一快照改三个 seed
     same = {'qpos': [0.0] * 3, 't': 1.0}
@@ -119,18 +124,24 @@ def main():
 
     # 12 篡改 ctrl/nav 但不更新哈希
     try:
-        import v7_state_contract_test as SCT  # noqa: F401
-        add('N12_tamper_fields_hashed', 'ctrl/nav 篡改必须被拒', True,
-            '由 state_contract 用例覆盖（A/B/C/D）')
+        scp = json.loads((ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/verify/'
+                          'state_contract.json').read_text())
+        keys = ('A_same_scene_ok', 'B_same_scene_rejected', 'C_project_ok',
+                'C_material_not_transferred', 'D_soil_changes_scene_sig')
+        add('N12_tamper_fields_hashed', '场景签名与投射字段必须受保护',
+            all(scp.get(k) is True for k in keys), {k: scp.get(k) for k in keys})
     except Exception as e:
         add('N12_tamper_fields_hashed', 'x', False, f'{type(e).__name__}: {e}')
 
     # 13 P95 缺测 vs 真实零误差
     import v7_second_view_screen as S
+    v_missing = {'measurement_status': 'measured', 'mask_iou': 0.95,
+                 'vis_pt_p95_mm': None, 'freespace_violation': 0.01}
+    v_zero = {'measurement_status': 'measured', 'mask_iou': 0.95,
+              'vis_pt_p95_mm': 0.0, 'freespace_violation': 0.01}
     add('N13_missing_vs_zero_p95', '缺测不得 pass/reject，零误差应 kept',
-        S.verdict_of({'mask_iou': 0.95, 'vis_pt_p95_mm': None, 'freespace_violation': 0.01}) == 'not_evaluated'
-        and S.verdict_of({'mask_iou': 0.95, 'vis_pt_p95_mm': 0.0, 'freespace_violation': 0.01}) == 'kept',
-        'not_evaluated / kept')
+        S.verdict_of(v_missing) == 'not_evaluated' and S.verdict_of(v_zero) == 'kept',
+        {'missing': S.verdict_of(v_missing), 'zero': S.verdict_of(v_zero)})
 
     # 14 并集内部接缝、部分暴露面、凹槽、通道
     import collision_occupancy_metrics as M2

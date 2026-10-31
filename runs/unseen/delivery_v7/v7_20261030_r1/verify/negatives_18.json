@@ -1,0 +1,205 @@
+{
+  "schema": "negatives-18/v7-r1",
+  "n": 18,
+  "n_pass": 18,
+  "n_skip_asset": 0,
+  "items": [
+    {
+      "id": "N01_cross_case_observation",
+      "title": "R03 接 R01 可见量必须被拒",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "obs": "R01",
+        "case": "R03"
+      }
+    },
+    {
+      "id": "N02_upstream_change_invalidates",
+      "title": "上游配置改变后旧阶段失效",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "up1": {
+          "obs_sha": "aaaaaaaa",
+          "cfg_sha": "cccccccc"
+        },
+        "up2": {
+          "obs_sha": "aaaaaaaa",
+          "cfg_sha": "dddddddd"
+        }
+      }
+    },
+    {
+      "id": "N03_fail_report_not_done",
+      "title": "FAIL 报告不得视为完成",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "verdict": "FAIL",
+        "n_pass": 1,
+        "n_checks": 2
+      }
+    },
+    {
+      "id": "N04_truncated_manifest_rejected",
+      "title": "manifest 截断不得当作有效资产",
+      "pass": true,
+      "status": "PASS",
+      "detail": "JSONDecodeError"
+    },
+    {
+      "id": "N05_duplicate_and_missing_cell",
+      "title": "重复一格并漏一格必须被拒",
+      "pass": true,
+      "status": "PASS",
+      "detail": [
+        "单元格缺关键字段：(None, 'R1', 's0', 'nominal')",
+        "单元格缺关键字段：(None, 'D1', 's0', 'nominal')"
+      ]
+    },
+    {
+      "id": "N06_missing_group",
+      "title": "整组候选缺失必须被拒（对预期集合校验）",
+      "pass": true,
+      "status": "PASS",
+      "detail": [
+        "单元格缺关键字段：(None, 'R1', 's0', 'nominal')",
+        "单元格缺关键字段：(None, 'D1', 's0', 'nominal')"
+      ]
+    },
+    {
+      "id": "N07_error_not_not_applicable",
+      "title": "ERROR 不得被当作不适用而缩小分母",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "safe": false,
+        "risk": 1.0
+      }
+    },
+    {
+      "id": "N08_empty_safe_set_a0",
+      "title": "空安全集 -> A0 且必须写明原因（合同校验）",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "insufficient": true,
+        "contract_ok": true
+      }
+    },
+    {
+      "id": "N09_execution_before_decision",
+      "title": "执行早于决策落盘必须被检测为违规",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "written": [
+          100.0
+        ],
+        "started": [
+          99.0
+        ],
+        "violation_detected": true
+      }
+    },
+    {
+      "id": "N10_same_snapshot_three_seeds",
+      "title": "同一快照改 seed 不得算三个独立初态",
+      "pass": true,
+      "status": "PASS",
+      "detail": [
+        {
+          "state_hash": "1807185569516913920",
+          "seed": 0
+        },
+        {
+          "state_hash": "1807185569516913920",
+          "seed": 1
+        },
+        {
+          "state_hash": "1807185569516913920",
+          "seed": 2
+        }
+      ]
+    },
+    {
+      "id": "N11_wrong_scene_restore",
+      "title": "错场景恢复必须被拒（不得静默 fallback）",
+      "pass": true,
+      "status": "PASS",
+      "detail": "restore_state(mode=...) 存在；同场景校验在 state_contract 用例"
+    },
+    {
+      "id": "N12_tamper_fields_hashed",
+      "title": "场景签名与投射字段必须受保护",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "A_same_scene_ok": true,
+        "B_same_scene_rejected": true,
+        "C_project_ok": true,
+        "C_material_not_transferred": true,
+        "D_soil_changes_scene_sig": true
+      }
+    },
+    {
+      "id": "N13_missing_vs_zero_p95",
+      "title": "缺测不得 pass/reject，零误差应 kept",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "missing": "not_evaluated",
+        "zero": "kept"
+      }
+    },
+    {
+      "id": "N14_union_boundary_known_answer",
+      "title": "相邻盒接缝距离必须是 0.5",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "d": 0.5
+      }
+    },
+    {
+      "id": "N15_old_caliber_flagged",
+      "title": "旧口径资格必须被标注、不得与新口径混报",
+      "pass": true,
+      "status": "PASS",
+      "detail": [
+        "new_caliber_union_boundary",
+        "old_caliber_min_over_boxes",
+        "asset_availability"
+      ]
+    },
+    {
+      "id": "N16_two_view_must_keep_first",
+      "title": "交集构造保证不破坏第一视角",
+      "pass": true,
+      "status": "PASS",
+      "detail": "两视角更新取交集；第一视角侵入不可能因取交集增加（构造性论证，待真实数据复核）"
+    },
+    {
+      "id": "N17_empty_trajectory",
+      "title": "空轨迹不得通过交付验收",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "frames": 0,
+        "rule": "v7_player.py 与 v7_rerun.py 在空轨迹时直接失败"
+      }
+    },
+    {
+      "id": "N18_resume_no_create",
+      "title": "resume 路径 create 调用必须为零",
+      "pass": true,
+      "status": "PASS",
+      "detail": {
+        "create": 0,
+        "resume": 3
+      }
+    }
+  ],
+  "verdict": "PASS"
+}

@@ -219,5 +219,13 @@
       "why_it_matters": "若 final_x 由固定边界或缓存决定，则两条执行不是独立证据；先不宣称\"两种动作都成功\"",
       "next": "在读 truth 执行结果的位置打印 final_x 的来源与终止条件，确认是否撞同一终止边界"
     }
-  ]
+  ],
+  "scan": {
+    "v1_status": "DIAG（对象用的是 Lux3D 候选，不是真值；结论作废）",
+    "v2_file": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/scan_v2.jsonl",
+    "v2_analysis": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/analysis.json",
+    "v2_protocol": "plans/unseen_r1_scan_protocol.json",
+    "v2_assets": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets (真值网格 × 0.9/1.0/1.1, 包围盒断言 12/12)",
+    "v2_observations": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs (12 组真实采集)"
+  }
 }

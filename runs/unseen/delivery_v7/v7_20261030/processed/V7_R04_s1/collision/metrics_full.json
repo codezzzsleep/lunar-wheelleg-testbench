@@ -1,0 +1,120 @@
+{
+  "schema": "collision-metrics/v2",
+  "version": "collision-metrics/v2",
+  "label": "V7_R04_s1",
+  "source_mesh": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/fusion/body.stl",
+  "source_sha": "80eb06853c05414732aa95950426579c8ad1dd2fd31471b58b680576d2a0c11f",
+  "collision_dir": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/collision",
+  "representation": "box_union",
+  "n_boxes": 13592,
+  "n_parts_declared": 13592,
+  "n_parts_loaded": null,
+  "missing_parts": [],
+  "collision_sha_manifest": "aff0dd45cfd4bc7583e79a6d59cff818",
+  "source_status": {
+    "watertight": true,
+    "euler": -1072,
+    "n_faces": 553340
+  },
+  "source_volume_defined": true,
+  "geometry": {
+    "source_inside": 51139,
+    "collision_inside": 51097,
+    "intersection": 50677,
+    "union": 51559,
+    "collision_only": 420,
+    "source_only": 462,
+    "occupancy_iou": 0.9829,
+    "over_fill_frac_of_collision": 0.0082,
+    "under_fill_frac_of_source": 0.009,
+    "over_fill_volume_m3": 2.688e-05,
+    "under_fill_volume_m3": 2.9568e-05,
+    "source_volume_voxelised_m3": 0.003272896,
+    "collision_volume_voxelised_m3": 0.003270208,
+    "eval_pitch_m": 0.004,
+    "eval_dims": [
+      134,
+      137,
+      57
+    ],
+    "source_to_collision_mm": {
+      "n": 1200,
+      "med": 0.5,
+      "p95": 1.0,
+      "max": 1.329
+    },
+    "collision_to_source_mm": {
+      "n": 1200,
+      "med": 0.5,
+      "p95": 1.163,
+      "max": 1.762
+    }
+  },
+  "probe": {
+    "n_gap_rows": 2054,
+    "largest": [
+      {
+        "x_m": 1.7593,
+        "z_m": 0.106,
+        "gap_m": 0.504,
+        "y_m": 0.0002
+      },
+      {
+        "x_m": 1.7633,
+        "z_m": 0.106,
+        "gap_m": 0.504,
+        "y_m": 0.0002
+      },
+      {
+        "x_m": 1.7673,
+        "z_m": 0.106,
+        "gap_m": 0.504,
+        "y_m": 0.0002
+      }
+    ]
+  },
+  "parity_source": {
+    "method": "full_mesh",
+    "faces": 553340
+  },
+  "evaluation_points": {
+    "total": 1046406,
+    "used": 1046406,
+    "sampled": false,
+    "max_points": 2000000,
+    "seed": 0
+  },
+  "samples": 1200,
+  "seed": 0,
+  "topology": {
+    "weld_applied": true,
+    "watertight_before_weld": false,
+    "watertight_after_weld": true,
+    "duplicate_vertices_welded": 1384422
+  },
+  "sampling": {
+    "collision_to_source": {
+      "algorithm": "exposed-face-area/uniform/v1",
+      "requested": 1200,
+      "used": 1200,
+      "n_faces": 228866,
+      "total_area_m2": 1.4304125,
+      "seed": 0
+    },
+    "source_to_collision": {
+      "algorithm": "surface_uniform/v1",
+      "requested": 1200,
+      "used": 1200,
+      "seed": 0
+    }
+  },
+  "measurement_validity": {
+    "source_volume_defined": true,
+    "metrics_present": true,
+    "sampling_complete": true,
+    "valid": true
+  },
+  "verdict": "PASS",
+  "note": "双向距离用并集表面（box 解析距离 / 凸 part 距离）；源网格非水密时 source_volume_defined=false，内部量只作诊断。",
+  "peak_rss_mb": 1829.3
+}

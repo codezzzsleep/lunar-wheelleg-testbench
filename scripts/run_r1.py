@@ -151,7 +151,7 @@ def s_closed_loop(a):
                'runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH',
                '--truth-world',
                'runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/truth_world',
-               '--visible-json', f'{BATCH}/observations/R01_visible_public.json',
+               '--visible-json', f'{BATCH}/observations/R03_visible_public.json',
                '--soil-configs', 'nominal,low_traction,high_drag',
                '--out', f'{BATCH}/evaluation/closed_loop_R03_three_soils'], a.dry_run)
 

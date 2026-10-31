@@ -1,0 +1,7 @@
+{"schema": "second-view-screen/v7",
+ "note": "两视角更新体的筛选记录：可见两视角均通过，但碰撞占据 IoU 0.9025（2 mm 并集）< 0.95，按冻结门槛不合格",
+ "rows": [{"candidate": "tv_R03_s1", "verdict_final": "rejected",
+           "reject_reason": "collision_iou_below_gate",
+           "collision_iou": 0.9025, "collision_c2s_mm": 4.0,
+           "visible_obs1": {"iou": 0.9803, "p95_mm": 1.669, "freespace": 0.0126},
+           "visible_obs2": {"iou": 0.9837, "p95_mm": 1.761, "freespace": 0.0108}}]}

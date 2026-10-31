@@ -67,6 +67,8 @@ def main():
     ap.add_argument('--actions', default=','.join(TRAVERSE_ACTIONS))
     ap.add_argument('--goal-x', type=float, default=2.6)
     ap.add_argument('--time-limit', type=float, default=30.0)
+    ap.add_argument('--a0-reason', default='no_candidates_after_second_view',
+                    help='A0 分支写入的原因（不同分支要能区分）')
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
     out = ROOT / a.out
@@ -176,9 +178,11 @@ def main():
         # 无候选分支：必须在**写盘之前**就把 A0 与原因写进 decision，
         # 否则写出的 decisions.json 缺原因，合同会（正确地）拒绝它。
         dec.update({'chosen': 'A0', 'safe_set': [],
-                    'reason': 'no_candidates_after_second_view',
+                    'reason': a.a0_reason,
                     'no_candidate': True,
-                    'reason_detail': '两视角筛选后保留集合为空，禁止通行，固定 A0'})
+                    'reason_detail': ('候选未通过冻结门槛而退出正式集合，禁止通行，固定 A0'
+                                      if a.a0_reason != 'no_candidates_after_second_view'
+                                      else '两视角筛选后保留集合为空，禁止通行，固定 A0')})
     # 决策矩阵合同校验（重复/缺格/A0 入安全集/无候选未写原因 -> 直接失败）
     import v7_decision_contract as DC
     _exp = {'candidates': [h['id'] for h in hyps], 'actions': acts,

@@ -29,7 +29,22 @@ global OOM，把 worker 一起杀掉（dmesg 里 10/29–10/31 共 8 次）。
 
 长任务必须持 SSH 会话保活；`scripts/cnb_run.sh` 已内建。
 
-## 4. 一个回合只推进一件事
+## 4. 崩溃的真正原因：本地重计算，不是轮询
 
-不要在一个回合里串多个小时的 `sleep` 轮询：回合被外部结束（OOM/关闭超时）时，
-本地子进程全部丢失，之前所有等待作废。
+2026-10-31 的三次中断（12:53 / 15:36 / 15:55）全部是 **global OOM**：
+
+```
+oom-kill: task_memcg=/system.slice/deepseek-harness.service, task=python
+Out of memory: Killed process (python) total-vm:15897276kB, anon-rss:7284768kB
+```
+
+本机 8 GB，R04_s2（0.0258 m³）的占据重建把 python 推到 7.28 GB，
+内核挑它杀掉，而它与 worker 同属一个 cgroup，于是整个回合一起没了。
+
+**轮询不是原因**：`sleep` 不占内存，等一小时也不会崩。
+之前的"别串长轮询"是错误归因，已撤回。
+
+真正的规则：
+- 本地只做改动、小测试、提交；
+- 任何融合/重建/占据测量/预演/扫描，**一律在沙箱**；
+- 本地误跑会被 `require_memory()` 直接拒绝（除非 `--allow-local`）。

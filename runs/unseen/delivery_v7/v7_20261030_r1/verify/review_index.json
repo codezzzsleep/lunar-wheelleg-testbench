@@ -120,32 +120,50 @@
     {
       "candidate": "V7_R03_s2",
       "object": "R03",
-      "status": "not_measured",
+      "status": "formal",
       "fusion": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/fusion",
       "parent": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R03_s2/world/align",
       "observation": "runs/unseen/recovery_r3/obs_R03",
       "collision_build": null,
-      "metrics": null,
+      "metrics": {
+        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/occ_R03_s2/collision/metrics_occ.json",
+        "evaluator": "union-outer-boundary/v3 (occupancy path)",
+        "watertight": true,
+        "source_volume_defined": true,
+        "iou": 0.9832,
+        "s2c_mm": 0.485,
+        "c2s_mm": 0.742,
+        "verdict": "PASS"
+      },
       "visible": {
         "iou": 0.9551,
         "p95_mm": 2.65,
         "freespace": 0.0473
       },
-      "notes": "旧口径记录；本轮未重测"
+      "notes": "按占据直连重建并重测，旧口径记录被本行替代"
     },
     {
       "candidate": "tvocc_R03_s1（占据式两视角）",
       "object": "R03",
-      "status": "built",
+      "status": "formal_pending_visible",
       "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1",
       "parent": "V7_R03_s1",
       "observation": "obs_R03 + obs_R03_at_driven",
-      "collision_build": null,
-      "metrics": null,
+      "collision_build": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1/collision",
+      "metrics": {
+        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1/collision/metrics_occ.json",
+        "evaluator": "union-outer-boundary/v3 (occupancy path)",
+        "watertight": true,
+        "source_volume_defined": true,
+        "iou": 0.9843,
+        "s2c_mm": 0.442,
+        "c2s_mm": 0.754,
+        "verdict": "PASS"
+      },
       "visible": {
         "note": "not_measured（下一步）"
       },
-      "notes": "O=(P|S1|S2)&~(F1|F2)，618,441 体素，507,344 面，watertight；冲突 S1∩F2=54、S2∩F1=2"
+      "notes": "O=(P|S1|S2)&~(F1|F2)：618,441 体素、507,344 面、watertight；碰撞 PASS 0.9843/0.442/0.754；可见双视角验收进行中"
     }
   ],
   "known_answers": {

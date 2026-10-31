@@ -23,6 +23,11 @@ def main():
     ap.add_argument('--goal-x', type=float, default=2.6)
     ap.add_argument('--soils', default='nominal,low_traction,high_drag')
     ap.add_argument('--actions', default=None)
+    ap.add_argument('--drive-mode', choices=['nav', 'arc'], default='arc',
+                    help='nav=侧向导航驾驶；arc=前进+偏航弧线（真实改变视角）')
+    ap.add_argument('--arc-v', type=float, default=0.12)
+    ap.add_argument('--arc-w', type=float, default=-0.20)
+    ap.add_argument('--arc-seconds', type=float, default=6.0)
     ap.add_argument('--drive-target-y', type=float, default=0.42)
     ap.add_argument('--drive-stop-x', type=float, default=0.55)
     ap.add_argument('--out', required=True)
@@ -49,8 +54,19 @@ def main():
     cam0 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
     q0 = np.array(env.data.qpos, dtype=float).copy()
     t_drive0 = float(env.t)
-    DO.drive_to_nav(env, a.drive_target_y, stop_x=a.drive_stop_x, max_s=8.0, v=0.10)
-    _st = DO.brake_and_settle(env)
+    if a.drive_mode == 'arc':
+        _t_arc = float(env.t)
+        while float(env.t) - _t_arc < a.arc_seconds:
+            env.step_drive(a.arc_v, a.arc_w)
+    else:
+        DO.drive_to_nav(env, a.drive_target_y, stop_x=a.drive_stop_x, max_s=8.0, v=0.10)
+    _st = DO.brake_and_settle(env, max_s=6.0)
+    if not _st.get('stable'):
+        # 弧线驾驶结束后可能仍有残余速度/转动：显式零指令再保持一段
+        _t_hold = float(env.t)
+        while float(env.t) - _t_hold < 0.8:
+            env.step_drive(0.0, 0.0)
+        _st = DO.brake_and_settle(env, max_s=3.0)
     drive_seconds = float(env.t) - t_drive0
     _mj.mj_forward(env.model, env.data)
     cam1 = np.array(env.data.cam_xpos[cam_id], dtype=float).copy()
@@ -61,8 +77,21 @@ def main():
     bearing_change_deg = float(np.degrees(np.arccos(np.clip(cosang, -1.0, 1.0))))
     stable = bool(_st.get('stable'))
     settle_hold_s = float(_st.get('hold_s', _st.get('seconds', 0.0)) or 0.0)
-    observe.capture_observation(env, out / 'obs_after_drive',
-                                obs_id=f'{case["case_id"]}_same_scene')
+    try:
+        observe.capture_observation(env, out / 'obs_after_drive',
+                                    obs_id=f'{case["case_id"]}_same_scene')
+    except Exception as _e:
+        # 目标不在视野内时裁剪会失败：这是**观察不成立**，不是程序崩溃
+        rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
+               'budget_s': a.budget, 'drive_seconds': round(drive_seconds, 4),
+               'decision': {'chosen': 'A0', 'reason': 'observation_capture_failed',
+                            'error': f'{type(_e).__name__}: {_e}'},
+               'execution': {'success': False, 'reason': 'observation_capture_failed',
+                             'executed': False, 'fallback': True},
+               'candidates': 'not_evaluated'}
+        (out / 'same_scene_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
+        print(json.dumps(rep, ensure_ascii=False))
+        return
     # 观察质量：像素数、有效深度比例、速度、角速度、倾角
     _depth = np.load(out / 'obs_after_drive' / 'depth.npy')
     valid_frac = float(np.isfinite(_depth).mean())

@@ -35,9 +35,27 @@ def sha_file(p):
     return h.hexdigest()
 
 
-def occupancy_from_mesh(mesh, pitch, margin=2):
-    """表面采样 -> 壳 -> 非周期膨胀 -> 外部 flood fill（与融合一致的占据语义）。"""
+def occupancy_from_mesh(mesh, pitch, margin=2, solid_from_mesh=False):
+    """表面采样 -> 壳 -> 非周期膨胀 -> 外部 flood fill（与融合一致的占据语义）。
+
+    solid_from_mesh=True 时改为直接对**水密网格**体素化并填内部：
+    细网格上射线采样可能留缝，导致 flood fill 把内部当外部、占据体积塌缩，
+    这条路径不依赖采样密度。
+    """
     grid = FZ.make_grid(mesh, np.asarray(mesh.vertices), pitch, margin)
+    if solid_from_mesh:
+        if not mesh.is_watertight:
+            raise SystemExit('solid_from_mesh 需要水密网格；当前网格非水密')
+        vg = mesh.voxelized(pitch=pitch).fill()
+        origin = np.asarray(vg.bounds[0])
+        shape = tuple(int(x) for x in np.round(vg.extents / pitch))
+        occ = np.zeros(grid.shape, dtype=bool)
+        lo = np.round((origin - grid.origin) / pitch).astype(int)
+        idx = tuple(slice(max(0, lo[d]), max(0, lo[d]) + shape[d]) for d in range(3))
+        src = vg.matrix
+        # 形状对齐后写入
+        occ[idx] = src[:occ[idx].shape[0], :occ[idx].shape[1], :occ[idx].shape[2]]
+        return occ, grid, {'solid_method': 'watertight_voxel_fill', 'n_voxels': int(occ.sum())}
     occ, stats = FZ.parent_solid(mesh, grid, 1)
     return occ, grid, stats
 
@@ -157,6 +175,8 @@ def cache_ok(outdir, mesh, pitch):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--solid-from-mesh', action='store_true',
+                    help='直接对水密网格体素化并填内部（细网格上更稳）')
     ap.add_argument('--mesh', required=True)
     ap.add_argument('--out', required=True)
     ap.add_argument('--pitch', type=float, default=0.005)
@@ -176,7 +196,15 @@ def main():
         # 身份不匹配时**拒绝**复用，也不覆盖旧缓存（避免一次错参数把合格缓存冲掉）
         raise SystemExit(f'缓存身份不匹配（{why}）：拒绝复用；如确需重建请去掉 --reuse 或加 --force')
     mesh = FZ._load_mesh(src)
-    occ, grid, stats = occupancy_from_mesh(mesh, a.pitch, margin=1)
+    if getattr(a, 'solid_from_mesh', False) and not mesh.is_watertight:
+        # 浮点往返可能让边配对失效：按容差合并顶点后再判一次
+        mesh.merge_vertices()
+        trimesh.repair.fill_holes(mesh)
+        trimesh.repair.fix_normals(mesh)
+        print(json.dumps({'note': 'merged vertices to recover watertightness',
+                          'watertight': bool(mesh.is_watertight)}, ensure_ascii=False))
+    occ, grid, stats = occupancy_from_mesh(mesh, a.pitch, margin=1,
+                                           solid_from_mesh=getattr(a, 'solid_from_mesh', False))
     boxes = merge_boxes_greedy(occ)
     out = pathlib.Path(a.out); (out / 'parts').mkdir(parents=True, exist_ok=True)
     files = []

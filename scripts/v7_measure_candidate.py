@@ -22,6 +22,31 @@ def run(cmd):
     return subprocess.call(cmd, cwd=str(ROOT))
 
 
+def _mem_available_gb():
+    try:
+        for line in open('/proc/meminfo'):
+            if line.startswith('MemAvailable:'):
+                return int(line.split()[1]) / 1024 / 1024
+    except OSError:
+        pass
+    return None
+
+
+def require_memory(min_gb=8.0, allow_local=False, what='占据/距离测量'):
+    """内存不够就拒绝在本地跑，而不是把整机 OOM 掉。
+
+    实测教训：本地 8 GB 机器上跑 0.026 m³ 对象的占据重建会到 7.2 GB，
+    触发 global OOM，连 harness worker 一起被杀。重活应当在 CNB 沙箱（16 GB）跑。
+    """
+    avail = _mem_available_gb()
+    if avail is None or allow_local or avail >= min_gb:
+        return avail
+    raise SystemExit(
+        f'{what} 需要约 {min_gb:.0f} GB 可用内存，当前仅 {avail:.1f} GB：'
+        '请到沙箱运行（ssh cnb-... 或 scripts/cnb_run.sh），'
+        '确需本地跑请加 --allow-local')
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--fusion', required=True, help='含 body.stl 的融合输出目录')
@@ -29,8 +54,11 @@ def main():
     ap.add_argument('--eval-pitch', type=float, default=0.004, help='评价网格')
     ap.add_argument('--parity', default='full', choices=['full', 'approx'])
     ap.add_argument('--label', default=None)
+    ap.add_argument('--allow-local', action='store_true',
+                    help='内存不足时仍允许在本机运行（可能 OOM）')
     ap.add_argument('--force', action='store_true')
     a = ap.parse_args()
+    require_memory(allow_local=getattr(a, 'allow_local', False))
     f = ROOT / a.fusion
     body = f / 'body.stl'
     if not body.exists():

@@ -1,0 +1,404 @@
+{
+  "schema": "six-main/v1",
+  "config": "R01@1.0",
+  "note": "只统计 execution/validation 行",
+  "rows": [
+    {
+      "method": "B0_blind",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B0_blind",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B0_blind",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B0_blind",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B0_blind",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 1,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B0_blind",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B1_height",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B2_box",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "B3_mirror",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "D1"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 3,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "D1"
+      ]
+    },
+    {
+      "method": "H5_lux3d",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 1,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 3,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "validation",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "validation",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    {
+      "method": "U_truth",
+      "phase": "validation",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 1,
+      "actions": [
+        "R2"
+      ]
+    },
+    {
+      "method": "W_width_rule(diagnostic)",
+      "phase": "execution",
+      "soil": "high_drag",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "S1"
+      ]
+    },
+    {
+      "method": "W_width_rule(diagnostic)",
+      "phase": "execution",
+      "soil": "low_traction",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "S1"
+      ]
+    },
+    {
+      "method": "W_width_rule(diagnostic)",
+      "phase": "execution",
+      "soil": "nominal",
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "S1"
+      ]
+    }
+  ],
+  "reading": {
+    "nominal": "H5 与真值参考同为 3/3（执行）、1/3（验证），都选 R2；其余方法 0，且先验全部刹停 A0",
+    "low_traction": "没有任何方法成功；真值与先验都选 A0，H5 选 D1 也失败",
+    "high_drag": "没有任何方法成功；H5 与真值都选 A0",
+    "conclusion": "该配置上生成几何在 nominal 土壤达到真值上限并优于先验，但两种非名义土壤下真值本身也不通行，说明土壤变化主导结果，几何结论只在 nominal 成立",
+    "caveat": "单一配置（R01@1.0）、每格 3 执行 + 3 验证状态，未做假设数量归因"
+  }
+}

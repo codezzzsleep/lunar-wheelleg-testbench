@@ -1,0 +1,18 @@
+{
+  "schema": "bounded-scan-protocol/v1",
+  "frozen_at": "2026-10-31",
+  "objects": ["R01", "R02", "R03", "R04"],
+  "size_levels": {"scales": [0.9, 1.0, 1.1], "applied_to": "target_height_m",
+                  "note": "等比缩放作用在障碍目标高度；不新增独立对象"},
+  "actions": ["R1", "R2", "L1", "L2", "S1", "D1", "D2"],
+  "initial_states": [{"seed": 0, "lateral_m": 0.05, "yaw_rad": 0.05},
+                     {"seed": 1, "lateral_m": -0.05, "yaw_rad": -0.05}],
+  "soil": "nominal",
+  "controller": "eval_six:run_episode（同一技能库与制动规则）",
+  "episode_seconds": 30.0,
+  "max_episodes": 168,
+  "outcomes": ["success", "not_applicable", "sim_error", "timeout", "tipped", "out_of_bounds"],
+  "rules": {"no_result_driven_extension": true,
+            "report_negative": "没有区分度也如实报告",
+            "use_object_own_visible_quantities": true}
+}

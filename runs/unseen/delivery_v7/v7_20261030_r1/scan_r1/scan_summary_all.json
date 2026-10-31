@@ -1,0 +1,65 @@
+{
+  "n_episodes": 168,
+  "protocol": "plans/unseen_r1_scan_protocol.json",
+  "by_outcome": {
+    "tipped": 66,
+    "success": 30,
+    "not_applicable": 72
+  },
+  "by_object": {
+    "R01": {
+      "tipped": 18,
+      "success": 6,
+      "not_applicable": 18
+    },
+    "R02": {
+      "tipped": 24,
+      "not_applicable": 18
+    },
+    "R03": {
+      "success": 24,
+      "not_applicable": 18
+    },
+    "R04": {
+      "tipped": 24,
+      "not_applicable": 18
+    }
+  },
+  "actionable": {
+    "R01_0.9": [
+      "R2"
+    ],
+    "R01_1.0": [
+      "R2"
+    ],
+    "R01_1.1": [
+      "R2"
+    ],
+    "R02_0.9": [],
+    "R02_1.0": [],
+    "R02_1.1": [],
+    "R03_0.9": [
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "R03_1.0": [
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "R03_1.1": [
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "R04_0.9": [],
+    "R04_1.0": [],
+    "R04_1.1": []
+  },
+  "discriminating_scenes": 6,
+  "note": "R04 无成功动作；R02 同样无成功动作（动作库无解，不等于物理不可通行）"
+}

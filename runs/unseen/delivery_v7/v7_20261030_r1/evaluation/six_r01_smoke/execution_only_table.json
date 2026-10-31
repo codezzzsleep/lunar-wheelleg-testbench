@@ -1,0 +1,97 @@
+{
+  "schema": "six-exec-only/v1",
+  "note": "只统计 execution/validation 行；rehearsal 行是预演，不能算执行成绩",
+  "rows": {
+    "W_width_rule(diagnostic)|execution": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "S1"
+      ]
+    },
+    "B0_blind|execution": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    "B1_height|execution": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "B2_box|execution": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "B3_mirror|execution": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "H5_lux3d|execution": {
+      "n": 3,
+      "ok": 3,
+      "actions": [
+        "R2"
+      ]
+    },
+    "U_truth|execution": {
+      "n": 3,
+      "ok": 3,
+      "actions": [
+        "R2"
+      ]
+    },
+    "B0_blind|validation": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "R1"
+      ]
+    },
+    "B1_height|validation": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "B2_box|validation": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "B3_mirror|validation": {
+      "n": 3,
+      "ok": 0,
+      "actions": [
+        "A0"
+      ]
+    },
+    "H5_lux3d|validation": {
+      "n": 3,
+      "ok": 1,
+      "actions": [
+        "R2"
+      ]
+    },
+    "U_truth|validation": {
+      "n": 3,
+      "ok": 1,
+      "actions": [
+        "R2"
+      ]
+    }
+  }
+}

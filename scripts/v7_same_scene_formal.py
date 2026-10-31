@@ -23,13 +23,13 @@ def main():
     ap.add_argument('--goal-x', type=float, default=2.6)
     ap.add_argument('--soils', default='nominal,low_traction,high_drag')
     ap.add_argument('--actions', default=None)
-    ap.add_argument('--drive-mode', choices=['nav', 'arc'], default='arc',
+    ap.add_argument('--drive-mode', choices=['nav', 'arc'], default='nav',
                     help='nav=侧向导航驾驶；arc=前进+偏航弧线（真实改变视角）')
     ap.add_argument('--arc-v', type=float, default=0.12)
     ap.add_argument('--arc-w', type=float, default=-0.20)
     ap.add_argument('--arc-seconds', type=float, default=6.0)
-    ap.add_argument('--drive-target-y', type=float, default=0.42)
-    ap.add_argument('--drive-stop-x', type=float, default=0.55)
+    ap.add_argument('--drive-target-y', type=float, default=0.30)
+    ap.add_argument('--drive-stop-x', type=float, default=1.30)
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
     case = json.loads((ROOT / a.case).read_text())
@@ -59,7 +59,7 @@ def main():
         while float(env.t) - _t_arc < a.arc_seconds:
             env.step_drive(a.arc_v, a.arc_w)
     else:
-        DO.drive_to_nav(env, a.drive_target_y, stop_x=a.drive_stop_x, max_s=8.0, v=0.10)
+        DO.drive_to_nav(env, a.drive_target_y, stop_x=a.drive_stop_x, max_s=10.0, v=0.10)
     _st = DO.brake_and_settle(env, max_s=6.0)
     if not _st.get('stable'):
         # 弧线驾驶结束后可能仍有残余速度/转动：显式零指令再保持一段

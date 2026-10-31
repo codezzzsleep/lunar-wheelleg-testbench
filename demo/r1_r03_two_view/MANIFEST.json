@@ -100,5 +100,46 @@
       "sha256": "273ee2666b5cd9796a93c5dbd6e8e6283fb1f747b7c5f892dcd324224c971277",
       "note": "闭环原始证据"
     }
-  ]
+  ],
+  "verification": {
+    "where": "fresh directory /tmp/demo_verify (only the pack contents)",
+    "steps": [
+      {
+        "step": "rebuild mesh from occ.npz",
+        "result": {
+          "faces": 500296,
+          "watertight": true,
+          "volume_m3": 0.009420634,
+          "n_occupied": 602975,
+          "content_sha": "3819f50d9a364753e6279dd13562cbbd5445dc9242598e422fbf6faf69de82ec"
+        }
+      },
+      {
+        "step": "collision box union from the same occ",
+        "result": {
+          "n_boxes": 4632,
+          "cover_check": "identical",
+          "gaps": 0,
+          "extra": 0,
+          "overlap_cells": 0
+        }
+      },
+      {
+        "step": "collision metrics on the rebuilt mesh",
+        "result": {
+          "verdict": "PASS",
+          "iou": 0.9833,
+          "s2c_mm": 0.504,
+          "c2s_mm": 0.739,
+          "source_vol_defined": true
+        }
+      }
+    ],
+    "matches_acceptance": {
+      "iou": true,
+      "s2c": true,
+      "c2s": true
+    },
+    "note": "与 acceptance/collision.json 完全一致，说明演示包能从占据独立重建该候选"
+  }
 }

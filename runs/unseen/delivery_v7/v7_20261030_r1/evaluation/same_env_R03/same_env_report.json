@@ -1,0 +1,29 @@
+{
+  "schema": "same-env-loop/v1",
+  "case": "R03",
+  "action": "R1",
+  "scene_sig_before": "5c8be3c612c3e02a09b8f1454a2b18a8f1c3c9fb4f9fbacadf6c34b10ab55d86",
+  "scene_sig_at_state": "5c8be3c612c3e02a09b8f1454a2b18a8f1c3c9fb4f9fbacadf6c34b10ab55d86",
+  "scene_sig_after_direct": "5c8be3c612c3e02a09b8f1454a2b18a8f1c3c9fb4f9fbacadf6c34b10ab55d86",
+  "scene_sig_after_restore": "5c8be3c612c3e02a09b8f1454a2b18a8f1c3c9fb4f9fbacadf6c34b10ab55d86",
+  "same_scene_holds": true,
+  "observation_seconds": 0.0,
+  "execution_seconds": 18.0,
+  "direct": {
+    "sim_s": 18.02,
+    "final_x": 15.8917,
+    "frames": 901
+  },
+  "save_restore": {
+    "sim_s": 18.02,
+    "final_x": 1.1382,
+    "frames": 901
+  },
+  "first_divergence": {
+    "frame": 0,
+    "max_abs_diff_m": 0.00023817582494956024,
+    "t_direct": 11.96,
+    "t_restore": 11.96
+  },
+  "frames_compared": 901
+}

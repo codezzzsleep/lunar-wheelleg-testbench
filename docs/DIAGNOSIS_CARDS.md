@@ -80,3 +80,34 @@
 8. **有证据**：缺失清单来自 audit。**未做**：把大资产放到稳定存储。
 9. **卡点**：缺一个"大资产的稳定存放 + SHA 清单"机制。
 10. **不受影响**：评价器、反例、入口逻辑、报告。
+
+---
+
+## 卡 5 · 同场景续行：签名成立，但直接/恢复对照首帧就分叉
+
+1. **期望**：在同一个 `WheelLegEnv` 实例内完成 驾驶 → 停稳 → 采集 → 续行；保存→恢复→再继续 与 直接继续 **逐帧一致**。
+2. **实际**：`same_scene_holds = true`（`scene_sig` 在恢复状态前、采集后、直接续行后、恢复续行后四处相同），
+   但两条续行**第 0 帧就分叉**：`max_abs_diff_m = 2.38e-4`；终值差得更多
+   （direct `final_x = 15.89 m`，save_restore `final_x = 1.14 m`）。
+3. **代码**：`scripts/observe.py::capture_observation`（本次新提取）、
+   `scripts/v7_same_env_loop.py::snapshot/restore/run_episode`。
+4. **最小复现**：
+   ```bash
+   MUJOCO_GL=osmesa /opt/lunar/bin/python scripts/v7_same_env_loop.py \
+     --case cases/unseen_v1/R03.json \
+     --state runs/unseen/delivery_v7/v7_20261030_r1/observation/drive_R03_b/drive_observe.json \
+     --action R1 --out runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_env_R03
+   ```
+5. **原始结果**：`same_env_report.json`：
+   `{"same_scene_holds": true, "observation_seconds": 0.0, "execution_seconds": 18.0,
+     "direct": {"final_x": 15.8917}, "save_restore": {"final_x": 1.1382},
+     "first_divergence": {"frame": 0, "max_abs_diff_m": 0.000238}}`
+6. **机器**：CNB 沙箱 8 vCPU / 16 GB，MuJoCo 3.17.0，OSMesa。
+7. **已尝试**：
+   - 只存 qpos/qvel/time → 首帧 2.4e-4；
+   - 改为 `mj_getState/mj_setState(mjSTATE_INTEGRATION)` + `qacc_warmstart` + `ctrl` + `act` + env 字段（`nav_target_y`、`n_physics`）→ **仍是首帧 2.4e-4**，说明还缺其它影响第一步的量。
+8. **有证据**：状态合同不完整（补了 warmstart 也没有消除分叉）。
+   **仅为猜测**：`run_episode` 用 `sk.act(None, rs)` 把观测传成 `None`，技能内部可能依赖观测，
+   导致两条路径的**输入**就不一致；`direct.final_x = 15.89 m` 已远超目标 2.6 m，像是控制发散而非物理差异。
+9. **卡点**：需要先把续行步进换成生产路径（`runner.EpisodeRunner`，带真实 obs），再判断分叉来自状态还是输入。
+10. **不受影响**：两视角更新资格、闭环决策与真值续行（走 `project` 模式的那条）、碰撞评价器。

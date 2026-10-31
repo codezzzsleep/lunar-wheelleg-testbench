@@ -124,6 +124,28 @@ def main():
         mujoco.mj_forward(env.model, env.data)
         print(json.dumps({'restored_state_seed': a.state_seed,
                           'qpos_n': len(_snap['qpos'])}, ensure_ascii=False))
+    capture_observation(env, out, width=a.width, height=a.height,
+                        fovy=a.fovy, cam_height=a.cam_height,
+                        cam_lateral=a.cam_lateral, obs_id=obs_id)
+
+
+def capture_observation(env, out, *, width=1280, height=960, fovy=70.0,
+                       cam_height=None, cam_lateral=0.0, obs_id=None,
+                       case_id=None, extra=None):
+    """从**已有环境**采集一份观测：不 reset、不推进物理、不重建障碍。
+
+    这是任务书 §四.1 要求的分离：驾驶/停稳与采集共用同一个真值环境实例，
+    采集后再从这个实例继续执行，就不存在"重建场景导致签名不符"。
+    """
+    out = pathlib.Path(out); out.mkdir(parents=True, exist_ok=True)
+    a = type("A", (), {})()
+    a.width = width; a.height = height; a.fovy = fovy
+    a.cam_height = cam_height; a.cam_lateral = cam_lateral
+    a.observation_id = obs_id
+    a.crop_pad = 0.35          # 与 observe 命令行默认值一致
+    a.mask_step = 2
+    a.azimuth = None
+
     cam_id = cam_id_of(env)
     m0, d0 = env.model, env.data
     mujoco.mj_forward(m0, d0)
@@ -241,13 +263,15 @@ def main():
     canvas.save(out / 'crop_white_src.png')
 
     info = {
-        'case_id': case['case_id'],
+        'case_id': (case_id or obs_id),
         'observation_id': obs_id,
         'observation_protocol': 'observation-v5/direction',
-        'object_pose': {'yaw_deg': yaw_deg, 'mesh': case['mesh'],
-                        'obstacle_x': float(case['obstacle_x']),
-                        'H': float(case['H']), 'W': float(case.get('W', 0.0)),
-                        'D': float(case.get('D', 0.0))},
+        'object_pose': {'yaw_deg': float(extra.get('yaw_deg', 0.0)) if extra else 0.0,
+                        'mesh': (extra or {}).get('mesh'),
+                        'obstacle_x': float((extra or {}).get('obstacle_x', 0.0)),
+                        'H': float((extra or {}).get('H', 0.0)),
+                        'W': float((extra or {}).get('W', 0.0)),
+                        'D': float((extra or {}).get('D', 0.0))},
         'camera_schema': camera_io.SCHEMA,
         'camera': {**snap,
                    'id': int(cam_id),
@@ -255,7 +279,7 @@ def main():
                    'cam_height_m': round(float(snap['world_pos'][2]), 5),
                    # 兼容旧字段：必须来自 model.cam_pos，不再来自未同步的 spec
                    'pos_body': [float(x) for x in snap['local_pos']],
-                   'pitch_deg': spec['front_cam']['pitch_deg']},
+                   'pitch_deg': float((extra or {}).get('pitch_deg', 0.0))},
         'image': {'W': a.width, 'H': a.height},
         'intrinsics': snap['intrinsics'],
         'crop': {'box': [cx0, cy0, cx1, cy1],
@@ -272,7 +296,7 @@ def main():
 
     # ---- 独立 observation_id / observation_sha 与出生状态（V5 P0.2）----
     birth = {'schema': 'birth-state/v1', 'observation_id': obs_id,
-             'case_id': case['case_id'], 'object_pose': info['object_pose'],
+             'case_id': (case_id or obs_id), 'object_pose': info['object_pose'],
              'qpos': [float(x) for x in d.qpos],
              'qvel': [float(x) for x in d.qvel],
              'data_time': float(d.time), 'env_t': float(env.t),
@@ -283,7 +307,7 @@ def main():
                   'observation.json', 'birth_state.json']
     file_sha = {n: hashlib.sha256((out / n).read_bytes()).hexdigest()
                 for n in file_names if (out / n).exists()}
-    canonical = {'observation_id': obs_id, 'case_id': case['case_id'],
+    canonical = {'observation_id': obs_id, 'case_id': (case_id or obs_id),
                  'camera': info['camera'], 'intrinsics': info['intrinsics'],
                  'visible': info['visible'], 'object_pose': info['object_pose'],
                  'files': file_sha}
@@ -293,7 +317,7 @@ def main():
         'schema': 'observation-manifest/v1', 'observation_id': obs_id,
         'observation_sha': obs_sha, 'files': file_sha,
         'canonical': canonical}, indent=2, ensure_ascii=False))
-    print(json.dumps({'case': case['case_id'], 'observation_id': obs_id,
+    print(json.dumps({'case': (case_id or obs_id), 'observation_id': obs_id,
                       'observation_sha': obs_sha[:16], 'mask_px': int(mask.sum()),
                       'x_front': round(x_front, 4) if x_front else None,
                       'W_vis': round(W_vis, 4) if W_vis else None,

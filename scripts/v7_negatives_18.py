@@ -151,11 +151,16 @@ def main():
         abs(float(seam) - 0.5) < 1e-9, {'d': float(seam)})
 
     # 15 旧资格 / 不同源 metrics 不得正式加载
-    man = json.loads((ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/manifest.json').read_text())
-    add('N15_old_caliber_flagged', '旧口径资格必须被标注、不得与新口径混报',
-        'qualification_by_caliber' in man
-        and 'old_caliber_min_over_boxes' in man['qualification_by_caliber'],
-        list(man.get('qualification_by_caliber', {}).keys()))
+    try:
+        man = json.loads((ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/manifest.json').read_text())
+        ok15 = ('qualification_by_caliber' in man
+                and 'old_caliber_min_over_boxes' in man['qualification_by_caliber'])
+        add('N15_old_caliber_flagged', '旧口径资格必须被标注、不得与新口径混报', ok15,
+            list(man.get('qualification_by_caliber', {}).keys()))
+    except FileNotFoundError:
+        add('N15_old_caliber_flagged', '旧口径资格必须被标注、不得与新口径混报', False,
+            'manifest 缺失：干净目录下无法判定（应当明确失败而不是静默通过）',
+            status='SKIP_ASSET')
 
     # 16 两视角更新破坏第一视角 -> 不合格
     add('N16_two_view_must_keep_first', '交集构造保证不破坏第一视角',

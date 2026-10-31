@@ -431,7 +431,7 @@ CNB_TOKEN=... bash scripts/cnb_run.sh --repo ycyc755/lunar-lab-r1
 | --- | --- |
 | `scripts/v7_collision_known_answers.py` | **8/8 PASS**（评价器已知答案，纯代码可复现） |
 | `scripts/run_r1.py --audit` | 正确报告 **7 个输入缺失**（证据/网格不在仓库里）—— 这是任务书要求的"缺原始输入必须明确失败"，不是静默通过 |
-| `scripts/v7_negatives_18.py` | 缺证据路径的条目按规则失败（不伪装通过） |
+| `scripts/v7_negatives_18.py` | **16/18 通过**；N12（状态合同记录）与 N15（口径标注）因缺证据**明确失败**，不伪装通过 |
 
 **结论**：代码层可复现（评价器与反例可独立运行）；**数据层不可复现**，因为
 `runs/` 下的网格与证据被 `.gitignore` 排除且原主机已回收。这是本批的真实复现边界：

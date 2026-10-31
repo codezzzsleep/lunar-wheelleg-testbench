@@ -41,7 +41,8 @@ def sha_file(p):
 
 
 def load_mesh(p):
-    m = trimesh.load(str(p), force='mesh')
+    # process=False：不要合并顶点/去重，否则会把水密网格改成非水密，占据判据随之失效
+    m = trimesh.load(str(p), force='mesh', process=False)
     if isinstance(m, trimesh.Scene):
         geoms = [g for g in m.geometry.values() if len(g.faces) > 0]
         m = trimesh.util.concatenate(geoms) if len(geoms) > 1 else geoms[0]

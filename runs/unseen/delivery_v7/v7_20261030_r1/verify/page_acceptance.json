@@ -1,0 +1,37 @@
+{
+  "schema": "page-acceptance/v1",
+  "server": "scripts/v7_server.py",
+  "urls": {
+    "index": "http://127.0.0.1:8781/",
+    "player": "http://127.0.0.1:8781/player"
+  },
+  "real_browser": {
+    "engine": "chrome-headless-shell (Chromium), DOM 内执行页面自身的事件处理器",
+    "player_result": {
+      "play_advanced": true,
+      "reached_s": 0.6,
+      "pause_ok": true,
+      "seek_moved": true,
+      "seek_to_s": 3.26,
+      "canvas_present": true
+    },
+    "note": "通过页面按钮的 click 与 slider 的 oninput 驱动，不是截图判断"
+  },
+  "rerun": {
+    "api": "POST /api/rerun {\"case\":\"R02\",\"action\":\"R1\",\"seed\":0}",
+    "case_aware": true,
+    "new_run_id": "20261101T023307-943458",
+    "frames": 230,
+    "success": false,
+    "reason": "tipped",
+    "out": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/rerun_page_16fb257dbc20",
+    "note": "这是一条真实的失败记录，可用于\"查看失败/安全放弃\"验收"
+  },
+  "case_switch": {
+    "R02": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision",
+    "default_R03_removed": true
+  },
+  "open_items": [
+    "重仿真完成后的\"自动打开新 run 回放\"尚未连线（目前报告无逐帧轨迹，播放器需单独的 trajectory）"
+  ]
+}

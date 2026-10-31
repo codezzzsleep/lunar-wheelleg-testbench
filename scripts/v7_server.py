@@ -22,9 +22,12 @@ LOCK = threading.Lock()
 def start_job(payload):
     job_id = uuid.uuid4().hex[:12]
     case = str(payload.get('case', 'R03'))
+    if case not in CASES:
+        raise ValueError(f'未在清单中的案例：{case}')
     action = str(payload.get('action', 'R1'))
     seed = int(payload.get('seed', 0))
-    hyp = str(payload.get('hypothesis', 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/collision'))
+    # 每个案例只能用自己的假设资产，不能沿用默认 R03
+    hyp = str(payload.get('hypothesis') or CASES[case]['collision'])
     out = BATCH / 'evaluation' / f'rerun_page_{job_id}'
     cmd = [sys.executable, str(ROOT / 'scripts/v7_rerun.py'), '--case', case,
            '--hypothesis', hyp, '--action', action, '--seed', str(seed), '--out', str(out)]
@@ -61,6 +64,50 @@ def start_job(payload):
     threading.Thread(target=run, daemon=True).start()
     return job
 
+
+SELFTEST_HTML = r"""
+<script>
+(function () {
+  if (!location.search.includes('selftest=1')) return;
+  var out = [];
+  function rec(k, v) { out.push(k + '=' + v); }
+  window.__selftest = out;
+  try {
+    var play = document.getElementById('play');
+    var pause = document.getElementById('pause');
+    var seek = document.getElementById('seek');
+    var before = document.getElementById('st').textContent;
+    play.click();
+    var t1 = document.getElementById('st').textContent;
+    pause.click();
+    seek.value = 500; seek.oninput({target: seek});
+    var mid = document.getElementById('st').textContent;
+    rec('play_advanced', String(t1 !== before));
+    rec('pause_ok', '1');
+    rec('seek_moved', String(mid !== t1));
+    rec('canvas_present', String(!!document.getElementById('cv')));
+  } catch (e) { rec('player_error', e.message); }
+  try {
+    var btn = document.getElementById('btnRun');
+    document.getElementById('cCase').value = 'R02';
+    btn.click();
+    rec('rerun_clicked', '1');
+    var t0 = Date.now();
+    var poll = setInterval(function () {
+      var s = document.getElementById('runState').textContent || '';
+      if (s.indexOf('完成') >= 0 || s.indexOf('失败') >= 0 || Date.now() - t0 > 240000) {
+        clearInterval(poll);
+        rec('rerun_state', s.replace(/\s+/g, ' ').slice(0, 120));
+        var d = document.createElement('div');
+        d.id = 'selftestResult';
+        d.textContent = 'SELFTEST ' + window.__selftest.join(' | ');
+        document.body.appendChild(d);
+      }
+    }, 2000);
+  } catch (e) { rec('rerun_error', e.message); }
+})();
+</script>
+"""
 
 CONTROL_HTML = """
 <h2>重新仿真（真实后端，非动画）</h2>
@@ -110,10 +157,55 @@ CONTROL_HTML = """
 """
 
 
+PLAYER_SELFTEST = r"""
+<script>
+(function () {
+  if (!location.search.includes('selftest=1')) return;
+  var out = [];
+  function rec(k, v) { out.push(k + '=' + v); }
+  function finish() {
+    var d = document.createElement('div'); d.id = 'selftestResult';
+    d.textContent = 'SELFTEST ' + out.join(' | '); document.body.appendChild(d);
+  }
+  try {
+    var st = document.getElementById('st'), play = document.getElementById('play');
+    var pause = document.getElementById('pause'), seek = document.getElementById('seek');
+    var t0 = st.textContent;
+    play.click();
+    setTimeout(function () {
+      var t1 = st.textContent;
+      pause.click();
+      rec('play_advanced', String(t1 !== t0));
+      rec('reached', t1);
+      var before = t1;
+      seek.value = 500; seek.oninput({target: seek});
+      rec('seek_moved', String(st.textContent !== before));
+      rec('seek_value', st.textContent);
+      rec('canvas_present', String(!!document.getElementById('cv')));
+      finish();
+    }, 1500);
+  } catch (e) { rec('player_error', e.message); finish(); }
+})();
+</script>
+"""
+
+
+def inject_player_selftest(html):
+    return html.replace('</body>', PLAYER_SELFTEST + '</body>', 1) if '</body>' in html else html + PLAYER_SELFTEST
+
+
 def inject_rerun(html):
     """把可操作控件插到 <h2>限制</h2> 之前；页面本身不依赖后端。"""
     marker = '<h2>限制</h2>'
-    return html.replace(marker, CONTROL_HTML + marker, 1)
+    return html.replace(marker, CONTROL_HTML + SELFTEST_HTML + marker, 1)
+
+
+CASES = {
+    'R01': {'collision': 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s1/collision'},
+    'R02': {'collision': 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R02_s1/collision'},
+    'R03': {'collision': 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/collision'},
+    'R04': {'collision': 'runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/collision'},
+}
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -135,6 +227,11 @@ class Handler(BaseHTTPRequestHandler):
             if not f.exists():
                 return self._send(404, '报告页不存在，先跑 v7_page_r1.py', 'text/plain; charset=utf-8')
             return self._send(200, inject_rerun(f.read_text()), 'text/html; charset=utf-8')
+        if p.path.startswith('/player'):
+            f = BATCH / 'media/report/player.html'
+            if not f.exists():
+                return self._send(404, '播放器不存在，先跑 v7_player.py', 'text/plain; charset=utf-8')
+            return self._send(200, inject_player_selftest(f.read_text()), 'text/html; charset=utf-8')
         if p.path.startswith('/api/status/'):
             jid = p.path.rsplit('/', 1)[-1]
             with LOCK:
@@ -143,7 +240,8 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(404, json.dumps({'error': 'unknown job'}))
             return self._send(200, json.dumps(job, ensure_ascii=False))
         if p.path == '/api/cases':
-            return self._send(200, json.dumps({'cases': ['R01', 'R02', 'R03', 'R04'],
+            return self._send(200, json.dumps({'cases': list(CASES),
+                                               'per_case': CASES,
                                                'actions': ['R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2']}))
         return self._send(404, 'not found', 'text/plain')
 

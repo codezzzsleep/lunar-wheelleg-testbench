@@ -227,5 +227,13 @@
       "evidence": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/pair_R1_D1/pair_summary.json",
       "status": "resolved"
     }
-  ]
+  ],
+  "same_scene_formal": {
+    "script": "scripts/v7_same_scene_formal.py",
+    "report": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_formal_v2/same_scene_report.json",
+    "what_works": "同一环境实例：驾驶 8.4 s → 停稳 → 采集（0 物理推进）→ 18 格预演(project) → 决策 R1 先落盘 → 原环境续行，state_mode=same_scene、fallback=false",
+    "budget": "总预算 30 s 由协议传入；env_t 9.72 s 时剩余 21.6 s，按真实时钟计算",
+    "open": "续行 1.32 s（66 控制步）后在 x=0.7329 倾覆，尚未到达 x=1.8 的石头；把轮速 ramp 从全局 env.t 改为本次起步计时后**结果完全不变**，说明 ramp 不是本例的原因",
+    "next": "在接管处逐控制步记录轮速目标/实际、倾角、接触，判断是转向残余、腿姿切换还是接触瞬态"
+  }
 }

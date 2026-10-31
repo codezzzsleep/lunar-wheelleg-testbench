@@ -59,8 +59,11 @@ def main():
     ap.add_argument('--drive', required=True)
     ap.add_argument('--hypotheses', default=None)
     ap.add_argument('--screen', default=None)
-    ap.add_argument('--truth-collision', required=True)
-    ap.add_argument('--truth-world', required=True)
+    ap.add_argument('--truth-collision', default=None,
+                    help='真值碰撞目录；配合 --no-truth 时可不给')
+    ap.add_argument('--no-truth', action='store_true',
+                    help='只构建矩阵并落盘决策，不执行真值（由调用方在同一环境续行）')
+    ap.add_argument('--truth-world', default=None)
     ap.add_argument('--visible-json', default=None,
                     help='公共可见量 JSON（W_vis/H_vis/x_front 等）')
     ap.add_argument('--soil-configs', default='nominal')
@@ -105,9 +108,9 @@ def main():
     # 场景一致性守卫：候选与真值必须描述同一物理布置（同一 x_front 附近），
     # 否则就是"拿 R01 的真值去执行 R03 的假设"，结论无效。
     import trimesh as _tm
-    _tw = pathlib.Path(a.truth_world) / 'body.stl'
+    _tw = (pathlib.Path(a.truth_world) / 'body.stl') if a.truth_world else None
     truth_center = (np.asarray(_tm.load(str(_tw), force='mesh', process=False).bounds).mean(axis=0)
-                    if _tw.exists() else None)
+                    if (_tw is not None and _tw.exists()) else None)
     hyps = []
     if a.hypotheses:
         hyps = json.loads((ROOT / a.hypotheses).read_text())
@@ -221,7 +224,7 @@ def main():
     branch = ('a0_fallback_no_candidate' if not hyps else
               ('insufficient_evidence_a0' if dec.get('insufficient_evidence') else 'matrix_decision'))
     exec_rows = []
-    for st in states:
+    for st in ([] if a.no_truth else states):
         tenv = build_env(ROOT / a.truth_collision, a.goal_x, a.time_limit, soil_cfgs[0])
         started = time.time()
         # 优先同场景完整恢复；若快照来自观测场景（与真值场景签名不同），

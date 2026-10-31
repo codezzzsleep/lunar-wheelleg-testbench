@@ -667,9 +667,16 @@ class WheelLegEnv:
                 d.ctrl[e['act']] = np.clip(
                     WHEEL_KP * (0.0 - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
                 continue
-            ramp = min(1.0, max(1e-3, self.t) / 2.0)
+            # 轮速爬升要按**本次起步**计时，不能用全局 env.t：
+            # 驾驶 9 秒后切到动作时 ramp 早已饱和，会瞬间给满速目标 ->
+            # 接管处速度阶跃、直接翻车（实测 x≈0.73 处倾覆）。
+            # 这里记录最近一次"指令为零"的时刻，作为本次起步的起点。
             turn = a[3] * (1.0 if leg in ('FL', 'RL') else -1.0)
-            vt = self.v_ref * ramp * (1.0 + a[2] + turn)
+            vt_raw = self.v_ref * (1.0 + a[2] + turn)
+            if abs(vt_raw) < 1e-9:
+                self._t_last_zero_cmd = self.t
+            ramp = min(1.0, max(1e-3, self.t - getattr(self, '_t_last_zero_cmd', 0.0)) / 2.0)
+            vt = vt_raw * ramp
             d.ctrl[e['act']] = np.clip(
                 WHEEL_KP * (vt / WHEEL_R - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
 
@@ -1043,6 +1050,7 @@ class WheelLegEnv:
     # ---------------------------------------------------------------- 接口
     def reset(self, seed=None):
         self._reset_state(seed=self.spec.get('seed', 0) if seed is None else seed)
+        self._t_last_zero_cmd = float(self.t)
         return self._obs(), {'scene': self.spec.get('name'), 't': 0.0}
 
     def step(self, action):

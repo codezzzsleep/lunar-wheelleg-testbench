@@ -31,8 +31,21 @@ def validate(matrix_rows, decision, expected=None, not_applicable=None):
     if dups:
         errs.append(f'重复单元格 {len(dups)} 个：{list(dups)[:3]}')
 
-    na = {(x.get('candidate'), x.get('action'), x.get('state_hash'), x.get('soil_config'))
-          for x in (not_applicable or [])}
+    # NOT_APPLICABLE 只接受**显式且带适用性理由与规则版本**的条目；
+    # 异常（ERROR）不允许借这个入口补齐缺格。
+    na = set()
+    na_bad = []
+    for x in (not_applicable or []):
+        k = (x.get('candidate'), x.get('action'), x.get('state_hash'), x.get('soil_config'))
+        has_reason = bool(x.get('reason')) and bool(x.get('rule_version') or x.get('applicability'))
+        is_error = (x.get('error') is not None) or x.get('reason') == 'rehearsal_error' \
+            or x.get('counted_as_failure') is True
+        if not has_reason or is_error:
+            na_bad.append({'key': k, 'reason': x.get('reason'), 'has_rule': bool(x.get('rule_version'))})
+            continue
+        na.add(k)
+    if na_bad:
+        errs.append(f'不合法 NOT_APPLICABLE {len(na_bad)} 条（缺理由/规则版本或实为 ERROR）：{na_bad[:3]}')
     if expected:
         want = {(c, a, s, so) for c in expected.get('candidates', [])
                 for a in expected.get('actions', []) for s in expected.get('states', [])

@@ -1,0 +1,134 @@
+{
+  "schema": "negatives-v2/v7-r1",
+  "n": 11,
+  "n_pass": 11,
+  "note": "每项都先验证正常输入通过，再注入单一故障",
+  "items": [
+    {
+      "id": "N01_duplicate_and_missing_cell",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "重复/缺格",
+      "observed_errors": [
+        "重复单元格 1 个：[('H1', 'R1', 's0', 'nominal')]",
+        "缺格 1 个：[('H1', 'D1', 's0', 'nominal')]"
+      ],
+      "why": "复制第一格、删掉最后一格，总数不变"
+    },
+    {
+      "id": "N02_missing_candidate_group",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "缺格",
+      "observed_errors": [
+        "缺格 2 个：[('H2', 'D1', 's0', 'nominal'), ('H2', 'R1', 's0', 'nominal')]"
+      ],
+      "why": "两候选的合法矩阵，删掉整个 H2 组"
+    },
+    {
+      "id": "N03_error_disguised_as_not_applicable",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "不合法 NOT_APPLICABLE",
+      "observed_errors": [
+        "不合法 NOT_APPLICABLE 1 条（缺理由/规则版本或实为 ERROR）：[{'key': ('H1', 'D1', 's0', 'nominal'), 'reason': 'rehearsal_error', 'has_rule': False}]",
+        "缺格 1 个：[('H1', 'D1', 's0', 'nominal')]"
+      ],
+      "why": "合法的 NA（带规则版本）通过；把 ERROR 塞进 NA 入口必须被拒"
+    },
+    {
+      "id": "N04_missing_candidate_field",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "缺关键字段",
+      "observed_errors": [
+        "单元格缺关键字段：(None, 'R1', 's0', 'nominal')",
+        "缺格 2 个：[('H1', 'D1', 's0', 'nominal'), ('H1', 'R1', 's0', 'nominal')]"
+      ],
+      "why": "生产合同认 candidate；只写 hypothesis_id 必须被拒"
+    },
+    {
+      "id": "N05_no_candidate_needs_a0_with_reason",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "无候选时必须 A0 且写明原因",
+      "observed_errors": [
+        "无候选时必须 chosen=A0 且写明原因"
+      ],
+      "why": "空矩阵 + 选通行动作 + 空原因必须被拒"
+    },
+    {
+      "id": "N06_a0_in_safe_set",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "A0 不得进入 safe_set",
+      "observed_errors": [
+        "A0 不得进入 safe_set"
+      ],
+      "why": "A0 是安全终态但不能进可完成任务的安全集"
+    },
+    {
+      "id": "N07_one_state_two_seeds",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "同一 state_hash 对应多个 seed",
+      "observed_errors": [
+        "同一 state_hash 对应多个 seed：{'s0': {0, 1}}"
+      ],
+      "why": "同一 state_hash 挂两个 seed 是伪造独立初态"
+    },
+    {
+      "id": "N08_tampered_decision_sha",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "decision_sha 与内容不一致",
+      "observed_errors": [
+        "decision_sha 与内容不一致"
+      ],
+      "why": "内容与 decision_sha 不一致必须被拒"
+    },
+    {
+      "id": "N09_missing_vs_zero_p95",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "not_evaluated",
+      "observed_errors": [
+        "not_evaluated"
+      ],
+      "why": "零误差 kept；缺测只能 not_evaluated"
+    },
+    {
+      "id": "N10_equivalent_box_representations",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "0.5",
+      "observed_errors": [
+        0.5,
+        0.5
+      ],
+      "why": "合并盒与三单位盒描述同一实体，距离都必须是 0.5"
+    },
+    {
+      "id": "N11_sampler_returns_requested",
+      "baseline_passes": true,
+      "fault_rejected": true,
+      "pass": true,
+      "expected_error": "used == requested",
+      "observed_errors": [
+        1200
+      ],
+      "why": "请求 1200 点必须得到 1200 点（旧版只给 292）"
+    }
+  ],
+  "verdict": "PASS"
+}

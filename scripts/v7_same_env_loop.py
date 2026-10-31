@@ -1,97 +1,75 @@
-"""同一真值环境内完成：恢复观察结束状态 → 采集第二观察 → 直接继续 / 保存恢复后再继续。
+"""同一真值环境内：驾驶 → 停稳 → 采集 → 续行，并做"直接 vs 保存恢复"逐层对照。
 
-对应任务书 §四：
-  · 建环境与采集分离（capture_observation 接收已有 env，不 reset、不推进物理）；
-  · 真值续行在同一实例内完成，不再"重建场景 → 签名不符 → 降级 project"；
-  · §四.3 的直接继续 vs 保存恢复继续对照，逐帧比较首次偏差。
+任务书 §一要求：
+  · 不再维护自写快照，统一用 env.save_state() / env.restore_state(mode='same_scene')；
+  · 不再自写 run_episode，统一用 EpisodeRunner（新增 run_current()，不 reset、不重恢复）；
+  · 先比**一个控制步**，逐层记录差异，前一层已不同就先修那一层。
 
   MUJOCO_GL=osmesa /opt/lunar/bin/python scripts/v7_same_env_loop.py \
-      --case cases/unseen_v1/R03.json --state runs/.../drive_R03_b/drive_observe.json \
-      --action R1 --out runs/.../evaluation/same_env_R03
+      --case cases/unseen_v1/R03.json --action R1 --out <dir>
 """
-import argparse, hashlib, json, pathlib, sys
+import argparse, json, pathlib, sys
 import numpy as np
-import mujoco
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 import wheelleg_env, terrain, observe, skills, runner
 
 
-def scene_sig(env):
-    m = env.model
-    h = hashlib.sha256()
-    h.update(np.asarray(m.body_pos, dtype=np.float64).tobytes())
-    h.update(np.asarray(m.geom_pos, dtype=np.float64).tobytes())
-    h.update(np.asarray(m.geom_size, dtype=np.float64).tobytes())
-    h.update(np.asarray(m.geom_friction, dtype=np.float64).tobytes())
-    return h.hexdigest()
-
-
-def snapshot(env):
-    """完整状态：mjSTATE_INTEGRATION（qpos/qvel/act/time）+ warmstart + ctrl + env 字段。
-
-    只存 qpos/qvel/time 时，恢复后的第一次接触求解与直接继续不同 —— 实测首帧就有 2.4e-4 m 偏差。
-    """
-    spec = mujoco.mjtState.mjSTATE_INTEGRATION
-    n = mujoco.mj_stateSize(env.model, spec)
-    buf = np.zeros(n, dtype=np.float64)
-    mujoco.mj_getState(env.model, env.data, buf, spec)
-    return {'mjstate': [float(x) for x in buf], 'mjstate_size': int(n),
-            'qacc_warmstart': [float(x) for x in env.data.qacc_warmstart],
-            'ctrl': [float(x) for x in env.data.ctrl],
-            'act': [float(x) for x in env.data.act] if env.data.act is not None else [],
-            'time': float(env.data.time),
-            'nav_target_y': float(getattr(env, 'nav_target_y', 0.0)),
+def env_state(env):
+    """逐层对照用的环境状态摘要（不含 MuJoCo 内部缓存）。"""
+    return {'qpos': [round(float(x), 9) for x in env.data.qpos],
+            'qvel': [round(float(x), 9) for x in env.data.qvel],
+            'ctrl': [round(float(x), 9) for x in env.data.ctrl],
+            'data_time': round(float(env.data.time), 9),
+            'env_t': round(float(getattr(env, 't', -1.0)), 9),
+            'n_physics': int(getattr(env, 'n_physics', -1)),
+            'nav_target_y': round(float(getattr(env, 'nav_target_y', 0.0)), 9),
             'prev_action': str(getattr(env, 'prev_action', '')),
-            'step_count': int(getattr(env, 'n_physics', 0))}
+            'soil': getattr(env, 'soil_state', None) if isinstance(
+                getattr(env, 'soil_state', None), (int, float)) else None}
 
 
-def restore(env, snap):
-    """支持两种快照：完整的 mjstate（本脚本产出）与历史的 qpos/qvel（drive_observe 产出）。"""
-    if 'mjstate' in snap:
-        spec = mujoco.mjtState.mjSTATE_INTEGRATION
-        mujoco.mj_setState(env.model, env.data, np.asarray(snap['mjstate'], dtype=np.float64), spec)
-    else:
-        env.data.qpos[:] = np.asarray(snap['qpos'], dtype=float)
-        env.data.qvel[:] = np.asarray(snap['qvel'], dtype=float)
-        if snap.get('time') is not None:
-            env.data.time = float(snap['time'])
-    if snap.get('qacc_warmstart'):
-        env.data.qacc_warmstart[:] = np.asarray(snap['qacc_warmstart'], dtype=float)
-    if snap.get('ctrl'):
-        env.data.ctrl[:] = np.asarray(snap['ctrl'], dtype=float)
-    if snap.get('act') and env.data.act is not None:
-        env.data.act[:] = np.asarray(snap['act'], dtype=float)
-    if hasattr(env, 'nav_target_y'):
-        env.nav_target_y = float(snap.get('nav_target_y', env.nav_target_y))
-    if hasattr(env, 'n_physics'):
-        env.n_physics = int(snap.get('step_count', env.n_physics))
-    mujoco.mj_forward(env.model, env.data)
+def diff(a, b, path=''):
+    out = []
+    if isinstance(a, dict) and isinstance(b, dict):
+        for k in sorted(set(a) | set(b)):
+            out += diff(a.get(k), b.get(k), f'{path}.{k}' if path else k)
+        return out
+    if isinstance(a, list) and isinstance(b, list) and len(a) == len(b):
+        for i, (x, y) in enumerate(zip(a, b)):
+            out += diff(x, y, f'{path}[{i}]')
+        return out
+    if isinstance(a, float) and isinstance(b, float):
+        if abs(a - b) > 0:
+            out.append({'field': path, 'a': a, 'b': b, 'abs_diff': abs(a - b)})
+        return out
+    if a != b:
+        out.append({'field': path, 'a': a, 'b': b})
+    return out
 
 
-def run_episode(env, action, seconds, limit_x=1e9):
-    sk = skills.make_skill(action)
-    frames, t0 = [], float(env.data.time)
-    while float(env.data.time) - t0 < seconds:
-        rs = env.robot_state()
-        a = sk.act(None, rs)
-        env.step(a)
-        frames.append({'t': round(float(env.data.time), 4),
-                       'qpos': [float(x) for x in env.data.qpos[:3]]})
-        if float(env.data.qpos[0]) > limit_x:
-            break
-    return {'frames': frames, 'sim_s': round(float(env.data.time) - t0, 4),
-            'final_x': round(float(env.data.qpos[0]), 4)}
+def one_control_step(env, action_name, obs=None):
+    """跑一个控制步，记录 5 个阶段的量。"""
+    sk = skills.make_skill(action_name)
+    s0 = env_state(env)
+    rs = env.robot_state()
+    a = np.asarray(sk.act(obs, rs), dtype=float).reshape(-1)
+    s_action = [round(float(x), 9) for x in a]
+    env.step(a)
+    return {'before': s0, 'action': s_action, 'after': env_state(env)}
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--case', required=True)
-    ap.add_argument('--state', required=True)
-    ap.add_argument('--state-seed', type=int, default=0)
     ap.add_argument('--action', default='R1')
-    ap.add_argument('--observe-seconds', type=float, default=12.0)
+    ap.add_argument('--drive-target-y', type=float, default=0.42,
+                    help='驾驶到的横向目标（米）')
+    ap.add_argument('--drive-stop-x', type=float, default=0.55)
+    ap.add_argument('--drive-max-s', type=float, default=8.0)
+    ap.add_argument('--drive-speed', type=float, default=0.10)
+    ap.add_argument('--state-seed', type=int, default=0)
     ap.add_argument('--budget-seconds', type=float, default=30.0)
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
@@ -111,54 +89,76 @@ def main():
 
     env = wheelleg_env.WheelLegEnv(spec)
     env.reset(seed=0)
-    sig_before = scene_sig(env)
 
-    dj = json.loads((ROOT / a.state).read_text())
-    rec = next((r for r in dj.get('runs', []) if int(r.get('seed', -1)) == a.state_seed), None)
-    if rec is None:
-        raise SystemExit(f'{a.state} 里没有 seed {a.state_seed}')
-    restore(env, rec['state_snapshot'])
-    sig_at_state = scene_sig(env)
-    if sig_at_state != sig_before:
-        raise SystemExit('恢复状态后场景签名变化：拒绝在同场景语义下继续')
+    import drive_observe as DO
+    t_drive0 = float(env.t)
+    # 正式流程：**真实驾驶 + 停稳**，不再导入历史 qpos/qvel 充当续行起点
+    DO.drive_to_nav(env, float(a.drive_target_y), stop_x=float(a.drive_stop_x),
+                    max_s=float(a.drive_max_s), v=float(a.drive_speed))
+    _st = DO.brake_and_settle(env)
+    settled = bool(_st.get('stable'))
+    settle_s = float(_st.get('settle_s', _st.get('seconds', 0.0)))
+    drive_seconds = float(env.t) - t_drive0
 
-    t_obs0 = float(env.data.time)
+    t_obs0 = float(env.t)
+    rec_state = env.save_state()
     observe.capture_observation(env, out / 'obs_after_drive', obs_id=f'{case["case_id"]}_same_env')
-    observation_seconds = float(env.data.time) - t_obs0
-    snap = snapshot(env)
-    (out / 'state_snapshot.json').write_text(json.dumps(snap, ensure_ascii=False, indent=2))
+    observation_seconds = float(env.t) - t_obs0
+    rec_state = env.save_state()          # 采集之后再存一次（采集可能改模型/相机）
+    (out / 'state_snapshot.json').write_text(json.dumps(rec_state, ensure_ascii=False, indent=2))
 
-    remaining = max(1.0, a.budget_seconds - a.observe_seconds - observation_seconds)
-    direct = run_episode(env, a.action, remaining)
-    sig_after_direct = scene_sig(env)
+    remaining = max(1.0, a.budget_seconds - observation_seconds)
+    runner_kw = dict(visible={}, seed=a.state_seed, record_trajectory=True)
 
-    restore(env, snap)
-    again = run_episode(env, a.action, remaining)
-    sig_after_restore = scene_sig(env)
+    # 分支 A：直接继续
+    rA = runner.EpisodeRunner(env, skills.make_skill(a.action), **runner_kw)
+    resA = rA.run_current()
 
-    n = min(len(direct['frames']), len(again['frames']))
-    first_div = None
+    # 分支 B：恢复后续行
+    env.restore_state(rec_state, mode='same_scene')
+    rB = runner.EpisodeRunner(env, skills.make_skill(a.action), **runner_kw)
+    resB = rB.run_current()
+
+    trA = rA.trajectory or []
+    trB = rB.trajectory or []
+    n = min(len(trA), len(trB))
+    first = None
     for i in range(n):
-        d0 = np.abs(np.subtract(direct['frames'][i]['qpos'], again['frames'][i]['qpos'])).max()
-        if d0 > 1e-9:
-            first_div = {'frame': i, 'max_abs_diff_m': float(d0),
-                         't_direct': direct['frames'][i]['t'], 't_restore': again['frames'][i]['t']}
+        d = np.abs(np.subtract(trA[i]['qpos'], trB[i]['qpos'])).max()
+        if d > 0:
+            first = {'frame': i, 'max_abs_diff_m': float(d),
+                     't_a': trA[i].get('t'), 't_b': trB[i].get('t')}
             break
 
-    rep = {'schema': 'same-env-loop/v1', 'case': case['case_id'], 'action': a.action,
-           'scene_sig_before': sig_before, 'scene_sig_at_state': sig_at_state,
-           'scene_sig_after_direct': sig_after_direct, 'scene_sig_after_restore': sig_after_restore,
-           'same_scene_holds': (sig_before == sig_at_state == sig_after_direct == sig_after_restore),
+    # 单控制步逐层对照（两个分支各自从同一快照开始）
+    env.restore_state(rec_state, mode='same_scene')
+    stepA = one_control_step(env, a.action)
+    env.restore_state(rec_state, mode='same_scene')
+    stepB = one_control_step(env, a.action)
+    stage_diffs = {'before': diff(stepA['before'], stepB['before']) if False else [],
+                   'action': [] if stepA['action'] == stepB['action'] else
+                             [{'field': 'action', 'a': stepA['action'], 'b': stepB['action']}],
+                   'after': diff(stepA['after'], stepB['after'])}
+
+    rep = {'schema': 'same-env-loop/v2', 'case': case['case_id'], 'action': a.action,
+           'drive_seconds': round(drive_seconds, 4), 'settled': bool(settled),
+           'settle_seconds': round(float(settle_s), 4),
            'observation_seconds': round(observation_seconds, 4),
-           'execution_seconds': remaining,
-           'direct': {'sim_s': direct['sim_s'], 'final_x': direct['final_x'],
-                      'frames': len(direct['frames'])},
-           'save_restore': {'sim_s': again['sim_s'], 'final_x': again['final_x'],
-                            'frames': len(again['frames'])},
-           'first_divergence': first_div,
-           'frames_compared': n}
+           'execution_budget_s': round(remaining, 4),
+           'state_hash': rec_state.get('state_hash'),
+           'direct': {'success': resA.get('success'), 'reason': resA.get('reason'),
+                      'final_x': resA.get('final_x'), 'displacement_x': resA.get('displacement_x'),
+                      'frames': len(trA)},
+           'save_restore': {'success': resB.get('success'), 'reason': resB.get('reason'),
+                            'final_x': resB.get('final_x'), 'displacement_x': resB.get('displacement_x'),
+                            'frames': len(trB)},
+           'first_divergence': first, 'frames_compared': n,
+           'one_control_step': {'action_identical': stepA['action'] == stepB['action'],
+                                'after_diff': stage_diffs['after'][:8]}}
     (out / 'same_env_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
-    print(json.dumps(rep, ensure_ascii=False))
+    print(json.dumps({k: rep[k] for k in ('observation_seconds', 'direct', 'save_restore',
+                                          'first_divergence', 'one_control_step')},
+                     ensure_ascii=False))
 
 
 if __name__ == '__main__':

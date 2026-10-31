@@ -1,0 +1,31 @@
+{
+  "schema": "same-env-loop/v2",
+  "case": "R03",
+  "action": "R1",
+  "drive_seconds": 8.4,
+  "settled": true,
+  "settle_seconds": 0.0,
+  "observation_seconds": 0.0,
+  "execution_budget_s": 30.0,
+  "state_hash": "d65fc63fdeef9717ba406b607d1c3ec0",
+  "direct": {
+    "success": false,
+    "reason": "tipped",
+    "final_x": 0.733,
+    "displacement_x": 0.535,
+    "frames": 66
+  },
+  "save_restore": {
+    "success": false,
+    "reason": "tipped",
+    "final_x": 0.733,
+    "displacement_x": 0.535,
+    "frames": 66
+  },
+  "first_divergence": null,
+  "frames_compared": 66,
+  "one_control_step": {
+    "action_identical": true,
+    "after_diff": []
+  }
+}

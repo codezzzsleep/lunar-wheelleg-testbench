@@ -82,6 +82,21 @@ class EpisodeRunner:
         self._capture_initial()
         return self._loop(obs, 0.0)
 
+    def run_current(self):
+        """从**当前环境状态**继续跑，不 reset、不恢复状态。
+
+        与 run() 共用 _loop()，因此成功/倾覆/出界/超时/制动规则完全一致；
+        用于"同一环境实例内直接继续"，与 restore_state 后的继续做逐帧对照。
+        """
+        env = self.env
+        obs = None
+        try:
+            obs = env.observation()
+        except Exception:
+            obs = None
+        self._capture_initial()
+        return self._loop(obs, float(getattr(env, 't', 0.0)))
+
     def _capture_initial(self):
         import hashlib
         h = hashlib.sha256()
@@ -161,6 +176,8 @@ class EpisodeRunner:
             'abort': info.get('reason') == 'abort',
             't_end': info.get('t'), 'x': info.get('x'),
             'final_x': round(float(env.data.qpos[0]), 3),
+            'start_x': round(float(q0[0]), 3),
+            'displacement_x': round(float(env.data.qpos[0]) - float(q0[0]), 3),
             'max_tilt': info.get('tilt_deg'),
             'contact': info.get('contact_style'),
             'belly_contact': info.get('contact_style') == 'body',

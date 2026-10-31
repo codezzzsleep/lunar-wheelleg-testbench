@@ -6,7 +6,9 @@
   "rebuild_steps": [
     "python scripts/v7_rebuild_from_occ.py --occ inputs/occ_two_view.npz --out rebuilt",
     "python scripts/collision_box_union.py --occupancy inputs/occ_two_view.npz --out rebuilt/collision --pitch 0.0025 --hypothesis-id demo",
-    "python scripts/collision_occupancy_metrics.py --mesh rebuilt/body.stl --collision rebuilt/collision --out rebuilt/collision/metrics.json --parity full"
+    "python scripts/collision_occupancy_metrics.py --mesh rebuilt/body.stl --collision rebuilt/collision --out rebuilt/collision/metrics.json --parity full",
+    "python scripts/v7_same_scene_formal.py --case ../../cases/unseen_v1/R03.json --hypotheses /tmp/demo_hyp.json --resume-state /tmp/demo_state.json --truth-collision inputs/truth_collision --out run",
+    "python scripts/v7_player.py --traj run/trajectory.jsonl --out run/player.html"
   ],
   "items": [
     {
@@ -99,6 +101,13 @@
       "bytes": 3678,
       "sha256": "273ee2666b5cd9796a93c5dbd6e8e6283fb1f747b7c5f892dcd324224c971277",
       "note": "闭环原始证据"
+    },
+    {
+      "path": "inputs/truth_collision",
+      "kind": "dir",
+      "n_files": 2,
+      "sha256_tree": "06aa2b4e31d7df24",
+      "note": "独立真值碰撞资产（不由生成候选自我回放）"
     }
   ],
   "verification": {

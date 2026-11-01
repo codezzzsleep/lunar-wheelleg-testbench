@@ -1,0 +1,92 @@
+{
+  "schema": "elev25d-summary/v1",
+  "rows": [
+    {
+      "config": "R01_s1",
+      "soil": "nominal",
+      "seed": 7,
+      "family": "E25D_E25D_block",
+      "unknown_frac": 0.2245,
+      "chosen": "D1",
+      "outcome": "fail",
+      "safe_set": [
+        "D1"
+      ],
+      "cells": 7,
+      "sim_time_s": 30.02
+    },
+    {
+      "config": "R01_s1",
+      "soil": "nominal",
+      "seed": 7,
+      "family": "E25D_E25D_fill",
+      "unknown_frac": 0.2245,
+      "chosen": "R1",
+      "outcome": "fail",
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "D2",
+        "S1",
+        "L1",
+        "R2"
+      ],
+      "cells": 7,
+      "sim_time_s": 14.46
+    },
+    {
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "family": "E25D_E25D_block",
+      "unknown_frac": 0.2669,
+      "chosen": "D1",
+      "outcome": "fail",
+      "safe_set": [
+        "D1"
+      ],
+      "cells": 7,
+      "sim_time_s": 14.64
+    },
+    {
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "family": "E25D_E25D_fill",
+      "unknown_frac": 0.2669,
+      "chosen": "R1",
+      "outcome": "pass",
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "D2",
+        "L1",
+        "R2"
+      ],
+      "cells": 7,
+      "sim_time_s": 17.02
+    }
+  ],
+  "reference_rows": [
+    {
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "family": "U_truth",
+      "chosen": "L2",
+      "outcome": "pass"
+    }
+  ],
+  "reading": {
+    "R02": "同一状态上，未知当障碍选 D1 且失败；未知按可见地面补平选 R1 且成功；真值参考在同一状态选 L2 且成功 —— 三种未知处理给出三种决策",
+    "R01": "两种策略分别选 D1 / R1，均失败；该配置连真值参考也不通行，失败归因于动作库边界而不是 2.5D 表示",
+    "unknown_share": {
+      "R01": 0.2245,
+      "R02": 0.2669
+    },
+    "honesty": "unknown 未伪装成 observed；补平格标 imputed；地图范围来自公共任务区，未读真值包围盒"
+  },
+  "scope": "R01/R02 各一个状态、nominal 土壤"
+}

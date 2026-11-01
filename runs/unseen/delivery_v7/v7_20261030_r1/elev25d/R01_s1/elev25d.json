@@ -1,0 +1,38 @@
+{
+  "schema": "elev25d-report/v1",
+  "observation": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+  "case": "cases/unseen_v1/R01.json",
+  "cell_m": 0.01,
+  "extent": {
+    "x0": 1.0357530453013855,
+    "x1": 2.6,
+    "y0": -1.2,
+    "y1": 1.2,
+    "cell": 0.01,
+    "nx": 157,
+    "ny": 240,
+    "source": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "x_front": 1.6357530453013853,
+    "extent_rule": "公共任务区（前沿-0.6 m .. goal_x，±通道半宽），不读真值包围盒"
+  },
+  "ground_z": 0.0,
+  "observed_cells": 29220,
+  "total_cells": 37680,
+  "unknown_frac": 0.2245,
+  "strategies": {
+    "block": {
+      "dir": "runs/unseen/delivery_v7/v7_20261030_r1/elev25d/R01_s1/block",
+      "n_boxes": 8662,
+      "unknown_policy": "blocked",
+      "unknown_cells": 8460,
+      "imputed_cells": 0
+    },
+    "fill": {
+      "dir": "runs/unseen/delivery_v7/v7_20261030_r1/elev25d/R01_s1/fill",
+      "n_boxes": 202,
+      "unknown_policy": "imputed_from_visible_ground",
+      "unknown_cells": 8460,
+      "imputed_cells": 8460
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "family": "H5_F",
+  "kind": "lux3d",
+  "asset": "runs/unseen/delivery_v7/v7_20261030_r1/refuse_R01_s1",
+  "decision": {
+    "chosen": "R2",
+    "safe_set": [
+      "R2",
+      "R1",
+      "L1",
+      "D1"
+    ],
+    "cost": 18.0,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "R2"
+    ],
+    "rehearsal_errors": 0
+  },
+  "cells": 7,
+  "safe_set": [
+    "R2",
+    "R1",
+    "L1",
+    "D1"
+  ],
+  "success": false,
+  "reason": "time_limit",
+  "final_x": 1.513,
+  "sim_time_s": 30.02,
+  "frames": 981,
+  "outcome": "fail"
+}

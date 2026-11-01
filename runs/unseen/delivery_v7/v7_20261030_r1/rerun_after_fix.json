@@ -1,0 +1,138 @@
+{
+  "schema": "rerun-after-collision-fix/v1",
+  "note": "碰撞加载与 2.5D 坐标修复后的统一重跑；旧表全部作废但原文件保留",
+  "family_compare": {
+    "R01_s1": [
+      {
+        "family": "B1_height",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B2_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B3_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_block",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_fill",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "H5_F",
+        "chosen": "R2",
+        "outcome": "fail",
+        "final_x": 1.513
+      },
+      {
+        "family": "U_truth",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      }
+    ],
+    "R02_s0.9": [
+      {
+        "family": "B1_height",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B2_F",
+        "chosen": "L2",
+        "outcome": "pass",
+        "final_x": 3.606
+      },
+      {
+        "family": "B3_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_block",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_fill",
+        "chosen": "L2",
+        "outcome": "pass",
+        "final_x": 3.606
+      },
+      {
+        "family": "H5_F",
+        "chosen": "L2",
+        "outcome": "pass",
+        "final_x": 3.606
+      },
+      {
+        "family": "U_truth",
+        "chosen": "L2",
+        "outcome": "pass",
+        "final_x": 3.606
+      }
+    ]
+  },
+  "fair": {
+    "R02_s0.9": {
+      "A_S1_first_image": {
+        "chosen": "L2",
+        "success": true,
+        "total_from_S0": 27.7
+      },
+      "B_S1_second_image": {
+        "chosen": "L2",
+        "success": true,
+        "total_from_S0": 27.7
+      },
+      "C_S0_direct": {
+        "chosen": "D2",
+        "success": true,
+        "total_from_S0": 7.46
+      }
+    }
+  },
+  "collision_equiv": {
+    "R02_s0.9": [
+      {
+        "family": "H5_F",
+        "ref": "L2",
+        "coarse": "L2",
+        "sensitive": false,
+        "adopt": "coarse"
+      },
+      {
+        "family": "B2_F",
+        "ref": "L2",
+        "coarse": "L2",
+        "sensitive": false,
+        "adopt": "coarse"
+      },
+      {
+        "family": "B3_F",
+        "ref": "A0",
+        "coarse": "R2",
+        "sensitive": true,
+        "adopt": "reference"
+      }
+    ]
+  }
+}

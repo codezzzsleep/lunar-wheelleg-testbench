@@ -1,0 +1,129 @@
+{
+  "schema": "second-view-fair/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_S1": "b7c80586f1cb18943a076c60d4044cb4",
+  "state_S0": "31a3771ee869c8d33cc1aa31971f8095",
+  "observation_S1": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation",
+    "sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6"
+  },
+  "budget_s": 30.0,
+  "arms": {
+    "A_S1_first_image": {
+      "arm": "A_S1_first_image",
+      "chosen": "L2",
+      "cells": 7,
+      "safe_set": [
+        "L2"
+      ],
+      "success": true,
+      "reason": "success",
+      "execution_sim_time_s": 17.3,
+      "final_x": 3.606,
+      "frames": 345,
+      "hypotheses": [
+        "first_image"
+      ],
+      "observation_sim_time_s": 10.399999999999867,
+      "total_sim_time_from_S0_s": 27.7
+    },
+    "B_S1_second_image": {
+      "arm": "B_S1_second_image",
+      "chosen": "L2",
+      "cells": 7,
+      "safe_set": [
+        "L2"
+      ],
+      "success": true,
+      "reason": "success",
+      "execution_sim_time_s": 17.3,
+      "final_x": 3.606,
+      "frames": 345,
+      "hypotheses": [
+        "two_view"
+      ],
+      "observation_sim_time_s": 10.399999999999867,
+      "total_sim_time_from_S0_s": 27.7
+    },
+    "C_S0_direct": {
+      "arm": "C_S0_direct",
+      "chosen": "D2",
+      "cells": 7,
+      "safe_set": [
+        "D2"
+      ],
+      "success": true,
+      "reason": "success",
+      "execution_sim_time_s": 7.46,
+      "final_x": 3.562,
+      "frames": 373,
+      "hypotheses": [
+        "first_image"
+      ],
+      "observation_sim_time_s": 0.0,
+      "total_sim_time_from_S0_s": 7.46
+    }
+  },
+  "observation_S0_first_image": {
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R02_s0.9",
+    "visible": {
+      "n_pixels": 11799,
+      "x_front": 1.6537892466481812,
+      "y_center": 0.002588637568937263,
+      "W_vis": 0.3508329215274155,
+      "H_vis": 0.1439632444772557
+    }
+  },
+  "hypothesis_first": {
+    "candidate_id": "refuse_R02_s0.9",
+    "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/refuse_R02_s0.9/collision",
+    "collision_asset": "boxes",
+    "strict_qualified": false,
+    "admitted_as": "diagnostic_hypothesis",
+    "visible": {
+      "mask_iou": 0.9788,
+      "vis_pt_p95_mm": 1.376,
+      "freespace_violation": 0.0649,
+      "p95_limit_mm": 5.0,
+      "h_vis_m": 0.1439632444772557
+    },
+    "reasons": [
+      "自由空间违规 0.0649 > 0.05"
+    ],
+    "label": "first_image"
+  },
+  "two_view_build": {
+    "two_view_report": "runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation_v2/R02_s0.9_nominal_seed7/two_view/two_view_report.json",
+    "occ_sha": "ba6ddcca00c82984dd253b427e537bae8147e0383cc2b4cb7d9a13cd34cf2545",
+    "visible": {
+      "obs1": {
+        "mask_iou": 0.9789,
+        "vis_pt_p95_mm": 1.268,
+        "freespace_violation": 0.0453
+      },
+      "both_views": false,
+      "measured_here": true,
+      "note": "两视角重建后现场测量的 obs1 可见指标"
+    }
+  },
+  "hypothesis_two_view": {
+    "candidate_id": "two_view",
+    "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation_v2/R02_s0.9_nominal_seed7/two_view/collision",
+    "collision_asset": "boxes",
+    "strict_qualified": false,
+    "admitted_as": "diagnostic_hypothesis",
+    "visible": null,
+    "reasons": [
+      "碰撞测量缺: runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation_v2/R02_s0.9_nominal_seed7/two_view/collision/metrics_*.json"
+    ],
+    "label": "two_view_this_run"
+  },
+  "accounting": {
+    "observation_sim_time_s": 10.399999999999867,
+    "note": "从 S0 起算：A/B 含观察阶段模拟时间，C 不含；不再用位移相减解释观察成本。"
+  }
+}

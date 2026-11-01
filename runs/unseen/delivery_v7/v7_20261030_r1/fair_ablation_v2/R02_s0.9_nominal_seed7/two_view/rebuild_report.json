@@ -1,0 +1,11 @@
+{
+  "schema": "rebuild-from-occ/v1",
+  "occ": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation_v2/R02_s0.9_nominal_seed7/two_view/occ.npz",
+  "convention": "voxel_center = origin + (index + 0.5) * pitch",
+  "algorithm": "two-view-occupancy/v1  O=(P|S1|S2)&~(F1|F2)",
+  "content_sha": "efe7b0d5b1ef4a2fda8bcdbaff8418ad28f40a58b207babc791706712812f9cf",
+  "n_occupied": 901269,
+  "faces": 522840,
+  "watertight": true,
+  "volume_m3": 0.014081494791666677
+}

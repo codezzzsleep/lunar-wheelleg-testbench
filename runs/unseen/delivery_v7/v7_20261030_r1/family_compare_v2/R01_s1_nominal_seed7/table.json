@@ -1,0 +1,99 @@
+{
+  "schema": "family-compare/v1",
+  "config": "R01_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "observation": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/observation",
+    "sha": "897a28c462604b703a9f3ddb51ff8f08534e1272522c9a6385811375db857b0d"
+  },
+  "visible": {
+    "n_pixels": 18154,
+    "x_front": 1.6357497094524809,
+    "y_center": 0.011140901170637874,
+    "W_vis": 0.14938013384355375,
+    "H_vis": 0.3325778971333141
+  },
+  "budget_s": 30.0,
+  "planner": "common-planner/v1",
+  "rows": [
+    {
+      "family": "B1_height",
+      "kind": "height_rule",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": null,
+      "safe_set": null,
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "B2_F",
+      "kind": "box",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 7,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "B3_F",
+      "kind": "mirror",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 7,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "E25D_block",
+      "kind": "elev25d_block",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 7,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "E25D_fill",
+      "kind": "elev25d_fill",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 7,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "H5_F",
+      "kind": "lux3d",
+      "chosen": "R2",
+      "outcome": "fail",
+      "cells": 7,
+      "safe_set": [
+        "R2",
+        "R1",
+        "L1",
+        "D1"
+      ],
+      "final_x": 1.513,
+      "sim_time_s": 30.02
+    },
+    {
+      "family": "U_truth",
+      "kind": "truth",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 7,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    }
+  ]
+}

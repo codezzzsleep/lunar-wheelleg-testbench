@@ -34,8 +34,8 @@ FAMILIES = [
     ('B1_height', 'height_rule', None),
     ('B2_F', 'box', f'{BATCH}/priors_{{cfg}}/B2F'),
     ('B3_F', 'mirror', f'{BATCH}/priors_{{cfg}}/B3F'),
-    ('E25D_block', 'elev25d_block', f'{BATCH}/elev25d/{{cfg}}/block'),
-    ('E25D_fill', 'elev25d_fill', f'{BATCH}/elev25d/{{cfg}}/fill'),
+    ('E25D_block', 'elev25d_block', f'{BATCH}/elev25d_v2/{{cfg}}/block'),
+    ('E25D_fill', 'elev25d_fill', f'{BATCH}/elev25d_v2/{{cfg}}/fill'),
     ('H5_F', 'lux3d', None),
 ]
 
@@ -58,15 +58,18 @@ def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, 
         rec['decision'] = {'chosen': act, 'evidence': why, 'planner': 'rule'}
         rec['cells'] = None
     else:
+        asset_error = None
         if asset is not None:
             info = CA.describe(asset)
             if info.get('ok') is False:
-                rec_asset_error = info['error']
+                asset_error = info['error']
                 asset = None
         if asset is None:
             rec.update({'decision': {'chosen': 'A0',
-                                     'evidence': {'rule': 'asset_missing'}},
-                        'outcome': 'asset_missing', 'cells': None})
+                                     'evidence': {'rule': 'asset_missing',
+                                                  'error': asset_error}},
+                        'outcome': ('asset_error' if asset_error else 'asset_missing'),
+                        'cells': None})
             (d / 'row.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
             return rec
         hyps = [{'id': name, 'kind': kind, 'collision_dir': asset}]

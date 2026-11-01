@@ -1,0 +1,38 @@
+{
+  "schema_version": "run-input/v1",
+  "batch_id": "v7_20261101_close",
+  "run_tag": "R03_same_scene",
+  "case_id": "R03",
+  "case_config": "cases/unseen_v1/R03.json",
+  "protocol": "plans/r1_controller_freeze.json",
+  "controller_freeze": "plans/r1_controller_freeze.json",
+  "observation_policy": {
+    "mode": "drive_settle_observe",
+    "observation_dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R03_s1",
+    "min_baseline_m": 0.2,
+    "min_bearing_deg": 5.0,
+    "min_mask_px": 500
+  },
+  "parent_candidates": [
+    {
+      "candidate_id": "tvocc_R03_s1_v3",
+      "world": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3",
+      "collision": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/collision"
+    }
+  ],
+  "truth_collision": "runs/unseen/delivery_v6_1/v6_1_20261029/evaluation/DIAG_R03/collision/TRUTH",
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "execution_soil": "nominal",
+  "state_source": null,
+  "time_budget_s": 30.0,
+  "output_root": "runs/unseen/delivery_v7/v7_20261030_r1/runs",
+  "fusion": {
+    "pitch_m": 0.0025,
+    "config": "configs/unseen_v7_r1_fusion_gapfill.json"
+  },
+  "scale": 1.0
+}

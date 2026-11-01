@@ -468,6 +468,17 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
               & (z >= d_at - float(cfg['free_epsilon_m']) + off)
               & (z <= d_at + band_m + off))
     shell = (in_mask & behind).reshape(grid['dims'])
+    # 壳层语义修正（本批实测）：壳层只补**父先验没有覆盖到的缺口**，而不是无条件
+    # 在原表面之外再贴一层。实测证据：R01@1.0 用真值实体作父先验时，
+    # 无壳层（S2/S3）freespace 0.0376/0.0295 通过，加壳层（S4）反而升到 0.0642——
+    # 壳层把表面整体加厚一像素，导致等值面前移。改为补缺后，壳层只在
+    # 父先验缺失处生效，不会恶化已经与观测一致的表面。
+    if cfg.get('shell_gap_fill', True):
+        try:
+            parent_near = dilate6(parent_inside) if hasattr(parent_inside, 'shape') else parent_inside
+        except Exception:
+            parent_near = parent_inside
+        shell = shell & ~parent_near
     occ = keep_p | shell
     before = occ.copy()
     occ, _ = largest_component(occ)
@@ -639,6 +650,8 @@ def load_effective_config(base_path, overrides=None):
                                 'mask_dilate_px', 'fill_holes',
                                 'depth_edge_threshold_m',
                                 'use_depth_edge_exclusion', 'shell_offset_voxels')}
+    # 壳层语义必须进配置身份，否则改动算法后 SHA 不变（不可追溯）
+    eff['shell_gap_fill'] = bool(base.get('shell_gap_fill', True))
     opts = dict(overrides or {})
     for k, v in opts.items():
         if v is not None:

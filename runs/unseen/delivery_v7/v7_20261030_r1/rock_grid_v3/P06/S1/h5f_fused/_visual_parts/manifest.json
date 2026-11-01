@@ -1,0 +1,32 @@
+{
+  "schema": "asset-manifest/v1",
+  "coordinate_frame": "world",
+  "parts": [
+    "part0_160e16a0ea69.stl",
+    "part1_c306b82fcd85.stl",
+    "part2_01ecb148ed31.stl",
+    "part3_d16b27a24601.stl",
+    "part4_0ee5c56cd4ed.stl",
+    "part5_fa024eae1550.stl",
+    "part6_8203b23ecc9b.stl"
+  ],
+  "n_parts": 7,
+  "world_sha": "d9d06fa12174a3c9c20ef284926407dd25c00244bf98924f36bcbf79bffd0101",
+  "canonical_faces": 680832,
+  "note": "多视觉 mesh 分块：同一场景一次渲染，顶点即世界坐标，不缩放/不居中/不贴地；碰撞仍用独立 box 表示",
+  "split": {
+    "n_parts": 7,
+    "axis": 0,
+    "max_faces": 100000,
+    "faces_per_part": [
+      97261,
+      97262,
+      97262,
+      97261,
+      97262,
+      97262,
+      97262
+    ],
+    "note": "按面质心沿最长轴分箱；切口不填盖；顶点保持世界坐标"
+  }
+}

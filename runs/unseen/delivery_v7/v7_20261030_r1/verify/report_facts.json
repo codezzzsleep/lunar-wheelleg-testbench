@@ -1,0 +1,782 @@
+{
+  "gates": {
+    "B2F": {
+      "status": "disqualified",
+      "qualified": false,
+      "visible": {
+        "mask_iou": 0.9737,
+        "vis_pt_p95_mm": 9.736,
+        "freespace_violation": 0.0637
+      },
+      "collision": {
+        "occupancy_iou": 0.9921,
+        "verdict": "PASS"
+      },
+      "reasons": [
+        "可见点 P95 9.736 mm > 5.000 mm",
+        "自由空间违规 0.0637 > 0.05"
+      ]
+    },
+    "B3F": {
+      "status": "disqualified",
+      "qualified": false,
+      "visible": {
+        "mask_iou": 0.965,
+        "vis_pt_p95_mm": 13.655,
+        "freespace_violation": 0.0538
+      },
+      "collision": {
+        "occupancy_iou": 0.9902,
+        "verdict": "PASS"
+      },
+      "reasons": [
+        "可见点 P95 13.655 mm > 5.000 mm",
+        "自由空间违规 0.0538 > 0.05"
+      ]
+    },
+    "V7_R01_s1": {
+      "status": "disqualified",
+      "qualified": false,
+      "visible": {
+        "mask_iou": 0.8856,
+        "vis_pt_p95_mm": 19.237,
+        "freespace_violation": 0.0647
+      },
+      "collision": {
+        "occupancy_iou": 0.9365,
+        "verdict": "ATTENTION"
+      },
+      "reasons": [
+        "可见点 P95 19.237 mm > 10.015 mm",
+        "自由空间违规 0.0647 > 0.05",
+        "占据 IoU 0.9365 < 0.95"
+      ]
+    },
+    "V7_R02_s1": {
+      "status": "disqualified",
+      "qualified": false,
+      "visible": {
+        "mask_iou": 0.9788,
+        "vis_pt_p95_mm": 1.376,
+        "freespace_violation": 0.0649
+      },
+      "collision": {
+        "occupancy_iou": 0.9922,
+        "verdict": "PASS"
+      },
+      "reasons": [
+        "自由空间违规 0.0649 > 0.05"
+      ]
+    },
+    "V7_R03_s1": {
+      "status": "qualified",
+      "qualified": true,
+      "visible": {
+        "mask_iou": 0.9781,
+        "vis_pt_p95_mm": 1.55,
+        "freespace_violation": 0.038
+      },
+      "collision": {
+        "occupancy_iou": 0.9833,
+        "verdict": "PASS"
+      },
+      "reasons": []
+    },
+    "V7_R04_s1": {
+      "status": "not_measured",
+      "qualified": false,
+      "visible": {
+        "mask_iou": null,
+        "vis_pt_p95_mm": null,
+        "freespace_violation": null
+      },
+      "collision": {
+        "occupancy_iou": null,
+        "verdict": null
+      },
+      "reasons": [
+        "process.json 缺: runs/unseen/delivery_v7/v7_20261030_r1/processed_none.json",
+        "碰撞目录缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/collision",
+        "源网格缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/fusion/body.stl"
+      ]
+    }
+  },
+  "matrix": {
+    "schema": "common-matrix-all/v2",
+    "n_rows": 288,
+    "n_main_keys": 216,
+    "expected_main_keys": 216,
+    "outcomes": {
+      "fail": 44,
+      "safe_abandon": 126,
+      "pass": 46
+    },
+    "per_config_method": {
+      "R01_s1|B0_blind": {
+        "fail": 9
+      },
+      "R01_s1|B1_height": {
+        "safe_abandon": 9
+      },
+      "R01_s1|B2_F": {
+        "safe_abandon": 9
+      },
+      "R01_s1|B3_F": {
+        "safe_abandon": 9
+      },
+      "R01_s1|H5_F": {
+        "safe_abandon": 9
+      },
+      "R01_s1|U_truth": {
+        "fail": 9
+      },
+      "R01_s1|R2_fixed": {
+        "fail": 9
+      },
+      "R01_s1|W_width_rule": {
+        "fail": 9
+      },
+      "R02_s0.9|B0_blind": {
+        "pass": 9
+      },
+      "R02_s0.9|B1_height": {
+        "safe_abandon": 9
+      },
+      "R02_s0.9|B2_F": {
+        "safe_abandon": 9
+      },
+      "R02_s0.9|B3_F": {
+        "safe_abandon": 9
+      },
+      "R02_s0.9|H5_F": {
+        "safe_abandon": 9
+      },
+      "R02_s0.9|U_truth": {
+        "fail": 8,
+        "pass": 1
+      },
+      "R02_s0.9|R2_fixed": {
+        "fail": 8,
+        "pass": 1
+      },
+      "R02_s0.9|W_width_rule": {
+        "pass": 9
+      },
+      "R03_s1|B0_blind": {
+        "pass": 9
+      },
+      "R03_s1|B1_height": {
+        "pass": 9
+      },
+      "R03_s1|B2_F": {
+        "safe_abandon": 9
+      },
+      "R03_s1|B3_F": {
+        "safe_abandon": 9
+      },
+      "R03_s1|H5_F": {
+        "pass": 9
+      },
+      "R03_s1|U_truth": {
+        "pass": 9
+      },
+      "R03_s1|R2_fixed": {
+        "pass": 9
+      },
+      "R03_s1|W_width_rule": {
+        "pass": 9
+      },
+      "R04_s1|B0_blind": {
+        "fail": 9
+      },
+      "R04_s1|B1_height": {
+        "safe_abandon": 9
+      },
+      "R04_s1|B2_F": {
+        "safe_abandon": 9
+      },
+      "R04_s1|B3_F": {
+        "safe_abandon": 9
+      },
+      "R04_s1|H5_F": {
+        "safe_abandon": 9
+      },
+      "R04_s1|U_truth": {
+        "fail": 9
+      },
+      "R04_s1|R2_fixed": {
+        "fail": 9
+      },
+      "R04_s1|W_width_rule": {
+        "pass": 6,
+        "fail": 3
+      }
+    },
+    "note": "pass=真值上通行成功；safe_abandon=A0 真实安全放弃（不计成功，也不与翻覆混类）；fail=执行但未成功。候选方法无合格候选时执行真实 A0。"
+  },
+  "ablation": {
+    "schema": "second-view-ablation/v2",
+    "state": {
+      "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R03_s1/nominal/seed7/state_snapshot.json",
+      "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+      "soil": "nominal",
+      "seed": 7
+    },
+    "observation": {
+      "ok": true,
+      "error": null,
+      "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R03_s1/nominal/seed7/observation",
+      "sha": "cc5fd126dfe7910c020c27884f93688d1b8e472c2c94a337cce5f435f7f88917"
+    },
+    "observation_acceptance_source": "共同采集记录（未使用 skip-acceptance 覆盖）",
+    "observation_cost": {
+      "drive_and_settle_s": 10.399999999999867,
+      "note": "第二张图的成本是真实驾驶+停稳+采集的时间"
+    },
+    "arms": {
+      "A_no_second_view": {
+        "label": "单视角候选（不使用第二张图）",
+        "candidate": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1",
+        "qualified": true,
+        "visible": {
+          "mask_iou": 0.9737,
+          "vis_pt_p95_mm": 1.702,
+          "freespace_violation": 0.0392,
+          "p95_limit_mm": 5.0,
+          "h_vis_m": 0.08212880883027526
+        },
+        "collision": {
+          "occupancy_iou": 0.9852,
+          "source_to_collision_p95_mm": 0.494,
+          "collision_to_source_p95_mm": 0.728,
+          "verdict": "PASS",
+          "measurement_valid": true,
+          "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/collision/metrics_single.json"
+        },
+        "decision": "R1",
+        "decision_sha": null,
+        "success": true,
+        "reason": "success",
+        "final_x": 3.613,
+        "displacement_x": 3.299,
+        "frames": 290
+      },
+      "B_with_second_view": {
+        "label": "两视角候选（使用第二张图）",
+        "candidate": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3",
+        "qualified": true,
+        "visible": {
+          "mask_iou": 0.9781,
+          "vis_pt_p95_mm": 1.55,
+          "freespace_violation": 0.038,
+          "p95_limit_mm": 5.0,
+          "h_vis_m": 0.08212880883027526
+        },
+        "collision": {
+          "occupancy_iou": 0.9833,
+          "source_to_collision_p95_mm": 0.504,
+          "collision_to_source_p95_mm": 0.739,
+          "verdict": "PASS",
+          "measurement_valid": true,
+          "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/collision/metrics_occ.json"
+        },
+        "decision": "R1",
+        "decision_sha": null,
+        "success": true,
+        "reason": "success",
+        "final_x": 3.613,
+        "displacement_x": 3.299,
+        "frames": 290
+      },
+      "C_direct_from_S0": {
+        "label": "S0 直接行动（不做移动观察）",
+        "s0_snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R03_s1/nominal/seed7/state_snapshot_s0.json",
+        "observation_cost": 0.0,
+        "s0_state_hash": "31a3771ee869c8d33cc1aa31971f8095",
+        "decision": "R1",
+        "success": true,
+        "reason": "success",
+        "final_x": 3.607,
+        "displacement_x": 3.611,
+        "frames": 326
+      }
+    },
+    "reading": {
+      "information_value": "A 与 B 决策相同（R1）、结果相同（success=True）、位移几乎相同（3.299 vs 3.299）→ 该状态上第二张图没有带来可测的信息价值",
+      "operational_net_value": "S0 直接行动位移 3.611，移动观察后 3.299；观察消耗了驾驶与停稳时间，且没有换来决定或结果改善 → 净价值不为正",
+      "both_arms_same_state": true,
+      "no_forced_acceptance": "两臂均使用采集记录中的观察验收，未使用 skip-acceptance 覆盖",
+      "note": "有效负结果：第二观察改变决策才会被记为信息价值；本状态两臂同决策同结果。仅一个状态，不能外推到全部配置。"
+    }
+  },
+  "page": {
+    "schema": "page-acceptance/v2",
+    "server": "scripts/v7_server.py",
+    "entry": "/api/rerun → scripts/r1_page_run.py（统一资格门 + 独立真值 + 生产轨迹）；/api/rehearse → scripts/v7_rerun.py（候选预演，标签独立）",
+    "browser": "chrome-headless-shell，DOM 内点击页面自身按钮并等待服务端返回",
+    "checks": [
+      {
+        "item": "1_open_existing_playback",
+        "ok": true,
+        "detail": {
+          "player": "/player?run=evaluation/page_run_7bc914a5f19a",
+          "selftest": "play_advanced=true reached=11.00 seek_moved=true seek_value=12.42 canvas_present=true"
+        }
+      },
+      {
+        "item": "2_page_formal_rerun",
+        "ok": true,
+        "detail": {
+          "run_id": "20261101T142255-R01-nominal-7",
+          "method": "B0_blind",
+          "case": "R01",
+          "decision": "R1",
+          "qualification": {
+            "method": "B0_blind",
+            "qualified": false,
+            "reason": null
+          }
+        }
+      },
+      {
+        "item": "3_open_new_run_playback",
+        "ok": true,
+        "detail": {
+          "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/player.html",
+          "frames": 203
+        }
+      },
+      {
+        "item": "4_ui_matches_records",
+        "ok": true,
+        "detail": {
+          "ui_reported": {
+            "kind": "formal_closed_loop",
+            "decision": "R1",
+            "frames": 203,
+            "success": false
+          },
+          "record": {
+            "run_id": "20261101T142255-R01-nominal-7",
+            "decision": "R1",
+            "frames": 203,
+            "reason": "tipped"
+          }
+        }
+      },
+      {
+        "item": "5_safe_abandon_visible",
+        "ok": true,
+        "detail": {
+          "run_id": "20261101T142014-R01-nominal-7",
+          "decision": "A0",
+          "qualification": {
+            "method": "H5_F",
+            "qualified": false,
+            "reason": "可见 freespace 0.0647 > 0.05；碰撞 IoU 0.9365 < 0.95"
+          },
+          "frames": 150
+        }
+      },
+      {
+        "item": "6_physical_failure_visible",
+        "ok": true,
+        "detail": {
+          "run_id": "20261101T142255-R01-nominal-7",
+          "reason": "tipped",
+          "final_x": 1.63
+        }
+      },
+      {
+        "item": "7_candidate_rehearsal_labeled",
+        "ok": true,
+        "detail": {
+          "job_kind": "candidate_rehearsal",
+          "label": "候选预演（非真值执行）",
+          "separate_output": "evaluation/rehearsal_page_beb7bd242f27",
+          "success": null,
+          "note": "预演成绩不进真值执行统计"
+        }
+      }
+    ],
+    "all_ok": true
+  },
+  "negatives_close": {
+    "schema": "negatives/close/v1",
+    "rows": [
+      {
+        "id": "N01_collision_pass_visible_fail",
+        "pass": true,
+        "detail": {
+          "status": "disqualified",
+          "reasons": [
+            "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+            "自由空间违规 0.1122 > 0.05"
+          ]
+        }
+      },
+      {
+        "id": "N02_reuse_visible_pass_other_scale",
+        "pass": true,
+        "detail": {
+          "status": "disqualified",
+          "reasons": [
+            "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s0.9",
+            "自由空间违规 0.1122 > 0.05"
+          ]
+        }
+      },
+      {
+        "id": "N03_missing_or_path_as_sha",
+        "pass": true,
+        "detail": {
+          "missing": "not_measured",
+          "path_as_sha": "not_measured"
+        }
+      },
+      {
+        "id": "N04_manifest_case_mismatch",
+        "pass": true,
+        "detail": {
+          "rc": 1
+        }
+      },
+      {
+        "id": "N05_candidate_not_truth",
+        "pass": true,
+        "detail": {
+          "method": "B0_blind",
+          "qualification": {
+            "method": "B0_blind",
+            "qualified": false,
+            "reason": null
+          }
+        }
+      },
+      {
+        "id": "N06_summary_as_trajectory_rejected",
+        "pass": true,
+        "detail": {
+          "rc": 1,
+          "err": [
+            "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+          ]
+        }
+      },
+      {
+        "id": "N07_nominal_is_not_rigid",
+        "pass": true,
+        "detail": {
+          "nominal_mode": "soil",
+          "rigid_mode": "rigid"
+        }
+      },
+      {
+        "id": "N08_planning_soils_required",
+        "pass": true,
+        "detail": {
+          "legacy_protocol_labelled_diagnostic": true,
+          "formal_plan_soils": [
+            "nominal",
+            "low_traction",
+            "high_drag"
+          ],
+          "n_main_keys": 216
+        }
+      },
+      {
+        "id": "N09_contract_rejects_bad_na",
+        "pass": true,
+        "detail": {
+          "note": "闭环合同已在第 2 轮修复：异常行不得借 NOT_APPLICABLE 通道补格；本轮以 matrix 全键覆盖（216/216）作为正面证据"
+        }
+      },
+      {
+        "id": "N10_tampered_ramp_state_detected",
+        "pass": true,
+        "detail": {
+          "tampered_field": "t_last_zero_cmd"
+        }
+      },
+      {
+        "id": "N11_skip_acceptance_checks",
+        "pass": true,
+        "detail": {
+          "note": "skip-acceptance 现在核对 usable/版本/状态哈希/相机哈希，不符即 SystemExit(6)"
+        }
+      },
+      {
+        "id": "N12_decision_before_execution",
+        "pass": true,
+        "detail": {
+          "decision_mtime": 1793514176.552991,
+          "trajectory_mtime": 1793514177.750917
+        }
+      },
+      {
+        "id": "N13_all_denominators_reported",
+        "pass": true,
+        "detail": {
+          "rows": 288,
+          "main_keys": 216,
+          "diagnostic_rows": 72
+        }
+      },
+      {
+        "id": "N14_demo_requires_own_truth",
+        "pass": true,
+        "detail": {
+          "rc": 1,
+          "tail": [
+            "DEMO_FAILED: 碰撞测量失败"
+          ]
+        }
+      }
+    ]
+  },
+  "fixture": {
+    "schema": "stage-fixture/v1",
+    "observation": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "observation_sha": "b3e50643b9315d5c3459b3a99b4519e604692a0a49bc3637405077348fc33322",
+    "entity": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R01_s1/body_world.stl",
+    "entity_sha": "5b2242894b30b7710a77dbcfa87f9209f7bf5d6b3a0931de9ed039955690daed",
+    "pitch_m": 0.0025,
+    "effective_config_sha": "d0e0b3a09c03c80239811aca5b11961ccea0936f7a9208b3ba1d205a9a19f494",
+    "thresholds": {
+      "mask_iou_min": 0.85,
+      "vis_pt_p95_mm_base": 5.0,
+      "vis_pt_p95_h_frac": 0.03,
+      "freespace_max": 0.05
+    },
+    "grid": {
+      "dims": [
+        131,
+        70,
+        137
+      ],
+      "pitch_m": 0.0025,
+      "n_voxels": 1256290
+    },
+    "space": {
+      "n_voxels": 1256290,
+      "n_free": 598732,
+      "n_band": 18659,
+      "n_unknown": 638899,
+      "n_in_fov": 1256290,
+      "n_valid_depth": 1098222,
+      "n_depth_edge_px": 0,
+      "n_constrained_px": 1098222,
+      "depth_edge_threshold_m": 0.0,
+      "valid_depth_frac": 0.874179,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    },
+    "levels": [
+      {
+        "tag": "S4_shell_full",
+        "mask_iou": 0.9873,
+        "vis_pt_p95_mm": 0.995,
+        "freespace_violation": 0.0295,
+        "watertight": true,
+        "n_faces": null,
+        "volume_m3": 0.007180451,
+        "p95_limit_mm": 10.015,
+        "pass": true,
+        "metrics_raw": {
+          "mask_iou": 0.9873,
+          "cand_px": 9768,
+          "obs_px": 9719,
+          "n_inter": 9681,
+          "resolution": [
+            1280,
+            960
+          ],
+          "depth_med_mm": 0.202,
+          "depth_p95_mm": 3.225,
+          "depth_inner_rms_mm": 1.674,
+          "depth_edge_rms_mm": 9.414,
+          "freespace_violation": 0.0295,
+          "freespace_n_px": 288,
+          "freespace_denom_px": 9768,
+          "freespace_outside_mask": 70,
+          "metric_version": "align-metric/v2.1",
+          "vis_pt_med_mm": 0.384,
+          "vis_pt_p95_mm": 0.995,
+          "vis_pt_n": 1200,
+          "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+        },
+        "shell_offset_voxels": 1.0
+      }
+    ],
+    "first_failing_level": null,
+    "verdict": "PASS",
+    "note": "fixture 只用该配置真值实体验证表示链自洽，不作为生成候选；S0/S1 失败先查输入与相机，不进入融合调参。",
+    "seconds": 293.47
+  },
+  "superseded": {
+    "schema": "supersede-record/v1",
+    "baseline": "fdd1d447",
+    "created": "2026-11-01T12:02:11",
+    "rule": "本批唯一正式资格门上线后，依赖不合格资产的旧结论降级；工程运行能力不撤回，只降级依赖这些资产的正式方法结论。",
+    "items": [
+      {
+        "path": "evaluation/six_matrix_all.json",
+        "use": "SUPERSEDED",
+        "why": "H5 行依赖 V7_R01_s1/V7_R02_s1 等未通过正式资格门（可见 freespace 超限、且测量针对旧观测 recovery_r3）的资产；合格门上线后这些行不能作为正式方法结论",
+        "keep_as": "诊断：可用于说明“若无严格资格门会得出什么”，不得进正式表",
+        "exists": true,
+        "sha": "68e61199d775ac9e"
+      },
+      {
+        "path": "evaluation/six_all_configs.json",
+        "use": "SUPERSEDED",
+        "why": "同上，四配置六方法汇总",
+        "exists": true,
+        "sha": "8348e50d919c6da0"
+      },
+      {
+        "path": "evaluation/six_r01_smoke/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "单配置冒烟，分母未对齐，且候选未过资格门",
+        "exists": true,
+        "sha": "a839d24abb276433"
+      },
+      {
+        "path": "evaluation/six_r01_low_traction/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "同上；且当时 nominal/土壤语义未按集合聚合",
+        "exists": true,
+        "sha": "22425cbaa9df4fd4"
+      },
+      {
+        "path": "evaluation/six_r01_high_drag/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "同上",
+        "exists": true,
+        "sha": "4b1bb5625ca8860d"
+      },
+      {
+        "path": "evaluation/six_R02_s0.9/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "R02@0.9 未按该尺度重新验收，H5 的 A0 是旧资产输出",
+        "exists": true,
+        "sha": "0111b9b835d4434b"
+      },
+      {
+        "path": "evaluation/six_R03_s1/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "R03 旧碰撞记录无测量有效性，资格门判 measurement_error",
+        "exists": true,
+        "sha": "1e6f6fe9dc743084"
+      },
+      {
+        "path": "evaluation/six_R04_s1/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "R04 无 process.json，可见资格为 not_measured",
+        "exists": true,
+        "sha": "810c1ca1e78c2184"
+      },
+      {
+        "path": "evaluation/six_r01_attribution.json",
+        "use": "SUPERSEDED",
+        "why": "归因基于未过资格门的候选，结论需在合格候选上重做",
+        "exists": true,
+        "sha": "155c237f4bda3866"
+      },
+      {
+        "path": "evaluation/six_r01_source_attribution.json",
+        "use": "SUPERSEDED",
+        "why": "同上",
+        "exists": true,
+        "sha": "642c6f78cec8c151"
+      },
+      {
+        "path": "evaluation/ablation_second_view.json",
+        "use": "DIAGNOSTIC",
+        "why": "两臂用 --skip-acceptance 强制 usable=true，违反 §6.3",
+        "exists": true,
+        "sha": "5b0d5ce9d915413d"
+      },
+      {
+        "path": "verify/candidate_qualification.json",
+        "use": "SUPERSEDED",
+        "why": "该文件只核对了碰撞保真，未含可见与观测匹配，已被 candidate_qualification/v2 取代",
+        "exists": true,
+        "sha": "412bafbe00ca652f"
+      },
+      {
+        "path": "evaluation/six_r01_b3f/records.jsonl",
+        "use": "DIAGNOSTIC",
+        "why": "B3_F 资产本身合格但其父先验来自未合格候选链",
+        "exists": true,
+        "sha": "2ae7a6475acaf428"
+      }
+    ]
+  },
+  "demo": {
+    "schema": "demo-run/v2",
+    "code_sha": "d1345d09a7f5f42c376c18d4ae861915b5a4a764",
+    "decision": "R1",
+    "decision_sha": "ec28f073b91644a07c8fb61771467772c1b92fa3af957554a0d0ae0743325b97",
+    "cells": 18,
+    "execution": {
+      "success": true,
+      "reason": "success",
+      "final_x": 3.605171,
+      "displacement_x": 3.286377,
+      "control_steps": 290,
+      "frames": 290,
+      "state_mode": "same_scene",
+      "fallback": false
+    },
+    "trajectory": "/tmp/demo_sb/run/trajectory.jsonl",
+    "trajectory_frames": 291,
+    "player": "/tmp/demo_sb/run/player.html",
+    "truth_identity": {
+      "case": "/workspace/r1/demo/r1_r03_two_view/inputs/case.json",
+      "truth_collision": "/workspace/r1/demo/r1_r03_two_view/inputs/truth_collision",
+      "exec_soil": "nominal",
+      "rehearsal_soils": [
+        "nominal",
+        "low_traction",
+        "high_drag"
+      ],
+      "goal_x": 2.6,
+      "budget_s": 30.0,
+      "soil": {
+        "exec_soil": "nominal",
+        "params_sha": "55848f80956792b4704ff3ec83678bf7",
+        "mode": "soil",
+        "rigid_diagnostic": false
+      }
+    },
+    "observation_acceptance": {
+      "stable": true,
+      "settle_hold_s": 0.4,
+      "cam_baseline_m": 0.3326,
+      "bearing_change_deg": 6.431,
+      "mask_px": 26002,
+      "valid_depth_frac": 1.0,
+      "speed_mps": 0.0017,
+      "omega_rps": 0.0013,
+      "tilt_deg": 0.174,
+      "state_hash": "f2c338a1662419dcb4742bc6997d13cc",
+      "camera_sha": "f4e3d4fc9020e2e001a060d82293e6a2d5ce278a4bcbee624e16b5d44c4bdc65",
+      "criteria": {
+        "version": "observation-acceptance/v1",
+        "stable": true,
+        "min_baseline_m": 0.2,
+        "min_bearing_deg": 5.0,
+        "min_mask_px": 500,
+        "min_valid_depth_frac": 0.5,
+        "max_speed": 0.05,
+        "max_omega": 0.5,
+        "max_tilt_deg": 5.0
+      },
+      "usable": true,
+      "reasons": []
+    },
+    "note": "本目录由演示包完整运行产生：重建→资格→预演→决策→真值执行→轨迹→回放。"
+  }
+}

@@ -1,262 +1,209 @@
 {
-  "schema": "review-index/v7-r1",
-  "generated_at": "2026-10-31",
-  "code_head": null,
+  "schema": "review-index/v2",
+  "baseline": "fdd1d447",
+  "rule": "每条结论必须有存在的产物；缺失即报错，不用占位路径。",
   "entries": [
     {
-      "candidate": "V7_R03_s1",
-      "object": "R03",
-      "status": "formal",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1",
-      "parent": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R03_s1/world/align",
-      "observation": "runs/unseen/recovery_r3/obs_R03",
-      "collision_build": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/collision",
-      "metrics": {
-        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/off1_R03_s1/collision/metrics_v2.json",
-        "evaluator": "union-outer-boundary/v3 (weld + exact sampling)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9852,
-        "s2c_mm": 0.494,
-        "c2s_mm": 0.728,
-        "verdict": "PASS",
-        "topology": {
-          "watertight_before_weld": false,
-          "duplicate_vertices_welded": 1273682
+      "key": "qualification_gate",
+      "title": "唯一正式资格门（可见+碰撞+身份）",
+      "code": "scripts/candidate_qualification.py",
+      "code_sha": "de61a37cdec02fd2fa728955762653eb7ee29499c7616bf1d88f767e8f20542c",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_R01_s1.json",
+          "exists": true,
+          "sha256": "119b5e086331c508bccfbecf67969fd33b7330406a5aecaa510f22bf4c9ae79f"
         },
-        "sampling": {
-          "requested": 1200,
-          "used": 1200,
-          "c2s_faces": 77610
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_R02_s0.9.json",
+          "exists": true,
+          "sha256": "5a51ed27f995349dfe4115f8782d0a0ea7140a57e535b044b0bc5c5f55d80959"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_R03_s1.json",
+          "exists": true,
+          "sha256": "2d0a5443c1e7272120f1468865d537fb6db4d5e30257166729855205dd2669a1"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_R04_s1.json",
+          "exists": true,
+          "sha256": "2d3812637e9086a39a5756e5e57bcf735dc7f49abd32e8c38cb5383e11f42d38"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_B2F.json",
+          "exists": true,
+          "sha256": "f4195ee42d84812d45dda4746112c91abf3dbcdbffae85dab877d6b128ab09cf"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_B3F.json",
+          "exists": true,
+          "sha256": "2cb18465e44d6fd7f02fd19f3a7436761c52f551762318097bc1dcacf1feb539"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/gate_evidence.json",
+          "exists": true,
+          "sha256": "8cffe53ab7c1c90d4acab0d843b1a3f576d2ea7b69061a6d5498871170e5bc46"
         }
-      },
-      "visible": {
-        "iou": 0.9737,
-        "p95_mm": 1.702,
-        "freespace": 0.0392
-      },
-      "notes": "STL 只是未焊接（焊接后水密），非真破洞；重测双向距离 0.494/0.728 mm，资格恢复"
+      ]
     },
     {
-      "candidate": "V7_R02_s2",
-      "object": "R02",
-      "status": "formal",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2",
-      "parent": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R02_s2/world/align",
-      "observation": "runs/unseen/recovery_r3/obs_R02",
-      "collision_build": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R02_s2/collision",
-      "metrics": {
-        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/occ_R02_s2_metrics.json",
-        "evaluator": "union-outer-boundary/v3 (occupancy path)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9903,
-        "s2c_mm": 0.512,
-        "c2s_mm": 0.75,
-        "verdict": "PASS"
-      },
-      "visible": {
-        "iou": 0.9841,
-        "p95_mm": 2.042,
-        "freespace": 0.0461
-      },
-      "notes": "重新融合并按占据直连重建；覆盖检查 identical"
+      "key": "chain_selfcheck",
+      "title": "S0–S4 表示链自检（真值也应通过）",
+      "code": "scripts/v7_stage_fixture.py",
+      "code_sha": "cf647728c9571e7c4166b37676b6339c6cd5b4558517272b71108902d428222a",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/fixture_R01_gapfill/fixture_report.json",
+          "exists": true,
+          "sha256": "13b9fe42520685f2d89178eb72e85ebceee2bea48daedc1e5a6f04d6e4314be0"
+        }
+      ]
     },
     {
-      "candidate": "tv_R03_s1 (fill_holes)",
-      "object": "R03",
-      "status": "rejected",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tv_R03_s1",
-      "parent": "V7_R03_s1（父候选）",
-      "observation": "obs_R03 + obs_R03_at_driven（两视角）",
-      "collision_build": null,
-      "metrics": {
-        "iou": 0.9025,
-        "s2c_mm": 1.0,
-        "c2s_mm": 4.0,
-        "watertight": true,
-        "source_volume_defined": true,
-        "file": "sandbox only（未回传）"
-      },
-      "visible": {
-        "obs1": [
-          0.9803,
-          1.669,
-          0.0126
-        ],
-        "obs2": [
-          0.9837,
-          1.761,
-          0.0108
-        ]
-      },
-      "notes": "可见双视角通过；碰撞 IoU 0.9025 < 0.95 → 不合格（有效测量）"
+      "key": "common_states",
+      "title": "四配置×三土壤×三新 seed 的共同观察后状态",
+      "code": "scripts/v7_acquire_states.py",
+      "code_sha": "0d681e905d55fab74e165537a3616a11088c842852209639ded18255beb50920",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R03_s1/nominal/seed7/acquisition.json",
+          "exists": true,
+          "sha256": "ae4cde10d947acab72d7f75be8b243b0b1503713d7bae657d901148fa9f1c216"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/acquisition.json",
+          "exists": true,
+          "sha256": "52c438d5ddac9382f1b23c195c213a6a891aa78f628560e1d52c5201fa36f142"
+        }
+      ]
     },
     {
-      "candidate": "V7_R04_s2",
-      "object": "R04",
-      "status": "formal",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/recal_V7_R04_s2",
-      "parent": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R04_s2/world/align",
-      "observation": "runs/unseen/recovery_r3/obs_R04",
-      "collision_build": null,
-      "metrics": {
-        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/occ_R04_s2/collision/metrics_occ.json",
-        "evaluator": "union-outer-boundary/v3 (occupancy path)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9889,
-        "s2c_mm": 0.548,
-        "c2s_mm": 0.83,
-        "verdict": "PASS"
-      },
-      "visible": {
-        "iou": 0.9654,
-        "p95_mm": 1.979,
-        "freespace": 0.0339
-      },
-      "notes": "占据直连路径；旧口径 c2s 37.6 mm 的问题消失"
+      "key": "formal_matrix",
+      "title": "216 键正式矩阵（含诊断基线）",
+      "code": "scripts/v7_common_matrix.py",
+      "code_sha": "a357991d3feb45db7868c33841c23339f99b9c0c55202b15f53c892c842c7403",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/matrix_all/matrix.jsonl",
+          "exists": true,
+          "sha256": "91e3fabe11ea3402328542956dbad878708003f3723d7efe5ba02bbe1ad310cd"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/matrix_all/summary.json",
+          "exists": true,
+          "sha256": "9e00a2fb4477e82fd188121605ad3f12bb23b74efb21ce8cd2867d2ef08a2b09"
+        }
+      ]
     },
     {
-      "candidate": "V7_R03_s2",
-      "object": "R03",
-      "status": "formal",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030/processed/V7_R03_s2/fusion",
-      "parent": "runs/unseen/delivery_v7/v7_20261030/candidates/V7_R03_s2/world/align",
-      "observation": "runs/unseen/recovery_r3/obs_R03",
-      "collision_build": null,
-      "metrics": {
-        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/occ_R03_s2/collision/metrics_occ.json",
-        "evaluator": "union-outer-boundary/v3 (occupancy path)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9832,
-        "s2c_mm": 0.485,
-        "c2s_mm": 0.742,
-        "verdict": "PASS"
-      },
-      "visible": {
-        "iou": 0.9551,
-        "p95_mm": 2.65,
-        "freespace": 0.0473
-      },
-      "notes": "按占据直连重建并重测，旧口径记录被本行替代"
+      "key": "second_view",
+      "title": "第二观察三臂消融",
+      "code": "scripts/v7_second_view_ablation.py",
+      "code_sha": "52daa60fb75735a392b0bfda0125c7fc2ec62fe44e0375783c5054d764b0ff28",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/ablation_second_view_v2/ablation.json",
+          "exists": true,
+          "sha256": "f95a9935b225c2c7869befdf49ee0439e38d6f2683eb48cd37f422e3633b7fbb"
+        }
+      ]
     },
     {
-      "candidate": "tvocc_R03_s1（占据式两视角）",
-      "object": "R03",
-      "status": "formal_pending_visible",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1",
-      "parent": "V7_R03_s1",
-      "observation": "obs_R03 + obs_R03_at_driven",
-      "collision_build": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1/collision",
-      "metrics": {
-        "file": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1/collision/metrics_occ.json",
-        "evaluator": "union-outer-boundary/v3 (occupancy path)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9843,
-        "s2c_mm": 0.442,
-        "c2s_mm": 0.754,
-        "verdict": "PASS"
-      },
-      "visible": {
-        "note": "not_measured（下一步）"
-      },
-      "notes": "O=(P|S1|S2)&~(F1|F2)：618,441 体素、507,344 面、watertight；碰撞 PASS 0.9843/0.442/0.754；可见双视角验收进行中"
+      "key": "page",
+      "title": "页面七项浏览器实操",
+      "code": "scripts/v7_server.py",
+      "code_sha": "272fa146431a628abc7a77e7b11552efeb0d1f0accf618bd183fb1fe944fdd9c",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/page_acceptance_v2.json",
+          "exists": true,
+          "sha256": "7c7c30e01fab82eb13c7746d325b8d098b70be341164a35946668527748bbf55"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/result.json",
+          "exists": true,
+          "sha256": "a5aa9fded77995df4186e1e1bf8f63705fb71a94fe5561077527a148646f9574"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/trajectory.jsonl",
+          "exists": true,
+          "sha256": "52eef65949deb7a4d18c25e08b49d4f764fbc0285aba218eb94062f63afe0f9e"
+        }
+      ]
     },
     {
-      "candidate": "tvocc_R03_s1_v3（两视角·单网格·精确挖）",
-      "object": "R03",
-      "status": "formal",
-      "fusion": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3",
-      "parent": "V7_R03_s1",
-      "observation": "obs_R03 + obs_R03_at_driven",
-      "collision_build": "runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/collision",
-      "metrics": {
-        "file": ".../tvocc_R03_s1_v3/collision/metrics_occ.json",
-        "evaluator": "union-outer-boundary/v3 (occupancy path)",
-        "watertight": true,
-        "source_volume_defined": true,
-        "iou": 0.9833,
-        "s2c_mm": 0.504,
-        "c2s_mm": 0.739,
-        "verdict": "PASS"
-      },
-      "visible": {
-        "obs1": [
-          0.9781,
-          1.55,
-          0.038
-        ],
-        "obs2": [
-          0.9767,
-          1.7,
-          0.0249
-        ],
-        "both_views": true
-      },
-      "notes": "O=(P|S1|S2)&~(F1|F2)，精确深度挖自由空间；603k 体素；可见双视角与碰撞全部通过"
+      "key": "negatives",
+      "title": "N01–N14 生产反例",
+      "code": "scripts/v7_negatives_close.py",
+      "code_sha": "72eabd415be2c3c0c63cb00155084c30bfba9c9c1f0ddc85be5b9cd0a1ef8812",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/negatives_close.json",
+          "exists": true,
+          "sha256": "f0f512bce28ecdb4764fca25a3e1354df1b5fb6149895ddb9e85178e2843e636"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/negatives_qualification.json",
+          "exists": true,
+          "sha256": "66322acf39ff7d6db8c926b3e89c3bdb1fe5221380d9ec786c1d9f686e0a5895"
+        }
+      ]
+    },
+    {
+      "key": "demo",
+      "title": "演示包新目录完整运行",
+      "code": "demo/r1_r03_two_view/run_demo.sh",
+      "code_sha": "23e376eda1bea94b8bc0c0e91403bab59352c349fc2330d21b28a74db12530e7",
+      "artifacts": [
+        {
+          "path": "demo/r1_r03_two_view/verification/full_run/demo_run_summary.json",
+          "exists": true,
+          "sha256": "89394650458c008df980b3a625e608729c74deca9aec24a33fc2ee972c40993d"
+        },
+        {
+          "path": "demo/r1_r03_two_view/verification/full_run/run/player.html",
+          "exists": true,
+          "sha256": "d7260ff690c7fe3c5a0b87200dfc0c5307f4c35f4707027d235257ecd749dea5"
+        },
+        {
+          "path": "demo/r1_r03_two_view/MANIFEST.json",
+          "exists": true,
+          "sha256": "464f7c83a2161db19d5cad8c2cd1e04942acde0fddb686304f8b415623dbe168"
+        }
+      ]
+    },
+    {
+      "key": "superseded",
+      "title": "旧结论降级与撤回清单",
+      "code": "runs/unseen/delivery_v7/v7_20261030_r1/verify/superseded.json",
+      "code_sha": "f30cbff8e7bce53480a1adfe2e35e689669195740b5b4140f30374ba168191e9",
+      "artifacts": [
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/superseded.json",
+          "exists": true,
+          "sha256": "f30cbff8e7bce53480a1adfe2e35e689669195740b5b4140f30374ba168191e9"
+        }
+      ]
+    },
+    {
+      "key": "report",
+      "title": "当前报告",
+      "code": "docs/R1_BATCH_REPORT.md",
+      "code_sha": "121a4b72e8de469e0f9f2f949262867533144334ae9fb936273181942ab07469",
+      "artifacts": [
+        {
+          "path": "docs/R1_BATCH_REPORT.md",
+          "exists": true,
+          "sha256": "121a4b72e8de469e0f9f2f949262867533144334ae9fb936273181942ab07469"
+        },
+        {
+          "path": "runs/unseen/delivery_v7/v7_20261030_r1/verify/report_facts.json",
+          "exists": true,
+          "sha256": "f75524d1852ae7b19cbdbe6707f9796bcca9d510124c10db03cc50caac68c8dd"
+        }
+      ]
     }
   ],
-  "known_answers": {
-    "file": "runs/unseen/delivery_v7/v7_20261030_r1/verify/known_answer_review.json",
-    "verdict": "PASS（合并盒与三单位盒均为 0.5）"
-  },
-  "negatives": {
-    "file": "runs/unseen/delivery_v7/v7_20261030_r1/verify/negatives_18_classification.json",
-    "production_count": 6,
-    "total": 18
-  },
-  "consistency": {
-    "file": "runs/unseen/delivery_v7/v7_20261030_r1/verify/consistency_checks.json"
-  },
-  "open_items": [],
-  "scan": {
-    "v1_status": "DIAG（对象用的是 Lux3D 候选，不是真值；结论作废）",
-    "v2_file": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/scan_v2.jsonl",
-    "v2_analysis": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/analysis.json",
-    "v2_protocol": "plans/unseen_r1_scan_protocol.json",
-    "v2_assets": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets (真值网格 × 0.9/1.0/1.1, 包围盒断言 12/12)",
-    "v2_observations": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs (12 组真实采集)"
-  },
-  "resolved_items": [
-    {
-      "id": "closed_loop_identical_final_x",
-      "resolution": "配对重跑：同一冻结起点分别真实运行 R1 与 D1，未取整 final_x 分别为 3.6154 与 3.5973，控制步数 335 vs 310，动作指纹不同，两条都成功。旧记录里两者都显示 3.603 是因为closed_loop.json 的 final_x 取到小数点后三位，不是读了同一份执行结果。",
-      "evidence": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/pair_R1_D1/pair_summary.json",
-      "status": "resolved"
-    }
-  ],
-  "same_scene_formal": {
-    "report": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/same_scene_fixed/same_scene_report.json",
-    "result": "success, final_x 3.691338, 294 steps, same_scene, no fallback",
-    "root_cause_fixed": "step_drive 未更新轮速爬升时钟 -> 接管满速 -> x≈0.733 侧翻 (commit d1651e1a)"
-  },
-  "validation_states_new": {
-    "file": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/validation_states_new/validation_states.json",
-    "states": [
-      {
-        "seed": 0,
-        "hash": "e2c18f87",
-        "stable": true
-      },
-      {
-        "seed": 1,
-        "hash": "6f726b55",
-        "stable": true
-      },
-      {
-        "seed": 2,
-        "hash": "bc1e281c",
-        "stable": true
-      }
-    ],
-    "note": "重新驾驶+停稳+采集，非旧快照重编号"
-  },
-  "paired_rerun_new": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/pair_R1_D1_new/pair_summary.json",
-  "demo_full_run": {
-    "pack": "demo/r1_r03_two_view",
-    "verified": "从 occ 重建 500,296 面 / 4,632 boxes / cover_check identical / R1 与 D1 均 success"
-  }
+  "missing": [],
+  "ok": true
 }

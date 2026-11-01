@@ -1,0 +1,28 @@
+{
+  "schema": "candidate-qualification/v2",
+  "candidate_id": "V7_R04_s1",
+  "strict": true,
+  "thresholds": {
+    "visible_iou_min": 0.85,
+    "vis_pt_p95_mm_base": 5.0,
+    "vis_pt_p95_h_frac": 0.03,
+    "freespace_max": 0.05,
+    "collision_iou_min": 0.95,
+    "surface_p95_mm_max": 5.0
+  },
+  "measurement_valid": false,
+  "collision_pass": false,
+  "visible_pass": false,
+  "source_identity_ok": false,
+  "observation_match_ok": false,
+  "files_complete": false,
+  "qualified": false,
+  "status": "not_measured",
+  "reasons": [
+    "process.json 缺: runs/unseen/delivery_v7/v7_20261030_r1/processed_none.json",
+    "碰撞目录缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/collision",
+    "源网格缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/fusion/body.stl",
+    "碰撞测量缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R04_s1/collision/metrics_*.json"
+  ],
+  "diag_mode": false
+}

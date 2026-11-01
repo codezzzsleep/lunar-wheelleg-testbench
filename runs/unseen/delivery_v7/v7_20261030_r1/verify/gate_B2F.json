@@ -1,0 +1,60 @@
+{
+  "schema": "candidate-qualification/v2",
+  "candidate_id": "B2F",
+  "strict": true,
+  "thresholds": {
+    "visible_iou_min": 0.85,
+    "vis_pt_p95_mm_base": 5.0,
+    "vis_pt_p95_h_frac": 0.03,
+    "freespace_max": 0.05,
+    "collision_iou_min": 0.95,
+    "surface_p95_mm_max": 5.0
+  },
+  "measurement_valid": true,
+  "collision_pass": true,
+  "visible_pass": false,
+  "source_identity_ok": true,
+  "observation_match_ok": true,
+  "files_complete": true,
+  "qualified": false,
+  "status": "disqualified",
+  "reasons": [
+    "可见点 P95 9.736 mm > 5.000 mm",
+    "自由空间违规 0.0637 > 0.05"
+  ],
+  "diag_mode": false,
+  "identity": {
+    "mesh_sha256": "08b0d4d0998cda4fd5f6781a7283cd17d05a3f9988eb57f48adfe09c50634e19",
+    "metrics_source_sha": "08b0d4d0998cda4fd5f6781a7283cd17d05a3f9988eb57f48adfe09c50634e19",
+    "process_fusion_world_sha": "08b0d4d0998cda4fd5f6781a7283cd17d05a3f9988eb57f48adfe09c50634e19",
+    "collision_manifest_sha": "13d9babd28b0d4377695303bf80ba013",
+    "metrics_manifest_sha": "13d9babd28b0d4377695303bf80ba013"
+  },
+  "observation": {
+    "process_observation": "runs/unseen/recovery_r3/obs_R03",
+    "current_observation": "runs/unseen/recovery_r3/obs_R03",
+    "current_observation_sha": "ff7b9e971d487f4f62808200428f82164d3c7538ffd2560f4742bafdb311cece",
+    "case_id": "R03",
+    "process_case_id": null
+  },
+  "visible_metrics": {
+    "mask_iou": 0.9737,
+    "vis_pt_p95_mm": 9.736,
+    "freespace_violation": 0.0637,
+    "p95_limit_mm": 5.0,
+    "h_vis_m": 0.08212880883027526
+  },
+  "collision_metrics": {
+    "occupancy_iou": 0.9921,
+    "source_to_collision_p95_mm": 0.359,
+    "collision_to_source_p95_mm": 0.569,
+    "verdict": "PASS",
+    "measurement_valid": true,
+    "file": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R03/B2F/collision/metrics_full.json"
+  },
+  "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R03/B2F/collision",
+  "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R03/B2F/body.stl",
+  "claims": {
+    "planning_eligible_in_manifest": false
+  }
+}

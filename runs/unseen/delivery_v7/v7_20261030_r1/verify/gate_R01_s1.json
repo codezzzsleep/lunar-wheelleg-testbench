@@ -1,0 +1,60 @@
+{
+  "schema": "candidate-qualification/v2",
+  "candidate_id": "V7_R01_s1",
+  "strict": true,
+  "thresholds": {
+    "visible_iou_min": 0.85,
+    "vis_pt_p95_mm_base": 5.0,
+    "vis_pt_p95_h_frac": 0.03,
+    "freespace_max": 0.05,
+    "collision_iou_min": 0.95,
+    "surface_p95_mm_max": 5.0
+  },
+  "measurement_valid": true,
+  "collision_pass": false,
+  "visible_pass": false,
+  "source_identity_ok": true,
+  "observation_match_ok": true,
+  "files_complete": true,
+  "qualified": false,
+  "status": "disqualified",
+  "reasons": [
+    "可见点 P95 19.237 mm > 10.015 mm",
+    "自由空间违规 0.0647 > 0.05",
+    "占据 IoU 0.9365 < 0.95",
+    "碰撞判定为 ATTENTION"
+  ],
+  "diag_mode": false,
+  "identity": {
+    "mesh_sha256": "79354a6bb06f305276151334d2e9781395028ef748db9d0f03d5b5dd46a5345a",
+    "metrics_source_sha": "79354a6bb06f305276151334d2e9781395028ef748db9d0f03d5b5dd46a5345a",
+    "process_fusion_world_sha": "79354a6bb06f305276151334d2e9781395028ef748db9d0f03d5b5dd46a5345a",
+    "collision_manifest_sha": "b8c2e9001d8d3bf3e3ada74d63fa01ee",
+    "metrics_manifest_sha": "b8c2e9001d8d3bf3e3ada74d63fa01ee"
+  },
+  "observation": {
+    "process_observation": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "current_observation": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "current_observation_sha": "b3e50643b9315d5c3459b3a99b4519e604692a0a49bc3637405077348fc33322",
+    "case_id": "R01",
+    "process_case_id": null
+  },
+  "visible_metrics": {
+    "mask_iou": 0.8856,
+    "vis_pt_p95_mm": 19.237,
+    "freespace_violation": 0.0647,
+    "p95_limit_mm": 10.015,
+    "h_vis_m": 0.33381759515037107
+  },
+  "collision_metrics": {
+    "occupancy_iou": 0.9365,
+    "source_to_collision_p95_mm": 0.535,
+    "collision_to_source_p95_mm": 0.799,
+    "verdict": "ATTENTION",
+    "measurement_valid": true,
+    "file": "runs/unseen/delivery_v7/v7_20261030_r1/refuse_R01_s1/collision/metrics_full.json"
+  },
+  "claims": {
+    "planning_eligible_in_manifest": false
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "elev25d-coordinate-fix/v1",
+  "bug": "网格原点 x0 未落在格点上（1.0537892），但 box 索引按 round(x0/cell) 计算，导致整张高程图沿 +x 平移约 1.05 m；石头的“看不见的那一面”被放到了 2.70–2.91 m，而不是真实的 1.65–1.94 m",
+  "old_extent": {
+    "x_m": [
+      2.704,
+      2.914
+    ],
+    "z_top_m": 0.15,
+    "n_boxes": 536,
+    "origin": [
+      1.0538,
+      -1.2,
+      0.0
+    ]
+  },
+  "fixed_extent": {
+    "x_m": [
+      1.65,
+      1.86
+    ],
+    "z_top_m": 0.16,
+    "n_boxes": 546,
+    "origin": [
+      1.05,
+      -1.2,
+      0.0
+    ]
+  },
+  "old_result": {
+    "block": {
+      "chosen": "D1",
+      "success": false
+    },
+    "fill": {
+      "chosen": "R1",
+      "success": true,
+      "final_x": 3.561
+    }
+  },
+  "fixed_result": {
+    "block": {
+      "chosen": "A0",
+      "success": false,
+      "reason": "no_safe_traversal"
+    },
+    "fill": {
+      "chosen": "L2",
+      "success": true,
+      "final_x": 3.606,
+      "safe_set": [
+        "L2",
+        "R2",
+        "D2"
+      ]
+    }
+  },
+  "consequence": "修正后 2.5D 补平仍能通行，但动作从 R1 变为 L2，终点 3.606，与真值参考选的 L2 一致；挡未知从“D1 撞车”变为“直接放弃”",
+  "retract": [
+    "旧 2.5D 数值（R1/3.561、D1/2.003）作废，原因是坐标错位"
+  ],
+  "kept": [
+    "unknown 占比 26.7%、imputed 标注、范围来自公共任务区等口径不变"
+  ]
+}

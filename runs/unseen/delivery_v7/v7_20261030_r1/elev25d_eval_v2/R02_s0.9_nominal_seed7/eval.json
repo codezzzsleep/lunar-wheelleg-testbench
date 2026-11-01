@@ -1,0 +1,55 @@
+{
+  "schema": "elev25d-eval/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "observation": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation",
+    "sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6"
+  },
+  "visible": {
+    "n_pixels": 22909,
+    "x_front": 1.6537607023110272,
+    "y_center": 0.0033225672454857136,
+    "W_vis": 0.35104189790804063,
+    "H_vis": 0.14022719068943648
+  },
+  "elevation": {
+    "unknown_frac": 0.2669,
+    "observed_cells": 27270
+  },
+  "arms": {
+    "block": {
+      "chosen": "D1",
+      "cells": 7,
+      "safe_set": [
+        "D1"
+      ],
+      "success": false,
+      "reason": "tipped",
+      "final_x": 2.003,
+      "sim_time_s": 14.64,
+      "frames": 212
+    },
+    "fill": {
+      "chosen": "R1",
+      "cells": 7,
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "D2",
+        "L1",
+        "R2"
+      ],
+      "success": true,
+      "reason": "success",
+      "final_x": 3.561,
+      "sim_time_s": 17.02,
+      "frames": 331
+    }
+  }
+}

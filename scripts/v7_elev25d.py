@@ -52,9 +52,11 @@ def build_elevation(obs_dir, case, cell=CELL_M):
     x_front = float(obsd['visible']['x_front'])
     half = float(case.get('channel_half', 1.2))
     goal_x = float(case.get('goal_x', 2.6))
-    x0 = max(0.0, x_front - 0.60)          # 前沿之前 0.6 m（公共区域）
-    x1 = goal_x
-    y0, y1 = -half, half
+    # 网格原点必须落在格点lattice上：否则 box 索引与世界坐标错位（实测错过约 1 m）
+    x0 = np.floor(max(0.0, x_front - 0.60) / cell) * cell
+    x1 = np.ceil(goal_x / cell) * cell
+    y0 = np.floor(-half / cell) * cell
+    y1 = np.ceil(half / cell) * cell
     nx = int(np.ceil((x1 - x0) / cell))
     ny = int(np.ceil((y1 - y0) / cell))
     H = np.full((nx, ny), np.nan, dtype=np.float64)     # 高程（世界 z 上表面）
@@ -104,13 +106,14 @@ def to_boxes(H, OBS, meta, strategy, ground_z, cell=CELL_M):
             base = ground_z
             if top <= base + 1e-4:
                 continue                    # 平地不需要碰撞盒
-            xa = int(round(x0 / cell)) + a
-            ya = int(round(y0 / cell)) + b
-            za = int(round(base / cell))
-            zb = int(round(top / cell))
+            # 原点已在格点上，索引即世界坐标除以格宽（无 round 偏移）
+            xa = a
+            ya = b
+            za = int(np.floor(base / cell))
+            zb = int(np.ceil(top / cell))
             if zb <= za:
                 zb = za + 1
-            boxes.append([xa, xa + 1, ya, ya + 1, za, zb])
+            boxes.append([int(xa), int(xa + 1), int(ya), int(ya + 1), int(za), int(zb)])
     return boxes, {'unknown_cells': unknown_cells, 'imputed_cells': imputed_cells,
                    'n_boxes': len(boxes)}
 

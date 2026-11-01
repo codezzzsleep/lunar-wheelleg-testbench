@@ -1,0 +1,21 @@
+{
+  "schema": "page-newrun-evidence/v1",
+  "endpoint": "/api/run_blocking（页面按钮实际调用的同一后端）",
+  "request": {
+    "case": "R02",
+    "soil": "nominal",
+    "seed": 7,
+    "kind": "formal",
+    "method": "E25D_fill"
+  },
+  "response": {
+    "state": "done",
+    "kind": "formal_closed_loop",
+    "method": "E25D_fill",
+    "decision": "R1",
+    "success": true,
+    "n_frames": 331,
+    "player": "/player?run=runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_511a4c9a3b69"
+  },
+  "note": "页面方法下拉新增 2.5D 后的一次真实运行：与命令行同一共同规划器与独立真值，结果与命令行一致（R1 → 成功 → 331 帧）"
+}

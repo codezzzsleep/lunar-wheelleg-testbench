@@ -1,0 +1,28 @@
+{
+  "method": "E25D_fill",
+  "chosen": "R1",
+  "evidence": {
+    "planner": "common-planner/v1",
+    "decision": {
+      "chosen": "R1",
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "D2",
+        "L1",
+        "R2"
+      ],
+      "cost": 15.8,
+      "reason": "worst_case_traversal",
+      "tie": [
+        "R1"
+      ]
+    },
+    "cells": 7
+  },
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "observation_sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6",
+  "soil": "nominal",
+  "seed": 7
+}

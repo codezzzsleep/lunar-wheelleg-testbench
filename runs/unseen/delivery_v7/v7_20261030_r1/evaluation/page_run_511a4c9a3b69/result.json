@@ -1,0 +1,45 @@
+{
+  "schema": "page-run/v1",
+  "case": "R02",
+  "config_id": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "method": "E25D_fill",
+  "run_id": "20261101T185813-R02-nominal-7",
+  "started_at": 1793530693.4849503,
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/state_snapshot.json",
+    "state_hash": "b7c80586f1cb18943a076c60d4044cb4"
+  },
+  "observation": {
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R02_s0.9",
+    "sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6"
+  },
+  "qualification": {
+    "method": "E25D_fill",
+    "qualified": null,
+    "applicable": false,
+    "reason": null,
+    "note": "2.5D 高程策略直接从观测构建，不走候选资格门"
+  },
+  "planner_cells": 7,
+  "decision": {
+    "chosen": "R1",
+    "sha": "a33c46191fe88535f27b0dbb7afcd3fd1fd7e71fe92e422ca4595df5cdb6a6d3",
+    "fallback": false
+  },
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.561,
+    "displacement_x": 3.247,
+    "control_steps": 331,
+    "frames": 331,
+    "state_mode": "same_scene"
+  },
+  "trajectory": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_511a4c9a3b69/trajectory.jsonl",
+  "trajectory_frames": 331,
+  "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_511a4c9a3b69/player.html",
+  "ok": true,
+  "seconds": 13.49
+}

@@ -5,7 +5,7 @@
   "seed": 7,
   "case_config": "cases/unseen_v1/R01.json",
   "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R01_s1/body.stl",
-  "started": 1793506694.6167874,
+  "started": 1793525822.2762156,
   "perturbation": {
     "lateral_m": 0.02,
     "yaw_rad": 0.02
@@ -13,17 +13,22 @@
   "soil_params_sha": "55848f80956792b4704ff3ec83678bf7",
   "soil_mode": "soil",
   "initial_state_hash": "31a3771ee869c8d33cc1aa31971f8095",
+  "s0": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/state_snapshot_s0.json",
+    "state_hash": "31a3771ee869c8d33cc1aa31971f8095",
+    "env_t": 0.0
+  },
   "settle": {
     "stable": true,
     "speed_mps": 0.00169,
-    "omega_rps": 0.00137,
+    "omega_rps": 0.00138,
     "tilt_deg": 0.176
   },
   "camera": {
     "pos": [
-      0.7275305801579506,
-      0.09765925712143068,
-      0.38465348215887657
+      0.7275312213108758,
+      0.09765955576297405,
+      0.3846529400610958
     ],
     "schema": "camera-snapshot/v2"
   },
@@ -31,21 +36,21 @@
     "ok": true,
     "error": null,
     "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/observation",
-    "sha": "96355511757b44cd5ebc81ce8b7bb0045f1d44cc1148cdb91d429f9703ace4de"
+    "sha": "897a28c462604b703a9f3ddb51ff8f08534e1272522c9a6385811375db857b0d"
   },
   "visible": {
-    "n_pixels": 18155,
-    "x_front": 1.6357498193032347,
-    "y_center": 0.011133714096695328,
-    "W_vis": 0.1493941061418549,
-    "H_vis": 0.33257138089921545
+    "n_pixels": 18154,
+    "x_front": 1.6357497094524809,
+    "y_center": 0.011140901170637874,
+    "W_vis": 0.14938013384355375,
+    "H_vis": 0.3325778971333141
   },
   "state": {
     "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/state_snapshot.json",
-    "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+    "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
     "env_t": 10.399999999999867,
     "data_time": 10.400000000000142
   },
   "ok": true,
-  "seconds": 2.02
+  "seconds": 3.81
 }

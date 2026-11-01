@@ -1,0 +1,74 @@
+{
+  "schema": "two-view-occupancy/v1",
+  "parent_id": "tv_R01_s1",
+  "obs1": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+  "obs2": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/observation",
+  "pitch_m": 0.0025,
+  "occupancy": {
+    "n_voxels": 898035,
+    "n_occupied": 61548,
+    "content_sha": "5ba3121ae2ab7fa8889a2759a048a08c434550ea51e1593720b02d0b567b0331",
+    "parent_voxels": 93712,
+    "shell1": 18715,
+    "shell2": 18904,
+    "free1": 494608,
+    "free2": 486707
+  },
+  "conflict": {
+    "shell1_into_free2": 373,
+    "shell2_into_free1": 369,
+    "free1_free2_agree": 481484,
+    "unknown_both": 376744,
+    "parent_kept_where_unknown": 40801,
+    "carved_by_free1": 43799,
+    "carved_by_free2": 43055
+  },
+  "space_stats": {
+    "obs1": {
+      "n_voxels": 898035,
+      "n_free": 494608,
+      "n_band": 18715,
+      "n_unknown": 384712,
+      "n_in_fov": 898035,
+      "n_valid_depth": 789134,
+      "n_depth_edge_px": 0,
+      "n_constrained_px": 789134,
+      "depth_edge_threshold_m": null,
+      "valid_depth_frac": 0.878734,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    },
+    "obs2": {
+      "n_voxels": 898035,
+      "n_free": 486707,
+      "n_band": 18904,
+      "n_unknown": 392424,
+      "n_in_fov": 898035,
+      "n_valid_depth": 801072,
+      "n_depth_edge_px": 0,
+      "n_constrained_px": 801072,
+      "depth_edge_threshold_m": null,
+      "valid_depth_frac": 0.892028,
+      "depth_convention": "positive_camera_minus_z (axis depth)",
+      "free_eps_m": 0.001,
+      "band_m": 0.0075
+    }
+  },
+  "parent_stats": {
+    "solid_method": "shell_floodfill",
+    "watertight_parent": false,
+    "n_surface_samples": 170142,
+    "n_shell_voxels": 93668,
+    "n_inside_voxels": 93712,
+    "dilate_voxels": 1
+  },
+  "mesh": {
+    "faces": 347568,
+    "watertight": true,
+    "volume_m3": 0.0009581536458333333
+  },
+  "formula": "O = (P | S1 | S2) & ~(F1 | F2)",
+  "shell_offset_m": 0.0025,
+  "edge_thr": 0.0
+}

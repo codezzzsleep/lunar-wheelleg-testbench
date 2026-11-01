@@ -1,0 +1,63 @@
+{
+  "schema": "second-view-fair-summary/v1",
+  "arms": {
+    "R01_s1_nominal_seed7": {
+      "A_S1_first_image": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 23.8,
+        "obs_s": 10.399999999999867
+      },
+      "B_S1_second_image": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 23.8,
+        "obs_s": 10.399999999999867
+      },
+      "C_S0_direct": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 3.0,
+        "obs_s": 0.0
+      }
+    },
+    "R02_s0.9_nominal_seed7": {
+      "A_S1_first_image": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 23.8,
+        "obs_s": 10.399999999999867
+      },
+      "B_S1_second_image": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 23.8,
+        "obs_s": 10.399999999999867
+      },
+      "C_S0_direct": {
+        "chosen": "A0",
+        "success": false,
+        "cells": 7,
+        "total_s": 3.0,
+        "obs_s": 0.0
+      }
+    }
+  },
+  "truth_reference_R02": {
+    "chosen": "L2",
+    "outcome": "pass"
+  },
+  "reading": {
+    "R01": "A/B/C 三臂都选 A0；该配置连真值参考也不通行（见上一批矩阵 R01 U_truth 0/9），因此 A0 是正确结论，不是第二观察无效",
+    "R02": "A/B 都选 A0，而同一状态的真值参考选 L2 并成功：差距来自候选几何过于悲观，不是第二张图缺少信息",
+    "information_value": "两个状态上 A 与 B 决策与结果完全一致 → 第二张图未改变决策",
+    "observation_cost": "A/B 从 S0 起总模拟时 23.8 s（含观察 10.4 s），C 从 S0 直接行动 3.0 s；本次不比较位移差",
+    "no_forced_acceptance": true,
+    "scope": "两个配置、各一个 seed、nominal 土壤"
+  }
+}

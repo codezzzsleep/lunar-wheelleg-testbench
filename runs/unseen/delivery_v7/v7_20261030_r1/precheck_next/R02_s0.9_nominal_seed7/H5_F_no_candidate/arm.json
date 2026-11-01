@@ -1,0 +1,25 @@
+{
+  "arm": "H5_F_no_candidate",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+  "decision": {
+    "chosen": "A0",
+    "evidence": {
+      "rule": "H5_F_no_candidate: fixed action"
+    }
+  },
+  "plan": null,
+  "execution": {
+    "success": false,
+    "reason": "abort",
+    "final_x": 0.313,
+    "displacement_x": -0.0,
+    "control_steps": 150,
+    "frames": 150,
+    "sim_time_s": 13.4,
+    "state_mode": "same_scene"
+  },
+  "outcome": "safe_abandon"
+}

@@ -1,0 +1,227 @@
+{
+  "schema": "precheck-next/v1",
+  "config": "R03_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "visible": {
+    "n_pixels": 25636,
+    "x_front": 1.605436122735505,
+    "y_center": 0.0024111197098278803,
+    "W_vis": 0.45959347227940356,
+    "H_vis": 0.07578629468381815
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "observation_sha": "cc5fd126dfe7910c020c27884f93688d1b8e472c2c94a337cce5f435f7f88917",
+  "arms": {
+    "fixed_R1": {
+      "arm": "fixed_R1",
+      "config": "R03_s1",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+      "decision": {
+        "chosen": "R1",
+        "evidence": {
+          "rule": "fixed_R1: fixed action"
+        }
+      },
+      "plan": null,
+      "execution": {
+        "success": true,
+        "reason": "success",
+        "final_x": 3.613,
+        "displacement_x": 3.299,
+        "control_steps": 290,
+        "frames": 290,
+        "sim_time_s": 16.2,
+        "state_mode": "same_scene"
+      },
+      "outcome": "pass"
+    },
+    "truth_reference": {
+      "arm": "truth_reference",
+      "config": "R03_s1",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+      "decision": {
+        "chosen": "R1",
+        "safe_set": [
+          "R1",
+          "L2",
+          "D1",
+          "L1",
+          "D2",
+          "R2"
+        ],
+        "cost": 16.24,
+        "reason": "worst_case_traversal",
+        "tie": [
+          "R1"
+        ]
+      },
+      "plan": {
+        "cells": 21,
+        "expected": 24,
+        "applicability": [
+          {
+            "hypothesis": "truth",
+            "action": "R1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "R2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "L1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "L2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "S1",
+            "applicable": false,
+            "reason": "not_applicable_by_public_visibility"
+          },
+          {
+            "hypothesis": "truth",
+            "action": "D1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "D2",
+            "applicable": true,
+            "reason": null
+          }
+        ],
+        "safe_set": [
+          "R1",
+          "L2",
+          "D1",
+          "L1",
+          "D2",
+          "R2"
+        ]
+      },
+      "execution": {
+        "success": true,
+        "reason": "success",
+        "final_x": 3.613,
+        "displacement_x": 3.299,
+        "control_steps": 290,
+        "frames": 290,
+        "sim_time_s": 16.2,
+        "state_mode": "same_scene"
+      },
+      "outcome": "pass"
+    },
+    "H5_F": {
+      "arm": "H5_F",
+      "config": "R03_s1",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+      "decision": {
+        "chosen": "R1",
+        "safe_set": [
+          "R1",
+          "L2",
+          "D1",
+          "L1",
+          "D2",
+          "R2"
+        ],
+        "cost": 16.26,
+        "reason": "worst_case_traversal",
+        "tie": [
+          "R1"
+        ]
+      },
+      "plan": {
+        "cells": 21,
+        "expected": 24,
+        "applicability": [
+          {
+            "hypothesis": "H5_F",
+            "action": "R1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "R2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "L1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "L2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "S1",
+            "applicable": false,
+            "reason": "not_applicable_by_public_visibility"
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "D1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "H5_F",
+            "action": "D2",
+            "applicable": true,
+            "reason": null
+          }
+        ],
+        "safe_set": [
+          "R1",
+          "L2",
+          "D1",
+          "L1",
+          "D2",
+          "R2"
+        ]
+      },
+      "execution": {
+        "success": true,
+        "reason": "success",
+        "final_x": 3.613,
+        "displacement_x": 3.299,
+        "control_steps": 290,
+        "frames": 290,
+        "sim_time_s": 16.2,
+        "state_mode": "same_scene"
+      },
+      "outcome": "pass"
+    }
+  }
+}

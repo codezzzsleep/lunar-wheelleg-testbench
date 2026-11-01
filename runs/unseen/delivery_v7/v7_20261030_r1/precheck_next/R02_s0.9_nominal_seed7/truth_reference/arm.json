@@ -1,0 +1,82 @@
+{
+  "arm": "truth_reference",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+  "decision": {
+    "chosen": "L2",
+    "safe_set": [
+      "L2",
+      "L1"
+    ],
+    "cost": 17.04,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "L2"
+    ]
+  },
+  "plan": {
+    "cells": 21,
+    "expected": 24,
+    "applicability": [
+      {
+        "hypothesis": "truth",
+        "action": "R1",
+        "applicable": true,
+        "reason": null
+      },
+      {
+        "hypothesis": "truth",
+        "action": "R2",
+        "applicable": true,
+        "reason": null
+      },
+      {
+        "hypothesis": "truth",
+        "action": "L1",
+        "applicable": true,
+        "reason": null
+      },
+      {
+        "hypothesis": "truth",
+        "action": "L2",
+        "applicable": true,
+        "reason": null
+      },
+      {
+        "hypothesis": "truth",
+        "action": "S1",
+        "applicable": false,
+        "reason": "not_applicable_by_public_visibility"
+      },
+      {
+        "hypothesis": "truth",
+        "action": "D1",
+        "applicable": true,
+        "reason": null
+      },
+      {
+        "hypothesis": "truth",
+        "action": "D2",
+        "applicable": true,
+        "reason": null
+      }
+    ],
+    "safe_set": [
+      "L2",
+      "L1"
+    ]
+  },
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.606,
+    "displacement_x": 3.293,
+    "control_steps": 349,
+    "frames": 349,
+    "sim_time_s": 17.38,
+    "state_mode": "same_scene"
+  },
+  "outcome": "pass"
+}

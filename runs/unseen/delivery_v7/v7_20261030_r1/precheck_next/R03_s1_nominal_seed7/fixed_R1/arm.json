@@ -1,0 +1,25 @@
+{
+  "arm": "fixed_R1",
+  "config": "R03_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "decision": {
+    "chosen": "R1",
+    "evidence": {
+      "rule": "fixed_R1: fixed action"
+    }
+  },
+  "plan": null,
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.613,
+    "displacement_x": 3.299,
+    "control_steps": 290,
+    "frames": 290,
+    "sim_time_s": 16.2,
+    "state_mode": "same_scene"
+  },
+  "outcome": "pass"
+}

@@ -1,0 +1,155 @@
+{
+  "schema": "precheck-next/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+  "visible": {
+    "n_pixels": 22909,
+    "x_front": 1.6537608070808727,
+    "y_center": 0.0033212227134889055,
+    "W_vis": 0.3510441809620236,
+    "H_vis": 0.14020776908072635
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "observation_sha": "946cf7c3dc3fb5a3391ccadfa0a32620bfd107488e528eec00a78773a2dcf538",
+  "arms": {
+    "fixed_R1": {
+      "arm": "fixed_R1",
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+      "decision": {
+        "chosen": "R1",
+        "evidence": {
+          "rule": "fixed_R1: fixed action"
+        }
+      },
+      "plan": null,
+      "execution": {
+        "success": true,
+        "reason": "success",
+        "final_x": 3.555,
+        "displacement_x": 3.241,
+        "control_steps": 330,
+        "frames": 330,
+        "sim_time_s": 17.0,
+        "state_mode": "same_scene"
+      },
+      "outcome": "pass"
+    },
+    "truth_reference": {
+      "arm": "truth_reference",
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+      "decision": {
+        "chosen": "L2",
+        "safe_set": [
+          "L2",
+          "L1"
+        ],
+        "cost": 17.04,
+        "reason": "worst_case_traversal",
+        "tie": [
+          "L2"
+        ]
+      },
+      "plan": {
+        "cells": 21,
+        "expected": 24,
+        "applicability": [
+          {
+            "hypothesis": "truth",
+            "action": "R1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "R2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "L1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "L2",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "S1",
+            "applicable": false,
+            "reason": "not_applicable_by_public_visibility"
+          },
+          {
+            "hypothesis": "truth",
+            "action": "D1",
+            "applicable": true,
+            "reason": null
+          },
+          {
+            "hypothesis": "truth",
+            "action": "D2",
+            "applicable": true,
+            "reason": null
+          }
+        ],
+        "safe_set": [
+          "L2",
+          "L1"
+        ]
+      },
+      "execution": {
+        "success": true,
+        "reason": "success",
+        "final_x": 3.606,
+        "displacement_x": 3.293,
+        "control_steps": 349,
+        "frames": 349,
+        "sim_time_s": 17.38,
+        "state_mode": "same_scene"
+      },
+      "outcome": "pass"
+    },
+    "H5_F": {
+      "arm": "H5_F_no_candidate",
+      "config": "R02_s0.9",
+      "soil": "nominal",
+      "seed": 7,
+      "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+      "decision": {
+        "chosen": "A0",
+        "evidence": {
+          "rule": "H5_F_no_candidate: fixed action"
+        }
+      },
+      "plan": null,
+      "execution": {
+        "success": false,
+        "reason": "abort",
+        "final_x": 0.313,
+        "displacement_x": -0.0,
+        "control_steps": 150,
+        "frames": 150,
+        "sim_time_s": 13.4,
+        "state_mode": "same_scene"
+      },
+      "outcome": "safe_abandon",
+      "note": "无合格候选：执行真实 A0（不是只写决策）；理由见候选资格记录"
+    }
+  }
+}

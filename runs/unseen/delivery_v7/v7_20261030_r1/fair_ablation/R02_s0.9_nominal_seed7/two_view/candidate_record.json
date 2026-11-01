@@ -1,0 +1,27 @@
+{
+  "schema": "two-view-candidate-record/v1",
+  "candidate": "tv_R02_s0.9",
+  "observation": "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R02_s0.9",
+  "observation_views": [
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R02_s0.9",
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation"
+  ],
+  "fusion_world_sha": "5dbb9e5fa211783ff65b6a25485e79da527dd744e595a205a83867b213c37c07",
+  "fusion_metrics": {
+    "mask_iou": 0.9789,
+    "vis_pt_p95_mm": 1.268,
+    "freespace_violation": 0.0453
+  },
+  "fusion_metrics_obs2": null,
+  "fusion_strict": {
+    "pass": false,
+    "iou_min": 0.85,
+    "freespace_max": 0.05
+  },
+  "collision_metrics_file": "collision/metrics_occ.json",
+  "_derived_from": [
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation/R02_s0.9_nominal_seed7/two_view/two_view_report.json",
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fair_ablation/R02_s0.9_nominal_seed7/two_view/visible_two_view.json"
+  ],
+  "note": "两视角资产无 process.json；可见指标取 obs1（主视角），obs2 明细保留。"
+}

@@ -1,0 +1,113 @@
+{
+  "schema": "repro-pack/v1",
+  "case_id": "R02",
+  "soil": "nominal",
+  "seed": 7,
+  "budget_s": 30.0,
+  "purpose": "从缓存数据完成 重建→预演→决策→独立真值执行→连续回放，用于验证 2.5D 补平策略在 R02 上的结果可复现",
+  "inputs": {
+    "observation": "inputs/observation",
+    "case": "inputs/case.json",
+    "truth_mesh": "inputs/truth/body.stl",
+    "state": "inputs/state_snapshot.json"
+  },
+  "dependencies": {
+    "robot_model": "vendor/unitree_mujoco/unitree_robots/go2w/go2w.xml",
+    "code": "scripts/v7_repro_run.py + scripts/common_planner.py + scripts/v7_elev25d.py"
+  },
+  "items": [
+    {
+      "path": "inputs/case.json",
+      "sha256": "a713677d5da3cd9e8bf1e0a958e2669baa4349fa2e21c0ae9471536a90781938",
+      "bytes": 311
+    },
+    {
+      "path": "inputs/state_snapshot.json",
+      "sha256": "a8afd08ccbda4640571b5c80f963bfc32223a1867d8fb24e21bff2292662895d",
+      "bytes": 7691
+    },
+    {
+      "path": "inputs/truth/body.stl",
+      "sha256": "a9075e05423ff48b4619756f1412ecce71aea6a58c8e14976149381dcfe4947c",
+      "bytes": 280884
+    },
+    {
+      "path": "inputs/observation/observation.json",
+      "sha256": "22c32212aa49af232fc1483880acf1550ed15907a0d6a0f18dd0be89934ad266",
+      "bytes": 3600
+    },
+    {
+      "path": "inputs/observation/depth.npy",
+      "sha256": "ae22fe397f4b1264eb92d6f96b159e276ef10ef151e3356b6b4fbc30aee57403",
+      "bytes": 4915328
+    },
+    {
+      "path": "inputs/observation/rgb.png",
+      "sha256": "877bcb84a87ff79844637de095dc1cda6282b76770161c2b27de139d529f73ec",
+      "bytes": 15922
+    },
+    {
+      "path": "inputs/observation/mask.png",
+      "sha256": "1d7b4ca8eb1263d0f45407babbee47943c8a47f06b35e355e8a89662969d6ff6",
+      "bytes": 1819
+    }
+  ],
+  "regenerate_command": "PY=.venv/bin/python bash demo/r1_r02_25d/run_repro.sh /tmp/repro_out",
+  "note": "包内只有缓存输入，不读原 runs 历史树，不触发生成；缺轨迹或播放器失败时 run_repro.sh 非零退出。",
+  "state_identity": {
+    "snapshot": "inputs/state_snapshot.json",
+    "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+    "scene_signature_rule": "content-identity (mesh sha256)",
+    "migration": "原始快照按路径口径记录场景签名；包内只把签名迁移为内容口径，mjstate 与所有控制计数一字未动，恢复后 hash 与原值一致",
+    "expected_result": {
+      "chosen": "R1",
+      "outcome": "success",
+      "final_x": 3.561
+    }
+  },
+  "verification": {
+    "repro_run": {
+      "where": "/tmp/repro_out2（新目录，仅用包内缓存输入 + 仓库代码）",
+      "command": "PY=.venv/bin/python bash demo/r1_r02_25d/run_repro.sh /tmp/repro_out2",
+      "ok": true,
+      "stages": {
+        "rebuild": {
+          "n_boxes": 536,
+          "unknown_frac": 0.2669,
+          "asset": "/tmp/repro_out2/elev25d/fill"
+        },
+        "plan": {
+          "chosen": "R1",
+          "cells": 7,
+          "safe_set": [
+            "R1",
+            "D1",
+            "L2",
+            "D2",
+            "L1",
+            "R2"
+          ]
+        },
+        "execute": {
+          "scene_rebind": false,
+          "success": true,
+          "reason": "success",
+          "final_x": 3.561,
+          "frames": 331,
+          "sim_time_s": 17.02
+        },
+        "replay": {
+          "player": "/tmp/repro_out2/player.html",
+          "frames": 331
+        }
+      },
+      "matches_expected": true,
+      "artifacts": [
+        "verification/repro_run/result.json",
+        "verification/repro_run/decision.json",
+        "verification/repro_run/trajectory.jsonl",
+        "verification/repro_run/player.html"
+      ]
+    }
+  }
+}

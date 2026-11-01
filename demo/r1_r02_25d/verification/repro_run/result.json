@@ -1,0 +1,39 @@
+{
+  "schema": "repro-run/v1",
+  "pack": "/var/lib/deepseek-harness/lunar-lab/demo/r1_r02_25d",
+  "strategy": "fill",
+  "inputs_verified": 7,
+  "stages": {
+    "rebuild": {
+      "n_boxes": 536,
+      "unknown_frac": 0.2669,
+      "asset": "/tmp/repro_out2/elev25d/fill"
+    },
+    "plan": {
+      "chosen": "R1",
+      "cells": 7,
+      "safe_set": [
+        "R1",
+        "D1",
+        "L2",
+        "D2",
+        "L1",
+        "R2"
+      ]
+    },
+    "execute": {
+      "scene_rebind": false,
+      "success": true,
+      "reason": "success",
+      "final_x": 3.561,
+      "frames": 331,
+      "sim_time_s": 17.02
+    },
+    "replay": {
+      "player": "/tmp/repro_out2/player.html",
+      "frames": 331
+    }
+  },
+  "ok": true,
+  "finished": 1793530312.952283
+}

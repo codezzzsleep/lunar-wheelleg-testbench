@@ -736,31 +736,48 @@ class WheelLegEnv:
                 'x_front': self.plan_visible.get('x_front') if hasattr(self, 'plan_visible') else None,
                 'W_vis': self.plan_visible.get('W_vis') if hasattr(self, 'plan_visible') else None}
 
-    def scene_signature(self):
-        """场景身份：障碍碰撞内容、地形、土壤参数、通道与目标。
-
-        用于区分「同场景完整恢复」与「跨候选状态投射」；不含机器人部分。
-        """
-        import hashlib as _h, json as _j
+    def _scene_parts(self, by_content=True):
+        """场景身份的组成部分。网格按**内容**哈希，使同一网格换目录仍算同场景。"""
+        import hashlib as _h
         parts = []
         for obj in (self.spec.get('objects') or []):
             pd = obj.get('posed_dir')
             if pd:
                 man = {}
                 try:
-                    man = _j.loads((pathlib.Path(pd) / 'manifest.json').read_text())
+                    man = json.loads((pathlib.Path(pd) / 'manifest.json').read_text())
                 except Exception:
                     man = {}
                 parts.append('|'.join(str(man.get(k)) for k in
                                       ('world_sha', 'collision_sha', 'n_parts', 'parts')))
             else:
-                parts.append(str(obj.get('mesh_file') or obj.get('asset') or '?'))
+                mf = obj.get('mesh_file')
+                if by_content and mf and pathlib.Path(mf).is_file():
+                    h = _h.sha256()
+                    h.update(pathlib.Path(mf).read_bytes())
+                    parts.append('mesh:' + h.hexdigest())
+                else:
+                    parts.append(str(mf or obj.get('asset') or '?'))
         soil = self.spec.get('soil') or {}
-        parts.append(_j.dumps(soil.get('params') or {}, sort_keys=True))
+        parts.append(json.dumps(soil.get('params') or {}, sort_keys=True))
         parts.append(str(self.spec.get('terrain') or self.spec.get('kind') or ''))
         parts.append(str(self.spec.get('goal_x')))
         parts.append(str((self.spec.get('channel') or {})))
-        return _h.sha256('\n'.join(parts).encode()).hexdigest()[:32]
+        return parts
+
+    def scene_signature(self):
+        """场景身份（内容口径）：障碍碰撞内容/网格内容、地形、土壤参数、通道与目标。
+
+        用内容而不是路径，是为了让「同一份真值网格放在另一个目录」仍被认作同场景；
+        旧快照用路径口径写入，restore 时两种都接受。
+        """
+        import hashlib as _h
+        return _h.sha256('\n'.join(self._scene_parts(True)).encode()).hexdigest()[:32]
+
+    def scene_signature_legacy(self):
+        """旧口径（路径）：仅用于兼容本批之前写入的快照。"""
+        import hashlib as _h
+        return _h.sha256('\n'.join(self._scene_parts(False)).encode()).hexdigest()[:32]
 
     def robot_signature(self):
         """机器人关节/执行器映射签名：名字+类型+地址，避免只看 nq。"""
@@ -886,7 +903,9 @@ class WheelLegEnv:
                                  % (rec.get('mujoco_version'), mujoco.__version__))
         cross = (mode == 'project')
         if not cross:
-            if rec.get('scene_signature') and rec['scene_signature'] != self.scene_signature():
+            _sig = rec.get('scene_signature')
+            if _sig and _sig not in (self.scene_signature(),
+                                     self.scene_signature_legacy()):
                 raise ValueError('场景签名不符：同场景恢复被拒绝'
                                  '（跨候选请显式用 mode="project"）')
         d, m = self.data, self.model

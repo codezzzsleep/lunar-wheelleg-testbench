@@ -1,0 +1,42 @@
+{
+  "schema": "page-run/v1",
+  "case": "R02",
+  "config_id": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "method": "H5_F",
+  "run_id": "20261101T140353-R02-nominal-7",
+  "started_at": 1793513033.4910252,
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/state_snapshot.json",
+    "state_hash": "2a708d3638cb2b2709b435164a440a7b"
+  },
+  "observation": {
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R02_s0.9",
+    "sha": "946cf7c3dc3fb5a3391ccadfa0a32620bfd107488e528eec00a78773a2dcf538"
+  },
+  "qualification": {
+    "method": "H5_F",
+    "qualified": false,
+    "reason": null
+  },
+  "decision": {
+    "chosen": "A0",
+    "sha": "af936ee04888ec7f07b41a8ca8485b843634d7a9cc0f3fe964f428d590f8ef9d",
+    "fallback": true
+  },
+  "execution": {
+    "success": false,
+    "reason": "abort",
+    "final_x": 0.313,
+    "displacement_x": -0.0,
+    "control_steps": 150,
+    "frames": 150,
+    "state_mode": "same_scene"
+  },
+  "trajectory": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_48ddaca6b249/trajectory.jsonl",
+  "trajectory_frames": 150,
+  "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_48ddaca6b249/player.html",
+  "ok": true,
+  "seconds": 1.66
+}

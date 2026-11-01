@@ -1,0 +1,113 @@
+{
+  "schema": "common-matrix-all/v2",
+  "n_rows": 288,
+  "n_main_keys": 216,
+  "expected_main_keys": 216,
+  "outcomes": {
+    "fail": 44,
+    "safe_abandon": 126,
+    "pass": 46
+  },
+  "per_config_method": {
+    "R01_s1|B0_blind": {
+      "fail": 9
+    },
+    "R01_s1|B1_height": {
+      "safe_abandon": 9
+    },
+    "R01_s1|B2_F": {
+      "safe_abandon": 9
+    },
+    "R01_s1|B3_F": {
+      "safe_abandon": 9
+    },
+    "R01_s1|H5_F": {
+      "safe_abandon": 9
+    },
+    "R01_s1|U_truth": {
+      "fail": 9
+    },
+    "R01_s1|R2_fixed": {
+      "fail": 9
+    },
+    "R01_s1|W_width_rule": {
+      "fail": 9
+    },
+    "R02_s0.9|B0_blind": {
+      "pass": 9
+    },
+    "R02_s0.9|B1_height": {
+      "safe_abandon": 9
+    },
+    "R02_s0.9|B2_F": {
+      "safe_abandon": 9
+    },
+    "R02_s0.9|B3_F": {
+      "safe_abandon": 9
+    },
+    "R02_s0.9|H5_F": {
+      "safe_abandon": 9
+    },
+    "R02_s0.9|U_truth": {
+      "fail": 8,
+      "pass": 1
+    },
+    "R02_s0.9|R2_fixed": {
+      "fail": 8,
+      "pass": 1
+    },
+    "R02_s0.9|W_width_rule": {
+      "pass": 9
+    },
+    "R03_s1|B0_blind": {
+      "pass": 9
+    },
+    "R03_s1|B1_height": {
+      "pass": 9
+    },
+    "R03_s1|B2_F": {
+      "safe_abandon": 9
+    },
+    "R03_s1|B3_F": {
+      "safe_abandon": 9
+    },
+    "R03_s1|H5_F": {
+      "pass": 9
+    },
+    "R03_s1|U_truth": {
+      "pass": 9
+    },
+    "R03_s1|R2_fixed": {
+      "pass": 9
+    },
+    "R03_s1|W_width_rule": {
+      "pass": 9
+    },
+    "R04_s1|B0_blind": {
+      "fail": 9
+    },
+    "R04_s1|B1_height": {
+      "safe_abandon": 9
+    },
+    "R04_s1|B2_F": {
+      "safe_abandon": 9
+    },
+    "R04_s1|B3_F": {
+      "safe_abandon": 9
+    },
+    "R04_s1|H5_F": {
+      "safe_abandon": 9
+    },
+    "R04_s1|U_truth": {
+      "fail": 9
+    },
+    "R04_s1|R2_fixed": {
+      "fail": 9
+    },
+    "R04_s1|W_width_rule": {
+      "pass": 6,
+      "fail": 3
+    }
+  },
+  "note": "pass=真值上通行成功；safe_abandon=A0 真实安全放弃（不计成功，也不与翻覆混类）；fail=执行但未成功。候选方法无合格候选时执行真实 A0。"
+}

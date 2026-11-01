@@ -146,6 +146,8 @@ def main():
     ap.add_argument('--config', default=None)
     ap.add_argument('--methods', default=','.join(METHODS))
     ap.add_argument('--diag', action='store_true', help='同时跑诊断基线（固定 R2、宽度规则）')
+    ap.add_argument('--candidates', default=None,
+                    help='方法→候选映射 JSON：{"H5_F": {"qualified": true, "collision_dir": ...}}')
     a = ap.parse_args()
 
     plan = json.loads((ROOT / a.plan).read_text())
@@ -158,11 +160,15 @@ def main():
     for cfg in plan['configs']:
         if a.config and cfg['config_id'] != a.config:
             continue
-        # 该配置的合格候选（唯一资格门判定）
-        gate_rec = None
-        gp = ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/verify' / f"gate_{cfg['config_id']}.json"
-        if gp.is_file():
-            gate_rec = json.loads(gp.read_text())
+        # 方法→候选映射：每个方法只用自己的候选，不能共用另一个方法的合格结果
+        cand_map = {}
+        if a.candidates:
+            cand_map = json.loads((ROOT / a.candidates).read_text()).get(cfg['config_id'], {})
+        else:
+            gp = ROOT / 'runs/unseen/delivery_v7/v7_20261030_r1/verify' / f"gate_{cfg['config_id']}.json"
+            if gp.is_file():
+                g = json.loads(gp.read_text())
+                cand_map = {'H5_F': g} if g.get('qualified') else {}
         for soil in plan['soils']:
             for seed in plan['seeds']:
                 d, acq = load_unit(a.states, cfg['config_id'], soil, seed)
@@ -179,8 +185,9 @@ def main():
                     env, case = make_env(cfg, soil, truth_collision=truth_col)
                     env.reset(seed=seed)
                     cand_col = None
-                    if gate_rec and gate_rec.get('qualified'):
-                        cand_col = gate_rec.get('collision_dir')
+                    _m = cand_map.get(m) or {}
+                    if _m.get('qualified'):
+                        cand_col = _m.get('collision_dir')
                     t0 = time.time()
                     CFG_CURRENT[0], CFG_CURRENT[1] = cfg, soil
                     act, why = decide(m, vis, cand_collision=cand_col,

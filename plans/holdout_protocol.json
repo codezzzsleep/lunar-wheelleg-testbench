@@ -1,0 +1,35 @@
+{
+  "schema": "holdout-selection-protocol/v1",
+  "frozen": "2026-11-01",
+  "status": "frozen_before_scan",
+  "note": "新留出集筛选规则：先冻结规则与协议，再扫描；不得看生成结果后挑正例。",
+  "soil_protocol": {
+    "planning_soils": ["nominal", "low_traction", "high_drag"],
+    "execution_soils": ["nominal"],
+    "nominal_injected_via": "v7_soil.resolve",
+    "note": "三土壤实际生效；极端值保留为压力边界，不占满主表"
+  },
+  "image_protocol": {
+    "camera": "front_cam pos [0.42,0,0], pitch 0, fovy 70",
+    "resolution": "1280x960 capture, observed at native size",
+    "depth": "axis depth, positive camera-minus-z",
+    "observation": "drive -> brake -> settle -> capture; acceptance recorded"
+  },
+  "confirm_initial_states": [7, 11, 13],
+  "selection_rule": {
+    "fail_rule": "简单方法在三个确认初态里失败至少两次",
+    "pass_rule": "存在一个非 A0 动作在三个初态全成功",
+    "simple_methods": ["B1_height", "W_width_rule", "R1_blind"],
+    "tie_break": "按固定种子顺序选取，不看生成结果"
+  },
+  "pool": {
+    "planned_first_pool": 48,
+    "max_pool": 80,
+    "actual_pool": 17,
+    "actual_pool_detail": "assets/raw 下 13 个独立 GLB（boulder/cargo_crate/...）+ R01..R04 四块石头",
+    "shortfall_reason": "新增真实几何需要付费生成；本批未获授权，故先用现有 17 个对象冻结规则并给出筛选实现"
+  },
+  "candidates_per_object": {"first": 1, "single": "按对象分别决策后再平均", "multi": "2-3，实际可用各自预演，稳健聚合"},
+  "cost_policy": {"new_creates": 0, "authorization": "500 积分历史授权不变",
+                  "actual_charge": "unknown"}
+}

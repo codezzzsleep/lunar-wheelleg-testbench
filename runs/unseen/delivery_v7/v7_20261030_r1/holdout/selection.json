@@ -1,0 +1,353 @@
+{
+  "schema": "holdout-selection/v1",
+  "protocol": "plans/holdout_protocol.json",
+  "scan": "runs/unseen/delivery_v7/v7_20261030_r1/scan_v2_full/scan_v2.jsonl",
+  "n_scanned_objects": 12,
+  "n_selected": 6,
+  "selected": [
+    "R01@0.9",
+    "R01@1.0",
+    "R02@0.9",
+    "R03@0.9",
+    "R03@1.0",
+    "R03@1.1"
+  ],
+  "seeds_used": [
+    0,
+    1
+  ],
+  "protocol_confirm_seeds": [
+    7,
+    11,
+    13
+  ],
+  "rows": [
+    {
+      "object": "R01@0.9",
+      "case": "R01",
+      "scale": 0.9,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R01@1.0",
+      "case": "R01",
+      "scale": 1.0,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "L2",
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "L2",
+            "S1"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "L2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R01@1.1",
+      "case": "R01",
+      "scale": 1.1,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "R02@0.9",
+      "case": "R02",
+      "scale": 0.9,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R2"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R02@1.0",
+      "case": "R02",
+      "scale": 1.0,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "R02@1.1",
+      "case": "R02",
+      "scale": 1.1,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "R03@0.9",
+      "case": "R03",
+      "scale": 0.9,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R03@1.0",
+      "case": "R03",
+      "scale": 1.0,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R03@1.1",
+      "case": "R03",
+      "scale": 1.1,
+      "simple_fail_states": 2,
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R2"
+      ],
+      "selected": true,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2"
+          ]
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R2"
+          ]
+        }
+      }
+    },
+    {
+      "object": "R04@0.9",
+      "case": "R04",
+      "scale": 0.9,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "R04@1.0",
+      "case": "R04",
+      "scale": 1.0,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "R04@1.1",
+      "case": "R04",
+      "scale": 1.1,
+      "simple_fail_states": 2,
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed0": {
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed1": {
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    }
+  ],
+  "pool": {
+    "planned_first_pool": 48,
+    "max_pool": 80,
+    "actual_pool": 17,
+    "actual_pool_detail": "assets/raw 下 13 个独立 GLB（boulder/cargo_crate/...）+ R01..R04 四块石头",
+    "shortfall_reason": "新增真实几何需要付费生成；本批未获授权，故先用现有 17 个对象冻结规则并给出筛选实现"
+  },
+  "note": "只对已扫描对象判定；池中其余对象写 not_scanned，不补造。新增真实几何需要付费生成，本批未授权。"
+}

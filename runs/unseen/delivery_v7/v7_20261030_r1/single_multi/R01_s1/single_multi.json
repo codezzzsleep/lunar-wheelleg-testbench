@@ -1,0 +1,83 @@
+{
+  "schema": "single-multi/v1",
+  "config": "R01_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "create_order": [
+    "V7_R01_s1",
+    "V7_R01_s2"
+  ],
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "rows": [
+    {
+      "tag": "fixed_first",
+      "hypotheses": [
+        "V7_R01_s1"
+      ],
+      "chosen": "A0",
+      "cells": 7,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "final_x": 0.313,
+      "frames": 150,
+      "outcome": "safe_abandon"
+    },
+    {
+      "tag": "single_V7_R01_s1",
+      "hypotheses": [
+        "V7_R01_s1"
+      ],
+      "chosen": "A0",
+      "cells": 7,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "final_x": 0.313,
+      "frames": 150,
+      "outcome": "safe_abandon"
+    },
+    {
+      "tag": "single_V7_R01_s2",
+      "hypotheses": [
+        "V7_R01_s2"
+      ],
+      "chosen": "A0",
+      "cells": 7,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "final_x": 0.313,
+      "frames": 150,
+      "outcome": "safe_abandon"
+    },
+    {
+      "tag": "multi_all",
+      "hypotheses": [
+        "V7_R01_s1",
+        "V7_R01_s2"
+      ],
+      "chosen": "A0",
+      "cells": 14,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "final_x": 0.313,
+      "frames": 150,
+      "outcome": "safe_abandon"
+    }
+  ],
+  "summary": {
+    "fixed_first": "safe_abandon",
+    "single_average": {
+      "n": 2,
+      "pass_rate": 0.0,
+      "outcomes": [
+        "safe_abandon",
+        "safe_abandon"
+      ]
+    },
+    "multi": "safe_abandon",
+    "note": "单候选分别决策后再平均；多候选是并发预演后最坏情形聚合，不取几何并集。固定首候选失败不换第二个。"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "schema": "generation-application/v1",
+  "selection": "runs/unseen/delivery_v7/v7_20261030_r1/holdout_final/selection.json",
+  "n_rocks": 7,
+  "n_tasks": 5,
+  "model": "Lux3D",
+  "version": "g1-turbo",
+  "task_type": "image-to-3d",
+  "face_count": 30000,
+  "price": {
+    "credits_per_task_verified": 1.0,
+    "source": "供应商任务列表 list_tasks 的 consumedCredits 字段（本批实测）",
+    "text_to_3d_credits": 13,
+    "ceiling_per_task": 20.0,
+    "expected_total_credits": 7.0,
+    "ceiling_total_credits": 140.0,
+    "budget_available_credits": 500.0,
+    "within_budget": true,
+    "actual_charge": "unknown（以外部账单为准）"
+  },
+  "images": [
+    {
+      "rock": "P04",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P04/crop_raw.png",
+      "sha256": "b3ce46c4c2cc434a6597ba9d8d88ef04a4ee56fdeb7c3a007c3e4afcc3ec7967"
+    },
+    {
+      "rock": "P06",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P06/crop_raw.png",
+      "sha256": "0acb5a260b0a536ee10e465e0480df68a548dd0c4ed031687e41450766ef003f"
+    },
+    {
+      "rock": "P29",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P29/crop_raw.png",
+      "sha256": "256d2038e75667b053e7e81ea00a4117ca4b411843a3e3544df5131c63f305f9"
+    },
+    {
+      "rock": "P46",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P46/crop_raw.png",
+      "sha256": "aafebeabe9a036a84409e5ec51b9a3d6d8c8f2fb7b4e7ca16063f1e9b2c3b9ab"
+    },
+    {
+      "rock": "P58",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P58/crop_raw.png",
+      "sha256": "388fc7cd0abc75998d6cfd49b78abfd06ac89e3d951d718ee586cc9d90956552"
+    },
+    {
+      "rock": "P64",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P64/crop_raw.png",
+      "sha256": "e0cbc2021894d7a84d0511488062278aadfe4ecc7d3b9d8e920ed934d098d648"
+    },
+    {
+      "rock": "P76",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P76/crop_raw.png",
+      "sha256": "327e0956b2683dddf043d7abce1fafc95309f6f5db17a1cbe7c81644105322aa"
+    }
+  ],
+  "contact_sheet": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/contact_sheet.png",
+  "tasks": [
+    {
+      "create_order": 2,
+      "rock": "P29",
+      "view": "front",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P29/crop_raw.png",
+      "image_sha256": "256d2038e75667b053e7e81ea00a4117ca4b411843a3e3544df5131c63f305f9",
+      "model": "Lux3D",
+      "version": "g1-turbo",
+      "task_type": "image-to-3d",
+      "face_count": 30000,
+      "sample_index": 0,
+      "estimated_credits": 1.0,
+      "ceiling_credits": 20.0,
+      "rock_sha256": "1cfaf6977402d8917b466eaf7ad770f0cc1e220775a74be8caf6d86add2c52ae",
+      "height_m": 0.2522
+    },
+    {
+      "create_order": 3,
+      "rock": "P46",
+      "view": "front",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P46/crop_raw.png",
+      "image_sha256": "aafebeabe9a036a84409e5ec51b9a3d6d8c8f2fb7b4e7ca16063f1e9b2c3b9ab",
+      "model": "Lux3D",
+      "version": "g1-turbo",
+      "task_type": "image-to-3d",
+      "face_count": 30000,
+      "sample_index": 0,
+      "estimated_credits": 1.0,
+      "ceiling_credits": 20.0,
+      "rock_sha256": "02747dacfebf75b5d329d869694b185455032f4d3608d07fe869c32afcc92abd",
+      "height_m": 0.1938
+    },
+    {
+      "create_order": 4,
+      "rock": "P58",
+      "view": "front",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P58/crop_raw.png",
+      "image_sha256": "388fc7cd0abc75998d6cfd49b78abfd06ac89e3d951d718ee586cc9d90956552",
+      "model": "Lux3D",
+      "version": "g1-turbo",
+      "task_type": "image-to-3d",
+      "face_count": 30000,
+      "sample_index": 0,
+      "estimated_credits": 1.0,
+      "ceiling_credits": 20.0,
+      "rock_sha256": "a7ae94c94dc770148d2b989415ff0bdf07a88551d19cae7eb509b7d11448db03",
+      "height_m": 0.1685
+    },
+    {
+      "create_order": 5,
+      "rock": "P64",
+      "view": "front",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P64/crop_raw.png",
+      "image_sha256": "e0cbc2021894d7a84d0511488062278aadfe4ecc7d3b9d8e920ed934d098d648",
+      "model": "Lux3D",
+      "version": "g1-turbo",
+      "task_type": "image-to-3d",
+      "face_count": 30000,
+      "sample_index": 0,
+      "estimated_credits": 1.0,
+      "ceiling_credits": 20.0,
+      "rock_sha256": "8d0832f9604d96a4dbc404274b2a2ba828b3b00ad42f6d5bf9c76594fc0b7de0",
+      "height_m": 0.1986
+    },
+    {
+      "create_order": 6,
+      "rock": "P76",
+      "view": "front",
+      "image": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/images/P76/crop_raw.png",
+      "image_sha256": "327e0956b2683dddf043d7abce1fafc95309f6f5db17a1cbe7c81644105322aa",
+      "model": "Lux3D",
+      "version": "g1-turbo",
+      "task_type": "image-to-3d",
+      "face_count": 30000,
+      "sample_index": 0,
+      "estimated_credits": 1.0,
+      "ceiling_credits": 20.0,
+      "rock_sha256": "070a28971ab25e7e07234180e90d922ebd95397081cf83f331df927774dd22dc",
+      "height_m": 0.1978
+    }
+  ],
+  "rules": [
+    "按 create_order 固定提交，不按下载完成顺序重排",
+    "固定首候选失败不换第二个",
+    "失败不自动重提",
+    "试点：先交前 2 个对象（2 任务），核对几何可用性与实际扣费后再放行其余"
+  ],
+  "authorization": {
+    "status": "pending_user_approval",
+    "not_authorized_by_this_file": true
+  }
+}

@@ -1,0 +1,157 @@
+{
+  "schema": "holdout-eval/v1",
+  "planning": "单土壤 nominal（诊断口径）",
+  "candidate_scope": "固定首候选（每块仅一个生成候选，不宣称多候选收益）",
+  "rocks": {
+    "P04": {
+      "height_m": 0.2741,
+      "generated_mesh": "assets/generated/P04/extracted/mesh/tex_mesh.glb",
+      "poses": {
+        "7": {
+          "pose": [
+            0.04,
+            0.03
+          ],
+          "hash": "cece69eeb289dcf6",
+          "visible": {
+            "n_pixels": 14004,
+            "x_front": 1.6013507101689186,
+            "y_center": -0.00017965129874973618,
+            "W_vis": 0.2871799012365034,
+            "H_vis": 0.2703093188497061
+          }
+        },
+        "11": {
+          "pose": [
+            -0.05,
+            -0.04
+          ],
+          "hash": "f2fb978cf77fee85",
+          "visible": {
+            "n_pixels": 14003,
+            "x_front": 1.600531982993723,
+            "y_center": -1.3048769686135886e-05,
+            "W_vis": 0.28903188295003746,
+            "H_vis": 0.271556723714321
+          }
+        },
+        "13": {
+          "pose": [
+            0.06,
+            0.05
+          ],
+          "hash": "a0c1759fc809e94a",
+          "visible": {
+            "n_pixels": 14017,
+            "x_front": 1.6011802182766925,
+            "y_center": 0.0004825134633908157,
+            "W_vis": 0.2875569055580121,
+            "H_vis": 0.2697776058666067
+          }
+        }
+      },
+      "rows": {
+        "U_truth": {
+          "chosen": "A0",
+          "cells": 7,
+          "errors": 0,
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "cells": 7,
+          "errors": 6,
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003
+        },
+        "Lux3D": {
+          "chosen": "A0",
+          "cells": 7,
+          "errors": 6,
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003
+        }
+      },
+      "distinct": true
+    },
+    "P06": {
+      "height_m": 0.1812,
+      "generated_mesh": "assets/generated/P06/extracted/mesh/tex_mesh.glb",
+      "poses": {
+        "7": {
+          "pose": [
+            0.04,
+            0.03
+          ],
+          "hash": "cece69eeb289dcf6",
+          "visible": {
+            "n_pixels": 11249,
+            "x_front": 1.6520567711981522,
+            "y_center": 0.0025869058649751614,
+            "W_vis": 0.36825767020935884,
+            "H_vis": 0.17407149423470752
+          }
+        },
+        "11": {
+          "pose": [
+            -0.05,
+            -0.04
+          ],
+          "hash": "f2fb978cf77fee85",
+          "visible": {
+            "n_pixels": 11245,
+            "x_front": 1.6520518859253142,
+            "y_center": 0.002106170398772811,
+            "W_vis": 0.3689033496727654,
+            "H_vis": 0.17452198782937803
+          }
+        },
+        "13": {
+          "pose": [
+            0.06,
+            0.05
+          ],
+          "hash": "a0c1759fc809e94a",
+          "visible": {
+            "n_pixels": 11256,
+            "x_front": 1.6520774314044355,
+            "y_center": 0.002362698756030082,
+            "W_vis": 0.36899582649915896,
+            "H_vis": 0.17489357691546553
+          }
+        }
+      },
+      "rows": {
+        "U_truth": {
+          "chosen": "L2",
+          "cells": 7,
+          "errors": 0,
+          "success": true,
+          "reason": "success",
+          "final_x": 3.578
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "cells": 7,
+          "errors": 6,
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003
+        },
+        "Lux3D": {
+          "chosen": "A0",
+          "cells": 7,
+          "errors": 6,
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003
+        }
+      },
+      "distinct": true
+    }
+  }
+}

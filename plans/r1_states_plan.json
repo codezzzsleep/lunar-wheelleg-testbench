@@ -1,0 +1,132 @@
+{
+  "schema": "state-acquisition-plan/v1",
+  "frozen": "2026-11-01",
+  "note": "四配置 × 三土壤 × 三个本批未用过的验证 seed；状态由真实驾驶→制动→停稳→观测得到。",
+  "soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "seeds": [
+    7,
+    11,
+    13
+  ],
+  "configs": [
+    {
+      "config_id": "R01_s1",
+      "case_config": "cases/unseen_v1/R01.json",
+      "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R01_s1/body.stl",
+      "budget_s": 30.0,
+      "drive_target_y": 0.3,
+      "drive_stop_x": 1.3,
+      "drive_v": 0.1,
+      "drive_max_s": 10.0,
+      "settle_max_s": 6.0,
+      "perturbations": {
+        "7": {
+          "lateral_m": 0.02,
+          "yaw_rad": 0.02
+        },
+        "11": {
+          "lateral_m": 0.04,
+          "yaw_rad": 0.03
+        },
+        "13": {
+          "lateral_m": 0.06,
+          "yaw_rad": 0.01
+        }
+      }
+    },
+    {
+      "config_id": "R02_s0.9",
+      "case_config": "cases/unseen_v1/R02.json",
+      "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R02_s0.9/body.stl",
+      "budget_s": 30.0,
+      "drive_target_y": 0.3,
+      "drive_stop_x": 1.3,
+      "drive_v": 0.1,
+      "drive_max_s": 10.0,
+      "settle_max_s": 6.0,
+      "perturbations": {
+        "7": {
+          "lateral_m": 0.02,
+          "yaw_rad": 0.02
+        },
+        "11": {
+          "lateral_m": 0.04,
+          "yaw_rad": 0.03
+        },
+        "13": {
+          "lateral_m": 0.06,
+          "yaw_rad": 0.01
+        }
+      }
+    },
+    {
+      "config_id": "R03_s1",
+      "case_config": "cases/unseen_v1/R03.json",
+      "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R03_s1/body.stl",
+      "budget_s": 30.0,
+      "drive_target_y": 0.3,
+      "drive_stop_x": 1.3,
+      "drive_v": 0.1,
+      "drive_max_s": 10.0,
+      "settle_max_s": 6.0,
+      "perturbations": {
+        "7": {
+          "lateral_m": 0.02,
+          "yaw_rad": 0.02
+        },
+        "11": {
+          "lateral_m": 0.04,
+          "yaw_rad": 0.03
+        },
+        "13": {
+          "lateral_m": 0.06,
+          "yaw_rad": 0.01
+        }
+      }
+    },
+    {
+      "config_id": "R04_s1",
+      "case_config": "cases/unseen_v1/R04.json",
+      "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R04_s1/body.stl",
+      "budget_s": 30.0,
+      "drive_target_y": 0.3,
+      "drive_stop_x": 1.3,
+      "drive_v": 0.1,
+      "drive_max_s": 10.0,
+      "settle_max_s": 6.0,
+      "perturbations": {
+        "7": {
+          "lateral_m": 0.02,
+          "yaw_rad": 0.02
+        },
+        "11": {
+          "lateral_m": 0.04,
+          "yaw_rad": 0.03
+        },
+        "13": {
+          "lateral_m": 0.06,
+          "yaw_rad": 0.01
+        }
+      }
+    }
+  ],
+  "perturbations": {
+    "7": {
+      "lateral_m": 0.02,
+      "yaw_rad": 0.02
+    },
+    "11": {
+      "lateral_m": 0.04,
+      "yaw_rad": 0.03
+    },
+    "13": {
+      "lateral_m": 0.06,
+      "yaw_rad": 0.01
+    }
+  },
+  "seed_note": "seed 7/11/13 各绑定一个非负初始扰动幅度；只是换标签而不给幅度会得到同一状态，本批已实测到该缺陷并修正。"
+}

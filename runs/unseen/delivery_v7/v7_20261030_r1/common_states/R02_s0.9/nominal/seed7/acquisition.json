@@ -1,0 +1,51 @@
+{
+  "schema": "common-state/v1",
+  "config_id": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "case_config": "cases/unseen_v1/R02.json",
+  "mesh": "runs/unseen/delivery_v7/v7_20261030_r1/scan_assets/R02_s0.9/body.stl",
+  "started": 1793506711.6409607,
+  "perturbation": {
+    "lateral_m": 0.02,
+    "yaw_rad": 0.02
+  },
+  "soil_params_sha": "55848f80956792b4704ff3ec83678bf7",
+  "soil_mode": "soil",
+  "initial_state_hash": "31a3771ee869c8d33cc1aa31971f8095",
+  "settle": {
+    "stable": true,
+    "speed_mps": 0.00169,
+    "omega_rps": 0.00137,
+    "tilt_deg": 0.176
+  },
+  "camera": {
+    "pos": [
+      0.7275305801579506,
+      0.09765925712143068,
+      0.38465348215887657
+    ],
+    "schema": "camera-snapshot/v2"
+  },
+  "observation": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation",
+    "sha": "946cf7c3dc3fb5a3391ccadfa0a32620bfd107488e528eec00a78773a2dcf538"
+  },
+  "visible": {
+    "n_pixels": 22909,
+    "x_front": 1.6537608070808727,
+    "y_center": 0.0033212227134889055,
+    "W_vis": 0.3510441809620236,
+    "H_vis": 0.14020776908072635
+  },
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/state_snapshot.json",
+    "state_hash": "2a708d3638cb2b2709b435164a440a7b",
+    "env_t": 10.399999999999867,
+    "data_time": 10.400000000000142
+  },
+  "ok": true,
+  "seconds": 1.81
+}

@@ -22,3 +22,7 @@ assets/generated/**/unpacked/
 # 只保留 model.glb 与 meta.json，zip 可用 task_id 重新下载。
 runs/unseen/generation/**/results.zip
 runs/unseen/generation/by_task/**/*.zip
+
+# 共同状态里的观测栅格（可由 acquisition.json 记录的实验条件重建，不入库）
+runs/**/common_states/**/observation/*.npy
+runs/**/common_states/**/observation/*.png

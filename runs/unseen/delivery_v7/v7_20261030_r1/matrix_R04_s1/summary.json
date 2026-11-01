@@ -1,0 +1,88 @@
+{
+  "schema": "common-matrix/v1",
+  "n_rows": 72,
+  "methods": {
+    "B0_blind": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 0,
+      "fail": 9,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "B1_height": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 9,
+      "fail": 0,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "B2_F": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 9,
+      "fail": 0,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "B3_F": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 9,
+      "fail": 0,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "H5_F": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 9,
+      "fail": 0,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "U_truth": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 0,
+      "fail": 9,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "R2_fixed": {
+      "n": 9,
+      "pass": 0,
+      "safe_abandon": 0,
+      "fail": 9,
+      "na": 0,
+      "configs": {
+        "R04_s1": 0
+      }
+    },
+    "W_width_rule": {
+      "n": 9,
+      "pass": 6,
+      "safe_abandon": 0,
+      "fail": 3,
+      "na": 0,
+      "configs": {
+        "R04_s1": 6
+      }
+    }
+  },
+  "expected_keys": 216,
+  "note": "A0 记为 safe_abandon，不计通行成功也不与翻覆混为一类；no_qualified_candidate 的方法按真实安全回退执行 A0。"
+}

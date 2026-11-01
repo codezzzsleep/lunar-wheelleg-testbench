@@ -1,0 +1,62 @@
+{
+  "method": "H5_F",
+  "chosen": "R1",
+  "evidence": {
+    "rule": "H5_F: rehearsal best of 7",
+    "rows": [
+      {
+        "option": "R1",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "R2",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "L1",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "L2",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "S1",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "D1",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "D2",
+        "success": true,
+        "cost": 9000000000.0,
+        "reason": "success"
+      },
+      {
+        "option": "A0",
+        "success": false,
+        "cost": 9000000000.0,
+        "reason": "abort"
+      }
+    ]
+  },
+  "state_hash": "b06cdb58bfaa0d2ba20d25384cfcfb49",
+  "observation_sha": "251a477b523b63b7ee7c12f41df3c2153caa32e0c8eb001e18d9ac3eab87ace8",
+  "soil": "high_drag",
+  "seed": 13,
+  "controller_freeze": "plans/r1_controller_freeze.json"
+}

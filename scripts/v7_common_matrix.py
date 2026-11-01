@@ -29,6 +29,8 @@ import skills
 
 PY = sys.executable
 HEIGHT_RULE = {'climb_direct': 1.0, 'climb_leg': 1.6, 'wheel_r': 0.08595}
+OPTIONS = ['R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2', 'A0']
+CFG_CURRENT = [None, None]
 METHODS = ['B0_blind', 'B1_height', 'B2_F', 'B3_F', 'H5_F', 'U_truth']
 DIAG_METHODS = ['R2_fixed', 'W_width_rule']
 
@@ -50,7 +52,8 @@ def load_unit(states_root, cfg_id, soil, seed):
     return d, acq
 
 
-def make_env(cfg, soil_label, collision_dir=None, truth_collision=None):
+def make_env(cfg, soil_label, collision_dir=None, truth_collision=None,
+             collision_override=None):
     """真值场景：用案例网格或真值碰撞资产构建，土壤参数必须注入。"""
     import terrain
     import v7_soil
@@ -62,7 +65,9 @@ def make_env(cfg, soil_label, collision_dir=None, truth_collision=None):
     spec['init_perturbation'] = {'lateral_m': 0.0, 'yaw_rad': 0.0}
     spec['skill_cfg'] = {'task': 'M'}
     spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
-    if truth_collision:
+    if collision_override:
+        spec['objects'] = [{'posed_dir': str(ROOT / collision_override)}]
+    elif truth_collision:
         spec['objects'] = [{'posed_dir': str(ROOT / truth_collision)}]
     else:
         spec['objects'] = [{'mesh_file': cfg['mesh'], 'x': case['obstacle_x'], 'y': 0.0,
@@ -74,7 +79,34 @@ def make_env(cfg, soil_label, collision_dir=None, truth_collision=None):
     return wheelleg_env.WheelLegEnv(spec, max_seconds=float(cfg.get('budget_s', 30.0))), case
 
 
-def decide(method, vis, cand_collision=None, truth_collision=None, env=None):
+def rehearse(collision_dir, env=None, snap=None, method='H5_F'):
+    """在候选碰撞上逐动作真实预演（从同一快照），再按成功与代价选动作。"""
+    import time as _t
+    rows = []
+    for act in OPTIONS:
+        try:
+            e2, _c = make_env(CFG_CURRENT[0], CFG_CURRENT[1], collision_override=collision_dir)
+            e2.reset(seed=0)
+            e2.restore_state(snap, mode='project')
+            sk = skills.make_skill(act)
+            r = runner.EpisodeRunner(e2, sk, visible=None, seed=0,
+                                     record_trajectory=False).run_current()
+            rows.append({'option': act, 'success': bool(r.get('success')),
+                         'cost': float(r.get('cost') or 9e9),
+                         'reason': r.get('reason')})
+        except Exception as ex:
+            rows.append({'option': act, 'success': False, 'cost': 9e9,
+                         'error': f'{type(ex).__name__}: {ex}'})
+    causal = [x for x in rows if x['option'] != 'A0' and x['success']]
+    if causal:
+        best = min(causal, key=lambda x: x['cost'])
+        return best['option'], {'rule': f'{method}: rehearsal best of {len(causal)}',
+                                'rows': rows}
+    return 'A0', {'rule': f'{method}: no safe traversal in rehearsal', 'rows': rows}
+
+
+def decide(method, vis, cand_collision=None, truth_collision=None, env=None,
+           snapshot=None):
     """返回 (action, evidence)。不依赖真值执行结果。"""
     h = float(vis.get('H_vis') or 0)
     w = float(vis.get('W_vis') or 0)
@@ -91,7 +123,7 @@ def decide(method, vis, cand_collision=None, truth_collision=None, env=None):
     if method in ('B2_F', 'B3_F', 'H5_F'):
         if not cand_collision:
             return 'A0', {'rule': 'no_qualified_candidate', 'fallback': True}
-        return ('R2', {'rule': f'{method}: 合格候选预演选 R2'})
+        return rehearse(cand_collision, env=env, snap=snapshot, method=method)
     if method == 'U_truth':
         return 'R2', {'rule': 'truth ceiling rehearsal selects R2'}
     return 'A0', {'rule': f'unknown method {method}'}
@@ -150,8 +182,10 @@ def main():
                     if gate_rec and gate_rec.get('qualified'):
                         cand_col = gate_rec.get('collision_dir')
                     t0 = time.time()
+                    CFG_CURRENT[0], CFG_CURRENT[1] = cfg, soil
                     act, why = decide(m, vis, cand_collision=cand_col,
-                                      truth_collision=truth_col, env=env)
+                                      truth_collision=truth_col, env=env,
+                                      snapshot=snap)
                     decision = {'method': m, 'chosen': act, 'evidence': why,
                                 'state_hash': snap.get('state_hash'),
                                 'observation_sha': acq['observation']['sha'],

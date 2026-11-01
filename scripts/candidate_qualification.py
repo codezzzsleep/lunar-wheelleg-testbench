@@ -355,6 +355,8 @@ def qualify_candidate(candidate, observation_set, case=None, strict=True):
         out['status'] = STATUS_MEASUREMENT_ERROR
     else:
         out['status'] = STATUS_DISQUALIFIED
+    out['collision_dir'] = _rel(collision_dir)
+    out['mesh'] = _rel(mesh_path)
     out['claims'] = {'planning_eligible_in_manifest': bool(candidate.get('planning_eligible'))}
     if candidate.get('planning_eligible') and not out['qualified']:
         reasons.append('清单声称 planning_eligible=true，被资格门拒绝')

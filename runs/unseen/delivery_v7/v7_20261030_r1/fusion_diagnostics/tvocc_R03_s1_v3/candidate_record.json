@@ -1,0 +1,31 @@
+{
+  "schema": "two-view-candidate-record/v1",
+  "candidate": "V7_R03_s1",
+  "observation": "runs/unseen/recovery_r3/obs_R03",
+  "observation_views": [
+    "runs/unseen/recovery_r3/obs_R03",
+    "runs/unseen/delivery_v7/v7_20261030_r1/observation/obs_R03_at_driven"
+  ],
+  "fusion_world_sha": "e9ef0a456df7ce7676c1897997988b5a9db36baaa0e2ea828d7e3f451e7b3afd",
+  "fusion_metrics": {
+    "mask_iou": 0.9781,
+    "vis_pt_p95_mm": 1.55,
+    "freespace_violation": 0.038
+  },
+  "fusion_metrics_obs2": {
+    "mask_iou": 0.9767,
+    "vis_pt_p95_mm": 1.7,
+    "freespace_violation": 0.0249
+  },
+  "fusion_strict": {
+    "pass": true,
+    "iou_min": 0.85,
+    "freespace_max": 0.05
+  },
+  "collision_metrics_file": "collision/metrics_occ.json",
+  "_derived_from": [
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/two_view_report.json",
+    "/var/lib/deepseek-harness/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/fusion_diagnostics/tvocc_R03_s1_v3/visible_two_view.json"
+  ],
+  "note": "两视角资产无 process.json；可见指标取 obs1（主视角），obs2 明细保留。"
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "page-run/v1",
+  "case": "R01",
+  "config_id": "R01_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "method": "B0_blind",
+  "run_id": "20261101T142255-R01-nominal-7",
+  "started_at": 1793514175.8298345,
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/state_snapshot.json",
+    "state_hash": "2a708d3638cb2b2709b435164a440a7b"
+  },
+  "observation": {
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "sha": "96355511757b44cd5ebc81ce8b7bb0045f1d44cc1148cdb91d429f9703ace4de"
+  },
+  "qualification": {
+    "method": "B0_blind",
+    "qualified": false,
+    "reason": null
+  },
+  "decision": {
+    "chosen": "R1",
+    "sha": "dd4048c9bf880421628c8c65bdcda57f765b798565f71348e1682d943cad6634",
+    "fallback": false
+  },
+  "execution": {
+    "success": false,
+    "reason": "tipped",
+    "final_x": 1.63,
+    "displacement_x": 1.316,
+    "control_steps": 203,
+    "frames": 203,
+    "state_mode": "same_scene"
+  },
+  "trajectory": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/trajectory.jsonl",
+  "trajectory_frames": 203,
+  "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/player.html",
+  "ok": true,
+  "seconds": 1.96
+}

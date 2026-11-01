@@ -38,7 +38,7 @@ INPUT_REQUIRED = [
 # 结果清单必填字段
 RESULT_REQUIRED = [
     'schema_version', 'run_id', 'code_sha', 'protocol_sha', 'inputs_sha',
-    'observation_sha', 'state_sha', 'qualification', 'stage_status',
+    'observation_sha', 'state_sha', 'qualification', 'stage_status', 'trajectory',
     'started_at', 'finished_at',
 ]
 

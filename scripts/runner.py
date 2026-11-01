@@ -117,7 +117,8 @@ class EpisodeRunner:
                 _frame = {'i': steps, 't': round(float(env.t), 5),
                           'qpos': [float(x) for x in env.data.qpos],
                           'qvel': [float(x) for x in env.data.qvel],
-                          'action': [float(x) for x in np.asarray(a).reshape(-1)]}
+                          'action': [float(x) for x in np.asarray(a).reshape(-1)],
+                          'phase': getattr(sk, 'phase', None)}
             # 动作可以让导航底座改横向目标（D1/D2 靠这个真正绕行）
             hint = getattr(sk, 'nav_target_hint', None)
             if hint is not None and callable(hint):

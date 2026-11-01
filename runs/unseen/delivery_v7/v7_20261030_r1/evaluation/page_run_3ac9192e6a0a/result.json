@@ -1,0 +1,42 @@
+{
+  "schema": "page-run/v1",
+  "case": "R01",
+  "config_id": "R01_s1",
+  "soil": "nominal",
+  "seed": 7,
+  "method": "H5_F",
+  "run_id": "20261101T142014-R01-nominal-7",
+  "started_at": 1793514014.3373559,
+  "state": {
+    "snapshot": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R01_s1/nominal/seed7/state_snapshot.json",
+    "state_hash": "2a708d3638cb2b2709b435164a440a7b"
+  },
+  "observation": {
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+    "sha": "96355511757b44cd5ebc81ce8b7bb0045f1d44cc1148cdb91d429f9703ace4de"
+  },
+  "qualification": {
+    "method": "H5_F",
+    "qualified": false,
+    "reason": "可见 freespace 0.0647 > 0.05；碰撞 IoU 0.9365 < 0.95"
+  },
+  "decision": {
+    "chosen": "A0",
+    "sha": "cd8d5f3e25256fb7ff81dcfe267a67664c1c99d791b6becb603f695b342d6248",
+    "fallback": true
+  },
+  "execution": {
+    "success": false,
+    "reason": "abort",
+    "final_x": 0.313,
+    "displacement_x": -0.0,
+    "control_steps": 150,
+    "frames": 150,
+    "state_mode": "same_scene"
+  },
+  "trajectory": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_3ac9192e6a0a/trajectory.jsonl",
+  "trajectory_frames": 150,
+  "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_3ac9192e6a0a/player.html",
+  "ok": true,
+  "seconds": 1.65
+}

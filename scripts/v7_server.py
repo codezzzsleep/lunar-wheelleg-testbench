@@ -19,28 +19,32 @@ JOBS = {}
 LOCK = threading.Lock()
 
 
-def start_job(payload):
+def start_rehearsal_job(payload):
+    """候选预演：只在候选碰撞上复现动作，**不是**真值执行，标签与统计都不混入正式表。"""
     job_id = uuid.uuid4().hex[:12]
     case = str(payload.get('case', 'R03'))
     if case not in CASES:
         raise ValueError(f'未在清单中的案例：{case}')
+    seed = int(payload.get('seed', 7))
     action = str(payload.get('action', 'R1'))
-    seed = int(payload.get('seed', 0))
-    # 每个案例只能用自己的假设资产，不能沿用默认 R03
-    hyp = str(payload.get('hypothesis') or CASES[case]['collision'])
-    out = BATCH / 'evaluation' / f'rerun_page_{job_id}'
+    out = BATCH / 'evaluation' / f'rehearsal_page_{job_id}'
     cmd = [sys.executable, str(ROOT / 'scripts/v7_rerun.py'), '--case', case,
-           '--hypothesis', hyp, '--action', action, '--seed', str(seed), '--out', str(out)]
+           '--hypothesis', CASES[case]['collision'], '--action', action,
+           '--seed', str(seed), '--out', str(out)]
     env = dict(os.environ, MUJOCO_GL=os.environ.get('MUJOCO_GL', 'osmesa'),
                LD_LIBRARY_PATH=os.environ.get('LD_LIBRARY_PATH', ''))
-    job = {'id': job_id, 'state': 'running', 'case': case, 'action': action, 'seed': seed,
-           'started': time.time(), 'out': str(out.relative_to(ROOT)), 'log': [], 'run_id': None}
+    job = {'id': job_id, 'state': 'running', 'case': case, 'seed': seed,
+           'action': action, 'started': time.time(),
+           'out': str(out.relative_to(ROOT)) if out.is_relative_to(ROOT) else str(out),
+           'log': [], 'run_id': None, 'kind': 'candidate_rehearsal',
+           'label': '候选预演（非真值执行）'}
     with LOCK:
         JOBS[job_id] = job
 
     def run():
         try:
-            p = subprocess.run(cmd, cwd=str(ROOT), env=env, capture_output=True, text=True, timeout=900)
+            p = subprocess.run(cmd, cwd=str(ROOT), env=env, capture_output=True,
+                               text=True, timeout=900)
             tail = (p.stdout + p.stderr).strip().splitlines()[-25:]
             job['log'] = tail
             last = {}
@@ -55,17 +59,66 @@ def start_job(payload):
             job['success'] = last.get('success')
             job['n_frames'] = last.get('n_frames')
             job['state'] = 'done' if p.returncode == 0 else 'failed'
-            # 完成后立即生成该 run 的播放器，并给出可直接打开的地址
             trail = out / 'rerun_trajectory.jsonl'
             if trail.exists() and trail.stat().st_size > 0:
                 pl = subprocess.run([sys.executable, str(ROOT / 'scripts/v7_player.py'),
                                      '--traj', str(trail), '--out', str(out / 'player.html'),
-                                     '--title', f"{case} {action} {job.get('run_id') or ''}"],
+                                     '--title', f'候选预演 {case} {action}'],
                                     cwd=str(ROOT), capture_output=True, text=True)
                 if pl.returncode == 0:
                     job['player'] = f"/player?run={out.relative_to(ROOT)}"
-                else:
-                    job['player_error'] = (pl.stderr or '').strip().splitlines()[-1:]
+        except Exception as e:  # noqa: BLE001
+            job['state'] = 'failed'
+            job['failure_class'] = f'{type(e).__name__}: {e}'
+    threading.Thread(target=run, daemon=True).start()
+    return job
+
+
+def start_job(payload):
+    """正式闭环重跑：走统一入口（资格门 + 独立真值 + 生产轨迹 + 播放器）。
+
+    与本项目其他生产入口同一数据链；不把候选碰撞当成真值。
+    """
+    job_id = uuid.uuid4().hex[:12]
+    case = str(payload.get('case', 'R03'))
+    if case not in CASES:
+        raise ValueError(f'未在清单中的案例：{case}')
+    soil = str(payload.get('soil', 'nominal'))
+    seed = int(payload.get('seed', 7))
+    out = BATCH / 'evaluation' / f'page_run_{job_id}'
+    method = str(payload.get('method') or 'H5_F')
+    cmd = [sys.executable, str(ROOT / 'scripts/r1_page_run.py'), '--case', case,
+           '--soil', soil, '--seed', str(seed), '--out', str(out),
+           '--method', method]
+    env = dict(os.environ, MUJOCO_GL=os.environ.get('MUJOCO_GL', 'osmesa'),
+               LD_LIBRARY_PATH=os.environ.get('LD_LIBRARY_PATH', ''))
+    job = {'id': job_id, 'state': 'running', 'case': case, 'soil': soil, 'seed': seed,
+           'started': time.time(), 'out': str(out.relative_to(ROOT)), 'log': [],
+           'run_id': None, 'method': method, 'kind': 'formal_closed_loop'}
+    with LOCK:
+        JOBS[job_id] = job
+
+    def run():
+        try:
+            p = subprocess.run(cmd, cwd=str(ROOT), env=env, capture_output=True, text=True,
+                               timeout=1800)
+            tail = (p.stdout + p.stderr).strip().splitlines()[-25:]
+            job['log'] = tail
+            res = {}
+            rp = out / 'result.json'
+            if rp.is_file():
+                res = json.loads(rp.read_text())
+            job['run_id'] = res.get('run_id')
+            job['decision'] = (res.get('decision') or {}).get('chosen')
+            job['success'] = (res.get('execution') or {}).get('success')
+            job['n_frames'] = res.get('trajectory_frames')
+            job['qualification'] = res.get('qualification')
+            job['failure_class'] = res.get('failure_class')
+            job['state'] = 'done' if res.get('ok') else 'failed'
+            if res.get('player') and (out / 'player.html').is_file():
+                job['player'] = f"/player?run={out.relative_to(ROOT)}"
+            elif res.get('ok') is False:
+                job['player_error'] = res.get('failure_class')
         except Exception as e:  # noqa: BLE001
             job['state'] = 'failed'
             job['log'] = [f'{type(e).__name__}: {e}']
@@ -75,6 +128,61 @@ def start_job(payload):
     threading.Thread(target=run, daemon=True).start()
     return job
 
+
+FULL_SELFTEST_HTML = r"""
+<script>
+(function () {
+  if (!location.search.includes('selftest=full')) return;
+  var out = [];
+  function rec(k, v) { out.push(k + '=' + v); }
+  function txt(id) { var e = document.getElementById(id); return e ? e.textContent : ''; }
+  function finish() {
+    var d = document.createElement('div'); d.id = 'selftestResult';
+    d.textContent = 'SELFTEST ' + out.join(' | '); document.body.appendChild(d);
+  }
+  function waitJob(cb) {
+    var tries = 0;
+    var t = setInterval(function () {
+      tries += 1;
+      if (window.__job && window.__job.id) {
+        clearInterval(t);
+        fetch('/api/wait/' + window.__job.id)
+          .then(function (r) { return r.json(); })
+          .then(function (s) { cb(s); });
+      } else if (tries > 60) {
+        clearInterval(t); cb({state: 'no_job'});
+      }
+    }, 300);
+  }
+  function runBlocking(body, label, cb) {
+    // 浏览器只发一次请求：服务端跑完再返回，避免虚拟时间把轮询耗尽
+    fetch('/api/run_blocking', {method: 'POST', headers: {'Content-Type': 'application/json'},
+                                body: JSON.stringify(body)})
+      .then(function (r) { return r.json(); })
+      .then(function (s) { cb(s); });
+  }
+  // 1) 正式闭环：R01（该配置无通行动作，预期失败）
+  document.getElementById('cCase').value = 'R01';
+  document.getElementById('cSoil').value = 'nominal';
+  document.getElementById('cMethod').value = 'B0_blind';
+  runBlocking({case: 'R01', soil: 'nominal', seed: 7, kind: 'formal', method: 'B0_blind'}, '正式闭环', function (s1) {
+    rec('run1_kind', s1.kind || '-');
+    rec('run1_state', (s1.state || '?') + ':' + (s1.decision || '-') + ':succ='
+        + (s1.success == null ? '-' : s1.success) + ':frames=' + (s1.n_frames == null ? '-' : s1.n_frames));
+    rec('run1_qual', (s1.qualification && s1.qualification.qualified) ? 'qualified' : 'not_qualified');
+    rec('run1_player', s1.player || 'none');
+    // 2) 候选预演：R03（标签必须不同）
+    document.getElementById('cCase').value = 'R03';
+    runBlocking({case: 'R03', seed: 7, kind: 'rehearsal'}, '候选预演', function (s2) {
+      rec('run2_kind', s2.kind || '-');
+      rec('run2_state', (s2.state || '?') + ':succ=' + (s2.success == null ? '-' : s2.success));
+      rec('run2_player', s2.player || 'none');
+      finish();
+    });
+  });
+})();
+</script>
+"""
 
 SELFTEST_HTML = r"""
 <script>
@@ -121,47 +229,79 @@ SELFTEST_HTML = r"""
 """
 
 CONTROL_HTML = """
-<h2>重新仿真（真实后端，非动画）</h2>
-<div class="note">点按钮会真的启动一次 MuJoCo 重仿真：新 run_id、新日志、新结果。
-不触发生成、不联网、不花钱。</div>
+<h2>正式闭环重跑（真实后端，非动画）</h2>
+<div class="note">走统一入口：唯一资格门 → 预演 → 决策先落盘 → 独立真值执行 → 连续轨迹与回放。
+不触发生成、不联网、不花钱。候选预演是另一类操作，标签不同、统计不进真值执行。</div>
 <div style="margin:8px 0">
   案例 <select id="cCase"><option>R03</option><option>R02</option><option>R01</option><option>R04</option></select>
-  动作 <select id="cAct"><option>R1</option><option>D1</option><option>S1</option><option>R2</option><option>L1</option><option>L2</option><option>D2</option></select>
-  seed <input id="cSeed" type="number" value="0" style="width:60px">
-  <button id="btnRun">开始重新仿真</button>
+  土壤 <select id="cSoil"><option>nominal</option><option>low_traction</option><option>high_drag</option></select>
+  seed <input id="cSeed" type="number" value="7" style="width:60px">
+  方法 <select id="cMethod"><option value="H5_F">H5_F 候选（正式）</option><option value="B0_blind">B0 盲走（失败演示）</option><option value="U_truth">U_truth 真值参考</option></select>
+  <button id="btnRun">开始正式闭环重跑</button>
+  <button id="btnRehearse">候选预演（非真值执行）</button>
 </div>
 <div id="runState" class="note">状态：未开始</div>
+<div id="runKind" class="note" data-kind="">操作类型：—</div>
+<div id="runQual" class="note">资格：—</div>
+<div id="runResult" class="note">结果：—</div>
+<div id="runPlayer"></div>
 <pre id="runLog" style="display:none;max-height:220px;overflow:auto;font-size:12px"></pre>
 <script>
 (function () {
   var st = document.getElementById('runState'), lg = document.getElementById('runLog');
-  document.getElementById('btnRun').onclick = function () {
-    var body = {case: document.getElementById('cCase').value,
-                action: document.getElementById('cAct').value,
-                seed: Number(document.getElementById('cSeed').value)};
+  var kind = document.getElementById('runKind'), qual = document.getElementById('runQual');
+  var res = document.getElementById('runResult'), pl = document.getElementById('runPlayer');
+  function submit(url, body, label) {
     st.textContent = '状态：已提交，等待启动…';
+    kind.textContent = '操作类型：' + label; kind.setAttribute('data-kind', label);
+    qual.textContent = '资格：—'; res.textContent = '结果：—'; pl.innerHTML = '';
     lg.style.display = 'block'; lg.textContent = '';
-    fetch('/api/rerun', {method: 'POST', headers: {'Content-Type': 'application/json'},
-                         body: JSON.stringify(body)})
+    fetch(url, {method: 'POST', headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(body)})
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(function (job) {
         st.textContent = '状态：运行中 · job ' + job.id;
+        window.__job = job;
         var t0 = Date.now();
         var poll = setInterval(function () {
           fetch('/api/status/' + job.id).then(function (r) { return r.json(); }).then(function (s) {
             lg.textContent = (s.log || []).join('\n');
             if (s.state === 'running') {
               st.textContent = '状态：运行中 · job ' + s.id + ' · ' + Math.round((Date.now() - t0) / 1000) + 's';
-            } else {
-              clearInterval(poll);
-              st.textContent = s.state === 'done'
-                ? '状态：完成 · 新 run_id ' + (s.run_id || '?') + ' · 帧数 ' + (s.n_frames == null ? '?' : s.n_frames)
-                : '状态：失败（见日志）';
+              return;
             }
+            clearInterval(poll);
+            st.textContent = (s.state === 'done' ? '状态：完成 · 新 run_id ' + (s.run_id || '?')
+                                                : '状态：失败 · ' + (s.failure_class || '见日志'));
+            var q = s.qualification || {};
+            qual.textContent = '资格：' + (q.qualified ? '合格（' + (q.method || '') + '）'
+                                     : (q.reason ? '不合格 · ' + q.reason : '未知'));
+            var ex = s.execution || {};
+            res.textContent = '结果：run_id ' + (s.run_id || '—') + ' · 方法 ' + (s.method || '—')
+              + ' · 决策 ' + (s.decision || '—') + ' · 成功 ' + (s.success == null ? '—' : s.success)
+              + ' · 帧数 ' + (s.n_frames == null ? '—' : s.n_frames)
+              + ' · 失败类别 ' + (s.failure_class || '无');
+            if (s.player) {
+              pl.innerHTML = '<a id="openPlayer" href="' + s.player + '">打开该 run 的连续回放</a>';
+            }
+            window.__lastJob = s;
           });
         }, 1500);
       })
       .catch(function (e) { st.textContent = '状态：失败（后端没起？' + e.message + '）'; });
+  }
+  document.getElementById('btnRun').onclick = function () {
+    submit('/api/rerun', {case: document.getElementById('cCase').value,
+                          soil: document.getElementById('cSoil').value,
+                          seed: Number(document.getElementById('cSeed').value),
+                          method: document.getElementById('cMethod').value},
+           '正式闭环（独立真值）');
+  };
+  document.getElementById('btnRehearse').onclick = function () {
+    submit('/api/rehearse', {case: document.getElementById('cCase').value,
+                             seed: Number(document.getElementById('cSeed').value),
+                          method: document.getElementById('cMethod').value},
+           '候选预演（非真值执行）');
   };
 })();
 </script>
@@ -208,7 +348,7 @@ def inject_player_selftest(html):
 def inject_rerun(html):
     """把可操作控件插到 <h2>限制</h2> 之前；页面本身不依赖后端。"""
     marker = '<h2>限制</h2>'
-    return html.replace(marker, CONTROL_HTML + SELFTEST_HTML + marker, 1)
+    return html.replace(marker, CONTROL_HTML + SELFTEST_HTML + FULL_SELFTEST_HTML + marker, 1)
 
 
 CASES = {
@@ -250,6 +390,19 @@ class Handler(BaseHTTPRequestHandler):
             if not f.exists():
                 return self._send(404, '播放器不存在，先跑 v7_player.py', 'text/plain; charset=utf-8')
             return self._send(200, inject_player_selftest(f.read_text()), 'text/html; charset=utf-8')
+        if p.path.startswith('/api/wait/'):
+            jid = p.path.split('/')[-1]
+            if not jid:
+                return self._send(400, json.dumps({'error': 'missing job id'}))
+            t0 = time.time()
+            while time.time() - t0 < 600:
+                j = JOBS.get(jid)
+                if j and j.get('state') != 'running':
+                    return self._send(200, json.dumps(j, ensure_ascii=False, default=str))
+                time.sleep(1.0)
+            j = dict(JOBS.get(jid) or {})
+            j['state'] = j.get('state') or 'timeout'
+            return self._send(200, json.dumps(j, ensure_ascii=False, default=str))
         if p.path.startswith('/api/status/'):
             jid = p.path.rsplit('/', 1)[-1]
             with LOCK:
@@ -264,14 +417,27 @@ class Handler(BaseHTTPRequestHandler):
         return self._send(404, 'not found', 'text/plain')
 
     def do_POST(self):
-        if self.path != '/api/rerun':
+        if self.path not in ('/api/rerun', '/api/rehearse', '/api/run_blocking'):
             return self._send(404, 'not found', 'text/plain')
         n = int(self.headers.get('Content-Length') or 0)
         try:
             payload = json.loads(self.rfile.read(n) or b'{}')
         except json.JSONDecodeError:
             payload = {}
-        job = start_job(payload)
+        if self.path == '/api/run_blocking':
+            # 浏览器只发一次请求：服务端等到作业结束再返回（便于无头浏览器验收）
+            job = (start_rehearsal_job(payload) if payload.get('kind') == 'rehearsal'
+                   else start_job(payload))
+            t0 = time.time()
+            while time.time() - t0 < 900:
+                j = JOBS.get(job['id'], {})
+                if j.get('state') != 'running':
+                    return self._send(200, json.dumps(j, ensure_ascii=False, default=str))
+                time.sleep(0.5)
+            return self._send(200, json.dumps(dict(job, state='timeout'),
+                                              ensure_ascii=False, default=str))
+        job = (start_rehearsal_job(payload) if self.path == '/api/rehearse'
+               else start_job(payload))
         return self._send(200, json.dumps(job, ensure_ascii=False))
 
 

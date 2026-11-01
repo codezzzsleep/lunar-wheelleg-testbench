@@ -1,0 +1,92 @@
+{
+  "schema": "page-acceptance/v2",
+  "server": "scripts/v7_server.py",
+  "entry": "/api/rerun → scripts/r1_page_run.py（统一资格门 + 独立真值 + 生产轨迹）；/api/rehearse → scripts/v7_rerun.py（候选预演，标签独立）",
+  "browser": "chrome-headless-shell，DOM 内点击页面自身按钮并等待服务端返回",
+  "checks": [
+    {
+      "item": "1_open_existing_playback",
+      "ok": true,
+      "detail": {
+        "player": "/player?run=evaluation/page_run_7bc914a5f19a",
+        "selftest": "play_advanced=true reached=11.00 seek_moved=true seek_value=12.42 canvas_present=true"
+      }
+    },
+    {
+      "item": "2_page_formal_rerun",
+      "ok": true,
+      "detail": {
+        "run_id": "20261101T142255-R01-nominal-7",
+        "method": "B0_blind",
+        "case": "R01",
+        "decision": "R1",
+        "qualification": {
+          "method": "B0_blind",
+          "qualified": false,
+          "reason": null
+        }
+      }
+    },
+    {
+      "item": "3_open_new_run_playback",
+      "ok": true,
+      "detail": {
+        "player": "runs/unseen/delivery_v7/v7_20261030_r1/evaluation/page_run_7bc914a5f19a/player.html",
+        "frames": 203
+      }
+    },
+    {
+      "item": "4_ui_matches_records",
+      "ok": true,
+      "detail": {
+        "ui_reported": {
+          "kind": "formal_closed_loop",
+          "decision": "R1",
+          "frames": 203,
+          "success": false
+        },
+        "record": {
+          "run_id": "20261101T142255-R01-nominal-7",
+          "decision": "R1",
+          "frames": 203,
+          "reason": "tipped"
+        }
+      }
+    },
+    {
+      "item": "5_safe_abandon_visible",
+      "ok": true,
+      "detail": {
+        "run_id": "20261101T142014-R01-nominal-7",
+        "decision": "A0",
+        "qualification": {
+          "method": "H5_F",
+          "qualified": false,
+          "reason": "可见 freespace 0.0647 > 0.05；碰撞 IoU 0.9365 < 0.95"
+        },
+        "frames": 150
+      }
+    },
+    {
+      "item": "6_physical_failure_visible",
+      "ok": true,
+      "detail": {
+        "run_id": "20261101T142255-R01-nominal-7",
+        "reason": "tipped",
+        "final_x": 1.63
+      }
+    },
+    {
+      "item": "7_candidate_rehearsal_labeled",
+      "ok": true,
+      "detail": {
+        "job_kind": "candidate_rehearsal",
+        "label": "候选预演（非真值执行）",
+        "separate_output": "evaluation/rehearsal_page_beb7bd242f27",
+        "success": null,
+        "note": "预演成绩不进真值执行统计"
+      }
+    }
+  ],
+  "all_ok": true
+}

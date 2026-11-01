@@ -15,7 +15,11 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--title', default='回放')
     a = ap.parse_args()
-    frames = [json.loads(l) for l in pathlib.Path(a.traj).read_text().splitlines() if l.strip()]
+    recs = [json.loads(l) for l in pathlib.Path(a.traj).read_text().splitlines() if l.strip()]
+    # 轨迹文件末尾可能有终止事件记录（没有 qpos）；播放器只用真正的帧，
+    # 终止记录单独带入摘要，避免把事件当帧渲染。
+    frames = [r for r in recs if isinstance(r.get('qpos'), list) and r.get('qpos')]
+    terminal = next((r for r in reversed(recs) if r.get('terminal')), None)
     if not frames:
         raise SystemExit('轨迹为空：拒绝生成"假回放"页面')
     slim = [{'i': f.get('i'), 't': f.get('t'),
@@ -81,8 +85,8 @@ draw();
 """
     p = pathlib.Path(a.out); p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text(html)
-    print(json.dumps({'out': a.out, 'frames': len(slim), 'duration_s': slim[-1]['t']},
-                     ensure_ascii=False))
+    print(json.dumps({'out': a.out, 'frames': len(slim), 'duration_s': slim[-1]['t'],
+                      'terminal': terminal}, ensure_ascii=False))
 
 
 if __name__ == '__main__':

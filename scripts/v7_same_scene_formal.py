@@ -261,6 +261,18 @@ def main():
     exec_end = {'env_t': float(env.t), 'data_time': float(env.data.time),
                 'x': float(env.data.qpos[0])}
     frames = res.get('trajectory') or []
+    # 生产执行器把轨迹落盘（§7.3）：每帧含时间、位姿/关节、动作、阶段；
+    # 末尾追加终止事件，播放器据此显示结束点。
+    traj_path = out / 'trajectory.jsonl'
+    if frames:
+        traj_path.write_text(
+            '\n'.join(json.dumps(fr, ensure_ascii=False) for fr in frames) + '\n')
+        with traj_path.open('a') as f:
+            f.write(json.dumps({'terminal': True, 't': round(float(env.t), 5),
+                                'reason': res.get('reason'),
+                                'success': bool(res.get('success')),
+                                'final_x': round(float(env.data.qpos[0]), 6)},
+                               ensure_ascii=False) + '\n')
     rep = {'schema': 'same-scene-formal/v1', 'case': case['case_id'],
            'truth_identity': truth_identity,
            'observation_acceptance': observation,
@@ -277,7 +289,11 @@ def main():
                          'final_x': round(exec_end['x'], 6),
                          'displacement_x': round(exec_end['x'] - exec_start['x'], 6),
                          'control_steps': res.get('steps'), 'frames': len(frames),
-                         'state_mode': 'same_scene', 'fallback': False}}
+                         'state_mode': 'same_scene', 'fallback': False},
+           'trajectory': (str(traj_path.relative_to(ROOT))
+                          if frames and traj_path.is_relative_to(ROOT) else
+                          (str(traj_path) if frames else None)),
+           'trajectory_frames': len(frames)}
     (out / 'same_scene_report.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
     print(json.dumps(rep, ensure_ascii=False))
 

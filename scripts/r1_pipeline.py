@@ -255,7 +255,9 @@ def stage_closed_loop(ctx):
     d = json.loads(rep.read_text())
     ctx.artifacts['closed_loop'] = {'report': MAN._rel(rep),
                                     'decision': (d.get('decision') or {}).get('chosen'),
-                                    'execution': d.get('execution')}
+                                    'execution': d.get('execution'),
+                                    'trajectory': d.get('trajectory'),
+                                    'trajectory_frames': d.get('trajectory_frames')}
     ok = bool((d.get('execution') or {}).get('success'))
     return ctx.set('closed_loop', MAN.STAGE_QUALIFIED if ok else MAN.STAGE_UNQUALIFIED,
                    decision=(d.get('decision') or {}).get('chosen'), success=ok)
@@ -275,9 +277,12 @@ def stage_verify(ctx):
     dec = ctx.out / 'decision.json'
     if dec.is_file():
         checks.append({'check': 'decision_before_execution', 'ok': True})
+    cl = ctx.artifacts.get('closed_loop') or {}
     res = MAN.make_result(ctx.man, ctx.stage_status, ctx.qualification,
                           extra={'run_id': ctx.run_id,
                                  'artifacts': ctx.artifacts,
+                                 'trajectory': cl.get('trajectory'),
+                                 'player': None,
                                  'started_at': ctx.started_at})
     errs = MAN.validate_result(res)
     checks.append({'check': 'result_manifest_valid', 'ok': not errs, 'errors': errs})

@@ -1,0 +1,117 @@
+{
+  "schema": "collision-load-fix/v1",
+  "root_cause": "旧代码把资产根目录直接交给环境；普通融合资产的碰撞体在 <root>/collision/，两视角资产的根目录根本没有 manifest.json，于是加载失败被当成\"候选认为过不去\"",
+  "fix": "scripts/collision_asset.py::resolve 统一解析 + common_planner 区分 rehearsal_error",
+  "smoke": {
+    "R02_seed7": {
+      "action": "R1",
+      "counts": {
+        "physics_pass": 0,
+        "physics_fail": 4,
+        "rehearsal_error": 0,
+        "asset_absent": 0
+      },
+      "rows": [
+        {
+          "asset": "box_B2F",
+          "outcome": "physics_fail",
+          "kind": "boxes",
+          "n_boxes": 3900,
+          "n_geom": 3953,
+          "frames": 185,
+          "reason": "tipped"
+        },
+        {
+          "asset": "mirror_B3F",
+          "outcome": "physics_fail",
+          "kind": "boxes",
+          "n_boxes": 3560,
+          "n_geom": 3613,
+          "frames": 182,
+          "reason": "tipped"
+        },
+        {
+          "asset": "lux3d_H5F",
+          "outcome": "physics_fail",
+          "kind": "boxes",
+          "n_boxes": 6595,
+          "n_geom": 6648,
+          "frames": 185,
+          "reason": "tipped"
+        },
+        {
+          "asset": "two_view",
+          "outcome": "physics_fail",
+          "kind": "boxes",
+          "n_boxes": 6742,
+          "n_geom": 6795,
+          "frames": 187,
+          "reason": "tipped"
+        }
+      ]
+    },
+    "R02_seed7_L2": {
+      "action": "L2",
+      "counts": {
+        "physics_pass": 3,
+        "physics_fail": 1,
+        "rehearsal_error": 0,
+        "asset_absent": 0
+      },
+      "rows": [
+        {
+          "asset": "box_B2F",
+          "outcome": "physics_pass",
+          "kind": "boxes",
+          "n_boxes": 3900,
+          "n_geom": 3953,
+          "frames": 325,
+          "reason": "success"
+        },
+        {
+          "asset": "mirror_B3F",
+          "outcome": "physics_fail",
+          "kind": "boxes",
+          "n_boxes": 3560,
+          "n_geom": 3613,
+          "frames": 217,
+          "reason": "tipped"
+        },
+        {
+          "asset": "lux3d_H5F",
+          "outcome": "physics_pass",
+          "kind": "boxes",
+          "n_boxes": 6595,
+          "n_geom": 6648,
+          "frames": 328,
+          "reason": "success"
+        },
+        {
+          "asset": "two_view",
+          "outcome": "physics_pass",
+          "kind": "boxes",
+          "n_boxes": 6742,
+          "n_geom": 6795,
+          "frames": 332,
+          "reason": "success"
+        }
+      ]
+    }
+  },
+  "verdict": "四类资产在 R1 与 L2 两个适用动作上都成功加载（kind=boxes，n_boxes 与解析一致）；R1 四次均物理失败（tipped），L2 三次成功一次 tipped —— 这是真实物理差异，不是加载异常",
+  "counts_total": {
+    "rehearsal_error": 0,
+    "physics_pass": 3,
+    "physics_fail": 5
+  },
+  "retracted": [
+    "第二观察价值为零（B 臂两视角资产根目录无 manifest，属加载失败）",
+    "候选过于悲观（同上，B 臂结果不可用）",
+    "碰撞表示敏感（参考表示跑在 mesh 上、粗表示跑在 box 上，比较的口径不一致）",
+    "方盒子/镜像/Lux3D 行在旧七行表里加载的是重建 mesh，不是 canonical box 并集"
+  ],
+  "kept": [
+    "原始记录与文件保留",
+    "2.5D 两行与真值参考行不受影响（根目录即 boxes）"
+  ]
+}

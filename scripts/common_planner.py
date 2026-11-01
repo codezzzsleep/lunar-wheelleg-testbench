@@ -21,6 +21,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
 
 import eval_six
+import collision_asset as CA
 
 REQUIRED_VISIBLE = ('x_front', 'W_vis', 'H_vis')
 PLANNER_VERSION = 'common-planner/v1'
@@ -72,8 +73,26 @@ def plan_action(hypotheses, snapshot, visible, planning_soils, budget,
                                    'success': False, 'cost': None})
                 continue
             for soil in planning_soils:
+                # 先单独建环境：加载失败属于 rehearsal_error，绝不混进物理结论
                 try:
                     env = build_environment(h, soil)
+                except CA.CollisionAssetError as e:
+                    matrix.append({'hypothesis': h['id'], 'kind': h.get('kind'),
+                                   'action': act, 'soil': soil,
+                                   'outcome': 'rehearsal_error',
+                                   'error_class': 'collision_asset',
+                                   'error': str(e)[:600],
+                                   'success': False, 'cost': None})
+                    continue
+                except Exception as e:
+                    matrix.append({'hypothesis': h['id'], 'kind': h.get('kind'),
+                                   'action': act, 'soil': soil,
+                                   'outcome': 'rehearsal_error',
+                                   'error_class': 'environment',
+                                   'error': f'{type(e).__name__}: {e}'[:600],
+                                   'success': False, 'cost': None})
+                    continue
+                try:
                     rows = eval_six.run_episode_from_env(
                         env, act, seed, vis, goal_x, time_limit=budget,
                         hid=h['id'], soil_mode=soil, snapshot=snapshot,
@@ -99,8 +118,9 @@ def plan_action(hypotheses, snapshot, visible, planning_soils, budget,
                 except Exception as e:
                     matrix.append({'hypothesis': h['id'], 'kind': h.get('kind'),
                                    'action': act, 'soil': soil,
-                                   'outcome': 'error',
-                                   'error': f'{type(e).__name__}: {e}',
+                                   'outcome': 'rehearsal_error',
+                                   'error_class': 'episode',
+                                   'error': f'{type(e).__name__}: {e}'[:600],
                                    'success': False, 'cost': None})
 
     # 聚合 1：同一（假设, 动作）跨土壤最坏情形
@@ -114,7 +134,7 @@ def plan_action(hypotheses, snapshot, visible, planning_soils, budget,
         if row['outcome'] == 'not_applicable':
             cur['not_applicable'] = True
             cur['success'] = False
-        elif row['outcome'] == 'error':
+        elif row['outcome'] == 'rehearsal_error':
             cur['errors'] += 1
             cur['success'] = False
         else:
@@ -144,14 +164,19 @@ def plan_action(hypotheses, snapshot, visible, planning_soils, budget,
             candidates.append({'action': act, 'cost': max(agg['costs'])})
     candidates.sort(key=lambda x: (x['cost'], x['action']))
 
+    load_errors = sum(v['errors'] for v in per_action.values())
     if candidates:
         best = candidates[0]
         decision = {'chosen': best['action'], 'safe_set': [c['action'] for c in candidates],
                     'cost': best['cost'], 'reason': 'worst_case_traversal',
-                    'tie': [c['action'] for c in candidates if c['cost'] == best['cost']]}
+                    'tie': [c['action'] for c in candidates if c['cost'] == best['cost']],
+                    'rehearsal_errors': load_errors}
     else:
         decision = {'chosen': 'A0', 'safe_set': [],
-                    'cost': None, 'reason': 'no_safe_traversal',
+                    'cost': None,
+                    'reason': ('no_safe_traversal' if load_errors == 0
+                               else 'inconclusive_rehearsal_errors'),
+                    'rehearsal_errors': load_errors,
                     'detail': {a: {'not_applicable': v['not_applicable'],
                                    'errors': v['errors'],
                                    'per_hypothesis': {k: vv['success']

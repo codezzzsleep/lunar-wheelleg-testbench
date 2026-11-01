@@ -85,6 +85,39 @@ bash demo/r1_r03_two_view/run_demo.sh /tmp/demo_new
 3. R01 无任何家族通行，是动作库边界，不是表示问题；
 4. 页面尚未接入"新仿真"按钮（当前由脚本生成页面）。
 
+
+## 更正：碰撞资产加载（2026-11-01 晚）
+
+**根因**：旧入口把资产根目录直接交给环境。
+
+- 普通融合资产的碰撞体在 `<root>/collision/manifest.json`，根目录 manifest 只列了 `body.stl`；
+- 两视角资产的根目录**没有 manifest.json**，加载直接抛异常；
+- 异常被吞成"没有安全动作"，于是输出 A0，被读成"候选认为过不去"。
+
+**修复**：`scripts/collision_asset.py::resolve()` 统一解析（先 `collision/`，再根目录，逐个校验 boxes/parts 可用），
+所有实验入口复用；`common_planner` 把加载失败记为 `rehearsal_error`，与物理失败分开，
+整轮若全是 `rehearsal_error`，决策理由记 `inconclusive_rehearsal_errors`，不再写 `no_safe_traversal`。
+
+**实跑证据**（R02、nominal、seed7，四类资产）：
+
+| 资产 | 解析 | R1 | L2 |
+| --- | --- | --- | --- |
+| 方盒 B2_F | boxes 3900 | tipped | **success** |
+| 镜像 B3_F | boxes 3560 | tipped | tipped |
+| Lux3D H5_F | boxes 6595 | tipped | **success** |
+| 双视角 | boxes 6742 | tipped | **success** |
+
+`rehearsal_error = 0`，8 次全部是真实物理结果。见 `runs/.../collision_smoke/summary.json`。
+
+**暂时撤回的解释**（原始记录与文件保留）：
+
+- "第二观察价值为零"——B 臂双视角资产根目录无 manifest，属加载失败；
+- "候选过于悲观"——同上；
+- "碰撞表示敏感"——参考表示跑在 mesh、粗表示跑在 box，口径不一致；
+- 旧七行表中方盒/镜像/Lux3D 行加载的是重建 mesh，不是 canonical box 并集，结论待重跑。
+
+**不受影响**：2.5D 两行与真值参考行（根目录即 boxes）。
+
 ## 七、账本
 
 | 项 | 值 |

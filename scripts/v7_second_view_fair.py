@@ -21,6 +21,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 
 import candidate_qualification as CQ
 import common_planner as CP
+import collision_asset as CA
 import runner
 import skills
 import v7_common_matrix as MX
@@ -115,10 +116,13 @@ def admit(asset_dir, obs, case, label):
     proc = d / 'manifest.json'
     if not proc.is_file() and (d / 'two_view_report.json').is_file():
         proc = CQ.record_from_two_view(d)
+    info = CA.describe(str(d.relative_to(ROOT)))
     res = CQ.qualify_candidate({'candidate_id': d.name, 'process': str(proc),
                                 'collision_dir': str(d / 'collision'),
                                 'mesh': str(d / 'body.stl')}, obs, case=case, strict=True)
-    return {'candidate_id': d.name, 'collision_dir': str(d.relative_to(ROOT)),
+    return {'candidate_id': d.name,
+            'collision_dir': (info.get('collision_dir') or str(d.relative_to(ROOT))),
+            'collision_asset': info.get('kind'),
             'strict_qualified': bool(res['qualified']),
             'admitted_as': ('qualified' if res['qualified'] else 'diagnostic_hypothesis'),
             'visible': res.get('visible_metrics'), 'reasons': res.get('reasons', [])[:3],

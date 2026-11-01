@@ -27,6 +27,7 @@ import eval_six
 import runner
 import skills
 import v7_soil
+import collision_asset as CA
 
 PY = sys.executable
 BATCH = 'runs/unseen/delivery_v7/v7_20261030_r1'
@@ -57,7 +58,8 @@ def build_env(cfg, soil_label, collision_dir=None, objects=None):
     spec['skill_cfg'] = {'task': 'M'}
     spec['front_cam'] = {'pos': [0.42, 0.0, 0.0], 'pitch_deg': 0.0, 'fovy': 70.0}
     if collision_dir:
-        spec['objects'] = [{'posed_dir': str(ROOT / collision_dir)}]
+        # 碰撞目录解析只有一个入口：普通融合资产取 collision/，2.5D 取根目录
+        spec['objects'] = [{'posed_dir': CA.resolve(collision_dir)['collision_dir']}]
     elif objects is not None:
         spec['objects'] = objects
     else:

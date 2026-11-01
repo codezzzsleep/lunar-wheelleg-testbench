@@ -26,6 +26,7 @@ import eval_six
 import runner
 import skills
 import v7_common_matrix as MX
+import collision_asset as CA
 
 BATCH = 'runs/unseen/delivery_v7/v7_20261030_r1'
 HEIGHT_RULE = {'climb_direct': 1.0, 'climb_leg': 1.6, 'wheel_r': 0.08595}
@@ -57,12 +58,10 @@ def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, 
         rec['decision'] = {'chosen': act, 'evidence': why, 'planner': 'rule'}
         rec['cells'] = None
     else:
-        if asset is not None and not (ROOT / asset / 'collision' / 'manifest.json').is_file():
-            # 2.5D 高程图资产的 box 并集就写在资产目录自己的 manifest 里
-            m = ROOT / asset / 'manifest.json'
-            if m.is_file() and json.loads(m.read_text()).get('boxes'):
-                pass
-            else:
+        if asset is not None:
+            info = CA.describe(asset)
+            if info.get('ok') is False:
+                rec_asset_error = info['error']
                 asset = None
         if asset is None:
             rec.update({'decision': {'chosen': 'A0',

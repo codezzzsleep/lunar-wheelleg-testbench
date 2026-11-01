@@ -1,0 +1,32 @@
+{
+  "asset": "mirror_B3F",
+  "asset_root": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R02_s0.9/B3F",
+  "action": "R1",
+  "resolved": {
+    "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R02_s0.9/B3F/collision",
+    "kind": "boxes",
+    "n_boxes": 3560,
+    "n_parts": 3560,
+    "pitch_m": 0.0025,
+    "coordinate_frame": "world",
+    "manifest_sha": "8391dc85871c8d84"
+  },
+  "env": {
+    "n_geom": 3613,
+    "n_objects": 1,
+    "obj_keys": [
+      "posed_dir"
+    ]
+  },
+  "state_mode": "project",
+  "result": {
+    "success": false,
+    "reason": "tipped",
+    "final_x": 1.768,
+    "frames": 182,
+    "sim_time_s": 14.04,
+    "contact": "wheel",
+    "max_tilt": 60.72
+  },
+  "outcome": "physics_fail"
+}

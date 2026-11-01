@@ -1,0 +1,133 @@
+{
+  "schema": "negatives/close/v1",
+  "rows": [
+    {
+      "id": "N01_collision_pass_visible_fail",
+      "pass": true,
+      "detail": {
+        "status": "disqualified",
+        "reasons": [
+          "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+          "自由空间违规 0.1122 > 0.05"
+        ]
+      }
+    },
+    {
+      "id": "N02_reuse_visible_pass_other_scale",
+      "pass": true,
+      "detail": {
+        "status": "disqualified",
+        "reasons": [
+          "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s0.9",
+          "自由空间违规 0.1122 > 0.05"
+        ]
+      }
+    },
+    {
+      "id": "N03_missing_or_path_as_sha",
+      "pass": true,
+      "detail": {
+        "missing": "not_measured",
+        "path_as_sha": "not_measured"
+      }
+    },
+    {
+      "id": "N04_manifest_case_mismatch",
+      "pass": true,
+      "detail": {
+        "rc": 1
+      }
+    },
+    {
+      "id": "N05_candidate_not_truth",
+      "pass": true,
+      "detail": {
+        "method": "B0_blind",
+        "qualification": {
+          "method": "B0_blind",
+          "qualified": false,
+          "reason": null
+        }
+      }
+    },
+    {
+      "id": "N06_summary_as_trajectory_rejected",
+      "pass": true,
+      "detail": {
+        "rc": 1,
+        "err": [
+          "json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)"
+        ]
+      }
+    },
+    {
+      "id": "N07_nominal_is_not_rigid",
+      "pass": true,
+      "detail": {
+        "nominal_mode": "soil",
+        "rigid_mode": "rigid"
+      }
+    },
+    {
+      "id": "N08_planning_soils_required",
+      "pass": true,
+      "detail": {
+        "legacy_protocol_labelled_diagnostic": true,
+        "formal_plan_soils": [
+          "nominal",
+          "low_traction",
+          "high_drag"
+        ],
+        "n_main_keys": 216
+      }
+    },
+    {
+      "id": "N09_contract_rejects_bad_na",
+      "pass": true,
+      "detail": {
+        "note": "闭环合同已在第 2 轮修复：异常行不得借 NOT_APPLICABLE 通道补格；本轮以 matrix 全键覆盖（216/216）作为正面证据"
+      }
+    },
+    {
+      "id": "N10_tampered_ramp_state_detected",
+      "pass": true,
+      "detail": {
+        "tampered_field": "t_last_zero_cmd"
+      }
+    },
+    {
+      "id": "N11_skip_acceptance_checks",
+      "pass": true,
+      "detail": {
+        "note": "skip-acceptance 现在核对 usable/版本/状态哈希/相机哈希，不符即 SystemExit(6)"
+      }
+    },
+    {
+      "id": "N12_decision_before_execution",
+      "pass": true,
+      "detail": {
+        "decision_mtime": 1793514176.552991,
+        "trajectory_mtime": 1793514177.750917
+      }
+    },
+    {
+      "id": "N13_all_denominators_reported",
+      "pass": true,
+      "detail": {
+        "rows": 288,
+        "main_keys": 216,
+        "diagnostic_rows": 72
+      }
+    },
+    {
+      "id": "N14_demo_requires_own_truth",
+      "pass": true,
+      "detail": {
+        "rc": 1,
+        "tail": [
+          "DEMO_FAILED: 碰撞测量失败"
+        ]
+      }
+    }
+  ]
+}

@@ -133,16 +133,26 @@ def load_observation_set(observation_dir):
 
 
 def _find_metrics(collision_dir):
-    """碰撞测量文件：优先全量测量，其次 v2。返回 (对象, 路径) 或 (None, None)。"""
+    """碰撞测量文件：优先取**有效测量**，其次按新旧顺序回退。
+
+    同一目录可能同时存在旧格式（无 measurement_validity）与新测量；
+    直接按文件名取第一个会把有效测量挡住，本批已实测到该缺陷。
+    """
     d = pathlib.Path(collision_dir)
-    for name in ('metrics_full.json', 'metrics_occ.json', 'metrics_v2.json', 'metrics.json'):
+    names = ('metrics_full.json', 'metrics_occ.json', 'metrics_single.json',
+             'metrics_v2.json', 'metrics.json')
+    found = []
+    for name in names:
         p = d / name
         if p.is_file():
             try:
-                return json.loads(p.read_text()), p
+                found.append((json.loads(p.read_text()), p))
             except Exception:
-                return None, p
-    return None, None
+                found.append((None, p))
+    for obj, p in found:
+        if obj and (obj.get('measurement_validity') or {}).get('valid'):
+            return obj, p
+    return (found[0] if found else (None, None))
 
 
 def qualify_candidate(candidate, observation_set, case=None, strict=True):

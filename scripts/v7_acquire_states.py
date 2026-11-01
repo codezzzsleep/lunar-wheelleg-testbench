@@ -78,7 +78,12 @@ def acquire(unit, cfg, out_root):
         rec['soil_mode'] = soilr.get('mode')
         env = wheelleg_env.WheelLegEnv(spec, max_seconds=float(cfg.get('budget_s', 30.0)))
         env.reset(seed=seed)
-        rec['initial_state_hash'] = env.save_state().get('state_hash')
+        _s0 = env.save_state()
+        rec['initial_state_hash'] = _s0.get('state_hash')
+        _s0p = d / 'state_snapshot_s0.json'
+        _s0p.write_text(json.dumps(_s0, ensure_ascii=False))
+        rec['s0'] = {'snapshot': str(_s0p.relative_to(ROOT)),
+                     'state_hash': _s0.get('state_hash'), 'env_t': _s0.get('env_t')}
         DO.drive_to_nav(env, float(cfg.get('drive_target_y', 0.30)),
                         stop_x=float(cfg.get('drive_stop_x', 1.30)),
                         max_s=float(cfg.get('drive_max_s', 10.0)),

@@ -33,6 +33,7 @@ import terrain
 import trimesh
 import wheelleg_env
 import runner
+import candidate_qualification as CQ
 import skills
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -487,7 +488,17 @@ def main():
     pending.append(('B3_mirror', dec))
 
     # 5) Lux3D 多候选
-    cands = proto.get('candidates') or []
+    # 候选池必须先过唯一资格门：清单里的 planning_eligible 不再被信任。
+    # 不合格候选只进 DIAG（记录但不进正式决策），缺测写 not_measured。
+    raw_cands = proto.get('candidates') or []
+    cands, cand_gate = gate_candidates(proto, raw_cands, obs_dir)
+    for g in (cand_gate.get('rows') or []):
+        if not g.get('qualified'):
+            records.append({'method': 'H5_lux3d', 'phase': 'qualification',
+                            'option': None, 'success': False, 'cost': None,
+                            'candidate_id': g.get('candidate_id'),
+                            'qualification_status': g.get('status'),
+                            'qualification_reasons': g.get('reasons')})
     if cands:
         per, reh_all = [], []
         for c in cands:
@@ -515,8 +526,13 @@ def main():
         pending.append(('H5_lux3d', dec))
     else:
         decisions.append({'method': 'H5_lux3d', 'selected_action': None,
-                          'evidence': 'no planning_eligible Lux3D candidate',
-                          'no_candidate': True, 'planning_inputs': []})
+                          'evidence': ('no_qualified_candidate：'
+                                       + json.dumps(cand_gate.get('status_counts') or {},
+                                                    ensure_ascii=False)),
+                          'no_candidate': True, 'planning_inputs': [],
+                          'qualification': cand_gate.get('status_counts'),
+                          'n_input_candidates': cand_gate.get('n_input'),
+                          'n_qualified': 0})
 
     # 6) 真实形状上限：拥有完整真值几何
     reh = rehearse_on(truth_col, 'U_truth', 'rehearsal', 'truth', truth_col_sha)

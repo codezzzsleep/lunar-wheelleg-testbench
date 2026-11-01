@@ -7,6 +7,19 @@ worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。�
 
 > 页面是当前主入口；旧的考场与 RL/训练路线已降为历史，数据与报告仍保留在仓库里。
 
+## 当前状态（唯一入口）
+
+**`docs/CURRENT_STATUS.md` 是本项目唯一的当前状态文档**，其他 `docs/*.md` 一律视为归档，
+保留过程与更正记录，不再逐份更新。
+
+- 五画面作品页：`runs/unseen/delivery_v7/v7_20261030_r1/story/R02.html`（看见 → 想象 → 试走 → 决定 → 真走与揭晓）
+- 共同规划入口：`scripts/common_planner.py`（唯一实现，所有比较入口复用）
+- 七行主比较：`scripts/v7_family_compare.py`
+- 2.5D 高程策略：`scripts/v7_elev25d.py`
+- 资格门：`scripts/candidate_qualification.py`
+- 演示包：`demo/r1_r03_two_view/run_demo.sh`
+
+
 
 ## V6（2026-10-29）观测约束融合与连续回放
 

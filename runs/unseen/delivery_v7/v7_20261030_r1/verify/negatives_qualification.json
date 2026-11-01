@@ -1,0 +1,59 @@
+{
+  "schema": "negatives/qualification/v1",
+  "rows": [
+    {
+      "id": "baseline",
+      "expect": "honest",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N01_collision_pass_only",
+      "expect": "reject",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N02_old_visible_pass_new_scale",
+      "expect": "reject",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s0.9",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N03_missing_metrics",
+      "expect": "reject",
+      "qualified": false,
+      "status": "not_measured",
+      "reasons": [
+        "碰撞目录缺: /tmp/does_not_exist",
+        "碰撞测量缺: /tmp/does_not_exist/metrics_*.json"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N03_sha_field_is_path",
+      "expect": "reject",
+      "qualified": false,
+      "status": "not_measured",
+      "reasons": [
+        "源网格缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s1/fusion"
+      ],
+      "pass": true
+    }
+  ]
+}

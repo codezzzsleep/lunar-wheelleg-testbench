@@ -1,0 +1,82 @@
+{
+  "schema": "gate-evidence/v1",
+  "positive_control": {
+    "what": "已知答案 fixture（父=该配置真值实体）经同一融合与同一资格门",
+    "candidate": "fixture_truth",
+    "status": "qualified",
+    "qualified": true,
+    "visible": {
+      "mask_iou": 0.9873,
+      "vis_pt_p95_mm": 0.995,
+      "freespace_violation": 0.0295,
+      "p95_limit_mm": 10.015,
+      "h_vis_m": 0.33381759515037107
+    },
+    "collision": {
+      "occupancy_iou": 0.9844,
+      "source_to_collision_p95_mm": 0.503,
+      "collision_to_source_p95_mm": 0.776,
+      "verdict": "PASS",
+      "measurement_valid": true,
+      "file": "runs/unseen/delivery_v7/v7_20261030_r1/fixture_R01_gapfill/S4_full_fusion/collision/metrics_full.json"
+    },
+    "note": "证明资格门本身可以通过，不是无条件拒绝"
+  },
+  "negatives": [
+    {
+      "id": "baseline",
+      "expect": "honest",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N01_collision_pass_only",
+      "expect": "reject",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s1",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N02_old_visible_pass_new_scale",
+      "expect": "reject",
+      "qualified": false,
+      "status": "disqualified",
+      "reasons": [
+        "测量针对的观测是 runs/unseen/recovery_r3/obs_R01，本次案例观测是 runs/unseen/delivery_v7/v7_20261030_r1/scan_obs2/R01_s0.9",
+        "自由空间违规 0.1122 > 0.05"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N03_missing_metrics",
+      "expect": "reject",
+      "qualified": false,
+      "status": "not_measured",
+      "reasons": [
+        "碰撞目录缺: /tmp/does_not_exist",
+        "碰撞测量缺: /tmp/does_not_exist/metrics_*.json"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N03_sha_field_is_path",
+      "expect": "reject",
+      "qualified": false,
+      "status": "not_measured",
+      "reasons": [
+        "源网格缺: runs/unseen/delivery_v7/v7_20261030/processed/V7_R01_s1/fusion"
+      ],
+      "pass": true
+    }
+  ],
+  "real_candidates": "见 verify/real_candidate_gate.json（由 r1_pipeline 生成）"
+}

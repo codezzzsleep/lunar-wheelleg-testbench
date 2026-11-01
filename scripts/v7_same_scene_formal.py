@@ -145,9 +145,11 @@ def main():
     speed = float(np.linalg.norm(np.asarray(env.data.qvel[:3])))
     omega = float(np.linalg.norm(np.asarray(env.data.qvel[3:6])))
     tilt = float(env._tilt())
-    OBS_CRIT = {'stable': True, 'min_baseline_m': 0.20, 'min_bearing_deg': 5.0,
-                'min_mask_px': 500, 'min_valid_depth_frac': 0.5,
-                'max_speed': 0.05, 'max_omega': 0.5, 'max_tilt_deg': 5.0}
+    OBS_CRIT_VERSIONED = {'version': 'observation-acceptance/v1',
+                          'stable': True, 'min_baseline_m': 0.20, 'min_bearing_deg': 5.0,
+                          'min_mask_px': 500, 'min_valid_depth_frac': 0.5,
+                          'max_speed': 0.05, 'max_omega': 0.5, 'max_tilt_deg': 5.0}
+    OBS_CRIT = OBS_CRIT_VERSIONED
     reasons = []
     if not stable: reasons.append('not_stable')
     if cam_baseline < OBS_CRIT['min_baseline_m']: reasons.append('baseline_too_small')
@@ -158,18 +160,47 @@ def main():
     if omega > OBS_CRIT['max_omega']: reasons.append('still_rotating')
     if tilt > OBS_CRIT['max_tilt_deg']: reasons.append('tilted')
     if a.skip_acceptance:
+        # 复用验收**不是**绕过验收（§6.3）：必须核对来源确实 usable、状态哈希、
+        # 相机位姿、观测哈希与标准版本全部一致；任一不符就重新测量。
         _src = json.loads((ROOT / a.skip_acceptance).read_text())
-        observation = dict(_src.get('observation_acceptance') or {})
+        _acc = dict(_src.get('observation_acceptance') or {})
+        _mismatch = []
+        if not _acc.get('usable'):
+            _mismatch.append('来源验收本身 usable=false')
+        if _acc.get('criteria') != OBS_CRIT_VERSIONED:
+            _mismatch.append('验收标准版本不符')
+        _want_state = _acc.get('state_hash')
+        _cur_state = env.save_state().get('state_hash')
+        if _want_state and _cur_state and _want_state != _cur_state:
+            _mismatch.append('状态哈希不符')
+        _want_cam = _acc.get('camera_sha')
+        if _want_cam:
+            import hashlib as _h
+            _cam_blob = _h.sha256(json.dumps(
+                {'pos': [float(x) for x in env.data.cam_xpos[cam_id]],
+                 'mat': [float(x) for x in env.data.cam_xmat[cam_id]]},
+                sort_keys=True).encode()).hexdigest()
+            if _cam_blob != _want_cam:
+                _mismatch.append('相机位姿不符')
+        if _mismatch:
+            sys.stderr.write(f'[skip-acceptance] 拒绝复用：{_mismatch}\n')
+            raise SystemExit(6)
+        observation = _acc
         observation['reused_from'] = a.skip_acceptance
-        observation['usable'] = True
-        observation['reasons'] = []
+        observation['reused_verified'] = True
     else:
         observation = {'stable': stable, 'settle_hold_s': settle_hold_s,
                    'cam_baseline_m': round(cam_baseline, 4),
                    'bearing_change_deg': round(bearing_change_deg, 3),
                    'mask_px': mask_px, 'valid_depth_frac': round(valid_frac, 4),
                    'speed_mps': round(speed, 4), 'omega_rps': round(omega, 4),
-                       'tilt_deg': round(tilt, 3), 'criteria': OBS_CRIT,
+                       'tilt_deg': round(tilt, 3),
+                       'state_hash': env.save_state().get('state_hash'),
+                       'camera_sha': __import__('hashlib').sha256(json.dumps(
+                           {'pos': [float(x) for x in env.data.cam_xpos[cam_id]],
+                            'mat': [float(x) for x in env.data.cam_xmat[cam_id]]},
+                           sort_keys=True).encode()).hexdigest(),
+                       'criteria': OBS_CRIT,
                        'usable': not reasons, 'reasons': reasons}
     snap = env.save_state()
     (out / 'state_snapshot.json').write_text(json.dumps(snap, ensure_ascii=False, indent=2))

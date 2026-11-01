@@ -37,6 +37,19 @@ TETS = [(0, 5, 1, 6), (0, 1, 2, 6), (0, 2, 3, 6),
         (0, 3, 7, 6), (0, 7, 4, 6), (0, 4, 5, 6)]
 
 
+def _relpath(p):
+    """记录仓库相对路径：绝对路径会让清单换机器后无法比对。"""
+    p = pathlib.Path(p)
+    try:
+        return str(p.resolve().relative_to(ROOT))
+    except Exception:
+        s = str(p)
+        for marker in ('/runs/', '/cases/', '/demo/'):
+            if marker in s:
+                return 'runs/' + s.split('/runs/', 1)[1] if marker == '/runs/' else s.split(marker, 1)[1]
+        return s
+
+
 def sha_file(p):
     h = hashlib.sha256()
     with open(p, 'rb') as f:
@@ -584,8 +597,8 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
         'parent_source_kind': 'lux3d' if method == 'H5_F' else 'mirror',
         'coordinate_frame': 'world', 'parts': ['body.stl'],
         'world_sha': sha_file(body),
-        'inputs': {'observation': str(observation),
-                   'parent_world': [str(x) for x in pw_list],
+        'inputs': {'observation': _relpath(observation),
+                   'parent_world': [_relpath(x) for x in pw_list],
                    'parent_mesh_sha': [sha_file(x / 'body.stl') for x in pw_list],
                    'effective_config_sha': cfg.get('_sha')},
         'grid': {'convention': 'cell-center',

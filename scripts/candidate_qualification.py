@@ -94,6 +94,11 @@ def _norm(p):
         try:
             return str(q.resolve().relative_to(ROOT))
         except Exception:
+            # 另一台机器上的绝对路径：取 runs/ 之后的仓库相对部分
+            for marker in ('/runs/', '/cases/', '/demo/'):
+                if marker in s:
+                    tail = s.split(marker, 1)[1]
+                    return (marker.strip('/') + '/' + tail) if marker != '/runs/' else 'runs/' + tail
             return str(q)
     return str(q)
 
@@ -186,6 +191,23 @@ def qualify_candidate(candidate, observation_set, case=None, strict=True):
         return out
 
     proc = json.loads(process_path.read_text())
+    # 两种记录格式都必须支持：旧 process.json（fusion_metrics/observation/
+    # fusion_world_sha）与本批 fuse_observed 的 manifest.json（metrics/
+    # inputs.observation/world_sha）。归一化后走同一套判定。
+    if 'fusion_metrics' not in proc and 'metrics' in proc:
+        _in = proc.get('inputs') or {}
+        proc = {
+            'schema': proc.get('schema'),
+            'candidate': proc.get('parent_id'),
+            'observation': _in.get('observation'),
+            'fusion_world_sha': proc.get('world_sha'),
+            'fusion_metrics': proc.get('metrics') or {},
+            'fusion_strict': proc.get('strict') or {},
+            'case_id': proc.get('case_id'),
+            '_source_format': 'fused-asset/v2',
+        }
+    else:
+        proc.setdefault('_source_format', 'v7-candidate-process/v1')
 
     # ---- 2 source_identity_ok --------------------------------------------
     mesh_sha = sha256_file(mesh_path)

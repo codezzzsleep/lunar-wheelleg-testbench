@@ -1,0 +1,100 @@
+{
+  "schema": "supersede-record/v1",
+  "baseline": "fdd1d447",
+  "created": "2026-11-01T12:02:11",
+  "rule": "本批唯一正式资格门上线后，依赖不合格资产的旧结论降级；工程运行能力不撤回，只降级依赖这些资产的正式方法结论。",
+  "items": [
+    {
+      "path": "evaluation/six_matrix_all.json",
+      "use": "SUPERSEDED",
+      "why": "H5 行依赖 V7_R01_s1/V7_R02_s1 等未通过正式资格门（可见 freespace 超限、且测量针对旧观测 recovery_r3）的资产；合格门上线后这些行不能作为正式方法结论",
+      "keep_as": "诊断：可用于说明“若无严格资格门会得出什么”，不得进正式表",
+      "exists": true,
+      "sha": "68e61199d775ac9e"
+    },
+    {
+      "path": "evaluation/six_all_configs.json",
+      "use": "SUPERSEDED",
+      "why": "同上，四配置六方法汇总",
+      "exists": true,
+      "sha": "8348e50d919c6da0"
+    },
+    {
+      "path": "evaluation/six_r01_smoke/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "单配置冒烟，分母未对齐，且候选未过资格门",
+      "exists": true,
+      "sha": "a839d24abb276433"
+    },
+    {
+      "path": "evaluation/six_r01_low_traction/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "同上；且当时 nominal/土壤语义未按集合聚合",
+      "exists": true,
+      "sha": "22425cbaa9df4fd4"
+    },
+    {
+      "path": "evaluation/six_r01_high_drag/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "同上",
+      "exists": true,
+      "sha": "4b1bb5625ca8860d"
+    },
+    {
+      "path": "evaluation/six_R02_s0.9/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "R02@0.9 未按该尺度重新验收，H5 的 A0 是旧资产输出",
+      "exists": true,
+      "sha": "0111b9b835d4434b"
+    },
+    {
+      "path": "evaluation/six_R03_s1/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "R03 旧碰撞记录无测量有效性，资格门判 measurement_error",
+      "exists": true,
+      "sha": "1e6f6fe9dc743084"
+    },
+    {
+      "path": "evaluation/six_R04_s1/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "R04 无 process.json，可见资格为 not_measured",
+      "exists": true,
+      "sha": "810c1ca1e78c2184"
+    },
+    {
+      "path": "evaluation/six_r01_attribution.json",
+      "use": "SUPERSEDED",
+      "why": "归因基于未过资格门的候选，结论需在合格候选上重做",
+      "exists": true,
+      "sha": "155c237f4bda3866"
+    },
+    {
+      "path": "evaluation/six_r01_source_attribution.json",
+      "use": "SUPERSEDED",
+      "why": "同上",
+      "exists": true,
+      "sha": "642c6f78cec8c151"
+    },
+    {
+      "path": "evaluation/ablation_second_view.json",
+      "use": "DIAGNOSTIC",
+      "why": "两臂用 --skip-acceptance 强制 usable=true，违反 §6.3",
+      "exists": true,
+      "sha": "5b0d5ce9d915413d"
+    },
+    {
+      "path": "verify/candidate_qualification.json",
+      "use": "SUPERSEDED",
+      "why": "该文件只核对了碰撞保真，未含可见与观测匹配，已被 candidate_qualification/v2 取代",
+      "exists": true,
+      "sha": "412bafbe00ca652f"
+    },
+    {
+      "path": "evaluation/six_r01_b3f/records.jsonl",
+      "use": "DIAGNOSTIC",
+      "why": "B3_F 资产本身合格但其父先验来自未合格候选链",
+      "exists": true,
+      "sha": "2ae7a6475acaf428"
+    }
+  ]
+}

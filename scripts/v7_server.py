@@ -236,7 +236,16 @@ CONTROL_HTML = """
   案例 <select id="cCase"><option>R03</option><option>R02</option><option>R01</option><option>R04</option></select>
   土壤 <select id="cSoil"><option>nominal</option><option>low_traction</option><option>high_drag</option></select>
   seed <input id="cSeed" type="number" value="7" style="width:60px">
-  方法 <select id="cMethod"><option value="H5_F">H5_F 候选（正式）</option><option value="B0_blind">B0 盲走（失败演示）</option><option value="U_truth">U_truth 真值参考</option></select>
+  方法 <select id="cMethod">
+    <option value="H5_F">H5_F 候选（Lux3D）</option>
+    <option value="E25D_fill">2.5D 补平（未知按可见地面）</option>
+    <option value="E25D_block">2.5D 挡未知</option>
+    <option value="B1_height">高度规则</option>
+    <option value="B2_F">方盒子</option>
+    <option value="B3_F">镜像</option>
+    <option value="U_truth">真值参考（只给对照）</option>
+    <option value="B0_blind">B0 盲走（诊断/失败演示）</option>
+  </select>
   <button id="btnRun">开始正式闭环重跑</button>
   <button id="btnRehearse">候选预演（非真值执行）</button>
 </div>

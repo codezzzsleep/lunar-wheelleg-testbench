@@ -108,20 +108,47 @@ def run(case_key, soil, seed, out, method=DEFAULT_METHOD):
     res['observation'] = {'dir': cfg['observation'], 'sha': acq['observation']['sha']}
     # 2 资格（唯一门）
     cmap = candidate_map(case_key).get(method) or {}
+    if method.startswith('E25D_') or method in ('B1_height', 'B0_blind'):
+        cmap = {'qualified': None,
+                'note': '规则/2.5D 家族不使用候选资格门' if not method.startswith('E25D_')
+                        else '2.5D 高程策略直接从观测构建，不走候选资格门'}
     res['qualification'] = {'method': method,
-                            'qualified': bool(cmap.get('qualified')),
-                            'reason': cmap.get('reason')}
+                            'qualified': cmap.get('qualified'),
+                            'applicable': cmap.get('qualified') is not None,
+                            'reason': cmap.get('reason'), 'note': cmap.get('note')}
     # 3 决策（候选方法走真实预演；无合格候选走真实 A0）
-    MX.CFG_CURRENT[0], MX.CFG_CURRENT[1] = cfg, soil
-    env, case = MX.make_env(cfg, soil, truth_collision=cfg.get('truth_collision'))
+    case = json.loads((ROOT / cfg['case_config']).read_text())
+    env = MX.build_env(cfg, soil, collision_dir=MX.truth_collision_for(cfg))
     env.reset(seed=seed)
     cand_col = cmap.get('collision_dir') if cmap.get('qualified') else None
-    if method in ('B0_blind', 'B1_height', 'R2_fixed', 'W_width_rule', 'U_truth'):
-        act, why = MX.decide(method, acq.get('visible') or {},
-                             cand_collision=None, snapshot=snap)
+    # 正式页面与命令行同一数据链：建模方法走共同规划器，规则方法直接给动作
+    import common_planner as CP
+    import eval_six
+    import actions as ACT
+    goal_x = case['goal_x']
+    budget = float(cfg.get('budget_s', 30.0))
+    if method in ('B0_blind', 'R2_fixed', 'W_width_rule'):
+        act, why = MX.rule_action(method, acq.get('visible') or {})
+    elif method == 'B1_height':
+        act, why = eval_six.plan_height(acq.get('visible') or {}, MX.HEIGHT_RULE)
     else:
-        act, why = MX.decide(method, acq.get('visible') or {}, cand_collision=cand_col,
-                             snapshot=snap)
+        asset = cand_col if method in ('H5_F', 'B2_F', 'B3_F') else (
+            f"{BATCH}/elev25d/{cfg['config_id']}/{method.split('_')[-1]}"
+            if method.startswith('E25D_') else cand_col)
+        if method == 'U_truth':
+            asset = MX.truth_collision_for(cfg)
+        if not asset:
+            act, why = 'A0', {'rule': 'no_qualified_candidate', 'fallback': True}
+        else:
+            hyps = [{'id': method, 'kind': method, 'collision_dir': asset}]
+            plan = CP.plan_action(hyps, snap, acq.get('visible') or {}, [soil], budget,
+                                  (lambda h, s: MX.build_env(cfg, s, collision_dir=asset)),
+                                  goal_x=goal_x, seed=seed)
+            CP.write_plan(plan, out / 'plan')
+            act = plan['decision']['chosen']
+            why = {'planner': CP.PLANNER_VERSION, 'decision': plan['decision'],
+                   'cells': plan['counts']['rows']}
+            res['planner_cells'] = plan['counts']['rows']
     dec = {'method': method, 'chosen': act, 'evidence': why,
            'state_hash': snap.get('state_hash'), 'observation_sha': acq['observation']['sha'],
            'soil': soil, 'seed': seed}

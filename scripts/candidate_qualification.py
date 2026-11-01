@@ -135,7 +135,7 @@ def load_observation_set(observation_dir):
 def _find_metrics(collision_dir):
     """碰撞测量文件：优先全量测量，其次 v2。返回 (对象, 路径) 或 (None, None)。"""
     d = pathlib.Path(collision_dir)
-    for name in ('metrics_full.json', 'metrics_v2.json', 'metrics.json'):
+    for name in ('metrics_full.json', 'metrics_occ.json', 'metrics_v2.json', 'metrics.json'):
         p = d / name
         if p.is_file():
             try:
@@ -361,6 +361,39 @@ def qualify_candidate(candidate, observation_set, case=None, strict=True):
     return out
 
 
+
+def record_from_two_view(asset_dir):
+    """从两视角占据派生的资产生成资格门可读的记录。
+
+    这类资产没有 process.json：可见指标记在 visible_two_view.json（逐视角），
+    身份记在 two_view_report.json。这里只做**格式归一**，不新造任何数值。
+    """
+    d = pathlib.Path(asset_dir)
+    rep = json.loads((d / 'two_view_report.json').read_text())
+    vis = json.loads((d / 'visible_two_view.json').read_text())
+    obs1 = vis.get('obs1') or {}
+    views = [rep.get('obs1'), rep.get('obs2')]
+    rec = {
+        'schema': 'two-view-candidate-record/v1',
+        'candidate': rep.get('parent_id'),
+        'observation': rep.get('obs1'),
+        'observation_views': views,
+        'fusion_world_sha': sha256_file(d / 'body.stl'),
+        'fusion_metrics': {'mask_iou': obs1.get('mask_iou'),
+                           'vis_pt_p95_mm': obs1.get('vis_pt_p95_mm'),
+                           'freespace_violation': obs1.get('freespace_violation')},
+        'fusion_metrics_obs2': vis.get('obs2'),
+        'fusion_strict': {'pass': bool(vis.get('both_views')),
+                          'iou_min': THRESHOLDS['visible_iou_min'],
+                          'freespace_max': THRESHOLDS['freespace_max']},
+        'collision_metrics_file': 'collision/metrics_occ.json',
+        '_derived_from': [str(d / 'two_view_report.json'), str(d / 'visible_two_view.json')],
+        'note': ('两视角资产无 process.json；可见指标取 obs1（主视角），obs2 明细保留。'),
+    }
+    (d / 'candidate_record.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
+    return d / 'candidate_record.json'
+
+
 def gate(candidates, observation_set, case=None, strict=True, diag_ids=()):
     """对一个候选池做资格判定，返回 (qualified, diag, summary)。
 
@@ -415,10 +448,19 @@ def main():
     ap.add_argument('--observation', required=True)
     ap.add_argument('--case', default=None)
     ap.add_argument('--diag', action='store_true', help='显式诊断模式：不进入正式表')
+    ap.add_argument('--two-view', default=None,
+                    help='两视角资产目录：从报告归一生成记录再判定')
     ap.add_argument('--out', default=None)
     a = ap.parse_args()
 
-    cand = _candidate_from_dir(a.candidate, ROOT / a.processed_root)
+    if a.two_view:
+        d = ROOT / a.two_view if not pathlib.Path(a.two_view).is_absolute() else pathlib.Path(a.two_view)
+        proc = record_from_two_view(d)
+        cand = {'candidate_id': json.loads(proc.read_text())['candidate'],
+                'process': str(proc), 'collision_dir': str(d / 'collision'),
+                'mesh': str(d / 'body.stl')}
+    else:
+        cand = _candidate_from_dir(a.candidate, ROOT / a.processed_root)
     if a.collision_dir:
         cand['collision_dir'] = str(ROOT / a.collision_dir) if not pathlib.Path(a.collision_dir).is_absolute() else a.collision_dir
     if a.mesh:

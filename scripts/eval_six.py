@@ -39,6 +39,7 @@ import skills
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 INIT_CFG = json.loads((ROOT / 'configs/unseen_initial_state_v5.json').read_text())
 # 完整动作库（S1 跨骑、D1/D2 绕行按公开可见量判定适用性）
+SOIL_DETAILS = []
 OPTIONS = ('R1', 'R2', 'L1', 'L2', 'S1', 'D1', 'D2', 'A0')
 FAR, ABORT = 60.0, 40.0
 
@@ -394,8 +395,33 @@ def main():
                                  'success': False, 'abort': False,
                                  'reason': APPLY[o][1], 'cost': None})
                     continue
-                r = run_episode(world_dir, o, s_, vis, goal_x,
-                                time_limit=a.time_limit, soil_mode=phy['soil_mode'])
+                # 规划土壤集合：逐土壤枚举后再做最坏情形聚合（§5.4）。
+                # 只有一个土壤标签时行为与旧版一致（known-soil diagnostic）。
+                soil_set = proto.get('planning_soils') or [phy['soil_mode']]
+                per_soil = []
+                for soil in soil_set:
+                    r = run_episode(world_dir, o, s_, vis, goal_x,
+                                    time_limit=a.time_limit, soil_mode=soil)
+                    row_s = dict(r)
+                    row_s.update({'method': method, 'phase': phase,
+                                  'hypothesis': method,
+                                  'initial_state_id': f'seed{s_}',
+                                  'initial_state_hash': ish,
+                                  'initial_full_hash': ifh,
+                                  'environment_kind': env_kind,
+                                  'environment_sha': env_sha,
+                                  'truth_sha': truth_sha if env_kind == 'truth' else None,
+                                  'soil_mode': soil,
+                                  'soil_aggregate': False})
+                    per_soil.append(row_s)
+                    SOIL_DETAILS.append(row_s)
+                ok_all = all(x['success'] for x in per_soil)
+                costs = [x['cost'] for x in per_soil if x.get('cost') is not None]
+                r = dict(per_soil[0])
+                r['success'] = bool(ok_all)
+                r['cost'] = (max(costs) if costs else None)
+                r['n_soil'] = len(per_soil)
+                r['soil_fail'] = [x['soil_mode'] for x in per_soil if not x['success']]
                 row = dict(r)
                 row.update({'method': method, 'phase': phase,
                             'hypothesis': method,
@@ -405,7 +431,9 @@ def main():
                             'environment_kind': env_kind,
                             'environment_sha': env_sha,
                             'truth_sha': truth_sha if env_kind == 'truth' else None,
-                            'soil_mode': phy['soil_mode']})
+                            'soil_mode': ('set:' + ','.join(soil_set))
+                            if len(soil_set) > 1 else phy['soil_mode'],
+                            'soil_aggregate': True})
                 rows.append(row)
         return rows
 
@@ -623,6 +651,8 @@ def main():
                                ensure_ascii=False) + '\n')
 
     records += run_validation(dec_sha)
+    # 逐土壤明细单列：聚合行进决策，明细行进 records，便于审计最坏情形
+    records += SOIL_DETAILS
 
     # ---- 汇总：只统计 phase=execution ----
     summary = []
@@ -655,6 +685,10 @@ def main():
         'protocol': a.protocol, 'truth_sha': truth_sha,
         'truth_collision_sha': truth_col_sha,
         'soil_mode': phy['soil_mode'],
+        'planning_soils': proto.get('planning_soils') or [phy['soil_mode']],
+        'soil_aggregation': ('worst_case_over_planning_soils'
+                             if len(proto.get('planning_soils') or []) > 1
+                             else 'single_known_soil_diagnostic'),
         'time_limit_s': a.time_limit,
         'expected_keys': [{'method': d_['method'],
                            'initial_state_id': f'seed{s_}',

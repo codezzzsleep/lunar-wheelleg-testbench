@@ -65,13 +65,20 @@ def main():
         if not (_tc / 'manifest.json').exists():
             raise SystemExit(f'真值碰撞资产缺 manifest：{_tc}')
         spec['objects'] = [{'posed_dir': str(_tc)}]
-    if a.exec_soil != 'nominal':
-        import v7_soil
-        _r = v7_soil.resolve(a.exec_soil)
+    # 土壤必须**总是**注入真实参数：名义土壤也是三土壤集合的一员，
+    # 不能因为名字叫 nominal 就省略成 rigid（否则物理身份与实际不一致）。
+    import v7_soil
+    _r = v7_soil.resolve(a.exec_soil)
+    if _r.get('mode') == 'rigid':
+        spec['soil'] = {'mode': 'rigid', 'label': a.exec_soil, 'params': None}
+    else:
         spec['soil'] = {'mode': 'soil', 'label': _r.get('label'), 'params': _r['params']}
+    soil_identity = {'exec_soil': a.exec_soil, 'params_sha': _r.get('params_sha'),
+                     'mode': _r.get('mode'), 'rigid_diagnostic': _r.get('mode') == 'rigid'}
     truth_identity = {'case': str(a.case), 'truth_collision': a.truth_collision,
                       'exec_soil': a.exec_soil, 'rehearsal_soils': a.soils.split(','),
-                      'goal_x': a.goal_x, 'budget_s': a.budget}
+                      'goal_x': a.goal_x, 'budget_s': a.budget,
+                      'soil': soil_identity}
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=a.budget)
     env.reset(seed=0)
 

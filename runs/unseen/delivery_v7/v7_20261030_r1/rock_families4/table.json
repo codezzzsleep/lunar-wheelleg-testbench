@@ -1,0 +1,161 @@
+{
+  "schema": "rock-families/v1",
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "execution_soil": "nominal",
+  "candidate_scope": "固定首候选（每块一个生成候选）",
+  "rows": {
+    "P06|7": {
+      "rock": "P06",
+      "seed": 7,
+      "state_hash": "b110e68c3cff227cd89c3469b0134f03",
+      "qpos": [
+        -0.003894,
+        -0.009752,
+        0.384077,
+        0.999998,
+        8e-06,
+        -0.000993,
+        0.001462,
+        -7.2e-05,
+        0.850443,
+        -1.654429,
+        0.013422,
+        0.000259,
+        0.850369,
+        -1.654795,
+        0.013173,
+        0.00013,
+        0.846065,
+        -1.659097,
+        0.007271,
+        5.5e-05,
+        0.846005,
+        -1.659157,
+        0.007282
+      ],
+      "qvel": [
+        0.002112,
+        4.3e-05,
+        0.000247,
+        8.4e-05,
+        0.002583,
+        0.000145,
+        -0.00023,
+        0.003561,
+        -0.001655,
+        0.001444,
+        -0.000275,
+        0.003744,
+        -0.001421,
+        0.000607,
+        0.000331,
+        0.001844,
+        0.004765,
+        -0.006942,
+        -0.000177,
+        0.001854,
+        0.004349,
+        -0.007407
+      ],
+      "visible": {
+        "n_pixels": 11249,
+        "x_front": 1.6520567711981522,
+        "y_center": 0.0025869058649751614,
+        "W_vis": 0.36825767020935884,
+        "H_vis": 0.17407149423470752
+      },
+      "assets": {
+        "box": "runs/unseen/delivery_v7/v7_20261030_r1/rock_families4/P06/seed7/box/box",
+        "mirror": "runs/unseen/delivery_v7/v7_20261030_r1/rock_families4/P06/seed7/mirror/mirror",
+        "E25D_block": "runs/unseen/delivery_v7/v7_20261030_r1/rock_families4/P06/seed7/e25d_block",
+        "E25D_fill": "runs/unseen/delivery_v7/v7_20261030_r1/rock_families4/P06/seed7/e25d_fill",
+        "Lux3D": "runs/unseen/delivery_v7/v7_20261030_r1/rock_families4/P06/seed7/lux3d_coll",
+        "U_truth": null
+      },
+      "rows": {
+        "B2_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B3_F": {
+          "status": "planned",
+          "chosen": "D2",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "D2"
+          ],
+          "success": true,
+          "reason": "success",
+          "final_x": 3.589,
+          "frames": 453
+        },
+        "E25D_block": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_fill": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "H5_F": {
+          "status": "planned",
+          "chosen": "D1",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "D1",
+            "D2",
+            "R1",
+            "R2",
+            "L1"
+          ],
+          "success": false,
+          "reason": "tipped",
+          "final_x": 1.517,
+          "frames": 278
+        },
+        "U_truth": {
+          "status": "planned",
+          "chosen": "L2",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "L2",
+            "D2",
+            "R2"
+          ],
+          "success": true,
+          "reason": "success",
+          "final_x": 3.578,
+          "frames": 416
+        }
+      }
+    }
+  }
+}

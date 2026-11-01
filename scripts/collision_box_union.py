@@ -43,14 +43,17 @@ def occupancy_from_mesh(mesh, pitch, margin=2, solid_from_mesh=False):
     这条路径不依赖采样密度。
     """
     grid = FZ.make_grid(mesh, np.asarray(mesh.vertices), pitch, margin)
+    gshape = tuple(int(x) for x in (grid['dims'] if isinstance(grid, dict)
+                                    else np.asarray(grid.shape)))
+    if solid_from_mesh and not mesh.is_watertight:
+        solid_from_mesh = False      # 非水密网格不能走填内部，退回射线采样
     if solid_from_mesh:
-        if not mesh.is_watertight:
-            raise SystemExit('solid_from_mesh 需要水密网格；当前网格非水密')
         vg = mesh.voxelized(pitch=pitch).fill()
         origin = np.asarray(vg.bounds[0])
         shape = tuple(int(x) for x in np.round(vg.extents / pitch))
-        occ = np.zeros(grid.shape, dtype=bool)
-        lo = np.round((origin - grid.origin) / pitch).astype(int)
+        occ = np.zeros(gshape, dtype=bool)
+        _gorg = grid['origin'] if isinstance(grid, dict) else grid.origin
+        lo = np.round((origin - np.asarray(_gorg, dtype=float)) / pitch).astype(int)
         idx = tuple(slice(max(0, lo[d]), max(0, lo[d]) + shape[d]) for d in range(3))
         src = vg.matrix
         # 形状对齐后写入

@@ -1,0 +1,100 @@
+{
+  "schema": "collision-equivalence-summary/v1",
+  "rows": [
+    {
+      "config": "R02_s0.9",
+      "family": "H5_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "L2",
+      "coarse_outcome": "pass",
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference",
+      "coarse_pitch_m": 0.005
+    },
+    {
+      "config": "R02_s0.9",
+      "family": "B2_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "L2",
+      "coarse_outcome": "pass",
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference",
+      "coarse_pitch_m": 0.005
+    },
+    {
+      "config": "R02_s0.9",
+      "family": "B3_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "R2",
+      "coarse_outcome": "fail",
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference",
+      "coarse_pitch_m": 0.005
+    },
+    {
+      "config": "R01_s1",
+      "family": "H5_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "R2",
+      "coarse_outcome": "fail",
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference",
+      "coarse_pitch_m": 0.005
+    },
+    {
+      "config": "R01_s1",
+      "family": "B2_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "A0",
+      "coarse_outcome": "safe_abandon",
+      "decision_changed": false,
+      "outcome_changed": false,
+      "representation_sensitive": false,
+      "adopt": "coarse",
+      "coarse_pitch_m": 0.005
+    },
+    {
+      "config": "R01_s1",
+      "family": "B3_F",
+      "reference_chosen": "A0",
+      "reference_outcome": "safe_abandon",
+      "coarse_chosen": "A0",
+      "coarse_outcome": "safe_abandon",
+      "decision_changed": false,
+      "outcome_changed": false,
+      "representation_sensitive": false,
+      "adopt": "coarse",
+      "coarse_pitch_m": 0.005
+    }
+  ],
+  "reading": {
+    "sensitive": [
+      "R02_s0.9/H5_F",
+      "R02_s0.9/B2_F",
+      "R02_s0.9/B3_F",
+      "R01_s1/H5_F"
+    ],
+    "insensitive": [
+      "R01_s1/B2_F",
+      "R01_s1/B3_F"
+    ],
+    "note": "决策随表示变粗而改变 → 该资产标 representation_sensitive 并用参考表示；未改变 → 可选用较粗表示并注明适用条件。旧 IoU/距离只留附录。"
+  },
+  "counts": {
+    "n": 6,
+    "sensitive": 4
+  }
+}

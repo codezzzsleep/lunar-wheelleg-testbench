@@ -1,0 +1,90 @@
+{
+  "schema": "collision-equivalence/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "criterion": "选中动作与执行结论是否随碰撞表示变粗而改变；旧 IoU/距离仅在附录引用，不作门槛",
+  "rows": [
+    {
+      "family": "B2_F",
+      "reference": {
+        "family": "B2_F",
+        "asset": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R02_s0.9/B2F",
+        "chosen": "A0",
+        "safe_set": [],
+        "cells": 7,
+        "success": false,
+        "reason": "abort",
+        "final_x": 0.313,
+        "outcome": "safe_abandon"
+      },
+      "coarse": {
+        "family": "B2_F",
+        "asset": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B2_F/coarse/collision",
+        "chosen": "L2",
+        "safe_set": [
+          "L2"
+        ],
+        "cells": 7,
+        "success": true,
+        "reason": "success",
+        "final_x": 3.606,
+        "outcome": "pass"
+      },
+      "coarse_asset": {
+        "occ": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B2_F/coarse/occ_coarse.npz",
+        "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B2_F/coarse/collision",
+        "pitch_m": 0.005,
+        "factor": 2,
+        "n_boxes": 1008,
+        "rc": 0,
+        "err": ""
+      },
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference"
+    },
+    {
+      "family": "B3_F",
+      "reference": {
+        "family": "B3_F",
+        "asset": "runs/unseen/delivery_v7/v7_20261030_r1/priors_R02_s0.9/B3F",
+        "chosen": "A0",
+        "safe_set": [],
+        "cells": 7,
+        "success": false,
+        "reason": "abort",
+        "final_x": 0.313,
+        "outcome": "safe_abandon"
+      },
+      "coarse": {
+        "family": "B3_F",
+        "asset": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B3_F/coarse/collision",
+        "chosen": "R2",
+        "safe_set": [
+          "R2"
+        ],
+        "cells": 7,
+        "success": false,
+        "reason": "time_limit",
+        "final_x": 2.03,
+        "outcome": "fail"
+      },
+      "coarse_asset": {
+        "occ": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B3_F/coarse/occ_coarse.npz",
+        "collision_dir": "runs/unseen/delivery_v7/v7_20261030_r1/collision_equiv/R02_s0.9_priors/B3_F/coarse/collision",
+        "pitch_m": 0.005,
+        "factor": 2,
+        "n_boxes": 970,
+        "rc": 0,
+        "err": ""
+      },
+      "decision_changed": true,
+      "outcome_changed": true,
+      "representation_sensitive": true,
+      "adopt": "reference"
+    }
+  ]
+}

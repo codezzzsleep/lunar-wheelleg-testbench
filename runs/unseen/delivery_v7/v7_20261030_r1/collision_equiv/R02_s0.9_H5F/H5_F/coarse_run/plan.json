@@ -1,0 +1,164 @@
+{
+  "schema": "common-plan/v1",
+  "version": "common-planner/v1",
+  "visible": {
+    "x_front": 1.6537607023110272,
+    "W_vis": 0.35104189790804063,
+    "H_vis": 0.14022719068943648,
+    "n_pixels": 22909,
+    "y_center": 0.0033225672454857136
+  },
+  "planning_soils": [
+    "nominal"
+  ],
+  "hypotheses": [
+    "H5_F"
+  ],
+  "state_mode": "project",
+  "applicability": [
+    {
+      "hypothesis": "H5_F",
+      "action": "R1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "R2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "L1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "L2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility"
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "D1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_F",
+      "action": "D2",
+      "applicable": true,
+      "reason": null
+    }
+  ],
+  "per_hypothesis_action": {
+    "H5_F|R1": {
+      "soil_outcomes": {
+        "nominal": "failure"
+      },
+      "costs": [
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_F|R2": {
+      "soil_outcomes": {
+        "nominal": "failure"
+      },
+      "costs": [
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_F|L1": {
+      "soil_outcomes": {
+        "nominal": "failure"
+      },
+      "costs": [
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_F|L2": {
+      "soil_outcomes": {
+        "nominal": "success"
+      },
+      "costs": [
+        17.62
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_F|S1": {
+      "soil_outcomes": {
+        "nominal": "not_applicable"
+      },
+      "costs": [],
+      "success": false,
+      "errors": 0,
+      "not_applicable": true
+    },
+    "H5_F|D1": {
+      "soil_outcomes": {
+        "nominal": "failure"
+      },
+      "costs": [
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_F|D2": {
+      "soil_outcomes": {
+        "nominal": "failure"
+      },
+      "costs": [
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    }
+  },
+  "decision": {
+    "chosen": "L2",
+    "safe_set": [
+      "L2"
+    ],
+    "cost": 17.62,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "L2"
+    ]
+  },
+  "counts": {
+    "rows": 7,
+    "expected_rows": 7,
+    "traversal_actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "a0_is_fallback": true
+  }
+}

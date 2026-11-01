@@ -1,0 +1,99 @@
+{
+  "schema": "family-compare-summary/v1",
+  "tables": {
+    "R01_s1_nominal_seed7": [
+      {
+        "family": "B1_height",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B2_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B3_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_block",
+        "chosen": "D1",
+        "outcome": "fail",
+        "final_x": 1.99
+      },
+      {
+        "family": "E25D_fill",
+        "chosen": "R1",
+        "outcome": "fail",
+        "final_x": 1.642
+      },
+      {
+        "family": "H5_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "U_truth",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      }
+    ],
+    "R02_s0.9_nominal_seed7": [
+      {
+        "family": "B1_height",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B2_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "B3_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "E25D_block",
+        "chosen": "D1",
+        "outcome": "fail",
+        "final_x": 2.003
+      },
+      {
+        "family": "E25D_fill",
+        "chosen": "R1",
+        "outcome": "pass",
+        "final_x": 3.561
+      },
+      {
+        "family": "H5_F",
+        "chosen": "A0",
+        "outcome": "safe_abandon",
+        "final_x": 0.313
+      },
+      {
+        "family": "U_truth",
+        "chosen": "L2",
+        "outcome": "pass",
+        "final_x": 3.606
+      }
+    ]
+  },
+  "reading": {
+    "R02": "同一状态上只有两个家族真正通行：2.5D 补平（R1，x=3.561）与真值参考（L2，x=3.606）。方盒子/镜像/Lux3D 候选都判无安全通行动作而放弃，2.5D 挡未知选 D1 但实际失败。",
+    "R01": "没有任何家族通行（含真值参考），2.5D 两策略分别尝试 D1/R1 并在 x≈1.6-2.0 失败。这是动作库/状态边界，不是某个表示的问题。",
+    "blind_note": "盲走已退出主比较，仅作诊断（见上一批矩阵）。",
+    "honesty": "七个家族共用同一状态、同一可见量、同一预算与同一规划器；真值几何只进入 U_truth 与其执行环境。"
+  }
+}

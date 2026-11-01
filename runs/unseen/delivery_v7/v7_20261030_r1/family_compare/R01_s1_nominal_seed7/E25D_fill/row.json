@@ -1,0 +1,38 @@
+{
+  "family": "E25D_fill",
+  "kind": "elev25d_fill",
+  "asset": "runs/unseen/delivery_v7/v7_20261030_r1/elev25d/R01_s1/fill",
+  "decision": {
+    "chosen": "R1",
+    "safe_set": [
+      "R1",
+      "D1",
+      "L2",
+      "D2",
+      "S1",
+      "L1",
+      "R2"
+    ],
+    "cost": 15.8,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "R1"
+    ]
+  },
+  "cells": 7,
+  "safe_set": [
+    "R1",
+    "D1",
+    "L2",
+    "D2",
+    "S1",
+    "L1",
+    "R2"
+  ],
+  "success": false,
+  "reason": "tipped",
+  "final_x": 1.642,
+  "sim_time_s": 14.46,
+  "frames": 203,
+  "outcome": "fail"
+}

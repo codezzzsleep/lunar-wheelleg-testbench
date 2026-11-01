@@ -1,0 +1,89 @@
+{
+  "schema": "same-scene-formal/v1",
+  "case": "R03",
+  "truth_identity": {
+    "case": "/workspace/r1/demo/r1_r03_two_view/inputs/case.json",
+    "truth_collision": "/workspace/r1/demo/r1_r03_two_view/inputs/truth_collision",
+    "exec_soil": "nominal",
+    "rehearsal_soils": [
+      "nominal",
+      "low_traction",
+      "high_drag"
+    ],
+    "goal_x": 2.6,
+    "budget_s": 30.0,
+    "soil": {
+      "exec_soil": "nominal",
+      "params_sha": "55848f80956792b4704ff3ec83678bf7",
+      "mode": "soil",
+      "rigid_diagnostic": false
+    }
+  },
+  "observation_acceptance": {
+    "stable": true,
+    "settle_hold_s": 0.4,
+    "cam_baseline_m": 0.3326,
+    "bearing_change_deg": 6.431,
+    "mask_px": 26002,
+    "valid_depth_frac": 1.0,
+    "speed_mps": 0.0017,
+    "omega_rps": 0.0013,
+    "tilt_deg": 0.174,
+    "state_hash": "f2c338a1662419dcb4742bc6997d13cc",
+    "camera_sha": "f4e3d4fc9020e2e001a060d82293e6a2d5ce278a4bcbee624e16b5d44c4bdc65",
+    "criteria": {
+      "version": "observation-acceptance/v1",
+      "stable": true,
+      "min_baseline_m": 0.2,
+      "min_bearing_deg": 5.0,
+      "min_mask_px": 500,
+      "min_valid_depth_frac": 0.5,
+      "max_speed": 0.05,
+      "max_omega": 0.5,
+      "max_tilt_deg": 5.0
+    },
+    "usable": true,
+    "reasons": []
+  },
+  "budget_s": 30.0,
+  "drive_seconds": 10.4,
+  "observation_seconds": 0.0,
+  "remaining_before_exec_s": 19.6,
+  "env_t_before_exec": 10.4,
+  "decision": {
+    "chosen": "R1",
+    "safe_set": [
+      "R1",
+      "L2",
+      "D1",
+      "L1",
+      "D2",
+      "R2"
+    ],
+    "decision_sha": "ec28f073b91644a07c8fb61771467772c1b92fa3af957554a0d0ae0743325b97",
+    "cells": 18
+  },
+  "execution_start": {
+    "env_t": 10.399999999999867,
+    "data_time": 10.400000000000142,
+    "x": 0.3187941773798116,
+    "state_hash": "f2c338a1662419dcb4742bc6997d13cc"
+  },
+  "execution_end": {
+    "env_t": 16.199999999999743,
+    "data_time": 16.2000000000019,
+    "x": 3.605170805454224
+  },
+  "execution": {
+    "success": true,
+    "reason": "success",
+    "final_x": 3.605171,
+    "displacement_x": 3.286377,
+    "control_steps": 290,
+    "frames": 290,
+    "state_mode": "same_scene",
+    "fallback": false
+  },
+  "trajectory": "/tmp/demo_sb/run/trajectory.jsonl",
+  "trajectory_frames": 290
+}

@@ -151,28 +151,50 @@
     },
     "note": "与 acceptance/collision.json 完全一致，说明演示包能从占据独立重建该候选",
     "full_run": {
-      "where": "fresh directory /tmp/demo_run2, only pack inputs plus the repository code",
-      "steps_done": [
-        "input validation",
-        "rebuild mesh and boxes from occ.npz",
-        "acceptance metrics re-run",
-        "new rehearsal (18 cells)",
-        "new decision written first",
-        "truth execution on inputs/truth_collision"
+      "where": "/tmp/demo_sb（新目录，仅用包内输入 + 仓库代码）",
+      "command": "bash demo/r1_r03_two_view/run_demo.sh /tmp/demo_sb",
+      "exit_code": 0,
+      "code_sha": "d1345d09a7f5f42c376c18d4ae861915b5a4a764",
+      "steps": [
+        "代码与模型依赖检查",
+        "输入身份校验（14 项）",
+        "从占据重建网格与碰撞",
+        "碰撞测量复测（IoU 0.9833 / 0.504 / 0.739）",
+        "新预演与新决策",
+        "独立真值执行",
+        "轨迹落盘（291 帧）",
+        "连续回放生成"
       ],
       "result": {
-        "observation_usable": true,
-        "decision": "D1",
+        "decision": "R1",
         "cells": 18,
-        "success": true,
-        "final_x": 3.666224,
-        "displacement_x": 3.275117,
-        "control_steps": 282,
-        "state_mode": "same_scene",
-        "fallback": false
+        "execution": {
+          "success": true,
+          "reason": "success",
+          "final_x": 3.605171,
+          "displacement_x": 3.286377,
+          "control_steps": 290,
+          "frames": 290,
+          "state_mode": "same_scene",
+          "fallback": false
+        },
+        "trajectory_frames": 291
       },
-      "playback": "本次运行的报告未包含逐帧轨迹，播放器跳过；如需回放应在执行时开启 trajectory 记录（run_current 已支持）",
-      "note": "整链不使用 API key，不触发 create"
+      "artifacts": {
+        "summary": "verification/full_run/demo_run_summary.json",
+        "report": "verification/full_run/run/same_scene_report.json",
+        "player": "verification/full_run/run/player.html",
+        "trajectory": "verification/full_run/run/trajectory.jsonl",
+        "collision_metrics": "verification/full_run/rebuilt/collision/metrics_full.json"
+      },
+      "failure_policy": "任一步缺失或播放器生成失败 → run_demo.sh 非零退出（§8.3）；不再有\"跳过回放仍打印完成\"的路径。"
     }
+  },
+  "dependencies": {
+    "python": "3.12",
+    "mujoco": "3.17.0",
+    "robot_model": "vendor/unitree_mujoco/unitree_robots/go2w/go2w.xml",
+    "code_sha": "d1345d09a7f5f42c376c18d4ae861915b5a4a764",
+    "note": "依赖仓库代码与机器人模型；输入全部在包内，运行期不读原 runs 历史树。"
   }
 }

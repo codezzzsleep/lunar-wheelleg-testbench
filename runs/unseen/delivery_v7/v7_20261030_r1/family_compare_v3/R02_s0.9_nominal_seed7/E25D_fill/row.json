@@ -1,0 +1,71 @@
+{
+  "family": "E25D_fill",
+  "kind": "elev25d_fill",
+  "asset": "runs/unseen/delivery_v7/v7_20261030_r1/elev25d_v2/R02_s0.9/fill",
+  "decision": {
+    "chosen": "A0",
+    "safe_set": [],
+    "cost": null,
+    "reason": "no_safe_traversal",
+    "rehearsal_errors": 0,
+    "detail": {
+      "R1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "R2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "L1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "L2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "S1": {
+        "not_applicable": true,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "D1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      },
+      "D2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "E25D_fill": false
+        }
+      }
+    }
+  },
+  "cells": 21,
+  "safe_set": [],
+  "success": false,
+  "reason": "abort",
+  "final_x": 0.313,
+  "sim_time_s": 13.4,
+  "frames": 150,
+  "outcome": "safe_abandon"
+}

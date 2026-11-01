@@ -146,16 +146,20 @@ def plan_and_execute(tag, cfg, soil, seed, snapshot, vis, hyps, out_root, budget
     env = MX.build_env(cfg, soil, collision_dir=MX.truth_collision_for(cfg))
     env.reset(seed=seed)
     env.restore_state(snapshot, mode='same_scene')
+    t_start = float(env.t)          # 该臂起点（S1 或 S0）的模拟时刻
     r = runner.EpisodeRunner(env, skills.make_skill(act), visible=vis, seed=seed,
                              record_trajectory=True).run_current()
     frames = r.get('trajectory') or []
     if frames:
         (out / 'trajectory.jsonl').write_text(
             '\n'.join(json.dumps(f, ensure_ascii=False) for f in frames) + '\n')
+    t_end = float(env.t)
     return {'arm': tag, 'chosen': act, 'cells': plan['counts']['rows'],
             'safe_set': plan['decision'].get('safe_set'),
             'success': bool(r.get('success')), 'reason': r.get('reason'),
-            'execution_sim_time_s': round(float(env.t), 4),
+            'sim_t_start': round(t_start, 4), 'sim_t_end': round(t_end, 4),
+            'exec_duration_s': round(t_end - t_start, 4),
+            'total_from_S0_s': round(t_end, 4),
             'final_x': r.get('final_x'), 'frames': len(frames),
             'hypotheses': [h['id'] for h in hyps]}
 
@@ -168,6 +172,8 @@ def main():
     ap.add_argument('--first-candidate', default=None,
                     help='第一张图派生的候选目录（诊断或合格都可）')
     ap.add_argument('--out', required=True)
+    ap.add_argument('--two-view', default=None,
+                    help='复用已有的两视角资产（跳过重建）')
     a = ap.parse_args()
     out_root = ROOT / a.out if not pathlib.Path(a.out).is_absolute() else pathlib.Path(a.out)
     out_root.mkdir(parents=True, exist_ok=True)
@@ -209,8 +215,13 @@ def main():
     rec['hypothesis_first'] = h_first
 
     # 假设 2：用本次真实第二张图重建（B 专用）
-    tv_dir, tv_meta = build_two_view(obs1, obs2, out_root / 'two_view', cfg)
-    if tv_dir is not None:
+    if a.two_view:
+        tv_dir = (ROOT / a.two_view) if not pathlib.Path(a.two_view).is_absolute() \
+            else pathlib.Path(a.two_view)
+        tv_meta = {'reused': True, 'dir': a.two_view}
+    else:
+        tv_dir, tv_meta = build_two_view(obs1, obs2, out_root / 'two_view', cfg)
+    if tv_dir is not None and not a.two_view:
         tv_meta['visible'] = measure_two_view_visibility(tv_dir, obs1)
     rec['two_view_build'] = tv_meta
     h_two = None
@@ -240,15 +251,11 @@ def main():
 
     # 从 S0 起的总模拟时间：观察成本（S1 采集时的模拟时间）+ 各自执行时间
     obs_cost = float((acq.get('state') or {}).get('env_t') or 0.0)
-    for name, arm in rec['arms'].items():
-        if 'execution_sim_time_s' in arm:
-            exec_t = float(arm['execution_sim_time_s'])
-            arm['observation_sim_time_s'] = 0.0 if name.startswith('C_') else obs_cost
-            arm['total_sim_time_from_S0_s'] = round(arm['observation_sim_time_s'] + exec_t, 4)
     rec['accounting'] = {
-        'observation_sim_time_s': obs_cost,
-        'note': ('从 S0 起算：A/B 含观察阶段模拟时间，C 不含；'
-                 '不再用位移相减解释观察成本。')}
+        's0_to_observation_s': round(obs_cost, 4),
+        'note': ('每臂记录 sim_t_start / sim_t_end / exec_duration_s / total_from_S0_s；'
+                 'total_from_S0_s 直接取该臂结束时的 env.t，不再把观察时间重复相加。'),
+        'no_double_count': True}
     (out_root / 'fair_ablation.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
     print(json.dumps({k: {kk: v.get(kk) for kk in ('chosen', 'success', 'reason',
                                                    'total_sim_time_from_S0_s')}

@@ -1,0 +1,108 @@
+{
+  "schema": "family-compare/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "observation": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation",
+    "sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6"
+  },
+  "visible": {
+    "n_pixels": 22909,
+    "x_front": 1.6537607023110272,
+    "y_center": 0.0033225672454857136,
+    "W_vis": 0.35104189790804063,
+    "H_vis": 0.14022719068943648
+  },
+  "budget_s": 30.0,
+  "planner": "common-planner/v1",
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "execution_soil": "nominal",
+  "planning_mode": "full_planning_soils",
+  "rows": [
+    {
+      "family": "B1_height",
+      "kind": "height_rule",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": null,
+      "safe_set": null,
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "B2_F",
+      "kind": "box",
+      "chosen": "L2",
+      "outcome": "pass",
+      "cells": 21,
+      "safe_set": [
+        "L2"
+      ],
+      "final_x": 3.606,
+      "sim_time_s": 17.3
+    },
+    {
+      "family": "B3_F",
+      "kind": "mirror",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 21,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "E25D_block",
+      "kind": "elev25d_block",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 21,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "E25D_fill",
+      "kind": "elev25d_fill",
+      "chosen": "A0",
+      "outcome": "safe_abandon",
+      "cells": 21,
+      "safe_set": [],
+      "final_x": 0.313,
+      "sim_time_s": 13.4
+    },
+    {
+      "family": "H5_F",
+      "kind": "lux3d",
+      "chosen": "L2",
+      "outcome": "pass",
+      "cells": 21,
+      "safe_set": [
+        "L2"
+      ],
+      "final_x": 3.606,
+      "sim_time_s": 17.3
+    },
+    {
+      "family": "U_truth",
+      "kind": "truth",
+      "chosen": "L2",
+      "outcome": "pass",
+      "cells": 21,
+      "safe_set": [
+        "L2",
+        "L1"
+      ],
+      "final_x": 3.606,
+      "sim_time_s": 17.3
+    }
+  ]
+}

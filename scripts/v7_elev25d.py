@@ -106,14 +106,17 @@ def to_boxes(H, OBS, meta, strategy, ground_z, cell=CELL_M):
             base = ground_z
             if top <= base + 1e-4:
                 continue                    # 平地不需要碰撞盒
-            # 原点已在格点上，索引即世界坐标除以格宽（无 round 偏移）
+            # 加载器的 box 索引是**闭区间**：单格写作 [a,a]、[b,b]，
+            # 世界范围 = origin + [i0, i1+1] * pitch。这里必须按闭区间给索引。
             xa = a
             ya = b
             za = int(np.floor(base / cell))
-            zb = int(np.ceil(top / cell))
+            zb = int(np.ceil(top / cell)) - 1
             if zb <= za:
                 zb = za + 1
-            boxes.append([int(xa), int(xa + 1), int(ya), int(ya + 1), int(za), int(zb)])
+            if zb < za:
+                zb = za
+            boxes.append([int(xa), int(xa), int(ya), int(ya), int(za), int(zb)])
     return boxes, {'unknown_cells': unknown_cells, 'imputed_cells': imputed_cells,
                    'n_boxes': len(boxes)}
 

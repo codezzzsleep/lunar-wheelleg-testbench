@@ -1,0 +1,153 @@
+{
+  "schema": "batch-index/v1",
+  "current": {
+    "family_compare": {
+      "dir": "family_compare_v3/R02_s0.9_nominal_seed7",
+      "planning_soils": [
+        "nominal",
+        "low_traction",
+        "high_drag"
+      ],
+      "execution_soil": "nominal",
+      "rows": [
+        {
+          "family": "B1_height",
+          "chosen": "A0",
+          "outcome": "safe_abandon",
+          "final_x": 0.313
+        },
+        {
+          "family": "B2_F",
+          "chosen": "L2",
+          "outcome": "pass",
+          "final_x": 3.606
+        },
+        {
+          "family": "B3_F",
+          "chosen": "A0",
+          "outcome": "safe_abandon",
+          "final_x": 0.313
+        },
+        {
+          "family": "E25D_block",
+          "chosen": "A0",
+          "outcome": "safe_abandon",
+          "final_x": 0.313
+        },
+        {
+          "family": "E25D_fill",
+          "chosen": "A0",
+          "outcome": "safe_abandon",
+          "final_x": 0.313
+        },
+        {
+          "family": "H5_F",
+          "chosen": "L2",
+          "outcome": "pass",
+          "final_x": 3.606
+        },
+        {
+          "family": "U_truth",
+          "chosen": "L2",
+          "outcome": "pass",
+          "final_x": 3.606
+        }
+      ]
+    },
+    "fair": {
+      "dir": "fair_ablation_v3/R02_s0.9_nominal_seed7",
+      "arms": {
+        "A_S1_first_image": {
+          "chosen": "L2",
+          "success": true,
+          "sim_t_start": 10.4,
+          "sim_t_end": 17.3,
+          "exec_duration_s": 6.9,
+          "total_from_S0_s": 17.3
+        },
+        "B_S1_second_image": {
+          "chosen": "L2",
+          "success": true,
+          "sim_t_start": 10.4,
+          "sim_t_end": 17.3,
+          "exec_duration_s": 6.9,
+          "total_from_S0_s": 17.3
+        },
+        "C_S0_direct": {
+          "chosen": "D2",
+          "success": true,
+          "sim_t_start": 0.0,
+          "sim_t_end": 7.46,
+          "exec_duration_s": 7.46,
+          "total_from_S0_s": 7.46
+        }
+      },
+      "conclusion": "本次 R02、seed7 实验未观察到决策或通行改善"
+    },
+    "holdout": {
+      "selection": "holdout_final/selection.json",
+      "pool": 80,
+      "scanned": 80,
+      "selected": [
+        "P04",
+        "P06",
+        "P29",
+        "P46",
+        "P58",
+        "P64",
+        "P76"
+      ],
+      "seeds": [
+        7,
+        11,
+        13
+      ]
+    },
+    "generation_application": {
+      "dir": "generation_application",
+      "n_rocks": 7,
+      "n_tasks": 7,
+      "price": {
+        "credits_per_task_verified": 1.0,
+        "source": "供应商任务列表 list_tasks 的 consumedCredits 字段（本批实测）",
+        "text_to_3d_credits": 13,
+        "ceiling_per_task": 20.0,
+        "expected_total_credits": 7.0,
+        "ceiling_total_credits": 140.0,
+        "budget_available_credits": 500.0,
+        "within_budget": true,
+        "actual_charge": "unknown（以外部账单为准）"
+      },
+      "contact_sheet": "runs/unseen/delivery_v7/v7_20261030_r1/generation_application/contact_sheet.png",
+      "authorization": {
+        "status": "pending_user_approval",
+        "not_authorized_by_this_file": true
+      }
+    },
+    "repro_pack": {
+      "dir": "../../demo/r1_r02_25d",
+      "expected": "L2 / success / 3.606"
+    },
+    "story": {
+      "dir": "story/R02_v3.html"
+    }
+  },
+  "archived": [
+    "family_compare",
+    "family_compare_v2",
+    "elev25d",
+    "elev25d_v2",
+    "elev25d_eval",
+    "elev25d_eval_v2",
+    "fair_ablation",
+    "fair_ablation_v2",
+    "collision_equiv",
+    "holdout",
+    "holdout_v2",
+    "holdout_scan_full",
+    "holdout_scan_smoke",
+    "holdout_scan_b",
+    "holdout_scan_c"
+  ],
+  "archived_reason": "这些目录用旧盒索引/旧加载路径/单土壤口径产生，保留原样但不再作为结论依据"
+}

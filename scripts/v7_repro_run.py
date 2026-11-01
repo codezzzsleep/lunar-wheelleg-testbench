@@ -85,13 +85,15 @@ def main():
     asset_rel = (str(asset_dir.relative_to(ROOT)) if asset_dir.is_relative_to(ROOT)
                  else str(asset_dir))
     hyps = [{'id': f'E25D_{a.strategy}', 'kind': 'elev25d', 'collision_dir': asset_rel}]
-    plan = CP.plan_action(hyps, snap, vis, [man.get('soil', 'nominal')], cfg['budget_s'],
+    soils = man.get('planning_soils') or [man.get('soil', 'nominal')]
+    plan = CP.plan_action(hyps, snap, vis, soils, cfg['budget_s'],
                           (lambda h, s: MX.build_env(cfg, s, collision_dir=asset_rel)),
                           goal_x=case['goal_x'], seed=int(man.get('seed', 7)))
     CP.write_plan(plan, out / 'plan')
     act = plan['decision']['chosen']
     (out / 'decision.json').write_text(json.dumps(plan['decision'], ensure_ascii=False, indent=2))
     rec['stages']['plan'] = {'chosen': act, 'cells': plan['counts']['rows'],
+                             'planning_soils': soils,
                              'safe_set': plan['decision'].get('safe_set')}
 
     # 4 独立真值执行

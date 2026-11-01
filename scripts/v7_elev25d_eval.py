@@ -24,6 +24,7 @@ def main():
     ap.add_argument('--soil', default='nominal')
     ap.add_argument('--seed', type=int, default=7)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--planning-soils', default='nominal,low_traction,high_drag')
     ap.add_argument('--asset-root', default=None,
                     help='高程资产根（默认为 BATCH/elev25d/<config>）')
     a = ap.parse_args()
@@ -50,7 +51,8 @@ def main():
         asset = (f"{a.asset_root}/{strat}" if a.asset_root
                  else f"{BATCH}/elev25d/{a.config}/{strat}")
         hyps = [{'id': tag, 'kind': 'elev25d', 'collision_dir': asset}]
-        p = CP.plan_action(hyps, snap, vis, [a.soil], float(cfg.get('budget_s', 30.0)),
+        soils = [x for x in a.planning_soils.split(',') if x]
+        p = CP.plan_action(hyps, snap, vis, soils, float(cfg.get('budget_s', 30.0)),
                            (lambda h, s: MX.build_env(cfg, s, collision_dir=asset)),
                            goal_x=goal_x, seed=a.seed)
         CP.write_plan(p, d)

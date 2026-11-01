@@ -49,7 +49,8 @@ def h5_asset(cfg_id):
     return None
 
 
-def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, budget):
+def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, budget,
+               planning_soils=None):
     d = out_root / name
     d.mkdir(parents=True, exist_ok=True)
     rec = {'family': name, 'kind': kind, 'asset': asset}
@@ -73,7 +74,7 @@ def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, 
             (d / 'row.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
             return rec
         hyps = [{'id': name, 'kind': kind, 'collision_dir': asset}]
-        p = CP.plan_action(hyps, snap, vis, [soil], budget,
+        p = CP.plan_action(hyps, snap, vis, planning_soils or [soil], budget,
                            (lambda h, s: MX.build_env(cfg, s, collision_dir=asset)),
                            goal_x=goal_x, seed=seed)
         CP.write_plan(p, d)
@@ -103,7 +104,11 @@ def run_family(name, kind, asset, cfg, soil, seed, snap, vis, goal_x, out_root, 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--config', required=True)
-    ap.add_argument('--soil', default='nominal')
+    ap.add_argument('--soil', default='nominal', help='执行土壤（单独指定）')
+    ap.add_argument('--planning-soils', default='nominal,low_traction,high_drag',
+                    help='规划土壤全集；默认三土壤')
+    ap.add_argument('--diagnostic-single-soil', action='store_true',
+                    help='旧口径：只用执行土壤规划（仅作诊断，不进主表）')
     ap.add_argument('--seed', type=int, default=7)
     ap.add_argument('--out', required=True)
     ap.add_argument('--families', default=None)
@@ -118,6 +123,8 @@ def main():
     vis = acq.get('visible') or {}
     goal_x = json.loads((ROOT / cfg['case_config']).read_text())['goal_x']
     budget = float(cfg.get('budget_s', 30.0))
+    planning_soils = ([a.soil] if a.diagnostic_single_soil
+                      else [x for x in a.planning_soils.split(',') if x])
     wanted = a.families.split(',') if a.families else None
 
     rows = []
@@ -130,13 +137,13 @@ def main():
         elif kind == 'lux3d':
             asset = h5_asset(a.config)
         rows.append(run_family(name, kind, asset, cfg, a.soil, a.seed, snap, vis,
-                               goal_x, out_root, budget))
+                               goal_x, out_root, budget, planning_soils))
         print(json.dumps({'family': name, 'chosen': rows[-1]['decision'].get('chosen'),
                           'outcome': rows[-1].get('outcome')}, ensure_ascii=False), flush=True)
     # 真值参考：唯一能读真值几何的家庭
     tc = MX.truth_collision_for(cfg)
     hyps = [{'id': 'truth', 'kind': 'truth'}]
-    p = CP.plan_action(hyps, snap, vis, [a.soil], budget,
+    p = CP.plan_action(hyps, snap, vis, planning_soils or [a.soil], budget,
                        (lambda h, s: MX.build_env(cfg, s, collision_dir=tc)),
                        goal_x=goal_x, seed=a.seed)
     d = out_root / 'U_truth'
@@ -164,6 +171,9 @@ def main():
              'seed': a.seed, 'state_hash': snap.get('state_hash'),
              'observation': acq.get('observation'), 'visible': vis,
              'budget_s': budget, 'planner': CP.PLANNER_VERSION,
+             'planning_soils': planning_soils, 'execution_soil': a.soil,
+             'planning_mode': ('diagnostic_single_soil' if a.diagnostic_single_soil
+                               else 'full_planning_soils'),
              'rows': [{'family': r['family'], 'kind': r['kind'],
                        'chosen': r['decision'].get('chosen'),
                        'outcome': r.get('outcome'),

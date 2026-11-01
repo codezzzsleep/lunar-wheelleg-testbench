@@ -5,35 +5,36 @@
   "inputs_verified": 7,
   "stages": {
     "rebuild": {
-      "n_boxes": 536,
-      "unknown_frac": 0.2669,
-      "asset": "/tmp/repro_out2/elev25d/fill"
+      "n_boxes": 546,
+      "unknown_frac": 0.2624,
+      "asset": "/tmp/repro_v3/elev25d/fill"
     },
     "plan": {
-      "chosen": "R1",
+      "chosen": "L2",
       "cells": 7,
+      "planning_soils": [
+        "nominal"
+      ],
       "safe_set": [
-        "R1",
-        "D1",
         "L2",
-        "D2",
         "L1",
-        "R2"
+        "R2",
+        "D2"
       ]
     },
     "execute": {
       "scene_rebind": false,
       "success": true,
       "reason": "success",
-      "final_x": 3.561,
-      "frames": 331,
-      "sim_time_s": 17.02
+      "final_x": 3.606,
+      "frames": 345,
+      "sim_time_s": 17.3
     },
     "replay": {
-      "player": "/tmp/repro_out2/player.html",
-      "frames": 331
+      "player": "/tmp/repro_v3/player.html",
+      "frames": 345
     }
   },
   "ok": true,
-  "finished": 1793530312.952283
+  "finished": 1793541943.6509032
 }

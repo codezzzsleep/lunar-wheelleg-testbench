@@ -1,0 +1,5957 @@
+{
+  "schema": "holdout-selection/v1",
+  "protocol": "plans/holdout_protocol.json",
+  "scan": "runs/unseen/delivery_v7/v7_20261030_r1/holdout_scan_union",
+  "n_scanned_objects": 80,
+  "n_selected": 7,
+  "selected": [
+    "P04",
+    "P06",
+    "P29",
+    "P46",
+    "P58",
+    "P64",
+    "P76"
+  ],
+  "seeds_used": [
+    7,
+    11,
+    13
+  ],
+  "protocol_confirm_seeds": [
+    7,
+    11,
+    13
+  ],
+  "rows": [
+    {
+      "object": "P01",
+      "case": "P01",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P02",
+      "case": "P02",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P03",
+      "case": "P03",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P04",
+      "case": "P04",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P05",
+      "case": "P05",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P06",
+      "case": "P06",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "L2",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "L2",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "L2",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P07",
+      "case": "P07",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P08",
+      "case": "P08",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P09",
+      "case": "P09",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P10",
+      "case": "P10",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P11",
+      "case": "P11",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P12",
+      "case": "P12",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P13",
+      "case": "P13",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "R1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "R1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "R1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P14",
+      "case": "P14",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P15",
+      "case": "P15",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P16",
+      "case": "P16",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P17",
+      "case": "P17",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P18",
+      "case": "P18",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P19",
+      "case": "P19",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P20",
+      "case": "P20",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P21",
+      "case": "P21",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P22",
+      "case": "P22",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P23",
+      "case": "P23",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "L1",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "L1",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P24",
+      "case": "P24",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P25",
+      "case": "P25",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P26",
+      "case": "P26",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P27",
+      "case": "P27",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P28",
+      "case": "P28",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P29",
+      "case": "P29",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R2",
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P30",
+      "case": "P30",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P31",
+      "case": "P31",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P32",
+      "case": "P32",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P33",
+      "case": "P33",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P34",
+      "case": "P34",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P35",
+      "case": "P35",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P36",
+      "case": "P36",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "R1",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "R1",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "R1",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P37",
+      "case": "P37",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P38",
+      "case": "P38",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P39",
+      "case": "P39",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P40",
+      "case": "P40",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P41",
+      "case": "P41",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P42",
+      "case": "P42",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "S1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "S1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P43",
+      "case": "P43",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P44",
+      "case": "P44",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P45",
+      "case": "P45",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P46",
+      "case": "P46",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P47",
+      "case": "P47",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P48",
+      "case": "P48",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P49",
+      "case": "P49",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P50",
+      "case": "P50",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P51",
+      "case": "P51",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P52",
+      "case": "P52",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P53",
+      "case": "P53",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P54",
+      "case": "P54",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P55",
+      "case": "P55",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P56",
+      "case": "P56",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P57",
+      "case": "P57",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P58",
+      "case": "P58",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D2"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D2"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D2"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P59",
+      "case": "P59",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P60",
+      "case": "P60",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P61",
+      "case": "P61",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P62",
+      "case": "P62",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P63",
+      "case": "P63",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P64",
+      "case": "P64",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "S1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P65",
+      "case": "P65",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P66",
+      "case": "P66",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P67",
+      "case": "P67",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P68",
+      "case": "P68",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P69",
+      "case": "P69",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P70",
+      "case": "P70",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P71",
+      "case": "P71",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "L1",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "L1": "success",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P72",
+      "case": "P72",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P73",
+      "case": "P73",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P74",
+      "case": "P74",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P75",
+      "case": "P75",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": []
+        }
+      }
+    },
+    {
+      "object": "P76",
+      "case": "P76",
+      "scale": null,
+      "status": "selected",
+      "simple_fail_states": 3,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1"
+      ],
+      "selected": true,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "failure"
+          },
+          "simple_ok": false,
+          "actions_ok": [
+            "D1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P77",
+      "case": "P77",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P78",
+      "case": "P78",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P79",
+      "case": "P79",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    },
+    {
+      "object": "P80",
+      "case": "P80",
+      "scale": null,
+      "status": "not_selected",
+      "simple_fail_states": 0,
+      "evaluated_seeds": 3,
+      "missing_seeds": [],
+      "robust_actions": [
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "R1",
+        "R2",
+        "S1"
+      ],
+      "selected": false,
+      "detail": {
+        "seed7": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed11": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        },
+        "seed13": {
+          "evaluated": true,
+          "simple_actions": {
+            "height": "A0",
+            "width": "R1"
+          },
+          "simple_outcomes": {
+            "A0": "abort",
+            "R1": "success"
+          },
+          "simple_ok": true,
+          "actions_ok": [
+            "D1",
+            "D2",
+            "L1",
+            "L2",
+            "R1",
+            "R2",
+            "S1"
+          ]
+        }
+      }
+    }
+  ],
+  "pool": {
+    "planned_first_pool": 48,
+    "max_pool": 80,
+    "actual_pool": 17,
+    "actual_pool_detail": "assets/raw 下 13 个独立 GLB（boulder/cargo_crate/...）+ R01..R04 四块石头",
+    "shortfall_reason": "新增真实几何需要付费生成；本批未获授权，故先用现有 17 个对象冻结规则并给出筛选实现"
+  },
+  "note": "只对已扫描对象判定；池中其余对象写 not_scanned，不补造。新增真实几何需要付费生成，本批未授权。"
+}

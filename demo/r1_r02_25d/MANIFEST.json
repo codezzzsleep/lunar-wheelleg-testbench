@@ -60,54 +60,55 @@
     "scene_signature_rule": "content-identity (mesh sha256)",
     "migration": "原始快照按路径口径记录场景签名；包内只把签名迁移为内容口径，mjstate 与所有控制计数一字未动，恢复后 hash 与原值一致",
     "expected_result": {
-      "chosen": "R1",
+      "chosen": "L2",
       "outcome": "success",
-      "final_x": 3.561
+      "final_x": 3.606
     }
   },
   "verification": {
     "repro_run": {
-      "where": "/tmp/repro_out2（新目录，仅用包内缓存输入 + 仓库代码）",
-      "command": "PY=.venv/bin/python bash demo/r1_r02_25d/run_repro.sh /tmp/repro_out2",
+      "where": "/tmp/repro_v3（新目录，仅用包内缓存输入 + 仓库代码）",
+      "command": "PY=.venv/bin/python bash demo/r1_r02_25d/run_repro.sh /tmp/repro_v3",
       "ok": true,
       "stages": {
         "rebuild": {
-          "n_boxes": 536,
-          "unknown_frac": 0.2669,
-          "asset": "/tmp/repro_out2/elev25d/fill"
+          "n_boxes": 546,
+          "unknown_frac": 0.2624,
+          "asset": "/tmp/repro_v3/elev25d/fill"
         },
         "plan": {
-          "chosen": "R1",
+          "chosen": "L2",
           "cells": 7,
+          "planning_soils": [
+            "nominal"
+          ],
           "safe_set": [
-            "R1",
-            "D1",
             "L2",
-            "D2",
             "L1",
-            "R2"
+            "R2",
+            "D2"
           ]
         },
         "execute": {
           "scene_rebind": false,
           "success": true,
           "reason": "success",
-          "final_x": 3.561,
-          "frames": 331,
-          "sim_time_s": 17.02
+          "final_x": 3.606,
+          "frames": 345,
+          "sim_time_s": 17.3
         },
         "replay": {
-          "player": "/tmp/repro_out2/player.html",
-          "frames": 331
+          "player": "/tmp/repro_v3/player.html",
+          "frames": 345
         }
       },
       "matches_expected": true,
-      "artifacts": [
-        "verification/repro_run/result.json",
-        "verification/repro_run/decision.json",
-        "verification/repro_run/trajectory.jsonl",
-        "verification/repro_run/player.html"
-      ]
+      "note": "2.5D 盒索引改为闭区间后重建为 546 个盒；未知占 26.2%；规划只跑包内声明的 nominal（单土壤诊断），与三土壤主表区分"
     }
-  }
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ]
 }

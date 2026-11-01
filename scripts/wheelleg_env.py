@@ -748,8 +748,17 @@ class WheelLegEnv:
                     man = json.loads((pathlib.Path(pd) / 'manifest.json').read_text())
                 except Exception:
                     man = {}
-                parts.append('|'.join(str(man.get(k)) for k in
-                                      ('world_sha', 'collision_sha', 'n_parts', 'parts')))
+                # box 并集必须把几何本身纳入身份：不同高程图不能共享同一场景签名
+                if man.get('boxes'):
+                    import hashlib as _h2
+                    hb = _h2.sha256()
+                    hb.update(json.dumps([[int(v) for v in b] for b in man['boxes']]).encode())
+                    hb.update(json.dumps([float(v) for v in (man.get('grid_origin') or [])]).encode())
+                    hb.update(str(man.get('pitch_m')).encode())
+                    parts.append('boxes:' + hb.hexdigest() + ':' + str(len(man['boxes'])))
+                else:
+                    parts.append('|'.join(str(man.get(k)) for k in
+                                          ('world_sha', 'collision_sha', 'n_parts', 'parts')))
             else:
                 mf = obj.get('mesh_file')
                 if by_content and mf and pathlib.Path(mf).is_file():

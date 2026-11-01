@@ -1,0 +1,48 @@
+{
+  "schema": "elev25d-eval/v1",
+  "config": "R02_s0.9",
+  "soil": "nominal",
+  "seed": 7,
+  "state_hash": "b7c80586f1cb18943a076c60d4044cb4",
+  "observation": {
+    "ok": true,
+    "error": null,
+    "dir": "runs/unseen/delivery_v7/v7_20261030_r1/common_states/R02_s0.9/nominal/seed7/observation",
+    "sha": "f9d7f55e82cd9eff0b9c2a72de7dbf3b701fb18f78f5240833433891d7a5d5e6"
+  },
+  "visible": {
+    "n_pixels": 22909,
+    "x_front": 1.6537607023110272,
+    "y_center": 0.0033225672454857136,
+    "W_vis": 0.35104189790804063,
+    "H_vis": 0.14022719068943648
+  },
+  "elevation": {
+    "unknown_frac": 0.2669,
+    "observed_cells": 27270
+  },
+  "arms": {
+    "block": {
+      "chosen": "A0",
+      "cells": 21,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "final_x": 0.313,
+      "sim_time_s": 13.4,
+      "frames": 150
+    },
+    "fill": {
+      "chosen": "L2",
+      "cells": 21,
+      "safe_set": [
+        "L2"
+      ],
+      "success": true,
+      "reason": "success",
+      "final_x": 3.606,
+      "sim_time_s": 17.3,
+      "frames": 345
+    }
+  }
+}

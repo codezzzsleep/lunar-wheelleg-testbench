@@ -1,0 +1,60 @@
+{
+  "schema": "v2-fusion-carve/v1",
+  "rows": [
+    {
+      "c": "A1",
+      "kept": 0,
+      "removed": 4930,
+      "carved_free": 8590,
+      "added": 3556,
+      "iou": 0.224,
+      "p95": 47.6
+    },
+    {
+      "c": "A2",
+      "kept": 0,
+      "removed": 5624,
+      "carved_free": 10272,
+      "added": 4226,
+      "iou": 0.704,
+      "p95": 40.6
+    },
+    {
+      "c": "B1",
+      "kept": 0,
+      "removed": 3569,
+      "carved_free": 6436,
+      "added": 5438,
+      "iou": 0.906,
+      "p95": 8.9
+    },
+    {
+      "c": "B2",
+      "kept": 0,
+      "removed": 4225,
+      "carved_free": 8259,
+      "added": 4656,
+      "iou": 0.82,
+      "p95": 24.8
+    },
+    {
+      "c": "C1",
+      "kept": 74846,
+      "removed": 0,
+      "carved_free": 57816,
+      "added": 0,
+      "iou": 0.806,
+      "p95": 31.9
+    },
+    {
+      "c": "C2",
+      "kept": 0,
+      "removed": 3586,
+      "carved_free": 5464,
+      "added": 4878,
+      "iou": 0.87,
+      "p95": 14.6
+    }
+  ],
+  "reading": "kept_ratio=0 的机制是 free-space 雕刻：候选隐藏体素落在观测判定为空的区域里，被 carve 掉（carved_free 与 removed 同量级）。这说明候选与观测矛盾，而不是融合算法保守。"
+}

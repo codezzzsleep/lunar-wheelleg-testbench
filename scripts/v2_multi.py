@@ -38,6 +38,39 @@ def prep_raw(glb, rock, case, out, tag, vis):
 
 
 def prep(glb, rock, case, obs_dir, out, tag, vis):
+    """正式入口：先走 align24 配准（24 朝向/贴地/尺度），再融合与碰撞。"""
+    import subprocess, numpy as np, trimesh
+    d = out/tag; d.mkdir(parents=True, exist_ok=True)
+    aj = d/'align.json'
+    r = subprocess.run([PY_, 'scripts/align24.py', '--candidate', str(glb),
+                        '--obs', str(obs_dir), '--out', str(aj),
+                        '--time-budget-s', '240'], cwd=str(ROOT),
+                       capture_output=True, text=True)
+    if not aj.is_file():
+        return None
+    arec = json.loads(aj.read_text())
+    best = arec.get('best') or arec
+    M = np.asarray(best['M'], dtype=float)
+    m = trimesh.load(glb, force='mesh', process=True)
+    m.apply_transform(M)
+    pw = d/'parent'; pw.mkdir(exist_ok=True)
+    m.export(pw/'body.stl')
+    (d/'align_used.json').write_text(json.dumps({k: best.get(k) for k in
+        ('pass','scale','yaw','z_min_world_m','native')}, ensure_ascii=False, indent=1))
+    fus = d/'fused'
+    subprocess.run([PY_,'scripts/fuse_observed.py','--observation',str(obs_dir),'--method','H5_F',
+                    '--parent-world',str(pw),'--parent-id',tag,'--out',str(fus),'--pitch','0.0025',
+                    '--config','configs/unseen_v7_r1_fusion_gapfill.json'],
+                   cwd=str(ROOT), capture_output=True)
+    if not (fus/'occ.npz').is_file():
+        return None
+    subprocess.run([PY_,'scripts/collision_box_union.py','--occupancy',str(fus/'occ.npz'),
+                    '--out',str(d/'coll'),'--pitch','0.0025','--hypothesis-id',tag],
+                   cwd=str(ROOT), capture_output=True)
+    return str((d/'coll').relative_to(ROOT)) if (d/'coll'/'manifest.json').is_file() else None
+
+
+def prep_legacy(glb, rock, case, obs_dir, out, tag, vis):
     """GLB → 世界父 → 观测融合 → 碰撞。返回资产目录或 None。"""
     import trimesh
     d = out/tag; d.mkdir(parents=True, exist_ok=True)

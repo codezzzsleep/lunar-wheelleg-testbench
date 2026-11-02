@@ -28,11 +28,16 @@ def main():
         # R1 判据：当前真实状态下 R1 的**单次真实结局**必须失败
         r1 = v['actions'].get('R1', {})
         outs = r1.get('outcomes') or []
+        labels = (json.loads((ROOT/a.soil_c).read_text()).get('point_labels')
+                  if pathlib.Path(ROOT/a.soil_c).is_file() else None) or \
+                 ['corner_pp','corner_pm','corner_mp','corner_mm','nominal']
         # outcomes[0] 是 nominal 单点（C 的第一点集顺序固定），失败即视为"直接冲不能完成"
-        r1_fails_now = bool(outs) and outs[0] != 'success'
+        nominal_idx = labels.index('nominal') if 'nominal' in labels else (len(outs)-1)
+        r1_nominal = outs[nominal_idx] if len(outs) > nominal_idx else None
+        r1_fails_now = (r1_nominal is not None and r1_nominal != 'success')
         selected = bool(robust) and r1_fails_now
         rows.append({'state': k, 'robust_actions': robust,
-                     'R1_current_outcome': (r1.get('outcomes') or [None])[0],
+                     'R1_current_outcome': r1_nominal,
                      'R1_fails_now': r1_fails_now,
                      'selected': selected})
     sel = [r for r in rows if r['selected']][:a.target]

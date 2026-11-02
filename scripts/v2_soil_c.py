@@ -41,7 +41,9 @@ def main():
     base = nominal_params(); keys, pts = points(base)
     out = ROOT/a.out; out.mkdir(parents=True, exist_ok=True)
     res = {'schema':'v2-soil-c/v1','perturbation':PERT,'keys':keys,
-           'base_params':base,'points':pts,'states':{}}
+           'base_params':base,'points':pts,
+           'point_labels':['corner_pp','corner_pm','corner_mp','corner_mm','nominal'],
+           'states':{}}
     for rid in a.rocks.split(','):
         rock = pool[rid]
         for sid in a.states.split(','):

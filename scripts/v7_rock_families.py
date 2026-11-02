@@ -116,9 +116,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--rocks', required=True)
     ap.add_argument('--states', default='S1,S2,S3')
+    ap.add_argument('--assets-only', action='store_true',
+                    help='只生成观测与 box/mirror/e25d 资产，不跑规划')
+    ap.add_argument('--soils', default=None,
+                    help='逗号分隔；默认用冻结文件的三档。v2 主表用 nominal')
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
     states, planning_soils, exec_soil = frozen()
+    if a.soils:
+        planning_soils = [x.strip() for x in a.soils.split(',') if x.strip()]
     pool = {r['id']: r for r in json.loads((ROOT/'assets/procedural_rocks/index.json').read_text())['rocks']}
     case = json.loads((ROOT/'cases/unseen_v1/R02.json').read_text())
     out = ROOT/a.out; out.mkdir(parents=True, exist_ok=True)
@@ -138,6 +144,12 @@ def main():
             od = out/rid/sid/'obs'; observe.capture_observation(env, od, case_id=rid)
             snap = env.save_state()
             reg, vis = assets_for(rock, case, od, out, sid)
+            if a.assets_only:
+                table['rows'][key] = {'rock': rid, 'state': sid, 'visible': vis,
+                                      'assets': reg, 'rows': {}}
+                (out/'table.json').write_text(json.dumps(table, ensure_ascii=False, indent=2))
+                print(json.dumps({'rock': rid, 'state': sid, 'assets': bool(reg)}), flush=True)
+                continue
             rec = {'rock': rid, 'state': sid, 'applied': applied,
                    'state_hash': snap.get('state_hash'),
                    'visible': vis, 'assets': reg, 'rows': {}}

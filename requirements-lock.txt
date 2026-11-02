@@ -1,0 +1,10 @@
+# 实测依赖锁定（2026-11-02，CNB 沙箱 /opt/lunar 解释器）
+# Python 3.12.16；本机开发 venv 为 3.12.3，同一组包版本。
+# 任何融合/预演结果必须记录 environment 块（fuse_observed/v3 起写入 manifest）。
+python==3.12.16
+mujoco==3.17.0
+numpy==2.5.4
+scipy==1.18.1
+trimesh==5.2.0
+manifold3d==3.5.4
+pillow==13.0.0

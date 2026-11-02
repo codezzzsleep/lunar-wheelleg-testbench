@@ -45,6 +45,7 @@ def variants(obs_dir, out):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--obs', required=True); ap.add_argument('--rock', required=True)
+    ap.add_argument('--state', default='')
     ap.add_argument('--out', required=True); ap.add_argument('--version', default='G1-Turbo')
     ap.add_argument('--samples', type=int, default=2)
     ap.add_argument('--face-count', type=int, default=30000)
@@ -59,37 +60,106 @@ def main():
            'observation_sha':obs_sha,'version':a.version,'tasks':[],'inputs':{}}
     for k, p in var.items():
         rec['inputs'][k] = {'path': str(pathlib.Path(p).relative_to(ROOT)), 'sha256': sha(p)}
+    prev = {}
+    if (out / 'tasks.json').is_file():
+        try:
+            for t in json.loads((out / 'tasks.json').read_text()).get('tasks', []):
+                prev[t.get('name')] = t
+        except Exception:
+            prev = {}
+
+    def files_ok(t):
+        fs = t.get('files') or []
+        return bool(fs) and all((ROOT / f['path']).is_file() for f in fs)
+
+    def poll_and_save(t, tid):
+        tag = f'v2-six:{a.rock}:{a.state}:{t["name"]}'
+        d = LC.poll(tid, timeout_s=1800, interval=10)
+        t['status'] = d.get('status')
+        t['consumed_credits'] = (d.get('consumedCredits')
+                                 if d.get('consumedCredits') is not None
+                                 else d.get('consumed_credits'))
+        urls = [o['content'] for o in (d.get('outputs') or []) if o.get('content')]
+        if urls:
+            saved = LC.download(urls, out / 'raw' / t['name'])
+            t['files'] = [{'path': str(p.relative_to(ROOT)), 'sha256': sha(p)}
+                          for p in saved]
+            t['ok'] = True
+            t.pop('error', None)
+        else:
+            t['ok'] = False
+            t['error'] = 'no outputs'
+        if not t.get('ledger_completed'):
+            LC.append_ledger({'event': 'completed', 'brief': tag, 'task_id': tid,
+                              'status': t['status'],
+                              'consumed_credits': t['consumed_credits'],
+                              'ok': t['ok'],
+                              'local_dir': str((out / 'raw' / t['name']).relative_to(ROOT))})
+            t['ledger_completed'] = True
+        return t
+
+    def submit(t):
+        for attempt in range(40):
+            try:
+                url = imagine.upload_image(str(ROOT / t['image']))
+                r = LC.submit_img_to_3d(url, version=a.version,
+                                        face_count=a.face_count)
+                return r['taskId']
+            except Exception as e:
+                msg = f'{type(e).__name__}: {e}'
+                if '并发上限' in msg or 'concurrency' in msg.lower():
+                    time.sleep(20 + min(attempt, 10) * 2)
+                    continue
+                raise
+        raise RuntimeError('创建任务重试耗尽：并发上限持续未释放')
+
     n = 0
-    for k in ('A','B','C'):
-        if k not in var: continue
+    for k in ('A', 'B', 'C'):
+        if k not in var:
+            continue
         for s in range(a.samples):
             n += 1
             t = {'name': f'{k}{s+1}', 'group': k, 'sample_index': s,
-                 'image': rec['inputs'][k]['path'], 'image_sha256': rec['inputs'][k]['sha256'],
+                 'image': rec['inputs'][k]['path'],
+                 'image_sha256': rec['inputs'][k]['sha256'],
                  'version': a.version, 'face_count': a.face_count}
+            old = prev.get(t['name'])
+            if old and old.get('ok') and files_ok(old):
+                rec['tasks'].append(old)
+                print(json.dumps({'name': t['name'], 'status': 'reused',
+                                  'task_id': old.get('task_id')}, ensure_ascii=False),
+                      flush=True)
+                continue
+            if old:
+                t.update({k2: old.get(k2) for k2 in
+                          ('task_id', 'status', 'consumed_credits', 'files', 'ok',
+                           'error', 'ledger_completed')})
             try:
-                url = imagine.upload_image(str(ROOT/t['image']))
-                r = LC.submit_img_to_3d(url, version=a.version, face_count=a.face_count)
-                tid = r['taskId']; t['task_id'] = tid
-                d = LC.poll(tid, timeout_s=1800, interval=10)
-                t['status'] = d.get('status')
-                urls = [o['content'] for o in (d.get('outputs') or []) if o.get('content')]
-                if urls:
-                    saved = LC.download(urls, out/'raw'/t['name'])
-                    t['files'] = [{'path': str(p.relative_to(ROOT)), 'sha256': sha(p)} for p in saved]
-                    t['ok'] = True
+                if not t.get('task_id'):
+                    tid = submit(t)
+                    t['task_id'] = tid
+                    tag = f'v2-six:{a.rock}:{a.state}:{t["name"]}'
+                    LC.append_ledger({'event': 'submitted', 'brief': tag,
+                                      'task_id': tid, 'estimated_credits': 1,
+                                      'image_sha256': t['image_sha256'],
+                                      'observation_sha': obs_sha,
+                                      'note': 'image-to-3d; 1 credit/task 按既有账本口径'})
                 else:
-                    t['ok'] = False; t['error'] = 'no outputs'
+                    tid = t['task_id']
+                poll_and_save(t, tid)
             except Exception as e:
-                t['ok'] = False; t['error'] = f'{type(e).__name__}: {e}'[:300]
+                t['ok'] = False
+                t['error'] = f'{type(e).__name__}: {e}'[:300]
             rec['tasks'].append(t)
-            (out/'tasks.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
-            print(json.dumps({k2: t.get(k2) for k2 in ('name','task_id','status','ok')},
+            (out / 'tasks.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
+            print(json.dumps({k2: t.get(k2) for k2 in
+                              ('name', 'task_id', 'status', 'ok')},
                              ensure_ascii=False), flush=True)
     rec['n_tasks'] = len(rec['tasks'])
     rec['n_ok'] = sum(1 for t in rec['tasks'] if t.get('ok'))
-    (out/'tasks.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
-    print(json.dumps({'n_tasks': rec['n_tasks'], 'n_ok': rec['n_ok']}, ensure_ascii=False))
+    (out / 'tasks.json').write_text(json.dumps(rec, ensure_ascii=False, indent=2))
+    print(json.dumps({'n_tasks': rec['n_tasks'], 'n_ok': rec['n_ok']},
+                     ensure_ascii=False))
 
 if __name__ == '__main__':
     main()

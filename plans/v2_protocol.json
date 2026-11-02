@@ -112,25 +112,30 @@
     {
       "id": "A1",
       "date": "2026-11-02",
-      "what": "主表 Lux3D 行必须同时报告 strict.pass、kept_ratio 与 shell_control_outcome 三列。",
-      "why": "P58·S2 上唯一通过验收的几何是仅用观测的壳层（IoU 0.990 / P95 1.16 mm），保留生成面的候选均未通过；不设壳层对照就无法判断通行是否来自生成先验。",
-      "shell_control": {
-        "method": "fuse_observed --method B3_F（仅观测点镜像壳）",
-        "same": [
-          "状态快照",
-          "动作集",
-          "规划土壤",
-          "预算"
-        ],
-        "record": [
-          "strict.pass",
-          "mask_iou",
-          "vis_pt_p95_mm",
-          "chosen",
-          "outcome"
-        ]
+      "revision": 2,
+      "what": "主表 Lux3D 行必须同时报告 strict.pass、kept_ratio 与 generation_ablation_outcome；B3_F 行单独标 mirror_completion，不得再称为壳层对照。",
+      "why": "修订 1 把 B3_F 的镜像补全误称为 shell control。v3 又定位到融合入口的真实缺陷：壳层与父先验被人为隔开，再由最大连通块二选一，导致 P06·S1 五个候选 kept_ratio=0、C1 壳层被删。修复后必须用同一候选的『只删未知区生成贡献』消融来回答生成先验是否有增量；镜像补全是另一条独立基线，不能替代该消融，也不能替代 2.5D 与镜像主比较。",
+      "correction": {
+        "old_name": "shell_control",
+        "old_interpretation": "B3_F = 仅观测点镜像壳",
+        "actual": "B3_F = 镜像补全（镜像先验 + 同一观测约束）",
+        "action": "既有 B3_F 结果改标 mirror_completion；真正的生成消融另做"
       },
-      "scope": "本修订不改变实验设计，只增加必报字段"
+      "mirror_completion": {
+        "row": "B3_F",
+        "label": "mirror_completion",
+        "method": "fuse_observed --method B3_F",
+        "record": ["strict.pass", "mask_iou", "vis_pt_p95_mm", "chosen", "outcome"]
+      },
+      "generation_ablation": {
+        "method": "fuse_observed --ablate-generated-unknown（同一候选、同一 parent、同一栅格）",
+        "only_changed": "未知区域内的父先验体素（生成隐藏面）",
+        "kept_identical": ["可见部分", "栅格", "状态快照", "预算"],
+        "record": ["strict.pass", "kept_ratio", "mask_iou", "vis_pt_p95_mm",
+                   "chosen", "outcome", "removed_voxels"],
+        "interpretation": "若消融后结局不变，生成先验在该状态无增量；若消融改变决策/结局，必须同时报告方向（变好或变坏）。"
+      },
+      "scope": "本修订不改变实验设计，只纠正对照命名并增加必报字段"
     }
   ]
 }

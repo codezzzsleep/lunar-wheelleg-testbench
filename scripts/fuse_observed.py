@@ -17,8 +17,10 @@ H5-F / B3-F：观测约束融合（V6.1 重写，fuse-observed/v2）。
 """
 import argparse
 import hashlib
+import importlib.metadata
 import json
 import pathlib
+import platform
 import sys
 import time
 
@@ -29,7 +31,7 @@ sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import camera_io
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-VERSION = 'fuse-observed/v2'
+VERSION = 'fuse-observed/v3'
 
 CUBE = np.array([[0, 0, 0], [1, 0, 0], [1, 1, 0], [0, 1, 0],
                  [0, 0, 1], [1, 0, 1], [1, 1, 1], [0, 1, 1]], dtype=np.int64)
@@ -126,6 +128,22 @@ def dilate2(mask, k=1):
                 sl[ax] = 0 if s == 1 else -1
                 sh[tuple(sl)] = False
                 m |= sh
+        out = m
+    return out
+
+
+def erode2(mask, k=1):
+    """掩码腐蚀（非周期）：去掉轮廓 1 像素，避免壳层在轮廓处向外突出。"""
+    out = mask.copy()
+    for _ in range(max(0, int(k))):
+        m = out.copy()
+        for ax in (0, 1):
+            for s in (1, -1):
+                sh = np.roll(out, s, ax)
+                sl = [slice(None)] * 2
+                sl[ax] = 0 if s == 1 else -1
+                sh[tuple(sl)] = False
+                m &= sh
         out = m
     return out
 
@@ -306,6 +324,113 @@ def largest_component(occ):
     return keep, best_n
 
 
+def prune_components(occ, parent_inside, min_shell_voxels=500):
+    """只清掉“不与任何父先验相连、且体积很小”的壳层碎片。
+
+    v2 的 `largest_component(occ)` 会把父先验和观测壳层当成一个全局最大块来选：
+    壳层与父先验一旦被 `~dilate6(parent_inside)` 隔开，二者必有一方被整块删除。
+    这是 P06·S1 五个候选 kept_ratio=0 / C1 壳层被删的直接原因。
+
+    v3 的准入规则：
+      * 任何包含父先验的连通块**无条件保留**（未知区先验不因“不是最大块”被清）；
+      * 纯壳层块只有达到 min_shell_voxels 才保留，用于去掉网格离散化产生的碎屑；
+      * 删除量、连通块数与父先验块数全部写进清单。
+    """
+    occ = np.asarray(occ, dtype=bool)
+    parent_inside = np.asarray(parent_inside, dtype=bool)
+    try:
+        from scipy import ndimage
+        struct = ndimage.generate_binary_structure(3, 1)
+        lab, n = ndimage.label(occ, structure=struct)
+        sizes = np.bincount(lab.ravel(), minlength=n + 1)
+        parent_labels = np.unique(lab[parent_inside & occ])
+        parent_labels = [int(x) for x in parent_labels if int(x) > 0]
+        keep_ids = set(parent_labels)
+        keep_ids |= {i for i in range(1, int(n) + 1)
+                     if int(sizes[i]) >= int(min_shell_voxels)}
+        keep = np.isin(lab, np.fromiter(sorted(keep_ids), dtype=np.int32,
+                                        count=len(keep_ids))) if keep_ids \
+            else np.zeros_like(occ)
+        removed_sizes = sorted([int(sizes[i]) for i in range(1, int(n) + 1)
+                                if i not in keep_ids], reverse=True)
+        stats = {
+            'n_components': int(n),
+            'n_parent_components': len(parent_labels),
+            'n_kept_components': len(keep_ids),
+            'removed_voxels': int(occ.sum() - keep.sum()),
+            'removed_components': removed_sizes[:20],
+            'removed_component_count': len(removed_sizes),
+            'min_shell_component_voxels': int(min_shell_voxels),
+            'rule': ('keep every component containing parent prior; '
+                     'keep shell-only components >= min_shell_component_voxels'),
+        }
+        return keep, stats
+    except ImportError:                                  # 无 scipy 时退回 BFS
+        lab = np.zeros(occ.shape, dtype=np.int32)
+        sizes = [0]
+        from collections import deque
+        for start in np.argwhere(occ):
+            s = tuple(int(x) for x in start)
+            if lab[s]:
+                continue
+            cid = len(sizes); lab[s] = cid
+            q = deque([s]); n = 0
+            while q:
+                i, j, k = q.popleft(); n += 1
+                for di, dj, dk in ((1, 0, 0), (-1, 0, 0), (0, 1, 0),
+                                   (0, -1, 0), (0, 0, 1), (0, 0, -1)):
+                    a, b, c = i + di, j + dj, k + dk
+                    if (0 <= a < occ.shape[0] and 0 <= b < occ.shape[1]
+                            and 0 <= c < occ.shape[2] and occ[a, b, c]
+                            and not lab[a, b, c]):
+                        lab[a, b, c] = cid; q.append((a, b, c))
+            sizes.append(n)
+        parent_labels = sorted({int(x) for x in np.unique(lab[parent_inside & occ]) if x})
+        keep_ids = set(parent_labels) | {i for i in range(1, len(sizes))
+                                         if sizes[i] >= int(min_shell_voxels)}
+        keep = np.isin(lab, np.fromiter(sorted(keep_ids), dtype=np.int32,
+                                       count=len(keep_ids))) if keep_ids \
+            else np.zeros_like(occ)
+        removed_sizes = sorted([sizes[i] for i in range(1, len(sizes))
+                                if i not in keep_ids], reverse=True)
+        return keep, {
+            'n_components': len(sizes) - 1, 'n_parent_components': len(parent_labels),
+            'n_kept_components': len(keep_ids),
+            'removed_voxels': int(occ.sum() - keep.sum()),
+            'removed_components': removed_sizes[:20],
+            'removed_component_count': len(removed_sizes),
+            'min_shell_component_voxels': int(min_shell_voxels),
+            'rule': ('keep every component containing parent prior; '
+                     'keep shell-only components >= min_shell_component_voxels'),
+        }
+
+
+def voxel_retention(space, parent_inside, occ):
+    """不依赖网格的体素级保留统计（用于修复前后对照与消融源清单）。"""
+    unknown = (space == 0)
+    core = unknown & parent_inside
+    kept = core & occ
+    n = int(core.sum())
+    return {'unknown_core_parent_voxels': n,
+            'kept_voxels': int(kept.sum()),
+            'removed_voxels': int((core & ~occ).sum()),
+            'added_voxels': int((unknown & occ & ~parent_inside).sum()),
+            'kept_ratio': (round(float(kept.sum()) / n, 5) if n else None),
+            'removed_ratio': (round(float((core & ~occ).sum()) / n, 5) if n else None)}
+
+
+def environment_versions():
+    """把实测运行环境写进清单；requirements-lock.txt 是同一组版本的冻结记录。"""
+    out = {'python': platform.python_version()}
+    for dist in ('numpy', 'trimesh', 'mujoco', 'scipy', 'Pillow', 'manifold3d'):
+        try:
+            out[dist] = importlib.metadata.version(dist)
+        except Exception:
+            out[dist] = None
+    return out
+
+
+
 def marching_tets(occ, grid):
     """cell-center 采样 -> 等值面：位置 = origin + (index + 0.5 + t)*pitch。"""
     pitch = grid['pitch']; origin = grid['origin']; dims = occ.shape
@@ -415,7 +540,8 @@ def hidden_retention(parent, fused, grid, space, parent_inside, fused_occ):
     return out
 
 
-def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed=0):
+def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed=0,
+         ablate_generated_unknown=False):
     t0 = time.time()
     observation = pathlib.Path(observation)
     # 多父候选：并集先验（H5_F_multi）。单个父候选时行为不变。
@@ -469,6 +595,12 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     ui = np.clip(np.nan_to_num(u, nan=-1), 0, W - 1).astype(np.int64)
     vi = np.clip(np.nan_to_num(v, nan=-1), 0, H - 1).astype(np.int64)
     in_mask = in_fov & mask_d[vi, ui]
+    # 壳层轮廓腐蚀：壳层是 3D 实体，若贴着 mask 外缘，会在轮廓处向外多出
+    # 半个体素，直接抬高 freespace_violation。壳层单独用腐蚀后的 mask，
+    # 父先验/自由空间判定仍用原始 mask。
+    _erode = int(cfg.get('shell_mask_erode_px', 0))
+    mask_shell = erode2(mask_d, _erode) if _erode > 0 else mask_d
+    in_mask_shell = in_fov & mask_shell[vi, ui]
     # 可见面壳层：放在测量面之后（0.5 体素偏移），保证提取出的等值面不在观测面前方
     off = float(cfg.get('shell_offset_voxels', 0.5)) * pitch
     d_at = np.full(len(in_fov), np.nan)
@@ -480,22 +612,75 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
     behind = (_valid & np.isfinite(d_at)
               & (z >= d_at - float(cfg['free_epsilon_m']) + off)
               & (z <= d_at + band_m + off))
-    shell = (in_mask & behind).reshape(grid['dims'])
-    # 壳层语义修正（本批实测）：壳层只补**父先验没有覆盖到的缺口**，而不是无条件
-    # 在原表面之外再贴一层。实测证据：R01@1.0 用真值实体作父先验时，
-    # 无壳层（S2/S3）freespace 0.0376/0.0295 通过，加壳层（S4）反而升到 0.0642——
-    # 壳层把表面整体加厚一像素，导致等值面前移。改为补缺后，壳层只在
-    # 父先验缺失处生效，不会恶化已经与观测一致的表面。
-    if cfg.get('shell_gap_fill', True):
-        try:
-            parent_near = dilate6(parent_inside) if hasattr(parent_inside, 'shape') else parent_inside
-        except Exception:
-            parent_near = parent_inside
-        shell = shell & ~parent_near
+    shell = (in_mask_shell & behind).reshape(grid['dims'])
+    if not bool(cfg.get('add_shell', True)):
+        shell = np.zeros_like(shell)
+    # ---------------------------------------------------------------- v3 修正
+    # v2 的错误：`shell & ~dilate6(parent_inside)` 在壳层与父先验之间人为挖出一圈
+    # 空隙，再用 largest_component 二选一。结果是 P06·S1 五个候选把父先验整块删掉
+    # （kept_ratio=0），C1 把观测壳层整块删掉（可见面验收 0.806）。
+    #
+    # v3：不再做 dilate 减法，改成按像素判断父先验是否已经提供观测面：
+    #   front      = 父先验前表面落在测量带内 -> 该像素不贴壳（默认，最省体积）
+    #   any_band   = 测量带内出现任意父先验体素 -> 不贴壳
+    #   any_parent = 该像素射线上出现任意父先验 -> 不贴壳（最接近“只补缺失”）
+    # 三种模式都只删壳、不删父先验；未知区父先验由 prune_components 保留。
+    shell_before_gapfill = shell
+    mode = str(cfg.get('shell_coverage', 'front'))
+    gapfill_stats = {'mode': mode, 'shell_voxels_before': int(shell.sum()),
+                     'mask_erode_px': int(_erode)}
+    if cfg.get('shell_gap_fill', True) and mode != 'none':
+        eps = float(cfg['free_epsilon_m'])
+        pix_idx = (vi.astype(np.int64) * W + ui.astype(np.int64))
+        covered_vox = np.zeros(len(z), dtype=bool)
+        if mode == 'front':
+            pfront = np.full(H * W, np.inf, dtype=np.float64)
+            sel_p = keep_p.ravel() & in_fov
+            if sel_p.any():
+                np.minimum.at(pfront, pix_idx[sel_p], z[sel_p])
+            pfront_vox = pfront[pix_idx]
+            band_lo = d_at - eps + off
+            band_hi = d_at + band_m + off
+            covered_vox = (np.isfinite(d_at) & (pfront_vox >= band_lo)
+                           & (pfront_vox <= band_hi))
+        elif mode in ('any_band', 'any_parent'):
+            pb = (parent_inside & (space == 1)) if mode == 'any_band' else keep_p
+            covered_pix = np.zeros(H * W, dtype=bool)
+            sel_p = pb.ravel() & in_fov
+            covered_pix[pix_idx[sel_p]] = True
+            covered_vox = covered_pix[pix_idx]
+        else:
+            raise SystemExit(f'未知 shell_coverage={mode!r}（front/any_band/any_parent/none）')
+        shell = shell & ~covered_vox.reshape(grid['dims'])
+        gapfill_stats.update({
+            'covered_pixels': int(np.unique(pix_idx[covered_vox]).size),
+            'shell_voxels_after': int(shell.sum())})
     occ = keep_p | shell
-    before = occ.copy()
-    occ, _ = largest_component(occ)
-    comp_removed = int(before.sum() - occ.sum())
+    ret_voxels_full = voxel_retention(space, parent_inside, occ)
+    occ, prune_stats = prune_components(
+        occ, parent_inside, int(cfg.get('min_shell_component_voxels', 500)))
+    comp_removed = int(prune_stats.get('removed_voxels', 0))
+    # 生成贡献消融：同一候选的可见部分/栅格/状态/预算不变，只删除未知区里的
+    # 父先验体素（生成隐藏面）。观测壳与测量带父先验原样保留。
+    occ_full = occ.copy()
+    ablation = None
+    if ablate_generated_unknown:
+        generated_unknown = (space == 0) & parent_inside
+        removed_ab = int((occ_full & generated_unknown).sum())
+        occ = occ_full & ~generated_unknown
+        occ, prune_ab = prune_components(
+            occ, parent_inside, int(cfg.get('min_shell_component_voxels', 500)))
+        ablation = {
+            'mode': 'remove_unknown_generated_contribution',
+            'removed_voxels': removed_ab,
+            'removed_fraction_of_occ': (round(removed_ab / max(1, int(occ_full.sum())), 5)),
+            'remaining_voxels': int(occ.sum()),
+            'prune_after': prune_ab,
+            'visible_band_voxels_kept': int(((space == 1) & parent_inside & occ).sum()),
+            'shell_voxels_kept': int((shell & occ).sum()),
+            'same': ['visible part', 'grid', 'state snapshot', 'budget'],
+        }
+
     obs_sha = _sha_dir(observation)
     _cfg_sha = hashlib.sha256(json.dumps(cfg, sort_keys=True, ensure_ascii=False)
                               .encode()).hexdigest()
@@ -592,15 +777,22 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
         except OSError:
             pass
     man = {
-        'schema': 'fused-asset/v2', 'version': VERSION, 'method': method,
+        'schema': 'fused-asset/v3', 'version': VERSION, 'method': method,
+        'artifact_status': 'complete',
+        'comparison_label': ('lux3d_observed_fusion' if method == 'H5_F'
+                             else 'mirror_completion'),
         'parent_id': parent_id, 'source_kind': method,
         'parent_source_kind': 'lux3d' if method == 'H5_F' else 'mirror',
         'coordinate_frame': 'world', 'parts': ['body.stl'],
         'world_sha': sha_file(body),
+        'content_sha': occ_hash,
         'inputs': {'observation': _relpath(observation),
+                   'observation_sha': obs_sha,
                    'parent_world': [_relpath(x) for x in pw_list],
                    'parent_mesh_sha': [sha_file(x / 'body.stl') for x in pw_list],
-                   'effective_config_sha': cfg.get('_sha')},
+                   'effective_config_sha': cfg.get('_sha'),
+                   'code_sha256': sha_file(pathlib.Path(__file__))},
+        'environment': environment_versions(),
         'grid': {'convention': 'cell-center',
                  'origin': [float(x) for x in grid['origin']],
                  'pitch_m': pitch, 'dims': [int(x) for x in grid['dims']],
@@ -609,11 +801,16 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
         'parent_solid': parent_stats,
         'growth': {'component_removed_voxels': comp_removed,
                    'component_kept_voxels': int(occ.sum()),
+                   'component_prune': prune_stats,
                    'shell_voxels': int(shell.sum()),
+                   'shell_voxels_before_gapfill': int(shell_before_gapfill.sum()),
+                   'shell_gapfill': gapfill_stats,
                    'filled_holes': repaired,
                    'volume_before_repair_m3': vol_before,
                    'volume_after_repair_m3': vol_after},
         'retention': retention,
+        'source_retention': voxel_retention(space, parent_inside, occ_full),
+        'ablation': ablation,
         'watertight': bool(mesh.is_watertight),
         'volume_m3': round(abs(float(mesh.volume)), 9) if mesh.is_watertight else None,
         'bounds': [[float(x) for x in mesh.bounds[0]], [float(x) for x in mesh.bounds[1]]],
@@ -621,11 +818,14 @@ def fuse(observation, parent_world, parent_id, out_dir, cfg, method='H5_F', seed
         'strict': {'pass': bool(strict), 'iou_min': 0.85,
                    'p95_mm_threshold': round(thr_p95, 3),
                    'freespace_max': 0.05, 'h_vis_m': h_vis},
-        'no_generated_hidden_contribution': bool(retention.get('kept_voxels', 0) == 0),
+        'no_generated_hidden_contribution': bool(
+            ablation is not None
+            or voxel_retention(space, parent_inside, occ_full)['kept_voxels'] == 0),
         'seconds': round(time.time() - t0, 2),
         'note': ('H5-F = 观测约束 + Lux3D 父候选隐藏几何；可见面由构造得到，'
                  '不证明 Lux3D 自己重建准确。' if method == 'H5_F' else
-                 'B3-F = 镜像先验 + 同一观测约束；镜像来自可见点云，不是 Lux3D 生成。'),
+                 'B3-F = 镜像补全（镜像先验 + 同一观测约束）；镜像来自可见点云，'
+                 '不是 Lux3D 生成，也不是生成贡献消融。'),
     }
     (out / 'manifest.json').write_text(json.dumps(man, ensure_ascii=False, indent=2))
     return man
@@ -665,6 +865,10 @@ def load_effective_config(base_path, overrides=None):
                                 'use_depth_edge_exclusion', 'shell_offset_voxels')}
     # 壳层语义必须进配置身份，否则改动算法后 SHA 不变（不可追溯）
     eff['shell_gap_fill'] = bool(base.get('shell_gap_fill', True))
+    eff['add_shell'] = bool(base.get('add_shell', True))
+    eff['shell_coverage'] = str(base.get('shell_coverage', 'front'))
+    eff['shell_mask_erode_px'] = int(base.get('shell_mask_erode_px', 0))
+    eff['min_shell_component_voxels'] = int(base.get('min_shell_component_voxels', 500))
     opts = dict(overrides or {})
     for k, v in opts.items():
         if v is not None:
@@ -683,6 +887,8 @@ def load_effective_config(base_path, overrides=None):
                               'mask_dilate_px', 'fill_holes',
                               'depth_edge_threshold_m',
                               'use_depth_edge_exclusion', 'shell_offset_voxels',
+                              'shell_gap_fill', 'add_shell', 'shell_coverage',
+                              'shell_mask_erode_px', 'min_shell_component_voxels',
                               'version')})
     return eff
 
@@ -697,9 +903,18 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--config', default='configs/unseen_v6_1_fusion.json')
     ap.add_argument('--pitch', type=float, default=None)
+    ap.add_argument('--no-shell', action='store_true')
+    ap.add_argument('--shell-coverage', default=None,
+                    choices=('front', 'any_band', 'any_parent', 'none'))
+    ap.add_argument('--shell-mask-erode-px', type=int, default=None)
     ap.add_argument('--seed', type=int, default=0)
+    ap.add_argument('--ablate-generated-unknown', action='store_true',
+                    help='生成贡献消融：保留同一候选可见部分/栅格，只删除未知区父先验')
     a = ap.parse_args()
-    eff = load_effective_config(a.config, {'pitch_m': a.pitch})
+    eff = load_effective_config(a.config, {
+        'pitch_m': a.pitch, 'shell_coverage': a.shell_coverage,
+        'add_shell': (False if a.no_shell else None),
+        'shell_mask_erode_px': a.shell_mask_erode_px})
     out = pathlib.Path(a.out); out.mkdir(parents=True, exist_ok=True)
     (out / 'effective_config.json').write_text(json.dumps(eff, ensure_ascii=False, indent=2))
     cfg = dict(eff); cfg['_sha'] = eff['sha256']
@@ -709,12 +924,26 @@ def main():
         a.parent_world = [str(mirror_dir)]
     if not a.parent_world:
         raise SystemExit('H5_F 需要 --parent-world')
-    man = fuse(a.observation, (a.parent_world if len(a.parent_world) > 1 else a.parent_world[0]),
-               a.parent_id, a.out, cfg,
-               method=a.method, seed=a.seed)
+    try:
+        man = fuse(a.observation,
+                   (a.parent_world if len(a.parent_world) > 1 else a.parent_world[0]),
+                   a.parent_id, a.out, cfg,
+                   method=a.method, seed=a.seed,
+                   ablate_generated_unknown=bool(a.ablate_generated_unknown))
+    except SystemExit:
+        raise
+    except BaseException as e:
+        # 失败必须显式落盘：下游只认 manifest.json + artifact_status=complete，
+        # 不允许仅凭残留的 occ.npz 继续预演。
+        (out / 'failed.json').write_text(json.dumps(
+            {'schema': 'fusion-failed/v1', 'time': time.time(),
+             'error_class': type(e).__name__, 'error': str(e)[:4000]},
+            ensure_ascii=False, indent=2))
+        raise
     print(json.dumps({k: man[k] for k in ('version', 'method', 'parent_id', 'world_sha',
                                           'watertight', 'volume_m3', 'space',
-                                          'retention', 'metrics', 'strict', 'seconds')},
+                                          'retention', 'source_retention', 'ablation',
+                                          'metrics', 'strict', 'seconds')},
                      ensure_ascii=False))
 
 

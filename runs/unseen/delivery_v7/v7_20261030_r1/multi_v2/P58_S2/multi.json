@@ -1,0 +1,48 @@
+{
+  "schema": "v2-multi/v1",
+  "rock": "P58",
+  "state": "S2",
+  "candidates": {
+    "A1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/A1/coll",
+    "A2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/A2/coll",
+    "B1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/B1/coll",
+    "B2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/B2/coll",
+    "C1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/C1/coll",
+    "C2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_v2/P58_S2/C2/coll"
+  },
+  "state_hash": "fb06766461230a06de30542c5270dee9",
+  "visible": {
+    "n_pixels": 12494,
+    "x_front": 1.6535500219112733,
+    "y_center": -0.0002494981743051822,
+    "W_vis": 0.39983317348102876,
+    "H_vis": 0.1678028005760285
+  },
+  "rows": {
+    "first": {
+      "chosen": "R1",
+      "cells": 21,
+      "n_candidates": 1,
+      "safe_set": [
+        "R1",
+        "L2",
+        "D2",
+        "L1",
+        "D1",
+        "R2"
+      ],
+      "success": false,
+      "reason": "tipped",
+      "errors": 0
+    },
+    "multi": {
+      "chosen": "A0",
+      "cells": 126,
+      "n_candidates": 6,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "errors": 0
+    }
+  }
+}

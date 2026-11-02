@@ -1,0 +1,55 @@
+{
+  "schema": "v2-multi/v2",
+  "rock": "P06",
+  "state": "S1",
+  "candidates": {
+    "A1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/A1/coll",
+    "A2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/A2/coll",
+    "B1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/B1/coll",
+    "B2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/B2/coll",
+    "C1": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/C1/coll",
+    "C2": "runs/unseen/delivery_v7/v7_20261030_r1/multi_reg/P06_S1/C2/coll"
+  },
+  "planning_soils": [
+    "nominal"
+  ],
+  "soil_label": "current",
+  "state_hash": "b110e68c3cff227cd89c3469b0134f03",
+  "visible": {
+    "n_pixels": 11249,
+    "x_front": 1.6520567711981522,
+    "y_center": 0.0025869058649751614,
+    "W_vis": 0.36825767020935884,
+    "H_vis": 0.17407149423470752
+  },
+  "rows": {
+    "first": {
+      "chosen": "L2",
+      "cells": 7,
+      "n_candidates": 1,
+      "safe_set": [
+        "L2",
+        "D1",
+        "D2",
+        "R1",
+        "R2",
+        "L1"
+      ],
+      "success": true,
+      "reason": "success",
+      "errors": 0
+    },
+    "multi": {
+      "chosen": "D2",
+      "cells": 42,
+      "n_candidates": 6,
+      "safe_set": [
+        "D2",
+        "R2"
+      ],
+      "success": true,
+      "reason": "success",
+      "errors": 0
+    }
+  }
+}

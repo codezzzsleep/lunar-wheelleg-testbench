@@ -1,0 +1,30 @@
+{
+ "pass": false,
+ "scale": 3.32523,
+ "yaw": 3.5,
+ "z_min_world_m": 0.0,
+ "native": {
+  "mask_iou": 0.6802,
+  "cand_px": 14153,
+  "obs_px": 11249,
+  "n_inter": 10284,
+  "resolution": [
+   1280,
+   960
+  ],
+  "depth_med_mm": -1.57,
+  "depth_p95_mm": 24.389,
+  "depth_inner_rms_mm": 11.116,
+  "depth_edge_rms_mm": 43.971,
+  "vis_pt_med_mm": 2.102,
+  "vis_pt_p95_mm": 32.906,
+  "vis_pt_n": 2500,
+  "vis_pt_total": 11249,
+  "vis_pt_strategy": "deterministic_subset(n=2500,seed=0)",
+  "metric_version": "align-metric/v2.1",
+  "freespace_violation": 0.5369,
+  "freespace_n_px": 7599,
+  "freespace_denom_px": 14153,
+  "freespace_outside_mask": 3869
+ }
+}

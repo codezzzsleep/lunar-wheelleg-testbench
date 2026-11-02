@@ -1,0 +1,12 @@
+{
+  "schema": "rock-initial-states/v1",
+  "frozen": "2026-11-02",
+  "note": "三组确认初态的唯一冻结定义；所有方法复用同一组。",
+  "states": [
+    {"id": "S1", "seed": 7, "lateral_m": 0.04, "yaw_rad": 0.03},
+    {"id": "S2", "seed": 11, "lateral_m": 0.05, "yaw_rad": 0.04},
+    {"id": "S3", "seed": 13, "lateral_m": 0.06, "yaw_rad": 0.05}
+  ],
+  "execution_soil": "nominal",
+  "planning_soils": ["nominal", "low_traction", "high_drag"]
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "v2-protocol/v1",
+  "frozen": "2026-11-02",
+  "source_commit": "6e493789aa04a80a4cfca1de7c71b45d6e158697",
+  "v1_archive": {"protocol": "plans/rock_initial_states.json", "results": "runs/unseen/delivery_v7/v7_20261030_r1/grid_final/"},
+  "soil": {
+    "observation": "低速直线接近段激励：轮速、机体速度、加速度、驱动转矩、模拟轮载信号",
+    "estimator": "拟合有效牵引系数 mu_eff 与等效行驶阻力 b_eff 的区间（不做全 Bekker 反演）",
+    "planning_set": {"rule": "区间四角 + 中心，共 5 个离散点", "frozen": true,
+                     "note": "开发阶段依测量误差冻结，不以通行结果反推范围"},
+    "sensitivity_levels": ["nominal", "low_traction", "high_drag"],
+    "sens_note": "三档仅作敏感性实验，不混入主比较的最坏集合",
+    "C_perturbation": {"mu_eff": 0.10, "b_eff": 0.10, "points": "四角+中心"}
+  },
+  "views": {
+    "first": "S0 观测（唯一首视角）",
+    "second": "移动到 S1 后采集 V1；A 臂只用首观测，B 臂加入 V1 筛选，C 臂真实两图任务",
+    "permission": "A/B/C 共用同一 S1 快照与剩余预算；A 计入已发生移动成本"
+  },
+  "initial_state": {"frozen_file": "plans/rock_initial_states.json",
+                    "states": ["S1", "S2", "S3"],
+                    "note": "每状态保存实际 qpos/qvel 与快照，各方法复用同一快照"},
+  "controller": {"budget_s": 30.0, "note": "探测、观察移动、制动、执行都计入"},
+  "state_selection": {
+    "rule": ["真实几何在主规划土壤集合下至少有一个可行动作",
+             "同一真实状态直接冲 R1 不能完成任务"],
+    "target": 30, "min_objects": 8, "max_objects": 10,
+    "pool": "assets/procedural_rocks (80)",
+    "order": "按池编号与 S1/S2/S3 顺序补充，不挑 Lux3D 获胜的状态",
+    "frozen_before_lux": true
+  },
+  "candidates": {
+    "per_view_group": 6,
+    "inputs": {"A1/A2": "保留纹理与光影的裁剪", "B1/B2": "掩码合成图，保留内部纹理与明暗",
+               "C1/C2": "同视角保留更多已观测地面上下文的裁剪"},
+    "identity": ["observation_sha", "image_sha", "version", "sample_index"],
+    "pipeline": ["清理", "位姿配准", "观测约束融合", "保结构碰撞", "资产解析", "共同规划"],
+    "dedup": "内容身份相同则复用预演；任务失败与重复仍计入生成分母"
+  },
+  "compare": {
+    "rows": ["B1_height", "B2_F", "B3_F", "E25D_block", "E25D_fill",
+             "Lux3D_first", "Lux3D_multi", "U_truth"],
+    "multi_aggregation": "候选内按土壤最坏、跨候选再最坏；A0 不入安全集",
+    "execution": "同一快照 same_scene 恢复；动作定义、可见量、控制器、时间口径一致"
+  },
+  "outcomes": ["pass", "safe_stop", "task_failure"],
+  "errors": ["wrong_safe_prediction", "over_conservative", "no_reference_action", "asset_or_compute_error"],
+  "reporting": {"wall_clock": "API/预演/静止等待分别报告", "denominators": "生成成功/重复/不可用与状态分母分列"}
+}

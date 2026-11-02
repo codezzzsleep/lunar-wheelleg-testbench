@@ -1,0 +1,53 @@
+{
+  "schema": "rock-grid-aggregate/v1",
+  "n_states": 21,
+  "families": {
+    "B1_height": {
+      "n": 21,
+      "abandon": 21
+    },
+    "B2_F": {
+      "n": 21,
+      "abandon": 21
+    },
+    "B3_F": {
+      "n": 21,
+      "abandon": 17,
+      "fail": 2,
+      "pass": 2
+    },
+    "E25D_block": {
+      "n": 21,
+      "abandon": 21
+    },
+    "E25D_fill": {
+      "n": 21,
+      "abandon": 17,
+      "pass": 3,
+      "fail": 1
+    },
+    "H5_raw": {
+      "n": 21,
+      "abandon": 3,
+      "fail": 15,
+      "pass": 3
+    },
+    "H5_F": {
+      "n": 21,
+      "abandon": 9,
+      "fail": 10,
+      "pass": 2
+    },
+    "U_truth": {
+      "n": 21,
+      "abandon": 15,
+      "pass": 6
+    }
+  },
+  "classes": {
+    "reference_no_solution": 15,
+    "over_conservative": 3,
+    "candidate_passes": 3
+  },
+  "note": "固定首候选；规划土壤三全集，执行土壤 nominal"
+}

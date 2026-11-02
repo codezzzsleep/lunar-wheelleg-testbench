@@ -1,0 +1,1965 @@
+{
+ "schema": "rock-grid-summary/v1",
+ "n_states": 21,
+ "n_rows": 168,
+ "classes": {
+  "reference_no_solution": 15,
+  "over_conservative": 3,
+  "candidate_passes": 3
+ },
+ "planning_soils": [
+  "nominal",
+  "low_traction",
+  "high_drag"
+ ],
+ "execution_soil": "nominal",
+ "candidate_scope": "固定首候选（每块一个生成候选）",
+ "states": [
+  {
+   "state": "P04|S1",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "a6e2b584468f4a46291c98372a3343c4",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P04|S2",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "a6e2b584468f4a46291c98372a3343c4",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "L1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P04|S3",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "a6e2b584468f4a46291c98372a3343c4",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "L2",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P06|S1",
+   "class": "over_conservative",
+   "truth": {
+    "chosen": "L2",
+    "success": true
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "1943e53089d52a213a4273e64ff70bb1",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "L2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P06|S2",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [
+    "H5_raw"
+   ],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "1943e53089d52a213a4273e64ff70bb1",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P06|S3",
+   "class": "over_conservative",
+   "truth": {
+    "chosen": "R2",
+    "success": true
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "1943e53089d52a213a4273e64ff70bb1",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "R2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P29|S1",
+   "class": "candidate_passes",
+   "truth": {
+    "chosen": "D1",
+    "success": true
+   },
+   "candidates_passing": [
+    "E25D_fill"
+   ],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "384cb3e0e45119e970a0bc8ee1b2e943",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P29|S2",
+   "class": "candidate_passes",
+   "truth": {
+    "chosen": "R1",
+    "success": true
+   },
+   "candidates_passing": [
+    "B3_F",
+    "E25D_fill",
+    "H5_raw",
+    "H5_F"
+   ],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "384cb3e0e45119e970a0bc8ee1b2e943",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "R2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P29|S3",
+   "class": "candidate_passes",
+   "truth": {
+    "chosen": "D2",
+    "success": true
+   },
+   "candidates_passing": [
+    "B3_F",
+    "E25D_fill",
+    "H5_raw",
+    "H5_F"
+   ],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "384cb3e0e45119e970a0bc8ee1b2e943",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "D2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "R2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "D2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P46|S1",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "9eca69768b442d3b613aeb84a8566e50",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P46|S2",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "9eca69768b442d3b613aeb84a8566e50",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P46|S3",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "9eca69768b442d3b613aeb84a8566e50",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P58|S1",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "ba12f92ab37438c0f4ba8bfb8032fc7f",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P58|S2",
+   "class": "over_conservative",
+   "truth": {
+    "chosen": "D2",
+    "success": true
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "ba12f92ab37438c0f4ba8bfb8032fc7f",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "D2",
+     "success": true,
+     "cells": 21,
+     "errors": 0,
+     "reason": "success"
+    }
+   }
+  },
+  {
+   "state": "P58|S3",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "ba12f92ab37438c0f4ba8bfb8032fc7f",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "D2",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "time_limit"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P64|S1",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P64|S2",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "D1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P64|S3",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P76|S1",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 7,
+    "lateral": 0.04,
+    "yaw": 0.03,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "c84bd0373c13625f0df48069b977d152",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "time_limit"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "time_limit"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P76|S2",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 11,
+    "lateral": 0.05,
+    "yaw": 0.04,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "c84bd0373c13625f0df48069b977d152",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "R1",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  },
+  {
+   "state": "P76|S3",
+   "class": "reference_no_solution",
+   "truth": {
+    "chosen": "A0",
+    "success": false
+   },
+   "candidates_passing": [],
+   "applied": {
+    "seed": 13,
+    "lateral": 0.06,
+    "yaw": 0.05,
+    "soil_label": "nominal",
+    "soil_mode": "soil",
+    "soil_params": {
+     "n": 1.0,
+     "kc": 1400.0,
+     "kphi": 820000.0,
+     "cohesion_pa": 170.0,
+     "phi_deg": 35.0,
+     "k_shear": 0.018
+    },
+    "scene_signature": "c84bd0373c13625f0df48069b977d152",
+    "soil_hash": "55848f809567"
+   },
+   "families": {
+    "B1_height": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": null,
+     "errors": null,
+     "reason": "abort"
+    },
+    "B2_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "B3_F": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_block": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    },
+    "E25D_fill": {
+     "status": "planned",
+     "chosen": "L2",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "H5_raw": {
+     "status": "planned",
+     "chosen": "R2",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "time_limit"
+    },
+    "H5_F": {
+     "status": "planned",
+     "chosen": "L2",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "tipped"
+    },
+    "U_truth": {
+     "status": "planned",
+     "chosen": "A0",
+     "success": false,
+     "cells": 21,
+     "errors": 0,
+     "reason": "abort"
+    }
+   }
+  }
+ ]
+}

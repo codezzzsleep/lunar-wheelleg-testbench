@@ -1,0 +1,239 @@
+{
+  "schema": "common-plan/v1",
+  "version": "common-planner/v1",
+  "visible": {
+    "x_front": 1.6370449281743664,
+    "W_vis": 0.383833327450099,
+    "H_vis": 0.18646753201995667,
+    "n_pixels": 14053,
+    "y_center": 1.5068291892406105e-05
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "hypotheses": [
+    "U_truth"
+  ],
+  "state_mode": "project",
+  "applicability": [
+    {
+      "hypothesis": "U_truth",
+      "action": "R1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "R2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "L1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "L2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility"
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "D1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "D2",
+      "applicable": true,
+      "reason": null
+    }
+  ],
+  "per_hypothesis_action": {
+    "U_truth|R1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|R2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|L1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|L2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|S1": {
+      "soil_outcomes": {
+        "nominal": "not_applicable",
+        "low_traction": "not_applicable",
+        "high_drag": "not_applicable"
+      },
+      "costs": [],
+      "success": false,
+      "errors": 0,
+      "not_applicable": true
+    },
+    "U_truth|D1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        7.38,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|D2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    }
+  },
+  "decision": {
+    "chosen": "A0",
+    "safe_set": [],
+    "cost": null,
+    "reason": "no_safe_traversal",
+    "rehearsal_errors": 0,
+    "detail": {
+      "R1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "R2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "L1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "L2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "S1": {
+        "not_applicable": true,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "D1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      },
+      "D2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "U_truth": false
+        }
+      }
+    }
+  },
+  "counts": {
+    "rows": 21,
+    "expected_rows": 21,
+    "traversal_actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "a0_is_fallback": true
+  }
+}

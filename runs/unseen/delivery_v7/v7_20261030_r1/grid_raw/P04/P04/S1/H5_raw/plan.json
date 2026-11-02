@@ -1,0 +1,239 @@
+{
+  "schema": "common-plan/v1",
+  "version": "common-planner/v1",
+  "visible": {
+    "x_front": 1.6013507101689186,
+    "W_vis": 0.2871799012365034,
+    "H_vis": 0.2703093188497061,
+    "n_pixels": 14004,
+    "y_center": -0.00017965129874973618
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "hypotheses": [
+    "H5_raw"
+  ],
+  "state_mode": "project",
+  "applicability": [
+    {
+      "hypothesis": "H5_raw",
+      "action": "R1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "R2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "L1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "L2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility"
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "D1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "H5_raw",
+      "action": "D2",
+      "applicable": true,
+      "reason": null
+    }
+  ],
+  "per_hypothesis_action": {
+    "H5_raw|R1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        9.18,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_raw|R2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_raw|L1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_raw|L2": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        8.88,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_raw|S1": {
+      "soil_outcomes": {
+        "nominal": "not_applicable",
+        "low_traction": "not_applicable",
+        "high_drag": "not_applicable"
+      },
+      "costs": [],
+      "success": false,
+      "errors": 0,
+      "not_applicable": true
+    },
+    "H5_raw|D1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "H5_raw|D2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        10.04,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    }
+  },
+  "decision": {
+    "chosen": "A0",
+    "safe_set": [],
+    "cost": null,
+    "reason": "no_safe_traversal",
+    "rehearsal_errors": 0,
+    "detail": {
+      "R1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "R2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "L1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "L2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "S1": {
+        "not_applicable": true,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "D1": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      },
+      "D2": {
+        "not_applicable": false,
+        "errors": 0,
+        "per_hypothesis": {
+          "H5_raw": false
+        }
+      }
+    }
+  },
+  "counts": {
+    "rows": 21,
+    "expected_rows": 21,
+    "traversal_actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "a0_is_fallback": true
+  }
+}

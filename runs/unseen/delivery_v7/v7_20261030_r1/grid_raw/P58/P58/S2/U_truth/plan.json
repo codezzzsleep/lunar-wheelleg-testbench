@@ -1,0 +1,193 @@
+{
+  "schema": "common-plan/v1",
+  "version": "common-planner/v1",
+  "visible": {
+    "x_front": 1.6535500219112733,
+    "W_vis": 0.39983317348102876,
+    "H_vis": 0.1678028005760285,
+    "n_pixels": 12494,
+    "y_center": -0.0002494981743051822
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "hypotheses": [
+    "U_truth"
+  ],
+  "state_mode": "project",
+  "applicability": [
+    {
+      "hypothesis": "U_truth",
+      "action": "R1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "R2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "L1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "L2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility"
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "D1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "U_truth",
+      "action": "D2",
+      "applicable": true,
+      "reason": null
+    }
+  ],
+  "per_hypothesis_action": {
+    "U_truth|R1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        7.5,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|R2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "failure",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        60.0,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|L1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        8.92,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|L2": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        8.82,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|S1": {
+      "soil_outcomes": {
+        "nominal": "not_applicable",
+        "low_traction": "not_applicable",
+        "high_drag": "not_applicable"
+      },
+      "costs": [],
+      "success": false,
+      "errors": 0,
+      "not_applicable": true
+    },
+    "U_truth|D1": {
+      "soil_outcomes": {
+        "nominal": "failure",
+        "low_traction": "success",
+        "high_drag": "failure"
+      },
+      "costs": [
+        60.0,
+        7.14,
+        60.0
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "U_truth|D2": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        8.46,
+        8.3,
+        7.8
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    }
+  },
+  "decision": {
+    "chosen": "D2",
+    "safe_set": [
+      "D2"
+    ],
+    "cost": 8.46,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "D2"
+    ],
+    "rehearsal_errors": 0
+  },
+  "counts": {
+    "rows": 21,
+    "expected_rows": 21,
+    "traversal_actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "a0_is_fallback": true
+  }
+}

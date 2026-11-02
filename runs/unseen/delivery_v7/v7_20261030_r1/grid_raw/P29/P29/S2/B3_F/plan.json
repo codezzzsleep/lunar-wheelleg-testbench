@@ -1,0 +1,197 @@
+{
+  "schema": "common-plan/v1",
+  "version": "common-planner/v1",
+  "visible": {
+    "x_front": 1.6513889143381195,
+    "W_vis": 0.32294627919379226,
+    "H_vis": 0.22659397987927027,
+    "n_pixels": 12778,
+    "y_center": -0.00015331120369986573
+  },
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "hypotheses": [
+    "B3_F"
+  ],
+  "state_mode": "project",
+  "applicability": [
+    {
+      "hypothesis": "B3_F",
+      "action": "R1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "R2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "L1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "L2",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "S1",
+      "applicable": false,
+      "reason": "not_applicable_by_public_visibility"
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "D1",
+      "applicable": true,
+      "reason": null
+    },
+    {
+      "hypothesis": "B3_F",
+      "action": "D2",
+      "applicable": true,
+      "reason": null
+    }
+  ],
+  "per_hypothesis_action": {
+    "B3_F|R1": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        6.16,
+        6.78,
+        6.04
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "B3_F|R2": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        8.1,
+        9.68,
+        7.98
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "B3_F|L1": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "failure",
+        "high_drag": "success"
+      },
+      "costs": [
+        7.12,
+        60.0,
+        6.76
+      ],
+      "success": false,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "B3_F|L2": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        6.56,
+        7.22,
+        6.5
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "B3_F|S1": {
+      "soil_outcomes": {
+        "nominal": "not_applicable",
+        "low_traction": "not_applicable",
+        "high_drag": "not_applicable"
+      },
+      "costs": [],
+      "success": false,
+      "errors": 0,
+      "not_applicable": true
+    },
+    "B3_F|D1": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        6.94,
+        7.62,
+        7.14
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    },
+    "B3_F|D2": {
+      "soil_outcomes": {
+        "nominal": "success",
+        "low_traction": "success",
+        "high_drag": "success"
+      },
+      "costs": [
+        6.62,
+        7.04,
+        6.4
+      ],
+      "success": true,
+      "errors": 0,
+      "not_applicable": false
+    }
+  },
+  "decision": {
+    "chosen": "R1",
+    "safe_set": [
+      "R1",
+      "D2",
+      "L2",
+      "D1",
+      "R2"
+    ],
+    "cost": 6.78,
+    "reason": "worst_case_traversal",
+    "tie": [
+      "R1"
+    ],
+    "rehearsal_errors": 0
+  },
+  "counts": {
+    "rows": 21,
+    "expected_rows": 21,
+    "traversal_actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "a0_is_fallback": true
+  }
+}

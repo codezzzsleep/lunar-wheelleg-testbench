@@ -1,0 +1,853 @@
+{
+  "schema": "rock-families/v2",
+  "planning_soils": [
+    "nominal",
+    "low_traction",
+    "high_drag"
+  ],
+  "execution_soil": "nominal",
+  "initial_states": {
+    "S1": {
+      "id": "S1",
+      "seed": 7,
+      "lateral_m": 0.04,
+      "yaw_rad": 0.03
+    },
+    "S2": {
+      "id": "S2",
+      "seed": 11,
+      "lateral_m": 0.05,
+      "yaw_rad": 0.04
+    },
+    "S3": {
+      "id": "S3",
+      "seed": 13,
+      "lateral_m": 0.06,
+      "yaw_rad": 0.05
+    }
+  },
+  "candidate_scope": "固定首候选（每块一个生成候选）",
+  "rows": {
+    "P64|S1": {
+      "rock": "P64",
+      "state": "S1",
+      "applied": {
+        "seed": 7,
+        "lateral": 0.04,
+        "yaw": 0.03,
+        "soil_label": "nominal",
+        "soil_mode": "soil",
+        "soil_params": {
+          "n": 1.0,
+          "kc": 1400.0,
+          "kphi": 820000.0,
+          "cohesion_pa": 170.0,
+          "phi_deg": 35.0,
+          "k_shear": 0.018
+        },
+        "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+        "soil_hash": "55848f809567"
+      },
+      "state_hash": "b110e68c3cff227cd89c3469b0134f03",
+      "visible": {
+        "n_pixels": 13960,
+        "x_front": 1.6370944985017046,
+        "y_center": 0.0002833613939221963,
+        "W_vis": 0.38376789359595864,
+        "H_vis": 0.18548307299312672
+      },
+      "assets": {
+        "box": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/box/box",
+        "mirror": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/mirror/mirror",
+        "E25D_block": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/e25d_block",
+        "E25D_fill": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/e25d_fill",
+        "H5_raw": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/h5_raw_coll",
+        "H5_raw_world": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/h5_raw_parent",
+        "H5_F": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/h5f_coll",
+        "H5_F_fused": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S1/h5f_fused"
+      },
+      "rows": {
+        "B1_height": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": null,
+          "evidence": {
+            "rule": "visible height ratio 2.16 > 1.6"
+          },
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B2_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B3_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_block": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_fill": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "H5_raw": {
+          "status": "planned",
+          "chosen": "R1",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "R1",
+            "L2",
+            "D2",
+            "D1",
+            "L1",
+            "R2"
+          ],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "tipped",
+          "final_x": 1.796,
+          "frames": 248
+        },
+        "H5_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "U_truth": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 7,
+            "lateral": 0.04,
+            "yaw": 0.03,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        }
+      }
+    },
+    "P64|S2": {
+      "rock": "P64",
+      "state": "S2",
+      "applied": {
+        "seed": 11,
+        "lateral": 0.05,
+        "yaw": 0.04,
+        "soil_label": "nominal",
+        "soil_mode": "soil",
+        "soil_params": {
+          "n": 1.0,
+          "kc": 1400.0,
+          "kphi": 820000.0,
+          "cohesion_pa": 170.0,
+          "phi_deg": 35.0,
+          "k_shear": 0.018
+        },
+        "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+        "soil_hash": "55848f809567"
+      },
+      "state_hash": "fb06766461230a06de30542c5270dee9",
+      "visible": {
+        "n_pixels": 14053,
+        "x_front": 1.6370449281743664,
+        "y_center": 1.5068291892406105e-05,
+        "W_vis": 0.383833327450099,
+        "H_vis": 0.18646753201995667
+      },
+      "assets": {
+        "box": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/box/box",
+        "mirror": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/mirror/mirror",
+        "E25D_block": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/e25d_block",
+        "E25D_fill": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/e25d_fill",
+        "H5_raw": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/h5_raw_coll",
+        "H5_raw_world": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/h5_raw_parent",
+        "H5_F": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/h5f_coll",
+        "H5_F_fused": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S2/h5f_fused"
+      },
+      "rows": {
+        "B1_height": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": null,
+          "evidence": {
+            "rule": "visible height ratio 2.17 > 1.6"
+          },
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B2_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B3_F": {
+          "status": "planned",
+          "chosen": "D1",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "D1"
+          ],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "tipped",
+          "final_x": 1.518,
+          "frames": 215
+        },
+        "E25D_block": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_fill": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "H5_raw": {
+          "status": "planned",
+          "chosen": "R1",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "R1",
+            "L2",
+            "D2",
+            "D1",
+            "L1",
+            "R2"
+          ],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "tipped",
+          "final_x": 1.853,
+          "frames": 236
+        },
+        "H5_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "U_truth": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 11,
+            "lateral": 0.05,
+            "yaw": 0.04,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        }
+      }
+    },
+    "P64|S3": {
+      "rock": "P64",
+      "state": "S3",
+      "applied": {
+        "seed": 13,
+        "lateral": 0.06,
+        "yaw": 0.05,
+        "soil_label": "nominal",
+        "soil_mode": "soil",
+        "soil_params": {
+          "n": 1.0,
+          "kc": 1400.0,
+          "kphi": 820000.0,
+          "cohesion_pa": 170.0,
+          "phi_deg": 35.0,
+          "k_shear": 0.018
+        },
+        "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+        "soil_hash": "55848f809567"
+      },
+      "state_hash": "28935a5b6b0630b157289a4bf0414bd3",
+      "visible": {
+        "n_pixels": 14161,
+        "x_front": 1.6363695359401111,
+        "y_center": 0.0005673304335321733,
+        "W_vis": 0.38248393506363454,
+        "H_vis": 0.1869612715227151
+      },
+      "assets": {
+        "box": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/box/box",
+        "mirror": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/mirror/mirror",
+        "E25D_block": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/e25d_block",
+        "E25D_fill": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/e25d_fill",
+        "H5_raw": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/h5_raw_coll",
+        "H5_raw_world": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/h5_raw_parent",
+        "H5_F": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/h5f_coll",
+        "H5_F_fused": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P64/P64/S3/h5f_fused"
+      },
+      "rows": {
+        "B1_height": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": null,
+          "evidence": {
+            "rule": "visible height ratio 2.18 > 1.6"
+          },
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B2_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "B3_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_block": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "E25D_fill": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "H5_raw": {
+          "status": "planned",
+          "chosen": "R1",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [
+            "R1",
+            "L2",
+            "D2",
+            "L1",
+            "D1",
+            "R2"
+          ],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "tipped",
+          "final_x": 1.541,
+          "frames": 250
+        },
+        "H5_F": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        },
+        "U_truth": {
+          "status": "planned",
+          "chosen": "A0",
+          "cells": 21,
+          "errors": 0,
+          "safe_set": [],
+          "applied": {
+            "seed": 13,
+            "lateral": 0.06,
+            "yaw": 0.05,
+            "soil_label": "nominal",
+            "soil_mode": "soil",
+            "soil_params": {
+              "n": 1.0,
+              "kc": 1400.0,
+              "kphi": 820000.0,
+              "cohesion_pa": 170.0,
+              "phi_deg": 35.0,
+              "k_shear": 0.018
+            },
+            "scene_signature": "26de3c0aae8d0c805bf9fd702f926817",
+            "soil_hash": "55848f809567"
+          },
+          "success": false,
+          "reason": "abort",
+          "final_x": -0.003,
+          "frames": 150
+        }
+      }
+    }
+  }
+}

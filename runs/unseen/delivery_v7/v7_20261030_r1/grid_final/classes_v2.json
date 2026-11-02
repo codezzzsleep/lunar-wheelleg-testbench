@@ -1,0 +1,791 @@
+{
+  "schema": "rock-grid-classes-v2/v1",
+  "note": "按方法分开记录：真值能过时，放弃=A0 记过度保守；选非 A0 且失败记错误安全预测。真值 15 次 A0 只表示该动作集/三土壤/预算下没找到可行动作，不表示任务绝对无解。",
+  "per_method": {
+    "B1_height": {
+      "over_conservative": 6
+    },
+    "B2_F": {
+      "over_conservative": 6
+    },
+    "B3_F": {
+      "over_conservative": 3,
+      "wrong_safe_prediction": 1,
+      "passes": 2
+    },
+    "E25D_block": {
+      "over_conservative": 6
+    },
+    "E25D_fill": {
+      "over_conservative": 3,
+      "passes": 3
+    },
+    "H5_raw": {
+      "wrong_safe_prediction": 4,
+      "passes": 2
+    },
+    "H5_F": {
+      "wrong_safe_prediction": 3,
+      "passes": 2,
+      "over_conservative": 1
+    }
+  },
+  "states": [
+    {
+      "state": "P04|S1",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P04|S2",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_F": {
+          "chosen": "L1",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P04|S3",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_F": {
+          "chosen": "L2",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P06|S1",
+      "truth_chosen": "L2",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "D1",
+          "class": "wrong_safe_prediction"
+        },
+        "H5_F": {
+          "chosen": "D1",
+          "class": "wrong_safe_prediction"
+        }
+      }
+    },
+    {
+      "state": "P06|S2",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "passes"
+        },
+        "H5_F": {
+          "chosen": "D1",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P06|S3",
+      "truth_chosen": "R2",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "D1",
+          "class": "wrong_safe_prediction"
+        },
+        "H5_F": {
+          "chosen": "R1",
+          "class": "wrong_safe_prediction"
+        }
+      }
+    },
+    {
+      "state": "P29|S1",
+      "truth_chosen": "D1",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "R1",
+          "class": "wrong_safe_prediction"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "D1",
+          "class": "passes"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "wrong_safe_prediction"
+        },
+        "H5_F": {
+          "chosen": "R1",
+          "class": "wrong_safe_prediction"
+        }
+      }
+    },
+    {
+      "state": "P29|S2",
+      "truth_chosen": "R1",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "R1",
+          "class": "passes"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "R2",
+          "class": "passes"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "passes"
+        },
+        "H5_F": {
+          "chosen": "R1",
+          "class": "passes"
+        }
+      }
+    },
+    {
+      "state": "P29|S3",
+      "truth_chosen": "D2",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "D2",
+          "class": "passes"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "R2",
+          "class": "passes"
+        },
+        "H5_raw": {
+          "chosen": "D1",
+          "class": "passes"
+        },
+        "H5_F": {
+          "chosen": "D1",
+          "class": "passes"
+        }
+      }
+    },
+    {
+      "state": "P46|S1",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P46|S2",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P46|S3",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P58|S1",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P58|S2",
+      "truth_chosen": "D2",
+      "truth_pass": true,
+      "reference": "reference_found_action",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "wrong_safe_prediction"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P58|S3",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "D2",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P64|S1",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P64|S2",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "D1",
+          "class": "attempt_failed"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P64|S3",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        }
+      }
+    },
+    {
+      "state": "P76|S1",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P76|S2",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "H5_raw": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "R1",
+          "class": "attempt_failed"
+        }
+      }
+    },
+    {
+      "state": "P76|S3",
+      "truth_chosen": "A0",
+      "truth_pass": false,
+      "reference": "no_action_found_by_reference",
+      "methods": {
+        "B1_height": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B2_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "B3_F": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_block": {
+          "chosen": "A0",
+          "class": "abandon"
+        },
+        "E25D_fill": {
+          "chosen": "L2",
+          "class": "attempt_failed"
+        },
+        "H5_raw": {
+          "chosen": "R2",
+          "class": "attempt_failed"
+        },
+        "H5_F": {
+          "chosen": "L2",
+          "class": "attempt_failed"
+        }
+      }
+    }
+  ]
+}

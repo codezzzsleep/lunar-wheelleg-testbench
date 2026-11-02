@@ -17,16 +17,21 @@ def main():
     for d in sorted((ROOT/a.cands).glob('*/parent/body.stl'))[:a.max_cands]:
         m = trimesh.load(d, force='mesh', process=False)
         m.apply_translation(-m.bounds.mean(0))
-        h = float(m.bounds[1][2]-m.bounds[0][2])
+        # 前沿对齐：把网格最小 x 对环境观测前沿，避免整体偏移
         vis = json.loads((obs/'observation.json').read_text())['visible']
+        # 先把原始网格缩放到观测高度，再在其附近搜索（此前漏了这一步，导致尺度网格严重偏离）
+        h = float(m.bounds[1][2]-m.bounds[0][2])
+        if h > 1e-6:
+            m.apply_scale(float(vis['H_vis'])/h)
         best = None
         for yaw in range(-180, 180, 30):
-            for sc in (0.95, 1.0, 1.05):
-                for dx in (-0.02, 0.0, 0.02):
+            for sc in (0.92, 0.96, 1.0, 1.04, 1.08):
+                for dx in (-0.10, -0.05, 0.0, 0.05, 0.10):
                     M = np.eye(4)
                     c, s = np.cos(np.deg2rad(yaw)), np.sin(np.deg2rad(yaw))
                     M[:3,:3] = np.array([[c,-s,0],[s,c,0],[0,0,1]]) * sc
-                    M[:3,3] = [1.8 + dx, vis['y_center'], 0.0]
+                    front = float(m.bounds[0][0] * sc)
+                    M[:3,3] = [float(vis['x_front']) - front + dx, vis['y_center'], 0.0]
                     mw = A.apply_T(m, M)
                     tmp = ROOT/'/tmp/v2reg'/'m.stl'; tmp.parent.mkdir(parents=True, exist_ok=True)
                     mw.export(tmp)

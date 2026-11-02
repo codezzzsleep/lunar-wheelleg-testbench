@@ -1,5 +1,7 @@
 {
-  "schema": "v2-main-table/v1",
+  "schema": "v2-main-table/v2",
+  "regime": "5pt",
+  "main_comparison": false,
   "states": {
     "P01|S1": {
       "truth_pass": false,
@@ -124,7 +126,11 @@
           "shell_voxels": 19330,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "B2": "fusion_invalid"
+          }
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -137,7 +143,11 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "B2": "fusion_invalid"
+          }
         },
         "U_truth": {
           "status": "planned",
@@ -284,7 +294,9 @@
           "shell_voxels": 23264,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -297,7 +309,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -444,7 +458,9 @@
           "shell_voxels": 22861,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -457,7 +473,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -606,7 +624,9 @@
           "shell_voxels": 17599,
           "generation_ablation_outcome": "task_failure",
           "generation_ablation_chosen": "R2",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -619,7 +639,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -766,7 +788,9 @@
           "shell_voxels": 16841,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -779,7 +803,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -930,7 +956,9 @@
           "shell_voxels": 23949,
           "generation_ablation_outcome": "task_failure",
           "generation_ablation_chosen": "L2",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -943,7 +971,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -1090,7 +1120,9 @@
           "shell_voxels": 17147,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -1103,7 +1135,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -1250,7 +1284,9 @@
           "shell_voxels": 11689,
           "generation_ablation_outcome": "safe_stop_no_reference",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -1263,7 +1299,9 @@
           "planning_usable": false,
           "outcome_class": "safe_stop_no_reference",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -1410,7 +1448,14 @@
           "shell_voxels": null,
           "generation_ablation_outcome": "over_conservative",
           "generation_ablation_chosen": "A0",
-          "generation_ablation_success": false
+          "generation_ablation_success": false,
+          "first_candidate_id": "B2",
+          "candidate_failures": {
+            "A1": "fusion_invalid",
+            "B1": "fusion_invalid",
+            "A2": "fusion_invalid",
+            "C1": "fusion_invalid"
+          }
         },
         "Lux3D_multi": {
           "chosen": "A0",
@@ -1423,7 +1468,14 @@
           "planning_usable": false,
           "outcome_class": "over_conservative",
           "comparison_label": "lux3d",
-          "generation_ablation_outcome": "not_run"
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "B2",
+          "candidate_failures": {
+            "A1": "fusion_invalid",
+            "B1": "fusion_invalid",
+            "A2": "fusion_invalid",
+            "C1": "fusion_invalid"
+          }
         },
         "U_truth": {
           "status": "planned",
@@ -1554,10 +1606,44 @@
           "comparison_label": "E25D_fill"
         },
         "Lux3D_first": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 35,
+          "n_candidates": 1,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "over_conservative",
+          "comparison_label": "lux3d",
+          "strict_pass": true,
+          "mask_iou": 0.9818,
+          "vis_p95_mm": 2.035,
+          "kept_ratio": 1.0,
+          "kept_voxels": 58782,
+          "shell_voxels": 24776,
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "C2": "fusion_invalid"
+          }
         },
         "Lux3D_multi": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 105,
+          "n_candidates": 3,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "over_conservative",
+          "comparison_label": "lux3d",
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "C2": "fusion_invalid"
+          }
         },
         "U_truth": {
           "status": "planned",
@@ -1688,10 +1774,46 @@
           "comparison_label": "E25D_fill"
         },
         "Lux3D_first": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 35,
+          "n_candidates": 1,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "safe_stop_no_reference",
+          "comparison_label": "lux3d",
+          "strict_pass": true,
+          "mask_iou": 0.978,
+          "vis_p95_mm": 2.186,
+          "kept_ratio": 1.0,
+          "kept_voxels": 82488,
+          "shell_voxels": 23684,
+          "generation_ablation_outcome": "pass",
+          "generation_ablation_chosen": "D1",
+          "generation_ablation_success": true,
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "C1": "fusion_invalid"
+          }
         },
         "Lux3D_multi": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 140,
+          "n_candidates": 4,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "safe_stop_no_reference",
+          "comparison_label": "lux3d",
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {
+            "C1": "fusion_invalid"
+          }
         },
         "U_truth": {
           "status": "planned",
@@ -1820,10 +1942,42 @@
           "comparison_label": "E25D_fill"
         },
         "Lux3D_first": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 35,
+          "n_candidates": 1,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "safe_stop_no_reference",
+          "comparison_label": "lux3d",
+          "strict_pass": false,
+          "mask_iou": 0.9696,
+          "vis_p95_mm": 2.201,
+          "kept_ratio": 1.0,
+          "kept_voxels": 469876,
+          "shell_voxels": 11729,
+          "generation_ablation_outcome": "safe_stop_no_reference",
+          "generation_ablation_chosen": "A0",
+          "generation_ablation_success": false,
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "Lux3D_multi": {
-          "status": "missing"
+          "chosen": "A0",
+          "cells": 210,
+          "n_candidates": 6,
+          "safe_set": [],
+          "success": false,
+          "reason": "abort",
+          "errors": 0,
+          "planning_usable": false,
+          "outcome_class": "safe_stop_no_reference",
+          "comparison_label": "lux3d",
+          "generation_ablation_outcome": "not_run",
+          "first_candidate_id": "A1",
+          "candidate_failures": {}
         },
         "U_truth": {
           "status": "planned",
@@ -2949,15 +3103,15 @@
       "pass": 1
     },
     "Lux3D_first": {
-      "safe_stop_no_reference": 6,
+      "safe_stop_no_reference": 8,
       "task_failure": 2,
-      "over_conservative": 1,
-      "missing": 11
+      "over_conservative": 2,
+      "missing": 8
     },
     "Lux3D_multi": {
-      "safe_stop_no_reference": 8,
-      "over_conservative": 1,
-      "missing": 11
+      "safe_stop_no_reference": 10,
+      "over_conservative": 2,
+      "missing": 8
     },
     "U_truth": {
       "safe_stop_no_reference": 16,

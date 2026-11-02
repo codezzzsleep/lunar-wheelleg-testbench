@@ -68,7 +68,10 @@ U_truth 行按正式可见量记，真值无动作的状态记 `safe_stop_no_ref
 
 - `5pt/<STATE>/multi.json`：Lux3D 六候选、first/multi/first_ablation、候选 fused 质量；
 - `5pt/<STATE>/nonlux.json`：B1_height / B2_F / B3_F / E25D_block / E25D_fill / U_truth；
-- `table/main_table.json|md`：当前部分八行表（5 点，missing 为未完成状态）；
+- `appendix_5pt/main_table.json|md`：**附录**，5 点退化口径（不是主比较）；
 - `key_states/*.multi.json`：三关键状态完整决策矩阵；
 - `key_states/truth_*.manifest.json`：已知答案的融合清单；
-- `nominal/`：主比较结果，生成中。
+- `nominal/`：nominal 主比较结果，A 侧已完成 13 个状态；B 侧 P22/P76/P29/P37 待补。
+
+**先读** [docs/REVIEW_2026-11-03.md](../../docs/REVIEW_2026-11-03.md)：评审指出 strict 测的是壳层而非生成几何、
+真值对照未过 strict、5 点表退化、first/multi 组成不一致；本批目前不能作为方法优劣的发表证据。

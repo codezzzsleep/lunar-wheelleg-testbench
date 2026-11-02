@@ -1,0 +1,744 @@
+{
+  "schema": "v2-multi/v4",
+  "rock": "P16",
+  "state": "S2",
+  "candidates": {
+    "A1": "runs/unseen/delivery_v7/v7_20261030_r1/v3batch_nominal/P16_S2/A1/coll",
+    "A2": "runs/unseen/delivery_v7/v7_20261030_r1/v3batch_nominal/P16_S2/A2/coll",
+    "C1": "runs/unseen/delivery_v7/v7_20261030_r1/v3batch_nominal/P16_S2/C1/coll"
+  },
+  "candidate_status": {
+    "A1": {
+      "status": "reused",
+      "fused": {
+        "schema": "fused-asset/v3",
+        "version": "fuse-observed/v3",
+        "method": "H5_F",
+        "artifact_status": "complete",
+        "comparison_label": "lux3d_observed_fusion",
+        "parent_id": "A1",
+        "source_kind": "H5_F",
+        "parent_source_kind": "lux3d",
+        "coordinate_frame": "world",
+        "parts": [
+          "body.stl"
+        ],
+        "world_sha": "88f07a121cf4a9a93f687a86af41f3aa1bea7b174ac49f9d7c03b1aecf97bccd",
+        "content_sha": "2364622af2c02dddcd7278d069ae0cc520cd21202cc0908996b4620fa0741870",
+        "inputs": {
+          "observation": "runs/unseen/delivery_v7/v7_20261030_r1/v3extra/P16/S2/obs",
+          "observation_sha": "f7c3ed90935f6235f120c9a50bd4b939ac02fc987c9ad3600fa9aee54a8746b7",
+          "parent_world": [
+            "runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/A1/parent"
+          ],
+          "parent_mesh_sha": [
+            "01a89a8729ec9fe36c333773345fd3d2436d51bfd5a47ea9af25c5a2b3f559e1"
+          ],
+          "effective_config_sha": "71d882d97c6ac9427fc860fd437456c554eefa894c2d9ba46548559a8790fb98",
+          "code_sha256": "f62e3b04980d47f56e6dad8b98ffe044b7ea84cd0968b31898ef1d94f619650a"
+        },
+        "environment": {
+          "python": "3.12.16",
+          "numpy": "2.5.4",
+          "trimesh": "5.2.0",
+          "mujoco": "3.17.0",
+          "scipy": "1.18.1",
+          "Pillow": "13.0.0",
+          "manifold3d": "3.5.4"
+        },
+        "grid": {
+          "convention": "cell-center",
+          "origin": [
+            1.6597624349594116,
+            -0.23347752511501313,
+            0.0
+          ],
+          "pitch_m": 0.0025,
+          "dims": [
+            294,
+            187,
+            92
+          ],
+          "n_voxels": 5057976
+        },
+        "space": {
+          "n_voxels": 5057976,
+          "n_free": 2605406,
+          "n_band": 27978,
+          "n_unknown": 2424592,
+          "n_in_fov": 5057976,
+          "n_valid_depth": 4576106,
+          "n_depth_edge_px": 0,
+          "n_constrained_px": 4576106,
+          "depth_edge_threshold_m": 0.0,
+          "valid_depth_frac": 0.904731,
+          "depth_convention": "positive_camera_minus_z (axis depth)",
+          "free_eps_m": 0.001,
+          "band_m": 0.0075,
+          "front_error_bound_mm": 2.25
+        },
+        "parent_solid": {
+          "parents": [
+            "/workspace/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/A1/parent"
+          ],
+          "solid_method": [
+            "ray_parity"
+          ],
+          "watertight_parent": true,
+          "n_inside_voxels": 114419,
+          "n_parents": 1
+        },
+        "growth": {
+          "component_removed_voxels": 311,
+          "component_kept_voxels": 85182,
+          "component_prune": {
+            "n_components": 113,
+            "n_parent_components": 7,
+            "n_kept_components": 7,
+            "removed_voxels": 311,
+            "removed_components": [
+              33,
+              11,
+              11,
+              9,
+              8,
+              7,
+              6,
+              6,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              5,
+              4,
+              4,
+              4
+            ],
+            "removed_component_count": 106,
+            "min_shell_component_voxels": 500,
+            "rule": "keep every component containing parent prior; keep shell-only components >= min_shell_component_voxels"
+          },
+          "shell_voxels": 24776,
+          "shell_voxels_before_gapfill": 27188,
+          "shell_gapfill": {
+            "mode": "front",
+            "shell_voxels_before": 27188,
+            "mask_erode_px": 1,
+            "covered_pixels": 944,
+            "shell_voxels_after": 24776
+          },
+          "filled_holes": false,
+          "volume_before_repair_m3": 0.0012902669270833326,
+          "volume_after_repair_m3": 0.0012902669270833326
+        },
+        "retention": {
+          "unknown_core_parent_voxels": 58782,
+          "kept_voxels": 58782,
+          "removed_voxels": 0,
+          "added_voxels": 7167,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0,
+          "added_volume_m3": 0.000111984,
+          "carved_free_voxels": 53284,
+          "carved_free_volume_m3": 0.000832563,
+          "parent_hidden_to_fused_mm": {
+            "n": 741,
+            "med": 0.462,
+            "p95": 0.948
+          },
+          "fused_to_parent_mm": {
+            "n": 1500,
+            "med": 0.717,
+            "p95": 25.083
+          },
+          "n_parents": 1,
+          "shell_rule": {
+            "lower": "depth - eps + offset",
+            "upper": "depth + band + offset",
+            "eps_m": 0.001,
+            "band_m": 0.0075,
+            "offset_m": 0.0025
+          },
+          "shell_voxels": 24776,
+          "shell_outside_parent_voxels": 24358
+        },
+        "source_retention": {
+          "unknown_core_parent_voxels": 58782,
+          "kept_voxels": 58782,
+          "removed_voxels": 0,
+          "added_voxels": 7167,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0
+        },
+        "ablation": null,
+        "watertight": true,
+        "volume_m3": 0.001290267,
+        "bounds": [
+          [
+            1.6672624349594116,
+            -0.22597752511501312,
+            0.0
+          ],
+          [
+            2.3872624349594114,
+            0.20652247488498687,
+            0.215
+          ]
+        ],
+        "metrics": {
+          "mask_iou": 0.9818,
+          "cand_px": 13330,
+          "obs_px": 13327,
+          "n_inter": 13206,
+          "resolution": [
+            1280,
+            960
+          ],
+          "depth_med_mm": 1.222,
+          "depth_p95_mm": 5.557,
+          "depth_inner_rms_mm": 14.255,
+          "depth_edge_rms_mm": 119.474,
+          "freespace_violation": 0.0176,
+          "freespace_n_px": 235,
+          "freespace_denom_px": 13330,
+          "freespace_outside_mask": 120,
+          "metric_version": "align-metric/v2.1",
+          "vis_pt_med_mm": 0.814,
+          "vis_pt_p95_mm": 2.035,
+          "vis_pt_n": 1200,
+          "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+        },
+        "strict": {
+          "pass": true,
+          "iou_min": 0.85,
+          "p95_mm_threshold": 6.519,
+          "freespace_max": 0.05,
+          "h_vis_m": 0.21730373338506428
+        },
+        "no_generated_hidden_contribution": false,
+        "seconds": 1091.48,
+        "note": "H5-F = 观测约束 + Lux3D 父候选隐藏几何；可见面由构造得到，不证明 Lux3D 自己重建准确。"
+      }
+    },
+    "A2": {
+      "status": "reused",
+      "fused": {
+        "schema": "fused-asset/v3",
+        "version": "fuse-observed/v3",
+        "method": "H5_F",
+        "artifact_status": "complete",
+        "comparison_label": "lux3d_observed_fusion",
+        "parent_id": "A2",
+        "source_kind": "H5_F",
+        "parent_source_kind": "lux3d",
+        "coordinate_frame": "world",
+        "parts": [
+          "body.stl"
+        ],
+        "world_sha": "ccd6154439eb1ee373af6a4e88aa77a5bfb79c3759dd81bd127a6126339ee778",
+        "content_sha": "960744a793f38727ac97021f822b5f2eceda1fde1594104d838c9ca1292d501e",
+        "inputs": {
+          "observation": "runs/unseen/delivery_v7/v7_20261030_r1/v3extra/P16/S2/obs",
+          "observation_sha": "f7c3ed90935f6235f120c9a50bd4b939ac02fc987c9ad3600fa9aee54a8746b7",
+          "parent_world": [
+            "runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/A2/parent"
+          ],
+          "parent_mesh_sha": [
+            "0f27794091244e8075bc3a845580eebb4197bda372b3975f72a0a09bc49be5f6"
+          ],
+          "effective_config_sha": "71d882d97c6ac9427fc860fd437456c554eefa894c2d9ba46548559a8790fb98",
+          "code_sha256": "f62e3b04980d47f56e6dad8b98ffe044b7ea84cd0968b31898ef1d94f619650a"
+        },
+        "environment": {
+          "python": "3.12.16",
+          "numpy": "2.5.4",
+          "trimesh": "5.2.0",
+          "mujoco": "3.17.0",
+          "scipy": "1.18.1",
+          "Pillow": "13.0.0",
+          "manifold3d": "3.5.4"
+        },
+        "grid": {
+          "convention": "cell-center",
+          "origin": [
+            1.6597624771002562,
+            -0.4180607569217682,
+            0.0
+          ],
+          "pitch_m": 0.0025,
+          "dims": [
+            177,
+            348,
+            91
+          ],
+          "n_voxels": 5605236
+        },
+        "space": {
+          "n_voxels": 5605236,
+          "n_free": 4297199,
+          "n_band": 28043,
+          "n_unknown": 1279994,
+          "n_in_fov": 5605236,
+          "n_valid_depth": 5445795,
+          "n_depth_edge_px": 0,
+          "n_constrained_px": 5445795,
+          "depth_edge_threshold_m": 0.0,
+          "valid_depth_frac": 0.971555,
+          "depth_convention": "positive_camera_minus_z (axis depth)",
+          "free_eps_m": 0.001,
+          "band_m": 0.0075,
+          "front_error_bound_mm": 2.25
+        },
+        "parent_solid": {
+          "parents": [
+            "/workspace/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/A2/parent"
+          ],
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "watertight_parent": false,
+          "n_inside_voxels": 2101780,
+          "n_parents": 1
+        },
+        "growth": {
+          "component_removed_voxels": 40,
+          "component_kept_voxels": 859396,
+          "component_prune": {
+            "n_components": 16,
+            "n_parent_components": 1,
+            "n_kept_components": 1,
+            "removed_voxels": 40,
+            "removed_components": [
+              6,
+              6,
+              4,
+              4,
+              4,
+              3,
+              2,
+              2,
+              2,
+              2,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "removed_component_count": 15,
+            "min_shell_component_voxels": 500,
+            "rule": "keep every component containing parent prior; keep shell-only components >= min_shell_component_voxels"
+          },
+          "shell_voxels": 17851,
+          "shell_voxels_before_gapfill": 27170,
+          "shell_gapfill": {
+            "mode": "front",
+            "shell_voxels_before": 27170,
+            "mask_erode_px": 1,
+            "covered_pixels": 3824,
+            "shell_voxels_after": 17851
+          },
+          "filled_holes": false,
+          "volume_before_repair_m3": 0.013427070312499992,
+          "volume_after_repair_m3": 0.013427070312499992
+        },
+        "retention": {
+          "unknown_core_parent_voxels": 832925,
+          "kept_voxels": 832925,
+          "removed_voxels": 0,
+          "added_voxels": 1413,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0,
+          "added_volume_m3": 2.2078e-05,
+          "carved_free_voxels": 1247333,
+          "carved_free_volume_m3": 0.019489578,
+          "parent_hidden_to_fused_mm": {
+            "n": 325,
+            "med": 3.651,
+            "p95": 6.643
+          },
+          "fused_to_parent_mm": {
+            "n": 1500,
+            "med": 4.921,
+            "p95": 56.651
+          },
+          "n_parents": 1,
+          "shell_rule": {
+            "lower": "depth - eps + offset",
+            "upper": "depth + band + offset",
+            "eps_m": 0.001,
+            "band_m": 0.0075,
+            "offset_m": 0.0025
+          },
+          "shell_voxels": 17851,
+          "shell_outside_parent_voxels": 4989
+        },
+        "source_retention": {
+          "unknown_core_parent_voxels": 832925,
+          "kept_voxels": 832925,
+          "removed_voxels": 0,
+          "added_voxels": 1413,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0
+        },
+        "ablation": null,
+        "watertight": true,
+        "volume_m3": 0.01342707,
+        "bounds": [
+          [
+            1.6672624771002562,
+            -0.21306075692176818,
+            0.0
+          ],
+          [
+            2.0772624771002564,
+            0.2119392430782318,
+            0.215
+          ]
+        ],
+        "metrics": {
+          "mask_iou": 0.9781,
+          "cand_px": 13467,
+          "obs_px": 13327,
+          "n_inter": 13249,
+          "resolution": [
+            1280,
+            960
+          ],
+          "depth_med_mm": -0.603,
+          "depth_p95_mm": 5.461,
+          "depth_inner_rms_mm": 2.809,
+          "depth_edge_rms_mm": 15.335,
+          "freespace_violation": 0.0676,
+          "freespace_n_px": 910,
+          "freespace_denom_px": 13467,
+          "freespace_outside_mask": 213,
+          "metric_version": "align-metric/v2.1",
+          "vis_pt_med_mm": 0.749,
+          "vis_pt_p95_mm": 1.855,
+          "vis_pt_n": 1200,
+          "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+        },
+        "strict": {
+          "pass": false,
+          "iou_min": 0.85,
+          "p95_mm_threshold": 6.519,
+          "freespace_max": 0.05,
+          "h_vis_m": 0.21730373338506428
+        },
+        "no_generated_hidden_contribution": false,
+        "seconds": 378.66,
+        "note": "H5-F = 观测约束 + Lux3D 父候选隐藏几何；可见面由构造得到，不证明 Lux3D 自己重建准确。"
+      }
+    },
+    "C1": {
+      "status": "reused",
+      "fused": {
+        "schema": "fused-asset/v3",
+        "version": "fuse-observed/v3",
+        "method": "H5_F",
+        "artifact_status": "complete",
+        "comparison_label": "lux3d_observed_fusion",
+        "parent_id": "C1",
+        "source_kind": "H5_F",
+        "parent_source_kind": "lux3d",
+        "coordinate_frame": "world",
+        "parts": [
+          "body.stl"
+        ],
+        "world_sha": "852d43ed68f0397521166066657cb21e05283e3c7645062e596a6ca213caa2ad",
+        "content_sha": "e12a865d33e7d66b988e6ac39400ab15185eed8f33b8dd3573e2d3d7ba45afdb",
+        "inputs": {
+          "observation": "runs/unseen/delivery_v7/v7_20261030_r1/v3extra/P16/S2/obs",
+          "observation_sha": "f7c3ed90935f6235f120c9a50bd4b939ac02fc987c9ad3600fa9aee54a8746b7",
+          "parent_world": [
+            "runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/C1/parent"
+          ],
+          "parent_mesh_sha": [
+            "a56a3d0a3b479487e418b1a8fa1ece0920a0d76f80e7eb825655b7c1b838a3a0"
+          ],
+          "effective_config_sha": "71d882d97c6ac9427fc860fd437456c554eefa894c2d9ba46548559a8790fb98",
+          "code_sha256": "f62e3b04980d47f56e6dad8b98ffe044b7ea84cd0968b31898ef1d94f619650a"
+        },
+        "environment": {
+          "python": "3.12.16",
+          "numpy": "2.5.4",
+          "trimesh": "5.2.0",
+          "mujoco": "3.17.0",
+          "scipy": "1.18.1",
+          "Pillow": "13.0.0",
+          "manifold3d": "3.5.4"
+        },
+        "grid": {
+          "convention": "cell-center",
+          "origin": [
+            1.6416414308547973,
+            -0.5260227990150451,
+            0.0
+          ],
+          "pitch_m": 0.0025,
+          "dims": [
+            218,
+            411,
+            91
+          ],
+          "n_voxels": 8153418
+        },
+        "space": {
+          "n_voxels": 8153418,
+          "n_free": 6500061,
+          "n_band": 27887,
+          "n_unknown": 1625470,
+          "n_in_fov": 8153418,
+          "n_valid_depth": 7801557,
+          "n_depth_edge_px": 0,
+          "n_constrained_px": 7801557,
+          "depth_edge_threshold_m": 0.0,
+          "valid_depth_frac": 0.956845,
+          "depth_convention": "positive_camera_minus_z (axis depth)",
+          "free_eps_m": 0.001,
+          "band_m": 0.0075,
+          "front_error_bound_mm": 2.25
+        },
+        "parent_solid": {
+          "parents": [
+            "/workspace/lunar-lab/runs/unseen/delivery_v7/v7_20261030_r1/v3batch/P16_S2/C1/parent"
+          ],
+          "solid_method": [
+            "shell_floodfill"
+          ],
+          "watertight_parent": false,
+          "n_inside_voxels": 3114065,
+          "n_parents": 1
+        },
+        "growth": {
+          "component_removed_voxels": 58,
+          "component_kept_voxels": 1039127,
+          "component_prune": {
+            "n_components": 28,
+            "n_parent_components": 3,
+            "n_kept_components": 3,
+            "removed_voxels": 58,
+            "removed_components": [
+              5,
+              5,
+              4,
+              4,
+              4,
+              4,
+              4,
+              3,
+              3,
+              3,
+              2,
+              2,
+              2,
+              2,
+              1,
+              1,
+              1,
+              1,
+              1,
+              1
+            ],
+            "removed_component_count": 25,
+            "min_shell_component_voxels": 500,
+            "rule": "keep every component containing parent prior; keep shell-only components >= min_shell_component_voxels"
+          },
+          "shell_voxels": 17556,
+          "shell_voxels_before_gapfill": 27109,
+          "shell_gapfill": {
+            "mode": "front",
+            "shell_voxels_before": 27109,
+            "mask_erode_px": 1,
+            "covered_pixels": 3923,
+            "shell_voxels_after": 17556
+          },
+          "filled_holes": false,
+          "volume_before_repair_m3": 0.016235531250000008,
+          "volume_after_repair_m3": 0.016235531250000008
+        },
+        "retention": {
+          "unknown_core_parent_voxels": 1012774,
+          "kept_voxels": 1012774,
+          "removed_voxels": 0,
+          "added_voxels": 1330,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0,
+          "added_volume_m3": 2.0781e-05,
+          "carved_free_voxels": 2079537,
+          "carved_free_volume_m3": 0.032492766,
+          "parent_hidden_to_fused_mm": {
+            "n": 294,
+            "med": 3.286,
+            "p95": 6.944
+          },
+          "fused_to_parent_mm": {
+            "n": 1500,
+            "med": 4.5,
+            "p95": 64.313
+          },
+          "n_parents": 1,
+          "shell_rule": {
+            "lower": "depth - eps + offset",
+            "upper": "depth + band + offset",
+            "eps_m": 0.001,
+            "band_m": 0.0075,
+            "offset_m": 0.0025
+          },
+          "shell_voxels": 17556,
+          "shell_outside_parent_voxels": 4657
+        },
+        "source_retention": {
+          "unknown_core_parent_voxels": 1012774,
+          "kept_voxels": 1012774,
+          "removed_voxels": 0,
+          "added_voxels": 1330,
+          "kept_ratio": 1.0,
+          "removed_ratio": 0.0
+        },
+        "ablation": null,
+        "watertight": true,
+        "volume_m3": 0.016235531,
+        "bounds": [
+          [
+            1.6666414308547972,
+            -0.22102279901504512,
+            0.0
+          ],
+          [
+            2.1341414308547972,
+            0.21897720098495488,
+            0.215
+          ]
+        ],
+        "metrics": {
+          "mask_iou": 0.9773,
+          "cand_px": 13469,
+          "obs_px": 13327,
+          "n_inter": 13244,
+          "resolution": [
+            1280,
+            960
+          ],
+          "depth_med_mm": -0.658,
+          "depth_p95_mm": 5.511,
+          "depth_inner_rms_mm": 2.854,
+          "depth_edge_rms_mm": 18.962,
+          "freespace_violation": 0.0671,
+          "freespace_n_px": 904,
+          "freespace_denom_px": 13469,
+          "freespace_outside_mask": 219,
+          "metric_version": "align-metric/v2.1",
+          "vis_pt_med_mm": 0.746,
+          "vis_pt_p95_mm": 1.808,
+          "vis_pt_n": 1200,
+          "vis_pt_strategy": "deterministic_subset(n=1200,seed=0,chunk=64)"
+        },
+        "strict": {
+          "pass": false,
+          "iou_min": 0.85,
+          "p95_mm_threshold": 6.519,
+          "freespace_max": 0.05,
+          "h_vis_m": 0.21730373338506428
+        },
+        "no_generated_hidden_contribution": false,
+        "seconds": 416.49,
+        "note": "H5-F = 观测约束 + Lux3D 父候选隐藏几何；可见面由构造得到，不证明 Lux3D 自己重建准确。"
+      }
+    },
+    "C2": {
+      "status": "fusion_invalid",
+      "reason": "manifest_missing",
+      "returncode": -9
+    }
+  },
+  "visible_quality": {
+    "A1": {
+      "align_mask_iou": 0.5477,
+      "align_vis_p95_mm": 41.076,
+      "align_pass": false,
+      "fused_strict_pass": true,
+      "fused_mask_iou": 0.9818,
+      "fused_vis_p95_mm": 2.035,
+      "fused_freespace": 0.0176,
+      "kept_ratio": 1.0,
+      "kept_voxels": 58782,
+      "shell_voxels": 24776
+    },
+    "A2": {
+      "align_mask_iou": 0.3406,
+      "align_vis_p95_mm": 48.682,
+      "align_pass": false,
+      "fused_strict_pass": false,
+      "fused_mask_iou": 0.9781,
+      "fused_vis_p95_mm": 1.855,
+      "fused_freespace": 0.0676,
+      "kept_ratio": 1.0,
+      "kept_voxels": 832925,
+      "shell_voxels": 17851
+    },
+    "C1": {
+      "align_mask_iou": 0.2755,
+      "align_vis_p95_mm": 54.361,
+      "align_pass": false,
+      "fused_strict_pass": false,
+      "fused_mask_iou": 0.9773,
+      "fused_vis_p95_mm": 1.808,
+      "fused_freespace": 0.0671,
+      "kept_ratio": 1.0,
+      "kept_voxels": 1012774,
+      "shell_voxels": 17556
+    },
+    "C2": {
+      "align_mask_iou": 0.3455,
+      "align_vis_p95_mm": 46.593,
+      "align_pass": false,
+      "fused_strict_pass": null,
+      "fused_mask_iou": null,
+      "fused_vis_p95_mm": null,
+      "fused_freespace": null,
+      "kept_ratio": null,
+      "kept_voxels": null,
+      "shell_voxels": null
+    }
+  },
+  "planning_soils": [
+    "nominal"
+  ],
+  "soil_label": "current",
+  "state_hash": "fb06766461230a06de30542c5270dee9",
+  "visible": {
+    "n_pixels": 13327,
+    "x_front": 1.6672624771002562,
+    "y_center": 6.966745947341313e-05,
+    "W_vis": 0.380572859995601,
+    "H_vis": 0.21730373338506428
+  },
+  "rows": {
+    "first": {
+      "chosen": "A0",
+      "cells": 7,
+      "n_candidates": 1,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "errors": 0,
+      "planning_usable": false
+    },
+    "multi": {
+      "chosen": "A0",
+      "cells": 21,
+      "n_candidates": 3,
+      "safe_set": [],
+      "success": false,
+      "reason": "abort",
+      "errors": 0,
+      "planning_usable": false
+    }
+  }
+}

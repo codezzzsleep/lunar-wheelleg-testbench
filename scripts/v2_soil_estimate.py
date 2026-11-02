@@ -39,7 +39,7 @@ def wheel_load(env):
         f = np.zeros(6); import mujoco
         mujoco.mj_contactForce(env.model, d, c, f)
         total += abs(float(f[0]))
-    return total / 9.81     # 折算质量当量
+    return total            # N：接触法向力合计（不再除以 g）
 
 def main():
     ap = argparse.ArgumentParser()
@@ -60,13 +60,19 @@ def main():
                 dt = max(1e-6, t - t_prev)
                 acc = (v - v_prev)/dt
                 N = wheel_load(env)
+                # 实际驱动力由驱动转矩与轮半径换算，不用"最大可提供牵引力"
+                tau = float(np.sum(np.abs(env.data.actuator_force)))
+                r_w = 0.08595
+                F_drive = tau / r_w
                 rows.append({'seed': seed, 'v_cmd': vcmd, 't': t, 'v': v, 'a': acc, 'N': N,
+                             'F_drive': F_drive,
                              'x': float(env.data.qpos[0])})
                 v_prev, t_prev = v, t
-    arr = {k: np.array([r[k] for r in rows]) for k in ('v','a','N','x')}
+    arr = {k: np.array([r[k] for r in rows]) for k in ('v','a','N','x','F_drive')}
     good = (arr['v'] > 0.02) & (arr['N'] > 1.0) & (np.abs(arr['a']) < 20)
-    X = np.stack([arr['N'][good], -arr['v'][good]], axis=1)
-    y = a.mass * arr['a'][good]
+    # 动力学：m*a = F_drive - b*v  （驱动力来自转矩，不再把 N 当驱动力）
+    X = np.stack([np.ones_like(arr['v'][good]), -arr['v'][good]], axis=1)
+    y = a.mass * arr['a'][good] - arr['F_drive'][good]
     from scipy.optimize import lsq_linear
     # 物理约束：mu>=0，b>=0（负阻力无意义，直接有界最小二乘）
     sol = lsq_linear(X, y, bounds=([0.0, 0.0], [3.0, 200.0]))
@@ -79,7 +85,7 @@ def main():
     XtX_inv = np.linalg.pinv(X.T @ X)
     se = np.sqrt(np.diag(XtX_inv)) * sd
     rec = {'schema':'v2-soil-estimate/v1',
-           'model':'m*a = mu*N - b*v',
+           'model':'m*a = F_drive - b*v（F_drive 由驱动转矩/轮半径换算）',
            'samples': int(good.sum()), 'seeds': a.seeds, 'excite': a.excite,
            'mu_hat': round(mu, 4), 'mu_se': round(float(se[0]), 4),
            'b_hat': round(b, 4), 'b_se': round(float(se[1]), 4),

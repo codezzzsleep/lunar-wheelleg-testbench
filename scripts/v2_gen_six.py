@@ -32,12 +32,14 @@ def variants(obs_dir, out):
     b = obs_dir/'crop_white.png'
     if not b.is_file(): b = obs_dir/'masked_only.png'
     if b.is_file(): made['B'] = b
-    if a.is_file():
-        im = Image.open(a); w, h = im.size
-        # C：向下扩展保留更多地面上下文
-        big = Image.new('RGB', (w, int(h*1.45)), (16, 16, 20))
-        big.paste(im, (0, 0))
-        cp = out/'C_ground.png'; big.save(cp); made['C'] = cp
+    full = obs_dir/'rgb.png'
+    if full.is_file():
+        # C：从完整观测图裁出**真正的更大范围**（含更多地面），不是补纯色边
+        im = Image.open(full); w, h = im.size
+        box = (0, 0, w, int(h*0.98))
+        cp = out/'C_ground.png'
+        im.crop(box).save(cp)
+        made['C'] = cp
     return made
 
 def main():

@@ -25,10 +25,15 @@ def main():
     rows = []
     for k, v in sorted(states.items()):
         robust = v['robust_actions']
+        # R1 判据：当前真实状态下 R1 的**单次真实结局**必须失败
         r1 = v['actions'].get('R1', {})
-        r1_ok = bool(r1.get('robust'))
-        selected = bool(robust) and not r1_ok
-        rows.append({'state': k, 'robust_actions': robust, 'R1_robust': r1_ok,
+        outs = r1.get('outcomes') or []
+        # outcomes[0] 是 nominal 单点（C 的第一点集顺序固定），失败即视为"直接冲不能完成"
+        r1_fails_now = bool(outs) and outs[0] != 'success'
+        selected = bool(robust) and r1_fails_now
+        rows.append({'state': k, 'robust_actions': robust,
+                     'R1_current_outcome': (r1.get('outcomes') or [None])[0],
+                     'R1_fails_now': r1_fails_now,
                      'selected': selected})
     sel = [r for r in rows if r['selected']][:a.target]
     out = {'schema': 'v2-state-selection/v1', 'rule': ['truth robust on 5-point soil set',

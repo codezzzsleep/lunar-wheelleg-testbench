@@ -1,0 +1,34 @@
+{
+  "schema": "v2-voxel-fate/v1",
+  "state": "P06|S1",
+  "before_fix": {
+    "version": "fuse-observed/v2",
+    "defect": "shell & ~dilate6(parent_inside) created a 1-voxel gap, then largest_component kept only one side",
+    "A1": {"unknown_core_parent_voxels": 4930, "kept_voxels": 0, "kept_ratio": 0.0,
+           "saved_occ": 9687, "note": "parent prior deleted; shell-only geometry"},
+    "B1": {"unknown_core_parent_voxels": 3569, "kept_voxels": 0, "kept_ratio": 0.0,
+           "saved_occ": 15946, "note": "parent prior deleted; shell-only geometry"},
+    "C1": {"unknown_core_parent_voxels": 74846, "kept_voxels": 74846, "kept_ratio": 1.0,
+           "component_removed_voxels": 4927, "shell_voxels": 4927,
+           "mask_iou": 0.8062, "strict_pass": false,
+           "note": "observation shell deleted by largest_component; visible surface is generated"}
+  },
+  "after_fix": {
+    "version": "fuse-observed/v3",
+    "rule": "per-pixel shell suppression; keep every component containing parent prior; prune only small shell-only specks",
+    "P06|S1": {
+      "A1": {"strict_pass": true, "mask_iou": 0.9236, "kept_ratio": 1.0},
+      "B1": {"strict_pass": true, "mask_iou": 0.93, "kept_ratio": 1.0},
+      "C1": {"strict_pass": true, "mask_iou": 0.9252, "kept_ratio": 1.0}
+    }
+  },
+  "known_answer": {
+    "parent": "truth P06 mesh after align24 (mask IoU 0.9527, P95 3.118 mm)",
+    "parent_core_voxels": 451068,
+    "parent_kept_voxels": 451068,
+    "kept_ratio": 1.0,
+    "shell_only_freespace": 0.0668,
+    "no_shell_freespace": 0.0666,
+    "interpretation": "the fused strict freespace limit is caused by 2.5 mm voxelisation / marching-tets, not by the shell; no threshold was loosened"
+  }
+}

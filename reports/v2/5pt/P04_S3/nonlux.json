@@ -1,0 +1,132 @@
+{
+  "schema": "v2-nonlux/v1",
+  "rock": "P04",
+  "state": "S3",
+  "observation": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3/obs",
+  "assets_root": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3",
+  "planning_soils": [
+    "p0",
+    "p1",
+    "p2",
+    "p3",
+    "p4"
+  ],
+  "state_hash": "28935a5b6b0630b157289a4bf0414bd3",
+  "visible": {
+    "n_pixels": 14027,
+    "x_front": 1.6008217046824536,
+    "y_center": 0.0005079370871563793,
+    "W_vis": 0.2887121867076528,
+    "H_vis": 0.27065524246157824
+  },
+  "rows": {
+    "B1_height": {
+      "status": "planned",
+      "chosen": "A0",
+      "evidence": {
+        "rule": "visible height ratio 3.15 > 1.6"
+      },
+      "cells": null,
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    },
+    "B2_F": {
+      "status": "planned",
+      "chosen": "A0",
+      "cells": 35,
+      "safe_set": [],
+      "errors": 0,
+      "asset": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3/box/box",
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    },
+    "B3_F": {
+      "status": "planned",
+      "chosen": "A0",
+      "cells": 35,
+      "safe_set": [],
+      "errors": 0,
+      "asset": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3/mirror/mirror",
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    },
+    "E25D_block": {
+      "status": "planned",
+      "chosen": "A0",
+      "cells": 35,
+      "safe_set": [],
+      "errors": 0,
+      "asset": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3/e25d_block",
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    },
+    "E25D_fill": {
+      "status": "planned",
+      "chosen": "A0",
+      "cells": 35,
+      "safe_set": [],
+      "errors": 0,
+      "asset": "runs/unseen/delivery_v7/v7_20261030_r1/grid/P04/P04/S3/e25d_fill",
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    },
+    "U_truth": {
+      "status": "planned",
+      "chosen": "A0",
+      "cells": 35,
+      "safe_set": [],
+      "errors": 0,
+      "asset": null,
+      "planning_soils": [
+        "p0",
+        "p1",
+        "p2",
+        "p3",
+        "p4"
+      ],
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003
+    }
+  }
+}

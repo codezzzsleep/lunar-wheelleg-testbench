@@ -4,6 +4,25 @@
 > 它是交接说明，不是第二份状态文档；数字口径仍以 v3 唯一源表为准。
 > 最近更新：2026-11-03 19:45 +0800。
 
+
+## STAGE003（2026-11-03 晚，窄目标批次）
+
+- 场景：两块 5 cm 错开台（face 0.95/1.13，far 2.35，宽 0.45），nominal；rigid 仅定位。
+- S1：末段 RR 诊断——快照里 RR 是台缘接触（轮底高于台面 10.7 mm、6.2 N），
+  停驱动后 RR/FL 同时掉零，机身落在 FR+RL 对角；不是几何不可达。
+- S2：结构 A 成功序列——FL 实测方向下放 → level_roll → body_down（同时下放最低载轮）
+  → preload_min → 1 s 稳定窗口 → descent；rigid 与 nominal 均 **24/24**。
+- S4：三个冻结初态 **3/3**（qpos dfea15f0 / 264be46e / 7e321110；qvel 相同，已注明）。
+- S5：轮式 R1 0.30 / R2 0.15 各 3 初态 **6/6 通过**（14.6–28.3 s，tilt ≤0.06°）；
+  腿式 56.8–58.7 s、tilt 3.5–4.35°。**本场景轮式也过且更便宜，不宣称腿式增量价值。**
+- 回放：`runs/v3/stage003/replay/{leg_state1,wheel_state1_r1,side_by_side_state1}.mp4`
+  （1757 帧/58.6 s；300 帧/10 s；并排 1920×1080）。
+- 离线包：`dist/stage003_bundle.tar.gz`（7.8 MB，sha256 3347bf9b…）；新目录解包
+  MANIFEST 273/273 通过，`./run_replay.sh wheel` exit 0。
+- 记录：50 Hz qpos/qvel/关节目标/力矩/接触（contacts jsonl）；相位只有 result.json
+  边界、轮模式只有 brake 标志——缺口已在 `runs/v3/stage003/record_check.json` 标注。
+- 不声称：20 m 路线、软土脱困、Lux3D 增量价值。
+
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

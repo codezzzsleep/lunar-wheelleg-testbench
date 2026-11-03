@@ -1,6 +1,6 @@
 {
   "schema": "v3-evidence-index/v1",
-  "n": 57,
+  "n": 82,
   "rows": [
     {
       "run": "runs/v3/basic_cycle/nominal_FL_r1",
@@ -594,6 +594,42 @@
       }
     },
     {
+      "run": "runs/v3/rock_actions/pp_-0.02_0.01_-1.5_s1",
+      "schema": "v3-rock-actions/v2",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 1,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/rock_actions/pp_0.02_0_0_s1",
+      "schema": "v3-rock-actions/v2",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 1,
+        "ok_actions": 1,
+        "unified_actions": 1
+      }
+    },
+    {
+      "run": "runs/v3/rock_actions/pp_0_0.02_1.5_s1",
+      "schema": "v3-rock-actions/v2",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 1,
+        "ok_actions": 1,
+        "unified_actions": 1
+      }
+    },
+    {
       "run": "runs/v3/rock_actions/unified_04_h2v0_s1",
       "schema": "v3-rock-actions/v2",
       "status": null,
@@ -714,6 +750,305 @@
         "step_h_m": 0.05,
         "final_x": 23.5482,
         "tilt_max_deg": 8.912
+      }
+    },
+    {
+      "run": "runs/v3/route/rigid_s035",
+      "schema": "v3-route/v1",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.35,
+        "step_h_m": 0.05,
+        "final_x": 23.5649,
+        "tilt_max_deg": 10.518
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s1_rigid",
+      "schema": "v3-endgame-diag/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2_descent",
+      "schema": "v3-descent/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "final_x": 2.5182,
+        "terminated": false
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2_full_nominal_r1",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2_full_rigid_r1",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "rigid",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2_stable",
+      "schema": "v3-stable-window/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 50,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r1",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 125,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r2",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 200,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r3",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 125,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r4",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 75,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r5",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 75,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s2a_r6",
+      "schema": "v3-endgame-recover/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "terminated": false,
+        "actions": 75,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state1",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state1f",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state2",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "body_down",
+        "terminated": false,
+        "phases": 23,
+        "ok_phases": 22
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state2b",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state2c",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state2d",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state2e",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s4_state3",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s5_wheel",
+      "schema": "v3-wheel-compare/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 6,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/s5_wheel_rigid",
+      "schema": "v3-wheel-compare/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "rigid",
+        "actions": 6,
+        "ok_actions": 0,
+        "unified_actions": 0
       }
     }
   ]

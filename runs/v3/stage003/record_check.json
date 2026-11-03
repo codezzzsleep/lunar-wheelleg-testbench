@@ -1,0 +1,63 @@
+{
+  "schema": "v3-record-check/v1",
+  "records": [
+    {
+      "record": "runs/v3/stage003/s4_state1f/record",
+      "chunks": 12,
+      "frames": 2929,
+      "keys": [
+        "action_raw",
+        "control_index",
+        "joint_target",
+        "joint_torque",
+        "joint_vel_target",
+        "nav_target_y",
+        "physics_index",
+        "qpos",
+        "qvel",
+        "t",
+        "tilt_deg",
+        "wheel_brake",
+        "wheel_omega_target",
+        "wheel_torque"
+      ],
+      "missing": [],
+      "contacts_jsonl": 12,
+      "contact_entries": 21150,
+      "notes": [
+        "phase labels: only result.json boundaries, not per frame",
+        "wheel mode: brake flag present; velocity/coast not stored per frame",
+        "per-wheel load: derivable from contacts geom ids + model"
+      ]
+    },
+    {
+      "record": "runs/v3/stage003/wheel_state1_r1/record",
+      "chunks": 2,
+      "frames": 500,
+      "keys": [
+        "action_raw",
+        "control_index",
+        "joint_target",
+        "joint_torque",
+        "joint_vel_target",
+        "nav_target_y",
+        "physics_index",
+        "qpos",
+        "qvel",
+        "t",
+        "tilt_deg",
+        "wheel_brake",
+        "wheel_omega_target",
+        "wheel_torque"
+      ],
+      "missing": [],
+      "contacts_jsonl": 2,
+      "contact_entries": 2244,
+      "notes": [
+        "phase labels: only result.json boundaries, not per frame",
+        "wheel mode: brake flag present; velocity/coast not stored per frame",
+        "per-wheel load: derivable from contacts geom ids + model"
+      ]
+    }
+  ]
+}

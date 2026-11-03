@@ -49,6 +49,9 @@
 | `runs/v3/rock_actions/moon_rock_04_h1v0` | v3-rock-actions/v1 | — | actions=7, ok_actions=1, unified_actions=0 |
 | `runs/v3/rock_actions/moon_rock_04_h2v0` | v3-rock-actions/v1 | — | actions=4, ok_actions=0, unified_actions=0 |
 | `runs/v3/rock_actions/moon_rock_05_h1v0` | v3-rock-actions/v1 | — | actions=7, ok_actions=6, unified_actions=0 |
+| `runs/v3/rock_actions/pp_-0.02_0.01_-1.5_s1` | v3-rock-actions/v2 | — | actions=1, ok_actions=0, unified_actions=0 |
+| `runs/v3/rock_actions/pp_0.02_0_0_s1` | v3-rock-actions/v2 | — | actions=1, ok_actions=1, unified_actions=1 |
+| `runs/v3/rock_actions/pp_0_0.02_1.5_s1` | v3-rock-actions/v2 | — | actions=1, ok_actions=1, unified_actions=1 |
 | `runs/v3/rock_actions/unified_04_h2v0_s1` | v3-rock-actions/v2 | — | actions=1, ok_actions=1, unified_actions=1 |
 | `runs/v3/rock_actions/unified_04_h2v0_wheel` | v3-rock-actions/v2 | — | actions=5, ok_actions=0, unified_actions=0 |
 | `runs/v3/rock_actions/unified_04_h2v1` | v3-rock-actions/v2 | — | actions=5, ok_actions=0, unified_actions=0 |
@@ -59,3 +62,25 @@
 | `runs/v3/route/nominal_r1` | v3-route/v1 | 通过 | final_x=23.5375, tilt_max_deg=8.286 |
 | `runs/v3/route/rigid_r1` | v3-route/v1 | 失败 | final_x=12.7655, tilt_max_deg=60.502 |
 | `runs/v3/route/rigid_r2` | v3-route/v1 | 通过 | final_x=23.5482, tilt_max_deg=8.912 |
+| `runs/v3/route/rigid_s035` | v3-route/v1 | 失败 | final_x=23.5649, tilt_max_deg=10.518 |
+| `runs/v3/stage003/s1_rigid` | v3-endgame-diag/v1 | — |  |
+| `runs/v3/stage003/s2_descent` | v3-descent/v1 | — | final_x=2.5182 |
+| `runs/v3/stage003/s2_full_nominal_r1` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s2_full_rigid_r1` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s2_stable` | v3-stable-window/v1 | — | actions=50, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r1` | v3-endgame-recover/v1 | — | actions=125, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r2` | v3-endgame-recover/v1 | — | actions=200, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r3` | v3-endgame-recover/v1 | — | actions=125, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r4` | v3-endgame-recover/v1 | — | actions=75, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r5` | v3-endgame-recover/v1 | — | actions=75, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s2a_r6` | v3-endgame-recover/v1 | — | actions=75, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s4_state1` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s4_state1f` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s4_state2` | v3-climb-front2/v2 | 失败 | blocked_at=body_down, phases=23, ok_phases=22 |
+| `runs/v3/stage003/s4_state2b` | v3-climb-front2/v2 | 失败 | blocked_at=descent, phases=26, ok_phases=25 |
+| `runs/v3/stage003/s4_state2c` | v3-climb-front2/v2 | 失败 | blocked_at=descent, phases=26, ok_phases=25 |
+| `runs/v3/stage003/s4_state2d` | v3-climb-front2/v2 | 失败 | blocked_at=descent, phases=26, ok_phases=25 |
+| `runs/v3/stage003/s4_state2e` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s4_state3` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
+| `runs/v3/stage003/s5_wheel` | v3-wheel-compare/v1 | — | actions=6, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage003/s5_wheel_rigid` | v3-wheel-compare/v1 | — | actions=6, ok_actions=0, unified_actions=0 |

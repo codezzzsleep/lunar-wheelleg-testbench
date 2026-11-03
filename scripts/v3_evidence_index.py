@@ -3,7 +3,7 @@ import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-GROUPS = ['basic_cycle', 'climb', 'wheel_probe', 'rock_actions', 'route', 'e_cases']
+GROUPS = ['basic_cycle', 'climb', 'wheel_probe', 'rock_actions', 'route', 'e_cases', 'stage003']
 rows = []
 for group in GROUPS:
     base = ROOT / 'runs/v3' / group

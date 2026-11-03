@@ -17,6 +17,7 @@ import terrain            # noqa: E402
 import v7_soil            # noqa: E402
 import wheelleg_env       # noqa: E402
 import v3_climb as vc     # noqa: E402
+import v3_record  # noqa: E402
 import v3_basic_cycle as bc  # noqa: E402
 
 LEG = bc.LEG
@@ -56,17 +57,26 @@ def perturb(env, dx, dy, dyaw):
     mujoco.mj_forward(env.model, env.data)
 
 
-def run_one(soil, dx, dy, dyaw, speed):
+def run_one(soil, dx, dy, dyaw, speed, rec_dir=None):
     env = build_env(soil)
     perturb(env, dx, dy, dyaw)
     qh = hashlib.sha256(np.asarray(env.data.qpos, np.float64).tobytes()).hexdigest()
     m, d = env.model, env.data
     bid = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, 'base_link')
+    rec = None
+    kk = 0
+    if rec_dir is not None:
+        rec = v3_record.Recorder(rec_dir, {'scenario': 'stage003_s5',
+                                           'action': f'wheel_{speed:.2f}',
+                                           'state': [dx, dy, dyaw]}, hz=50.0)
     term = {}
     for _ in range(int(45.0 * 50)):
         env.step_command(joint_targets_rad=STANCE,
                          wheel_omega_rad_s=np.full(4, speed / vc.WHEEL_R),
                          wheel_mode='velocity')
+        if rec is not None:
+            rec.add(v3_record.frame_from_env(env, None, np.zeros(3), kk, env.t))
+            kk += 1
         if env.terminated or env.truncated:
             term = {'reason': env.last_termination.get('reason')}
             break
@@ -77,10 +87,16 @@ def run_one(soil, dx, dy, dyaw, speed):
             break
         env.step_command(joint_targets_rad=STANCE, wheel_omega_rad_s=np.zeros(4),
                          wheel_mode='velocity')
+        if rec is not None:
+            rec.add(v3_record.frame_from_env(env, None, np.zeros(3), kk, env.t))
+            kk += 1
     rows = []
     for _ in range(100):
         env.step_command(joint_targets_rad=STANCE, wheel_omega_rad_s=np.zeros(4),
                          wheel_mode='velocity')
+        if rec is not None:
+            rec.add(v3_record.frame_from_env(env, None, np.zeros(3), kk, env.t))
+            kk += 1
         rows.append({'t': round(float(env.t), 3), 'x': round(float(d.qpos[0]), 4),
                      'tilt': round(float(np.degrees(np.arccos(
                          np.clip(d.xmat[bid][8], -1, 1)))), 3),
@@ -106,12 +122,16 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--out', required=True)
+    ap.add_argument('--record', action='store_true')
     a = ap.parse_args()
     states = [(0.0, 0.0, 0.0), (0.02, 0.01, 1.0), (-0.02, -0.01, -1.0)]
     rows = []
+    idx = 0
     for st in states:
         for speed in (0.30, 0.15):
-            r = run_one(a.soil, *st, speed)
+            rd = (ROOT / a.out / f'record_{idx:02d}') if a.record else None
+            r = run_one(a.soil, *st, speed, rec_dir=rd)
+            idx += 1
             rows.append(r)
             print(json.dumps(r, ensure_ascii=False))
     out = ROOT / a.out

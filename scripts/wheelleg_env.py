@@ -221,6 +221,11 @@ class WheelLegEnv:
             xml = xml.replace('<worldbody>',
                 f'<worldbody><light pos="{lx} {ly} {lz}" dir="{d_x} {d_y} {d_z}" '
                 f'diffuse="0.85 0.8 0.7" castshadow="false"/>')
+        rs = (self.spec.get('render') or {}).get('size')
+        if rs:
+            xml = xml.replace('<visual>',
+                              f'<visual><global offwidth="{int(rs[0])}" '
+                              f'offheight="{int(rs[1])}"/>', 1)
         mat = self.spec.get('object_material')
         if mat:
             # 纹理只改视觉，不改碰撞；贴图按盒投影（MuJoCo 2d 纹理默认行为）

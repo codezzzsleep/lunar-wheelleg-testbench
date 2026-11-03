@@ -1,0 +1,135 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "stage5_smoke",
+  "arm": "FULL",
+  "decided_at": "2026-11-04T01:48:16+0800",
+  "state_hash": "e620b637a73a0aa72e48e7410bacd075",
+  "visible": {
+    "x_front": 0.95,
+    "W_vis": 0.45,
+    "H_vis": 0.05,
+    "x_front_m": 0.95,
+    "W_vis_m": 0.45,
+    "H_vis_m": 0.05
+  },
+  "matrix_sha256": "202c0c96bb59ada62fd27b948a773421b19bd4f31217bdd7df837b6d0e15feda",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "D1": 0,
+      "D2": 1,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 1
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 9.22,
+      "D1": 60.0,
+      "D2": 8.42,
+      "L1": 60.0,
+      "L2": 60.0,
+      "CLIMB": 63.32
+    },
+    "chosen": "D2",
+    "safe_set": [
+      "R2",
+      "D2",
+      "CLIMB"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "C1": {
+        "R1": {
+          "success": false,
+          "reason": "out_of_field",
+          "cost": 60.0,
+          "t_end": 6.8,
+          "final_x": 3.958
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.22,
+          "t_end": 9.22,
+          "final_x": 3.696
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_field",
+          "cost": 60.0,
+          "t_end": 7.16,
+          "final_x": 3.954
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 8.42,
+          "t_end": 8.42,
+          "final_x": 3.689
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.4,
+          "final_x": 0.869
+        },
+        "L2": {
+          "success": false,
+          "reason": "out_of_field",
+          "cost": 60.0,
+          "t_end": 8.42,
+          "final_x": 3.955
+        },
+        "CLIMB": {
+          "success": true,
+          "reason": "success",
+          "cost": 63.32,
+          "t_end": 63.32,
+          "final_x": 2.6538
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.000000000000002,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "candidates": [
+    "C1"
+  ],
+  "climb_plan": {
+    "action": "CLIMB",
+    "params": {
+      "face_FR": 0.95,
+      "face_FL": 1.13,
+      "top_z": 0.05,
+      "brake_x": 0.6,
+      "place_RR_x": 1.02,
+      "assist_FL_x": 1.2,
+      "lift_center_z": 0.161,
+      "far_x": 2.3499999999999996,
+      "descent": {
+        "mode": "forward_drop",
+        "target_x": 2.6499999999999995
+      },
+      "landing": null
+    },
+    "applicable": true,
+    "plan_id": "stage5_smoke_plan",
+    "source": "dev_wiring"
+  },
+  "decision_sha": "a05a9201103231eba063b961c35d7509"
+}

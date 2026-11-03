@@ -1,0 +1,47 @@
+{
+  "schema": "stage5-smoke/v1",
+  "climb_rows": [
+    {
+      "action": "CLIMB",
+      "success": true,
+      "outcome": "pass",
+      "cost": 63.32,
+      "t_end": 63.32,
+      "plan_id": "stage5_smoke_plan",
+      "geometry_id": "ef6fe46bbb43b514cc9899e5463a5dde151a3cf2c40380f4ca4b1acde496dc51",
+      "state_mode": null
+    }
+  ],
+  "votes": {
+    "R1": 0,
+    "R2": 1,
+    "D1": 0,
+    "D2": 1,
+    "L1": 0,
+    "L2": 0,
+    "CLIMB": 1
+  },
+  "chosen": "D2",
+  "reason": "majority_traversal",
+  "exec": {
+    "action": "D2",
+    "outcome": "pass",
+    "t_end": 8.4
+  },
+  "truth_climb": {
+    "success": false,
+    "outcome": "physical_failure",
+    "t_end": 45.0
+  },
+  "options": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2",
+    "CLIMB",
+    "A0"
+  ],
+  "budget_s": 120.0
+}

@@ -147,24 +147,74 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
     return row
 
 
+def run_climb_cell(spec, snapshot, plan, proto, mode='project', seed=0,
+                   record_dir=None, record_meta=None, budget=120.0):
+    """在给定场景/碰撞几何上执行一次完整 CLIMB（G1 验证过的状态机）。"""
+    import v3_climb
+    import v3_record
+    env = make_env(spec, proto, budget=budget)
+    try:
+        env.restore_state(snapshot, mode=mode)
+    except Exception as e:  # noqa: BLE001
+        return {'action': 'CLIMB', 'ok': False, 'error_class': 'restore',
+                'error': f'{type(e).__name__}: {e}', 'success': False,
+                'outcome': 'pipeline_failure', 'cost': 60.0, 't_end': None,
+                'plan_id': plan.get('plan_id') if plan else None}
+    rdir = pathlib.Path(record_dir) if record_dir else None
+    rec = None
+    if rdir is not None:
+        meta = dict(record_meta or {})
+        meta.update({'action': 'CLIMB', 'mode': mode,
+                     'plan_id': plan.get('plan_id') if plan else None})
+        rec = v3_record.Recorder(rdir, meta, hz=50.0)
+    faces = {'FR': plan['params']['face_FR'], 'FL': plan['params']['face_FL']}
+    phases, c = v3_climb.run_climb_episode(env, plan['params'], faces,
+                                           rdir or pathlib.Path('/tmp'), rec=rec,
+                                           rear=True, no_shift=False)
+    ref = rec.close() if rec is not None else None
+    checks = {p['phase']: bool(p.get('ok')) for p in phases}
+    success = bool(all(checks.values()) and not c.terminated)
+    outcome = 'pass' if success else ('physical_failure' if c.terminated else 'abort')
+    t_end = float(env.t)
+    row = {'action': 'CLIMB', 'ok': True, 'success': success, 'abort': not success,
+           'reason': 'success' if success else ('terminated' if c.terminated else 'phase_failed'),
+           'outcome': outcome, 'final_x': round(float(env.data.qpos[0]), 4),
+           't_end': round(t_end, 3), 'cost': round(t_end if success else 60.0, 3),
+           'max_tilt': max((p.get('tilt_max_deg', 0.0) for p in phases), default=0.0),
+           'plan_id': plan.get('plan_id') if plan else None,
+           'phases': phases, 'checks': checks, 'terminated': bool(c.terminated),
+           'applicable': True}
+    if ref:
+        row['trajectory_ref'] = ref
+    return row
+
+
 def truth_spec(state):
     spec = json.loads(json.dumps(state['spec']))
     spec.pop('object_material', None)
     return spec
 
 
-def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene'):
+def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
+                     options=None, climb_plan=None, climb_budget=120.0):
     """在给定场景 spec（可以是真值网格）上跑完整动作矩阵。"""
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
-    applic = {a: ACT.applicable(a, visible, ch) for a in opts}
+    applic = {a: (ACT.applicable(a, visible, ch) if a != 'CLIMB'
+                  else (bool(climb_plan and climb_plan.get('applicable')),
+                        None if (climb_plan and climb_plan.get('applicable')) else 'climb_not_applicable'))
+              for a in opts}
     rows = []
     for a in [x for x in opts if applic[x][0]] + [ACT.FALLBACK]:
         try:
-            env = make_env(spec, proto)
-            r = run_action(env, snapshot, a, visible, mode=mode, seed=seed)
-            del env
+            if a == 'CLIMB':
+                r = run_climb_cell(spec, snapshot, climb_plan, proto, mode=mode,
+                                   seed=seed, budget=climb_budget)
+            else:
+                env = make_env(spec, proto)
+                r = run_action(env, snapshot, a, visible, mode=mode, seed=seed)
+                del env
         except Exception as e:  # noqa: BLE001
             r = {'action': a, 'ok': False, 'error_class': 'episode',
                  'error': f'{type(e).__name__}: {e}', 'success': False,
@@ -176,7 +226,7 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene'):
 
 
 def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
-             record_root=None):
+             record_root=None, options=None, climb_plan=None, climb_budget=120.0):
     """对一组几何候选跑完整预演矩阵。geom: {candidate_id: posed_dir}
 
     record_cells=True 时每个矩阵格写一条 >=50Hz 全状态轨迹到
@@ -185,26 +235,37 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
-    applic = {a: ACT.applicable(a, visible, ch) for a in opts}
+    applic = {a: (ACT.applicable(a, visible, ch) if a != 'CLIMB'
+                  else (bool(climb_plan and climb_plan.get('applicable')),
+                        None if (climb_plan and climb_plan.get('applicable')) else 'climb_not_applicable'))
+              for a in opts}
     rows = []
     for cid, pd in geom.items():
         spec = spec_with_geometry(state['spec'], pd)
         for a in [x for x in opts if applic[x][0]] + [ACT.FALLBACK]:
             try:
-                # 每个动作一个全新 env：复用 env 会把上一回合的土壤/摩擦残余带进来
-                # （实测同一 env 里 R1 倾覆后 L2 从 success 变 time_limit）
-                env = make_env(spec, proto)
                 rdir = None
                 if record_cells:
                     base = pathlib.Path(record_root or (pathlib.Path(state['state_dir'])
                                                         / 'matrix'))
                     rdir = base / str(cid) / str(a)
-                r = run_action(env, snapshot, a, visible, mode='project', seed=seed,
-                               record_dir=rdir,
-                               record_meta={'scenario': state.get('state_id'),
-                                            'candidate': cid, 'method': 'rehearsal',
-                                            'state_mode': 'project'})
-                del env
+                if a == 'CLIMB':
+                    r = run_climb_cell(spec, snapshot, climb_plan, proto, mode='project',
+                                       seed=seed, record_dir=rdir,
+                                       record_meta={'scenario': state.get('state_id'),
+                                                    'candidate': cid,
+                                                    'method': 'rehearsal',
+                                                    'state_mode': 'project'},
+                                       budget=climb_budget)
+                else:
+                    # 每个动作一个全新 env：复用 env 会把上一回合的土壤/摩擦残余带进来
+                    env = make_env(spec, proto)
+                    r = run_action(env, snapshot, a, visible, mode='project', seed=seed,
+                                   record_dir=rdir,
+                                   record_meta={'scenario': state.get('state_id'),
+                                                'candidate': cid, 'method': 'rehearsal',
+                                                'state_mode': 'project'})
+                    del env
             except Exception as e:  # noqa: BLE001
                 r = {'action': a, 'ok': False, 'error_class': 'episode',
                      'error': f'{type(e).__name__}: {e}', 'success': False,
@@ -302,18 +363,26 @@ def write_decision(out_dir, state, arm, rows, dec, extra=None):
     return rec
 
 
-def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene'):
+def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene',
+                  climb_plan=None, climb_budget=120.0):
     """在真值场景从同一个 S0 续行执行。"""
     spec = json.loads(json.dumps(state['spec']))
     spec.pop('object_material', None)
     env = make_env(spec, proto)
     try:
-        r = run_action(env, state['snapshot'], action, state['visible'],
-                       mode=mode, seed=seed, record=True,
-                       record_dir=pathlib.Path(out_dir) / 'record' / str(arm),
-                       record_meta={'scenario': state['state'].get('state_id'),
-                                    'method': arm, 'state_mode': mode,
-                                    'action': action})
+        if action == 'CLIMB':
+            r = run_climb_cell(spec, state['snapshot'], climb_plan, proto, mode=mode,
+                               seed=seed, record_dir=pathlib.Path(out_dir) / 'record' / str(arm),
+                               record_meta={'scenario': state['state'].get('state_id'),
+                                            'method': arm, 'state_mode': mode},
+                               budget=climb_budget)
+        else:
+            r = run_action(env, state['snapshot'], action, state['visible'],
+                           mode=mode, seed=seed, record=True,
+                           record_dir=pathlib.Path(out_dir) / 'record' / str(arm),
+                           record_meta={'scenario': state['state'].get('state_id'),
+                                        'method': arm, 'state_mode': mode,
+                                        'action': action})
     except Exception as e:  # noqa: BLE001
         r = {'action': action, 'ok': False, 'error_class': 'episode',
              'error': f'{type(e).__name__}: {e}', 'outcome': 'pipeline_failure',

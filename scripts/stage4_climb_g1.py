@@ -60,10 +60,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', required=True)
     ap.add_argument('--soil', default='nominal')
+    ap.add_argument('--climb-only', action='store_true',
+                    help='G1b：只留 CLIMB/A0，验证 CLIMB 能被正式选择并执行')
     a = ap.parse_args()
     out = (ROOT / a.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
     cfg = S4C.load()
+    options = ['CLIMB', 'A0'] if a.climb_only else list(cfg['actions'])
     proto = json.loads((ROOT / 'plans/v3_protocol.json').read_text())
     spec, far = make_dev_spec(out)
     spec['soil'] = v7_soil.resolve(a.soil)
@@ -80,7 +83,7 @@ def main():
     plan = {'action': 'CLIMB', 'params': gp['params'], 'source': 'dev_truth_wiring',
             'applicable': gp['valid'], 'plan_id': 'dev_g1'}
     rows = []
-    for act in [x for x in cfg['actions'] if x != 'CLIMB']:
+    for act in [x for x in options if x != 'CLIMB']:
         ok, why = ACT.applicable(act, visible, 1.2)
         if not ok and act != 'A0':
             rows.append({'action': act, 'success': False, 'outcome': 'not_applicable',
@@ -99,7 +102,7 @@ def main():
     for act in ACT.OPTIONS:
         if act == 'A0':
             continue
-        if act not in cfg['actions']:
+        if act not in options:
             applic[act] = (False, 'not_in_stage4_protocol')
         else:
             applic[act] = ACT.applicable(act, visible, 1.2)
@@ -111,7 +114,7 @@ def main():
     (out / 'applic.json').write_text(json.dumps({k: list(v) for k, v in applic.items()}, ensure_ascii=False, indent=2))
     dec = v3_core.aggregate(rows, ['dev'], {}, 'majority', proto,
                             threshold_mode='majority', applic=applic,
-                            options=cfg['actions'])
+                            options=options)
     ex = None
     if dec['chosen'] == 'CLIMB':
         ex = run_climb(core, proto, plan, out / 'record_exec', 'CLIMB_exec')

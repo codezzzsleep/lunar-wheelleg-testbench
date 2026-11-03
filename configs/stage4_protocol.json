@@ -2,19 +2,48 @@
   "schema": "stage4-protocol/v1",
   "revision": "stage4-climb-v1",
   "note": "CLIMB 是新协议修订，不回填 Stage003/旧 30 s 协议结果",
-  "actions": ["R1", "R2", "D1", "D2", "L1", "L2", "CLIMB", "A0"],
-  "traverse_actions": ["R1", "R2", "D1", "D2", "L1", "L2", "CLIMB"],
+  "actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2",
+    "CLIMB",
+    "A0"
+  ],
+  "traverse_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2",
+    "CLIMB"
+  ],
   "budget_s": 120.0,
   "control_hz": 50.0,
   "decision_rule": "majority",
   "worst_case_secondary": true,
   "climb": {
-    "expected_duration_s": [57, 60],
+    "expected_duration_s": [
+      57,
+      60
+    ],
     "corridor_half_y_m": 0.22,
-    "top_width_min_m": 0.40,
-    "top_len_min_m": 0.20,
-    "top_z_range_m": [0.02, 0.15],
-    "flatness_max_m": 0.03
+    "top_width_min_m": 0.4,
+    "top_len_min_m": 0.2,
+    "top_z_range_m": [
+      0.02,
+      0.15
+    ],
+    "flatness_max_m": 0.03,
+    "plan_source": {
+      "FULL": "one canonical fused occupancy (A1) per arm; same params rehearsed on every candidate",
+      "OBS": "shared V occupancy",
+      "truth": "truth occupancy (reference only)"
+    },
+    "plan_fixed_across_candidates": true
   },
   "criteria": {
     "pass": "outcome=pass; four wheels past the far edge and stable",

@@ -1,0 +1,84 @@
+{
+  "schema": "v3-run-manifest/v1",
+  "run_id": "front3_rigid_r1",
+  "created_at": "2026-11-03T18:13:20+0800",
+  "code_commit": "4cccec7d91552ecdbc56ee8dca9986d1c5dea2e4",
+  "sandbox": "cnb-ljh-1k6fm0sla-001.3a63e40a-b641-47b3-819f-dcf271429eef-07q@cnb.space",
+  "command": "MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --soil rigid  --record --out runs/v3/climb/front3_rigid_r1",
+  "parent_run": null,
+  "inputs": {
+    "result_schema": "v3-climb-front2/v2",
+    "soil": "rigid",
+    "swing": null,
+    "cycles_requested": null,
+    "init_seed": null,
+    "init_qpos_sha256": null
+  },
+  "outputs": {
+    "frames.npz": {
+      "bytes": 20804,
+      "sha256": "4380abd7293c532a291b4b32f2a03adb3e79c7e480b05cd936e0158f44559736"
+    },
+    "record/chunk_00000.npz": {
+      "bytes": 9295,
+      "sha256": "32c73960ac9bcf10e20ed017085d456969926bb6e662173cbc7524d4cd6005c2"
+    },
+    "record/chunk_00001.npz": {
+      "bytes": 8553,
+      "sha256": "5cbf9892dd13f48fc6f781d964d23ac0f032787585dcb5a173368317fef7cd0f"
+    },
+    "record/chunk_00002.npz": {
+      "bytes": 9043,
+      "sha256": "86e81302f776f35dcf038b6884eb4b82d93b8f57bebde25754550a140045c470"
+    },
+    "record/chunk_00003.npz": {
+      "bytes": 7978,
+      "sha256": "57cf7f324ec5d48a7f40a0ec1976986e9eff1df95e7fd021a1999a12303cee53"
+    },
+    "record/chunk_00004.npz": {
+      "bytes": 6587,
+      "sha256": "9bb705ee54ff584adbd664022d467ff22edeb37e30e11ed738c85d94a4d82379"
+    },
+    "record/contacts_00000.jsonl": {
+      "bytes": 353692,
+      "sha256": "561876452a2ce35e59703c91080c789c9ba496e8bba39390a735a21b87980ea3"
+    },
+    "record/contacts_00001.jsonl": {
+      "bytes": 338414,
+      "sha256": "976f417fc44535226710af7d3d070589ecd07e4d1acdffd01f5dcc7f444df454"
+    },
+    "record/contacts_00002.jsonl": {
+      "bytes": 363585,
+      "sha256": "6f006fffcc83a25cb200975675af604671298e99c3fe55c1921a325d644e0b52"
+    },
+    "record/contacts_00003.jsonl": {
+      "bytes": 322549,
+      "sha256": "98327b76e8192acb26bd58f09ea49f20906ac519d2c0ee5fdcddfc6c1a4f8713"
+    },
+    "record/contacts_00004.jsonl": {
+      "bytes": 251864,
+      "sha256": "2b6917ee9481626fbff3136061c9b5b0420ced4c69a1b7e4f686ee8ec2ff504b"
+    },
+    "record/index.json": {
+      "bytes": 3751,
+      "sha256": "65b4f4e32946f6639a7cdc39579382dfb989f9116baa829ce66c5f975fdfb7a5"
+    },
+    "record/index.sha256": {
+      "bytes": 65,
+      "sha256": "9cb17ac3e259276289cacf6ffe64294b37397caddefd0ea6710d94e7fdf32efe"
+    },
+    "result.json": {
+      "bytes": 2457,
+      "sha256": "1e3c9bb7f230cfda288df8bf87c05c86f759a3603c8fc1130cb5b23865c72989"
+    },
+    "step_fl.stl": {
+      "bytes": 684,
+      "sha256": "cc076a2b1b43d729af87a2cb6faac0a5eb91054512d669ad6dee16b9f3059877"
+    },
+    "step_fr.stl": {
+      "bytes": 684,
+      "sha256": "cc076a2b1b43d729af87a2cb6faac0a5eb91054512d669ad6dee16b9f3059877"
+    }
+  },
+  "result_sha256": "1e3c9bb7f230cfda288df8bf87c05c86f759a3603c8fc1130cb5b23865c72989"
+}

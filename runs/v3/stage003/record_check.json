@@ -2,7 +2,7 @@
   "schema": "v3-record-check/v1",
   "records": [
     {
-      "record": "runs/v3/stage003/s4_state1f/record",
+      "record": "runs/v3/stage003/fix_leg_state1/record",
       "chunks": 12,
       "frames": 2929,
       "keys": [
@@ -31,9 +31,9 @@
       ]
     },
     {
-      "record": "runs/v3/stage003/wheel_state1_r1/record",
-      "chunks": 2,
-      "frames": 500,
+      "record": "runs/v3/stage003/fix_s5_wheel2/record_00",
+      "chunks": 3,
+      "frames": 736,
       "keys": [
         "action_raw",
         "control_index",
@@ -51,13 +51,21 @@
         "wheel_torque"
       ],
       "missing": [],
-      "contacts_jsonl": 2,
-      "contact_entries": 2244,
+      "contacts_jsonl": 3,
+      "contact_entries": 3594,
       "notes": [
         "phase labels: only result.json boundaries, not per frame",
         "wheel mode: brake flag present; velocity/coast not stored per frame",
         "per-wheel load: derivable from contacts geom ids + model"
       ]
     }
-  ]
+  ],
+  "supersedes": {
+    "note": "previous entries pointed at pre-fix records (view aliasing); kept as history",
+    "old_records": [
+      "runs/v3/stage003/s4_state1f/record",
+      "runs/v3/stage003/wheel_state1_r1/record"
+    ],
+    "old_marker": "RECORD_DEFECT.json in the old run dirs"
+  }
 }

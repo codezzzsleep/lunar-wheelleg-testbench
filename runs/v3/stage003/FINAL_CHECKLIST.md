@@ -11,7 +11,7 @@
 | 3b. 关键快照 | **通过** | `support4/state.json`（四轮支撑）、`s1_rigid/endgame_state.json` |
 | 3c. 三维回放 | **通过（按时间戳重渲）** | `replay_fix/leg.mp4` 58.57 s、`wheel.mp4` 14.70 s（真实执行全程）、`side_by_side.mp4` 1920×1080/58.57 s |
 | 3d. 新目录可复现离线包 | **通过（修复后重建）** | `dist/stage003_bundle.tar.gz` sha256 `355f3627…`；新目录 MANIFEST 277/277、`all` exit 0；leg/wheel/side 均 1920×1080 |
-| 4. 代码与小证据已推送，包 SHA 明确 | **通过** | commit 见各段；tar sha256 3347bf9b… |
+| 4. 代码与小证据已推送，包 SHA 明确 | **通过** | commit 见各段；当前包 tar sha256 `355f3627…`（旧包 `3347bf9b…` 已作废，仅作历史） |
 | 5. 不宣称腿式/Lux3D 增量价值 | **遵守** | 本场景轮式 6/6 且更便宜（14.6–28.3 s vs 56.8–58.7 s） |
 
 ## 失败与缺口（不隐藏）

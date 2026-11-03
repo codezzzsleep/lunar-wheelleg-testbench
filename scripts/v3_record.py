@@ -87,9 +87,19 @@ class Recorder:
             vals = [f.get(k) for f in self.buf]
             if k in ('action_raw', 'qpos', 'qvel', 'joint_target', 'joint_vel_target',
                      'wheel_omega_target', 'wheel_brake', 'joint_torque', 'wheel_torque'):
-                arrays[k] = np.asarray([np.asarray(v, dtype=np.float32)
-                                        if v is not None else np.full(1, np.nan, np.float32)
-                                        for v in vals], dtype=np.float32)
+                arrs = [None if v is None else np.asarray(v, dtype=np.float32)
+                        for v in vals]
+                shapes = {a.shape for a in arrs if a is not None}
+                if len(shapes) == 1:
+                    # None 段（如 coast 的轮目标）按同形状 NaN 填充，避免
+                    # “有的帧 4 值、有的帧 1 个 NaN”被 numpy 判为 ragged。
+                    fill = np.full(shapes.pop(), np.nan, np.float32)
+                    arrays[k] = np.stack([fill if a is None else a for a in arrs])
+                elif len(shapes) == 0:
+                    arrays[k] = np.full((len(arrs), 1), np.nan, np.float32)
+                else:
+                    arrays[k] = np.asarray(arrs, dtype=object)
+                    self.unavailable.append(k + ':ragged_shapes')
             else:
                 arrays[k] = np.asarray([np.nan if v is None else v for v in vals],
                                        dtype=np.float64)

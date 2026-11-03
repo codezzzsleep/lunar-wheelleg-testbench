@@ -1,0 +1,75 @@
+{
+  "schema": "v3-climb-front/v1",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.05,
+    "face_x": 0.95
+  },
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0089,
+      "ok": true
+    },
+    {
+      "phase": "shift_support",
+      "margin_m": 0.013669001568462227,
+      "ok": true
+    },
+    {
+      "phase": "lift_fr",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "advance_to_ledge",
+      "fr_wheel_x": 1.0205,
+      "x_target": 1.02,
+      "base_dx": 0.1696,
+      "ok": true
+    },
+    {
+      "phase": "lower_fr",
+      "contact_at_t": 12.239999999999828,
+      "steps": 25,
+      "load_n": 9.452,
+      "ok": true
+    },
+    {
+      "phase": "hold_front",
+      "fr_load_n": 4.081,
+      "frac": 0.0973,
+      "tilt_max_deg": 1.403,
+      "ok": true
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "shift_support": true,
+    "lift_fr": true,
+    "advance_to_ledge": true,
+    "lower_fr": true,
+    "hold_front": true
+  },
+  "terminated": false,
+  "errors": [],
+  "all_ok": true,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/climb/front_rigid_r1/record/index.json",
+    "trajectory_sha256": "8459c7e8a9542de30919164295bc6cf0dcf38251ad6e98dcf15652ee4d8fe951",
+    "frame_count": 652,
+    "record_hz": 50.0,
+    "duration_s": 13.019999999999811,
+    "n_chunks": 3,
+    "contacts_n": 4914
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "v3-effective-config/v1",
+  "run_id": "nominal_seed0_r1",
+  "environment": {
+    "sandbox": "cnb-ljh-1k6fm0sla-001.3a63e40a-b641-47b3-819f-dcf271429eef-07q@cnb.space",
+    "code_commit": "c4bdead2c7dd03adef2c09ea5205ed14cb0dfc84"
+  },
+  "scene": {
+    "kind": "flat",
+    "goal_x": 5.0,
+    "channel_half_m": 1.2,
+    "soil": "nominal"
+  },
+  "robot": {
+    "platform": "go2w",
+    "total_mass_kg": 19.1264,
+    "gravity_mps2": 1.62
+  },
+  "cycle": {
+    "phases": [
+      "stand",
+      "shift_support",
+      "small_lift",
+      "hold",
+      "lower_until_contact",
+      "load_transfer",
+      "return_body"
+    ],
+    "swing": "FR",
+    "hold_s": 1.2,
+    "lift_target_m": 0.03,
+    "cycles": 3
+  },
+  "thresholds": {
+    "hold_s": 1.2,
+    "lift_m": 0.02,
+    "margin_m": 0.01,
+    "swing_load_frac": 0.02,
+    "support_frac": 0.05,
+    "tilt_deg": 5.0,
+    "speed_mps": 0.03,
+    "ang_speed_radps": 0.1,
+    "track_err_rad": 0.15,
+    "contact_load_n": 5.0,
+    "contact_sustained_s": 0.2
+  },
+  "note": "控制基础周期实验，不是 Lux3D 决策实验；payload/decision 不适用。"
+}

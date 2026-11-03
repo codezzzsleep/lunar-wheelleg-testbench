@@ -35,7 +35,7 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_rock_actions.py --state runs/v3/s
 
 ## 4. 已知缺陷 / 阻塞
 
-- CLIMB 未完成；D3 只有 1/2 初态；S1 是跨骑，不是搭腿攀越。
+- CLIMB 未完成；D3 原始初态 1/2、扰动初态 2/3；S1 是跨骑，不是搭腿攀越。
 - E 没有“FULL 成功而 OBS 失败”的正例；14 例几乎退化。
 - 动作结束后接触表不可靠；落地用轮心高度（≤0.12 m）。
 - `dist/v3_bundle` 仍是 12:29 旧批次；`build_delivery_v5.py` 读

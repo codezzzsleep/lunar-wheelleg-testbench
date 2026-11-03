@@ -9,7 +9,7 @@
 | A 控制接口 | **通过** | `v3_selftest_command`；`runs/v3/` 自检记录 |
 | B 基础周期 | **通过** | `runs/v3/basic_cycle/*`（8 run，168/168） |
 | C 预演保真 | **部分** | `runs/v3/isolation5_r3` 等；分叉步 72/92，残差已解释 |
-| D 腿式能力 | **未通过** | `runs/v3/climb/CLIMB_failure_report.json`；D3 腿式 1/2 |
+| D 腿式能力 | **未通过** | `runs/v3/climb/CLIMB_failure_report.json`；D3 原始 1/2、扰动 2/3 |
 | E 主角对照 | **无正例** | `docs/E_CASES.md`、`runs/v3/e_cases/index.json` |
 | F 连续路线 | **通过** | `runs/v3/route/rigid_r2`、`runs/v3/route/nominal_r1` |
 

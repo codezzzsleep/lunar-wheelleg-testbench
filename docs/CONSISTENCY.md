@@ -13,6 +13,9 @@
 | e both_success=12 | 通过 | 12 |
 | e full_only=0 | 通过 | 0 |
 | e differ_action=1 | 通过 | 1 |
+| perturbed S1 n=3 | 通过 | 3 |
+| perturbed S1 unified=2 | 通过 | 2 |
+| perturbed hashes distinct | 通过 | 3 |
 | evidence index present | 通过 | 57 |
 
-总计：12/12 通过。
+总计：15/15 通过。

@@ -7,7 +7,7 @@
 | A 控制接口 | **通过** | `v3_selftest_command`：25 控制步=250 物理步、t≈0.5 s、coast ctrl=0、restore diff 0 |
 | B 基础周期 | **通过** | 8 个 run、168/168 检查；HOLD tilt 1.36–1.54°，margin 11.6–16.7 mm |
 | C 预演保真 | **部分** | 五臂对照、A/B 第 72 步分叉、B/盒 第 92 步；残差已解释；`revalidation.json` 早于最终批次 |
-| D 腿式能力 | **未通过** | CLIMB 停在 `RR_hold`/`RL_shift`；D3 腿式 1/2 初态；SIDE_LEVEL 未评估 |
+| D 腿式能力 | **未通过** | CLIMB 停在 `RR_hold`/`RL_shift`；D3：原始初态 1/2、扰动初态 2/3；SIDE_LEVEL 未评估 |
 | E 主角对照 | **无正例** | 14 例：双方成功 12、仅 FULL 成功 0、选择不同 1；按 G5 展示边界 |
 | F 连续路线 | **通过** | 20 m（3×5 cm 台阶）：rigid x=23.5482/100.26 s；nominal x=23.5375/106.6 s |
 

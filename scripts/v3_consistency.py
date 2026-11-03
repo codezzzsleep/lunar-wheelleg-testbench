@@ -40,6 +40,17 @@ check('e both_success=12', both == 12, both)
 check('e full_only=0', full_only == 0, full_only)
 check('e differ_action=1', differ == 1, differ)
 
+pp = [json.loads(p.read_text()) for p in
+      sorted((ROOT / 'runs/v3/rock_actions').glob('pp_*/result.json'))]
+pp_rows = [x['rows'][0] for x in pp]
+check('perturbed S1 n=3', len(pp_rows) == 3, len(pp_rows))
+check('perturbed S1 unified=2',
+      sum(1 for r in pp_rows if r.get('unified')) == 2,
+      sum(1 for r in pp_rows if r.get('unified')))
+check('perturbed hashes distinct',
+      len({r.get('init_qpos_sha256') for r in pp_rows}) == len(pp_rows),
+      len({r.get('init_qpos_sha256') for r in pp_rows}))
+
 idx = j('runs/v3/evidence_index.json')
 check('evidence index present', idx.get('n', 0) > 0, idx.get('n'))
 

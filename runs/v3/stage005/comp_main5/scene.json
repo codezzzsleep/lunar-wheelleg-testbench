@@ -1,0 +1,118 @@
+{
+  "schema": "stage5-composite/v1",
+  "rocks": [
+    {
+      "id": "moon_rock_02",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_02",
+      "scale": 0.69767,
+      "y_center": -0.12,
+      "target_face_x": 1.0
+    },
+    {
+      "id": "moon_rock_05",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_05",
+      "scale": 0.69767,
+      "y_center": -0.06,
+      "target_face_x": 1.0
+    },
+    {
+      "id": "moon_rock_07",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_07",
+      "scale": 0.69767,
+      "y_center": 0.0,
+      "target_face_x": 1.0
+    },
+    {
+      "id": "moon_rock_01",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_01",
+      "scale": 0.69767,
+      "y_center": 0.06,
+      "target_face_x": 1.0
+    },
+    {
+      "id": "moon_rock_03",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_03",
+      "scale": 0.69767,
+      "y_center": 0.12,
+      "target_face_x": 1.0
+    }
+  ],
+  "grid": {
+    "origin": [
+      0.6,
+      -0.5,
+      0.0
+    ],
+    "pitch": 0.004,
+    "dims": [
+      500,
+      250,
+      50
+    ],
+    "content_sha": "5ec1a1f612199d7e9d8aec35117508c4"
+  },
+  "collision": {
+    "representation": "box_union (4 mm boxes from 4 mm occupancy)",
+    "coll_dir": "runs/v3/stage005/comp_main5/coll",
+    "n_boxes": 605
+  },
+  "top_z": 0.124,
+  "face_x": 1.002,
+  "far_x": 1.342,
+  "landing_x": 1.072,
+  "bearing": {
+    "landing_x": 1.072,
+    "wheel_lines": {
+      "FR": {
+        "y": -0.19,
+        "z": 0.04,
+        "slope_x": -1.667,
+        "slope_y": 2.667,
+        "flat_area_frac": 0.166
+      },
+      "FL": {
+        "y": 0.19,
+        "z": 0.0,
+        "slope_x": 0.0,
+        "slope_y": 0.0,
+        "flat_area_frac": 0.811
+      }
+    },
+    "front_slope": {
+      "FR": 0.04,
+      "FL": 0.0
+    },
+    "rear_drop": {
+      "FR": 0.04,
+      "FL": 0.0
+    },
+    "coverage_y": [
+      -0.166,
+      0.19
+    ],
+    "max_gap_m": 0.044,
+    "effective_area_frac": 0.292,
+    "passable_columns": {
+      "FR": [
+        true,
+        1.054,
+        1.078
+      ],
+      "FL": [
+        true,
+        1.098,
+        1.218
+      ]
+    }
+  }
+}

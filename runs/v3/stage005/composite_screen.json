@@ -166,8 +166,62 @@
       ],
       "climb": "physical_failure",
       "climb_t": 22.0
+    },
+    {
+      "config": "MAIN_tight_spacing",
+      "dir": "comp_main5",
+      "rocks": [
+        "moon_rock_02",
+        "moon_rock_05",
+        "moon_rock_07",
+        "moon_rock_01",
+        "moon_rock_03"
+      ],
+      "top_z": 0.124,
+      "face_x": 1.002,
+      "far_x": 1.342,
+      "coverage_y": [
+        -0.166,
+        0.19
+      ],
+      "coverage_width": 0.356,
+      "max_gap_m": 0.044,
+      "effective_area_frac": 0.292,
+      "wheel_lines": {
+        "FR": {
+          "y": -0.19,
+          "z": 0.04,
+          "slope_x": -1.667,
+          "slope_y": 2.667,
+          "flat_area_frac": 0.166
+        },
+        "FL": {
+          "y": 0.19,
+          "z": 0.0,
+          "slope_x": 0.0,
+          "slope_y": 0.0,
+          "flat_area_frac": 0.811
+        }
+      },
+      "front_slope": {
+        "FR": 0.04,
+        "FL": 0.0
+      },
+      "rear_drop": {
+        "FR": 0.04,
+        "FL": 0.0
+      },
+      "applicable": false,
+      "reasons": [
+        "coverage_width(0.356<0.40)",
+        "bearing_gap(0.044)",
+        "FR_flat_area(0.166)",
+        "FR_slope"
+      ],
+      "climb": "physical_failure",
+      "climb_t": 32.16
     }
   ],
   "qualified": [],
-  "conclusion": "no qualified composite config; CLIMB not passed in truth on any of the three"
+  "conclusion": "no qualified composite config across the main composition and three variants/placements; CLIMB fails in truth on all of them"
 }

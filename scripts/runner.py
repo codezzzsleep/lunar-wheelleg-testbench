@@ -51,20 +51,22 @@ class EpisodeRunner:
         self.initial_full_hash = None
         self.skill.reset(params or {})
 
-    def run_from_state(self, snapshot, mode='same_scene'):
+    def run_from_state(self, snapshot, mode='same_scene', pre_step_hook=None):
         """
         从给定状态**继续**执行：不 reset，保留观察移动的时间与内部状态。
 
         snapshot 至少包含 qpos/qvel；可选 time。返回结构与 run() 一致，
         额外带 continuing_from / t_start，便于核对"没有偷偷 reset"。
+        pre_step_hook(env, restore_info) 在 restore 完成、第一条控制命令之前调用，
+        供 C1 在正确采样点记录恢复后的完整状态。
         """
         env, sk = self.env, self.skill
         # 完整状态恢复：走 env.restore_state（含 mj_getState 全量物理状态、
         # ctrl/外力/计数/导航/土壤），不是只设 qpos/qvel
-        if snapshot.get('schema') == 'env-state/v1':
+        if snapshot.get('schema') in ('env-state/v1', 'env-state/v2'):
             info = env.restore_state(snapshot, mode=mode)
         else:
-            raise ValueError('run_from_state 需要 env-state/v1 完整快照 '
+            raise ValueError('run_from_state 需要 env-state/v1 或 v2 完整快照 '
                              '（位姿/速度续接请用 env.restore_state 的旧格式适配器）')
         if getattr(env, 'plan_visible', None) is None:
             env.plan_visible = dict(self.visible)
@@ -72,6 +74,8 @@ class EpisodeRunner:
         t_start = float(env.t)
         self._restored = info
         self._capture_initial()
+        if pre_step_hook is not None:
+            pre_step_hook(env, info)
         out = self._loop(obs, t_start)
         out['continuing_from'] = 'snapshot'
         out['state_mode'] = mode

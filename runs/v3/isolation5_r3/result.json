@@ -1,0 +1,2356 @@
+{
+  "schema": "v3-isolation5/v2",
+  "repeat": 2,
+  "repeats": {
+    "A_truth_mesh_same_scene": {
+      "runs": [
+        {
+          "outcome": "physical_failure",
+          "final_x": 2.109,
+          "steps": 217
+        },
+        {
+          "outcome": "physical_failure",
+          "final_x": 2.109,
+          "steps": 217
+        }
+      ],
+      "deterministic": true
+    },
+    "B_truth_mesh_project": {
+      "runs": [
+        {
+          "outcome": "physical_failure",
+          "final_x": 2.109,
+          "steps": 217
+        },
+        {
+          "outcome": "physical_failure",
+          "final_x": 2.109,
+          "steps": 217
+        }
+      ],
+      "deterministic": true
+    },
+    "C_truth_fine_project": {
+      "runs": [
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.957,
+          "steps": 214
+        },
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.957,
+          "steps": 214
+        }
+      ],
+      "deterministic": true
+    },
+    "D_truth_coarse_project": {
+      "runs": [
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.602,
+          "steps": 196
+        },
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.602,
+          "steps": 196
+        }
+      ],
+      "deterministic": true
+    },
+    "E_tparent_fine_project": {
+      "runs": [
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.63,
+          "steps": 201
+        },
+        {
+          "outcome": "physical_failure",
+          "final_x": 1.63,
+          "steps": 201
+        }
+      ],
+      "deterministic": true
+    }
+  },
+  "state": "runs/v3/states/moon_rock_04_h1v0",
+  "action": "L2",
+  "arms": {
+    "A_truth_mesh_same_scene": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 2.109,
+      "steps": 217,
+      "after_restore": {
+        "restore_mode": "same_scene",
+        "state_schema": "env-state/v1",
+        "qpos": [
+          -0.003316,
+          -6.5e-05,
+          0.384137,
+          1.0,
+          -1.3e-05,
+          -0.000743,
+          -1.3e-05,
+          -9.1e-05,
+          0.851378,
+          -1.654823,
+          0.014194,
+          0.000277,
+          0.851512,
+          -1.654995,
+          0.013641,
+          6.7e-05,
+          0.846721,
+          -1.658103,
+          0.005729,
+          -0.0001,
+          0.846704,
+          -1.658165,
+          0.005322
+        ],
+        "qvel": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05,
+          -5e-05,
+          0.00066,
+          -0.000289,
+          0.000788,
+          -8.5e-05,
+          0.000658,
+          -6e-05,
+          0.000708,
+          -5e-06,
+          0.000712,
+          0.000557,
+          -0.001531,
+          -0.00013,
+          0.000729,
+          0.000774,
+          -0.001727
+        ],
+        "qpos_sha256": "24f3b615ec75ea27b731c2e5abd696e6e431794a32aecbb9b597ef390c815c97",
+        "qvel_sha256": "22a4472cc29b4389fc156c6256aea237d4b2ccd5ee0a62ede0b62a875a63b24a",
+        "ctrl_sha256": "0af7894796bc212f437c439251ac95edd4267384071ba8d1a4bb4de7bbe423d3",
+        "xfrc_sha256": "692daefb273215ffa7409eb80e2c8285f90c9c880553cd084d66faa6ec28e38b",
+        "warmstart_sha256": "da93ea00563e6abb5420e1ed0b35df006109ac54b42d0c1b87c73b93f4138471",
+        "friction_sha256": "560abd069ba697fc9265001cf0c5a66ded268b1bedf905d4f788eae20db23bef",
+        "soil_prev_force_sha256": "28f0b19b01fe9904796ea8cecc260c4286e32872064471807f3b31c243b0de71",
+        "full_sha256": "efe244dbd0ed61388372049c3bacc30a940ce5932272299cf3bde3c533ffb946",
+        "data_time": 0.6,
+        "env_t": 0.6,
+        "n_physics": 600,
+        "n_control": 30,
+        "wheel_loads_n": {
+          "FR": 7.6096,
+          "FL": 7.41,
+          "RR": 7.9441,
+          "RL": 7.9645
+        },
+        "ncon": 12,
+        "scene_signature": "f4905fb83230978cfd223f36a2363d6b",
+        "state_mode": "same_scene"
+      },
+      "ncon_start": 12,
+      "wheel_loads_start": {
+        "FR": 7.6096,
+        "FL": 7.41,
+        "RR": 7.9441,
+        "RL": 7.9645
+      }
+    },
+    "B_truth_mesh_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 2.109,
+      "steps": 217,
+      "after_restore": {
+        "restore_mode": "project",
+        "state_schema": "env-state/v1",
+        "qpos": [
+          -0.003316,
+          -6.5e-05,
+          0.384137,
+          1.0,
+          -1.3e-05,
+          -0.000743,
+          -1.3e-05,
+          -9.1e-05,
+          0.851378,
+          -1.654823,
+          0.014194,
+          0.000277,
+          0.851512,
+          -1.654995,
+          0.013641,
+          6.7e-05,
+          0.846721,
+          -1.658103,
+          0.005729,
+          -0.0001,
+          0.846704,
+          -1.658165,
+          0.005322
+        ],
+        "qvel": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05,
+          -5e-05,
+          0.00066,
+          -0.000289,
+          0.000788,
+          -8.5e-05,
+          0.000658,
+          -6e-05,
+          0.000708,
+          -5e-06,
+          0.000712,
+          0.000557,
+          -0.001531,
+          -0.00013,
+          0.000729,
+          0.000774,
+          -0.001727
+        ],
+        "qpos_sha256": "24f3b615ec75ea27b731c2e5abd696e6e431794a32aecbb9b597ef390c815c97",
+        "qvel_sha256": "22a4472cc29b4389fc156c6256aea237d4b2ccd5ee0a62ede0b62a875a63b24a",
+        "ctrl_sha256": "0af7894796bc212f437c439251ac95edd4267384071ba8d1a4bb4de7bbe423d3",
+        "xfrc_sha256": "692daefb273215ffa7409eb80e2c8285f90c9c880553cd084d66faa6ec28e38b",
+        "warmstart_sha256": "86d2cf5b090f43ee54d8f7c1dcf746a853951191457ff6dac96269a9d24860b9",
+        "friction_sha256": "f7ac5cf73d2ccd4adf405fcfe4f67cb80ce493a49ea985aee0cefdb0824dccb3",
+        "soil_prev_force_sha256": "28f0b19b01fe9904796ea8cecc260c4286e32872064471807f3b31c243b0de71",
+        "full_sha256": "d057b1ba138e41e67beee9611dc360ac1c043db9e708c71d8d501b0cd32ce2bc",
+        "data_time": 0.6,
+        "env_t": 0.6,
+        "n_physics": 600,
+        "n_control": 30,
+        "wheel_loads_n": {
+          "FR": 7.6096,
+          "FL": 7.4098,
+          "RR": 7.9447,
+          "RL": 7.9645
+        },
+        "ncon": 12,
+        "scene_signature": "f4905fb83230978cfd223f36a2363d6b",
+        "state_mode": "project"
+      },
+      "ncon_start": 12,
+      "wheel_loads_start": {
+        "FR": 7.6096,
+        "FL": 7.4098,
+        "RR": 7.9447,
+        "RL": 7.9645
+      }
+    },
+    "C_truth_fine_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.957,
+      "steps": 214,
+      "after_restore": {
+        "restore_mode": "project",
+        "state_schema": "env-state/v1",
+        "qpos": [
+          -0.003316,
+          -6.5e-05,
+          0.384137,
+          1.0,
+          -1.3e-05,
+          -0.000743,
+          -1.3e-05,
+          -9.1e-05,
+          0.851378,
+          -1.654823,
+          0.014194,
+          0.000277,
+          0.851512,
+          -1.654995,
+          0.013641,
+          6.7e-05,
+          0.846721,
+          -1.658103,
+          0.005729,
+          -0.0001,
+          0.846704,
+          -1.658165,
+          0.005322
+        ],
+        "qvel": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05,
+          -5e-05,
+          0.00066,
+          -0.000289,
+          0.000788,
+          -8.5e-05,
+          0.000658,
+          -6e-05,
+          0.000708,
+          -5e-06,
+          0.000712,
+          0.000557,
+          -0.001531,
+          -0.00013,
+          0.000729,
+          0.000774,
+          -0.001727
+        ],
+        "qpos_sha256": "24f3b615ec75ea27b731c2e5abd696e6e431794a32aecbb9b597ef390c815c97",
+        "qvel_sha256": "22a4472cc29b4389fc156c6256aea237d4b2ccd5ee0a62ede0b62a875a63b24a",
+        "ctrl_sha256": "0af7894796bc212f437c439251ac95edd4267384071ba8d1a4bb4de7bbe423d3",
+        "xfrc_sha256": "692daefb273215ffa7409eb80e2c8285f90c9c880553cd084d66faa6ec28e38b",
+        "warmstart_sha256": "86d2cf5b090f43ee54d8f7c1dcf746a853951191457ff6dac96269a9d24860b9",
+        "friction_sha256": "eb68d48efb563722a5ab5e2aaf746bea33fbebbc510d645fe2c0da77abdd0085",
+        "soil_prev_force_sha256": "28f0b19b01fe9904796ea8cecc260c4286e32872064471807f3b31c243b0de71",
+        "full_sha256": "d057b1ba138e41e67beee9611dc360ac1c043db9e708c71d8d501b0cd32ce2bc",
+        "data_time": 0.6,
+        "env_t": 0.6,
+        "n_physics": 600,
+        "n_control": 30,
+        "wheel_loads_n": {
+          "FR": 7.6096,
+          "FL": 7.4098,
+          "RR": 7.9447,
+          "RL": 7.9645
+        },
+        "ncon": 12,
+        "scene_signature": "f4905fb83230978cfd223f36a2363d6b",
+        "state_mode": "project"
+      },
+      "ncon_start": 12,
+      "wheel_loads_start": {
+        "FR": 7.6096,
+        "FL": 7.4098,
+        "RR": 7.9447,
+        "RL": 7.9645
+      }
+    },
+    "D_truth_coarse_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.602,
+      "steps": 196,
+      "after_restore": {
+        "restore_mode": "project",
+        "state_schema": "env-state/v1",
+        "qpos": [
+          -0.003316,
+          -6.5e-05,
+          0.384137,
+          1.0,
+          -1.3e-05,
+          -0.000743,
+          -1.3e-05,
+          -9.1e-05,
+          0.851378,
+          -1.654823,
+          0.014194,
+          0.000277,
+          0.851512,
+          -1.654995,
+          0.013641,
+          6.7e-05,
+          0.846721,
+          -1.658103,
+          0.005729,
+          -0.0001,
+          0.846704,
+          -1.658165,
+          0.005322
+        ],
+        "qvel": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05,
+          -5e-05,
+          0.00066,
+          -0.000289,
+          0.000788,
+          -8.5e-05,
+          0.000658,
+          -6e-05,
+          0.000708,
+          -5e-06,
+          0.000712,
+          0.000557,
+          -0.001531,
+          -0.00013,
+          0.000729,
+          0.000774,
+          -0.001727
+        ],
+        "qpos_sha256": "24f3b615ec75ea27b731c2e5abd696e6e431794a32aecbb9b597ef390c815c97",
+        "qvel_sha256": "22a4472cc29b4389fc156c6256aea237d4b2ccd5ee0a62ede0b62a875a63b24a",
+        "ctrl_sha256": "0af7894796bc212f437c439251ac95edd4267384071ba8d1a4bb4de7bbe423d3",
+        "xfrc_sha256": "692daefb273215ffa7409eb80e2c8285f90c9c880553cd084d66faa6ec28e38b",
+        "warmstart_sha256": "86d2cf5b090f43ee54d8f7c1dcf746a853951191457ff6dac96269a9d24860b9",
+        "friction_sha256": "2a0cea0f443b6e2b94612a50d735d5c128c4c6b9175ede4a02dbe4c198c2d6da",
+        "soil_prev_force_sha256": "28f0b19b01fe9904796ea8cecc260c4286e32872064471807f3b31c243b0de71",
+        "full_sha256": "d057b1ba138e41e67beee9611dc360ac1c043db9e708c71d8d501b0cd32ce2bc",
+        "data_time": 0.6,
+        "env_t": 0.6,
+        "n_physics": 600,
+        "n_control": 30,
+        "wheel_loads_n": {
+          "FR": 7.6096,
+          "FL": 7.4098,
+          "RR": 7.9447,
+          "RL": 7.9645
+        },
+        "ncon": 12,
+        "scene_signature": "f4905fb83230978cfd223f36a2363d6b",
+        "state_mode": "project"
+      },
+      "ncon_start": 12,
+      "wheel_loads_start": {
+        "FR": 7.6096,
+        "FL": 7.4098,
+        "RR": 7.9447,
+        "RL": 7.9645
+      }
+    },
+    "E_tparent_fine_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.63,
+      "steps": 201,
+      "after_restore": {
+        "restore_mode": "project",
+        "state_schema": "env-state/v1",
+        "qpos": [
+          -0.003316,
+          -6.5e-05,
+          0.384137,
+          1.0,
+          -1.3e-05,
+          -0.000743,
+          -1.3e-05,
+          -9.1e-05,
+          0.851378,
+          -1.654823,
+          0.014194,
+          0.000277,
+          0.851512,
+          -1.654995,
+          0.013641,
+          6.7e-05,
+          0.846721,
+          -1.658103,
+          0.005729,
+          -0.0001,
+          0.846704,
+          -1.658165,
+          0.005322
+        ],
+        "qvel": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05,
+          -5e-05,
+          0.00066,
+          -0.000289,
+          0.000788,
+          -8.5e-05,
+          0.000658,
+          -6e-05,
+          0.000708,
+          -5e-06,
+          0.000712,
+          0.000557,
+          -0.001531,
+          -0.00013,
+          0.000729,
+          0.000774,
+          -0.001727
+        ],
+        "qpos_sha256": "24f3b615ec75ea27b731c2e5abd696e6e431794a32aecbb9b597ef390c815c97",
+        "qvel_sha256": "22a4472cc29b4389fc156c6256aea237d4b2ccd5ee0a62ede0b62a875a63b24a",
+        "ctrl_sha256": "0af7894796bc212f437c439251ac95edd4267384071ba8d1a4bb4de7bbe423d3",
+        "xfrc_sha256": "692daefb273215ffa7409eb80e2c8285f90c9c880553cd084d66faa6ec28e38b",
+        "warmstart_sha256": "86d2cf5b090f43ee54d8f7c1dcf746a853951191457ff6dac96269a9d24860b9",
+        "friction_sha256": "9d09893401251974f14f6613d2e3a69b060712d4e1dc36377ba61ad980527a59",
+        "soil_prev_force_sha256": "28f0b19b01fe9904796ea8cecc260c4286e32872064471807f3b31c243b0de71",
+        "full_sha256": "d057b1ba138e41e67beee9611dc360ac1c043db9e708c71d8d501b0cd32ce2bc",
+        "data_time": 0.6,
+        "env_t": 0.6,
+        "n_physics": 600,
+        "n_control": 30,
+        "wheel_loads_n": {
+          "FR": 7.6096,
+          "FL": 7.4098,
+          "RR": 7.9447,
+          "RL": 7.9645
+        },
+        "ncon": 12,
+        "scene_signature": "f4905fb83230978cfd223f36a2363d6b",
+        "state_mode": "project"
+      },
+      "ncon_start": 12,
+      "wheel_loads_start": {
+        "FR": 7.6096,
+        "FL": 7.4098,
+        "RR": 7.9447,
+        "RL": 7.9645
+      }
+    }
+  },
+  "pairs": [
+    {
+      "a": "A_truth_mesh_same_scene",
+      "b": "B_truth_mesh_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "A_truth_mesh_same_scene",
+      "b": "C_truth_fine_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "A_truth_mesh_same_scene",
+      "b": "D_truth_coarse_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "A_truth_mesh_same_scene",
+      "b": "E_tparent_fine_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "B_truth_mesh_project",
+      "b": "C_truth_fine_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.007278209516556444,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "B_truth_mesh_project",
+      "b": "D_truth_coarse_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.028302314365449277,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "B_truth_mesh_project",
+      "b": "E_tparent_fine_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.005701498213367628,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "C_truth_fine_project",
+      "b": "D_truth_coarse_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.03558052388200572,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "C_truth_fine_project",
+      "b": "E_tparent_fine_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.012979707729924073,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "D_truth_coarse_project",
+      "b": "E_tparent_fine_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.02260081615208165,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    }
+  ],
+  "c1_restore_compare": {
+    "qpos_sha256": true,
+    "qvel_sha256": true,
+    "ctrl_sha256": true,
+    "xfrc_sha256": true,
+    "warmstart_sha256": false,
+    "friction_sha256": false,
+    "soil_prev_force_sha256": true,
+    "data_time": true,
+    "env_t": true,
+    "n_physics": true,
+    "n_control": true,
+    "both_sampled_after_restore": true
+  },
+  "c2_representation": {
+    "A_truth_mesh_same_scene": {
+      "ngeom": 54,
+      "n_mesh_geoms": 34,
+      "mesh_geoms": [
+        {
+          "geom": 1,
+          "type": "mesh",
+          "dataid": 1,
+          "size": [
+            0.02301,
+            0.035,
+            0.03506
+          ]
+        },
+        {
+          "geom": 2,
+          "type": "mesh",
+          "dataid": 2,
+          "size": [
+            0.03766,
+            0.042,
+            0.04196
+          ]
+        },
+        {
+          "geom": 3,
+          "type": "mesh",
+          "dataid": 3,
+          "size": [
+            0.00325,
+            0.01301,
+            0.05506
+          ]
+        },
+        {
+          "geom": 4,
+          "type": "mesh",
+          "dataid": 4,
+          "size": [
+            0.01954,
+            0.10344,
+            0.26864
+          ]
+        },
+        {
+          "geom": 5,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.09793,
+            0.09765,
+            0.25706
+          ]
+        },
+        {
+          "geom": 9,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 10,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 12,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 13,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 15,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 18,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 19,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 20,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 21,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 23,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 24,
+          "type": "mesh",
+          "dataid": 11,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 26,
+          "type": "mesh",
+          "dataid": 15,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 29,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 30,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 31,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 32,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 34,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 35,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 37,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 40,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 41,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 42,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 43,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 45,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 46,
+          "type": "mesh",
+          "dataid": 11,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 48,
+          "type": "mesh",
+          "dataid": 15,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 51,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 52,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 53,
+          "type": "mesh",
+          "dataid": 0,
+          "size": [
+            0.10096,
+            0.20648,
+            0.29716
+          ]
+        }
+      ],
+      "note": "mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。"
+    },
+    "B_truth_mesh_project": {
+      "ngeom": 54,
+      "n_mesh_geoms": 34,
+      "mesh_geoms": [
+        {
+          "geom": 1,
+          "type": "mesh",
+          "dataid": 1,
+          "size": [
+            0.02301,
+            0.035,
+            0.03506
+          ]
+        },
+        {
+          "geom": 2,
+          "type": "mesh",
+          "dataid": 2,
+          "size": [
+            0.03766,
+            0.042,
+            0.04196
+          ]
+        },
+        {
+          "geom": 3,
+          "type": "mesh",
+          "dataid": 3,
+          "size": [
+            0.00325,
+            0.01301,
+            0.05506
+          ]
+        },
+        {
+          "geom": 4,
+          "type": "mesh",
+          "dataid": 4,
+          "size": [
+            0.01954,
+            0.10344,
+            0.26864
+          ]
+        },
+        {
+          "geom": 5,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.09793,
+            0.09765,
+            0.25706
+          ]
+        },
+        {
+          "geom": 9,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 10,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 12,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 13,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 15,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 18,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 19,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 20,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 21,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 23,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 24,
+          "type": "mesh",
+          "dataid": 11,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 26,
+          "type": "mesh",
+          "dataid": 15,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 29,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 30,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 31,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 32,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 34,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 35,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 37,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 40,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 41,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 42,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 43,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 45,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 46,
+          "type": "mesh",
+          "dataid": 11,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 48,
+          "type": "mesh",
+          "dataid": 15,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 51,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 52,
+          "type": "mesh",
+          "dataid": 17,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 53,
+          "type": "mesh",
+          "dataid": 0,
+          "size": [
+            0.10096,
+            0.20648,
+            0.29716
+          ]
+        }
+      ],
+      "note": "mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。"
+    },
+    "C_truth_fine_project": {
+      "ngeom": 1400,
+      "n_mesh_geoms": 33,
+      "mesh_geoms": [
+        {
+          "geom": 1,
+          "type": "mesh",
+          "dataid": 0,
+          "size": [
+            0.02301,
+            0.035,
+            0.03506
+          ]
+        },
+        {
+          "geom": 2,
+          "type": "mesh",
+          "dataid": 1,
+          "size": [
+            0.03766,
+            0.042,
+            0.04196
+          ]
+        },
+        {
+          "geom": 3,
+          "type": "mesh",
+          "dataid": 2,
+          "size": [
+            0.00325,
+            0.01301,
+            0.05506
+          ]
+        },
+        {
+          "geom": 4,
+          "type": "mesh",
+          "dataid": 3,
+          "size": [
+            0.01954,
+            0.10344,
+            0.26864
+          ]
+        },
+        {
+          "geom": 5,
+          "type": "mesh",
+          "dataid": 4,
+          "size": [
+            0.09793,
+            0.09765,
+            0.25706
+          ]
+        },
+        {
+          "geom": 9,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 10,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 12,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 13,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 15,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 18,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 19,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 20,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 21,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 23,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 24,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 26,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 29,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 30,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 31,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 32,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 34,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 35,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 37,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 40,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 41,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 42,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 43,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 45,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 46,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 48,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 51,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 52,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        }
+      ],
+      "note": "mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。"
+    },
+    "D_truth_coarse_project": {
+      "ngeom": 393,
+      "n_mesh_geoms": 33,
+      "mesh_geoms": [
+        {
+          "geom": 1,
+          "type": "mesh",
+          "dataid": 0,
+          "size": [
+            0.02301,
+            0.035,
+            0.03506
+          ]
+        },
+        {
+          "geom": 2,
+          "type": "mesh",
+          "dataid": 1,
+          "size": [
+            0.03766,
+            0.042,
+            0.04196
+          ]
+        },
+        {
+          "geom": 3,
+          "type": "mesh",
+          "dataid": 2,
+          "size": [
+            0.00325,
+            0.01301,
+            0.05506
+          ]
+        },
+        {
+          "geom": 4,
+          "type": "mesh",
+          "dataid": 3,
+          "size": [
+            0.01954,
+            0.10344,
+            0.26864
+          ]
+        },
+        {
+          "geom": 5,
+          "type": "mesh",
+          "dataid": 4,
+          "size": [
+            0.09793,
+            0.09765,
+            0.25706
+          ]
+        },
+        {
+          "geom": 9,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 10,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 12,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 13,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 15,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 18,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 19,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 20,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 21,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 23,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 24,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 26,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 29,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 30,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 31,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 32,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 34,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 35,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 37,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 40,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 41,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 42,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 43,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 45,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 46,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 48,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 51,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 52,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        }
+      ],
+      "note": "mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。"
+    },
+    "E_tparent_fine_project": {
+      "ngeom": 2846,
+      "n_mesh_geoms": 33,
+      "mesh_geoms": [
+        {
+          "geom": 1,
+          "type": "mesh",
+          "dataid": 0,
+          "size": [
+            0.02301,
+            0.035,
+            0.03506
+          ]
+        },
+        {
+          "geom": 2,
+          "type": "mesh",
+          "dataid": 1,
+          "size": [
+            0.03766,
+            0.042,
+            0.04196
+          ]
+        },
+        {
+          "geom": 3,
+          "type": "mesh",
+          "dataid": 2,
+          "size": [
+            0.00325,
+            0.01301,
+            0.05506
+          ]
+        },
+        {
+          "geom": 4,
+          "type": "mesh",
+          "dataid": 3,
+          "size": [
+            0.01954,
+            0.10344,
+            0.26864
+          ]
+        },
+        {
+          "geom": 5,
+          "type": "mesh",
+          "dataid": 4,
+          "size": [
+            0.09793,
+            0.09765,
+            0.25706
+          ]
+        },
+        {
+          "geom": 9,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 10,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 12,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 13,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 15,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 18,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 19,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 20,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 21,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 23,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 24,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 26,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 29,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 30,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 31,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 32,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 34,
+          "type": "mesh",
+          "dataid": 7,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 35,
+          "type": "mesh",
+          "dataid": 8,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 37,
+          "type": "mesh",
+          "dataid": 13,
+          "size": [
+            0.02706,
+            0.05191,
+            0.2088
+          ]
+        },
+        {
+          "geom": 40,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 41,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 42,
+          "type": "mesh",
+          "dataid": 5,
+          "size": [
+            0.03002,
+            0.0463,
+            0.06736
+          ]
+        },
+        {
+          "geom": 43,
+          "type": "mesh",
+          "dataid": 6,
+          "size": [
+            0.04032,
+            0.04928,
+            0.07038
+          ]
+        },
+        {
+          "geom": 45,
+          "type": "mesh",
+          "dataid": 9,
+          "size": [
+            0.03696,
+            0.05122,
+            0.18655
+          ]
+        },
+        {
+          "geom": 46,
+          "type": "mesh",
+          "dataid": 10,
+          "size": [
+            0.05078,
+            0.05715,
+            0.06452
+          ]
+        },
+        {
+          "geom": 48,
+          "type": "mesh",
+          "dataid": 14,
+          "size": [
+            0.02727,
+            0.05222,
+            0.20776
+          ]
+        },
+        {
+          "geom": 51,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        },
+        {
+          "geom": 52,
+          "type": "mesh",
+          "dataid": 16,
+          "size": [
+            0.0263,
+            0.08599,
+            0.08595
+          ]
+        }
+      ],
+      "note": "mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。"
+    }
+  },
+  "c3_build": {
+    "truth_fine_pitch_m": 0.006084,
+    "coarse": {
+      "ok": true,
+      "cached": false,
+      "n_boxes": 340,
+      "collision_sha": "78c0d64ea1691c321aa4f4c512c14b8e",
+      "cache_key": "239d55d7d4dc0044e701a70ea55bf8593b032ccbab1e1af10782b83138bd829e",
+      "source": {
+        "occ_sha256": "497814be193fbba5f9c8b1eda39e14df06d1d16fdf4226fd5c3f8042d1fac09b",
+        "origin": [
+          1.134666,
+          -0.36504,
+          0.0
+        ],
+        "pitch": 0.006084,
+        "dims": [
+          198,
+          150,
+          38
+        ],
+        "n_occ": 63793,
+        "shape": [
+          198,
+          150,
+          38
+        ],
+        "convention": "voxel_center = origin + (index+0.5)*pitch"
+      },
+      "cache_rebuilt_reason": null
+    }
+  },
+  "env_before_note": "after_restore 是 restore 完成、第一条控制命令之前的采样"
+}

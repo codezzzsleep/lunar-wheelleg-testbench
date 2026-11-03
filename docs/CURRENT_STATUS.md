@@ -85,6 +85,26 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 沙箱重任务必须用独立 `run_id`、独立输出目录、PID/日志/退出码落盘，
 不覆盖已有 `result.json`；重任务并发上限 2（V0 / V1 各一）。
 
+## 本轮已完成（工作包 C 的首轮五条件对照）
+
+- C1 修正：`runner.run_from_state(..., pre_step_hook=...)` 在 `restore_state` 完成、
+  第一条控制命令之前采样；`env_before` 不再采在恢复前。旧 `env-state/v1` 与新 `v2`
+  快照都可续行。
+- C2 记录：真值臂编译后共 54 个 geom、其中 34 个 mesh geom（机器人 33 + 真值物体 1），
+  即**物理真值是一块 mesh geom，MuJoCo 按凸包参与接触**；凹扫描件不等于凹网格接触。
+  细盒 1400 geom、粗盒 393 geom、T-as-parent 2846 geom。
+- C3 五条件（state `moon_rock_04_h1v0`，动作 L2，每臂重复 2 次）：
+  A 真值 mesh / same_scene；B 真值 mesh / project；C 真值源占据细盒；
+  D 同一源占据 12.17 mm 粗盒；E 生产 T-as-parent 细盒。
+  五臂全部 `physical_failure`；A/B 首次分叉在第 **72** 步，B 与 C/D/E 在第 **92** 步。
+- C1 对照：A/B 恢复后 qpos/qvel/ctrl/xfrc/土壤/双时钟/计数哈希**全部相同**；
+  仅 `qacc_warmstart` 与 `geom_friction` 不同（project 不搬材质，符合设计）。
+- 重复性：五臂各重复 2 次，outcome 与 final_x 完全一致（deterministic=True）。
+- 结论范围：本轮只支持“72 步分叉与恢复模式相关、92 步分叉与碰撞表示相关”，
+  还不能声称“72 步只由 warmstart 引起”或“92 步全部来自盒碰撞”；需要 warmstart
+  受控开关与接触事件对照。
+- 产物：`runs/v3/isolation5_r3/`（result.json、qpos_*.npy、粗盒 manifest）。
+
 # 当前状态（唯一入口）
 
 > 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `091b4104216279974b424d2ec81270817048bc6e4db4fdcdcd4f6d3f93fe3130`　生成时点 `2026-11-03T15:19:20+0800`

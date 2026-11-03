@@ -112,7 +112,7 @@ def env_unguard(env, g):
 
 
 def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
-               record=False, record_dir=None, record_meta=None):
+               record=False, record_dir=None, record_meta=None, pre_step_hook=None):
     sk = skills.make_skill(action)
     rec = None
     if record_dir is not None:
@@ -124,7 +124,7 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
     ep = runner.EpisodeRunner(env, sk, visible=visible, seed=seed,
                               record_trajectory=record, recorder=rec)
     t0 = time.time()
-    out = ep.run_from_state(snapshot, mode=mode)
+    out = ep.run_from_state(snapshot, mode=mode, pre_step_hook=pre_step_hook)
     wall = time.time() - t0
     t_start = out.get('t_start')
     t_end = out.get('t_end')

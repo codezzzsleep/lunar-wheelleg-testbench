@@ -1,6 +1,6 @@
 # v3 结果表（由唯一源表生成）
 
-> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `9cdec0b997c66730b3ede281d5cd5bc7386077c3e2cd7c74078e26cd86ff851b`　生成时点 `2026-11-03T14:57:35+0800`
+> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `091b4104216279974b424d2ec81270817048bc6e4db4fdcdcd4f6d3f93fe3130`　生成时点 `2026-11-03T15:19:20+0800`
 > 三份文档（CURRENT_STATUS / V3_FINAL_REPORT / V3_RESULTS_TABLE）都由该表生成；数字口径见表中 `definitions`。
 
 ## 漏斗
@@ -28,10 +28,10 @@
 
 | 指标 | FULL | OBS_ONLY |
 | --- | --- | --- |
-| pass | 11 | 11 |
+| pass | 12 | 12 |
 | safe_stop | 1 | 1 |
-| physical_failure | 2 | 2 |
-| 风险低估 | 2 | 2 |
+| physical_failure | 1 | 1 |
+| 风险低估 | 1 | 1 |
 | 过度保守 | 1 | 1 |
 | 参考未评估 | 0 | 0 |
 | 有效执行 | 14 | 14 |
@@ -44,18 +44,18 @@
 
 | 状态 | FULL | OBS_ONLY | 更好 | FULL 动作 | OBS 动作 |
 | --- | --- | --- | --- | --- | --- |
-| moon_rock_01_h0v0 | pass | pass | same | D1 | D1 |
+| moon_rock_01_h0v0 | pass | pass | same | R1 | R1 |
 | moon_rock_01_h0v1 | pass | pass | same | D1 | D1 |
 | moon_rock_01_h2v0 | safe_stop | safe_stop | same | A0 | A0 |
-| moon_rock_02_h0v1 | pass | pass | same | D1 | D1 |
-| moon_rock_02_h2v0 | pass | pass | same | D1 | L2 |
-| moon_rock_02_h2v1 | pass | pass | same | D1 | D1 |
-| moon_rock_03_h1v0 | pass | pass | same | L2 | L2 |
+| moon_rock_02_h0v1 | pass | pass | same | R1 | R1 |
+| moon_rock_02_h2v0 | pass | pass | same | L2 | R1 |
+| moon_rock_02_h2v1 | pass | pass | same | L2 | L2 |
+| moon_rock_03_h1v0 | pass | pass | same | R1 | R1 |
 | moon_rock_03_h2v1 | pass | pass | same | R1 | R1 |
 | moon_rock_04_h0v1 | pass | pass | same | L2 | L2 |
-| moon_rock_04_h1v0 | physical_failure | physical_failure | same | L2 | L2 |
+| moon_rock_04_h1v0 | pass | pass | same | R2 | R2 |
 | moon_rock_05_h1v0 | pass | pass | same | D1 | D1 |
-| moon_rock_05_h1v1 | physical_failure | physical_failure | same | L2 | L2 |
+| moon_rock_05_h1v1 | physical_failure | physical_failure | same | S1 | S1 |
 | moon_rock_05_h2v0 | pass | pass | same | R1 | R1 |
 | moon_rock_05_h2v1 | pass | pass | same | R2 | R2 |
 
@@ -74,17 +74,17 @@
 
 | 状态 | H(m) | 配对状态 | FULL 动作/结局 | OBS 动作/结局 |
 | --- | --- | --- | --- | --- |
-| moon_rock_01_h0v0 | 0.120 | executed_pair | D1/pass | D1/pass |
+| moon_rock_01_h0v0 | 0.120 | executed_pair | R1/pass | R1/pass |
 | moon_rock_01_h0v1 | 0.120 | executed_pair | D1/pass | D1/pass |
 | moon_rock_01_h2v0 | 0.224 | executed_pair | A0/safe_stop | A0/safe_stop |
-| moon_rock_02_h0v1 | 0.120 | executed_pair | D1/pass | D1/pass |
-| moon_rock_02_h2v0 | 0.224 | executed_pair | D1/pass | L2/pass |
-| moon_rock_02_h2v1 | 0.224 | executed_pair | D1/pass | D1/pass |
-| moon_rock_03_h1v0 | 0.172 | executed_pair | L2/pass | L2/pass |
+| moon_rock_02_h0v1 | 0.120 | executed_pair | R1/pass | R1/pass |
+| moon_rock_02_h2v0 | 0.224 | executed_pair | L2/pass | R1/pass |
+| moon_rock_02_h2v1 | 0.224 | executed_pair | L2/pass | L2/pass |
+| moon_rock_03_h1v0 | 0.172 | executed_pair | R1/pass | R1/pass |
 | moon_rock_03_h2v1 | 0.224 | executed_pair | R1/pass | R1/pass |
 | moon_rock_04_h0v1 | 0.120 | executed_pair | L2/pass | L2/pass |
-| moon_rock_04_h1v0 | 0.172 | executed_pair | L2/physical_failure | L2/physical_failure |
+| moon_rock_04_h1v0 | 0.172 | executed_pair | R2/pass | R2/pass |
 | moon_rock_05_h1v0 | 0.172 | executed_pair | D1/pass | D1/pass |
-| moon_rock_05_h1v1 | 0.172 | executed_pair | L2/physical_failure | L2/physical_failure |
+| moon_rock_05_h1v1 | 0.172 | executed_pair | S1/physical_failure | S1/physical_failure |
 | moon_rock_05_h2v0 | 0.224 | executed_pair | R1/pass | R1/pass |
 | moon_rock_05_h2v1 | 0.224 | executed_pair | R2/pass | R2/pass |

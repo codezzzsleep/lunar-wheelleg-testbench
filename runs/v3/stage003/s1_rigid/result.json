@@ -1,0 +1,199 @@
+{
+  "schema": "v3-endgame-diag/v1",
+  "soil": "rigid",
+  "state": "/tmp/endgame_rigid/state.json",
+  "restore_mode": "same_scene",
+  "wheel": {
+    "FR": {
+      "x": 1.6204,
+      "y": -0.0026,
+      "z": 0.1466,
+      "bottom_z": 0.0606,
+      "load_n": 16.431
+    },
+    "FL": {
+      "x": 1.5671,
+      "y": 0.2508,
+      "z": 0.201,
+      "bottom_z": 0.115,
+      "load_n": 0.0
+    },
+    "RR": {
+      "x": 1.2676,
+      "y": -0.0783,
+      "z": 0.1467,
+      "bottom_z": 0.0607,
+      "load_n": 6.233
+    },
+    "RL": {
+      "x": 1.201,
+      "y": 0.1988,
+      "z": 0.1269,
+      "bottom_z": 0.0409,
+      "load_n": 11.738
+    }
+  },
+  "rr_geometry": {
+    "in_fr_x": true,
+    "in_fr_y": true,
+    "bottom_to_platform_m": 0.0107
+  },
+  "rr_contacts": [
+    {
+      "other_body": 18,
+      "pos": [
+        1.2754,
+        -0.1146,
+        0.0505
+      ],
+      "normal_z": -1.0,
+      "normal_force": 0.0,
+      "top": true
+    },
+    {
+      "other_body": 18,
+      "pos": [
+        1.2754,
+        -0.1146,
+        0.0505
+      ],
+      "normal_z": -1.0,
+      "normal_force": 6.233,
+      "top": true
+    }
+  ],
+  "joints": {
+    "FR": {
+      "hip": {
+        "actual": 0.0116,
+        "target": null,
+        "range": [
+          -1.047,
+          1.047
+        ],
+        "at_limit": false
+      },
+      "thigh": {
+        "actual": 1.175,
+        "target": null,
+        "range": [
+          -1.571,
+          3.491
+        ],
+        "at_limit": false
+      },
+      "calf": {
+        "actual": -2.0016,
+        "target": null,
+        "range": [
+          -2.723,
+          -0.838
+        ],
+        "at_limit": false
+      }
+    },
+    "FL": {
+      "hip": {
+        "actual": -0.0713,
+        "target": null,
+        "range": [
+          -1.047,
+          1.047
+        ],
+        "at_limit": false
+      },
+      "thigh": {
+        "actual": 1.1902,
+        "target": null,
+        "range": [
+          -1.571,
+          3.491
+        ],
+        "at_limit": false
+      },
+      "calf": {
+        "actual": -2.0286,
+        "target": null,
+        "range": [
+          -2.723,
+          -0.838
+        ],
+        "at_limit": false
+      }
+    },
+    "RR": {
+      "hip": {
+        "actual": 0.0094,
+        "target": null,
+        "range": [
+          -1.047,
+          1.047
+        ],
+        "at_limit": false
+      },
+      "thigh": {
+        "actual": 1.1257,
+        "target": null,
+        "range": [
+          -0.524,
+          4.538
+        ],
+        "at_limit": false
+      },
+      "calf": {
+        "actual": -2.1118,
+        "target": null,
+        "range": [
+          -2.723,
+          -0.838
+        ],
+        "at_limit": false
+      }
+    },
+    "RL": {
+      "hip": {
+        "actual": -0.0246,
+        "target": null,
+        "range": [
+          -1.047,
+          1.047
+        ],
+        "at_limit": false
+      },
+      "thigh": {
+        "actual": 0.9261,
+        "target": null,
+        "range": [
+          -0.524,
+          4.538
+        ],
+        "at_limit": false
+      },
+      "calf": {
+        "actual": -1.6812,
+        "target": null,
+        "range": [
+          -2.723,
+          -0.838
+        ],
+        "at_limit": false
+      }
+    }
+  },
+  "roll_deg": 681.908,
+  "pitch_deg": -167.288,
+  "tilt_deg": 12.249,
+  "com": [
+    1.4233,
+    0.0595,
+    0.3337
+  ],
+  "base_z": 0.3979,
+  "terminated": false,
+  "safe_exit": {
+    "ok": false,
+    "rows": 50,
+    "tilt_max": 12.246,
+    "vx_last": 0.0013
+  }
+}

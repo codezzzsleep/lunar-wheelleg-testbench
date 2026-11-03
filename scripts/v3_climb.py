@@ -18,6 +18,7 @@ import json
 import pathlib
 import sys
 
+import mujoco
 import numpy as np
 import trimesh
 
@@ -33,6 +34,13 @@ import v3_basic_cycle as bc   # noqa: E402
 LEG = bc.LEG
 STANCE = {leg: dict(bc.STANCE) for leg in LEG}
 WHEEL_R = wheelleg_env.WHEEL_R
+
+
+def jlim(env, leg, part):
+    """真实关节限位（从模型读），不要用统一 [-2.5,2.5]。"""
+    j = mujoco.mj_name2id(env.model, mujoco.mjtObj.mjOBJ_JOINT, f'{leg}_{part}_joint')
+    lo, hi = env.model.jnt_range[j]
+    return float(lo), float(hi)
 
 
 def contact_load(env, leg, kind='top'):
@@ -212,7 +220,8 @@ class Climb:
             for leg in self.support:
                 dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.06, 0.06)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
-                    goal[leg][p] = float(np.clip(start[leg][p] + float(v), -2.5, 2.5))
+                    lo, hi = jlim(env, leg, p)
+                    goal[leg][p] = float(np.clip(start[leg][p] + float(v), lo, hi))
             for i in range(ramp):
                 a = (i + 1) / ramp
                 for leg in LEG:
@@ -255,14 +264,33 @@ class Climb:
                 dp = np.array([0.0, 0.0, -sign * d])
                 dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.02, 0.02)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                    lo, hi = jlim(env, leg, p)
                     self.targets[leg][p] = float(np.clip(
-                        self.targets[leg][p] + float(v), -2.5, 2.5))
+                        self.targets[leg][p] + float(v), lo, hi))
         loads = {leg: round(contact_load(env, leg), 3) for leg in LEG}
         roll, pitch = bc.attitude(env)
         return {'phase': 'side_level', 'loads_n': loads,
                 'roll_deg': round(float(np.degrees(roll)), 3),
                 'pitch_deg': round(float(np.degrees(pitch)), 3),
                 'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
+
+    # ---- 简单轮式助爬：最后一轮保持接触滚上台（用于末段状态采集）
+    def wheel_assist(self, leg, x_target, speed=0.12, max_s=8.0):
+        env = self.env
+        b = bc.wheel_body(env, leg)
+        for _ in range(int(max_s * 50)):
+            if (float(env.data.xpos[b][0]) >= x_target
+                    and contact_load(env, leg) >= 0.05 * self.W):
+                break
+            self.step(f'{leg}_assist', omega=speed / WHEEL_R)
+            if self.terminated:
+                break
+        x = float(env.data.xpos[b][0])
+        load = contact_load(env, leg)
+        return {'phase': f'{leg}_assist', 'wheel_x': round(x, 4),
+                'x_target': round(x_target, 4), 'load_n': round(load, 3),
+                'ok': bool(x >= x_target - 0.01 and load >= 0.05 * self.W
+                           and not self.terminated)}
 
     # ---- 轮腿协同：最后一轮保持接触滚上台；支撑轮掉载时向下补 4 mm
     def push_last_wheel(self, leg, x_target, speed=0.10, max_s=8.0,
@@ -285,8 +313,9 @@ class Climb:
                         dq = np.clip(bc.damped_ls(bc.leg_jac(env, other), -dp),
                                      -0.02, 0.02)
                         for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                            lo, hi = jlim(env, other, p)
                             self.targets[other][p] = float(np.clip(
-                                self.targets[other][p] + float(v), -2.5, 2.5))
+                                self.targets[other][p] + float(v), lo, hi))
         x = float(env.data.xpos[b][0])
         load = contact_load(env, leg)
         loads = {l: round(contact_load(env, l), 3) for l in LEG}
@@ -309,8 +338,10 @@ class Climb:
             dp[2] = float(np.clip(need, -0.06, 0.06))
             dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), dp), -max_dq, max_dq)
             start = dict(self.targets[leg])
-            goal = {p: float(np.clip(start[p] + float(v), -2.5, 2.5))
-                    for p, v in zip(('hip', 'thigh', 'calf'), dq)}
+            goal = {}
+            for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                lo, hi = jlim(env, leg, p)
+                goal[p] = float(np.clip(start[p] + float(v), lo, hi))
             for i in range(ramp):
                 a = (i + 1) / ramp
                 for p in ('hip', 'thigh', 'calf'):
@@ -353,7 +384,8 @@ class Climb:
             for leg in LEG:
                 dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.04, 0.04)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
-                    goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+                    lo, hi = jlim(env, leg, p)
+                    goal[leg][p] = float(np.clip(start[leg][p] + v, lo, hi))
             for i in range(ramp):
                 a = (i + 1) / ramp
                 for leg in LEG:
@@ -380,7 +412,8 @@ class Climb:
             for leg in LEG:
                 dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.04, 0.04)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
-                    goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+                    lo, hi = jlim(env, leg, p)
+                    goal[leg][p] = float(np.clip(start[leg][p] + v, lo, hi))
             for i in range(ramp):
                 a = (i + 1) / ramp
                 for leg in LEG:
@@ -429,7 +462,8 @@ class Climb:
         for leg in LEG:
             dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.06, 0.06)
             for p, v in zip(('hip', 'thigh', 'calf'), dq):
-                goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+                lo, hi = jlim(env, leg, p)
+                goal[leg][p] = float(np.clip(start[leg][p] + v, lo, hi))
         for i in range(ramp):
             a = (i + 1) / ramp
             for leg in LEG:
@@ -511,6 +545,8 @@ def main():
     ap.add_argument('--step-w', type=float, default=0.90)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--record', action='store_true')
+    ap.add_argument('--save-endgame', default='',
+                    help='在后轮末段保存完整状态快照到该路径')
     ap.add_argument('--no-shift', action='store_true',
                     help='开发场景实验：跳过 FL/RR/RL 的支撑转移')
     ap.add_argument('--rear', action='store_true',
@@ -648,12 +684,17 @@ def main():
                     c.step(f'{leg}_settle')
                     if stop():
                         break
-            if ok and not stop():
-                ok = add(c.hold_leg(leg))
+            # SPEC 003 6.1：三点支撑中间态允许，不要求 RR 先单独 hold 到 5%
 
     if ok and not stop() and a.rear:
         # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
-        ok = add(c.push_last_wheel('RL', faces['FL'] + 0.07, speed=0.10))
+        ok = add(c.wheel_assist('RL', faces['FL'] + 0.07, speed=0.12))
+    if a.save_endgame and not stop():
+        snap = env.save_state()
+        sp = ROOT / a.save_endgame
+        sp.parent.mkdir(parents=True, exist_ok=True)
+        sp.write_text(json.dumps({'snapshot': snap, 'spec': spec}, ensure_ascii=False))
+        print(json.dumps({'saved_state': str(sp), 'bytes': sp.stat().st_size}))
     if ok and not stop() and a.rear:
         ok = add(c.side_level(2.5))
     if ok and not stop() and a.rear:

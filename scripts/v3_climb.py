@@ -56,8 +56,9 @@ def contact_load(env, leg, kind='top'):
         name = m.body(other).name if other >= 0 else 'world'
         if other != 0 and not name.startswith('obstacle'):
             continue
+        # MuJoCo contact.frame 行主序存储，法向是第一行（实测 [0,0,1,...]）
         frame = np.asarray(c.frame, dtype=float).reshape(3, 3)
-        nz = abs(float(frame[2, 0]))
+        nz = abs(float(frame[0, 2]))
         if kind == 'top' and nz < 0.7:
             continue
         if kind == 'wall' and nz >= 0.7:
@@ -84,7 +85,7 @@ def contact_points(env, leg, min_load=0.5):
         if other != 0 and not name.startswith('obstacle'):
             continue
         frame = np.asarray(c.frame, dtype=float).reshape(3, 3)
-        if abs(float(frame[2, 0])) < 0.7:
+        if abs(float(frame[0, 2])) < 0.7:
             continue
         f = np.zeros(6)
         mujoco.mj_contactForce(m, d, i, f)
@@ -244,7 +245,7 @@ class Climb:
                 'ok': bool(x >= x_target - 0.01)}
 
     # ---- 前轴预压：机身向 +x 平移，前轮被压向台面、后轮伸长
-    def preload(self, dx=0.010, ramp=30):
+    def preload(self, dx=0.005, ramp=30):
         env = self.env
         dp = np.array([0.0, float(dx), 0.0])
         start = {leg: dict(self.targets[leg]) for leg in LEG}

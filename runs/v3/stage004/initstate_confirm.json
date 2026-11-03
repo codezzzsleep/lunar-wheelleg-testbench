@@ -1,0 +1,54 @@
+{
+  "schema": "stage004-initstate-confirm/v1",
+  "state": "moon_rock_04_h1v0",
+  "note": "3 frozen initial states, both arms share the perturbed snapshot (hash recomputed); decision saved before truth",
+  "rows": [
+    {
+      "run": "e2e_04_p1",
+      "perturb": {
+        "dx": 0.0,
+        "dy": 0.0,
+        "dyaw_deg": 0.0
+      },
+      "init_qpos_sha256": "1bafbffafdf61d62",
+      "FULL": "R2",
+      "OBS": "R2",
+      "full_outcome": "pass",
+      "obs_outcome": "pass",
+      "full_t": 9.42,
+      "obs_t": 9.42
+    },
+    {
+      "run": "e2e_04_p2",
+      "perturb": {
+        "dx": 0.02,
+        "dy": 0.01,
+        "dyaw_deg": 1.0
+      },
+      "init_qpos_sha256": "c14592bb52884ff7",
+      "FULL": "L2",
+      "OBS": "L2",
+      "full_outcome": "pass",
+      "obs_outcome": "pass",
+      "full_t": 7.1,
+      "obs_t": 7.1
+    },
+    {
+      "run": "e2e_04_p3",
+      "perturb": {
+        "dx": -0.02,
+        "dy": -0.01,
+        "dyaw_deg": -1.0
+      },
+      "init_qpos_sha256": "ba77a64d6fe0311e",
+      "FULL": "R2",
+      "OBS": "R2",
+      "full_outcome": "pass",
+      "obs_outcome": "pass",
+      "full_t": 9.48,
+      "obs_t": 9.48
+    }
+  ],
+  "all_pass": true,
+  "differences": 0
+}

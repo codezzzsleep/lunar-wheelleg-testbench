@@ -10,8 +10,10 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
+import hashlib  # noqa: E402
 import numpy as np  # noqa: E402
 import v3_core  # noqa: E402
+import stage4_perturb as S4P  # noqa: E402
 
 
 def main():
@@ -22,6 +24,7 @@ def main():
     ap.add_argument('--pitch', type=float, default=0.0,
                     help='0 表示用 protocol 的 collision.pitch_m（2 mm）')
     ap.add_argument('--max-candidates', type=int, default=6)
+    ap.add_argument('--perturb', default='', help='dx,dy,dyaw_deg 冻结初态扰动')
     a = ap.parse_args()
     state_dir = (ROOT / a.state).resolve()
     out = (ROOT / a.out).resolve()
@@ -30,6 +33,17 @@ def main():
     if not a.pitch:
         a.pitch = float(proto['collision']['pitch_m'])
     core = v3_core.load_state(state_dir)
+    dx = dy = dyaw = 0.0
+    if a.perturb:
+        parts = [float(x) for x in a.perturb.split(',')]
+        while len(parts) < 3:
+            parts.append(0.0)
+        dx, dy, dyaw = parts[:3]
+    if dx or dy or dyaw:
+        core['snapshot'] = S4P.perturb_snapshot(core['snapshot'], dx, dy, dyaw)
+    import numpy as _np
+    _q = _np.asarray(core['snapshot']['mjstate'], dtype=float)[:int(core['snapshot']['nq'])]
+    init_qpos_sha = hashlib.sha256(_q.tobytes()).hexdigest()
     # 候选：fused 完整
     cands = []
     for d in sorted((state_dir / 'candidates').iterdir()):
@@ -82,6 +96,8 @@ def main():
     ex_o = v3_core.truth_execute(core, dec_o['chosen'], proto, out / 'truth_exec', 'OBS')
     res = {'schema': 'stage4-full-obs/v1', 'state_id': core['state']['state_id'],
            'formula': 'FULL = V | (P & U); OBS_ONLY = V',
+           'perturb': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw},
+           'init_qpos_sha256': init_qpos_sha,
            'candidates': cand_ids,
            'FULL': {'chosen': dec_f['chosen'], 'votes': dec_f['votes'],
                     'costs': dec_f['mean_cost_s'], 'reason': dec_f['reason'],

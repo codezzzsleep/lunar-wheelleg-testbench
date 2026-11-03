@@ -4,171 +4,423 @@
   "rows": [
     {
       "state": "moon_rock_01_h0v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R1",
+      "obs_action": "R1",
       "same_action": true,
       "full_success": true,
       "full_cost": 5.78,
       "obs_success": true,
       "obs_cost": 5.78,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 6,
+        "R2": 6,
+        "L1": 6,
+        "L2": 6,
+        "S1": 6,
+        "D1": 6,
+        "D2": 6
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 1,
+        "D1": 1,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_01_h0v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "D1",
+      "obs_action": "D1",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.08,
       "obs_success": true,
       "obs_cost": 6.08,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 4,
+        "R2": 4,
+        "L1": 4,
+        "L2": 4,
+        "S1": 4,
+        "D1": 4,
+        "D2": 4
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 1,
+        "D1": 1,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_01_h2v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "A0",
+      "obs_action": "A0",
       "same_action": true,
       "full_success": false,
       "full_cost": 60.0,
       "obs_success": false,
       "obs_cost": 60.0,
       "full_reason": "abort",
-      "obs_reason": "abort"
+      "obs_reason": "abort",
+      "full_votes": {
+        "R1": 0,
+        "R2": 0,
+        "L1": 0,
+        "L2": 1,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 0,
+        "R2": 0,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_02_h0v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R1",
+      "obs_action": "R1",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.12,
       "obs_success": true,
       "obs_cost": 6.12,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 6,
+        "R2": 6,
+        "L1": 6,
+        "L2": 6,
+        "S1": 6,
+        "D1": 6,
+        "D2": 6
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 1,
+        "D1": 1,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_02_h2v0",
-      "full_action": null,
-      "obs_action": null,
-      "same_action": true,
+      "full_action": "L2",
+      "obs_action": "R1",
+      "same_action": false,
       "full_success": true,
       "full_cost": 6.300000000000001,
       "obs_success": true,
       "obs_cost": 6.260000000000001,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 4,
+        "R2": 4,
+        "L1": 0,
+        "L2": 4,
+        "S1": 0,
+        "D1": 4,
+        "D2": 4
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 0,
+        "L2": 1,
+        "S1": 0,
+        "D1": 1,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_02_h2v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "L2",
+      "obs_action": "L2",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.800000000000001,
       "obs_success": true,
       "obs_cost": 6.800000000000001,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 5,
+        "R2": 6,
+        "L1": 5,
+        "L2": 6,
+        "S1": 0,
+        "D1": 5,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 0,
+        "D1": 1,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_03_h1v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R1",
+      "obs_action": "R1",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.220000000000001,
       "obs_success": true,
       "obs_cost": 6.220000000000001,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 4,
+        "R2": 4,
+        "L1": 3,
+        "L2": 4,
+        "S1": 0,
+        "D1": 0,
+        "D2": 4
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 0,
+        "D1": 0,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_03_h2v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R1",
+      "obs_action": "R1",
       "same_action": true,
       "full_success": true,
       "full_cost": 8.82,
       "obs_success": true,
       "obs_cost": 8.82,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 4,
+        "R2": 1,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 0,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_04_h0v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "L2",
+      "obs_action": "L2",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.66,
       "obs_success": true,
       "obs_cost": 6.66,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 0,
+        "R2": 4,
+        "L1": 0,
+        "L2": 4,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 0,
+        "R2": 6,
+        "L1": 0,
+        "L2": 6,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_04_h1v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R2",
+      "obs_action": "R2",
       "same_action": true,
       "full_success": true,
       "full_cost": 8.82,
       "obs_success": true,
       "obs_cost": 8.82,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 0,
+        "R2": 6,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 0,
+        "R2": 1,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_05_h1v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "D1",
+      "obs_action": "D1",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.0200000000000005,
       "obs_success": true,
       "obs_cost": 6.0200000000000005,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 6,
+        "R2": 6,
+        "L1": 6,
+        "L2": 6,
+        "S1": 6,
+        "D1": 6,
+        "D2": 6
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 1,
+        "D1": 1,
+        "D2": 1
+      }
     },
     {
       "state": "moon_rock_05_h1v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "S1",
+      "obs_action": "S1",
       "same_action": true,
       "full_success": false,
       "full_cost": 60.0,
       "obs_success": false,
       "obs_cost": 60.0,
       "full_reason": "tipped",
-      "obs_reason": "tipped"
+      "obs_reason": "tipped",
+      "full_votes": {
+        "R1": 0,
+        "R2": 6,
+        "L1": 6,
+        "L2": 0,
+        "S1": 6,
+        "D1": 2,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 0,
+        "R2": 1,
+        "L1": 1,
+        "L2": 0,
+        "S1": 1,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_05_h2v0",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R1",
+      "obs_action": "R1",
       "same_action": true,
       "full_success": true,
       "full_cost": 6.62,
       "obs_success": true,
       "obs_cost": 6.62,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 6,
+        "R2": 6,
+        "L1": 6,
+        "L2": 6,
+        "S1": 0,
+        "D1": 0,
+        "D2": 1
+      },
+      "obs_votes": {
+        "R1": 1,
+        "R2": 1,
+        "L1": 1,
+        "L2": 1,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     },
     {
       "state": "moon_rock_05_h2v1",
-      "full_action": null,
-      "obs_action": null,
+      "full_action": "R2",
+      "obs_action": "R2",
       "same_action": true,
       "full_success": true,
       "full_cost": 8.540000000000001,
       "obs_success": true,
       "obs_cost": 8.540000000000001,
       "full_reason": "success",
-      "obs_reason": "success"
+      "obs_reason": "success",
+      "full_votes": {
+        "R1": 0,
+        "R2": 6,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      },
+      "obs_votes": {
+        "R1": 0,
+        "R2": 1,
+        "L1": 0,
+        "L2": 0,
+        "S1": 0,
+        "D1": 0,
+        "D2": 0
+      }
     }
   ]
 }

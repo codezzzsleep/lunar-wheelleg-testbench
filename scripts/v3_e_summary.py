@@ -15,8 +15,9 @@ for sd in sorted((ROOT / 'runs/v3/states').iterdir()):
         fj, oj = json.loads(f.read_text()), json.loads(o.read_text())
     except Exception:  # noqa: BLE001
         continue
-    fa = (fj.get('decision') or {}).get('action')
-    oa = (oj.get('decision') or {}).get('action')
+    fd, od = (fj.get('decision') or {}), (oj.get('decision') or {})
+    fa = fd.get('chosen') or fd.get('action')
+    oa = od.get('chosen') or od.get('action')
     ef = d / 'execution_FULL.json'
     eo = d / 'execution_OBS_ONLY.json'
     fe = json.loads(ef.read_text()) if ef.exists() else {}
@@ -25,7 +26,8 @@ for sd in sorted((ROOT / 'runs/v3/states').iterdir()):
                  'same_action': fa == oa,
                  'full_success': fe.get('success'), 'full_cost': fe.get('cost'),
                  'obs_success': oe.get('success'), 'obs_cost': oe.get('cost'),
-                 'full_reason': fe.get('reason'), 'obs_reason': oe.get('reason')})
+                 'full_reason': fe.get('reason'), 'obs_reason': oe.get('reason'),
+                 'full_votes': fd.get('votes'), 'obs_votes': od.get('votes')})
 out = ROOT / 'runs/v3/e_cases/index.json'
 out.parent.mkdir(parents=True, exist_ok=True)
 out.write_text(json.dumps({'schema': 'v3-e-cases/v1', 'n': len(rows), 'rows': rows},

@@ -1,0 +1,64 @@
+{
+  "schema": "v3-run-manifest/v1",
+  "run_id": "front_nominal_r1",
+  "created_at": "2026-11-03T17:45:23+0800",
+  "code_commit": "a13f58c6a73004d92bae594457ca0adabb4cb861",
+  "sandbox": "cnb-ljh-1k6fm0sla-001.3a63e40a-b641-47b3-819f-dcf271429eef-07q@cnb.space",
+  "command": "MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --soil nominal --record --out runs/v3/climb/front_nominal_r1",
+  "parent_run": null,
+  "inputs": {
+    "result_schema": "v3-climb-front/v1",
+    "soil": "nominal",
+    "swing": null,
+    "cycles_requested": null,
+    "init_seed": null,
+    "init_qpos_sha256": null
+  },
+  "outputs": {
+    "frames.npz": {
+      "bytes": 15113,
+      "sha256": "4716cba98926da171699cd1b6473acd3755d1379b6eae2d0c2235c4b12129dd3"
+    },
+    "record/chunk_00000.npz": {
+      "bytes": 8735,
+      "sha256": "0257ff007c816a8956534fb7c2f2a0bec7dcd1aefa4fb60a917b560339ff9966"
+    },
+    "record/chunk_00001.npz": {
+      "bytes": 9120,
+      "sha256": "12884d74590d0e3fcd0a4b98600a388d9f92997bfb999289d88cf2f8cfb5f036"
+    },
+    "record/chunk_00002.npz": {
+      "bytes": 7107,
+      "sha256": "555149286590bbfc7d1b8c2ae6cce0a1b420dbe78cc18b49b4dd5f5339853e49"
+    },
+    "record/contacts_00000.jsonl": {
+      "bytes": 348850,
+      "sha256": "0669404e0b978eb71334aa00aaa07546ec98e9d246673a3ccb3b4a997076a87f"
+    },
+    "record/contacts_00001.jsonl": {
+      "bytes": 389362,
+      "sha256": "442164b0fe570ce493bce6ebd60e4d8afbc8976a7bf4cfe9b76e41e6e9367357"
+    },
+    "record/contacts_00002.jsonl": {
+      "bytes": 304843,
+      "sha256": "1d2db4ed8db2bb445ca8de25f822db7f5612cc7ed26713dbdfb7094062f30032"
+    },
+    "record/index.json": {
+      "bytes": 2923,
+      "sha256": "063c4742fccfc8354df88d86338a224024bd26da5c8fbb6e50b0a4f5a9669aab"
+    },
+    "record/index.sha256": {
+      "bytes": 65,
+      "sha256": "37570513ff684ae8aed840c2cdf0a86d97dcb1925e7da53674b21d063c560127"
+    },
+    "result.json": {
+      "bytes": 1529,
+      "sha256": "91c9ad1619b2b7ccda0fa799f940ba94e8ef82aefef06c023eff7fe089e3ef02"
+    },
+    "step.stl": {
+      "bytes": 684,
+      "sha256": "cc076a2b1b43d729af87a2cb6faac0a5eb91054512d669ad6dee16b9f3059877"
+    }
+  },
+  "result_sha256": "91c9ad1619b2b7ccda0fa799f940ba94e8ef82aefef06c023eff7fe089e3ef02"
+}

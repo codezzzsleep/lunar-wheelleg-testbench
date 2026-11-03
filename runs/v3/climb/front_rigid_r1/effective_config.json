@@ -1,0 +1,36 @@
+{
+  "schema": "v3-effective-config/v1",
+  "run_id": "front_rigid_r1",
+  "environment": {
+    "sandbox": "cnb-ljh-1k6fm0sla-001.3a63e40a-b641-47b3-819f-dcf271429eef-07q@cnb.space",
+    "code_commit": "a13f58c6a73004d92bae594457ca0adabb4cb861"
+  },
+  "scene": {
+    "kind": "flat",
+    "goal_x": 5.0,
+    "channel_half_m": 1.2,
+    "soil": "rigid"
+  },
+  "robot": {
+    "platform": "go2w",
+    "total_mass_kg": null,
+    "gravity_mps2": 1.62
+  },
+  "cycle": {
+    "phases": [
+      "stand",
+      "shift_support",
+      "small_lift",
+      "hold",
+      "lower_until_contact",
+      "load_transfer",
+      "return_body"
+    ],
+    "swing": null,
+    "hold_s": null,
+    "lift_target_m": 0.03,
+    "cycles": null
+  },
+  "thresholds": null,
+  "note": "控制基础周期实验，不是 Lux3D 决策实验；payload/decision 不适用。"
+}

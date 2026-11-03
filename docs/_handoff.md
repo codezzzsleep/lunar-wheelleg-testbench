@@ -67,7 +67,9 @@
 ## 尚未完成
 
 - 工作包 C：预演保真五条件对照；`v3_isolation5.py` 的 `env_before` 仍在 restore 之前采样。
-- 工作包 D/E/F：CLIMB、第二技能与软土脱困、主角三案例、约 20 m 连续路线。
+- 工作包 D：D1 只完成 FR 单轮搭台；FL 搭台、身体前移、后轮跟上、后坡下降未做；
+  D2 完整轮式库对照与 D4 软土脱困未做。
+- 工作包 E/F：主角三案例、约 20 m 连续路线。
 - v3 旧记录的 `runs/v3/report/revalidation.json` 生成于 14:59，早于最终 14 状态批次
   （run_id 15:09–15:17）；不得再用它给 14 个状态标 `revalidated`。要重标须重跑并生成新记录。
 - `dist/v3_bundle` 仍是 12:29 旧批次，页面数字与当前源表不一致；按新口径重建前不得对外引用。
@@ -123,3 +125,17 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
   - 05 的 A/B 无分叉（该快照 warmstart 与摩擦本就一致），盒臂在 100–101 步分叉。
 - 产物：`runs/v3/isolation5_c4_r1/`、`runs/v3/isolation5_r3_01h0v0/`、
   `runs/v3/isolation5_r3_05h1v1/`（result.json + qpos_*.npy）。
+
+## 本轮完成（D1 第一里程碑：FR 前轮搭台）
+
+- 场景：平地 + 5 cm 高、0.5 × 0.27 m 窄台，横向偏置只盖住 FR 轮迹
+  （开发用已知几何；正式执行不得读台沿真值参数）。
+- 阶段：APPROACH → 速度斜坡 BRAKE → SHIFT_SUPPORT（16.1 mm）→ LIFT_FR
+  （轮心 0.1626 m，高于台面 + 轮半径 25 mm）→ ADVANCE_TO_LEDGE（FR 轮心 x=1.02）
+  → LOWER_FR（持续载荷触发）→ HOLD_FRONT。
+- 结果：rigid、nominal 各通过，nominal 两次重复；7/7 阶段检查通过；
+  HOLD 时 FR 载荷 4.29 N（13.8% 重力），倾角 1.29°，无终止。
+- **限制**：只完成一个前轮的搭台；还没有抬 FL、身体前移、后轮跟上、后坡下降。
+  不是完整 CLIMB，不能据此宣称腿式价值；单初态、开发几何。
+- 过程中修掉的实现问题：速度目标被 coast 模式吃掉；硬刹车导致后轮卸载；
+  载荷统计只算地面、漏掉障碍物接触；两前轮 x 相同，台沿必须窄且偏置。

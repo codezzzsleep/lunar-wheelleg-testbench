@@ -104,3 +104,22 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
   还不能声称“72 步只由 warmstart 引起”或“92 步全部来自盒碰撞”；需要 warmstart
   受控开关与接触事件对照。
 - 产物：`runs/v3/isolation5_r3/`（result.json、qpos_*.npy、粗盒 manifest）。
+
+## 本轮完成（C4 受控 warmstart + C5 三状态回归）
+
+- C4 四臂（同真值，只切 warmstart；各重复 2 次）：
+  `A_ws_keep` / `A_ws_zero` / `B_ws_keep` / `B_ws_zero`。
+  - A keep vs A zero：第 **71** 步分叉；A keep vs B keep：第 **72** 步；
+    A zero vs B zero：第 **185** 步。
+  - B 的 project 恢复把 `qacc_warmstart` 清零（norm 0）；A 保留（norm 0.0231）。
+  - **结论**：此前 72 步分叉由 warmstart 解释；清零后残余的 185 步分叉来自
+    4 个轮 geom 的 sliding friction 差（最大 5.57e-4；project 不搬材质）。
+    这修正了“72 步只由 warmstart、其余全由盒碰撞”的粗糙说法。
+- C5 三状态回归（`moon_rock_01_h0v0`、`moon_rock_04_h1v0`、`moon_rock_05_h1v1`），
+  五臂 × 2 次：
+  - 01 五臂全 `pass`；04 五臂全 `physical_failure`；05 五臂全 `physical_failure`；
+  - 同状态内五臂结局同类，未出现“某表示预测安全、真值执行失败”的未解释情况；
+  - 重复性全部 deterministic；01 的 A/B 仍在 72 步分叉、B 与盒臂在 95–96 步分叉；
+  - 05 的 A/B 无分叉（该快照 warmstart 与摩擦本就一致），盒臂在 100–101 步分叉。
+- 产物：`runs/v3/isolation5_c4_r1/`、`runs/v3/isolation5_r3_01h0v0/`、
+  `runs/v3/isolation5_r3_05h1v1/`（result.json + qpos_*.npy）。

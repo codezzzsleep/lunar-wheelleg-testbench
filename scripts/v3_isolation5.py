@@ -62,7 +62,9 @@ def full_snapshot(env, restore_info):
         'qpos_sha256': sha_bytes(qpos), 'qvel_sha256': sha_bytes(qvel),
         'ctrl_sha256': sha_bytes(ctrl), 'xfrc_sha256': sha_bytes(xfrc),
         'warmstart_sha256': sha_bytes(warm),
+        'warmstart': [round(float(x), 8) for x in warm],
         'friction_sha256': sha_bytes(fr),
+        'friction': [round(float(x), 6) for x in fr],
         'soil_prev_force_sha256': sha_bytes(soil_concat),
         'full_sha256': digest,
         'data_time': round(float(d.time), 6), 'env_t': round(float(env.t), 6),
@@ -88,12 +90,15 @@ def representation(env):
             'note': 'mesh geom 在 MuJoCo 里按凸包参与接触；凹扫描件不等价于凹网格接触。'}
 
 
-def run_arm(spec, st, proto, mode):
+def run_arm(spec, st, proto, mode, zero_warmstart=False):
     env = v3_core.make_env(spec, proto)
     cap = {}
 
     def hook(e, info):
+        if zero_warmstart:
+            e.data.qacc_warmstart[:] = 0.0
         cap['after_restore'] = full_snapshot(e, info)
+        cap['after_restore']['warmstart_zeroed'] = bool(zero_warmstart)
 
     r = v3_core.run_action(env, st['snapshot'], 'L2', st['visible'], mode=mode,
                            seed=0, record=True, pre_step_hook=hook)
@@ -123,6 +128,8 @@ def main():
     ap.add_argument('--out', default='runs/v3/isolation5')
     ap.add_argument('--action', default='L2')
     ap.add_argument('--repeat', type=int, default=1)
+    ap.add_argument('--c4', action='store_true',
+                    help='C4 受控对照：同真值同模式，只切 warmstart 清零/保留')
     a = ap.parse_args()
     proto = json.loads((ROOT / 'plans/v3_protocol.json').read_text())
     sd = ROOT / a.state
@@ -140,18 +147,28 @@ def main():
     if not coarse.get('ok'):
         raise SystemExit(f'粗盒构建失败：{coarse.get("error")}')
 
-    arms = {
-        'A_truth_mesh_same_scene': (truth, 'same_scene'),
-        'B_truth_mesh_project': (truth, 'project'),
-        'C_truth_fine_project': (v3_core.spec_with_geometry(truth, truth_coll), 'project'),
-        'D_truth_coarse_project': (v3_core.spec_with_geometry(
-            truth, out / 'coll_truth_ds2'), 'project'),
-        'E_tparent_fine_project': (v3_core.spec_with_geometry(
-            truth, sd / 'tparent' / 'coll'), 'project'),
-    }
+    if a.c4:
+        arms = {
+            'A_ws_keep': (truth, 'same_scene', False),
+            'A_ws_zero': (truth, 'same_scene', True),
+            'B_ws_keep': (truth, 'project', False),
+            'B_ws_zero': (truth, 'project', True),
+        }
+    else:
+        arms = {
+            'A_truth_mesh_same_scene': (truth, 'same_scene', False),
+            'B_truth_mesh_project': (truth, 'project', False),
+            'C_truth_fine_project': (v3_core.spec_with_geometry(truth, truth_coll),
+                                     'project', False),
+            'D_truth_coarse_project': (v3_core.spec_with_geometry(
+                truth, out / 'coll_truth_ds2'), 'project', False),
+            'E_tparent_fine_project': (v3_core.spec_with_geometry(
+                truth, sd / 'tparent' / 'coll'), 'project', False),
+        }
     res, trajs, reps, repeats = {}, {}, {}, {}
-    for name, (spec, mode) in arms.items():
-        rr = [run_arm(spec, st, proto, mode) for _ in range(a.repeat)]
+    for name, (spec, mode, zero_ws) in arms.items():
+        rr = [run_arm(spec, st, proto, mode, zero_warmstart=zero_ws)
+              for _ in range(a.repeat)]
         r, t, rep = rr[0]
         res[name] = r
         trajs[name] = t
@@ -174,8 +191,12 @@ def main():
                           'outcome_b': res[names[j]]['outcome']})
 
     # C1：A/B 恢复后状态对比（同真值，只差恢复模式）
-    sa = res['A_truth_mesh_same_scene']['after_restore']
-    sb = res['B_truth_mesh_project']['after_restore']
+    if a.c4:
+        sa = res['A_ws_keep']['after_restore']
+        sb = res['B_ws_keep']['after_restore']
+    else:
+        sa = res['A_truth_mesh_same_scene']['after_restore']
+        sb = res['B_truth_mesh_project']['after_restore']
     restore_cmp = {k: (sa.get(k) == sb.get(k))
                    for k in ('qpos_sha256', 'qvel_sha256', 'ctrl_sha256',
                              'xfrc_sha256', 'warmstart_sha256', 'friction_sha256',
@@ -184,7 +205,8 @@ def main():
     restore_cmp['both_sampled_after_restore'] = bool(sa and sb)
 
     payload = {
-        'schema': 'v3-isolation5/v2', 'repeat': a.repeat,
+        'schema': 'v3-isolation5/v2', 'set': 'c4' if a.c4 else 'five',
+        'repeat': a.repeat,
         'repeats': repeats,
         'state': a.state, 'action': a.action,
         'arms': res, 'pairs': pairs,

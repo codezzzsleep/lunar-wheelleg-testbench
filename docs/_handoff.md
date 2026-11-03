@@ -59,6 +59,10 @@
 - 运行目录：`runs/v3/basic_cycle/{rigid_r1, nominal_r1, nominal_FL_r1,
   nominal_RR_r1, nominal_RL_r1}`，每个含 result.json、frames.npz、record/、
   run_manifest.json、effective_config.json、status.json。
+- **B 的限制（未过 G3 的部分）**：目前只用 `reset(seed=0)` 一个初态；
+  SPEC B6 要求的“三个真实不同轻微初态 + 实际 qpos/qvel 哈希”尚未做。
+- 过程说明：B 实现阶段做了多轮代码修正（目标裁剪、持续接触阈值），
+  属于实现修正而非参数扫描；下一轮起按 B6 在每次试验前写“假设—只改什么—看哪个信号”。
 
 ## 尚未完成
 

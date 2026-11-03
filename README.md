@@ -9,6 +9,10 @@ worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。�
 
 ## 当前状态（唯一入口）
 
+**2026-11-03 最新交付**：`dist/minimal/index.html`（最小可复现交付页，单文件）、
+`docs/G6_DELIVERY.md`（交付页 Markdown）。状态矩阵：A/B/F 通过、C 部分、D 未通过、
+E 无正例；证据索引见 `docs/EVIDENCE_INDEX.md`，能力边界见 `docs/BOUNDARY.md`。
+
 **`docs/CURRENT_STATUS.md` 是本项目唯一的当前状态文档**，其他 `docs/*.md` 一律视为归档，
 保留过程与更正记录，不再逐份更新。
 

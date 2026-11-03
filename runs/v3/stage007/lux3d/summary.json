@@ -1,0 +1,101 @@
+{
+  "schema": "stage7-lux3d-batch/v1",
+  "input": {
+    "scene_image": "runs/v3/stage007/render1/scene_1536.png",
+    "target_image": "runs/v3/stage007/render1/target_1536.png",
+    "source_rock": "moon_rock_05",
+    "scale": 1.74419,
+    "yaw_deg": 90.0,
+    "layout": "stage7 narrow passage, walls y=+/-0.55, rock 0.30 m"
+  },
+  "tasks": [
+    {
+      "task_id": 4632564,
+      "sample": "s1c",
+      "mode": "single_image",
+      "glb_sha256": "9bf975219b2998b76273f31843eb129dd2aedb9b22559e89814a4677621edb61",
+      "zip_sha256": "b673bf8eff58d8b3a66354b45e94a020c3d6f86b7e0d81830743e836ffa6b093",
+      "zip_bytes": 45987669,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    },
+    {
+      "task_id": 4632603,
+      "sample": "s2",
+      "mode": "single_image",
+      "glb_sha256": "407c1f700191754cdb8a55a4be86c672ec5f75dd4bad0cdb419efd5bf58516a8",
+      "zip_sha256": "697dd6f2cc5e27729c745f1cdb49c06e48dd1027d7770c94c3738d12eba6dadc",
+      "zip_bytes": 49668781,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    },
+    {
+      "task_id": 4632618,
+      "sample": "s3",
+      "mode": "single_image",
+      "glb_sha256": "8e5c112b3ed84559c7751b7d77b39bbca6d8514d806c9eeac70d4bb227fd2a81",
+      "zip_sha256": "a32906cc2faaa5259e32133a5eb30871eb5b4cf749b5d801cfcfa5c7ba55fa87",
+      "zip_bytes": 46584247,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    },
+    {
+      "task_id": 4632621,
+      "sample": "s4",
+      "mode": "single_image",
+      "glb_sha256": "51c541bcbf53e558ace8cf3fdfdda2d03fcf15b8b61d485d984d6b05d31b1d4b",
+      "zip_sha256": "47b58c3008f5217f8b690327522040a081265b3a6ae0ff2ef3fa2574c3df7378",
+      "zip_bytes": 78936367,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    },
+    {
+      "task_id": 4632624,
+      "sample": "s5",
+      "mode": "single_image",
+      "glb_sha256": "f7a91ff6d6359a3614f3062c49fef5b1e3a0d3b5c28ef30dbf2a65dbdb94d63a",
+      "zip_sha256": "268622f0743cd11aa57ac25d3396e9bfc51bec7f9b238dfc45cce470c087ebe6",
+      "zip_bytes": 40083747,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    },
+    {
+      "task_id": 4632627,
+      "sample": "s6",
+      "mode": "single_image",
+      "glb_sha256": "083447c5023f7b1604decc6918c5759b2769de96ac865a998a912ea8d87365be",
+      "zip_sha256": "f05d18878fe11f1f9bcc3c8f89969f4fd51a67620f2bf200f6ec14145259d206",
+      "zip_bytes": 48875888,
+      "face_count": 30000,
+      "image_sha256": [
+        "355f61177a2217006da20035d0deec214ca0d4100ee1865fb0b0bfa1d77997a6"
+      ]
+    }
+  ],
+  "budget": {
+    "per_task_upper_credits": 20,
+    "successful_tasks": 6,
+    "failed_reservations": [
+      "s1: AHOLO_API_KEY missing",
+      "s1b: AHOLO_API_KEY missing"
+    ],
+    "held_credits_upper": 160,
+    "remaining_credits_upper": 340
+  },
+  "timing": {
+    "api_submit_to_download_observed": "~2-5 min per task (wall clock); the batch ledger does not store per-task timestamps",
+    "physics_rehearsal": "pending FULL/OBS stage",
+    "api_seconds_per_task": null
+  },
+  "assets_location": "GLB/zip stay on the sandbox under runs/v3/stage007/lux3d/generation/task_*/ (not committed)"
+}

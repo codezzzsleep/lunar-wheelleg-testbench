@@ -91,3 +91,5 @@
 | `runs/v3/stage006/matrix_030_obs` | stage6-matrix/v1 | 通过 | OBS hold-raised BODY 28.58 s; chosen=D1 |
 | `runs/v3/stage006/fix` | stage6-fix/v1 | 通过 | common end 2.6 m; BODY ref 30.06 s / OBS 30.16 s, 0 chassis contacts, 1503/1508 control steps |
 | `runs/v3/stage006/replay_fix` | mp4 | — | stance vs BODY, 30.07 s, raise frame @10 s, lowered @28 s, sha256 f7c8a5d9... |
+| `runs/v3/stage007/render1` | stage7-render/v1 | — | textured scene/target 1536px from frozen layout |
+| `runs/v3/stage007/lux3d` | stage7-lux3d-batch/v1 | 通过 | 6 real G1-Turbo candidates, GLB shas recorded, GLBs on sandbox |

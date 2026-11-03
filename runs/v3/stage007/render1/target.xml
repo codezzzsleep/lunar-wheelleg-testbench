@@ -1,0 +1,21 @@
+<mujoco>
+  <compiler meshdir="/workspace/lunar-lab/assets/v3/rocks/moon_rock_05/h1" texturedir="/workspace/lunar-lab/assets/v3/rocks/moon_rock_05"/>
+  <visual><global offwidth="1536" offheight="1536"/></visual>
+  <asset>
+    <mesh name="rockmesh" file="body_vis.obj" scale="1.74419 1.74419 1.74419"/>
+    <texture name="rocktex" type="2d" file="texture.png"/>
+    <material name="rockmat" texture="rocktex" rgba="1 1 1 1"/>
+    <texture name="checker" type="2d" builtin="checker" rgb1="0.72 0.72 0.70" rgb2="0.62 0.62 0.60"
+             width="512" height="512"/>
+    <material name="floormat" texture="checker" texrepeat="8 8" rgba="1 1 1 1"/>
+  </asset>
+  <worldbody>
+    <light pos="0 0 3" dir="0 0 -1" diffuse="0.9 0.9 0.9"/>
+    <light pos="2 -2 2" dir="-1 1 -0.5" diffuse="0.35 0.35 0.35"/>
+    <geom name="floor" type="plane" size="6 6 0.1" material="floormat"/>
+    
+    <body name="rock" pos="1.0 0.0 0.0" euler="0 0 90.0">
+      <geom type="mesh" mesh="rockmesh" material="rockmat"/>
+    </body>
+  </worldbody>
+</mujoco>

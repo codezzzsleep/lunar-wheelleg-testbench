@@ -1,0 +1,191 @@
+{
+  "schema": "v3-climb-front2/v1",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.05,
+    "face_x": 0.95
+  },
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0089,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.013676120904443558,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.0205,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 12.239999999999828,
+      "steps": 25,
+      "load_n": 9.453,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 4.284,
+      "frac": 0.0573,
+      "tilt_max_deg": 1.174,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "margin_m": 0.012744043689832854,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2004,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 21.619999999999628,
+      "steps": 22,
+      "load_n": 8.355,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 2.859,
+      "frac": 0.0383,
+      "tilt_max_deg": 1.222,
+      "ok": false
+    },
+    {
+      "phase": "preload_front",
+      "fr_load_n": 10.223,
+      "fl_load_n": 4.148,
+      "fr_frac": 0.1368,
+      "fl_frac": 0.0555,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 10.703,
+      "fl_load_n": 3.762,
+      "fr_frac": 0.1432,
+      "fl_frac": 0.0504,
+      "tilt_max_deg": 1.307,
+      "ok": true
+    },
+    {
+      "phase": "advance_body",
+      "x": 1.1104,
+      "x_target": 1.11,
+      "ok": true
+    },
+    {
+      "phase": "RR_shift",
+      "margin_m": -1.0,
+      "ok": false
+    },
+    {
+      "phase": "RR_lift",
+      "wheel_center_z": 0.1623,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "RR_advance",
+      "wheel_x": 1.0201,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "RR_lower",
+      "contact_at_t": 36.4400000000001,
+      "steps": 32,
+      "load_n": 7.443,
+      "ok": true
+    },
+    {
+      "phase": "RR_hold",
+      "load_n": 4.213,
+      "frac": 0.0564,
+      "tilt_max_deg": 2.188,
+      "ok": true
+    },
+    {
+      "phase": "RL_shift",
+      "margin_m": -0.028308860819259044,
+      "ok": false
+    },
+    {
+      "phase": "RL_lift",
+      "wheel_center_z": 0.1115,
+      "target_z": 0.161,
+      "ok": false
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": false,
+    "preload_front": true,
+    "hold_both": true,
+    "advance_body": true,
+    "RR_shift": false,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RR_hold": true,
+    "RL_shift": false,
+    "RL_lift": false
+  },
+  "terminated": true,
+  "errors": [
+    {
+      "phase": "RL_lift",
+      "reason": "tilt>15deg",
+      "tilt": 15.08
+    }
+  ],
+  "all_ok": false,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/climb/rear_attempt_r2/record/index.json",
+    "trajectory_sha256": "7fc5c8f7fb58b54e8b006fd247d478faeeb67c3894526cc9c7366b68ee57ad38",
+    "frame_count": 1986,
+    "record_hz": 50.0,
+    "duration_s": 39.70000000000061,
+    "n_chunks": 8,
+    "contacts_n": 15330
+  }
+}

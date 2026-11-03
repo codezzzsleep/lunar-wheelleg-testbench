@@ -163,6 +163,16 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
   让三条支撑腿的裕度和载荷先稳定，再抬 RL。
 - 默认路径（不带 `--rear`）仍是里程碑 2 的短台面两前轮流程，已复跑通过 13/13。
 
+## D1-3 第二轮（前轴侧向预压，`--rear`，仍未通过）
+
+- 改动：两条前轮上台后，先做**侧向预压**（机身 +y 平移 10 mm），再身体前移、后轮搭台。
+- 结果（rigid，沙箱）：`preload_front` 通过、`hold_both` 通过（FL 载荷升到 ≥5%）、
+  `advance_body` 通过、RR 搭台通过；RL 的 shift 仍失败，RL lift 倾角 15.08° 终止。
+- 判断：**不要再调这一个结构**。最后一条腿抬起时，三条支撑腿都在 5 cm 台上、
+  支撑多边形太窄；方向应改为改变场景/顺序（后轮用 2.5 cm 二级台阶或后坡坡道），
+  而不是继续加增益。
+- 产物：`runs/v3/climb/rear_attempt_r2/`（status=partial）。
+
 # 当前状态（唯一入口）
 
 > 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `091b4104216279974b424d2ec81270817048bc6e4db4fdcdcd4f6d3f93fe3130`　生成时点 `2026-11-03T15:19:20+0800`

@@ -1,0 +1,16 @@
+{
+  "schema": "v3-run-status/v1",
+  "run_id": "rear_attempt_r2",
+  "status": "partial",
+  "all_ok": false,
+  "cycles_completed": null,
+  "terminated": true,
+  "errors": [
+    {
+      "phase": "RL_lift",
+      "reason": "tilt>15deg",
+      "tilt": 15.08
+    }
+  ],
+  "finished_at": "2026-11-03T18:08:18+0800"
+}

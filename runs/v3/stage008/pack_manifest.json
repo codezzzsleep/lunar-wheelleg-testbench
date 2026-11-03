@@ -1,0 +1,46 @@
+{
+  "schema": "stage8-pack-manifest/v1",
+  "runnable": {
+    "file": "stage008_runnable.tar.gz",
+    "bytes": 10943014,
+    "sha256": "ec77a38f3e907cdc2e8fd3b726fea2cd9a68e02cf6a8971c85926f1ea2185890",
+    "contents": [
+      "run_offline.py",
+      "scripts/",
+      "configs/",
+      "plans/",
+      "vendor/.../go2w",
+      "data/coll",
+      "data/record/BODY_CLEARANCE",
+      "data/scene_occ.npz",
+      "data/formal_final.json"
+    ],
+    "validation": {
+      "where": "fresh directory /tmp/pack_test on the new sandbox",
+      "sim": "base_z 0.3841 -> 0.4429 (+5.88 cm), chassis 0.2775 -> 0.3362, 150 steps, not terminated",
+      "replay": "91 frames, 3.03 s MP4 written from the cached record",
+      "network": "none; no API, no keys"
+    }
+  },
+  "demo": {
+    "file": "stage008_demo.tar.gz",
+    "bytes": 4668881,
+    "sha256": "e587cf3017f4712c985278317ccd3f2ff8cf0f70af173add4b7569c2105be86e",
+    "contents": [
+      "reference_body_vs_stance.mp4",
+      "textured_scene.png",
+      "textured_target.png",
+      "formal_final.json",
+      "README.md"
+    ]
+  },
+  "persistent_remote": {
+    "branch": "archive/stage008",
+    "commit": "b7b8140e75fdd1c2b6621e41ebdda125097df540",
+    "url": "https://cnb.cool/ycyc755/lunar-lab-r1"
+  },
+  "notes": [
+    "packs are not committed to main; they live in the host workspace and on the archive branch",
+    "large originals from the first archive commit fa66c604 remain unchanged"
+  ]
+}

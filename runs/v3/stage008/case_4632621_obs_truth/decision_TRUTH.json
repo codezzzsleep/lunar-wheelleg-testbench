@@ -1,0 +1,120 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "stage8_obs",
+  "arm": "obs",
+  "decided_at": "2026-11-04T05:57:47+0800",
+  "state_hash": "e620b637a73a0aa72e48e7410bacd075",
+  "visible": {
+    "x_front": 0.83,
+    "W_vis": 0.28,
+    "H_vis": 0.3
+  },
+  "matrix_sha256": "60fa74a8adac2ee3171c0da120eeba694b707567582247d2af8d0ee326b5ab86",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 1,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 1
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "D1": 60.0,
+      "D2": 7.46,
+      "L1": 60.0,
+      "L2": 60.0,
+      "CLIMB": 60.0,
+      "BODY_CLEARANCE": 114.22
+    },
+    "chosen": "D2",
+    "safe_set": [
+      "D2",
+      "BODY_CLEARANCE"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "truth": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 38.88,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.84,
+          "t_end": 7.84,
+          "final_x": 3.338
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.44,
+          "final_x": 0.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.46,
+          "t_end": 7.46,
+          "final_x": 3.606
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.24,
+          "final_x": 0.907
+        },
+        "L2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.0,
+          "final_x": 1.069
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 114.22,
+          "t_end": 114.22,
+          "final_x": 2.6094
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.000000000000002,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "fusion": "/workspace/lunar-lab/runs/v3/stage008/fusion/task_4632621",
+  "plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 1.495,
+    "end_x": 2.6,
+    "stop_tilt_deg": 12.0,
+    "plan_id": "c5d227f104e349a5",
+    "far_edge_source": "complete_geometry_reference"
+  },
+  "decision_sha": "90ace692351812bb8cce886439a2d002"
+}

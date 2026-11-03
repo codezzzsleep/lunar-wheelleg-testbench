@@ -98,3 +98,5 @@
 | `runs/v3/stage007/stage007_pack.tar.gz` | pack | — | reference replay + textured stills + candidate table + README |
 | `runs/v3/stage007/retrieval.json` | stage7-retrieval/v1 | — | 6/6 GLB sha verified, 48/48 action records verified, 12/12 arm coll; local-only, gitignored |
 | `runs/v3/stage007/cand_small/widths.json` | stage7-widths/v1 | — | wheel-band widths 0.240-0.288 m (full) vs ~0.28 m gap |
+| `runs/v3/stage008/formal_final.json` | stage8-formal-final/v1 | 通过 | 7 cases FULL/OBS; decision diff 5/7; FULL truth fail 0, OBS truth fail 5 |
+| `runs/v3/stage008/pack_manifest.json` | stage8-pack-manifest/v1 | 通过 | runnable+demo packs, sha256, fresh-dir validation, archive branch b7b8140 |

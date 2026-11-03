@@ -157,6 +157,29 @@
 - 接线修正中：OBS 臂的真值执行必须用完整几何场景，而不是 OBS 自己的 V 场景；正在重跑
   `case_*_obs_truth`，完成后再给最终 FULL/OBS 决策与结局差异表。
 - 早期 `stage7_candidates` 仅作几何适配诊断，不作正式比较。
+## STAGE008 正式单案例结果（2026-11-04）
+
+正式链：重建观测（固定 S0/相机，标 reconstructed）→ 共享 V（60,996 体素，sha ed44fbe6…）
+→ 应用 GLB 节点变换并复用 v3_fuse：FULL=V∪(P∩U)、OBS_ONLY=V → 同一 S0/动作集/2.6 m 终点/
+120 s → 决策先落盘 → **完整几何场景独立真值执行**。
+
+| 案例 | FULL 决策/真值 | OBS 决策/真值 |
+| --- | --- | --- |
+| 参考（诊断父先验） | BODY pass 112.8 s | D2 physical_failure 5.9 s |
+| 4632564 | BODY pass 76.96 s | D2 physical_failure 40 s |
+| 4632603 | BODY pass 113.32 s | D2 physical_failure 5.84 s |
+| 4632618 | BODY pass 113.2 s | D2 physical_failure 40 s |
+| 4632621 | D2 pass 11.26 s | D2 pass 11.26 s |
+| 4632624 | D2 pass 7.18 s | D2 pass 7.18 s |
+| 4632627 | BODY pass 30.32 s | D2 physical_failure 40 s |
+
+- 决策差异 **5/7**；FULL 真值执行 **0 失败**，OBS 真值执行 **5 失败**（其 D2 在完整几何上过不去）。
+- BODY 在 12/12 正式预演臂中 pass、0 次机身接触；OBS 预演里 D2 都显示 7.46 s 通过，但在完整几何
+  真值上失败——这是“完整几何改变决策”的真实证据，也是 OBS 只看到前缘的代价。
+- 注意：参考诊断 BODY 112.8 s 与旧 layout2 30.06 s 不同，原因是正式链的 V 壳层 + 融合栅格使
+  接触更“毛”，正对照仍通过；该差异已记录，不归因 Lux3D。
+- 交付：可运行包 `stage008_runnable.tar.gz`（sha 见 pack_manifest，sim/replay 在新目录实测）、
+  展示包 `stage008_demo.tar.gz`；均推送到 `archive/stage008`（commit b7b8140）。
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

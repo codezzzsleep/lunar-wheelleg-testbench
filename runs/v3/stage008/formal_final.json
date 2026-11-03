@@ -1,0 +1,393 @@
+{
+  "schema": "stage8-formal-final/v1",
+  "rows": [
+    {
+      "case": "case_4632564_full",
+      "arm": "full",
+      "chosen": "BODY_CLEARANCE",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 76.96,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 76.96
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632564_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "physical_failure",
+        "t_end": 40.0,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632603_full",
+      "arm": "full",
+      "chosen": "BODY_CLEARANCE",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 113.32,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 113.32
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632603_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "physical_failure",
+        "t_end": 5.84,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632618_full",
+      "arm": "full",
+      "chosen": "BODY_CLEARANCE",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 113.2,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 113.2
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632618_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "physical_failure",
+        "t_end": 40.0,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632621_full",
+      "arm": "full",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 30.08,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "pass",
+        "t_end": 11.26
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632621_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "pass",
+        "t_end": 11.26,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632624_full",
+      "arm": "full",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 113.7,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "pass",
+        "t_end": 7.18
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632624_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "pass",
+        "t_end": 7.18,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632627_full",
+      "arm": "full",
+      "chosen": "BODY_CLEARANCE",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 30.32,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 30.32
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_4632627_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "physical_failure",
+        "t_end": 40.0,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_ref_full",
+      "arm": "full",
+      "chosen": "BODY_CLEARANCE",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 112.8,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 112.8
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    {
+      "case": "case_ref_obs_truth",
+      "arm": "obs",
+      "chosen": "D2",
+      "body_rehearsal": {
+        "success": true,
+        "outcome": "pass",
+        "cost_s": 114.22,
+        "chassis_contacts": 0
+      },
+      "truth_exec": {
+        "action": "D2",
+        "outcome": "physical_failure",
+        "t_end": 5.9,
+        "chassis_contacts": null,
+        "safe_pass": null,
+        "reached": null
+      },
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 1,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    }
+  ],
+  "decision_diff": 5,
+  "truth_fail_obs": 5,
+  "truth_fail_full": 0
+}

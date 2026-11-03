@@ -1,0 +1,124 @@
+{
+  "schema": "stage6-fix/v1",
+  "common_end_x": 2.6,
+  "budget_s": 120.0,
+  "stability": "tilt <= 10 deg at recover, no termination",
+  "plans": {
+    "full": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 1.495,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "plan_id": "c5d227f104e349a5",
+      "far_edge_source": "truth_far_edge_known"
+    },
+    "obs": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "plan_id": "861beea42332ed6d",
+      "far_edge_source": "far_edge_unknown_hold"
+    }
+  },
+  "full": {
+    "reached": true,
+    "chassis_contacts": 0,
+    "tipped_or_stuck": false,
+    "stable_exit": true,
+    "safe_pass": true,
+    "failed_phase": null,
+    "final_x": 2.6097,
+    "cost": 30.06,
+    "t_end": 30.06,
+    "phase_times": {
+      "settle": [
+        0.02,
+        0.3
+      ],
+      "raise": [
+        0.32,
+        2.3
+      ],
+      "drive_to_lower": [
+        2.32,
+        17.08
+      ],
+      "lower": [
+        17.1,
+        19.08
+      ],
+      "drive_to_end": [
+        19.1,
+        29.76
+      ],
+      "recover": [
+        29.78,
+        30.06
+      ]
+    },
+    "n_control_steps": 1503,
+    "plan_id": "c5d227f104e349a5",
+    "lower_at_x": 1.495,
+    "end_x": 2.6
+  },
+  "obs": {
+    "reached": true,
+    "chassis_contacts": 0,
+    "tipped_or_stuck": false,
+    "stable_exit": true,
+    "safe_pass": true,
+    "failed_phase": null,
+    "final_x": 2.609,
+    "cost": 30.16,
+    "t_end": 30.16,
+    "phase_times": {
+      "settle": [
+        0.02,
+        0.3
+      ],
+      "raise": [
+        0.32,
+        2.3
+      ],
+      "drive_to_lower": [
+        2.32,
+        26.28
+      ],
+      "lower": [
+        26.3,
+        28.28
+      ],
+      "drive_to_end": [
+        28.3,
+        29.86
+      ],
+      "recover": [
+        29.88,
+        30.16
+      ]
+    },
+    "n_control_steps": 1508,
+    "plan_id": "861beea42332ed6d",
+    "lower_at_x": 2.45,
+    "end_x": 2.6
+  },
+  "recheck_wheels": {
+    "R2": {
+      "max_x": null,
+      "chassis_contacts": null,
+      "reached_end": false,
+      "reusable": false
+    },
+    "D1": {
+      "max_x": null,
+      "chassis_contacts": null,
+      "reached_end": false,
+      "reusable": false
+    }
+  }
+}

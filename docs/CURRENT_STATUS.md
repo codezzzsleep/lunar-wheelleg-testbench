@@ -130,6 +130,19 @@
   BODY 物理 120.022 s × 12 臂。
 - 表述：项目总体收益仍 NOT_ESTABLISHED；FULL 一律写“完整几何参考（后缘来自真值）”。
 
+## STAGE008 恢复与保全（2026-11-04）
+
+- 新沙箱 `cnb-b5t-1k6hgejmv-001` 接管：scripts/configs/plans/docs、assets/v3、vendor（go2w）、
+  stage005-007 运行数据齐全；Python 2.5.4 numpy / 3.17.0 mujoco / 5.2.0 trimesh / 1.18.1 scipy；
+  参考 BODY 复跑 30.06 s / OBS 30.16 s，与旧记录逐项一致。
+- 逐分块校验：50 个记录索引中 48 个通过（候选 6×2×4 动作全部数组/接触 SHA 匹配）；12/12
+  碰撞 manifest 通过（parts 齐全、n_boxes 一致）。缺失的是旧 `stage6/fix` 两条参考轨迹的
+  数组分块与接触文件（旧沙箱释放前未取回）——新复跑已生成新 run（`runs/v3/stage008/ref_repro`）
+  并校验通过；旧索引保留 missing 标记。
+- 原始资产归档：cnb 远端独立分支 `archive/stage008`（commit `fa66c604`），含 6 个原始 GLB、
+  候选资产、参考轨迹与清单；main 分支不含大包。
+- 定位更正：`stage7_candidates` 的结果只作“原始候选几何适配诊断”，它不是正式 FULL/OBS：
+  未使用真实共享 V、OBS 只是生成模型前 10 cm 截断、没有独立真值执行。正式链见下一步。
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

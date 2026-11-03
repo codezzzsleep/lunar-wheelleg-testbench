@@ -1,0 +1,38 @@
+{
+  "schema": "stage8-verification/v1",
+  "indexes": 2,
+  "collisions": 1,
+  "failures": 0,
+  "indexes_ok": 2,
+  "collisions_ok": 1,
+  "details": {
+    "indexes": [
+      {
+        "index": "runs/v3/stage008/ref_repro/record_full/index.json",
+        "schema": "v3-trajectory/v2",
+        "frames": 1503,
+        "contacts_n": 11718,
+        "ok": true,
+        "errors": []
+      },
+      {
+        "index": "runs/v3/stage008/ref_repro/record_obs/index.json",
+        "schema": "v3-trajectory/v2",
+        "frames": 1508,
+        "contacts_n": 11515,
+        "ok": true,
+        "errors": []
+      }
+    ],
+    "collisions": [
+      {
+        "manifest": "runs/v3/stage008/ref_repro/scene/coll/manifest.json",
+        "n_boxes": 812,
+        "parts": 812,
+        "parts_sha256_aggregate": "c2312acf3c6cd3b9b4fe4a8a7f42c3ff4d269cda5c66fb15ba15c6e0cfb316d3",
+        "ok": true,
+        "errors": []
+      }
+    ]
+  }
+}

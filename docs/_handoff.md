@@ -277,3 +277,9 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 - 目前停在 `RR_hold`：RR lower 在 3 步内触发 5.04 N，但 0.6 s 稳定窗口里又掉到 0；
   还没走到 RL push。下一步把 RR 落地改成**持续载荷闭环**（顶面 ≥5% W 维持 0.2 s
   才停，掉载继续小幅下压），再跑 RL push / hold_all / descend。
+
+### 口径更正
+
+此前把 `RL_shift` 写成“结构性无解”**不准确**；应记为**当前支撑转移策略未完成**。
+`shift()` 已改为移动后稳定窗口重测、按最终状态判定（见上一节），后续不再用
+“结构无解”下结论，除非两条实现路径都按有限尝试规则失败。

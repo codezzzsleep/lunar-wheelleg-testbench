@@ -1,0 +1,45 @@
+{
+  "action": "D1",
+  "ok": true,
+  "success": true,
+  "abort": false,
+  "reason": "success",
+  "outcome": "pass",
+  "final_x": 3.898,
+  "displacement_x": 3.901,
+  "t_start": 0.6,
+  "t_end": 6.68,
+  "cost": 6.08,
+  "max_tilt": 1.03,
+  "contact": "wheel",
+  "triggered": true,
+  "state_mode": "same_scene",
+  "wall_s": 1.091,
+  "steps": 304,
+  "n_actions": 304,
+  "action_fingerprint": "c31f3a1f38a4d5b9",
+  "initial_full_hash": "5209d5ce825e570e63178d78eed787e68e4647b76947a0f11d29bb577e186d80",
+  "phases": [
+    {
+      "t": 2.16,
+      "phase": "shift"
+    },
+    {
+      "t": 4.06,
+      "phase": "return"
+    }
+  ],
+  "arm": "OBS_ONLY",
+  "run_id": "moon_rock_01_h0v1_OBS_ONLY_1793689794",
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/decision/record/OBS_ONLY/index.json",
+    "trajectory_sha256": "1f7b82ecf729a7f0fda66e828975dd2fe74cea05c6140743abf7f39ffc8bf89e",
+    "frame_count": 304,
+    "record_hz": 50.0,
+    "duration_s": 6.059999999999945,
+    "n_chunks": 2,
+    "contacts_n": 1120
+  },
+  "record_hz": 50.0,
+  "trajectory_frames": 304
+}

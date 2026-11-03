@@ -1,0 +1,451 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "moon_rock_01_h0v0",
+  "arm": "FULL",
+  "decided_at": "2026-11-03T15:10:13+0800",
+  "state_hash": "6881bbab062f784bbc2e7797bbbee80b",
+  "visible": {
+    "n_pixels": 17333,
+    "x_front": 1.1769501781996408,
+    "y_center": 0.0982733512003201,
+    "W_vis": 0.17493864312894392,
+    "H_vis": 0.1195466283682976
+  },
+  "matrix_sha256": "1ac7c7d7e6048258955fb6e73196e99b42dc68014a52608280b4736c0634a26d",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 6,
+    "n_valid": 6,
+    "n_unique_geometries": 6,
+    "threshold": 4,
+    "votes": {
+      "R1": 6,
+      "R2": 6,
+      "L1": 6,
+      "L2": 6,
+      "S1": 6,
+      "D1": 6,
+      "D2": 6
+    },
+    "mean_cost_s": {
+      "R1": 5.8067,
+      "R2": 7.71,
+      "L1": 6.2533,
+      "L2": 6.0433,
+      "S1": 6.26,
+      "D1": 6.02,
+      "D2": 6.4333
+    },
+    "chosen": "R1",
+    "safe_set": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "A1": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.800000000000001,
+          "t_end": 6.4,
+          "final_x": 3.921
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.720000000000001,
+          "t_end": 8.32,
+          "final_x": 3.646
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.24,
+          "t_end": 6.84,
+          "final_x": 3.919
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.04,
+          "t_end": 6.64,
+          "final_x": 3.916
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.899
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.4,
+          "t_end": 7.0,
+          "final_x": 3.915
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "A2": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.840000000000001,
+          "t_end": 6.44,
+          "final_x": 3.92
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.700000000000001,
+          "t_end": 8.3,
+          "final_x": 3.645
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.32,
+          "t_end": 6.92,
+          "final_x": 3.913
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.04,
+          "t_end": 6.64,
+          "final_x": 3.911
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.903
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.48,
+          "t_end": 7.08,
+          "final_x": 3.918
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "B1": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.800000000000001,
+          "t_end": 6.4,
+          "final_x": 3.922
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.68,
+          "t_end": 8.28,
+          "final_x": 3.639
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.24,
+          "t_end": 6.84,
+          "final_x": 3.919
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.04,
+          "t_end": 6.64,
+          "final_x": 3.919
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.9
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.5200000000000005,
+          "t_end": 7.12,
+          "final_x": 3.924
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "B2": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.800000000000001,
+          "t_end": 6.4,
+          "final_x": 3.923
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.720000000000001,
+          "t_end": 8.32,
+          "final_x": 3.646
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.24,
+          "t_end": 6.84,
+          "final_x": 3.919
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.04,
+          "t_end": 6.64,
+          "final_x": 3.916
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.9
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.4,
+          "t_end": 7.0,
+          "final_x": 3.916
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "C1": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.800000000000001,
+          "t_end": 6.4,
+          "final_x": 3.919
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.720000000000001,
+          "t_end": 8.32,
+          "final_x": 3.646
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.24,
+          "t_end": 6.84,
+          "final_x": 3.919
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0600000000000005,
+          "t_end": 6.66,
+          "final_x": 3.91
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.902
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.4,
+          "t_end": 7.0,
+          "final_x": 3.914
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "C2": {
+        "R1": {
+          "success": true,
+          "reason": "success",
+          "cost": 5.800000000000001,
+          "t_end": 6.4,
+          "final_x": 3.922
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.720000000000001,
+          "t_end": 8.32,
+          "final_x": 3.646
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.24,
+          "t_end": 6.84,
+          "final_x": 3.919
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.04,
+          "t_end": 6.64,
+          "final_x": 3.916
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.260000000000001,
+          "t_end": 6.86,
+          "final_x": 3.9
+        },
+        "D1": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.0200000000000005,
+          "t_end": 6.62,
+          "final_x": 3.889
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.4,
+          "t_end": 7.0,
+          "final_x": 3.916
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "applicability": {
+    "R1": [
+      true,
+      null
+    ],
+    "R2": [
+      true,
+      null
+    ],
+    "L1": [
+      true,
+      null
+    ],
+    "L2": [
+      true,
+      null
+    ],
+    "S1": [
+      true,
+      null
+    ],
+    "D1": [
+      true,
+      null
+    ],
+    "D2": [
+      true,
+      null
+    ]
+  },
+  "geometry": {
+    "A1": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/A1/coll",
+    "A2": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/A2/coll",
+    "B1": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/B1/coll",
+    "B2": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/B2/coll",
+    "C1": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/C1/coll",
+    "C2": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/candidates/C2/coll"
+  },
+  "geometry_ids": {
+    "A1": "30c3def6725c0f542c405f3e6d24a24190e64d1be346f2b848c6f982a2ced525",
+    "A2": "9196cd39b961aae9024b4e282f9ded2796921f333ba0653156214e40eca1440e",
+    "B1": "6622da65463e6e0981ba64e31584878960a3828272ff742934e1e457b96f4bb7",
+    "B2": "7053741de7ccff135429e8217f4d5851a9fa620a221e7eed28dec463e537daec",
+    "C1": "992ede4c29360a46a6735e14ad7d74b981645995f6024969fbea25f1cc3e539c",
+    "C2": "add0828511a9441259acee0d6274f7a8400b9f211053091c8a358fe2bfb4d8b3"
+  },
+  "rejected_geometry": [],
+  "decision_sha": "1ea7dbd3e971c2878acbac7bbed35b52"
+}

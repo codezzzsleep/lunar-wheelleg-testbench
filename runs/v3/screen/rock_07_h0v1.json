@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "rock_07_h0v1",
+  "rock_id": "rock_07",
+  "level": 0,
+  "view": 1,
+  "height_m": 0.1204,
+  "hr_ratio": 1.4,
+  "truth_plan": {
+    "chosen": "D1",
+    "costs": {
+      "R1": 60.0,
+      "R2": 8.74,
+      "L1": 7.58,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 6.92,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 1,
+      "L2": 0,
+      "S1": 0,
+      "D1": 1,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "D1",
+    "costs": {
+      "R1": 60.0,
+      "R2": 8.98,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 7.46,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 1,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "D1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.667,
+    "t_end": 7.52
+  },
+  "obs_exec": {
+    "action": "D1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.667,
+    "t_end": 7.52
+  },
+  "traverse": {
+    "R1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 8.74
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.58
+    },
+    "L2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "D1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.92
+    },
+    "D2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": false,
+  "outcome_differs": false,
+  "hidden_sensitive": false,
+  "selected": false,
+  "layer": "none",
+  "pipeline_errors": [],
+  "wall_s": 32.65,
+  "screened_at": "2026-11-03T11:31:49+0800",
+  "truth_boxes": 887,
+  "obs_boxes": 1220
+}

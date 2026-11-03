@@ -221,7 +221,13 @@ def main():
         res['report_sha256'] = side.read_text().strip()
     docs = ROOT / 'docs'
     docs.mkdir(parents=True, exist_ok=True)
-    (docs / 'CURRENT_STATUS.md').write_text(build_status(res))
+    # 会话交接块（SPEC RECOVERY-002 §3.1）：由 docs/_handoff.md 手工维护，
+    # 生成 CURRENT_STATUS 时置顶拼接；它是交接说明，不是第二份状态文档。
+    handoff = docs / '_handoff.md'
+    status = build_status(res)
+    if handoff.is_file():
+        status = handoff.read_text().rstrip() + '\n\n' + status
+    (docs / 'CURRENT_STATUS.md').write_text(status)
     (docs / 'V3_FINAL_REPORT.md').write_text(build_report(res))
     (docs / 'V3_RESULTS_TABLE.md').write_text(build_table(res))
     print(json.dumps({'report_sha256': res.get('report_sha256'),

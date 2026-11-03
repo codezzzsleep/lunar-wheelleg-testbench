@@ -26,3 +26,19 @@ runs/unseen/generation/by_task/**/*.zip
 # 共同状态里的观测栅格（可由 acquisition.json 记录的实验条件重建，不入库）
 runs/**/common_states/**/observation/*.npy
 runs/**/common_states/**/observation/*.png
+
+# v3 大产物（2026-11-03 回传）：原始扫描岩石、Lux3D 缓存、逐状态观测/候选/几何
+# 只留在本机与沙箱，不进普通 Git 历史；证据表需要的 decision/metrics/screen 仍入库。
+assets/v3/rocks/
+runs/v3/generation/cache/
+runs/v3/states/*/candidates/
+runs/v3/states/*/observation/
+runs/v3/states/*/fusion/
+runs/v3/states/*/obs_only/
+runs/v3/states/*/tparent/
+runs/v3/states/*/vtrace/
+runs/v3/states/*/screen_exec/
+runs/v3/selftest_command/
+runs/v3/selftest_fidelity/
+runs/v3/selftest_collision/
+

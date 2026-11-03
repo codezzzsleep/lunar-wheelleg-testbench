@@ -1,0 +1,147 @@
+{
+  "schema": "v3-state/v1",
+  "state_id": "moon_rock_06_h2v1",
+  "rock_id": "moon_rock_06",
+  "level": 2,
+  "view": 1,
+  "height_m": 0.2236,
+  "hr_ratio": 2.6,
+  "extents_m": [
+    0.348297,
+    0.372985,
+    0.2236
+  ],
+  "state_hash": "1db594799efa9678be2b9dc6afb2a151",
+  "scene_signature": "c1893eea0054e05b60873c5e87af396c",
+  "env_t": 0.6000000000000002,
+  "visible": {
+    "n_pixels": 49225,
+    "x_front": 1.1935035944533257,
+    "y_center": 0.15804724529793315,
+    "W_vis": 0.38269111211765733,
+    "H_vis": 0.2200119541573423
+  },
+  "camera_world_pos": [
+    0.41671434978110194,
+    0.02000620196586308,
+    0.3847235649672504
+  ],
+  "camera_R": [
+    [
+      4.7727637580985416e-05,
+      0.4213470169554998,
+      -0.9068994922397835
+    ],
+    [
+      -0.9999999980820313,
+      5.590673643196542e-05,
+      -2.6652899326684576e-05
+    ],
+    [
+      3.947167125845086e-05,
+      0.9068994917724573,
+      0.4213470188156652
+    ]
+  ],
+  "planning_fovy_deg": 70.0,
+  "gen": {
+    "fovy_deg": 70.0,
+    "width": 3707,
+    "height": 2780,
+    "native_object_height_px": 541.0
+  },
+  "inputs": {
+    "schema": "v3-inputs/v1",
+    "upload_px": 1536,
+    "native_object_height_px": 541.0,
+    "variants": {
+      "A1": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/A1.png",
+        "sha256": "6e4b9f3dad7e7d3406cbd9a13db3fbb33f173f76fbdfbef668e75ec45e216697",
+        "class": "A",
+        "repeat_idx": 0,
+        "crop_box": [
+          1127,
+          662,
+          2038,
+          1573
+        ],
+        "uploaded_object_height_px": 912.2
+      },
+      "A2": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/A2.png",
+        "sha256": "6e4b9f3dad7e7d3406cbd9a13db3fbb33f173f76fbdfbef668e75ec45e216697",
+        "class": "A",
+        "repeat_idx": 1,
+        "crop_box": [
+          1127,
+          662,
+          2038,
+          1573
+        ],
+        "uploaded_object_height_px": 912.2
+      },
+      "B1": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/B1.png",
+        "sha256": "2062d568503e6ea44b8b48af61f0bf6abf48f0173dd36d6fc71d241abef43768",
+        "class": "B",
+        "repeat_idx": 0,
+        "crop_box": [
+          1127,
+          662,
+          2038,
+          1573
+        ],
+        "uploaded_object_height_px": 912.2
+      },
+      "B2": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/B2.png",
+        "sha256": "2062d568503e6ea44b8b48af61f0bf6abf48f0173dd36d6fc71d241abef43768",
+        "class": "B",
+        "repeat_idx": 1,
+        "crop_box": [
+          1127,
+          662,
+          2038,
+          1573
+        ],
+        "uploaded_object_height_px": 912.2
+      },
+      "C1": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/C1.png",
+        "sha256": "e265b2bb31a65856dbeb32497418938ba38898f15060ed1441a1d974366ed204",
+        "class": "C",
+        "repeat_idx": 0,
+        "crop_box": [
+          747,
+          282,
+          2417,
+          1952
+        ],
+        "uploaded_object_height_px": 497.6
+      },
+      "C2": {
+        "path": "runs/v3/states/moon_rock_06_h2v1/observation/gen/variants/C2.png",
+        "sha256": "e265b2bb31a65856dbeb32497418938ba38898f15060ed1441a1d974366ed204",
+        "class": "C",
+        "repeat_idx": 1,
+        "crop_box": [
+          747,
+          282,
+          2417,
+          1952
+        ],
+        "uploaded_object_height_px": 497.6
+      }
+    },
+    "native_ok": true,
+    "upload_ok": false
+  },
+  "truth": {
+    "body_world": "truth/body_world.stl",
+    "manifest": "truth/manifest.json"
+  },
+  "scene_spec_sha256": "f4a7d7c63efc40f68bdf2dce02c4f2cf3034c1fa292fe359245d19b9a2e36361",
+  "observation_sha256": "570190ebc3c0c6a71432b6b00244225a6ea3bd67ae7492dbd957dde5875d0f53",
+  "created": "2026-11-03T11:19:54+0800"
+}

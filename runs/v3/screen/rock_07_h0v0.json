@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "rock_07_h0v0",
+  "rock_id": "rock_07",
+  "level": 0,
+  "view": 0,
+  "height_m": 0.1204,
+  "hr_ratio": 1.4,
+  "truth_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 6.14,
+      "R2": 7.92,
+      "L1": 7.02,
+      "L2": 6.26,
+      "S1": 60.0,
+      "D1": 6.22,
+      "D2": 7.02
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "D1",
+    "costs": {
+      "R1": 6.68,
+      "R2": 8.08,
+      "L1": 6.94,
+      "L2": 6.54,
+      "S1": 60.0,
+      "D1": 6.36,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 1,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.896,
+    "t_end": 6.74
+  },
+  "obs_exec": {
+    "action": "D1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.864,
+    "t_end": 6.82
+  },
+  "traverse": {
+    "R1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.140000000000001
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.92
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.0200000000000005
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.260000000000001
+    },
+    "D1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.220000000000001
+    },
+    "D2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.0200000000000005
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": true,
+  "outcome_differs": false,
+  "hidden_sensitive": true,
+  "selected": true,
+  "layer": "action_only",
+  "pipeline_errors": [],
+  "wall_s": 36.7,
+  "screened_at": "2026-11-03T11:31:46+0800",
+  "truth_boxes": 621,
+  "obs_boxes": 1092
+}

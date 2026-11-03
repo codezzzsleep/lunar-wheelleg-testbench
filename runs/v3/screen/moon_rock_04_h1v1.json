@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "moon_rock_04_h1v1",
+  "rock_id": "moon_rock_04",
+  "level": 1,
+  "view": 1,
+  "height_m": 0.172,
+  "hr_ratio": 2.0,
+  "truth_plan": {
+    "chosen": "L2",
+    "costs": {
+      "R1": 60.0,
+      "R2": 9.06,
+      "L1": 60.0,
+      "L2": 6.8,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "L2",
+    "costs": {
+      "R1": 60.0,
+      "R2": 9.26,
+      "L1": 60.0,
+      "L2": 6.6,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "L2",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.901,
+    "t_end": 7.4
+  },
+  "obs_exec": {
+    "action": "L2",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.901,
+    "t_end": 7.4
+  },
+  "traverse": {
+    "R1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 9.06
+    },
+    "L1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.800000000000001
+    },
+    "D1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "D2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": false,
+  "outcome_differs": false,
+  "hidden_sensitive": false,
+  "selected": false,
+  "layer": "none",
+  "pipeline_errors": [],
+  "wall_s": 48.66,
+  "screened_at": "2026-11-03T11:29:36+0800",
+  "truth_boxes": 1393,
+  "obs_boxes": 1123
+}

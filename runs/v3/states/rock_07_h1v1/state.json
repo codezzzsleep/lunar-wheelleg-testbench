@@ -1,0 +1,147 @@
+{
+  "schema": "v3-state/v1",
+  "state_id": "rock_07_h1v1",
+  "rock_id": "rock_07",
+  "level": 1,
+  "view": 1,
+  "height_m": 0.172,
+  "hr_ratio": 2.0,
+  "extents_m": [
+    0.202113,
+    0.383298,
+    0.172
+  ],
+  "state_hash": "1db594799efa9678be2b9dc6afb2a151",
+  "scene_signature": "48f56e9908417aef9d0cb5f79e99f2b6",
+  "env_t": 0.6000000000000002,
+  "visible": {
+    "n_pixels": 43310,
+    "x_front": 1.2412680341665583,
+    "y_center": 0.1514220602160892,
+    "W_vis": 0.3896762080263178,
+    "H_vis": 0.17230433308360601
+  },
+  "camera_world_pos": [
+    0.41671434978110194,
+    0.02000620196586308,
+    0.3847235649672504
+  ],
+  "camera_R": [
+    [
+      4.7727637580985416e-05,
+      0.4213470169554998,
+      -0.9068994922397835
+    ],
+    [
+      -0.9999999980820313,
+      5.590673643196542e-05,
+      -2.6652899326684576e-05
+    ],
+    [
+      3.947167125845086e-05,
+      0.9068994917724573,
+      0.4213470188156652
+    ]
+  ],
+  "planning_fovy_deg": 70.0,
+  "gen": {
+    "fovy_deg": 70.0,
+    "width": 5008,
+    "height": 3756,
+    "native_object_height_px": 520.0
+  },
+  "inputs": {
+    "schema": "v3-inputs/v1",
+    "upload_px": 1536,
+    "native_object_height_px": 520.0,
+    "variants": {
+      "A1": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/A1.png",
+        "sha256": "21d071f53454332d3a060e64b504c1e4cb588870c7644e105754997eff5916da",
+        "class": "A",
+        "repeat_idx": 0,
+        "crop_box": [
+          1464,
+          884,
+          2789,
+          2209
+        ],
+        "uploaded_object_height_px": 602.8
+      },
+      "A2": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/A2.png",
+        "sha256": "21d071f53454332d3a060e64b504c1e4cb588870c7644e105754997eff5916da",
+        "class": "A",
+        "repeat_idx": 1,
+        "crop_box": [
+          1464,
+          884,
+          2789,
+          2209
+        ],
+        "uploaded_object_height_px": 602.8
+      },
+      "B1": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/B1.png",
+        "sha256": "f25cc119a21b3759951e53ee9743fa2a1b611946ad52964b8ce2b9d359bd420a",
+        "class": "B",
+        "repeat_idx": 0,
+        "crop_box": [
+          1464,
+          884,
+          2789,
+          2209
+        ],
+        "uploaded_object_height_px": 602.8
+      },
+      "B2": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/B2.png",
+        "sha256": "f25cc119a21b3759951e53ee9743fa2a1b611946ad52964b8ce2b9d359bd420a",
+        "class": "B",
+        "repeat_idx": 1,
+        "crop_box": [
+          1464,
+          884,
+          2789,
+          2209
+        ],
+        "uploaded_object_height_px": 602.8
+      },
+      "C1": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/C1.png",
+        "sha256": "ce0ec7d032e50e6b4b4777553bafc35453701ad43305d23ecdf197ab76484ca9",
+        "class": "C",
+        "repeat_idx": 0,
+        "crop_box": [
+          912,
+          332,
+          3341,
+          2761
+        ],
+        "uploaded_object_height_px": 328.8
+      },
+      "C2": {
+        "path": "runs/v3/states/rock_07_h1v1/observation/gen/variants/C2.png",
+        "sha256": "ce0ec7d032e50e6b4b4777553bafc35453701ad43305d23ecdf197ab76484ca9",
+        "class": "C",
+        "repeat_idx": 1,
+        "crop_box": [
+          912,
+          332,
+          3341,
+          2761
+        ],
+        "uploaded_object_height_px": 328.8
+      }
+    },
+    "native_ok": true,
+    "upload_ok": false
+  },
+  "truth": {
+    "body_world": "truth/body_world.stl",
+    "manifest": "truth/manifest.json"
+  },
+  "scene_spec_sha256": "d3da99fc143f60cc8b876f8278bb2045608ea9b379008f474ff60b3531dd27d7",
+  "observation_sha256": "ac8c0004d7fea96ce40fab8803dcf146c9d538ae68e2ef074a62267f209912e1",
+  "created": "2026-11-03T11:20:04+0800"
+}

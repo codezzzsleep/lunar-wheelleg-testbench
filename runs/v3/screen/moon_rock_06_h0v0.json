@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "moon_rock_06_h0v0",
+  "rock_id": "moon_rock_06",
+  "level": 0,
+  "view": 0,
+  "height_m": 0.1204,
+  "hr_ratio": 1.4,
+  "truth_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 5.82,
+      "R2": 7.7,
+      "L1": 6.16,
+      "L2": 6.02,
+      "S1": 60.0,
+      "D1": 6.02,
+      "D2": 6.26
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 5.9,
+      "R2": 7.74,
+      "L1": 6.42,
+      "L2": 6.02,
+      "S1": 60.0,
+      "D1": 6.0,
+      "D2": 6.4
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.922,
+    "t_end": 6.42
+  },
+  "obs_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.922,
+    "t_end": 6.42
+  },
+  "traverse": {
+    "R1": {
+      "success": true,
+      "reason": "success",
+      "cost": 5.82
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.700000000000001
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.16
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.0200000000000005
+    },
+    "D1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.0200000000000005
+    },
+    "D2": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.260000000000001
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": false,
+  "outcome_differs": false,
+  "hidden_sensitive": false,
+  "selected": false,
+  "layer": "none",
+  "pipeline_errors": [],
+  "wall_s": 34.18,
+  "screened_at": "2026-11-03T11:30:38+0800",
+  "truth_boxes": 778,
+  "obs_boxes": 801
+}

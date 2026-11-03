@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "rock_07_h1v0",
+  "rock_id": "rock_07",
+  "level": 1,
+  "view": 0,
+  "height_m": 0.172,
+  "hr_ratio": 2.0,
+  "truth_plan": {
+    "chosen": "D2",
+    "costs": {
+      "R1": 7.52,
+      "R2": 10.22,
+      "L1": 7.32,
+      "L2": 7.58,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 7.14
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 6.72,
+      "R2": 10.22,
+      "L1": 60.0,
+      "L2": 7.44,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 8.66
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 0,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "D2",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.91,
+    "t_end": 7.74
+  },
+  "obs_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.686,
+    "t_end": 8.12
+  },
+  "traverse": {
+    "R1": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.52
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 10.22
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.32
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.58
+    },
+    "D1": {
+      "success": false,
+      "reason": "out_of_bounds",
+      "cost": 60.0
+    },
+    "D2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.140000000000001
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": true,
+  "outcome_differs": false,
+  "hidden_sensitive": true,
+  "selected": true,
+  "layer": "action_only",
+  "pipeline_errors": [],
+  "wall_s": 43.04,
+  "screened_at": "2026-11-03T11:32:01+0800",
+  "truth_boxes": 1278,
+  "obs_boxes": 2118
+}

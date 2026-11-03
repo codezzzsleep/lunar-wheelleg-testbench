@@ -1,0 +1,49 @@
+{
+  "action": "L2",
+  "ok": true,
+  "success": true,
+  "abort": false,
+  "reason": "success",
+  "outcome": "pass",
+  "final_x": 3.882,
+  "displacement_x": 3.886,
+  "t_start": 0.6,
+  "t_end": 7.4,
+  "cost": 6.800000000000001,
+  "max_tilt": 0.86,
+  "contact": "wheel",
+  "triggered": true,
+  "state_mode": "same_scene",
+  "wall_s": 1.484,
+  "steps": 340,
+  "n_actions": 340,
+  "action_fingerprint": "e77864201a174dee",
+  "initial_full_hash": "5209d5ce825e570e63178d78eed787e68e4647b76947a0f11d29bb577e186d80",
+  "phases": [
+    {
+      "t": 2.32,
+      "phase": "lift"
+    },
+    {
+      "t": 3.04,
+      "phase": "recover"
+    },
+    {
+      "t": 3.4,
+      "phase": "done"
+    }
+  ],
+  "arm": "FULL",
+  "run_id": "moon_rock_02_h2v1_FULL_1793689991",
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/decision/record/FULL/index.json",
+    "trajectory_sha256": "051946fd00e233f2cf219002f114c25d8c15b5383d4e0a0cb629b77c5b8300a3",
+    "frame_count": 340,
+    "record_hz": 50.0,
+    "duration_s": 6.77999999999993,
+    "n_chunks": 2,
+    "contacts_n": 1245
+  },
+  "record_hz": 50.0,
+  "trajectory_frames": 340
+}

@@ -34,6 +34,11 @@ FRONT = {'FR', 'FL'}
 REAR = {'RR', 'RL'}
 KP, KD = 150.0, 5.0
 WHEEL_KP, WHEEL_MAX, LEG_MAX = 1.2, 15.0, 45.0
+# 轮命令三种状态（SPEC RECOVERY-002 A2）：速度闭环 / 明确制动 / 零力矩滑行。
+# 旧调用（wheel_brake / wheel_omega_rad_s）语义不变；COAST 必须显式指定，
+# 不得把 brake=0 且 omega=0 当自由滚动。
+WHEEL_MODES = ('velocity', 'brake', 'coast')
+BRAKE_GAIN = 6.0          # 与历史 brake_step 同增益，保持旧结果可比
 # 驾驶接口的物理常量与限幅（实测轮距/轮径在 __init__ 里再核对）
 DRIVE_TRACK_M = 0.2837            # 轮中心距（实测）
 DRIVE_WHEEL_R = 0.08599           # 轮半径（实测）
@@ -844,7 +849,7 @@ class WheelLegEnv:
         buf = np.zeros(mujoco.mj_stateSize(m, flags), dtype=np.float64)
         mujoco.mj_getState(m, d, buf, flags)
         rec = {
-            'schema': 'env-state/v1',
+            'schema': 'env-state/v2',
             'mujoco_version': mujoco.__version__,
             'nq': int(m.nq), 'nv': int(m.nv), 'na': int(m.na),
             'robot_signature': self.robot_signature(),
@@ -867,6 +872,26 @@ class WheelLegEnv:
             'n_control': int(self.n_control),
             'nav_target_y': float(getattr(self, 'nav_target_y', self.channel_center)),
             't_last_zero_cmd': float(getattr(self, '_t_last_zero_cmd', 0.0)),
+            # A5 控制状态合同：恢复后下一控制步必须与保存时同构。
+            'command': {
+                'joint_targets': (None if getattr(self, '_last_joint_targets', None) is None
+                                  else np.asarray(self._last_joint_targets,
+                                                  dtype=np.float64).tolist()),
+                'joint_vel_targets': (None if getattr(self, '_last_joint_vel_targets',
+                                                      None) is None
+                                      else np.asarray(self._last_joint_vel_targets,
+                                                      dtype=np.float64).tolist()),
+                'wheel_omega': (None if getattr(self, '_last_wheel_omega', None) is None
+                                else np.asarray(self._last_wheel_omega,
+                                                dtype=np.float64).tolist()),
+                'wheel_brake': (None if getattr(self, '_last_wheel_brake', None) is None
+                                else np.asarray(self._last_wheel_brake,
+                                                dtype=np.float64).tolist()),
+                'wheel_modes': dict(getattr(self, '_last_wheel_modes', {}) or {}),
+                'terminated': bool(getattr(self, 'terminated', False)),
+                'truncated': bool(getattr(self, 'truncated', False)),
+                'last_termination': dict(getattr(self, 'last_termination', {}) or {}),
+            },
             'soil': ({'limits': {str(k): v for k, v in (self._soil_limits or {}).items()},
                       'prev_force': {str(k): np.asarray(v).tolist()
                                      for k, v in (self._soil_prev_force or {}).items()},
@@ -888,6 +913,8 @@ class WheelLegEnv:
                             dtype=np.float64).tobytes())
         if rec.get('soil'):
             h.update(json.dumps(rec['soil'], sort_keys=True).encode())
+        if rec.get('command') is not None:
+            h.update(json.dumps(rec['command'], sort_keys=True).encode())
         h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
                        rec['n_control'])).encode())
         rec['state_hash'] = h.hexdigest()[:32]
@@ -898,8 +925,9 @@ class WheelLegEnv:
         恢复 save_state() 的快照。strict=True 时维度/版本不符直接拒绝，
         不静默跳过。
         """
-        if rec.get('schema') != 'env-state/v1':
-            raise ValueError(f"快照 schema 不符：{rec.get('schema')}")
+        schema = rec.get('schema')
+        if schema not in ('env-state/v1', 'env-state/v2'):
+            raise ValueError(f"快照 schema 不符：{schema}")
         # B2：重算哈希并校验，损坏或缺失立即拒绝
         import hashlib as _h
         h = _h.sha256()
@@ -915,6 +943,8 @@ class WheelLegEnv:
                             dtype=np.float64).tobytes())
         if rec.get('soil'):
             h.update(json.dumps(rec['soil'], sort_keys=True).encode())
+        if rec.get('command') is not None:
+            h.update(json.dumps(rec['command'], sort_keys=True).encode())
         h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
                        rec.get('n_control', 0))).encode())
         calc = h.hexdigest()[:32]
@@ -970,6 +1000,7 @@ class WheelLegEnv:
         else:
             skipped = len(rec.get('geom_friction') or {})   # 跨场景一律不搬材质
         self._last_restore_info = {'mode': mode,
+                                   'state_schema': schema,
                                    'source_scene_sha': rec.get('scene_signature'),
                                    'target_scene_sha': self.scene_signature(),
                                    'collision_material_transferred': not cross,
@@ -977,6 +1008,24 @@ class WheelLegEnv:
                                    'ngeom_snapshot': len(rec.get('geom_friction') or {}),
                                    'ngeom_current': int(self.model.ngeom)}
         self.nav_target_y = float(rec.get('nav_target_y', self.channel_center))
+        # A5：恢复控制状态（v2 快照）；v1 快照无此字段，显式按空值处理。
+        cmd = rec.get('command') or {}
+        self._last_joint_targets = (None if cmd.get('joint_targets') is None
+                                    else np.asarray(cmd['joint_targets'],
+                                                    dtype=np.float64))
+        self._last_joint_vel_targets = (None if cmd.get('joint_vel_targets') is None
+                                        else np.asarray(cmd['joint_vel_targets'],
+                                                        dtype=np.float64))
+        self._last_wheel_omega = (None if cmd.get('wheel_omega') is None
+                                  else np.asarray(cmd['wheel_omega'],
+                                                  dtype=np.float64))
+        self._last_wheel_brake = (None if cmd.get('wheel_brake') is None
+                                  else np.asarray(cmd['wheel_brake'],
+                                                  dtype=np.float64))
+        self._last_wheel_modes = dict(cmd.get('wheel_modes') or {})
+        self.terminated = bool(cmd.get('terminated', False))
+        self.truncated = bool(cmd.get('truncated', False))
+        self.last_termination = dict(cmd.get('last_termination') or {})
         so = rec.get('soil')
         # 土壤参数/状态与场景几何无关：project 模式也必须恢复，否则预演用的
         # 土壤和真值执行不同（实测同一动作 project 通关、same_scene 倾覆）。
@@ -1034,7 +1083,7 @@ class WheelLegEnv:
 
         走统一物理推进入口：与 step() 相同的 substeps、土壤钩子、接触检测与计时。
         """
-        d, m = self.data, self.model
+        d = self.data
         v = float(np.clip(v_forward_mps, -self.DRIVE_V_MAX, self.DRIVE_V_MAX))
         w = float(np.clip(yaw_rate_rps, -self.DRIVE_W_MAX, self.DRIVE_W_MAX))
         B = self.DRIVE_TRACK
@@ -1044,33 +1093,26 @@ class WheelLegEnv:
         cap = max_wheel_rps if max_wheel_rps is not None else self.DRIVE_RPS_MAX
         targets = {'L': float(np.clip(vL / R, -cap, cap)),
                    'R': float(np.clip(vR / R, -cap, cap))}
-        # 驾驶/停稳走的是 wheel_rps 分支，不经过 _apply_controls 的坡升逻辑；
-        # 这里必须同样维护"最近一次零指令时刻"，否则从驾驶切到动作时
-        # ramp 会按全局 env.t 直接饱和 -> 满速接管 -> 翻车（实测 x≈0.73）。
+        # 驾驶/停稳必须同样维护"最近一次零指令时刻"，否则从驾驶切到动作时
+        # ramp 会按全局 env.t 饱和 -> 满速接管 -> 翻车（实测 x≈0.73）。
         if max(abs(targets['L']), abs(targets['R'])) < 1e-9:
             self._t_last_zero_cmd = self.t
-
-        # 直接给左右轮角速度目标（经 _apply_controls 的 wheel_rps 分支）。
-        # 不经过残差通道：ACT_SCALE 会把 a[2] 缩放成 0.6，导致"最小仍为 0.4 倍前进"，
-        # 无法表达真正的零速度；这里可以。
-        self._apply_controls(np.zeros(CTRL_DIM), drive=True, wheel_rps=targets)
-
-        # ---- 与 step() 相同的物理推进 ----
-        for _ in range(self.substeps):
-            self._soil_step()
-            mujoco.mj_step(m, d)
-            self.n_physics += 1
-        self.n_control += 1
-        self.t += self.substeps * self.dt
+        omega = np.zeros(4, dtype=np.float64)
+        for li, leg in enumerate(LEG):
+            omega[li] = targets['L'] if leg in ('FL', 'RL') else targets['R']
+        # 走 step_command 的同一物理循环：每物理子步 PD + 统一终止判定。
+        _ctrl, te, tr, info = self.step_command(
+            joint_targets_rad={leg: dict(STANCE) for leg in LEG},
+            wheel_omega_rad_s=omega, wheel_mode='velocity', return_info=True)
         for leg in LEG:
             e = self.J[f'{leg}_wheel_joint']
             self._wheel_rps_last[leg] = float(d.qvel[e['vadr']] * self._wheel_sign.get(
                 'L' if leg in ('FL', 'RL') else 'R', 1.0))
-        te, tr, info = self._check_termination()
         self.last_drive = {'v_target': v, 'yaw_rate': w,
                            'wheel_rps_target': dict(targets),
                            't': round(float(self.t), 4),
-                           'terminated': te, 'truncated': tr, 'reason': info.get('reason')}
+                           'terminated': te, 'truncated': tr,
+                           'reason': info.get('reason')}
         return self._obs(), 0.0, te, tr, info or {'reason': 'driving'}
 
     def calibrate_wheel_signs(self, v_test=0.12, seconds=0.4):
@@ -1093,95 +1135,141 @@ class WheelLegEnv:
                 'chosen_sign': best, 'positive_means_forward': rec[best] > 0}
 
     # ------------------------------------------------------------------ V1 命令合同
-    def apply_command(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
-                      wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None):
-        """统一关节命令：12 关节目标(rad, [4,3] 或 {leg: {hip,thigh,calf}}) + 4 轮。
+    @staticmethod
+    def _wheel_mode_of(li, wheel_omega_rad_s, wheel_brake, wheel_mode):
+        """单个轮的显式模式。wheel_mode=None 时保持旧调用语义（brake>omega>零速）。"""
+        if wheel_mode is not None:
+            if wheel_mode not in WHEEL_MODES:
+                raise ValueError(f'未知 wheel_mode={wheel_mode!r}，只允许 {WHEEL_MODES}')
+            return wheel_mode
+        if wheel_brake is not None and bool(np.asarray(wheel_brake).reshape(-1)[li]):
+            return 'brake'
+        return 'velocity'
 
-        单位与顺序：关节 rad（hi/thigh/calf 按 LEG 顺序），轮 rad/s，制动 0/1。
-        只写 data.ctrl，不碰 qpos/qvel（不得瞬移）。返回实际下发的 ctrl（含饱和）。
+    def _command_ctrl(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
+                      wheel_omega_rad_s=None, wheel_brake=None, wheel_mode=None,
+                      kp=None, kd=None):
+        """按当前 qpos/qvel 计算一个物理子步的 ctrl（A1：PD 每子步更新）。
+
+        只写 data.ctrl，不碰 qpos/qvel。返回实际下发 ctrl（含饱和）。
+        记录真实轮命令模式，供记录器/状态合同使用。
         """
-        import numpy as _np
-        d, m = self.data, self.model
+        d = self.data
         kp = float(KP if kp is None else kp)
         kd = float(KD if kd is None else kd)
-        ctrl = {}
+        ctrl, modes = {}, {}
+        jt_arr = None
+        jvt_arr = None
+        if joint_targets_rad is not None:
+            if isinstance(joint_targets_rad, dict):
+                jt_arr = np.asarray([[float(joint_targets_rad[leg][part])
+                                      for part in ('hip', 'thigh', 'calf')]
+                                     for leg in LEG], dtype=float)
+            else:
+                jt_arr = np.asarray(joint_targets_rad, dtype=float)
+            if jt_arr.shape != (4, 3):
+                raise ValueError(f'joint_targets_rad 维度应为 (4,3)，得到 {jt_arr.shape}')
+            if not np.isfinite(jt_arr).all():
+                raise ValueError('joint_targets_rad 含 NaN/Inf')
+        if joint_velocity_targets_rad_s is not None:
+            if isinstance(joint_velocity_targets_rad_s, dict):
+                jvt_arr = np.asarray([[float(joint_velocity_targets_rad_s[leg][part])
+                                       for part in ('hip', 'thigh', 'calf')]
+                                      for leg in LEG], dtype=float)
+            else:
+                jvt_arr = np.asarray(joint_velocity_targets_rad_s, dtype=float)
+            if jvt_arr.shape != (4, 3):
+                raise ValueError('joint_velocity_targets_rad_s 维度应为 (4,3)，'
+                                 f'得到 {jvt_arr.shape}')
+            if not np.isfinite(jvt_arr).all():
+                raise ValueError('joint_velocity_targets_rad_s 含 NaN/Inf')
+        if wheel_omega_rad_s is not None:
+            _wo = np.asarray(wheel_omega_rad_s, dtype=float).reshape(-1)
+            if _wo.size != 4 or not np.isfinite(_wo).all():
+                raise ValueError('wheel_omega_rad_s 应为 4 个有限值')
         for li, leg in enumerate(LEG):
             for ji, part in enumerate(('hip', 'thigh', 'calf')):
                 e = self.J[f'{leg}_{part}_joint']
-                if joint_targets_rad is None:
-                    tgt = STANCE[part]
-                elif isinstance(joint_targets_rad, dict):
-                    tgt = float(joint_targets_rad[leg][part])
-                else:
-                    tgt = float(_np.asarray(joint_targets_rad)[li, ji])
-                vff = 0.0
-                if joint_velocity_targets_rad_s is not None:
-                    if isinstance(joint_velocity_targets_rad_s, dict):
-                        vff = float(joint_velocity_targets_rad_s[leg][part])
-                    else:
-                        vff = float(_np.asarray(joint_velocity_targets_rad_s)[li, ji])
+                tgt = float(STANCE[part]) if jt_arr is None else float(jt_arr[li, ji])
+                vff = 0.0 if jvt_arr is None else float(jvt_arr[li, ji])
                 u = kp * (tgt - d.qpos[e['qadr']]) + kd * (vff - d.qvel[e['vadr']])
-                u = float(_np.clip(u, -LEG_MAX, LEG_MAX))
+                u = float(np.clip(u, -LEG_MAX, LEG_MAX))
                 d.ctrl[e['act']] = u
                 ctrl[f'{leg}_{part}'] = u
             e = self.J[f'{leg}_wheel_joint']
-            if wheel_brake is not None and bool(_np.asarray(wheel_brake).reshape(-1)[li]):
-                u = float(_np.clip(-6.0 * d.qvel[e['vadr']], -WHEEL_MAX, WHEEL_MAX))
-            elif wheel_omega_rad_s is not None:
-                want = float(_np.asarray(wheel_omega_rad_s).reshape(-1)[li])
-                u = float(_np.clip(WHEEL_KP * (want - d.qvel[e['vadr']]),
-                                   -WHEEL_MAX, WHEEL_MAX))
+            mode = self._wheel_mode_of(li, wheel_omega_rad_s, wheel_brake, wheel_mode)
+            if mode == 'coast':
+                u = 0.0                      # 零力矩；模型被动摩擦仍然生效
+            elif mode == 'brake':
+                u = float(np.clip(-BRAKE_GAIN * d.qvel[e['vadr']], -WHEEL_MAX, WHEEL_MAX))
             else:
-                u = float(_np.clip(WHEEL_KP * (0.0 - d.qvel[e['vadr']]),
-                                   -WHEEL_MAX, WHEEL_MAX))
+                want = (0.0 if wheel_omega_rad_s is None
+                        else float(np.asarray(wheel_omega_rad_s).reshape(-1)[li]))
+                u = float(np.clip(WHEEL_KP * (want - d.qvel[e['vadr']]),
+                                  -WHEEL_MAX, WHEEL_MAX))
             d.ctrl[e['act']] = u
             ctrl[f'{leg}_wheel'] = u
-        self._last_joint_targets = (None if joint_targets_rad is None else
-                                    _np.asarray([[joint_targets_rad[leg][part]
-                                                  for part in ('hip', 'thigh', 'calf')]
-                                                 for leg in LEG], dtype=float)
-                                    if isinstance(joint_targets_rad, dict)
-                                    else _np.asarray(joint_targets_rad, float))
-        self._last_joint_vel_targets = None
+            modes[leg] = mode
+        self._last_joint_targets = jt_arr
+        self._last_joint_vel_targets = jvt_arr
         self._last_wheel_omega = (None if wheel_omega_rad_s is None
-                                  else _np.asarray(wheel_omega_rad_s, float))
+                                  else np.asarray(wheel_omega_rad_s, dtype=float))
         self._last_wheel_brake = (None if wheel_brake is None
-                                  else _np.asarray(wheel_brake, float))
+                                  else np.asarray(wheel_brake, dtype=float))
+        self._last_wheel_modes = modes
         return ctrl
 
+    def apply_command(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
+                      wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None,
+                      wheel_mode=None):
+        """统一关节命令：只计算并写入一次 ctrl（保留旧 API）。
+
+        生产推进请用 step_command（每物理子步重算 PD、统一终止）。
+        """
+        return self._command_ctrl(joint_targets_rad, joint_velocity_targets_rad_s,
+                                  wheel_omega_rad_s, wheel_brake, wheel_mode, kp, kd)
+
     def step_command(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
-                     wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None):
-        """用统一命令推进一个控制步（与 step/step_drive 相同的物理子步与计时）。"""
-        ctrl = self.apply_command(joint_targets_rad, joint_velocity_targets_rad_s,
-                                  wheel_omega_rad_s, wheel_brake, kp=kp, kd=kd)
+                     wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None,
+                     wheel_mode=None, return_info=False):
+        """用统一命令推进一个控制步（A1：每物理子步更新 PD；A4：统一终止）。
+
+        目标在本控制步内锁定；每个物理子步用当前 qpos/qvel 重算 PD，饱和后写
+        data.ctrl，再走土壤钩子与 mj_step。任一子步触发终止（倾覆/越界/超时）后
+        立即结束本控制步，不执行剩余子步。
+        """
+        self.terminated = False
+        self.truncated = False
+        self.last_termination = {}
+        n_sub = 0
+        ctrl = {}
+        te = tr = False
+        info = {}
         for _ in range(self.substeps):
+            ctrl = self._command_ctrl(joint_targets_rad, joint_velocity_targets_rad_s,
+                                      wheel_omega_rad_s, wheel_brake, wheel_mode,
+                                      kp, kd)
             self._soil_step()
             mujoco.mj_step(self.model, self.data)
             self.n_physics += 1
+            n_sub += 1
+            te, tr, info = self._check_termination()
+            if te or tr:
+                break
         self.n_control += 1
-        self.t += self.substeps * self.dt
+        self.t += n_sub * self.dt
+        self.terminated, self.truncated = bool(te), bool(tr)
+        self.last_termination = dict(info or {})
+        if return_info:
+            return ctrl, self.terminated, self.truncated, self.last_termination
         return ctrl
 
     def brake_step(self, return_info=False):
-        """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""
-        for _ in range(self.substeps):
-            self._soil_step() if hasattr(self, '_soil_step') else None
-            for leg in LEG:
-                e = self.J[f'{leg}_wheel_joint']
-                self.data.ctrl[e['act']] = float(np.clip(
-                    -6.0 * self.data.qvel[e['vadr']],
-                    -WHEEL_MAX, WHEEL_MAX))
-            for leg in LEG:
-                for p_ in ('hip', 'thigh', 'calf'):
-                    e = self.J[f'{leg}_{p_}_joint']
-                    tgt = STANCE[p_ if p_ != 'hip' else 'hip']
-                    self.data.ctrl[e['act']] = float(np.clip(
-                        KP * (tgt - self.data.qpos[e['qadr']])
-                        - KD * self.data.qvel[e['vadr']], -LEG_MAX, LEG_MAX))
-            mujoco.mj_step(self.model, self.data)
-            self.n_physics += 1
-        self.t += self.substeps * self.dt
-        self.n_control += 1
+        """显式刹车一步：与 step_command 同一物理循环，轮为 BRAKE 模式。"""
+        out = self.step_command(
+            joint_targets_rad={leg: dict(STANCE) for leg in LEG},
+            wheel_mode='brake', return_info=True)
+        return out if return_info else None
 
     def _nav_state(self):
         """通道相对导航量：横向偏差（米，左正）与朝向误差（弧度）。"""

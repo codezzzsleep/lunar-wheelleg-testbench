@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "rock_07_h1v1",
+  "rock_id": "rock_07",
+  "level": 1,
+  "view": 1,
+  "height_m": 0.172,
+  "hr_ratio": 2.0,
+  "truth_plan": {
+    "chosen": "L2",
+    "costs": {
+      "R1": 60.0,
+      "R2": 12.06,
+      "L1": 60.0,
+      "L2": 7.32,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "D1",
+    "costs": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 8.38,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 1,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "L2",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.875,
+    "t_end": 7.92
+  },
+  "obs_exec": {
+    "action": "D1",
+    "outcome": "physical_failure",
+    "reason": "out_of_bounds",
+    "final_x": 1.705,
+    "t_end": 5.92
+  },
+  "traverse": {
+    "R1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 12.06
+    },
+    "L1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.32
+    },
+    "D1": {
+      "success": false,
+      "reason": "out_of_bounds",
+      "cost": 60.0
+    },
+    "D2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": true,
+  "outcome_differs": true,
+  "hidden_sensitive": true,
+  "selected": true,
+  "layer": "action_and_outcome",
+  "pipeline_errors": [],
+  "wall_s": 49.39,
+  "screened_at": "2026-11-03T11:32:08+0800",
+  "truth_boxes": 1851,
+  "obs_boxes": 2299
+}

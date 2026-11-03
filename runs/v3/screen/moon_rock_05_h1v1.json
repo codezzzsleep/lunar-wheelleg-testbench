@@ -1,0 +1,115 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "moon_rock_05_h1v1",
+  "rock_id": "moon_rock_05",
+  "level": 1,
+  "view": 1,
+  "height_m": 0.172,
+  "hr_ratio": 2.0,
+  "truth_plan": {
+    "chosen": "D1",
+    "costs": {
+      "R1": 60.0,
+      "R2": 8.44,
+      "L1": 7.32,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 6.94,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 1,
+      "L2": 0,
+      "S1": 0,
+      "D1": 1,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "L2",
+    "costs": {
+      "R1": 60.0,
+      "R2": 8.7,
+      "L1": 7.62,
+      "L2": 7.06,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "D1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.733,
+    "t_end": 7.54
+  },
+  "obs_exec": {
+    "action": "L2",
+    "outcome": "physical_failure",
+    "reason": "tipped",
+    "final_x": 2.234,
+    "t_end": 5.12
+  },
+  "traverse": {
+    "R1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 8.44
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.32
+    },
+    "L2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "S1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "D1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.94
+    },
+    "D2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": true,
+  "outcome_differs": true,
+  "hidden_sensitive": true,
+  "selected": true,
+  "layer": "action_and_outcome",
+  "pipeline_errors": [],
+  "wall_s": 36.28,
+  "screened_at": "2026-11-03T11:30:12+0800",
+  "truth_boxes": 933,
+  "obs_boxes": 1147
+}

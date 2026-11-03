@@ -1,0 +1,115 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "moon_rock_05_h0v0",
+  "rock_id": "moon_rock_05",
+  "level": 0,
+  "view": 0,
+  "height_m": 0.1204,
+  "hr_ratio": 1.4,
+  "truth_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 5.68,
+      "R2": 7.56,
+      "L1": 6.12,
+      "L2": 5.92,
+      "S1": 6.18,
+      "D1": 6.0,
+      "D2": 6.2
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 1,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "obs_plan": {
+    "chosen": "R1",
+    "costs": {
+      "R1": 5.8,
+      "R2": 7.6,
+      "L1": 6.22,
+      "L2": 6.02,
+      "S1": 6.2,
+      "D1": 5.94,
+      "D2": 6.38
+    },
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 1,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal"
+  },
+  "truth_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.913,
+    "t_end": 6.28
+  },
+  "obs_exec": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.913,
+    "t_end": 6.28
+  },
+  "traverse": {
+    "R1": {
+      "success": true,
+      "reason": "success",
+      "cost": 5.680000000000001
+    },
+    "R2": {
+      "success": true,
+      "reason": "success",
+      "cost": 7.5600000000000005
+    },
+    "L1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.12
+    },
+    "L2": {
+      "success": true,
+      "reason": "success",
+      "cost": 5.92
+    },
+    "S1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.180000000000001
+    },
+    "D1": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.0
+    },
+    "D2": {
+      "success": true,
+      "reason": "success",
+      "cost": 6.2
+    }
+  },
+  "complete_feasible": true,
+  "action_differs": false,
+  "outcome_differs": false,
+  "hidden_sensitive": false,
+  "selected": false,
+  "layer": "none",
+  "pipeline_errors": [],
+  "wall_s": 38.43,
+  "screened_at": "2026-11-03T11:30:04+0800",
+  "truth_boxes": 514,
+  "obs_boxes": 624
+}

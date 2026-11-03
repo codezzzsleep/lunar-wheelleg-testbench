@@ -1,0 +1,1209 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "protocol": "plans/v3_protocol.json",
+  "protocol_sha256": "1b066aab347e51309ca213d232885734cb5d1fb9bd8de294304d94d147428882",
+  "n": 84,
+  "states": [
+    "moon_rock_01_h0v0",
+    "moon_rock_01_h0v1",
+    "moon_rock_01_h2v0",
+    "moon_rock_02_h0v1",
+    "moon_rock_02_h2v0",
+    "moon_rock_02_h2v1",
+    "moon_rock_03_h1v0",
+    "moon_rock_03_h2v1",
+    "moon_rock_04_h0v1",
+    "moon_rock_04_h1v0",
+    "moon_rock_05_h1v0",
+    "moon_rock_05_h1v1",
+    "moon_rock_05_h2v0",
+    "moon_rock_05_h2v1"
+  ],
+  "variants": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "note": "A1 固定为首候选；每状态 6 个候选（A/B/C 各两次独立生成）",
+  "tasks": [
+    {
+      "id": "moon_rock_01_h0v0_A1",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/A1.png",
+      "image_sha256": "639e7694ad521da7556fccef9b0094c76e16318b4c5258f96c1be2fd1075257f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v0_A2",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/A2.png",
+      "image_sha256": "639e7694ad521da7556fccef9b0094c76e16318b4c5258f96c1be2fd1075257f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 2,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v0_B1",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/B1.png",
+      "image_sha256": "b8628ad76bd6bf9c40f2a21f25242c5bf1148c9d26ab58c44c81acfaa4a58952",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 3,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v0_B2",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/B2.png",
+      "image_sha256": "b8628ad76bd6bf9c40f2a21f25242c5bf1148c9d26ab58c44c81acfaa4a58952",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 4,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v0_C1",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/C1.png",
+      "image_sha256": "fad3dd2b27856eda3d060a88f406a28fc729307eb3b19c74b877ffe51c3cbf0d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 5,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v0_C2",
+      "state_id": "moon_rock_01_h0v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v0/observation/gen/variants/C2.png",
+      "image_sha256": "fad3dd2b27856eda3d060a88f406a28fc729307eb3b19c74b877ffe51c3cbf0d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 6,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_A1",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/A1.png",
+      "image_sha256": "f4f5c3b5498f248e0c3e8844e885dbf12e155eb8aa5e7bdbf6e542baa4b7ae83",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 7,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_A2",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/A2.png",
+      "image_sha256": "f4f5c3b5498f248e0c3e8844e885dbf12e155eb8aa5e7bdbf6e542baa4b7ae83",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 8,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_B1",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/B1.png",
+      "image_sha256": "34b182fc489008c9e04c9d9f940843dc307e7906ac45416a316c840e7b1a1c0c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 9,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_B2",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/B2.png",
+      "image_sha256": "34b182fc489008c9e04c9d9f940843dc307e7906ac45416a316c840e7b1a1c0c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 10,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_C1",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/C1.png",
+      "image_sha256": "95e2c6afb8196a5561804c0a0a5d5e324b9d6de5582cf61ad8bf29a0f5100dd7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 11,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h0v1_C2",
+      "state_id": "moon_rock_01_h0v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h0v1/observation/gen/variants/C2.png",
+      "image_sha256": "95e2c6afb8196a5561804c0a0a5d5e324b9d6de5582cf61ad8bf29a0f5100dd7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 12,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_A1",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/A1.png",
+      "image_sha256": "a79c546b2f4126ba76f89435f5b6b4166bdac5c7685a15c23458a3d8e1e88b64",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 13,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_A2",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/A2.png",
+      "image_sha256": "a79c546b2f4126ba76f89435f5b6b4166bdac5c7685a15c23458a3d8e1e88b64",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 14,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_B1",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/B1.png",
+      "image_sha256": "91d564cb6f70b616fb131b1b9aeee08d3cf30c86863acea337fa2a932e2da7f2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 15,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_B2",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/B2.png",
+      "image_sha256": "91d564cb6f70b616fb131b1b9aeee08d3cf30c86863acea337fa2a932e2da7f2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 16,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_C1",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/C1.png",
+      "image_sha256": "a2a23e291bca86d8e3325eab4f54b6014609844ea176895effd13d65dd410149",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 17,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_01_h2v0_C2",
+      "state_id": "moon_rock_01_h2v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_01_h2v0/observation/gen/variants/C2.png",
+      "image_sha256": "a2a23e291bca86d8e3325eab4f54b6014609844ea176895effd13d65dd410149",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 18,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_A1",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/A1.png",
+      "image_sha256": "c99bfa14b713a0db0a4ec11923948848fb103be332c0e4e8e18412ff17272568",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 19,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_A2",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/A2.png",
+      "image_sha256": "c99bfa14b713a0db0a4ec11923948848fb103be332c0e4e8e18412ff17272568",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 20,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_B1",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/B1.png",
+      "image_sha256": "6308c50d1fdda5b6d5ef7c0c0d2de670409ec6ba2b1e7bc1c60d0bc5fe03743c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 21,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_B2",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/B2.png",
+      "image_sha256": "6308c50d1fdda5b6d5ef7c0c0d2de670409ec6ba2b1e7bc1c60d0bc5fe03743c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 22,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_C1",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/C1.png",
+      "image_sha256": "b47b0d7bd4029af09b07f88066b12d7caca36fdc0c8674623bcc4bb83b742072",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 23,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h0v1_C2",
+      "state_id": "moon_rock_02_h0v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/C2.png",
+      "image_sha256": "b47b0d7bd4029af09b07f88066b12d7caca36fdc0c8674623bcc4bb83b742072",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 24,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_A1",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/A1.png",
+      "image_sha256": "6d01afacb6954b3f86415bd56553ea9d915fd2261633a1c3a564ec9f0552a117",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 25,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_A2",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/A2.png",
+      "image_sha256": "6d01afacb6954b3f86415bd56553ea9d915fd2261633a1c3a564ec9f0552a117",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 26,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_B1",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/B1.png",
+      "image_sha256": "defd6fc036df0efde0751e4a3415327f645f9339d96d01361a0682a1fcfe79f9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 27,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_B2",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/B2.png",
+      "image_sha256": "defd6fc036df0efde0751e4a3415327f645f9339d96d01361a0682a1fcfe79f9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 28,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_C1",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/C1.png",
+      "image_sha256": "a2b9cff10c68237d4d02a98be164e8192eaa959eacbd89dd6746961bfd8a3228",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 29,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v0_C2",
+      "state_id": "moon_rock_02_h2v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v0/observation/gen/variants/C2.png",
+      "image_sha256": "a2b9cff10c68237d4d02a98be164e8192eaa959eacbd89dd6746961bfd8a3228",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 30,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_A1",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/A1.png",
+      "image_sha256": "fe98c4a98460b4886844f21d5cd1b8133b40d85fbf93773fd68efafb2477d1f0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 31,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_A2",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/A2.png",
+      "image_sha256": "fe98c4a98460b4886844f21d5cd1b8133b40d85fbf93773fd68efafb2477d1f0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 32,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_B1",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/B1.png",
+      "image_sha256": "211bd5bf3b278052887a723ef91aa61afdb7fba33302ddf26ae3aeb512895846",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 33,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_B2",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/B2.png",
+      "image_sha256": "211bd5bf3b278052887a723ef91aa61afdb7fba33302ddf26ae3aeb512895846",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 34,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_C1",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/C1.png",
+      "image_sha256": "46e9fa6e1b4c4cd1a3fe41421a2c95882e3a1e7b79edd6d9260670cf6d65bc02",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 35,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_02_h2v1_C2",
+      "state_id": "moon_rock_02_h2v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_02_h2v1/observation/gen/variants/C2.png",
+      "image_sha256": "46e9fa6e1b4c4cd1a3fe41421a2c95882e3a1e7b79edd6d9260670cf6d65bc02",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 36,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_A1",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/A1.png",
+      "image_sha256": "e13a61bf67c24c67a471247c1d73f8e09f83efa754ce49ff45ecd3aabf9841ff",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 37,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_A2",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/A2.png",
+      "image_sha256": "e13a61bf67c24c67a471247c1d73f8e09f83efa754ce49ff45ecd3aabf9841ff",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 38,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_B1",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/B1.png",
+      "image_sha256": "47cde88947b9242122ef26a8e995a035fbcf6ba1ff5d3649d19c64a56a324ffd",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 39,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_B2",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/B2.png",
+      "image_sha256": "47cde88947b9242122ef26a8e995a035fbcf6ba1ff5d3649d19c64a56a324ffd",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 40,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_C1",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/C1.png",
+      "image_sha256": "96fbb2e11e4fc985cdabf698b25afcd3a42647971595ce25b25fc3b369bd7d2c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 41,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h1v0_C2",
+      "state_id": "moon_rock_03_h1v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h1v0/observation/gen/variants/C2.png",
+      "image_sha256": "96fbb2e11e4fc985cdabf698b25afcd3a42647971595ce25b25fc3b369bd7d2c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 42,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_A1",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/A1.png",
+      "image_sha256": "b64d3c008120f3885c810e27f0d4c51a18897581cc59b1e90892ab7fa6e476c9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 43,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_A2",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/A2.png",
+      "image_sha256": "b64d3c008120f3885c810e27f0d4c51a18897581cc59b1e90892ab7fa6e476c9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 44,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_B1",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/B1.png",
+      "image_sha256": "d05aeac1381366f2f2ba8351a1c4bce86493010b3c75c330c6f29c04a9b34fe9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 45,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_B2",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/B2.png",
+      "image_sha256": "d05aeac1381366f2f2ba8351a1c4bce86493010b3c75c330c6f29c04a9b34fe9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 46,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_C1",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/C1.png",
+      "image_sha256": "f16f3f11682e3fb663cd61e304b506ce4459e1a0d01e9a6b411cd056c43def33",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 47,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_03_h2v1_C2",
+      "state_id": "moon_rock_03_h2v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_03_h2v1/observation/gen/variants/C2.png",
+      "image_sha256": "f16f3f11682e3fb663cd61e304b506ce4459e1a0d01e9a6b411cd056c43def33",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 48,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_A1",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/A1.png",
+      "image_sha256": "18de3c07b77ce9768c07102c2ebb62c76b2a0323cfb9aafcfee14c47155f6b04",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 49,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_A2",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/A2.png",
+      "image_sha256": "18de3c07b77ce9768c07102c2ebb62c76b2a0323cfb9aafcfee14c47155f6b04",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 50,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_B1",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/B1.png",
+      "image_sha256": "b031419b624ee853231447f390dc717e0fbf0bad1d1fc9346ec2fb599025de7d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 51,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_B2",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/B2.png",
+      "image_sha256": "b031419b624ee853231447f390dc717e0fbf0bad1d1fc9346ec2fb599025de7d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 52,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_C1",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/C1.png",
+      "image_sha256": "2ab3b5450d54bf558d24bb86b71499aca534c7988c543d4800c04bd7ecff7ba8",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 53,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h0v1_C2",
+      "state_id": "moon_rock_04_h0v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h0v1/observation/gen/variants/C2.png",
+      "image_sha256": "2ab3b5450d54bf558d24bb86b71499aca534c7988c543d4800c04bd7ecff7ba8",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 54,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_A1",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/A1.png",
+      "image_sha256": "bb4d9a5ea0da02a0a194d23d3c4ff1d4e8e6f476e4fea7d89029943af5343dd3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 55,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_A2",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/A2.png",
+      "image_sha256": "bb4d9a5ea0da02a0a194d23d3c4ff1d4e8e6f476e4fea7d89029943af5343dd3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 56,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_B1",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/B1.png",
+      "image_sha256": "a5c54f35dbd576671f4d9e1a5ec089b0edab98dc572fc4a1f1f98467c62b0d68",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 57,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_B2",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/B2.png",
+      "image_sha256": "a5c54f35dbd576671f4d9e1a5ec089b0edab98dc572fc4a1f1f98467c62b0d68",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 58,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_C1",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/C1.png",
+      "image_sha256": "b3b75f8294054cb4402417a277831943a9c7f34cdbb2ba3334797a475e939f66",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 59,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_04_h1v0_C2",
+      "state_id": "moon_rock_04_h1v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_04_h1v0/observation/gen/variants/C2.png",
+      "image_sha256": "b3b75f8294054cb4402417a277831943a9c7f34cdbb2ba3334797a475e939f66",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 60,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_A1",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/A1.png",
+      "image_sha256": "eb8975bb5bd546b40351abb98ff3c0bc21e9ca1f205ef5f20682c0bd9e5ac3b5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 61,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_A2",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/A2.png",
+      "image_sha256": "eb8975bb5bd546b40351abb98ff3c0bc21e9ca1f205ef5f20682c0bd9e5ac3b5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 62,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_B1",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/B1.png",
+      "image_sha256": "f46da2dba8628412b90db131cb52df81fe0ef34ab864bb91e14f55d0fbe71714",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 63,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_B2",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/B2.png",
+      "image_sha256": "f46da2dba8628412b90db131cb52df81fe0ef34ab864bb91e14f55d0fbe71714",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 64,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_C1",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/C1.png",
+      "image_sha256": "811844eaf99d0f4cb70facae0e43d09bc01455d2652733260855922c52952913",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 65,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v0_C2",
+      "state_id": "moon_rock_05_h1v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v0/observation/gen/variants/C2.png",
+      "image_sha256": "811844eaf99d0f4cb70facae0e43d09bc01455d2652733260855922c52952913",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 66,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_A1",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/A1.png",
+      "image_sha256": "8e9790efc656b14372285a444cbc45d9a382b005723d6c79ed585840b5908c44",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 67,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_A2",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/A2.png",
+      "image_sha256": "8e9790efc656b14372285a444cbc45d9a382b005723d6c79ed585840b5908c44",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 68,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_B1",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/B1.png",
+      "image_sha256": "a6223b6c4eb9dd330625b7a663c847b657643c86fc721129465991cec87c97fd",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 69,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_B2",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/B2.png",
+      "image_sha256": "a6223b6c4eb9dd330625b7a663c847b657643c86fc721129465991cec87c97fd",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 70,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_C1",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/C1.png",
+      "image_sha256": "497f6d627961f9d71ff8d7adc130d34a94498e2220bf86534002a3b3c7020a2b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 71,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h1v1_C2",
+      "state_id": "moon_rock_05_h1v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h1v1/observation/gen/variants/C2.png",
+      "image_sha256": "497f6d627961f9d71ff8d7adc130d34a94498e2220bf86534002a3b3c7020a2b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 72,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_A1",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/A1.png",
+      "image_sha256": "b6f911e4bbe2741cdf4d5b83b57dc33292e65461913346c0c8c02b924edfdc74",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 73,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_A2",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/A2.png",
+      "image_sha256": "b6f911e4bbe2741cdf4d5b83b57dc33292e65461913346c0c8c02b924edfdc74",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 74,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_B1",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/B1.png",
+      "image_sha256": "5d1985f632a66dfc6b40a91f0de462dc5ba6f4631c949d26c0c1a8ca92ffef4f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 75,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_B2",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/B2.png",
+      "image_sha256": "5d1985f632a66dfc6b40a91f0de462dc5ba6f4631c949d26c0c1a8ca92ffef4f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 76,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_C1",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/C1.png",
+      "image_sha256": "124406cc3c67f9b62231c164f8885f2ae8cb9dc6be6ce1f1994373b25ccd2efa",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 77,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v0_C2",
+      "state_id": "moon_rock_05_h2v0",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v0/observation/gen/variants/C2.png",
+      "image_sha256": "124406cc3c67f9b62231c164f8885f2ae8cb9dc6be6ce1f1994373b25ccd2efa",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 78,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_A1",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "A1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/A1.png",
+      "image_sha256": "dfa72b0b4aada1c1a02777d078e2070ec4d1e7d6dc6e42d5744aa8b822331798",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 79,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_A2",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "A2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/A2.png",
+      "image_sha256": "dfa72b0b4aada1c1a02777d078e2070ec4d1e7d6dc6e42d5744aa8b822331798",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 80,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_B1",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/B1.png",
+      "image_sha256": "3ad0ffe68477ac8f98f4869133f60a9d6db0feeba832344146a762ddb058bc7b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 81,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_B2",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "B2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/B2.png",
+      "image_sha256": "3ad0ffe68477ac8f98f4869133f60a9d6db0feeba832344146a762ddb058bc7b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 82,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_C1",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "C1",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/C1.png",
+      "image_sha256": "6dead65bfc054e15889a861547f3789eeca0e22effea2d9f587213c34345e53e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 83,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "moon_rock_05_h2v1_C2",
+      "state_id": "moon_rock_05_h2v1",
+      "variant": "C2",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/states/moon_rock_05_h2v1/observation/gen/variants/C2.png",
+      "image_sha256": "6dead65bfc054e15889a861547f3789eeca0e22effea2d9f587213c34345e53e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 84,
+      "estimated_credits": 20.0
+    }
+  ]
+}

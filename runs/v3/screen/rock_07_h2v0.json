@@ -1,0 +1,110 @@
+{
+  "schema": "v3-screen/v1",
+  "state_id": "rock_07_h2v0",
+  "rock_id": "rock_07",
+  "level": 2,
+  "view": 0,
+  "height_m": 0.2236,
+  "hr_ratio": 2.6,
+  "truth_plan": {
+    "chosen": "A0",
+    "costs": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "no_safe_traversal"
+  },
+  "obs_plan": {
+    "chosen": "A0",
+    "costs": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "reason": "no_safe_traversal"
+  },
+  "truth_exec": {
+    "action": "A0",
+    "outcome": "safe_stop",
+    "reason": "abort",
+    "final_x": -0.003,
+    "t_end": 3.6000000000000028
+  },
+  "obs_exec": {
+    "action": "A0",
+    "outcome": "safe_stop",
+    "reason": "abort",
+    "final_x": -0.003,
+    "t_end": 3.6000000000000028
+  },
+  "traverse": {
+    "R1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "R2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "L1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "L2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "D1": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    },
+    "D2": {
+      "success": false,
+      "reason": "tipped",
+      "cost": 60.0
+    }
+  },
+  "complete_feasible": false,
+  "action_differs": false,
+  "outcome_differs": false,
+  "hidden_sensitive": false,
+  "selected": false,
+  "layer": "none",
+  "pipeline_errors": [],
+  "wall_s": 30.08,
+  "screened_at": "2026-11-03T11:31:52+0800",
+  "truth_boxes": 947,
+  "obs_boxes": 1274
+}

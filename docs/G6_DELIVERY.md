@@ -6,9 +6,9 @@
 
 | 工作包 | 状态 | 证据 |
 | --- | --- | --- |
-| A 控制接口 | **通过** | `v3_selftest_command`；`runs/v3/` 自检记录 |
+| A 控制接口 | **通过** | `v3_selftest_command` 复跑：pass、stand_err 0.0087、substep_ok、restore_diff 0.0 |
 | B 基础周期 | **通过** | `runs/v3/basic_cycle/*`（8 run，168/168） |
-| C 预演保真 | **部分** | `runs/v3/isolation5_r3` 等；分叉步 72/92，残差已解释 |
+| C 预演保真 | **部分** | `runs/v3/isolation5_r3`：五臂均 physical_failure（final_x 2.109/2.109/1.957/1.602/1.630）；A-B 第 72 步分叉；残差已解释 |
 | D 腿式能力 | **未通过** | `runs/v3/climb/CLIMB_failure_report.json`；D3 原始 1/2、扰动 2/3 |
 | E 主角对照 | **无正例** | `docs/E_CASES.md`、`runs/v3/e_cases/index.json` |
 | F 连续路线 | **通过** | `runs/v3/route/rigid_r2`、`runs/v3/route/nominal_r1` |

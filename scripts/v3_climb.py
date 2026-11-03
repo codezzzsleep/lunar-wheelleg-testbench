@@ -1,13 +1,17 @@
-"""D1 第一里程碑：把 FR 前轮搭上台沿并真实承载。
+"""D1 第二里程碑：两条前腿依次搭上台沿，前部真实承载。
 
-场景：平地 + 一个 0.05 m 高的方台（已知几何，用于能力调试；正式执行不读真值参数）。
-阶段：APPROACH -> BRAKE -> SHIFT_SUPPORT -> LIFT_FR -> ADVANCE_TO_LEDGE
-      -> LOWER_FR -> HOLD_FRONT
+场景：平地 + 0.05 m 高、0.9 m 宽的台（开发用已知几何）。
+阶段：APPROACH -> 速度斜坡 BRAKE -> 对每条前腿执行
+      SHIFT_SUPPORT -> LIFT_LEG -> ADVANCE_TO_LEDGE -> LOWER_LEG -> HOLD_LEG
+最后 HOLD_BOTH：两条前轮都压在台面上并各自承担 >=5% 重力。
 
-每阶段有进入条件、最大时间、失败原因；成功判据用真实接触载荷、轮心高度与姿态，
-不用目标角或"轮心 z 升高"代替。
+要点：
+  * 一次只抬一条前腿，另外三条（含已上台的前轮）保持支撑；
+  * 抬腿前先做支撑转移；抬腿用逐腿 3 关节雅可比；
+  * 前进前必须先抬到台面 + 轮半径 + 裕度，否则未抬的轮会先撞台阶；
+  * 载荷统计包含地面与障碍物接触；成功判据用真实接触、轮心高度与姿态。
 
-  MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --out runs/v3/climb/front_r1
+  MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --soil nominal --out runs/v3/climb/front2_r1
 """
 import argparse
 import json
@@ -52,23 +56,46 @@ def contact_load(env, leg):
     return total
 
 
-def make_step(path, h=0.05, sx=0.5, sy=0.8):
+def contact_points(env, leg, min_load=0.5):
+    """轮-支撑接触点（地面 + 障碍物），用于支撑多边形。"""
+    import mujoco
+    m, d = env.model, env.data
+    b = bc.wheel_body(env, leg)
+    pts = []
+    for i in range(int(d.ncon)):
+        c = d.contact[i]
+        b1, b2 = int(m.geom_bodyid[c.geom1]), int(m.geom_bodyid[c.geom2])
+        if b not in (b1, b2):
+            continue
+        other = b2 if b1 == b else b1
+        name = m.body(other).name if other >= 0 else 'world'
+        if other != 0 and not name.startswith('obstacle'):
+            continue
+        f = np.zeros(6)
+        mujoco.mj_contactForce(m, d, i, f)
+        if abs(float(f[0])) >= min_load:
+            pts.append(np.asarray(c.pos, dtype=float).copy())
+    return pts
+
+
+def make_step(path, h=0.05, sx=0.5, sy=0.9):
     box = trimesh.creation.box(extents=[sx, sy, h])
-    box.apply_translation([0.0, 0.0, h / 2.0])
+    box.apply_translation([0, 0, h / 2.0])
     path.parent.mkdir(parents=True, exist_ok=True)
     box.export(path)
     return str(path)
 
 
 class Climb:
-    def __init__(self, env, step_x, step_h, step_sx, record=None):
+    def __init__(self, env, step_x, step_h, step_sx, record=None, faces=None):
         self.env = env
         self.step_x = step_x
         self.step_h = step_h
         self.face_x = step_x - step_sx / 2.0
+        self.faces = faces or {'FR': self.face_x, 'FL': self.face_x}
         self.W = bc.total_weight(env)
         self.swing = 'FR'
-        self.support = [l for l in LEG if l != 'FR']
+        self.support = [l for l in LEG if l != self.swing]
         self.targets = {leg: dict(bc.STANCE) for leg in LEG}
         self.rec = record
         self.frames = []
@@ -76,17 +103,20 @@ class Climb:
         self.errors = []
         self.terminated = False
 
-    def step(self, phase, omega=None, wheel_mode='coast', brake=False):
+    def set_swing(self, leg):
+        self.swing = leg
+        self.support = [l for l in LEG if l != leg]
+
+    def step(self, phase, omega=None, brake=False):
         env = self.env
         if brake:
             env.step_command(joint_targets_rad=self.targets, wheel_mode='brake')
         elif omega is not None:
-            # omega 非空必须走速度闭环；不能沿用 'coast' 把目标吃掉
             env.step_command(joint_targets_rad=self.targets,
                              wheel_omega_rad_s=np.full(4, float(omega)),
                              wheel_mode='velocity')
         else:
-            env.step_command(joint_targets_rad=self.targets, wheel_mode=wheel_mode)
+            env.step_command(joint_targets_rad=self.targets, wheel_mode='coast')
         self.k += 1
         roll, pitch = bc.attitude(env)
         f = {'k': self.k, 't': round(float(env.t), 4), 'phase': phase,
@@ -96,11 +126,9 @@ class Climb:
              'vx': round(float(env.data.qvel[0]), 4),
              'loads': {leg: round(bc.wheel_ground(env, leg)['load'], 3)
                        for leg in LEG},
+             'support_load': round(contact_load(env, self.swing), 3),
              'wheel_z': {leg: round(float(env.data.xpos[bc.wheel_body(env, leg)][2]), 4)
-                         for leg in LEG},
-             'fr_clearance': round(float(bc.wheel_clearance(env, 'FR')), 4),
-             'fr_support_load': round(contact_load(env, 'FR'), 3),
-             'margin': None}
+                         for leg in LEG}}
         self.frames.append(f)
         if self.rec is not None:
             self.rec.add(v3_record.frame_from_env(env, None, np.zeros(3), self.k,
@@ -116,110 +144,105 @@ class Climb:
                                 'tilt': round(float(env._tilt()), 2)})
         return f
 
-    def shift(self, target_margin=0.012, max_s=2.0):
-        """复用 B 的支撑转移：沿最近支撑边内法向，分轮次斜坡。"""
+    # ---- 支撑转移（与 B 相同：最近支撑边内法向 + 分轮次斜坡）
+    def shift(self, target_margin=0.012, max_dp=0.03, ramp=30):
         env = self.env
         best = None
         for _ in range(3):
-            st = bc.support_state(env, self.support, self.swing)
+            c = bc.com(env)
             pts = [np.asarray(p[:2]) for leg in self.support
-                   for p in bc.wheel_ground(env, leg)['points']]
-            if len(pts) < 3 or st['margin_m'] is None:
+                   for p in contact_points(env, leg)]
+            if len(pts) < 3:
                 break
-            margin, inward = bc.nearest_edge(pts, np.asarray(st['com'][:2]))
+            margin, inward = bc.nearest_edge(pts, c[:2])
             best = margin if best is None else max(best, margin)
             if margin >= target_margin:
                 break
             dp = np.zeros(3)
-            dp[:2] = inward * float(np.clip(target_margin - margin + 0.004, 0, 0.03))
+            dp[:2] = inward * float(np.clip(target_margin - margin + 0.004, 0, max_dp))
             start = {leg: dict(self.targets[leg]) for leg in LEG}
             goal = {leg: dict(self.targets[leg]) for leg in LEG}
             for leg in self.support:
-                J = bc.leg_jac(env, leg)
-                dq = np.clip(bc.damped_ls(J, -dp), -0.08, 0.08)
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.08, 0.08)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
                     goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
-            n = 30
-            for i in range(n):
-                a = (i + 1) / n
+            for i in range(ramp):
+                a = (i + 1) / ramp
                 for leg in LEG:
                     for p in ('hip', 'thigh', 'calf'):
                         self.targets[leg][p] = float(
                             start[leg][p] + a * (goal[leg][p] - start[leg][p]))
-                self.step('shift_support')
+                self.step(f'{self.swing}_shift')
                 if self.terminated:
                     break
             if self.terminated:
                 break
-        return {'phase': 'shift_support', 'margin_m': best,
+        return {'phase': f'{self.swing}_shift', 'margin_m': best,
                 'ok': bool(best is not None and best >= target_margin)}
 
-    def lift_fr(self, target_center_z, max_s=2.4):
-        """把 FR 轮心抬到 target_center_z（世界 z），用逐腿雅可比 + 斜坡。"""
+    # ---- 抬单腿到目标轮心高度
+    def lift_leg(self, leg, target_center_z, max_dq=0.45, rounds=4, ramp=45):
         env = self.env
-        b = bc.wheel_body(env, 'FR')
+        b = bc.wheel_body(env, leg)
         best = 0.0
-        for _ in range(4):
+        for _ in range(rounds):
             need = target_center_z - float(env.data.xpos[b][2])
             if need <= 0.004:
                 break
             dp = np.zeros(3)
             dp[2] = float(np.clip(need, -0.06, 0.06))
-            J = bc.leg_jac(env, 'FR')
-            dq = np.clip(bc.damped_ls(J, dp), -0.45, 0.45)
-            start = dict(self.targets['FR'])
+            dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), dp), -max_dq, max_dq)
+            start = dict(self.targets[leg])
             goal = {p: float(np.clip(start[p] + float(v), -2.5, 2.5))
                     for p, v in zip(('hip', 'thigh', 'calf'), dq)}
-            n = 45
-            for i in range(n):
-                a = (i + 1) / n
+            for i in range(ramp):
+                a = (i + 1) / ramp
                 for p in ('hip', 'thigh', 'calf'):
-                    self.targets['FR'][p] = float(
-                        start[p] + a * (goal[p] - start[p]))
-                f = self.step('lift_fr')
+                    self.targets[leg][p] = float(start[p] + a * (goal[p] - start[p]))
+                self.step(f'{leg}_lift')
                 best = max(best, float(env.data.xpos[b][2]))
                 if self.terminated:
                     break
             if self.terminated:
                 break
         z = float(env.data.xpos[b][2])
-        return {'phase': 'lift_fr', 'wheel_center_z': round(z, 4),
+        return {'phase': f'{leg}_lift', 'wheel_center_z': round(z, 4),
                 'target_z': round(target_center_z, 4),
                 'ok': bool(z >= target_center_z - 0.008)}
 
-    def advance_to_ledge(self, max_s=6.0, speed=0.06):
-        """保持 FR 抬起，低速前进到 FR 轮心越过台沿内侧。"""
+    # ---- 保持抬高，低速前进到该轮越过台沿
+    def advance_to_ledge(self, leg, x_target=None, max_s=6.0, speed=0.06):
+        if x_target is None:
+            x_target = self.faces.get(leg, self.face_x) + 0.07
         env = self.env
-        b = bc.wheel_body(env, 'FR')
-        x_target = self.face_x + 0.07
-        x0 = float(env.data.qpos[0])
+        b = bc.wheel_body(env, leg)
         for _ in range(int(max_s * 50)):
             if float(env.data.xpos[b][0]) >= x_target:
                 break
-            self.step('advance_to_ledge', omega=speed / WHEEL_R)
+            self.step(f'{leg}_advance', omega=speed / WHEEL_R)
             if self.terminated:
                 break
-        return {'phase': 'advance_to_ledge',
-                'fr_wheel_x': round(float(env.data.xpos[b][0]), 4),
+        x = float(env.data.xpos[b][0])
+        return {'phase': f'{leg}_advance', 'wheel_x': round(x, 4),
                 'x_target': round(x_target, 4),
-                'base_dx': round(float(env.data.qpos[0]) - x0, 4),
-                'ok': bool(float(env.data.xpos[b][0]) >= x_target - 0.01)}
+                'ok': bool(x >= x_target - 0.01)}
 
-    def lower_fr(self, load_thr=3.0, hold_steps=3, max_s=1.6):
-        """把 FR 放回站姿目标，触地按持续载荷判定后停住。"""
+    # ---- 落腿：持续载荷触发后停住
+    def lower_leg(self, leg, load_thr=3.0, hold_steps=3, max_s=1.6):
         env = self.env
-        start = dict(self.targets['FR'])
+        start = dict(self.targets[leg])
         gone = 0
         t_contact = None
         n = int(max_s * 50)
+        i = 0
         for i in range(n):
             a = (i + 1) / n
             for p in ('hip', 'thigh', 'calf'):
-                self.targets['FR'][p] = float(start[p] + a * (STANCE['FR'][p] - start[p]))
-            self.step('lower_fr')
+                self.targets[leg][p] = float(start[p] + a * (STANCE[leg][p] - start[p]))
+            self.step(f'{leg}_lower')
             if self.terminated:
                 break
-            load = contact_load(env, 'FR')
+            load = contact_load(env, leg)
             if load > load_thr:
                 gone += 1
                 if gone >= hold_steps:
@@ -227,56 +250,58 @@ class Climb:
                     break
             else:
                 gone = 0
-        load = contact_load(env, 'FR')
-        return {'phase': 'lower_fr', 'contact_at_t': t_contact,
+        load = contact_load(env, leg)
+        return {'phase': f'{leg}_lower', 'contact_at_t': t_contact,
                 'steps': i + 1, 'load_n': round(load, 3),
                 'ok': bool(t_contact is not None)}
 
-    def hold_front(self, seconds=0.8, min_frac=0.05):
+    def hold_leg(self, leg, seconds=0.8, min_frac=0.05):
         rows = []
         for _ in range(int(seconds * 50)):
-            rows.append(self.step('hold_front'))
+            rows.append(self.step(f'{leg}_hold'))
             if self.terminated:
                 break
-        mean = float(np.mean([r['fr_support_load'] for r in rows])) if rows else 0.0
+        loads = [r['support_load'] for r in rows]
+        mean = float(np.mean(loads)) if loads else 0.0
         tilt = max((r['tilt'] for r in rows), default=99)
-        return {'phase': 'hold_front', 'fr_load_n': round(mean, 3),
-                'frac': round(mean / self.W, 4),
-                'tilt_max_deg': round(tilt, 3),
+        return {'phase': f'{leg}_hold', 'load_n': round(mean, 3),
+                'frac': round(mean / self.W, 4), 'tilt_max_deg': round(tilt, 3),
                 'ok': bool(rows and mean >= min_frac * self.W and tilt <= 10.0)}
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--out', default='runs/v3/climb/front_r1')
+    ap.add_argument('--out', default='runs/v3/climb/front2_r1')
     ap.add_argument('--step-h', type=float, default=0.05)
     ap.add_argument('--step-x', type=float, default=1.20)
-    ap.add_argument('--step-y', type=float, default=-0.115,
-                    help='窄台沿横向偏置：只盖住 FR 轮迹，FL 仍走平地')
-    ap.add_argument('--step-w', type=float, default=0.27)
+    ap.add_argument('--step-w', type=float, default=0.90)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--record', action='store_true')
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
-    box = make_step(out / 'step.stl', h=a.step_h, sy=a.step_w)
-
-    spec = terrain.make_spec(kind='flat', seed=0, goal_x=3.0, name='climb_front',
-                             objects=[{'mesh_file': box, 'x': a.step_x, 'y': a.step_y,
-                                       'yaw_deg': 0.0}])
+    # 两块窄台：FR 与 FL 各一块，台沿 x 错开，避免先抬的那条腿被另一块台挡住
+    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=0.5, sy=0.27)
+    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=0.5, sy=0.27)
+    faces = {'FR': a.step_x - 0.25, 'FL': a.step_x + 0.18 - 0.25}
+    spec = terrain.make_spec(kind='flat', seed=0, goal_x=3.0, name='climb_front2',
+                             objects=[{'mesh_file': box_fr, 'x': a.step_x, 'y': -0.115,
+                                       'yaw_deg': 0.0},
+                                      {'mesh_file': box_fl, 'x': a.step_x + 0.18,
+                                       'y': 0.185, 'yaw_deg': 0.0}])
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=30.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=40.0)
     env.reset(seed=0)
     rec = None
     if a.record:
         rec = v3_record.Recorder(out / 'record',
-                                 {'scenario': 'climb_front', 'method': 'D1',
-                                  'action': 'CLIMB_FR'}, hz=50.0)
-    c = Climb(env, a.step_x, a.step_h, 0.5, record=rec)
-
+                                 {'scenario': 'climb_front2', 'method': 'D1',
+                                  'action': 'CLIMB_FRONT2'}, hz=50.0)
+    c = Climb(env, a.step_x, a.step_h, 0.5, record=rec, faces=faces)
     phases = []
-    # APPROACH：直行到台面前 0.35 m
+
+    # APPROACH
     brake_x = c.face_x - 0.35
     ok = False
     for _ in range(int(4.0 * 50)):
@@ -289,7 +314,7 @@ def main():
     phases.append({'phase': 'approach', 'x': round(float(env.data.qpos[0]), 4),
                    'target_x': round(brake_x, 4), 'ok': bool(ok)})
 
-    # BRAKE：速度斜坡减速到 0（不用硬刹车，避免后轮瞬间卸载）
+    # BRAKE（速度斜坡，避免后轮卸载）
     stopped = False
     v0 = max(0.02, abs(float(env.data.qvel[0])))
     n = 60
@@ -308,20 +333,48 @@ def main():
     phases.append({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
                    'ok': bool(stopped)})
 
-    if not c.terminated:
+    # 逐条前腿搭台
+    z_target = a.step_h + WHEEL_R + 0.025
+    for leg in ('FR', 'FL'):
+        if c.terminated:
+            break
+        c.set_swing(leg)
         phases.append(c.shift())
+        if not c.terminated:
+            phases.append(c.lift_leg(leg, z_target))
+        if not c.terminated:
+            phases.append(c.advance_to_ledge(leg))
+        if not c.terminated:
+            phases.append(c.lower_leg(leg))
+        if not c.terminated:
+            for _ in range(30):          # 落轮后先稳定 0.6 s，再判持续承载
+                c.step(f'{leg}_settle')
+                if c.terminated:
+                    break
+        if not c.terminated:
+            phases.append(c.hold_leg(leg))
+
+    # 两条前轮同时承载
     if not c.terminated:
-        phases.append(c.lift_fr(a.step_h + WHEEL_R + 0.025))
-    if not c.terminated:
-        phases.append(c.advance_to_ledge())
-    if not c.terminated:
-        phases.append(c.lower_fr())
-    if not c.terminated:
-        phases.append(c.hold_front())
+        rows = []
+        for _ in range(int(0.8 * 50)):
+            rows.append(c.step('hold_both'))
+            if c.terminated:
+                break
+        fr = contact_load(env, 'FR')
+        fl = contact_load(env, 'FL')
+        tilt = max((r['tilt'] for r in rows), default=99)
+        phases.append({'phase': 'hold_both',
+                       'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
+                       'fr_frac': round(fr / c.W, 4),
+                       'fl_frac': round(fl / c.W, 4),
+                       'tilt_max_deg': round(tilt, 3),
+                       'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
+                                  and tilt <= 10.0)})
 
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}
-    res = {'schema': 'v3-climb-front/v1', 'soil': a.soil,
+    res = {'schema': 'v3-climb-front2/v1', 'soil': a.soil,
            'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x},
            'phases': phases, 'checks': checks,
            'terminated': c.terminated, 'errors': c.errors,
@@ -335,8 +388,8 @@ def main():
                         tilt=np.array([f['tilt'] for f in c.frames]),
                         loads=np.array([[f['loads'][l] for l in LEG] for f in c.frames]))
     print(json.dumps({'all_ok': res['all_ok'], 'checks': checks,
-                      'errors': c.errors[:2],
-                      'terminated': c.terminated}, ensure_ascii=False))
+                      'errors': c.errors[:2], 'terminated': c.terminated},
+                     ensure_ascii=False))
     return 0 if res['all_ok'] else 1
 
 

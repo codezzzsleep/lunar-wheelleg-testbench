@@ -68,6 +68,8 @@ def wheel_z(env, leg):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/v3/control/legtest')
+    ap.add_argument('--lower-omega', type=float, default=0.0,
+                    help='下落期间四轮前向角速度 rad/s（0=不驱动）')
     ap.add_argument('--roll-gain', type=float, default=0.0,
                     help='闭环支撑转移增益（按实测 roll 给支撑腿 hip 预压）')
     ap.add_argument('--sweep', default='runs/v3/control/legsweep.json',
@@ -83,7 +85,8 @@ def main():
                                               'action': 'LIFT_FR'}, hz=50.0)
     phases = []
 
-    def run_phase(name, seconds, targets, ramp=0.25, brake=1.0, roll_gain=0.0):
+    def run_phase(name, seconds, targets, ramp=0.25, brake=1.0, roll_gain=0.0,
+                  wheel_omega=0.0):
         n = int(round(seconds * 50))
         n_ramp = max(1, int(round(ramp * 50)))
         q_now = {leg: {p: float(env.data.qpos[env.J[f'{leg}_{p}_joint']['qadr']])
@@ -101,7 +104,7 @@ def main():
                 for leg in ('FL', 'RR', 'RL'):
                     cmd[leg]['hip'] = float(np.clip(cmd[leg]['hip'] - roll_gain * r, -1.0, 1.0))
             env.step_command(joint_targets_rad=cmd,
-                             wheel_omega_rad_s=np.zeros(4),
+                             wheel_omega_rad_s=np.full(4, float(wheel_omega)),
                              wheel_brake=np.full(4, float(brake)))
             for leg in LEG:
                 load[leg] += wheel_contact(env, leg)
@@ -149,9 +152,14 @@ def main():
     # 两段式下落：先落一半并停 0.25 s 让接触建立，再落到底
     half = {leg: {pp: lift[leg][pp] + 0.5 * (stance_targets()[leg][pp] - lift[leg][pp])
                   for pp in ('hip', 'thigh', 'calf')} for leg in LEG}
-    ph_down1 = run_phase('lower_half', 0.7, half, ramp=0.5, brake=0.0, roll_gain=rg)
-    ph_down2 = run_phase('lower_settle', 0.25, half, ramp=0.05, brake=0.0, roll_gain=rg)
-    ph_down = run_phase('lower_FR', 0.9, stance_targets(), ramp=0.7, brake=0.0, roll_gain=rg)
+    # 下落时给一个小前向轮速：让 FR 轮滚进接触，而不是被竖直放到地面
+    vw = float(a.lower_omega)
+    ph_down1 = run_phase('lower_half', 0.7, half, ramp=0.5, brake=0.0, roll_gain=rg,
+                         wheel_omega=vw)
+    ph_down2 = run_phase('lower_settle', 0.25, half, ramp=0.05, brake=0.0, roll_gain=rg,
+                         wheel_omega=vw)
+    ph_down = run_phase('lower_FR', 0.9, stance_targets(), ramp=0.7, brake=0.0,
+                        roll_gain=rg, wheel_omega=vw)
     ref = rec.close()
     aborted = [p for p in phases if 'aborted' in p]
     if aborted:

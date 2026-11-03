@@ -259,6 +259,33 @@ class Climb:
                 'x_target': round(x_target, 4),
                 'ok': bool(x >= x_target - 0.01)}
 
+    # ---- 四轮都在支撑面上时，做横向 CoM 居中（小步、多轮，避免丢接触）
+    def center_lateral(self, dy=-0.006, rounds=4, ramp=15):
+        env = self.env
+        for _ in range(rounds):
+            dp = np.array([0.0, float(dy), 0.0])
+            start = {leg: dict(self.targets[leg]) for leg in LEG}
+            goal = {leg: dict(self.targets[leg]) for leg in LEG}
+            for leg in LEG:
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.04, 0.04)
+                for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                    goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+            for i in range(ramp):
+                a = (i + 1) / ramp
+                for leg in LEG:
+                    for p in ('hip', 'thigh', 'calf'):
+                        self.targets[leg][p] = float(
+                            start[leg][p] + a * (goal[leg][p] - start[leg][p]))
+                self.step('center_lateral')
+                if self.terminated:
+                    break
+            if self.terminated:
+                break
+        loads = {leg: contact_load(env, leg) for leg in LEG}
+        return {'phase': 'center_lateral',
+                'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
+
     # ---- 下降：四轮越过台面最远后缘，落地并稳定保持
     def descend(self, far_x, max_s=10.0, speed=0.08):
         env = self.env
@@ -489,6 +516,8 @@ def main():
 
     # 后轮不先做整体前移：像前轮一样，抬起来再前进，避免四轮承重时 FR 卸载
 
+    if ok and not stop() and a.rear:
+        ok = add(c.center_lateral(-0.003, rounds=2))
     if ok and not stop() and a.rear:
         for leg, face in (('RR', faces['FR']), ('RL', faces['FL'])):
             if stop() or not ok:

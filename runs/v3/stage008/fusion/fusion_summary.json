@@ -1,0 +1,210 @@
+{
+  "schema": "stage8-fusion/v1",
+  "state": "runs/v3/stage008/state_layout2",
+  "v_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+  "v_stats": {
+    "n_voxels": 9792510,
+    "n_free": 5605573,
+    "n_band": 60996,
+    "n_unknown": 4125941,
+    "n_in_fov": 9792510,
+    "n_masked_fov": 2933380,
+    "n_shell": 60996,
+    "valid_depth_frac": 0.743056,
+    "free_eps_m": 0.004,
+    "band_m": 0.006,
+    "shell_offset_m": 0.001,
+    "pitch_m": 0.002,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "parents": {
+    "reference": {
+      "id": "reference_truth",
+      "stats": {
+        "n_parent_voxels": 1256301,
+        "n_generated_unknown": 1211217,
+        "n_full": 1272213,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 1211217,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.96411,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "be4baacca822e8e84e08e696900818e34d9eda9608c5319ff52fc055dfe895a7",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01"
+    },
+    "4632564": {
+      "id": "lux_4632564",
+      "stats": {
+        "n_parent_voxels": 74234,
+        "n_generated_unknown": 29265,
+        "n_full": 90261,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 29265,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.39423,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "4d22a32f28d02646408baf3d9a24b4873d2b97aebfe6121a7500a9f5c64cfcbc",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "9bf975219b2998b76273f31843eb129dd2aedb9b22559e89814a4677621edb61"
+    },
+    "4632603": {
+      "id": "lux_4632603",
+      "stats": {
+        "n_parent_voxels": 61260,
+        "n_generated_unknown": 24490,
+        "n_full": 85486,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 24490,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.39977,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "01e78214ae5bf1b1e5f7960f6b690d09456681ae46c6ef96b1f3f44a74b4c182",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "407c1f700191754cdb8a55a4be86c672ec5f75dd4bad0cdb419efd5bf58516a8"
+    },
+    "4632618": {
+      "id": "lux_4632618",
+      "stats": {
+        "n_parent_voxels": 55626,
+        "n_generated_unknown": 22605,
+        "n_full": 83601,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 22605,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.40637,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "298a7201fdb9d60d6591d80961a645c13d32abd73320affecaa61ef93bf3e15b",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "8e5c112b3ed84559c7751b7d77b39bbca6d8514d806c9eeac70d4bb227fd2a81"
+    },
+    "4632621": {
+      "id": "lux_4632621",
+      "stats": {
+        "n_parent_voxels": 140071,
+        "n_generated_unknown": 66856,
+        "n_full": 127852,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 66856,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.4773,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "0b2b13a0a721befff4ed184f5022100a382854d21237df01de549e5bad44f060",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "51c541bcbf53e558ace8cf3fdfdda2d03fcf15b8b61d485d984d6b05d31b1d4b"
+    },
+    "4632624": {
+      "id": "lux_4632624",
+      "stats": {
+        "n_parent_voxels": 60061,
+        "n_generated_unknown": 26043,
+        "n_full": 87039,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 26043,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.43361,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "689b294c88ae04c390a65a2d7ed7283c4e6e50154b02c72dd5ef787fa378519e",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "f7a91ff6d6359a3614f3062c49fef5b1e3a0d3b5c28ef30dbf2a65dbdb94d63a"
+    },
+    "4632627": {
+      "id": "lux_4632627",
+      "stats": {
+        "n_parent_voxels": 70450,
+        "n_generated_unknown": 25741,
+        "n_full": 86737,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5605573,
+        "n_unknown": 4125941,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 25741,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.36538,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "full_sha": "3a9a49027b892f6a5bea0517f314a37ed84dc9bceeaa54f6af5cae601fe9f043",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "glb_sha": "083447c5023f7b1604decc6918c5759b2769de96ac865a998a912ea8d87365be"
+    }
+  }
+}

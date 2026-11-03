@@ -1,0 +1,114 @@
+{
+  "schema": "stage8-case/v1",
+  "fusion": "runs/v3/stage008/fusion/task_4632627",
+  "arm": "obs",
+  "plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 1.495,
+    "end_x": 2.6,
+    "stop_tilt_deg": 12.0,
+    "plan_id": "c5d227f104e349a5",
+    "far_edge_source": "complete_geometry_reference"
+  },
+  "grid_sha": "268020aa519cfaf0c02d9783fa8f8a5c",
+  "votes": {
+    "R1": 0,
+    "R2": 0,
+    "D1": 0,
+    "D2": 1,
+    "L1": 0,
+    "L2": 0,
+    "CLIMB": 0,
+    "BODY_CLEARANCE": 1
+  },
+  "chosen": "D2",
+  "rows": [
+    {
+      "action": "R1",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "cost": 60.0,
+      "t_end": 38.88,
+      "chassis_contacts": 1803,
+      "plan_id": null
+    },
+    {
+      "action": "R2",
+      "success": false,
+      "outcome": "chassis_contact",
+      "reason": "chassis_obstacle_contact",
+      "cost": 7.84,
+      "t_end": 7.84,
+      "chassis_contacts": 8,
+      "plan_id": null
+    },
+    {
+      "action": "D1",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "cost": 60.0,
+      "t_end": 3.44,
+      "chassis_contacts": 13,
+      "plan_id": null
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "outcome": "pass",
+      "reason": "success",
+      "cost": 7.46,
+      "t_end": 7.46,
+      "chassis_contacts": 0,
+      "plan_id": null
+    },
+    {
+      "action": "L1",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "cost": 60.0,
+      "t_end": 3.24,
+      "chassis_contacts": 7,
+      "plan_id": null
+    },
+    {
+      "action": "L2",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": null,
+      "cost": 60.0,
+      "t_end": 40.0,
+      "chassis_contacts": 1841,
+      "plan_id": null
+    },
+    {
+      "action": "BODY_CLEARANCE",
+      "success": true,
+      "outcome": "pass",
+      "reason": "success",
+      "cost": 114.22,
+      "t_end": 114.22,
+      "chassis_contacts": 0,
+      "plan_id": "c5d227f104e349a5"
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "outcome": "safe_stop",
+      "reason": "abort",
+      "cost": 60.0,
+      "t_end": 3.000000000000002,
+      "chassis_contacts": 0,
+      "plan_id": null
+    }
+  ],
+  "exec": {
+    "action": "D2",
+    "outcome": "pass",
+    "t_end": 7.46
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "v3-rock-actions/v2",
+  "state": "runs/v3/states/moon_rock_04_h2v0",
+  "soil": "nominal",
+  "rock_max_x": 1.5988,
+  "rows": [
+    {
+      "action": "S1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.895,
+      "displacement_x": 3.898,
+      "max_tilt": 3.28,
+      "steps": 386,
+      "cost": 7.720000000000001,
+      "phases": [],
+      "rock_max_x": 1.5988,
+      "wheel_x": {
+        "FR": 4.1162,
+        "FL": 4.1353,
+        "RR": 3.627,
+        "RL": 3.6464
+      },
+      "grounded": {
+        "FR": false,
+        "FL": false,
+        "RR": false,
+        "RL": false
+      },
+      "final_tilt": 3.278,
+      "base_z": 0.3647,
+      "crossed": true,
+      "descended": true,
+      "unified": true
+    }
+  ],
+  "wheel_ok": false,
+  "wheel_unified_ok": false,
+  "leg_unified_ok": null,
+  "leg_ok": null,
+  "note": "轮式基线 = R1/R2/D1/D2/A0；L1/L2 为腿式对照"
+}

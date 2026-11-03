@@ -27,12 +27,12 @@
     "cache_key": "106fec7734f65c99e543416f0dc4dddd5fa7ab40972e7fc00132fd94d32d490e"
   },
   "decision": {
-    "chosen": "L2",
+    "chosen": "R2",
     "votes": {
       "R1": 0,
       "R2": 1,
       "L1": 0,
-      "L2": 1,
+      "L2": 0,
       "S1": 0,
       "D1": 0,
       "D2": 0
@@ -41,9 +41,9 @@
     "n_valid": 1
   },
   "execution": {
-    "action": "L2",
-    "outcome": "physical_failure",
-    "reason": "tipped",
-    "final_x": 2.109
+    "action": "R2",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.642
   }
 }

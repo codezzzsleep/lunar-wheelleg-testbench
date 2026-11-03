@@ -978,7 +978,9 @@ class WheelLegEnv:
                                    'ngeom_current': int(self.model.ngeom)}
         self.nav_target_y = float(rec.get('nav_target_y', self.channel_center))
         so = rec.get('soil')
-        if (not cross) and so and self.soil_mode != 'rigid':
+        # 土壤参数/状态与场景几何无关：project 模式也必须恢复，否则预演用的
+        # 土壤和真值执行不同（实测同一动作 project 通关、same_scene 倾覆）。
+        if so and self.soil_mode != 'rigid':
             self._soil_limits = dict(so.get('limits') or {})
             self._soil_prev_force = {int(k): np.asarray(v)
                                      for k, v in (so.get('prev_force') or {}).items()}

@@ -10,6 +10,8 @@
 import argparse
 import json
 import pathlib
+
+import numpy as np
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -64,32 +66,20 @@ def main():
                                    mode='same_scene', seed=0, record=True)
             wheel_x = {leg: round(float(env.data.xpos[vc.bc.wheel_body(env, leg)][0]), 4)
                        for leg in vc.LEG}
-            traj = r.get('trajectory') or []
-            last = traj[-1] if traj else {}
-            cons = last.get('contacts') or []
-            m = env.model
-            wheel_ids = {leg: int(vc.bc.wheel_body(env, leg)) for leg in vc.LEG}
-            grounded = {leg: False for leg in vc.LEG}
-            for c in cons:
-                if 'geom1' not in c:
-                    continue
-                g1, g2 = int(c['geom1']), int(c['geom2'])
-                b1, b2 = int(m.geom_bodyid[g1]), int(m.geom_bodyid[g2])
-                for leg, wid in wheel_ids.items():
-                    if wid not in (b1, b2):
-                        continue
-                    og = g2 if b1 == wid else g1
-                    ob = b2 if b1 == wid else b1
-                    if ob == 0 or int(m.geom_type[og]) == int(mujoco.mjtGeom.mjGEOM_HEIGHTFIELD):
-                        grounded[leg] = True
-            q = last.get('qpos')
-            final_tilt = round(float(last.get('tilt_deg', env._tilt())), 3)
-            base_z = round(float(q[2]), 4) if q is not None else round(float(env.data.qpos[2]), 4)
+            # 动作结束后先 mj_forward 刷新接触表，再查四轮落地
+            mujoco.mj_forward(env.model, env.data)
+            # 轮心高度 <= 0.12 m 视为已下降回平地（轮半径 0.086 m）；
+            # 接触表在动作结束后不可靠，不再用它判落地。
+            grounded = {leg: float(env.data.xpos[vc.bc.wheel_body(env, leg)][2]) <= 0.12
+                        for leg in vc.LEG}
+            base_z = round(float(env.data.qpos[2]), 4)
+            final_tilt = round(float(env._tilt()), 3)
             crossed = bool(rock_max_x is not None
                            and all(x > rock_max_x + 0.03 for x in wheel_x.values()))
             # 动作结束后接触表可能未刷新；用机身高度作为“已下降回平地”的代理
             descended = bool(base_z <= 0.42)
             unified = bool(crossed and descended and final_tilt <= 10.0
+                           and all(grounded.values())
                            and not env.terminated and not env.truncated)
             rows.append({'action': name, 'success': bool(r['success']),
                          'reason': r['reason'], 'final_x': r['final_x'],

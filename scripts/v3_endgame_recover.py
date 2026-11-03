@@ -24,6 +24,8 @@ def main():
     ap.add_argument('--seconds', type=float, default=2.5)
     ap.add_argument('--dz', type=float, default=0.003)
     ap.add_argument('--out', required=True)
+    ap.add_argument('--save-final', default='')
+    ap.add_argument('--mode', default='unloaded', choices=['unloaded', 'body'])
     a = ap.parse_args()
     bundle = json.loads(pathlib.Path(a.state).read_text())
     snap, spec = bundle['snapshot'], dict(bundle['spec'])
@@ -43,9 +45,9 @@ def main():
         if k % 5 == 0 and not env.terminated:
             loads = {leg: vc.contact_load(env, leg) for leg in LEG}
             for leg in LEG:
-                if loads[leg] < 1.0:
+                if a.mode == 'body' or loads[leg] < 1.0:
                     dp = np.array([0.0, 0.0, -a.dz])
-                    dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.02, 0.02)
+                    dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.03, 0.03)
                     for p, v in zip(('hip', 'thigh', 'calf'), dq):
                         j = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_JOINT, f'{leg}_{p}_joint')
                         lo, hi = (float(x) for x in m.jnt_range[j])
@@ -63,6 +65,11 @@ def main():
     n_support = sum(1 for v in (last.get('loads') or {}).values() if v >= 1.0)
     ok = bool(last and last['tilt'] <= 10.0 and n_support >= 3
               and (last['loads'].get('RR', 0) >= 1.0) and not env.terminated)
+    if a.save_final:
+        fp = ROOT / a.save_final
+        fp.parent.mkdir(parents=True, exist_ok=True)
+        fp.write_text(json.dumps({'snapshot': env.save_state(), 'spec': spec},
+                                 ensure_ascii=False))
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
     (out / 'result.json').write_text(json.dumps(

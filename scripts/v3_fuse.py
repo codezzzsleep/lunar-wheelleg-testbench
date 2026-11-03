@@ -43,7 +43,12 @@ def sha256_file(p):
 
 
 def arr_sha(a):
-    return hashlib.sha256(np.ascontiguousarray(a).tobytes()).hexdigest()[:32]
+    """数组内容 SHA：全 64 位十六进制。
+
+    旧版本这里截断成 32 位，与 v3_core.occ_identity 的 64 位混用会得到假"不一致"；
+    统一为一个定义，旧清单里的 32 位值在读取端按 legacy 处理。
+    """
+    return hashlib.sha256(np.ascontiguousarray(a).tobytes()).hexdigest()
 
 
 # --------------------------------------------------------------------------- grid

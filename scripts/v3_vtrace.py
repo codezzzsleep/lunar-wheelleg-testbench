@@ -180,6 +180,10 @@ def trace_candidate(state_dir, proto, cid):
         def _verdict(src):
             if not src:
                 return 'unverifiable_legacy'
+            if len(src) == 32:
+                # 旧清单把内容 SHA 截断成 32 位：只能做前缀核对，不能判 mismatch
+                return 'legacy_32hex_prefix_ok' if fused_sha.startswith(src) else \
+                    'legacy_32hex_unverifiable'
             return 'ok' if src == fused_sha else 'mismatch'
         tr['S5_collision'] = {
             'identity_verdict': _verdict((coll.get('source') or {}).get('occ_sha256')),

@@ -311,3 +311,12 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 - rigid：x=**23.5482 m**，100.26 s，tilt 8.91°，无终止；
 - nominal：x=**23.5375 m**，106.6 s，tilt 8.29°，无终止；
 - 三个 5 cm 台阶全部通过，纯轮式慢压，终点稳定 1 s。
+
+## SIDE_LEVEL 独立评估尝试（未得到干净结果）
+
+- 静态垫块场景（右侧 8–15 mm 小垫块）在 reset/settle 阶段就把机器人掀翻
+  （roll −71.5° / −131.6°），不是 SIDE_LEVEL 的动作问题，而是场景/初始落点问题。
+- 脚本保留在 `scripts/v3_side_level.py`，标 WIP；**不要把它的输出当作
+  SIDE_LEVEL 通过/失败结论**。第二技能仍为“已实现、未验证”。
+- 不再为此新开场；若后续要验证，应让机器人先在平地稳定，再横向驶上垫块，
+  而不是在垫块上出生。

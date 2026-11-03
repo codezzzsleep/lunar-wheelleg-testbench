@@ -1,0 +1,77 @@
+{
+  "schema": "stage6-calib/v1",
+  "results": [
+    {
+      "target_z": 0.02,
+      "z0": 0.3841,
+      "z_hold": 0.404,
+      "z_gain": 0.0198,
+      "chassis0": 0.2775,
+      "chassis_hold": 0.2972,
+      "clearance_gain": 0.0197,
+      "tilt_max": 0.05,
+      "min_wheel_load": 7.389,
+      "joint_margin_min": 0.6908,
+      "terminated": false,
+      "hold_window": 50,
+      "ok": true,
+      "trajectory": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage006/calib/z02/record/index.json",
+        "trajectory_sha256": "1547d998db19fca583c08f02fda9527504972ebdb1b2b7f59c3bce6062d82bab",
+        "frame_count": 300,
+        "record_hz": 50.0,
+        "duration_s": 5.9799999999999605,
+        "n_chunks": 2,
+        "contacts_n": 2700
+      }
+    },
+    {
+      "target_z": 0.04,
+      "z0": 0.3841,
+      "z_hold": 0.4239,
+      "z_gain": 0.0398,
+      "chassis0": 0.2775,
+      "chassis_hold": 0.3171,
+      "clearance_gain": 0.0396,
+      "tilt_max": 0.041,
+      "min_wheel_load": 7.507,
+      "joint_margin_min": 0.5553,
+      "terminated": false,
+      "hold_window": 50,
+      "ok": true,
+      "trajectory": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage006/calib/z04/record/index.json",
+        "trajectory_sha256": "b068914538c7723e02e4b655c108865f88bbb1dc45ce18d0a913d77771e50c70",
+        "frame_count": 300,
+        "record_hz": 50.0,
+        "duration_s": 5.9799999999999605,
+        "n_chunks": 2,
+        "contacts_n": 2700
+      }
+    },
+    {
+      "target_z": 0.06,
+      "z0": 0.3841,
+      "z_hold": 0.4436,
+      "z_gain": 0.0595,
+      "chassis0": 0.2775,
+      "chassis_hold": 0.3368,
+      "clearance_gain": 0.0594,
+      "tilt_max": 0.058,
+      "min_wheel_load": 7.592,
+      "joint_margin_min": 0.4084,
+      "terminated": false,
+      "hold_window": 50,
+      "ok": true,
+      "trajectory": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage006/calib/z06/record/index.json",
+        "trajectory_sha256": "ee29360143e0c4b874020e007ddf047421b6d14eab5c72269c38519fe1472ac3",
+        "frame_count": 300,
+        "record_hz": 50.0,
+        "duration_s": 5.9799999999999605,
+        "n_chunks": 2,
+        "contacts_n": 2700
+      }
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "schema": "stage6-rock/v1",
+  "rock": "moon_rock_05",
+  "height_m": 0.3,
+  "scale": 1.74419,
+  "rock_x": 1.0,
+  "budget_s": 120.0,
+  "normal": {
+    "arm": "stance",
+    "raise_z": 0.0,
+    "x_end": 2.2751,
+    "terminated": false,
+    "base_rock_contact": true,
+    "max_tilt": 3.829,
+    "min_chassis": 0.2757,
+    "outcome": "blocked",
+    "trajectory": {
+      "trajectory_path": "/workspace/lunar-lab/runs/v3/stage006/rock5/record_stance/index.json",
+      "trajectory_sha256": "53f453326fe3cef3d45b285f8f062a0d59e4dbeb040d1f86290e3036eebbc60c",
+      "frame_count": 1501,
+      "record_hz": 50.0,
+      "duration_s": 29.99999999999945,
+      "n_chunks": 7,
+      "contacts_n": 10518
+    },
+    "n_frames": 1486
+  },
+  "body_clearance": {
+    "arm": "body_clearance",
+    "raise_z": 0.06,
+    "x_end": 2.3019,
+    "terminated": false,
+    "base_rock_contact": true,
+    "max_tilt": 0.332,
+    "min_chassis": 0.27756,
+    "outcome": "pass",
+    "trajectory": {
+      "trajectory_path": "/workspace/lunar-lab/runs/v3/stage006/rock5/record_body_clearance/index.json",
+      "trajectory_sha256": "2df5b1608d13b1172d8c7e87b9ac04489171097e676c70e460e771c2b1d8ce4e",
+      "frame_count": 1342,
+      "record_hz": 50.0,
+      "duration_s": 26.819999999999517,
+      "n_chunks": 6,
+      "contacts_n": 10558
+    },
+    "n_frames": 1227
+  },
+  "delta": {
+    "x_end": 0.0268,
+    "contact": [
+      true,
+      true
+    ]
+  }
+}

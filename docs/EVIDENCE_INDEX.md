@@ -93,3 +93,6 @@
 | `runs/v3/stage006/replay_fix` | mp4 | — | stance vs BODY, 30.07 s, raise frame @10 s, lowered @28 s, sha256 f7c8a5d9... |
 | `runs/v3/stage007/render1` | stage7-render/v1 | — | textured scene/target 1536px from frozen layout |
 | `runs/v3/stage007/lux3d` | stage7-lux3d-batch/v1 | 通过 | 6 real G1-Turbo candidates, GLB shas recorded, GLBs on sandbox |
+| `runs/v3/stage007/cand_small` | stage7-screen/v1 | 边界 | 6 candidates FULL/OBS: BODY stalls 120 s, 0 chassis contacts on all |
+| `runs/v3/stage007/summary.json` | stage7-integration-summary/v1 | 边界 | Lux3D candidates do not reproduce the clean BODY pass |
+| `runs/v3/stage007/stage007_pack.tar.gz` | pack | — | reference replay + textured stills + candidate table + README |

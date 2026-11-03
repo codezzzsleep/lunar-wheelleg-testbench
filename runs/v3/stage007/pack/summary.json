@@ -1,0 +1,144 @@
+{
+  "schema": "stage7-integration-summary/v1",
+  "layout": "narrow passage: reference rock 0.30 m at (1.0,0), background walls y=+/-0.55 (inner +/-0.30), end 2.6 m, 120 s",
+  "reference_result": "only BODY_CLEARANCE safe-passes on the reference rock (30.06 s, 0 chassis contacts); wheels fail because the walls remove the detour",
+  "lux3d": {
+    "model": "G1-Turbo",
+    "input": "target_1536.png (textured rock from the frozen layout)",
+    "tasks": 6,
+    "glb_shas": [
+      "9bf975219b29",
+      "407c1f700191",
+      "8e5c112b3ed8",
+      "51c541bcbf53",
+      "f7a91ff6d635",
+      "083447c5023f"
+    ],
+    "budget": {
+      "successful": 6,
+      "failed_reservations": 2,
+      "held_credits_upper": 160,
+      "remaining_credits_upper": 340
+    }
+  },
+  "candidate_screen": [
+    {
+      "task": 4632564,
+      "full": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "61b5669dec5e51a8"
+      },
+      "obs": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    },
+    {
+      "task": 4632603,
+      "full": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "014331e4df5f31b5"
+      },
+      "obs": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    },
+    {
+      "task": 4632618,
+      "full": {
+        "chosen": "D1",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "115e2a4f1bd78290"
+      },
+      "obs": {
+        "chosen": "D1",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    },
+    {
+      "task": 4632621,
+      "full": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "cccbbda461e64c78"
+      },
+      "obs": {
+        "chosen": "R2",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    },
+    {
+      "task": 4632624,
+      "full": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "4808775d1ec5b282"
+      },
+      "obs": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    },
+    {
+      "task": 4632627,
+      "full": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "92f905ef3275359b"
+      },
+      "obs": {
+        "chosen": "A0",
+        "body_outcome": "physical_failure",
+        "body_cost_s": 120.022,
+        "body_chassis_contacts": 0,
+        "plan_id": "861beea42332ed6d"
+      }
+    }
+  ],
+  "conclusion": "none of the six generated candidates reproduces the clean BODY_CLEARANCE pass: the body run stalls in drive_to_lower for 120 s on every candidate in both arms, with zero chassis contacts, i.e. the wheels are blocked by the generated rock, not the belly. One candidate (4632618) lets the wheels pass, so the narrow-passage premise does not hold for it. One candidate (4632621) shows FULL failing while OBS passes: OBS truncates the unknown rear to a 0.10 m front band, which makes the obstacle easier, not the planner better.",
+  "boundary": "per the agreed stop rule, BODY clean-pass was not reproduced on Lux3D candidates; control research ends here, the reference scene keeps its clean BODY pass, and no further skill variants are opened.",
+  "timing": {
+    "api_observed_submit_to_download": "~2-5 min per task (wall clock, no per-task timestamps in the batch ledger)",
+    "screening_wall": "~8 min wall for 6 candidates x 2 arms x 3 actions on the 8-core sandbox",
+    "physics_time_s": {
+      "body_total": 1440.3,
+      "note": "body 120.022 s on 12/12 arms; wheel rows 8-60 s each"
+    }
+  },
+  "artifacts": {
+    "replay_reference": "runs/v3/stage006/replay_fix/body_vs_stance.mp4",
+    "textured_scene": "runs/v3/stage007/render1/scene_1536.png",
+    "textured_target": "runs/v3/stage007/render1/target_1536.png",
+    "candidate_table": "runs/v3/stage007/cand_small/table.json"
+  }
+}

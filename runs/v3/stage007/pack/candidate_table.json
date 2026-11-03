@@ -1,0 +1,794 @@
+[
+  {
+    "task": 4632564,
+    "glb": "9bf975219b29",
+    "arms": {
+      "full": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "61b5669dec5e51a8"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 1214,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "tipped",
+            "cost": 60.0,
+            "t_end": 5.4,
+            "chassis_contacts": 11,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "61b5669dec5e51a8"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.802,
+          "far_x": 1.202,
+          "obs_truncated_x": null,
+          "grid_sha": "4110caff1114784dd56e07c810dc7d50"
+        }
+      },
+      "obs": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "tipped",
+            "cost": 60.0,
+            "t_end": 4.72,
+            "chassis_contacts": 22,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.802,
+          "far_x": 1.202,
+          "obs_truncated_x": 0.902,
+          "grid_sha": "1f6dd1bd463bde42a174db1f8c0d032d"
+        }
+      }
+    }
+  },
+  {
+    "task": 4632603,
+    "glb": "407c1f700191",
+    "arms": {
+      "full": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "014331e4df5f31b5"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "tipped",
+            "cost": 60.0,
+            "t_end": 3.94,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "014331e4df5f31b5"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.818,
+          "far_x": 1.186,
+          "obs_truncated_x": null,
+          "grid_sha": "eaeed4071fbb24ad78369e2546be088e"
+        }
+      },
+      "obs": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "tipped",
+            "cost": 60.0,
+            "t_end": 4.06,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.818,
+          "far_x": 1.186,
+          "obs_truncated_x": 0.918,
+          "grid_sha": "5f0239a281114fad8ae0bec5eebcf45c"
+        }
+      }
+    }
+  },
+  {
+    "task": 4632618,
+    "glb": "8e5c112b3ed8",
+    "arms": {
+      "full": {
+        "chosen": "D1",
+        "votes": {
+          "R2": 1,
+          "D1": 1,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "115e2a4f1bd78290"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 8.06,
+            "t_end": 8.06,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 7.62,
+            "t_end": 7.62,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "115e2a4f1bd78290"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.826,
+          "far_x": 1.178,
+          "obs_truncated_x": null,
+          "grid_sha": "eb43f79ee562deefe5e1609d1e2d9f2c"
+        }
+      },
+      "obs": {
+        "chosen": "D1",
+        "votes": {
+          "R2": 1,
+          "D1": 1,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 8.0,
+            "t_end": 8.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 6.52,
+            "t_end": 6.52,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.826,
+          "far_x": 1.178,
+          "obs_truncated_x": 0.926,
+          "grid_sha": "096468eea8da1db9e7d56c603bc02e5c"
+        }
+      }
+    }
+  },
+  {
+    "task": 4632621,
+    "glb": "51c541bcbf53",
+    "arms": {
+      "full": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "cccbbda461e64c78"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 1869,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 1865,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "cccbbda461e64c78"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.83,
+          "far_x": 1.174,
+          "obs_truncated_x": null,
+          "grid_sha": "6ab28184c1f5afdabca6475252839ad6"
+        }
+      },
+      "obs": {
+        "chosen": "R2",
+        "votes": {
+          "R2": 1,
+          "D1": 1,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 8.42,
+            "t_end": 8.42,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": true,
+            "outcome": "pass",
+            "reason": "success",
+            "cost": 9.08,
+            "t_end": 9.08,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.83,
+          "far_x": 1.174,
+          "obs_truncated_x": 0.93,
+          "grid_sha": "79a2a79633f7bfa7bb3af00fb61217a0"
+        }
+      }
+    }
+  },
+  {
+    "task": 4632624,
+    "glb": "f7a91ff6d635",
+    "arms": {
+      "full": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "4808775d1ec5b282"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "4808775d1ec5b282"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.846,
+          "far_x": 1.158,
+          "obs_truncated_x": null,
+          "grid_sha": "5a0320a2a4bcf1984e6ff56c44f538a2"
+        }
+      },
+      "obs": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.846,
+          "far_x": 1.158,
+          "obs_truncated_x": 0.946,
+          "grid_sha": "3067ccfa52c8deaf6e90fda6ca369e6f"
+        }
+      }
+    }
+  },
+  {
+    "task": 4632627,
+    "glb": "083447c5023f",
+    "arms": {
+      "full": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "92f905ef3275359b"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 1,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 110,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "92f905ef3275359b"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.814,
+          "far_x": 1.19,
+          "obs_truncated_x": null,
+          "grid_sha": "4c6b7c4848e513157ec3485b1928ba06"
+        }
+      },
+      "obs": {
+        "chosen": "A0",
+        "votes": {
+          "R2": 0,
+          "D1": 0,
+          "BODY_CLEARANCE": 0
+        },
+        "body": {
+          "success": false,
+          "outcome": "physical_failure",
+          "cost": 120.022,
+          "chassis_contacts": 0,
+          "plan_id": "861beea42332ed6d"
+        },
+        "rows": [
+          {
+            "action": "R2",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "D1",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": null,
+            "cost": 60.0,
+            "t_end": 40.0,
+            "chassis_contacts": 0,
+            "plan_id": null
+          },
+          {
+            "action": "BODY_CLEARANCE",
+            "success": false,
+            "outcome": "physical_failure",
+            "reason": "failed_at_drive_to_lower",
+            "cost": 120.022,
+            "t_end": 120.022,
+            "chassis_contacts": 0,
+            "plan_id": "861beea42332ed6d"
+          },
+          {
+            "action": "A0",
+            "success": false,
+            "outcome": "safe_stop",
+            "reason": "abort",
+            "cost": 60.0,
+            "t_end": 3.000000000000002,
+            "chassis_contacts": 0,
+            "plan_id": null
+          }
+        ],
+        "geometry": {
+          "face_x": 0.814,
+          "far_x": 1.19,
+          "obs_truncated_x": 0.914,
+          "grid_sha": "fd80736184537de065f3ea3820254e8f"
+        }
+      }
+    }
+  }
+]

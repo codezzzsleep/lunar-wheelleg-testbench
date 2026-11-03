@@ -1,0 +1,160 @@
+{
+  "schema": "stage5-composite-check/v1",
+  "scene": {
+    "schema": "stage5-composite/v1",
+    "rocks": [
+      {
+        "id": "moon_rock_02",
+        "level": "h1",
+        "license": "CC0-1.0",
+        "source_url": "https://polyhaven.com/a/moon_rock_02",
+        "scale": 0.69767,
+        "y_center": -0.17,
+        "target_face_x": 1.0
+      },
+      {
+        "id": "moon_rock_05",
+        "level": "h1",
+        "license": "CC0-1.0",
+        "source_url": "https://polyhaven.com/a/moon_rock_05",
+        "scale": 0.69767,
+        "y_center": -0.085,
+        "target_face_x": 1.0
+      },
+      {
+        "id": "moon_rock_07",
+        "level": "h1",
+        "license": "CC0-1.0",
+        "source_url": "https://polyhaven.com/a/moon_rock_07",
+        "scale": 0.69767,
+        "y_center": 0.0,
+        "target_face_x": 1.0
+      },
+      {
+        "id": "moon_rock_01",
+        "level": "h1",
+        "license": "CC0-1.0",
+        "source_url": "https://polyhaven.com/a/moon_rock_01",
+        "scale": 0.69767,
+        "y_center": 0.085,
+        "target_face_x": 1.0
+      },
+      {
+        "id": "moon_rock_03",
+        "level": "h1",
+        "license": "CC0-1.0",
+        "source_url": "https://polyhaven.com/a/moon_rock_03",
+        "scale": 0.69767,
+        "y_center": 0.17,
+        "target_face_x": 1.0
+      }
+    ],
+    "grid": {
+      "origin": [
+        0.6,
+        -0.5,
+        0.0
+      ],
+      "pitch": 0.004,
+      "dims": [
+        500,
+        250,
+        50
+      ],
+      "content_sha": "6c4cf65396b15395d7a3cd9461d6cd7a"
+    },
+    "collision": {
+      "representation": "box_union (4 mm boxes from 4 mm occupancy)",
+      "coll_dir": "runs/v3/stage005/comp_main4/coll",
+      "n_boxes": 717
+    },
+    "top_z": 0.124,
+    "face_x": 1.002,
+    "far_x": 1.342,
+    "landing_x": 1.072,
+    "bearing": {
+      "landing_x": 1.072,
+      "wheel_lines": {
+        "FR": {
+          "y": -0.19,
+          "z": 0.112,
+          "slope_x": 0.167,
+          "slope_y": 0.333,
+          "flat_area_frac": 0.728
+        },
+        "FL": {
+          "y": 0.19,
+          "z": 0.1,
+          "slope_x": 0.5,
+          "slope_y": -4.167,
+          "flat_area_frac": 0.734
+        }
+      },
+      "front_slope": {
+        "FR": 0.112,
+        "FL": 0.1
+      },
+      "rear_drop": {
+        "FR": 0.112,
+        "FL": 0.1
+      },
+      "coverage_y": [
+        -0.21,
+        0.246
+      ],
+      "max_gap_m": 0.092,
+      "effective_area_frac": 0.308,
+      "passable_columns": {
+        "FR": [
+          true,
+          1.018,
+          1.146
+        ],
+        "FL": [
+          true,
+          1.026,
+          1.234
+        ]
+      }
+    }
+  },
+  "climb": {
+    "success": false,
+    "outcome": "physical_failure",
+    "reason": "terminated",
+    "t_end": 22.0,
+    "checks": {
+      "approach": true,
+      "brake": true,
+      "FR_shift": true,
+      "FR_lift": true,
+      "FR_advance": false,
+      "FL_lower": true,
+      "level_roll": true,
+      "body_down": true,
+      "preload_min": true,
+      "stable": true,
+      "descent": false
+    }
+  },
+  "plan": {
+    "action": "CLIMB",
+    "params": {
+      "face_FR": 1.002,
+      "face_FL": 1.002,
+      "top_z": 0.124,
+      "brake_x": 0.652,
+      "place_RR_x": 1.072,
+      "assist_FL_x": 1.072,
+      "lift_center_z": 0.235,
+      "far_x": 1.342,
+      "descent": {
+        "mode": "forward_drop",
+        "target_x": 1.6420000000000001
+      },
+      "landing": null
+    },
+    "applicable": true,
+    "plan_id": "b71039623c18f713"
+  }
+}

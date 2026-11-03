@@ -1,0 +1,100 @@
+{
+  "schema": "stage5-composite/v1",
+  "rocks": [
+    {
+      "id": "moon_rock_02",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_02",
+      "scale": 0.69767,
+      "y_center": -0.11,
+      "target_face_x": 1.0
+    },
+    {
+      "id": "moon_rock_05",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_05",
+      "scale": 0.69767,
+      "y_center": 0.0,
+      "target_face_x": 1.01
+    },
+    {
+      "id": "moon_rock_07",
+      "level": "h1",
+      "license": "CC0-1.0",
+      "source_url": "https://polyhaven.com/a/moon_rock_07",
+      "scale": 0.69767,
+      "y_center": 0.09,
+      "target_face_x": 1.02
+    }
+  ],
+  "grid": {
+    "origin": [
+      0.6,
+      -0.5,
+      0.0
+    ],
+    "pitch": 0.004,
+    "dims": [
+      500,
+      250,
+      50
+    ],
+    "content_sha": "e19078788dd5d0421a38160d42e7b9a6"
+  },
+  "collision": {
+    "representation": "box_union (4 mm boxes from 4 mm occupancy)",
+    "coll_dir": "runs/v3/stage005/comp_main2/coll",
+    "n_boxes": 389
+  },
+  "top_z": 0.124,
+  "face_x": 1.002,
+  "far_x": 1.214,
+  "landing_x": 1.072,
+  "bearing": {
+    "landing_x": 1.072,
+    "wheel_lines": {
+      "FR": {
+        "y": -0.19,
+        "z": 0.0,
+        "slope_x": 0.0,
+        "slope_y": 0.0,
+        "flat_area_frac": 0.976
+      },
+      "FL": {
+        "y": 0.19,
+        "z": 0.0,
+        "slope_x": 0.0,
+        "slope_y": 0.0,
+        "flat_area_frac": 1.0
+      }
+    },
+    "front_slope": {
+      "FR": 0.0,
+      "FL": 0.0
+    },
+    "rear_drop": {
+      "FR": 0.0,
+      "FL": 0.0
+    },
+    "coverage_y": [
+      -0.13,
+      0.114
+    ],
+    "max_gap_m": 0.048,
+    "effective_area_frac": 0.18,
+    "passable_columns": {
+      "FR": [
+        false,
+        null,
+        null
+      ],
+      "FL": [
+        false,
+        null,
+        null
+      ]
+    }
+  }
+}

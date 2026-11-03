@@ -1,0 +1,173 @@
+{
+  "schema": "stage5-composite-screen/v1",
+  "gate": {
+    "coverage_width_min_m": 0.4,
+    "max_gap_max_m": 0.01,
+    "top_z_m": [
+      0.02,
+      0.15
+    ],
+    "top_len_min_m": 0.2,
+    "wheel_flat_area_min": 0.6,
+    "wheel_slope_max": 0.15,
+    "note": "gaps between rocks never count as bearing surface"
+  },
+  "configs": [
+    {
+      "config": "V0_two_rocks",
+      "dir": "comp_main",
+      "rocks": [
+        "moon_rock_02",
+        "moon_rock_05"
+      ],
+      "top_z": 0.124,
+      "face_x": 1.002,
+      "far_x": 1.146,
+      "coverage_y": [
+        -0.162,
+        0.15
+      ],
+      "coverage_width": 0.312,
+      "max_gap_m": 0.144,
+      "effective_area_frac": 0.168,
+      "wheel_lines": {
+        "FR": {
+          "y": -0.19,
+          "z": 0.0,
+          "slope_x": 0.0,
+          "slope_y": 2.5,
+          "flat_area_frac": 0.704
+        },
+        "FL": {
+          "y": 0.19,
+          "z": 0.0,
+          "slope_x": 0.0,
+          "slope_y": 0.0,
+          "flat_area_frac": 0.899
+        }
+      },
+      "front_slope": {
+        "FR": 0.0,
+        "FL": 0.0
+      },
+      "rear_drop": {
+        "FR": 0.0,
+        "FL": 0.0
+      },
+      "applicable": false,
+      "reasons": [
+        "coverage_width(0.312<0.40)",
+        "bearing_gap(0.144)",
+        "top_len(0.144)",
+        "FR_slope(0.0,2.5)"
+      ],
+      "climb": "physical_failure",
+      "climb_t": 31.8
+    },
+    {
+      "config": "V1_three_rocks",
+      "dir": "comp_main2",
+      "rocks": [
+        "moon_rock_02",
+        "moon_rock_05",
+        "moon_rock_07"
+      ],
+      "top_z": 0.124,
+      "face_x": 1.002,
+      "far_x": 1.214,
+      "coverage_y": [
+        -0.13,
+        0.114
+      ],
+      "coverage_width": 0.244,
+      "max_gap_m": 0.048,
+      "effective_area_frac": 0.18,
+      "wheel_lines": {
+        "FR": {
+          "y": -0.19,
+          "z": 0.0,
+          "slope_x": 0.0,
+          "slope_y": 0.0,
+          "flat_area_frac": 0.976
+        },
+        "FL": {
+          "y": 0.19,
+          "z": 0.0,
+          "slope_x": 0.0,
+          "slope_y": 0.0,
+          "flat_area_frac": 1.0
+        }
+      },
+      "front_slope": {
+        "FR": 0.0,
+        "FL": 0.0
+      },
+      "rear_drop": {
+        "FR": 0.0,
+        "FL": 0.0
+      },
+      "applicable": false,
+      "reasons": [
+        "coverage_width(0.244<0.40)",
+        "bearing_gap(0.048)"
+      ],
+      "climb": "abort",
+      "climb_t": 21.22
+    },
+    {
+      "config": "MAIN_five_rocks",
+      "dir": "comp_main4",
+      "rocks": [
+        "moon_rock_02",
+        "moon_rock_05",
+        "moon_rock_07",
+        "moon_rock_01",
+        "moon_rock_03"
+      ],
+      "top_z": 0.124,
+      "face_x": 1.002,
+      "far_x": 1.342,
+      "coverage_y": [
+        -0.21,
+        0.246
+      ],
+      "coverage_width": 0.456,
+      "max_gap_m": 0.092,
+      "effective_area_frac": 0.308,
+      "wheel_lines": {
+        "FR": {
+          "y": -0.19,
+          "z": 0.112,
+          "slope_x": 0.167,
+          "slope_y": 0.333,
+          "flat_area_frac": 0.728
+        },
+        "FL": {
+          "y": 0.19,
+          "z": 0.1,
+          "slope_x": 0.5,
+          "slope_y": -4.167,
+          "flat_area_frac": 0.734
+        }
+      },
+      "front_slope": {
+        "FR": 0.112,
+        "FL": 0.1
+      },
+      "rear_drop": {
+        "FR": 0.112,
+        "FL": 0.1
+      },
+      "applicable": false,
+      "reasons": [
+        "bearing_gap(0.092)",
+        "FR_slope(0.167,0.333)",
+        "FL_slope(0.5,-4.167)"
+      ],
+      "climb": "physical_failure",
+      "climb_t": 22.0
+    }
+  ],
+  "qualified": [],
+  "conclusion": "no qualified composite config; CLIMB not passed in truth on any of the three"
+}

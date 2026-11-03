@@ -227,8 +227,34 @@ class Climb:
                 'x_target': round(x_target, 4),
                 'ok': bool(x >= x_target - 0.01)}
 
+    # ---- 前轴预压：机身向 +x 平移，前轮被压向台面、后轮伸长
+    def preload(self, dx=0.010, ramp=30):
+        env = self.env
+        dp = np.array([0.0, float(dx), 0.0])
+        start = {leg: dict(self.targets[leg]) for leg in LEG}
+        goal = {leg: dict(self.targets[leg]) for leg in LEG}
+        for leg in LEG:
+            dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.06, 0.06)
+            for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+        for i in range(ramp):
+            a = (i + 1) / ramp
+            for leg in LEG:
+                for p in ('hip', 'thigh', 'calf'):
+                    self.targets[leg][p] = float(
+                        start[leg][p] + a * (goal[leg][p] - start[leg][p]))
+            self.step('preload_front')
+            if self.terminated:
+                break
+        fr = contact_load(env, 'FR')
+        fl = contact_load(env, 'FL')
+        return {'phase': 'preload_front',
+                'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
+                'fr_frac': round(fr / self.W, 4), 'fl_frac': round(fl / self.W, 4),
+                'ok': bool(fr >= 0.05 * self.W and fl >= 0.05 * self.W)}
+
     # ---- 低速前进到指定机身 x（前后轮都在支撑面上时用）
-    def advance_body(self, x_target, max_s=8.0, speed=0.05):
+    def advance_body(self, x_target, max_s=12.0, speed=0.06):
         env = self.env
         for _ in range(int(max_s * 50)):
             if float(env.data.qpos[0]) >= x_target:
@@ -372,6 +398,10 @@ def main():
                     break
         if not c.terminated:
             phases.append(c.hold_leg(leg))
+
+    # --rear：先做前轴预压，让两条前轮都真正吃上载荷
+    if a.rear and not c.terminated:
+        phases.append(c.preload())
 
     # 两条前轮同时承载
     if not c.terminated:

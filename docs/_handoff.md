@@ -19,6 +19,8 @@
   （1757 帧/58.6 s；300 帧/10 s；并排 1920×1080）。
 - 离线包：`dist/stage003_bundle.tar.gz`（7.8 MB，sha256 3347bf9b…）；新目录解包
   MANIFEST 273/273 通过，`./run_replay.sh wheel` exit 0。
+- **记录修复（追加）**：记录器采样入队改深拷贝；重采 `fix_leg_state1|2|3`、`fix_s5_wheel2`；
+  旧记录标 `RECORD_DEFECT`；回放与离线包按修复后记录重建（sha256 355f3627…）。
 - 记录：50 Hz qpos/qvel/关节目标/力矩/接触（contacts jsonl）；相位只有 result.json
   边界、轮模式只有 brake 标志——缺口已在 `runs/v3/stage003/record_check.json` 标注。
 - 不声称：20 m 路线、软土脱困、Lux3D 增量价值。

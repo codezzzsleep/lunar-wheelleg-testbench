@@ -41,5 +41,7 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_rock_actions.py --state runs/v3/s
 - CLIMB 未完成：最后一条腿的支撑/落地仍是缺口；D3 的 3/3 不成立。
 - E 没有“背面使 FULL 成功而 OBS 失败”的正例；现有 14 例几乎退化。
 - 动作结束后接触表不可靠；落地判据用轮心高度（≤0.12 m）代替。
-- `dist/v3_bundle` 仍是旧批次；发布通道受限于无 git-lfs/gh/token。
+- `dist/v3_bundle` 仍是旧批次（12:29 构建），与当前证据（19:xx）不一致；
+  重建需要 `build_delivery_v5.py --manifest` 的页面/媒体清单，未在本轮重跑；
+  发布通道受限于无 git-lfs/gh/token，标 `blocked_on_release_channel`。
 - `revalidation.json` 早于最终批次，不能据此标“已复验”。

@@ -1,0 +1,784 @@
+{
+  "schema": "v3-ctrl-map/v1",
+  "model": "Go2W (unitree_mujoco)",
+  "nq": 23,
+  "nv": 22,
+  "nu": 16,
+  "timestep_s": 0.002,
+  "gravity": [
+    0.0,
+    0.0,
+    -1.62
+  ],
+  "joints": [
+    {
+      "name": "joint0",
+      "type": 0,
+      "qadr": 0,
+      "dofadr": 0,
+      "axis": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    },
+    {
+      "name": "FL_hip_joint",
+      "type": 3,
+      "qadr": 7,
+      "dofadr": 6,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        -1.0472,
+        1.0472
+      ],
+      "limited": true
+    },
+    {
+      "name": "FL_thigh_joint",
+      "type": 3,
+      "qadr": 8,
+      "dofadr": 7,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -1.5708,
+        3.4907
+      ],
+      "limited": true
+    },
+    {
+      "name": "FL_calf_joint",
+      "type": 3,
+      "qadr": 9,
+      "dofadr": 8,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -2.7227,
+        -0.83776
+      ],
+      "limited": true
+    },
+    {
+      "name": "FL_wheel_joint",
+      "type": 3,
+      "qadr": 10,
+      "dofadr": 9,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    },
+    {
+      "name": "FR_hip_joint",
+      "type": 3,
+      "qadr": 11,
+      "dofadr": 10,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        -1.0472,
+        1.0472
+      ],
+      "limited": true
+    },
+    {
+      "name": "FR_thigh_joint",
+      "type": 3,
+      "qadr": 12,
+      "dofadr": 11,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -1.5708,
+        3.4907
+      ],
+      "limited": true
+    },
+    {
+      "name": "FR_calf_joint",
+      "type": 3,
+      "qadr": 13,
+      "dofadr": 12,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -2.7227,
+        -0.83776
+      ],
+      "limited": true
+    },
+    {
+      "name": "FR_wheel_joint",
+      "type": 3,
+      "qadr": 14,
+      "dofadr": 13,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    },
+    {
+      "name": "RL_hip_joint",
+      "type": 3,
+      "qadr": 15,
+      "dofadr": 14,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        -1.0472,
+        1.0472
+      ],
+      "limited": true
+    },
+    {
+      "name": "RL_thigh_joint",
+      "type": 3,
+      "qadr": 16,
+      "dofadr": 15,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -0.5236,
+        4.5379
+      ],
+      "limited": true
+    },
+    {
+      "name": "RL_calf_joint",
+      "type": 3,
+      "qadr": 17,
+      "dofadr": 16,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -2.7227,
+        -0.83776
+      ],
+      "limited": true
+    },
+    {
+      "name": "RL_wheel_joint",
+      "type": 3,
+      "qadr": 18,
+      "dofadr": 17,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    },
+    {
+      "name": "RR_hip_joint",
+      "type": 3,
+      "qadr": 19,
+      "dofadr": 18,
+      "axis": [
+        1.0,
+        0.0,
+        0.0
+      ],
+      "range": [
+        -1.0472,
+        1.0472
+      ],
+      "limited": true
+    },
+    {
+      "name": "RR_thigh_joint",
+      "type": 3,
+      "qadr": 20,
+      "dofadr": 19,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -0.5236,
+        4.5379
+      ],
+      "limited": true
+    },
+    {
+      "name": "RR_calf_joint",
+      "type": 3,
+      "qadr": 21,
+      "dofadr": 20,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        -2.7227,
+        -0.83776
+      ],
+      "limited": true
+    },
+    {
+      "name": "RR_wheel_joint",
+      "type": 3,
+      "qadr": 22,
+      "dofadr": 21,
+      "axis": [
+        0.0,
+        1.0,
+        0.0
+      ],
+      "range": [
+        0.0,
+        0.0
+      ],
+      "limited": false
+    }
+  ],
+  "actuators": [
+    {
+      "index": 0,
+      "name": "FR_hip",
+      "trnid": 5,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 1,
+      "name": "FR_thigh",
+      "trnid": 6,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 2,
+      "name": "FR_calf",
+      "trnid": 7,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -45.43,
+        45.43
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 3,
+      "name": "FL_hip",
+      "trnid": 1,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 4,
+      "name": "FL_thigh",
+      "trnid": 2,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 5,
+      "name": "FL_calf",
+      "trnid": 3,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -45.43,
+        45.43
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 6,
+      "name": "RR_hip",
+      "trnid": 13,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 7,
+      "name": "RR_thigh",
+      "trnid": 14,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 8,
+      "name": "RR_calf",
+      "trnid": 15,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -45.43,
+        45.43
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 9,
+      "name": "RL_hip",
+      "trnid": 9,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 10,
+      "name": "RL_thigh",
+      "trnid": 10,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -23.7,
+        23.7
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 11,
+      "name": "RL_calf",
+      "trnid": 11,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -45.43,
+        45.43
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 12,
+      "name": "FR_wheel",
+      "trnid": 8,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -15.0,
+        15.0
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 13,
+      "name": "FL_wheel",
+      "trnid": 4,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -15.0,
+        15.0
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 14,
+      "name": "RR_wheel",
+      "trnid": 16,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -15.0,
+        15.0
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    },
+    {
+      "index": 15,
+      "name": "RL_wheel",
+      "trnid": 12,
+      "gear": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ctrlrange": [
+        -15.0,
+        15.0
+      ],
+      "ctrllimited": true,
+      "forcerange": [
+        0.0,
+        0.0
+      ],
+      "forcelimited": false
+    }
+  ],
+  "wheels": {
+    "FR": {
+      "body_id": 9,
+      "n_geom": 2,
+      "geom_types": [
+        7,
+        7
+      ],
+      "radius_candidates": [],
+      "geom_sizes": [
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ],
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ]
+      ],
+      "geom_mesh_names": [
+        "wheel",
+        "wheel"
+      ],
+      "body_name": "FR_wheel_link",
+      "body_pos": [
+        0.0,
+        0.0,
+        -0.2264
+      ]
+    },
+    "FL": {
+      "body_id": 5,
+      "n_geom": 2,
+      "geom_types": [
+        7,
+        7
+      ],
+      "radius_candidates": [],
+      "geom_sizes": [
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ],
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ]
+      ],
+      "geom_mesh_names": [
+        "wheel",
+        "wheel"
+      ],
+      "body_name": "FL_wheel_link",
+      "body_pos": [
+        0.0,
+        0.0,
+        -0.2264
+      ]
+    },
+    "RR": {
+      "body_id": 17,
+      "n_geom": 2,
+      "geom_types": [
+        7,
+        7
+      ],
+      "radius_candidates": [],
+      "geom_sizes": [
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ],
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ]
+      ],
+      "geom_mesh_names": [
+        "wheel",
+        "wheel"
+      ],
+      "body_name": "RR_wheel_link",
+      "body_pos": [
+        0.0,
+        0.0,
+        -0.2264
+      ]
+    },
+    "RL": {
+      "body_id": 13,
+      "n_geom": 2,
+      "geom_types": [
+        7,
+        7
+      ],
+      "radius_candidates": [],
+      "geom_sizes": [
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ],
+        [
+          0.026302125404415656,
+          0.08599256097156228,
+          0.08595308207793478
+        ]
+      ],
+      "geom_mesh_names": [
+        "wheel",
+        "wheel"
+      ],
+      "body_name": "RL_wheel_link",
+      "body_pos": [
+        0.0,
+        0.0,
+        -0.2264
+      ]
+    }
+  },
+  "notes": "qadr/dofadr 是 MuJoCo 原生下标；gear 是执行器到关节的传动比；radius_candidates 只作核对，生产用协议里的 wheel_radius_m"
+}

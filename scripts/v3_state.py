@@ -204,35 +204,71 @@ def _geom_map(state_dir, tasks, kind):
     return geom
 
 
+def _geom_identity(state_dir, geom, kind, tasks):
+    """实际几何内容 ID（用于候选去重）：碰撞清单里的源占据 SHA，并与融合产物核对。
+
+    不能只看 manifest 存在：源 SHA 与 fused/occ_*.npz 不一致就拒绝该几何（返回 None），
+    由调用方记录 pipeline_failure，而不是拿旧碰撞件预演。
+    """
+    ids, bad = {}, []
+    for cid, coll_dir in geom.items():
+        man = json.loads((pathlib.Path(coll_dir) / 'manifest.json').read_text())
+        src = (man.get('source') or {}).get('occ_sha256')
+        if kind == 'FULL':
+            occ_p = state_dir / 'candidates' / cid / 'fused' / 'occ_full.npz'
+        else:
+            occ_p = state_dir / 'candidates' / next(iter(
+                [t['variant'] for t in tasks if t.get('state_id') == state_dir.name])) \
+                / 'fused' / 'occ_obs_only.npz'
+        cur = None
+        if occ_p.is_file():
+            import numpy as _np
+            cur = hashlib.sha256(_np.ascontiguousarray(
+                _np.load(occ_p)['occupied']).tobytes()).hexdigest()
+        if src and cur and src == cur:
+            ids[cid] = src
+        else:
+            bad.append({'candidate': cid, 'kind': kind,
+                        'reason': 'collision_source_mismatch',
+                        'coll_source': src, 'current': cur})
+    return ids, bad
+
+
 def stage_decide(state_dir, proto, tasks):
     st = v3_core.load_state(state_dir)
     out = state_dir / 'decision'
     res = {}
     geom_full = _geom_map(state_dir, tasks, 'FULL')
     if geom_full:
+        ids_full, bad_full = _geom_identity(state_dir, geom_full, 'FULL', tasks)
         rows, applic = v3_core.rehearse(st, geom_full, st['snapshot'], proto)
-        dec = v3_core.aggregate(rows, list(geom_full), {}, 'majority', proto,
+        dec = v3_core.aggregate(rows, list(geom_full), ids_full, 'majority', proto,
                                 threshold_mode='majority',
                                 applic={k: tuple(v) for k, v in applic.items()})
         v3_core.write_decision(out, st, 'FULL', rows, dec,
                                extra={'applicability': {k: list(v) for k, v in applic.items()},
-                                      'geometry': geom_full})
+                                      'geometry': geom_full,
+                                      'geometry_ids': ids_full,
+                                      'rejected_geometry': bad_full})
         res['FULL'] = {'chosen': dec['chosen'], 'votes': dec['votes'],
                        'n_valid': dec['n_valid'], 'reason': dec['reason']}
     geom_obs = _geom_map(state_dir, tasks, 'OBS_ONLY')
     if geom_obs:
+        ids_obs, bad_obs = _geom_identity(state_dir, geom_obs, 'OBS_ONLY', tasks)
         first = next(iter(geom_obs))
         rows1, applic = v3_core.rehearse(st, {first: geom_obs[first]}, st['snapshot'], proto)
         rows = []
         for cid in geom_obs:
             for r in rows1:
                 rr = dict(r); rr['candidate'] = cid; rows.append(rr)
-        dec = v3_core.aggregate(rows, list(geom_obs), {}, 'majority', proto,
+        dec = v3_core.aggregate(rows, list(geom_obs), ids_obs, 'majority', proto,
                                 threshold_mode='majority',
                                 applic={k: tuple(v) for k, v in applic.items()})
         v3_core.write_decision(out, st, 'OBS_ONLY', rows, dec,
                                extra={'applicability': {k: list(v) for k, v in applic.items()},
                                       'geometry': geom_obs,
+                                      'geometry_ids': ids_obs,
+                                      'rejected_geometry': bad_obs,
                                       'note': 'OBS_ONLY 的六个候选几何完全相同，预演只算一次，'
                                               '按候选 ID 复制票映射（不伪称多次独立试验）'})
         res['OBS_ONLY'] = {'chosen': dec['chosen'], 'votes': dec['votes'],

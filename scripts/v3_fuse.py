@@ -65,11 +65,14 @@ def frozen_grid(proto, vis):
     dims = np.maximum(np.ceil((hi - lo) / pitch).astype(int), 8)
     # 大岩石的栅格会超过上限：按状态自动把 pitch 放大到能装下为止（记录实际 pitch），
     # 而不是把大岩石整体排除（否则筛选会系统性偏向小石头）。
+    # 固定由观测算出的 lo/hi（世界坐标不便），只放大 pitch 直到装进上限。
+    # 旧实现把 hi[0]+hidden 又加了一次，x 上界被重复扩，栅格与度量都会漂。
+    lo0 = lo.copy()
+    hi0 = hi.copy()
     while int(np.prod(dims)) > int(v['grid_max_voxels']):
         pitch = round(pitch * 1.15, 6)
-        lo = np.floor(np.array([x_front - margin, y_c - half_y, 0.0]) / pitch) * pitch
-        dims = np.maximum(np.ceil(np.array([hi[0] + hidden, hi[1], hi[2]]) / pitch
-                                  - lo / pitch).astype(int), 8)
+        lo = np.floor(lo0 / pitch) * pitch
+        dims = np.maximum(np.ceil((hi0 - lo) / pitch).astype(int), 8)
     g = {'origin': lo, 'pitch': pitch, 'dims': dims}
     xs = lo[0] + (np.arange(dims[0]) + 0.5) * pitch
     ys = lo[1] + (np.arange(dims[1]) + 0.5) * pitch

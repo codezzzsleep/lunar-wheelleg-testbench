@@ -1,0 +1,138 @@
+{
+  "schema": "v3-v0trace/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "candidate": "A1",
+  "grid": {
+    "origin": [
+      1.134666,
+      -0.36504,
+      0.0
+    ],
+    "pitch": 0.003042,
+    "dims": [
+      396,
+      301,
+      76
+    ],
+    "grid_sha256": null
+  },
+  "S0_raw_glb": {
+    "path": null,
+    "status": "missing"
+  },
+  "S1_registration": {
+    "parent_world": "runs/v3/states/moon_rock_04_h1v0/candidates/A1/parent_world/body.stl",
+    "status": "ok",
+    "sha256": "d9697b0e715534579d40ad9e1c929ce7b1285cf1027a6ef6a8d75b677f4bffcb",
+    "n_vertices": 86238,
+    "n_faces": 28746,
+    "aabb": [
+      [
+        1.148661494255066,
+        -0.1217549592256546,
+        -0.014322632923722267
+      ],
+      [
+        1.292480230331421,
+        0.3076966106891632,
+        0.15544942021369934
+      ]
+    ],
+    "extents": [
+      0.14381873607635498,
+      0.4294515699148178,
+      0.1697720531374216
+    ],
+    "volume_m3": null,
+    "is_watertight": false,
+    "is_volume": false,
+    "n_components": 28746,
+    "units": "m (glTF)",
+    "registration": {}
+  },
+  "S2_occupancy": {
+    "status": "ok",
+    "n_parent_voxels": 7157,
+    "pitch_m": 0.003042,
+    "dims": [
+      396,
+      301,
+      76
+    ],
+    "method": "voxelize_columns（列射线区间填实心，开底扫描从地面起算）",
+    "occ_sha256": "c44884cbeb3fb22f36ad91b3a1ccb7a7",
+    "mesh_bounds": [
+      [
+        1.148661494255066,
+        -0.1217549592256546,
+        -0.014322632923722267
+      ],
+      [
+        1.292480230331421,
+        0.3076966106891632,
+        0.15544942021369934
+      ]
+    ],
+    "clipped_by_grid_any_axis": 1.0,
+    "volume_voxel_m3": 0.000201469192779816
+  },
+  "S3_classification": {
+    "P": 7157,
+    "P_and_F": 2769,
+    "P_and_B": 803,
+    "P_and_U": 3585,
+    "conservation_ok": true,
+    "carved_by_free": 2769,
+    "replaced_in_band": 803,
+    "kept_in_unknown": 3585
+  },
+  "S4_fusion": {
+    "n_v": 24401,
+    "n_generated_unknown": 3585,
+    "n_full_recomputed": 27986,
+    "n_full_saved": 27986,
+    "n_obs_saved": 24401,
+    "full_minus_v": 3585,
+    "full_minus_v_equals_p_and_u": true,
+    "obs_equals_v": true,
+    "recomputed_equals_saved": true,
+    "free_violations_full": 0,
+    "free_violations_obs": 0
+  },
+  "S5_collision": {
+    "full": {
+      "n_boxes": 1589,
+      "collision_sha": "eab94af8fb76a40d003389699a20a383",
+      "source": null,
+      "params": null,
+      "algo": null,
+      "cache_key": null
+    },
+    "obs_only": {
+      "n_boxes": 1134,
+      "collision_sha": "b49eb6a4162c04605882235a69ce4582",
+      "source": null,
+      "params": null
+    },
+    "hidden_increment_boxes": 455,
+    "source_matches_fusion": false
+  },
+  "S6_rehearsal_loaded": {
+    "initial_full_hashes_in_matrix": [
+      "8c272af7c8c7bc442c18a79b76f1e09b2cb4aa32aeffcca4e3216e0b78e7d8e6"
+    ],
+    "matches_fused_full": false,
+    "note": "矩阵里记录的哈希来自当次加载的碰撞/几何；不一致说明预演加载的不是本次融合结果"
+  },
+  "truth_hidden": {
+    "roi": "x∈[obstacle_x, obstacle_x+hidden_extent], |y|<=corridor_half, 且 U",
+    "T_hidden": 115789,
+    "P_hidden": 0,
+    "intersection": 0,
+    "missing": 115789,
+    "overfill": 0,
+    "missing_rate": 1.0,
+    "overfill_rate": 0.0,
+    "iou": 0.0
+  }
+}

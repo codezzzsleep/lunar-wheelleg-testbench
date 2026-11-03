@@ -2,7 +2,7 @@
 
 > 本块由人工维护；`scripts/v3_docs.py` 生成 `CURRENT_STATUS.md` 时置顶拼接。
 > 它是交接说明，不是第二份状态文档；数字口径仍以 v3 唯一源表为准。
-> 最近更新：2026-11-03 16:45 +0800。
+> 最近更新：2026-11-03 17:15 +0800。
 
 ## 代码基准
 
@@ -41,9 +41,27 @@
 - 自检：`scripts/v3_selftest_command.py`（A6 短核查，宿主可跑；站姿误差、子步计数、
   轮三模式、终止、save/restore 一致性）。
 
+## 本轮已完成（工作包 B）
+
+- B2 阶段机：`scripts/v3_basic_cycle.py`，STAND → SHIFT_SUPPORT → 抬轮 → HOLD →
+  LOWER_UNTIL_CONTACT → LOAD_TRANSFER → RETURN_BODY，每阶段有进入条件、最大时间与失败原因。
+- B1 测量：整机重心用 `subtree_com(base_link)`；支撑点来自真实轮-地接触点；
+  支撑多边形与 10 mm 裕度；逐轮法向载荷；轮底对地间隙；roll/pitch、速度、跟踪误差。
+- B3 支撑转移：逐腿 3 关节雅可比 + 阻尼最小二乘，支撑轮基本不动、机身/重心横移；
+  没有给三个支撑髋同一个经验偏置。
+- B5 阈值全部写进结果并由 `ok` 强制：HOLD 1.2 s、倾角 ≤5°、速度 ≤0.03 m/s、
+  角速度 ≤0.1 rad/s、摆动轮 <2% 重力、三支撑各 ≥5%、裕度 ≥10 mm、
+  跟踪 ≤0.15 rad、落轮持续承载 ≥0.2 s 后才回位。
+- B6 实跑（沙箱）：FR 在 rigid 与 nominal 各 3 个连续周期；FL/RR/RL 在 nominal 各 3 个周期。
+  全部阶段通过，无终止。
+- 数字（nominal，逐周期）：HOLD 倾角 1.36–1.52°、裕度 11.6–16.7 mm、
+  抬轮 24.9–25.2 mm、跟踪 0.014–0.016 rad；rigid 同类。
+- 运行目录：`runs/v3/basic_cycle/{rigid_r1, nominal_r1, nominal_FL_r1,
+  nominal_RR_r1, nominal_RL_r1}`，每个含 result.json、frames.npz、record/、
+  run_manifest.json、effective_config.json、status.json。
+
 ## 尚未完成
 
-- 工作包 B：重心与支撑多边形测量、SHIFT_SUPPORT → 小抬轮 → HOLD → 落轮 → 承载恢复。
 - 工作包 C：预演保真五条件对照；`v3_isolation5.py` 的 `env_before` 仍在 restore 之前采样。
 - 工作包 D/E/F：CLIMB、第二技能与软土脱困、主角三案例、约 20 m 连续路线。
 - v3 旧记录的 `runs/v3/report/revalidation.json` 生成于 14:59，早于最终 14 状态批次
@@ -53,7 +71,11 @@
 ## 下一条可执行命令
 
 ```bash
+# A6 命令合同（宿主可跑）
 .venv/bin/python scripts/v3_selftest_command.py
+# B 基础周期（沙箱；已有结果见 runs/v3/basic_cycle/）
+MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
+    --soil nominal --swing FR --cycles 3 --record --out runs/v3/basic_cycle/nominal_r1
 ```
 
 沙箱重任务必须用独立 `run_id`、独立输出目录、PID/日志/退出码落盘，

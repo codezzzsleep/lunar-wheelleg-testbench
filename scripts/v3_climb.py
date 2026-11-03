@@ -474,12 +474,17 @@ class Climb:
         return {'phase': 'level_roll', 'tilt_max_deg': round(tilt, 3),
                 'ok': bool(tilt <= 10.0 and not self.terminated)}
 
-    def body_until_support(self, max_ticks=20, dz=0.001):
+    def body_until_support(self, max_ticks=25, dz=0.001):
         env = self.env
         for _ in range(max_ticks):
             loads = {leg: contact_load(env, leg) for leg in LEG}
             if all(v >= 1.0 for v in loads.values()):
                 break
+            low = min(loads, key=loads.get)
+            lo, hi = jlim(env, low, 'thigh')
+            self.targets[low]['thigh'] = float(np.clip(self.targets[low]['thigh'] - 0.01, lo, hi))
+            lo, hi = jlim(env, low, 'calf')
+            self.targets[low]['calf'] = float(np.clip(self.targets[low]['calf'] + 0.035, lo, hi))
             dp = np.array([0.0, 0.0, -dz])
             for leg in LEG:
                 dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.03, 0.03)
@@ -548,20 +553,21 @@ class Climb:
             self.step('descent_drive', omega=speed / WHEEL_R)
             if self.terminated or float(env.data.qpos[0]) >= far_x + 0.30:
                 break
-        for _ in range(60):
-            if abs(float(env.data.qvel[0])) <= 0.03:
+        for _ in range(80):
+            if abs(float(env.data.qvel[0])) <= 0.010:
                 break
             self.step('descent_stop', omega=0.0)
             if self.terminated:
                 break
         rows = []
-        for _ in range(75):
-            rows.append(self.step('descent_hold'))
+        for _ in range(100):
+            rows.append(self.step('descent_hold', omega=0.0))
             if self.terminated:
                 break
+        win = rows[-50:] if len(rows) >= 50 else rows   # 取最后 1 s 作为稳定窗口
         wheel_z = {leg: float(env.data.xpos[bc.wheel_body(env, leg)][2]) for leg in LEG}
-        tilt = max((r['tilt'] for r in rows), default=99)
-        vx = max((abs(r['vx']) for r in rows), default=99)
+        tilt = max((r['tilt'] for r in win), default=99)
+        vx = max((abs(r['vx']) for r in win), default=99)
         grounded = all(z <= 0.12 for z in wheel_z.values())
         crossed = float(env.data.qpos[0]) >= far_x + 0.25
         return {'phase': 'descent', 'final_x': round(float(env.data.qpos[0]), 4),

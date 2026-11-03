@@ -1,0 +1,27 @@
+{
+  "schema": "stage4-bound-decision/v1",
+  "run_dir": "e2e_04_p3_fix",
+  "state_id": "moon_rock_04_h1v0",
+  "frozen_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "matrix_FULL_sha256": "693761482eb10dd22921139d2a24ad8795429718c68f94aeaf2c78db702bb782",
+  "matrix_OBS_sha256": "0ff31558a695b785675975a6f2541410abe823285dbca34c6d9ea3251e8c21bc",
+  "snapshot_state_hash": "287460fe203daa142d7af56d744e0307",
+  "perturb": {
+    "dx": -0.02,
+    "dy": -0.01,
+    "dyaw_deg": -1.0
+  },
+  "chosen": {
+    "FULL": "R2",
+    "OBS": "L2"
+  },
+  "decision_written_before_exec": false,
+  "note": "post-hoc bound record; 05 execution retained as post-hoc correction"
+}

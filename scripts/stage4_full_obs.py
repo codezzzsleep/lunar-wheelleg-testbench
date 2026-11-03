@@ -39,11 +39,18 @@ def main():
         while len(parts) < 3:
             parts.append(0.0)
         dx, dy, dyaw = parts[:3]
+    perturb_diag = None
     if dx or dy or dyaw:
-        core['snapshot'] = S4P.perturb_snapshot(core['snapshot'], dx, dy, dyaw)
+        snap_new, perturb_diag = S4P.env_perturb_snapshot(core, proto, dx, dy, dyaw)
+        core['snapshot'] = snap_new
+        core['state']['state_hash'] = snap_new.get('state_hash')
     import numpy as _np
-    _q = _np.asarray(core['snapshot']['mjstate'], dtype=float)[:int(core['snapshot']['nq'])]
+    _env0 = v3_core.make_env(core['spec'], proto)
+    _env0.restore_state(core['snapshot'], mode='same_scene')
+    _q = _np.asarray(_env0.data.qpos, dtype=float).copy()
     init_qpos_sha = hashlib.sha256(_q.tobytes()).hexdigest()
+    init_state_hash = core['snapshot'].get('state_hash')
+    init_clock_s = round(float(_env0.t), 4)
     # 候选：fused 完整
     cands = []
     for d in sorted((state_dir / 'candidates').iterdir()):
@@ -98,6 +105,9 @@ def main():
            'formula': 'FULL = V | (P & U); OBS_ONLY = V',
            'perturb': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw},
            'init_qpos_sha256': init_qpos_sha,
+           'init_state_hash': init_state_hash,
+           'init_clock_s': init_clock_s,
+           'perturb_diag': perturb_diag,
            'candidates': cand_ids,
            'FULL': {'chosen': dec_f['chosen'], 'votes': dec_f['votes'],
                     'costs': dec_f['mean_cost_s'], 'reason': dec_f['reason'],

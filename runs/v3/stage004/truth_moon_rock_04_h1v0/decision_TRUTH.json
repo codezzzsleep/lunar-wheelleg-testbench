@@ -1,0 +1,109 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "arm": "TRUTH",
+  "decided_at": "2026-11-04T00:08:03+0800",
+  "state_hash": "6881bbab062f784bbc2e7797bbbee80b",
+  "visible": {
+    "n_pixels": 67710,
+    "x_front": 1.1554201596702691,
+    "y_center": 0.09354863720856092,
+    "W_vis": 0.5372463296456831,
+    "H_vis": 0.1589415069054573
+  },
+  "matrix_sha256": "50ea30fe9d828e493574d4bfe13fc5ce784a982f925246554061c86d12343eba",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 8.82,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "chosen": "R2",
+    "safe_set": [
+      "R2"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "truth": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.96,
+          "final_x": 1.431
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 8.82,
+          "t_end": 9.42,
+          "final_x": 3.642
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.88,
+          "final_x": 1.106
+        },
+        "L2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.94,
+          "final_x": 2.109
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.42,
+          "final_x": 1.302
+        },
+        "D2": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 5.66,
+          "final_x": 2.104
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "actions_frozen": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "decision_sha": "a8a7afe697e968a90916b0140ffb3673"
+}

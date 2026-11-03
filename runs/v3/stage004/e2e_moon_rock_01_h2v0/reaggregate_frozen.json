@@ -1,0 +1,57 @@
+{
+  "schema": "stage4-reaggregate/v1",
+  "frozen_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "excluded": [
+    "S1"
+  ],
+  "threshold_rule": "majority",
+  "FULL_old": "A0",
+  "FULL_new": "A0",
+  "OBS_old": "A0",
+  "OBS_new": "A0",
+  "FULL_votes": {
+    "R1": 0,
+    "R2": 0,
+    "L1": 0,
+    "L2": 1,
+    "S1": 0,
+    "D1": 0,
+    "D2": 0
+  },
+  "OBS_votes": {
+    "R1": 0,
+    "R2": 0,
+    "L1": 0,
+    "L2": 0,
+    "S1": 0,
+    "D1": 0,
+    "D2": 0
+  },
+  "FULL_costs": {
+    "R1": 60.0,
+    "R2": 60.0,
+    "L1": 60.0,
+    "L2": 51.4967,
+    "S1": 60.0,
+    "D1": 60.0,
+    "D2": 60.0
+  },
+  "OBS_costs": {
+    "R1": 60.0,
+    "R2": 60.0,
+    "L1": 60.0,
+    "L2": 60.0,
+    "S1": 60.0,
+    "D1": 60.0,
+    "D2": 60.0
+  },
+  "FULL_cost_reason": "no_safe_traversal",
+  "OBS_cost_reason": "no_safe_traversal"
+}

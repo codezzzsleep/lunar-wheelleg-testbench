@@ -1,0 +1,207 @@
+{
+  "schema": "stage4-correction/v1",
+  "frozen_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "s1_status": "S1 was never in the frozen manifest; runs that executed S1 (old 05) are non-conforming and are superseded by the frozen-action re-aggregation",
+  "perturb_fix": {
+    "method": "restore the real snapshot through the env entry, read env.data.qpos, apply dx/dy/yaw, mj_forward, then env.save_state(); no mjstate slicing",
+    "states": [
+      {
+        "requested": {
+          "dx": 0.02,
+          "dy": 0.01,
+          "dyaw_deg": 1.0
+        },
+        "actual": {
+          "x": 0.016684,
+          "y": 0.009935,
+          "yaw_deg": 0.9985
+        },
+        "qvel_base": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05
+        ],
+        "clock_s": 0.6,
+        "state_hash": "af50ca77d76b610c0dcd1e8fd56a052a",
+        "decision_state_hash_match": true
+      },
+      {
+        "requested": {
+          "dx": -0.02,
+          "dy": -0.01,
+          "dyaw_deg": -1.0
+        },
+        "actual": {
+          "x": -0.023316,
+          "y": -0.010065,
+          "yaw_deg": -1.0015
+        },
+        "qvel_base": [
+          0.000426,
+          3.2e-05,
+          3.8e-05,
+          -4e-05,
+          0.000352,
+          4.8e-05
+        ],
+        "clock_s": 0.6,
+        "state_hash": "287460fe203daa142d7af56d744e0307",
+        "decision_state_hash_match": true
+      }
+    ],
+    "note": "x changes equal the requested dx on top of the state start x=-0.003316; zero-perturbation run kept"
+  },
+  "corrected_configs": [
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "truth": {
+        "chosen": "R2",
+        "outcome": "pass",
+        "t_end": 9.42
+      },
+      "FULL": {
+        "chosen": "R2",
+        "outcome": "pass",
+        "t_end": 9.42
+      },
+      "OBS": {
+        "chosen": "R2",
+        "outcome": "pass",
+        "t_end": 9.42
+      },
+      "full_obs_differs": false
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "truth": {
+        "chosen": "L2",
+        "outcome": "pass",
+        "t_end": 8.36
+      },
+      "FULL": {
+        "chosen": "A0",
+        "outcome": "safe_stop"
+      },
+      "OBS": {
+        "chosen": "A0",
+        "outcome": "safe_stop"
+      },
+      "full_obs_differs": false,
+      "note": "truth passes, deployed arms abort: candidate FULL still cannot use the back side"
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "truth": {
+        "chosen": "D1",
+        "outcome": "pass",
+        "t_end": 7.54
+      },
+      "FULL": {
+        "chosen": "L1",
+        "outcome": "pass",
+        "t_end": 7.92
+      },
+      "OBS": {
+        "chosen": "L1",
+        "outcome": "pass",
+        "t_end": 7.92
+      },
+      "full_obs_differs": false,
+      "note": "old S1 physical failure came from an action outside the frozen set; with the frozen set both arms choose L1 and pass"
+    }
+  ],
+  "initial_states_04": [
+    {
+      "run": "e2e_04_p1",
+      "perturb": [
+        0,
+        0,
+        0
+      ],
+      "FULL": "R2",
+      "OBS": "R2",
+      "outcomes": [
+        "pass",
+        "pass"
+      ],
+      "t": [
+        9.42,
+        9.42
+      ],
+      "note": "zero perturbation kept"
+    },
+    {
+      "run": "e2e_04_p2_fix",
+      "perturb": [
+        0.02,
+        0.01,
+        1.0
+      ],
+      "FULL": "R2",
+      "OBS": "R2",
+      "outcomes": [
+        "pass",
+        "pass"
+      ],
+      "t": [
+        9.48,
+        9.48
+      ]
+    },
+    {
+      "run": "e2e_04_p3_fix",
+      "perturb": [
+        -0.02,
+        -0.01,
+        -1.0
+      ],
+      "FULL": "R2",
+      "OBS": "L2",
+      "outcomes": [
+        "pass",
+        "pass"
+      ],
+      "t": [
+        9.46,
+        7.12
+      ],
+      "note": "decision differs, outcome does not; the old broken-perturbation p3 result is superseded"
+    }
+  ],
+  "screening_criteria_change": {
+    "old_obs_v_sha": "445074e0e12f75077d814dfd68e3d678 (state-level fusion/obs_only_occ.npz)",
+    "current_shared_v_sha": "0bd97be1e518ce976e5b6a03e8ea0c34bc02fa0910fda9411662fea20f4d2e31",
+    "old_obs_decisions": {
+      "moon_rock_04_h1v0": "L2 (tipped)",
+      "moon_rock_01_h2v0": "A0",
+      "moon_rock_05_h1v1": "L2 (tipped)"
+    },
+    "current_obs_decisions": {
+      "moon_rock_04_h1v0": "R2 (pass)",
+      "moon_rock_01_h2v0": "A0",
+      "moon_rock_05_h1v1": "L1 (pass)"
+    },
+    "conclusion": "the old screen OBS geometry overstates back-side sensitivity; with the current shared V and frozen actions OBS changes in 2/3"
+  },
+  "accounting": {
+    "climb_parameterisation_interface": "complete (dev 24/24, 4 cm 24/24, unknown far safe stop)",
+    "new_climb_in_full_obs_comparison": "NOT complete: CLIMB is not in the action library used by the FULL/OBS loop",
+    "real_scan_applicability": "the scanned boulders are too narrow for the double-front-wheel CLIMB; this is a skill-adaptation boundary, not a proof that legs are unusable on real rocks",
+    "L1_L2_results": "retained as action-library evidence, not a substitute for the new skill"
+  },
+  "missing_wiring": [
+    "no observation->local-geometry->CLIMB parameter path for rocks",
+    "CLIMB is absent from actions.OPTIONS, so the majority-vote loop cannot rehearse or select it",
+    "no applicability check that would refuse CLIMB when the top band is too narrow"
+  ]
+}

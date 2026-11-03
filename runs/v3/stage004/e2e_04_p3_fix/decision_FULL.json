@@ -1,0 +1,373 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "arm": "FULL",
+  "decided_at": "2026-11-04T00:01:20+0800",
+  "state_hash": "287460fe203daa142d7af56d744e0307",
+  "visible": {
+    "n_pixels": 67710,
+    "x_front": 1.1554201596702691,
+    "y_center": 0.09354863720856092,
+    "W_vis": 0.5372463296456831,
+    "H_vis": 0.1589415069054573
+  },
+  "matrix_sha256": "693761482eb10dd22921139d2a24ad8795429718c68f94aeaf2c78db702bb782",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 6,
+    "n_valid": 6,
+    "n_unique_geometries": 6,
+    "threshold": 4,
+    "votes": {
+      "R1": 0,
+      "R2": 6,
+      "L1": 0,
+      "L2": 5,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 9.7033,
+      "L1": 60.0,
+      "L2": 15.62,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "chosen": "R2",
+    "safe_set": [
+      "R2",
+      "L2"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "A1": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.9,
+          "final_x": 1.344
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.88,
+          "t_end": 10.48,
+          "final_x": 3.637
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.28,
+          "final_x": 0.945
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.6000000000000005,
+          "t_end": 7.2,
+          "final_x": 3.918
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 6.48,
+          "final_x": 1.528
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.5,
+          "final_x": 1.611
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      },
+      "A2": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.02,
+          "final_x": 1.366
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.66,
+          "t_end": 10.26,
+          "final_x": 3.647
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.3,
+          "final_x": 0.946
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.78,
+          "t_end": 7.38,
+          "final_x": 3.913
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 6.28,
+          "final_x": 1.591
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.22,
+          "final_x": 1.438
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      },
+      "B1": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.0,
+          "final_x": 1.385
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.8,
+          "t_end": 10.4,
+          "final_x": 3.64
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.26,
+          "final_x": 0.953
+        },
+        "L2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 6.56,
+          "final_x": 3.16
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.58,
+          "final_x": 1.669
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.22,
+          "final_x": 1.438
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      },
+      "B2": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.02,
+          "final_x": 1.366
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.64,
+          "t_end": 10.24,
+          "final_x": 3.64
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.3,
+          "final_x": 0.946
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.78,
+          "t_end": 7.38,
+          "final_x": 3.919
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 6.34,
+          "final_x": 1.571
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.22,
+          "final_x": 1.438
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      },
+      "C1": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.02,
+          "final_x": 1.366
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.64,
+          "t_end": 10.24,
+          "final_x": 3.642
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.3,
+          "final_x": 0.941
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.78,
+          "t_end": 7.38,
+          "final_x": 3.913
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 6.52,
+          "final_x": 1.579
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.86,
+          "final_x": 1.248
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      },
+      "C2": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.02,
+          "final_x": 1.366
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 9.6,
+          "t_end": 10.2,
+          "final_x": 3.65
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.3,
+          "final_x": 0.946
+        },
+        "L2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.78,
+          "t_end": 7.38,
+          "final_x": 3.915
+        },
+        "D1": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 6.46,
+          "final_x": 1.549
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 4.2,
+          "final_x": 1.429
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.023
+        }
+      }
+    }
+  },
+  "candidates": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "full_occ_sha": {
+    "A1": "8a63c49c0c2a8b3af2b35089599950c47cbc78dc2d9bec48b5384155a09c1d49",
+    "A2": "02aca984cf67bb8a18496babd3b01b2cdd988370970aeadcf5a2ab7567114531",
+    "B1": "bd6f81f4465c889eb69428fe42d8c4e970c598ef01326703099b5ba3ea7ecc0f",
+    "B2": "bd657f3561d818079425fc4ddc1f6ff6b2194f9e5471e7365b11461687d45e25",
+    "C1": "d12a4fd6fa86025dfd00c2dbf0f395c9d63bd7c1daa7b187455220d9dfe25710",
+    "C2": "bb0711806a07936ad221f01cb451d675b385dc2cb14ba427bc46778b70bf7ca0"
+  },
+  "decision_sha": "5a9be3508beb3741c889b3755304d8aa"
+}

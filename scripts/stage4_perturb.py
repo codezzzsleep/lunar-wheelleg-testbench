@@ -1,33 +1,18 @@
-"""Stage004：按冻结扰动修改完整初始快照，并同步重算 state_hash。"""
-import hashlib
-import json
+"""Stage004：通过环境恢复入口读真实 qpos，施加冻结扰动后用 save_state 重新取快照。
+
+不改 mjstate 字节，不手算 qpos 偏移；state_hash 由 save_state 生成，
+决策里的 state_hash 必须引用这个实际执行快照。
+"""
 import numpy as np
+import mujoco
+
+import v3_core
 
 
-def _compute_hash(rec):
-    h = hashlib.sha256()
-    h.update(np.asarray(rec['mjstate'], dtype=np.float64).tobytes())
-    h.update(np.asarray([rec['data_time'], rec['env_t'],
-                         rec['t_last_zero_cmd']], dtype=np.float64).tobytes())
-    h.update(np.asarray(rec['prev_action'], dtype=np.float64).tobytes())
-    h.update(np.asarray([rec['prev_x'], rec['nav_target_y'],
-                         rec['n_physics'], rec['n_control'],
-                         rec['contact_steps'], rec['wheel_contact_steps']],
-                        dtype=np.float64).tobytes())
-    if rec.get('soil'):
-        h.update(json.dumps(rec['soil'], sort_keys=True).encode())
-    if rec.get('command') is not None:
-        h.update(json.dumps(rec['command'], sort_keys=True).encode())
-    h.update(repr((rec['data_time'], rec['env_t'], rec['n_physics'],
-                   rec.get('n_control', 0))).encode())
-    return h.hexdigest()[:32]
-
-
-def perturb_snapshot(snapshot, dx=0.0, dy=0.0, dyaw_deg=0.0):
-    rec = json.loads(json.dumps(snapshot))
-    nq = int(rec['nq'])
-    st = np.asarray(rec['mjstate'], dtype=np.float64).copy()
-    q = st[:nq].copy()
+def env_perturb_snapshot(core, proto, dx=0.0, dy=0.0, dyaw_deg=0.0):
+    env = v3_core.make_env(core['spec'], proto)
+    env.restore_state(core['snapshot'], mode='same_scene')
+    q = np.array(env.data.qpos, dtype=np.float64, copy=True)
     q[0] += float(dx)
     q[1] += float(dy)
     if abs(dyaw_deg) > 1e-9:
@@ -38,7 +23,18 @@ def perturb_snapshot(snapshot, dx=0.0, dy=0.0, dyaw_deg=0.0):
         q[4] = c * x + s * y
         q[5] = c * y - s * x
         q[6] = c * z + s * w
-    st[:nq] = q
-    rec['mjstate'] = st.tolist()
-    rec['state_hash'] = _compute_hash(rec)
-    return rec
+    env.data.qpos[:] = q
+    mujoco.mj_forward(env.model, env.data)
+    snap = env.save_state()
+    qn = np.asarray(env.data.qpos, dtype=np.float64)
+    qv = np.asarray(env.data.qvel, dtype=np.float64)
+    w, x, y, z = (float(v) for v in qn[3:7])
+    yaw = float(np.degrees(np.arctan2(2.0 * (w * z + x * y),
+                                      1.0 - 2.0 * (y * y + z * z))))
+    diag = {'x': round(float(qn[0]), 6), 'y': round(float(qn[1]), 6),
+            'z': round(float(qn[2]), 6), 'yaw_deg': round(yaw, 4),
+            'qvel_base': [round(float(v), 6) for v in qv[:6]],
+            'clock_s': round(float(env.t), 4),
+            'snapshot_state_hash': snap.get('state_hash'),
+            'requested': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw_deg}}
+    return snap, diag

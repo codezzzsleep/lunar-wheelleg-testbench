@@ -1,0 +1,45 @@
+{
+  "action": "D1",
+  "ok": true,
+  "success": true,
+  "abort": false,
+  "reason": "success",
+  "outcome": "pass",
+  "final_x": 3.733,
+  "displacement_x": 3.736,
+  "t_start": 0.6,
+  "t_end": 7.54,
+  "cost": 6.94,
+  "max_tilt": 0.14,
+  "contact": "wheel",
+  "triggered": true,
+  "state_mode": "same_scene",
+  "wall_s": 1.151,
+  "steps": 347,
+  "n_actions": 347,
+  "action_fingerprint": "738c3f4f663ff639",
+  "initial_full_hash": "5209d5ce825e570e63178d78eed787e68e4647b76947a0f11d29bb577e186d80",
+  "phases": [
+    {
+      "t": 2.28,
+      "phase": "shift"
+    },
+    {
+      "t": 4.84,
+      "phase": "return"
+    }
+  ],
+  "arm": "TRUTH",
+  "run_id": "moon_rock_05_h1v1_TRUTH_1793722104",
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/stage004/truth_moon_rock_05_h1v1/truth_exec/record/TRUTH/index.json",
+    "trajectory_sha256": "642c93f569a8b5be8b11df9bed04ddb9b5f2bfc58aabc9d00ee83270a99815ba",
+    "frame_count": 347,
+    "record_hz": 50.0,
+    "duration_s": 6.919999999999927,
+    "n_chunks": 2,
+    "contacts_n": 1153
+  },
+  "record_hz": 50.0,
+  "trajectory_frames": 347
+}

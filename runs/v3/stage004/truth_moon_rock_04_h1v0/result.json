@@ -1,0 +1,40 @@
+{
+  "schema": "stage4-truth-arm/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "frozen_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "chosen": "R2",
+  "votes": {
+    "R1": 0,
+    "R2": 1,
+    "L1": 0,
+    "L2": 0,
+    "S1": 0,
+    "D1": 0,
+    "D2": 0
+  },
+  "costs": {
+    "R1": 60.0,
+    "R2": 8.82,
+    "L1": 60.0,
+    "L2": 60.0,
+    "S1": 60.0,
+    "D1": 60.0,
+    "D2": 60.0
+  },
+  "reason": "majority_traversal",
+  "threshold": 1,
+  "exec": {
+    "action": "R2",
+    "outcome": "pass",
+    "reason": "success",
+    "t_end": 9.42
+  },
+  "snapshot_state_hash": "6881bbab062f784bbc2e7797bbbee80b"
+}

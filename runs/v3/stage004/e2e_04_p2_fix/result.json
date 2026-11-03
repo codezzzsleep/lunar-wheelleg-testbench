@@ -1,0 +1,163 @@
+{
+  "schema": "stage4-full-obs/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "formula": "FULL = V | (P & U); OBS_ONLY = V",
+  "perturb": {
+    "dx": 0.02,
+    "dy": 0.01,
+    "dyaw_deg": 1.0
+  },
+  "init_qpos_sha256": "9159aceb2ac0c229bdbec15d84e3b4f4cd9987f0690b0d473120af8f2ae2d69a",
+  "init_state_hash": "af50ca77d76b610c0dcd1e8fd56a052a",
+  "init_clock_s": 0.6,
+  "perturb_diag": {
+    "x": 0.016684,
+    "y": 0.009935,
+    "z": 0.384137,
+    "yaw_deg": 0.9985,
+    "qvel_base": [
+      0.000426,
+      3.2e-05,
+      3.8e-05,
+      -4e-05,
+      0.000352,
+      4.8e-05
+    ],
+    "clock_s": 0.6,
+    "snapshot_state_hash": "af50ca77d76b610c0dcd1e8fd56a052a",
+    "requested": {
+      "dx": 0.02,
+      "dy": 0.01,
+      "dyaw_deg": 1.0
+    }
+  },
+  "candidates": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1",
+    "C2"
+  ],
+  "FULL": {
+    "chosen": "R2",
+    "votes": {
+      "R1": 0,
+      "R2": 6,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "costs": {
+      "R1": 60.0,
+      "R2": 9.3967,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "reason": "majority_traversal",
+    "threshold": 4,
+    "n_unique": 6,
+    "exec": {
+      "action": "R2",
+      "ok": true,
+      "success": true,
+      "abort": false,
+      "reason": "success",
+      "outcome": "pass",
+      "final_x": 3.646,
+      "displacement_x": 3.629,
+      "t_start": 0.6,
+      "t_end": 9.48,
+      "cost": 8.88,
+      "max_tilt": 0.11,
+      "contact": "wheel",
+      "triggered": false,
+      "state_mode": "same_scene",
+      "wall_s": 1.532,
+      "steps": 444,
+      "n_actions": 444,
+      "action_fingerprint": "95fb451f67525bc1",
+      "initial_full_hash": "4341dd17edfb7e738e4811528eee6a4d2a75a10328fa179c5dbcb70a41eb6408",
+      "phases": [],
+      "arm": "FULL",
+      "run_id": "moon_rock_04_h1v0_FULL_1793721565",
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage004/e2e_04_p2_fix/truth_exec/record/FULL/index.json",
+        "trajectory_sha256": "348740eaec59be447210b57892e231c034eec4b363c6a46faac0c177070fba96",
+        "frame_count": 444,
+        "record_hz": 50.0,
+        "duration_s": 8.859999999999886,
+        "n_chunks": 2,
+        "contacts_n": 1832
+      },
+      "record_hz": 50.0,
+      "trajectory_frames": 444
+    }
+  },
+  "OBS": {
+    "chosen": "R2",
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 0,
+      "L2": 0,
+      "S1": 0,
+      "D1": 0,
+      "D2": 0
+    },
+    "costs": {
+      "R1": 60.0,
+      "R2": 9.34,
+      "L1": 60.0,
+      "L2": 60.0,
+      "S1": 60.0,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "reason": "majority_traversal",
+    "exec": {
+      "action": "R2",
+      "ok": true,
+      "success": true,
+      "abort": false,
+      "reason": "success",
+      "outcome": "pass",
+      "final_x": 3.646,
+      "displacement_x": 3.629,
+      "t_start": 0.6,
+      "t_end": 9.48,
+      "cost": 8.88,
+      "max_tilt": 0.11,
+      "contact": "wheel",
+      "triggered": false,
+      "state_mode": "same_scene",
+      "wall_s": 1.527,
+      "steps": 444,
+      "n_actions": 444,
+      "action_fingerprint": "95fb451f67525bc1",
+      "initial_full_hash": "4341dd17edfb7e738e4811528eee6a4d2a75a10328fa179c5dbcb70a41eb6408",
+      "phases": [],
+      "arm": "OBS",
+      "run_id": "moon_rock_04_h1v0_OBS_1793721567",
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage004/e2e_04_p2_fix/truth_exec/record/OBS/index.json",
+        "trajectory_sha256": "04249875a2978210694347e6b9f53a733135b17a473c06fc1428a992f28c5bab",
+        "frame_count": 444,
+        "record_hz": 50.0,
+        "duration_s": 8.859999999999886,
+        "n_chunks": 2,
+        "contacts_n": 1832
+      },
+      "record_hz": 50.0,
+      "trajectory_frames": 444
+    }
+  },
+  "decision_differs": false,
+  "outcome_differs": false,
+  "pipeline_errors": []
+}

@@ -1,0 +1,71 @@
+{
+  "schema": "stage4-reaggregate/v1",
+  "frozen_actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ],
+  "excluded": [
+    "S1"
+  ],
+  "threshold_rule": "majority",
+  "FULL_old": "S1",
+  "FULL_new": "L1",
+  "OBS_old": "S1",
+  "OBS_new": "L1",
+  "FULL_votes": {
+    "R1": 0,
+    "R2": 6,
+    "L1": 6,
+    "L2": 0,
+    "S1": 0,
+    "D1": 2,
+    "D2": 0
+  },
+  "OBS_votes": {
+    "R1": 0,
+    "R2": 1,
+    "L1": 1,
+    "L2": 0,
+    "S1": 0,
+    "D1": 0,
+    "D2": 0
+  },
+  "FULL_costs": {
+    "R1": 60.0,
+    "R2": 8.59,
+    "L1": 7.7033,
+    "L2": 60.0,
+    "S1": 60.0,
+    "D1": 42.44,
+    "D2": 60.0
+  },
+  "OBS_costs": {
+    "R1": 60.0,
+    "R2": 8.6,
+    "L1": 7.8,
+    "L2": 60.0,
+    "S1": 60.0,
+    "D1": 60.0,
+    "D2": 60.0
+  },
+  "FULL_cost_reason": "majority_traversal",
+  "OBS_cost_reason": "majority_traversal",
+  "exec": {
+    "FULL": {
+      "action": "L1",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 7.92
+    },
+    "OBS": {
+      "action": "L1",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 7.92
+    }
+  }
+}

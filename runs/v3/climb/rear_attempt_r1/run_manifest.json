@@ -1,0 +1,116 @@
+{
+  "schema": "v3-run-manifest/v1",
+  "run_id": "rear_attempt_r1",
+  "created_at": "2026-11-03T18:02:40+0800",
+  "code_commit": "fdc7921fb0b80b6a5f07bf05ff85764b5ded21d4",
+  "sandbox": "cnb-ljh-1k6fm0sla-001.3a63e40a-b641-47b3-819f-dcf271429eef-07q@cnb.space",
+  "command": "MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --soil rigid --rear --record --out runs/v3/climb/rear_attempt_r1",
+  "parent_run": null,
+  "inputs": {
+    "result_schema": "v3-climb-front2/v1",
+    "soil": "rigid",
+    "swing": null,
+    "cycles_requested": null,
+    "init_seed": null,
+    "init_qpos_sha256": null
+  },
+  "outputs": {
+    "frames.npz": {
+      "bytes": 32290,
+      "sha256": "5fe3d77cd52f8ed2d8b44ef69700adb17e9003a9cb690135acb788e59e3a37ab"
+    },
+    "record/chunk_00000.npz": {
+      "bytes": 9299,
+      "sha256": "56d642490ca5a059db1d69dad7d5cd6477edc06eb3b63472387983b097395d2d"
+    },
+    "record/chunk_00001.npz": {
+      "bytes": 8539,
+      "sha256": "aa85dea3953356ab0f59cc59134aaf1858123d416cf3d15a99ec4af7bba9cc88"
+    },
+    "record/chunk_00002.npz": {
+      "bytes": 9061,
+      "sha256": "c1713ea4b198d209ca8a048183bb207da2efb0d41f15a04347fbd14853d928ba"
+    },
+    "record/chunk_00003.npz": {
+      "bytes": 7984,
+      "sha256": "06315db5711a3d17feb1544b6452719f0b42177debedc3b8d23f96d80d4c34a9"
+    },
+    "record/chunk_00004.npz": {
+      "bytes": 7668,
+      "sha256": "7bf33ead748e44bc8b73ef5044d9ed871c4a120f5874fe5cbbb15ad245f14d21"
+    },
+    "record/chunk_00005.npz": {
+      "bytes": 7476,
+      "sha256": "d1f6c462dc05408f62da69b91882a1d22acd2bd4dca3c32d374f0a61620d191d"
+    },
+    "record/chunk_00006.npz": {
+      "bytes": 10649,
+      "sha256": "4d7c90fafa40024dc553022d7501a1a496c985b3bf6f232480b036d1f0062900"
+    },
+    "record/chunk_00007.npz": {
+      "bytes": 7898,
+      "sha256": "bfe50cda3bd171be3871d0a4fcce4290112cfb32924297b41b0ad54960ecd39a"
+    },
+    "record/chunk_00008.npz": {
+      "bytes": 10029,
+      "sha256": "e59fdf6d5ba6b4ceee3e12ba66a078366c2173a9b0f775f10de245e8bc8596c5"
+    },
+    "record/contacts_00000.jsonl": {
+      "bytes": 353739,
+      "sha256": "b03c9bd0f7ff3362074402247fe6f4df31236abe900a0dd7f428a899b7d506f7"
+    },
+    "record/contacts_00001.jsonl": {
+      "bytes": 338042,
+      "sha256": "b64213adde8709c6f4f58b46c2dcd6a63a84eb7b6ba6f230532d039701b3754e"
+    },
+    "record/contacts_00002.jsonl": {
+      "bytes": 364857,
+      "sha256": "93fc55de46b319edb16e73c986ef42ebbe9a3c6bc4842b2ea591c05a4fda9927"
+    },
+    "record/contacts_00003.jsonl": {
+      "bytes": 320134,
+      "sha256": "ca10c6b3635e099c6952ce9913d50c58a2c95a954a06987e13c70a9ce5c187d0"
+    },
+    "record/contacts_00004.jsonl": {
+      "bytes": 361311,
+      "sha256": "05a3edd45f14b4ca8536b9cfacd3cd77d7c9f8d4eeec6d05d3bb7d346c29bd1d"
+    },
+    "record/contacts_00005.jsonl": {
+      "bytes": 385564,
+      "sha256": "ed19f7fa94ee2b20816a4096bd763718e8f33fe4f14f2b0b41b782d14cc6a609"
+    },
+    "record/contacts_00006.jsonl": {
+      "bytes": 388899,
+      "sha256": "d51ae2cb742746a4400082d80eaaf325f4e718d5fd3c02aef5d040da8981ce94"
+    },
+    "record/contacts_00007.jsonl": {
+      "bytes": 371106,
+      "sha256": "49acf8ad112dd6ff60e89db854105c1a605b8f31eb247897e592c44fc9afc08e"
+    },
+    "record/contacts_00008.jsonl": {
+      "bytes": 295239,
+      "sha256": "1f635f85c3db4c726f8612d9fe790cd95cbfc3177c74352167a1ecb30ec7fa31"
+    },
+    "record/index.json": {
+      "bytes": 5390,
+      "sha256": "0826277fd3ac5fb4b28dc4860df9c77efa5a18caa1de3f0a51be2e8e6992caff"
+    },
+    "record/index.sha256": {
+      "bytes": 65,
+      "sha256": "7aa1cac306259004a34ec53fd953d16039aaab2c599251bd8ee640b57ae4d36b"
+    },
+    "result.json": {
+      "bytes": 3562,
+      "sha256": "d9fff97d10594a9b5cbede95b0b549179a99f510f6eb5cbaf26c8241f46153ae"
+    },
+    "step_fl.stl": {
+      "bytes": 684,
+      "sha256": "217d6c4d0faf7b316018139d4bf63be774ed62f3e1312d0a7761c6f922d59ac8"
+    },
+    "step_fr.stl": {
+      "bytes": 684,
+      "sha256": "217d6c4d0faf7b316018139d4bf63be774ed62f3e1312d0a7761c6f922d59ac8"
+    }
+  },
+  "result_sha256": "d9fff97d10594a9b5cbede95b0b549179a99f510f6eb5cbaf26c8241f46153ae"
+}

@@ -25,7 +25,7 @@ def main():
     ap.add_argument('--dz', type=float, default=0.003)
     ap.add_argument('--out', required=True)
     ap.add_argument('--save-final', default='')
-    ap.add_argument('--mode', default='unloaded', choices=['unloaded', 'body', 'fl_joint'])
+    ap.add_argument('--mode', default='unloaded', choices=['unloaded', 'body', 'fl_joint', 'level', 'touch'])
     a = ap.parse_args()
     bundle = json.loads(pathlib.Path(a.state).read_text())
     snap, spec = bundle['snapshot'], dict(bundle['spec'])
@@ -44,6 +44,22 @@ def main():
         env.step_command(joint_targets_rad=targets, wheel_mode='coast')
         if k % 5 == 0 and not env.terminated:
             loads = {leg: vc.contact_load(env, leg) for leg in LEG}
+            if a.mode == 'level':
+                for leg in ('FL', 'RL'):
+                    targets[leg]['thigh'] = float(np.clip(targets[leg]['thigh'] + 0.004, -1.571, 3.491))
+                    targets[leg]['calf'] = float(np.clip(targets[leg]['calf'] - 0.014, -2.723, -0.838))
+                for leg in ('FR', 'RR'):
+                    targets[leg]['thigh'] = float(np.clip(targets[leg]['thigh'] - 0.004, -1.571, 4.538))
+                    targets[leg]['calf'] = float(np.clip(targets[leg]['calf'] + 0.014, -2.723, -0.838))
+                changes.append({'k': k, 'leg': 'level', 'dq': [0.004, -0.014]})
+            if a.mode == 'touch':
+                for leg in LEG:
+                    if loads[leg] < 1.0:
+                        targets[leg]['thigh'] = float(np.clip(
+                            targets[leg]['thigh'] - 0.02, -1.571, 4.538))
+                        targets[leg]['calf'] = float(np.clip(
+                            targets[leg]['calf'] + 0.07, -2.723, -0.838))
+                        changes.append({'k': k, 'leg': leg, 'dq': [-0.02, 0.07]})
             if a.mode == 'fl_joint':
                 if loads.get('FL', 0.0) < 1.0:
                     targets['FL']['thigh'] = float(np.clip(targets['FL']['thigh'] - 0.03, -1.571, 3.491))
@@ -63,7 +79,8 @@ def main():
                      'tilt': round(float(np.degrees(np.arccos(
                          np.clip(d.xmat[bid][8], -1, 1)))), 3),
                      'loads': {l: round(v, 3) for l, v in loads.items()},
-                     'base_z': round(float(d.qpos[2]), 4)})
+                     'base_z': round(float(d.qpos[2]), 4),
+                     'up': [round(float(d.xmat[bid][i]), 4) for i in (6, 7, 8)]})
         if env.terminated or env.truncated:
             break
     last = rows[-1] if rows else {}

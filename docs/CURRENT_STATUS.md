@@ -1,6 +1,6 @@
 # 当前状态（唯一入口）
 
-> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `d569502101729bbd9da0ec6378134fd947ae3637100cb2e0805900d33b74b233`　生成时点 `2026-11-03T14:16:36+0800`
+> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `9cdec0b997c66730b3ede281d5cd5bc7386077c3e2cd7c74078e26cd86ff851b`　生成时点 `2026-11-03T14:57:35+0800`
 > 三份文档（CURRENT_STATUS / V3_FINAL_REPORT / V3_RESULTS_TABLE）都由该表生成；数字口径见表中 `definitions`。
 
 ## 一、当前结论（口径见源表）
@@ -26,23 +26,34 @@
 
 | 指标 | FULL | OBS_ONLY |
 | --- | --- | --- |
-| pass | 1 | 1 |
-| safe_stop | 0 | 0 |
+| pass | 11 | 11 |
+| safe_stop | 1 | 1 |
 | physical_failure | 2 | 2 |
 | 风险低估 | 2 | 2 |
-| 过度保守 | 0 | 0 |
+| 过度保守 | 1 | 1 |
 | 参考未评估 | 0 | 0 |
-| 有效执行 | 3 | 3 |
+| 有效执行 | 14 | 14 |
 
-- 有效配对：**3** 个（定义：两臂 decision+execution 齐全、action 与 decision 一致、state_mode=same_scene、同一 state_hash、轨迹可读且首尾时间可核）。
-- 结局更好：FULL 0 / OBS_ONLY 0 / 相同 3。
+- 有效配对：**14** 个（定义：两臂 decision+execution 齐全、action 与 decision 一致、state_mode=same_scene、同一 state_hash、轨迹可读且首尾时间可核）。
+- 结局更好：FULL 0 / OBS_ONLY 0 / 相同 14。
 - 这只陈述**当前已测配对计数**，不能据此推出“总体没有变差”或“方法有效”。
 
 | 状态 | FULL | OBS_ONLY | 更好 | FULL 动作 | OBS 动作 |
 | --- | --- | --- | --- | --- | --- |
 | moon_rock_01_h0v0 | pass | pass | same | D1 | D1 |
+| moon_rock_01_h0v1 | pass | pass | same | D1 | D1 |
+| moon_rock_01_h2v0 | safe_stop | safe_stop | same | A0 | A0 |
+| moon_rock_02_h0v1 | pass | pass | same | D1 | D1 |
+| moon_rock_02_h2v0 | pass | pass | same | D1 | L2 |
+| moon_rock_02_h2v1 | pass | pass | same | D1 | D1 |
+| moon_rock_03_h1v0 | pass | pass | same | L2 | L2 |
+| moon_rock_03_h2v1 | pass | pass | same | R1 | R1 |
+| moon_rock_04_h0v1 | pass | pass | same | L2 | L2 |
 | moon_rock_04_h1v0 | physical_failure | physical_failure | same | L2 | L2 |
+| moon_rock_05_h1v0 | pass | pass | same | D1 | D1 |
 | moon_rock_05_h1v1 | physical_failure | physical_failure | same | L2 | L2 |
+| moon_rock_05_h2v0 | pass | pass | same | R1 | R1 |
+| moon_rock_05_h2v1 | pass | pass | same | R2 | R2 |
 
 ### 隐藏区误差覆盖
 

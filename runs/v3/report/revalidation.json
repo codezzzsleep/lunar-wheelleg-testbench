@@ -1,29 +1,9 @@
 {
-  "schema": "v3-revalidation/v1",
-  "generated_at": "2026-11-03T14:16:00+0800",
-  "trigger": "voxelize_columns 重复壳合并修复（P 由薄壳变实体）使旧融合/碰撞/决策失效",
-  "scope": "本批只重跑 3 个代表状态；其余 11 个已执行状态标 needs_revalidation",
+  "schema": "v3-revalidation/v2",
+  "generated_at": "2026-11-03T14:57:13+0800",
+  "trigger": "voxelize_columns 重复壳合并 + 碰撞身份缓存 + 64 位哈希统一",
+  "scope": "全部 14 个已执行状态用修好的代码重跑融合/碰撞/决策/执行",
   "rows": [
-    {
-      "state_id": "moon_rock_04_h1v0",
-      "old": {
-        "FULL": "pass",
-        "OBS_ONLY": "physical_failure"
-      },
-      "new": {
-        "FULL": "physical_failure",
-        "OBS_ONLY": "physical_failure"
-      },
-      "new_actions": {
-        "FULL": "L2",
-        "OBS_ONLY": "L2"
-      },
-      "changed": true,
-      "decision_sha": {
-        "FULL": "a98abb7b917061bd1299f76f0f84d786",
-        "OBS_ONLY": "42e39a93531b154f37d4f78196675f7d"
-      }
-    },
     {
       "state_id": "moon_rock_01_h0v0",
       "old": {
@@ -40,8 +20,208 @@
       },
       "changed": false,
       "decision_sha": {
-        "FULL": "9c4beda862a0e2340d150628e71a1089",
-        "OBS_ONLY": "3ed50e18686e6733787f9690aa6b959c"
+        "FULL": "3a7aa1eb5a9b1a074a4f9049651f11fb",
+        "OBS_ONLY": "8b21c2eca8e8e5db98ffb576e1d6454e"
+      }
+    },
+    {
+      "state_id": "moon_rock_01_h0v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "D1",
+        "OBS_ONLY": "D1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "f86817f18d36e70310aa2b4901474fa7",
+        "OBS_ONLY": "bdcbd959f90806341938a3d5ce285f28"
+      }
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "old": {
+        "FULL": "safe_stop",
+        "OBS_ONLY": "safe_stop"
+      },
+      "new": {
+        "FULL": "safe_stop",
+        "OBS_ONLY": "safe_stop"
+      },
+      "new_actions": {
+        "FULL": "A0",
+        "OBS_ONLY": "A0"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "3a1a7baae232b4e2a013a172d689f276",
+        "OBS_ONLY": "640b5a768a5f69535b8d9520240441c9"
+      }
+    },
+    {
+      "state_id": "moon_rock_02_h0v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "D1",
+        "OBS_ONLY": "D1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "6c2847c0716bdc6124de9e798cb61474",
+        "OBS_ONLY": "e6a5aa5201977ba57d9bc4f92ad07349"
+      }
+    },
+    {
+      "state_id": "moon_rock_02_h2v0",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "D1",
+        "OBS_ONLY": "L2"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "331b623baff2bfed77660f8d2ff573a6",
+        "OBS_ONLY": "2c921a64f2a83b8036cc2415bc62c3c2"
+      }
+    },
+    {
+      "state_id": "moon_rock_02_h2v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "D1",
+        "OBS_ONLY": "D1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "2ceb4ce97ff5cad14b4be0a0ebad511e",
+        "OBS_ONLY": "6c5258930ce80424d9baa425f0f89304"
+      }
+    },
+    {
+      "state_id": "moon_rock_03_h1v0",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "L2",
+        "OBS_ONLY": "L2"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "da790a556de659492beca5bffdab60bc",
+        "OBS_ONLY": "022ac31fd3ee505a9ca23defb109da6d"
+      }
+    },
+    {
+      "state_id": "moon_rock_03_h2v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "R1",
+        "OBS_ONLY": "R1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "be8bc4e8182898d6095d8f210ca6f2ae",
+        "OBS_ONLY": "89d1ea72bcab3140380a99f5237fa98d"
+      }
+    },
+    {
+      "state_id": "moon_rock_04_h0v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "L2",
+        "OBS_ONLY": "L2"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "892547ef4bbf5c8ecf233eee53cc4b66",
+        "OBS_ONLY": "332bbad9fea646dbff15444a0e006cc9"
+      }
+    },
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "old": {
+        "FULL": "physical_failure",
+        "OBS_ONLY": "physical_failure"
+      },
+      "new": {
+        "FULL": "physical_failure",
+        "OBS_ONLY": "physical_failure"
+      },
+      "new_actions": {
+        "FULL": "L2",
+        "OBS_ONLY": "L2"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "375536eeb587ede6791eba24d1c6f714",
+        "OBS_ONLY": "529a6e7e695a5b5e2eb42099e1e1dbb6"
+      }
+    },
+    {
+      "state_id": "moon_rock_05_h1v0",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "D1",
+        "OBS_ONLY": "D1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "1092b690340540e2fe21d977de368c7c",
+        "OBS_ONLY": "4cdac07fde4267b887117540847a934d"
       }
     },
     {
@@ -60,10 +240,51 @@
       },
       "changed": false,
       "decision_sha": {
-        "FULL": "17d81ce9f9eb9bc0ddc6849ed5fd93fb",
-        "OBS_ONLY": "12fea9db5aa1ada1d935dff05a7c50de"
+        "FULL": "e8ddf6e1230989bb5a737b29e3d636bf",
+        "OBS_ONLY": "4582bc89d0ba2de85d76ad02fbdb33a0"
+      }
+    },
+    {
+      "state_id": "moon_rock_05_h2v0",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "R1",
+        "OBS_ONLY": "R1"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "f961e2f0d6d294dbe52880d827ba49ee",
+        "OBS_ONLY": "b5f7bee4fcf22abfc701b31111dfe1e6"
+      }
+    },
+    {
+      "state_id": "moon_rock_05_h2v1",
+      "old": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new": {
+        "FULL": "pass",
+        "OBS_ONLY": "pass"
+      },
+      "new_actions": {
+        "FULL": "R2",
+        "OBS_ONLY": "R2"
+      },
+      "changed": false,
+      "decision_sha": {
+        "FULL": "31ad53337e48bb4457abf0d3fa151557",
+        "OBS_ONLY": "3421871a6d29d3774e81d29c11e0aa21"
       }
     }
   ],
-  "conclusion": "唯一“FULL 更好”的状态 moon_rock_04_h1v0 在修复后变成两臂同失败，说明上一批的方向性结论来自实体化缺陷，不是隐藏几何被理解对了"
+  "n_changed": 0,
+  "changed_states": []
 }

@@ -72,9 +72,26 @@
     },
     "conclusion": "same decision (D1) and same outcome; only the BODY plan cost differs (19.38 vs 28.58 s) -> no meaningful decision/outcome difference, so no Lux3D candidates are started"
   },
-  "stage_outcome": "BODY_CLEARANCE is available and clean; Lux3D shows no increment on this scene",
+  "stage_outcome": "BODY_CLEARANCE is available and passes cleanly on the 0.30 m rock with full-phase contact records; Lux3D was NOT evaluated; overall project benefit remains NOT_ESTABLISHED",
   "notes": [
     "wheel actions were not deleted; cheaper detour D1 wins in both arms",
     "chassis contacts counted from recorded body-name contacts, not distance heuristics"
-  ]
+  ],
+  "corrected": {
+    "common_end_x": 2.6,
+    "same_task_times_s": {
+      "R2": 6.5,
+      "D1": 6.56,
+      "BODY_full_reference": 30.06,
+      "BODY_obs": 30.16
+    },
+    "body_safe_pass_full_contacts": {
+      "full_reference": 0,
+      "obs": 0
+    },
+    "renaming": {
+      "FULL": "complete geometry reference (rear edge from truth)",
+      "OBS": "shared observation with unknown rear edge (hold raised until plan event)"
+    }
+  }
 }

@@ -66,10 +66,20 @@ def main():
         print(json.dumps({'record': r, 'mp4': str(v), 'frames': n}))
     labels = ['STANCE (chassis contact)', 'BODY_CLEARANCE (+6 cm)']
     if len(vids) == 2:
+        def dur(p):
+            o = subprocess.check_output(['ffprobe', '-v', 'error', '-show_entries',
+                                         'format=duration', '-of', 'csv=p=0', str(p)])
+            return float(o.strip())
+        d0, d1 = dur(vids[0]), dur(vids[1])
+        pad = max(0.0, max(d0, d1) - min(d0, d1))
+        pads = [0.0, 0.0]
+        pads[0 if d0 < d1 else 1] = pad
         subprocess.check_call(['ffmpeg', '-y', '-i', str(vids[0]), '-i', str(vids[1]),
                                '-filter_complex',
-                               f"[0:v]scale=1920:540,drawtext=text='{labels[0]}':fontsize=30:fontcolor=white:x=20:y=20[v0];"
-                               f"[1:v]scale=1920:540,drawtext=text='{labels[1]}':fontsize=30:fontcolor=white:x=20:y=20[v1];"
+                               f"[0:v]scale=1920:540,tpad=stop_mode=clone:stop_duration={pads[0]:.3f},"
+                               f"drawtext=text='{labels[0]}':fontsize=30:fontcolor=white:x=20:y=20[v0];"
+                               f"[1:v]scale=1920:540,tpad=stop_mode=clone:stop_duration={pads[1]:.3f},"
+                               f"drawtext=text='{labels[1]}':fontsize=30:fontcolor=white:x=20:y=20[v1];"
                                "[v0][v1]vstack=inputs=2[v]", '-map', '[v]',
                                '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '20', str(out)])
     print(json.dumps({'out': str(out)}))

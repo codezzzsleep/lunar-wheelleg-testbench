@@ -648,18 +648,30 @@ class WheelLegEnv:
         st = STANCE
         a = np.asarray(action, dtype=np.float64).reshape(CTRL_DIM)
         a = np.concatenate([np.clip(a[:3], -1, 1) * ACT_SCALE, [np.clip(a[3], -1, 1) * 0.6]])
-        for leg in LEG:
+        # 记录“本步真正下发的目标”，供 >=50Hz 记录器与状态恢复使用；
+        # 命令合同单位：关节目标 rad、轮目标 rad/s、制动 0/1。
+        jt = np.zeros((4, 3), dtype=np.float64)
+        jvt = np.zeros((4, 3), dtype=np.float64)
+        wo = np.zeros(4, dtype=np.float64)
+        wb = np.zeros(4, dtype=np.float64)
+        for li, leg in enumerate(LEG):
             off = a[0] if leg in FRONT else a[1]
-            for p, base in (('hip', st['hip']), ('thigh', st['thigh']), ('calf', st['calf'])):
+            for ji, p in enumerate(('hip', 'thigh', 'calf')):
+                base = {'hip': st['hip'], 'thigh': st['thigh'], 'calf': st['calf']}[p]
                 e = self.J[f'{leg}_{p}_joint']
                 tgt = base + (off if p == 'thigh' else 0.0)
+                jt[li, ji] = tgt
                 d.ctrl[e['act']] = np.clip(
                     KP * (tgt - d.qpos[e['qadr']]) - KD * d.qvel[e['vadr']],
                     -LEG_MAX, LEG_MAX)
             e = self.J[f'{leg}_wheel_joint']
+            wi = LEG.index(leg)
             if wheel_rps is not None:
                 side = 'L' if leg in ('FL', 'RL') else 'R'
+                side = 'L' if leg in ('FL', 'RL') else 'R'
                 want = float(wheel_rps.get(side, 0.0))
+                wo[wi] = want
+                wb[wi] = 0.0
                 d.ctrl[e['act']] = float(np.clip(
                     WHEEL_KP * (want - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX))
                 continue
@@ -677,8 +689,13 @@ class WheelLegEnv:
                 self._t_last_zero_cmd = self.t
             ramp = min(1.0, max(1e-3, self.t - getattr(self, '_t_last_zero_cmd', 0.0)) / 2.0)
             vt = vt_raw * ramp
+            wo[wi] = vt / WHEEL_R
             d.ctrl[e['act']] = np.clip(
                 WHEEL_KP * (vt / WHEEL_R - d.qvel[e['vadr']]), -WHEEL_MAX, WHEEL_MAX)
+        self._last_joint_targets = jt
+        self._last_joint_vel_targets = jvt
+        self._last_wheel_omega = wo
+        self._last_wheel_brake = wb
 
     # ---------------------------------------------------------------- 观测
     def _tilt(self):

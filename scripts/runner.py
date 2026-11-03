@@ -31,7 +31,7 @@ def action_fingerprint(actions):
 
 class EpisodeRunner:
     def __init__(self, env, skill, visible=None, params=None, max_steps=2000, seed=0,
-                 record_trajectory=False):
+                 record_trajectory=False, recorder=None):
         self.env = env
         self.skill = skill if not isinstance(skill, str) else __import__('skills').make_skill(skill)
         self.visible = visible or {}
@@ -44,6 +44,9 @@ class EpisodeRunner:
         env.nav_target_y = env.channel_center      # 每次 reset 清空导航横向目标
         self.seed = seed
         self.record_trajectory = bool(record_trajectory)
+        # >=50Hz 全状态记录器（v3_record.Recorder）；与轻量 trajectory 列表并存，
+        # 列表只用于兼容旧读取，矩阵/决策引用的是 recorder 封卷后的 index.json
+        self.recorder = recorder
         self.trajectory = []
         self.initial_full_hash = None
         self.skill.reset(params or {})
@@ -161,6 +164,13 @@ class EpisodeRunner:
             if _frame is not None:
                 _frame['contacts'] = self._contacts()
                 self.trajectory.append(_frame)
+            if self.recorder is not None:
+                import v3_record
+                self.recorder.add(v3_record.frame_from_env(
+                    env, sk, a, steps, env.t,
+                    extra={'action': getattr(sk, 'name', None),
+                           'skill_phase': getattr(sk, 'phase', None),
+                           'nav_target_y': float(getattr(env, 'nav_target_y', np.nan))}))
             ph = getattr(sk, 'phase', None)
             if ph != last_phase:
                 phases.append({'t': round(float(env.t), 3), 'phase': ph})

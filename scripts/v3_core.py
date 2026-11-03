@@ -112,10 +112,17 @@ def env_unguard(env, g):
 
 
 def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
-               record=False):
+               record=False, record_dir=None, record_meta=None):
     sk = skills.make_skill(action)
+    rec = None
+    if record_dir is not None:
+        import v3_record
+        meta = dict(record_meta or {})
+        meta.update({'action': action, 'mode': mode, 'seed': int(seed),
+                     'started_at': time.strftime('%Y-%m-%dT%H:%M:%S%z')})
+        rec = v3_record.Recorder(record_dir, meta, hz=50.0)
     ep = runner.EpisodeRunner(env, sk, visible=visible, seed=seed,
-                              record_trajectory=record)
+                              record_trajectory=record, recorder=rec)
     t0 = time.time()
     out = ep.run_from_state(snapshot, mode=mode)
     wall = time.time() - t0
@@ -135,6 +142,8 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
            'action_fingerprint': out['action_fingerprint'],
            'initial_full_hash': out.get('initial_full_hash'),
            'phases': out.get('phases'), 'trajectory': out.get('trajectory')}
+    if rec is not None:
+        row['trajectory_ref'] = rec.close()
     return row
 
 
@@ -166,8 +175,13 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene'):
     return rows, {a: (bool(applic[a][0]), applic[a][1]) for a in opts}
 
 
-def rehearse(state, geom, snapshot, proto, seed=0):
-    """对一组几何候选跑完整预演矩阵。geom: {candidate_id: posed_dir}"""
+def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
+             record_root=None):
+    """对一组几何候选跑完整预演矩阵。geom: {candidate_id: posed_dir}
+
+    record_cells=True 时每个矩阵格写一条 >=50Hz 全状态轨迹到
+    record_root/<candidate>/<action>/，矩阵行里只放 trajectory_ref。
+    """
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
     opts = [a for a in ACT.OPTIONS if a != ACT.FALLBACK]
@@ -180,7 +194,16 @@ def rehearse(state, geom, snapshot, proto, seed=0):
                 # 每个动作一个全新 env：复用 env 会把上一回合的土壤/摩擦残余带进来
                 # （实测同一 env 里 R1 倾覆后 L2 从 success 变 time_limit）
                 env = make_env(spec, proto)
-                r = run_action(env, snapshot, a, visible, mode='project', seed=seed)
+                rdir = None
+                if record_cells:
+                    base = pathlib.Path(record_root or (pathlib.Path(state['state_dir'])
+                                                        / 'matrix'))
+                    rdir = base / str(cid) / str(a)
+                r = run_action(env, snapshot, a, visible, mode='project', seed=seed,
+                               record_dir=rdir,
+                               record_meta={'scenario': state.get('state_id'),
+                                            'candidate': cid, 'method': 'rehearsal',
+                                            'state_mode': 'project'})
                 del env
             except Exception as e:  # noqa: BLE001
                 r = {'action': a, 'ok': False, 'error_class': 'episode',
@@ -252,7 +275,7 @@ def write_decision(out_dir, state, arm, rows, dec, extra=None):
     d.mkdir(parents=True, exist_ok=True)
     with (d / f'matrix_{arm}.jsonl').open('w') as f:
         for r in rows:
-            rr = {k: v for k, v in r.items() if k != 'trajectory'}
+            rr = {k: v for k, v in r.items() if k not in ('trajectory', 'trajectory_arrays')}
             f.write(json.dumps(rr, ensure_ascii=False) + '\n')
     matrix_sha = sha256_file(d / f'matrix_{arm}.jsonl')
     rec = {'schema': 'v3-decision/v1', 'state_id': state['state']['state_id'],
@@ -274,7 +297,11 @@ def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene')
     env = make_env(spec, proto)
     try:
         r = run_action(env, state['snapshot'], action, state['visible'],
-                       mode=mode, seed=seed, record=True)
+                       mode=mode, seed=seed, record=True,
+                       record_dir=pathlib.Path(out_dir) / 'record' / str(arm),
+                       record_meta={'scenario': state['state'].get('state_id'),
+                                    'method': arm, 'state_mode': mode,
+                                    'action': action})
     except Exception as e:  # noqa: BLE001
         r = {'action': action, 'ok': False, 'error_class': 'episode',
              'error': f'{type(e).__name__}: {e}', 'outcome': 'pipeline_failure',
@@ -283,6 +310,11 @@ def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene')
     r['state_mode'] = mode
     r['run_id'] = f"{state['state']['state_id']}_{arm}_{int(time.time())}"
     traj = r.pop('trajectory', None)
+    traj_ref = r.pop('trajectory_ref', None)
+    if traj_ref:
+        r['trajectory_ref'] = traj_ref
+        r['record_hz'] = traj_ref.get('record_hz')
+        r['trajectory_frames'] = traj_ref.get('frame_count')
     d = pathlib.Path(out_dir)
     d.mkdir(parents=True, exist_ok=True)
     if traj:

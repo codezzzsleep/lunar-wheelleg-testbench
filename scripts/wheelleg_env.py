@@ -82,6 +82,7 @@ class WheelLegEnv:
         ch = spec.get('channel') or {}
         self.channel_center = float(ch.get('center_y', 0.0))
         self.channel_half_width = float(ch.get('half_width', 0.45))
+        self.field_x_max = float((spec.get('terrain') or {}).get('field_x_max', FIELD_X_MAX))
         self.require_contact = bool((spec.get('skill_cfg') or {}).get('require_contact', False))
         self.nav_base = bool(nav_base)
         # 导航横向目标：默认等于通道中心，绕行动作通过它真正改变横向轨迹
@@ -1062,7 +1063,7 @@ class WheelLegEnv:
         if abs(lat) > self.channel_half_width:
             return True, False, {'reason': 'out_of_bounds', 't': float(self.t),
                                  'x': float(d.qpos[0]), 'tilt_deg': tilt}
-        if float(d.qpos[0]) > FIELD_X_MAX:
+        if float(d.qpos[0]) > float(getattr(self, 'field_x_max', FIELD_X_MAX)):
             return True, False, {'reason': 'out_of_field', 't': float(self.t),
                                  'x': float(d.qpos[0]), 'tilt_deg': tilt}
         if float(self.t) >= float(getattr(self, 'max_seconds', 1e9)):

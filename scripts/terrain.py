@@ -112,8 +112,9 @@ def write_heightfield_png(h, path, zmax=None):
 
 def heightfield_xml(spec, png_path, zmax):
     # size = 半径x 半径y 最大高度 基底；第 4 个值必须为正
+    span = float((spec.get('terrain') or {}).get('span') or SPAN)
     return (f'<hfield name="terrain" nrow="{N}" ncol="{N}" '
-            f'size="{SPAN} {SPAN} {zmax} 0.01" file="{png_path}"/>')
+            f'size="{span} {span} {zmax} 0.01" file="{png_path}"/>')
 
 
 def terrain_geom_xml(pos='0 0 0', rgba='.32 .32 .36 1', friction='0.9 0.02 0.001'):
@@ -150,7 +151,7 @@ def scene_identity(spec):
 # ------------------------------------------------------------------ scene_spec
 
 def make_spec(kind='flat', seed=0, slope_deg=0.0, roughness=0.0, pits=0,
-              pit_depth=0.0, objects=None, goal_x=3.0, name='scene', **extra):
+              pit_depth=0.0, objects=None, goal_x=3.0, name='scene', span=None, **extra):
     spec = {
         'name': name,
         'seed': int(seed),
@@ -158,6 +159,7 @@ def make_spec(kind='flat', seed=0, slope_deg=0.0, roughness=0.0, pits=0,
         'start': [0.0, 0.0],
         'goal_x': float(goal_x),
         'terrain': {'kind': kind, 'slope_deg': float(slope_deg),
+                    'span': float(span) if span else None,
                     'roughness': float(roughness), 'pits': int(pits),
                     'pit_depth': float(pit_depth)},
         'objects': objects or [],

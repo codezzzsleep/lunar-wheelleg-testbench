@@ -293,3 +293,13 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
   SIDE_LEVEL 评估；强制绕过安全门时 `RL_push` 会倾到 15.03°，不采纳。
 - CLIMB 仍按 D5 标未过；下一步做 BODY_CLEARANCE / SIDE_LEVEL 的独立评估，
   以及真实岩石上的完整轮式库（同一完整通行判据）。
+
+## F 连续路线（20 m）第一版
+
+- 为 20 m 路线把地形 span 与场地 x 上限做成可配置（`terrain.make_spec(span=...)`、
+  `spec['terrain']['field_x_max']`），默认仍是 4 m，不影响旧场景。
+- 路线：24 m 平地 + 3 个 5 cm 台阶（x=4/10/16，0.9 m 宽），纯轮式 0.30 m/s 连续行驶。
+- 结果（rigid）：跑到 **x=12.77 m**（已过前两个台阶），随后 **tipped**（tilt 60.5°），
+  用时 53.2 s；**未完成 20 m**。
+- 结论：连续路线目前只过 2/3 台阶；需要更稳的通过策略（降速/抬头/姿态控制）或
+  更缓的台阶，不能把 12.77 m 说成 20 m 通过。

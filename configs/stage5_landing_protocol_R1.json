@@ -1,0 +1,16 @@
+{
+  "schema": "stage5-landing-protocol/v1",
+  "revision": "R1",
+  "supersedes": "raw centre-difference slope + global top (Stage005 first pass)",
+  "registered_before_runs": true,
+  "definitions": {
+    "wheel_patch": "9x9 cells at 4 mm around the wheel's own target point",
+    "flat_area_frac": "fraction of finite patch cells with |z - patch_median| <= 0.01",
+    "slope": "magnitude of the least-squares plane gradient over finite patch cells",
+    "support_gap": "any NaN cell on the segment edge_x..target_x within +/-1 cell of the wheel line",
+    "z_reference": "patch_median, not the global rock top",
+    "thresholds": {"flat_area_frac_min": 0.60, "slope_max": 0.15,
+                    "support_gap_max_m": 0.008, "z_ref_tolerance_m": 0.02}
+  },
+  "note": "Old raw-difference results are kept; this revision is registered before any CLIMB run with per-wheel landings."
+}

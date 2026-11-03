@@ -140,12 +140,13 @@ def make_step(path, h=0.05, sx=0.5, sy=0.9):
 
 
 class Climb:
-    def __init__(self, env, step_x, step_h, step_sx, record=None, faces=None):
+    def __init__(self, env, step_x, step_h, step_sx, record=None, faces=None, landings=None):
         self.env = env
         self.step_x = step_x
         self.step_h = step_h
         self.face_x = step_x - step_sx / 2.0
         self.faces = faces or {'FR': self.face_x, 'FL': self.face_x}
+        self.landings = dict(landings or {})
         self.W = bc.total_weight(env)
         self.swing = 'FR'
         self.support = [l for l in LEG if l != self.swing]
@@ -377,7 +378,7 @@ class Climb:
     # ---- 保持抬高，低速前进到该轮越过台沿
     def advance_to_ledge(self, leg, x_target=None, max_s=6.0, speed=0.06):
         if x_target is None:
-            x_target = self.faces.get(leg, self.face_x) + 0.07
+            x_target = self.landings.get(leg, self.faces.get(leg, self.face_x) + 0.07)
         env = self.env
         b = bc.wheel_body(env, leg)
         for _ in range(int(max_s * 50)):
@@ -701,7 +702,8 @@ def run_climb_episode(env, P, faces, out, rec=None, rear=True, no_shift=False,
     env/spec 由调用方建立；P 来自 derive_skill_params；本函数不读场景真值。
     返回 (phases, climb 实例)。
     """
-    c = Climb(env, 1.20, float(P['top_z']), 0.5, record=rec, faces=faces)
+    c = Climb(env, 1.20, float(P['top_z']), 0.5, record=rec, faces=faces,
+              landings=P.get('landings'))
     phases = []
 
     def add(ph):
@@ -797,7 +799,7 @@ def run_climb_episode(env, P, faces, out, rec=None, rear=True, no_shift=False,
             if ok and not stop():
                 ok = add(c.lift_leg(leg, z_target))
             if ok and not stop():
-                ok = add(c.advance_to_ledge(leg, float(P['place_RR_x'])))
+                ok = add(c.advance_to_ledge(leg, float((P.get('landings') or {}).get(leg, P['place_RR_x']))))
             if ok and not stop():
                 ok = add(c.lower_leg(leg))
             if ok and not stop():

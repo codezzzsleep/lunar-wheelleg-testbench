@@ -33,7 +33,8 @@ def main():
         core['state']['state_hash'] = snap.get('state_hash')
         (out / 'perturb_diag.json').write_text(json.dumps(diag, ensure_ascii=False, indent=2))
     rows, app = v3_core.rehearse_on_spec(core, v3_core.truth_spec(core),
-                                         core['snapshot'], proto)
+                                         core['snapshot'], proto,
+                                         budget=float(S4C.budget()))
     applic = {x: (x in FROZEN, None if x in FROZEN else 'not_in_frozen_set')
               for x in ACT.OPTIONS if x != 'A0'}
     dec = v3_core.aggregate(rows, ['truth'], {}, 'majority', proto,

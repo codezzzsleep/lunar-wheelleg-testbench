@@ -13,6 +13,7 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 import hashlib  # noqa: E402
 import numpy as np  # noqa: E402
 import v3_core  # noqa: E402
+import stage4_config as S4C  # noqa: E402
 import stage4_perturb as S4P  # noqa: E402
 
 
@@ -87,14 +88,18 @@ def main():
     snap = core['snapshot']
     # FULL：逐候选预演（≥50Hz 记录）
     rows_f, app_f = v3_core.rehearse(core, full_coll, snap, proto, record_cells=True,
-                                     record_root=out / 'record_full')
+                                     record_root=out / 'record_full',
+                                     budget=float(S4C.budget()),
+                                     climb_budget=float(S4C.budget()))
     dec_f = v3_core.aggregate(rows_f, cand_ids, geom_sha, 'majority', proto,
                               threshold_mode='majority', applic=app_f)
     v3_core.write_decision(out, core, 'FULL', rows_f, dec_f,
                            {'candidates': cand_ids, 'full_occ_sha': geom_sha})
     # OBS_ONLY
     rows_o, app_o = v3_core.rehearse(core, {'OBS': str(obs_cd)}, snap, proto,
-                                     record_cells=True, record_root=out / 'record_obs')
+                                     record_cells=True, record_root=out / 'record_obs',
+                                     budget=float(S4C.budget()),
+                                     climb_budget=float(S4C.budget()))
     dec_o = v3_core.aggregate(rows_o, ['OBS'], {}, 'majority', proto,
                               threshold_mode='majority', applic=app_o)
     v3_core.write_decision(out, core, 'OBS', rows_o, dec_o, {'candidates': ['OBS']})

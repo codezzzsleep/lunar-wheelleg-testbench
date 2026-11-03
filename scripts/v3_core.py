@@ -210,7 +210,7 @@ def truth_spec(state):
 
 
 def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
-                     options=None, climb_plan=None, climb_budget=120.0):
+                     options=None, climb_plan=None, climb_budget=120.0, budget=None):
     """在给定场景 spec（可以是真值网格）上跑完整动作矩阵。"""
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
@@ -226,7 +226,7 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
                 r = run_climb_cell(spec, snapshot, climb_plan, proto, mode=mode,
                                    seed=seed, budget=climb_budget)
             else:
-                env = make_env(spec, proto)
+                env = make_env(spec, proto, budget=budget or climb_budget)
                 r = run_action(env, snapshot, a, visible, mode=mode, seed=seed)
                 del env
         except Exception as e:  # noqa: BLE001
@@ -240,7 +240,8 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
 
 
 def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
-             record_root=None, options=None, climb_plan=None, climb_budget=120.0):
+             record_root=None, options=None, climb_plan=None, climb_budget=120.0,
+             budget=None):
     """对一组几何候选跑完整预演矩阵。geom: {candidate_id: posed_dir}
 
     record_cells=True 时每个矩阵格写一条 >=50Hz 全状态轨迹到
@@ -273,7 +274,7 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
                                        budget=climb_budget)
                 else:
                     # 每个动作一个全新 env：复用 env 会把上一回合的土壤/摩擦残余带进来
-                    env = make_env(spec, proto)
+                    env = make_env(spec, proto, budget=budget or climb_budget)
                     r = run_action(env, snapshot, a, visible, mode='project', seed=seed,
                                    record_dir=rdir,
                                    record_meta={'scenario': state.get('state_id'),
@@ -378,11 +379,11 @@ def write_decision(out_dir, state, arm, rows, dec, extra=None):
 
 
 def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene',
-                  climb_plan=None, climb_budget=120.0):
+                  climb_plan=None, climb_budget=120.0, budget=None):
     """在真值场景从同一个 S0 续行执行。"""
     spec = json.loads(json.dumps(state['spec']))
     spec.pop('object_material', None)
-    env = make_env(spec, proto)
+    env = make_env(spec, proto, budget=budget or climb_budget)
     try:
         if action == 'CLIMB':
             r = run_climb_cell(spec, state['snapshot'], climb_plan, proto, mode=mode,

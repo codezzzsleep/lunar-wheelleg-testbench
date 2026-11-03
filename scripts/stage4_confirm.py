@@ -40,7 +40,8 @@ def main():
     ex = {}
     for arm in ('FULL', 'OBS'):
         act = dec['chosen'][arm]
-        r = v3_core.truth_execute(core, act, proto, out / 'truth_exec_confirm', arm)
+        r = v3_core.truth_execute(core, act, proto, out / 'truth_exec_confirm', arm,
+                                  budget=float(__import__('stage4_config').budget()))
         ex[arm] = {'action': act, 'outcome': r.get('outcome'),
                    'reason': r.get('reason'), 't_end': r.get('t_end'),
                    'final_x': r.get('final_x')}

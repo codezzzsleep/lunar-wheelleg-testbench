@@ -1,0 +1,238 @@
+{
+  "schema": "stage5-landing-summary/v1",
+  "frozen_config": {
+    "scene": "comp_main4",
+    "scene_sha": "6c4cf65396b15395d7a3cd9461d6cd7a",
+    "collision": {
+      "representation": "box_union (4 mm boxes from 4 mm occupancy)",
+      "coll_dir": "runs/v3/stage005/comp_main4/coll",
+      "n_boxes": 717
+    },
+    "s0_state_hash": "e620b637a73a0aa72e48e7410bacd075",
+    "controller": "Stage003 CLIMB state machine via v3_core.run_climb_cell",
+    "thresholds": "configs/stage5_landing_protocol_R1.json",
+    "budget_s": 120.0,
+    "note": "other composite configs kept as history, not rerun"
+  },
+  "wheel_positions_s0": {
+    "FR": {
+      "x": 0.1981,
+      "y": -0.0985,
+      "z": 0.0869
+    },
+    "FL": {
+      "x": 0.188,
+      "y": 0.1852,
+      "z": 0.0869
+    },
+    "RR": {
+      "x": -0.1865,
+      "y": -0.1123,
+      "z": 0.0869
+    },
+    "RL": {
+      "x": -0.1966,
+      "y": 0.1715,
+      "z": 0.0869
+    }
+  },
+  "schemes": [
+    {
+      "name": "S0_per_wheel_geometric",
+      "delta_x": null,
+      "targets": {
+        "FR": 1.082,
+        "FL": 1.11,
+        "RR": 1.086,
+        "RL": 1.098
+      },
+      "wheels": {
+        "FR": {
+          "y": -0.098,
+          "edge_x": 1.002,
+          "target_x": 1.082,
+          "z": 0.102,
+          "top_local": 0.12,
+          "slope": 0.126,
+          "finite_frac": 0.889,
+          "flat_area_frac": 0.833,
+          "support_gap_m": 0.032
+        },
+        "FL": {
+          "y": 0.186,
+          "edge_x": 1.002,
+          "target_x": 1.11,
+          "z": 0.116,
+          "top_local": 0.124,
+          "slope": 0.211,
+          "finite_frac": 0.889,
+          "flat_area_frac": 0.972,
+          "support_gap_m": 0.06
+        },
+        "RR": {
+          "y": -0.114,
+          "edge_x": 1.002,
+          "target_x": 1.086,
+          "z": 0.112,
+          "top_local": 0.124,
+          "slope": 0.763,
+          "finite_frac": 1.0,
+          "flat_area_frac": 0.741,
+          "support_gap_m": 0.04
+        },
+        "RL": {
+          "y": 0.17,
+          "edge_x": 1.002,
+          "target_x": 1.098,
+          "z": 0.112,
+          "top_local": 0.12,
+          "slope": 0.307,
+          "finite_frac": 1.0,
+          "flat_area_frac": 0.951,
+          "support_gap_m": 0.004
+        }
+      },
+      "applicable": false,
+      "reasons": [
+        "FR_gap(0.032)",
+        "FL_slope(0.211)",
+        "FL_gap(0.06)",
+        "RR_slope(0.763)",
+        "RR_gap(0.04)",
+        "RL_slope(0.307)"
+      ]
+    },
+    {
+      "name": "S1_edge_plus_007",
+      "delta_x": 0.07,
+      "wheels": {
+        "FR": {
+          "y": -0.098,
+          "edge_x": 1.002,
+          "target_x": 1.07,
+          "z": 0.1,
+          "top_local": 0.12,
+          "slope": 0.606,
+          "finite_frac": 0.889,
+          "flat_area_frac": 0.639,
+          "support_gap_m": 0.032
+        },
+        "FL": {
+          "y": 0.186,
+          "edge_x": 1.002,
+          "target_x": 1.07,
+          "z": 0.1,
+          "top_local": 0.124,
+          "slope": 0.421,
+          "finite_frac": 0.889,
+          "flat_area_frac": 1.0,
+          "support_gap_m": 0.06
+        },
+        "RR": {
+          "y": -0.114,
+          "edge_x": 1.002,
+          "target_x": 1.07,
+          "z": 0.104,
+          "top_local": 0.124,
+          "slope": 1.031,
+          "finite_frac": 1.0,
+          "flat_area_frac": 0.506,
+          "support_gap_m": 0.04
+        },
+        "RL": {
+          "y": 0.17,
+          "edge_x": 1.002,
+          "target_x": 1.07,
+          "z": 0.1,
+          "top_local": 0.12,
+          "slope": 0.46,
+          "finite_frac": 1.0,
+          "flat_area_frac": 1.0,
+          "support_gap_m": 0.004
+        }
+      },
+      "applicable": false,
+      "reasons": [
+        "FR_slope(0.606)",
+        "FR_gap(0.032)",
+        "FL_slope(0.421)",
+        "FL_gap(0.06)",
+        "RR_slope(1.031)",
+        "RR_flat_area(0.506)",
+        "RR_gap(0.04)",
+        "RL_slope(0.46)"
+      ]
+    },
+    {
+      "name": "S2_edge_plus_010",
+      "delta_x": 0.1,
+      "wheels": {
+        "FR": {
+          "y": -0.098,
+          "edge_x": 1.002,
+          "target_x": 1.102,
+          "z": 0.096,
+          "top_local": 0.12,
+          "slope": 1.797,
+          "finite_frac": 0.889,
+          "flat_area_frac": 0.431,
+          "support_gap_m": 0.032
+        },
+        "FL": {
+          "y": 0.186,
+          "edge_x": 1.002,
+          "target_x": 1.102,
+          "z": 0.112,
+          "top_local": 0.124,
+          "slope": 0.315,
+          "finite_frac": 0.889,
+          "flat_area_frac": 1.0,
+          "support_gap_m": 0.06
+        },
+        "RR": {
+          "y": -0.114,
+          "edge_x": 1.002,
+          "target_x": 1.102,
+          "z": 0.108,
+          "top_local": 0.124,
+          "slope": 1.837,
+          "finite_frac": 1.0,
+          "flat_area_frac": 0.667,
+          "support_gap_m": 0.04
+        },
+        "RL": {
+          "y": 0.17,
+          "edge_x": 1.002,
+          "target_x": 1.102,
+          "z": 0.112,
+          "top_local": 0.12,
+          "slope": 0.359,
+          "finite_frac": 1.0,
+          "flat_area_frac": 0.914,
+          "support_gap_m": 0.004
+        }
+      },
+      "applicable": false,
+      "reasons": [
+        "FR_slope(1.797)",
+        "FR_flat_area(0.431)",
+        "FR_gap(0.032)",
+        "FL_slope(0.315)",
+        "FL_gap(0.06)",
+        "RR_slope(1.837)",
+        "RR_gap(0.04)",
+        "RL_slope(0.359)"
+      ]
+    }
+  ],
+  "qualified": [],
+  "conclusion": "no qualified landing scheme on comp_main4; per-wheel geometric targets exist but every scheme has real under-wheel gaps and/or dome slopes beyond the frozen limits",
+  "blockers": [
+    "under-wheel support gaps 0.032-0.060 m (real holes between rock tops, not voxel noise)",
+    "dome slopes 0.21-1.84 over the 9x9 wheel patch",
+    "the fixed +0.07 baseline fails the same conditions, so this is not a landing-selection bug"
+  ],
+  "executed_climb": false,
+  "executed_reason": "per instruction: no forced execution without a qualified scheme",
+  "budget_note": "120 s now passed to all actions in v3_core.rehearse/rehearse_on_spec/truth_execute, not only CLIMB"
+}

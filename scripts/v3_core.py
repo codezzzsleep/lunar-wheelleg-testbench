@@ -317,6 +317,109 @@ def downsample_occ(occ_npz, out_npz, factor):
     return str(out_npz), p2
 
 
+COLLISION_ALGO_VERSION = 'v3-collision/2'
+
+
+def occ_identity(occ_npz):
+    """源占据的内容身份：内容 SHA + 栅格参数 + 占据数。跨网格不能直接比较。"""
+    import hashlib
+    z = np.load(occ_npz)
+    occ = np.asarray(z['occupied'])
+    origin = [float(x) for x in np.asarray(z['origin']).tolist()]
+    pitch = float(z['pitch'])
+    dims = [int(x) for x in np.asarray(z['dims']).tolist()]
+    h = hashlib.sha256(np.ascontiguousarray(occ).tobytes()).hexdigest()
+    return {'occ_sha256': h, 'origin': origin, 'pitch': pitch, 'dims': dims,
+            'n_occ': int(occ.sum()), 'shape': list(occ.shape),
+            'convention': str(z['convention']) if 'convention' in z else None}
+
+
+def build_collision(occ_npz, out_dir, pitch=0.002, downsample=1,
+                    algo=COLLISION_ALGO_VERSION, force=False):
+    """占据 -> box union 碰撞件；缓存 key 覆盖源内容/栅格/降采样/盒尺寸/算法版本。
+
+    读取缓存时逐项验证（key、算法、盒文件实际存在且数量一致、_occ_ds 内容），
+    缺源、半截 manifest、源或参数不一致一律拒绝并重建，绝不返回 cached=True。
+    """
+    import hashlib
+    out = pathlib.Path(out_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    ident = occ_identity(occ_npz)
+    params = {'downsample': int(downsample), 'box_pitch': float(pitch) * int(downsample),
+              'algo': algo}
+    key = hashlib.sha256(json.dumps({'src': ident, 'params': params},
+                                    sort_keys=True).encode()).hexdigest()
+    man_p = out / 'manifest.json'
+    stale_reason = None
+    if not force and man_p.is_file():
+        try:
+            man = json.loads(man_p.read_text())
+            if man.get('cache_key') != key:
+                stale_reason = 'cache_key_mismatch'
+            elif man.get('algo') != algo:
+                stale_reason = 'algo_mismatch'
+            elif not man.get('boxes'):
+                stale_reason = 'empty_boxes'
+            else:
+                parts = sorted((out / 'parts').glob('box_*.stl')) if (out / 'parts').is_dir() else []
+                n_boxes = int(man.get('n_boxes') or len(man['boxes']))
+                if len(parts) != n_boxes:
+                    stale_reason = f'parts_count_mismatch:{len(parts)}!={n_boxes}'
+                elif not (out / '_occ_ds.npz').is_file():
+                    stale_reason = 'missing_downsampled_occ'
+        except Exception as e:  # noqa: BLE001
+            stale_reason = f'manifest_unreadable:{type(e).__name__}'
+        if stale_reason is None:
+            return {'ok': True, 'cached': True, 'manifest': man,
+                    'n_boxes': man.get('n_boxes'), 'collision_sha': man.get('collision_sha'),
+                    'cache_key': key, 'source': ident}
+        # 明确记下为什么重建，不静默复用
+        (out / 'cache_invalidated.json').write_text(json.dumps(
+            {'schema': 'v3-collision-cache/v1', 'reason': stale_reason,
+             'expected_key': key, 'algo': algo, 'source': ident,
+             'at': time.strftime('%Y-%m-%dT%H:%M:%S%z')},
+            ensure_ascii=False, indent=2))
+        for f in (out / 'manifest.json',):
+            if f.exists():
+                f.unlink()
+    src, eff_pitch = downsample_occ(occ_npz, out / '_occ_ds.npz', downsample)
+    cmd = [sys.executable, str(ROOT / 'scripts/collision_box_union.py'),
+           '--occ', str(src), '--out', str(out), '--pitch', str(eff_pitch)]
+    r = subprocess.run(cmd, capture_output=True, text=True)
+    if r.returncode != 0:
+        return {'ok': False, 'error': (r.stderr or r.stdout)[-800:]}
+    man = json.loads((out / 'manifest.json').read_text())
+    man.update({'cache_key': key, 'algo': algo, 'source': ident, 'params': params,
+                'cache_rebuilt_reason': stale_reason,
+                'rebuilt_at': time.strftime('%Y-%m-%dT%H:%M:%S%z')})
+    (out / 'manifest.json').write_text(json.dumps(man, ensure_ascii=False, indent=2))
+    return {'ok': True, 'cached': False, 'n_boxes': man.get('n_boxes'),
+            'collision_sha': man.get('collision_sha'), 'cache_key': key,
+            'source': ident, 'cache_rebuilt_reason': stale_reason}
+
+
+def downsample_occ(occ_npz, out_npz, factor):
+    """占据按 factor 块降采样（any），写一个新的 occ.npz（pitch×factor）。"""
+    d = np.load(occ_npz)
+    occ = np.asarray(d['occupied'], dtype=bool)
+    origin = np.asarray(d['origin'], float)
+    pitch = float(d['pitch'])
+    if int(factor) <= 1:
+        return str(occ_npz), pitch
+    f = int(factor)
+    nx, ny, nz = occ.shape
+    occ = occ[:nx // f * f, :ny // f * f, :nz // f * f]
+    occ = occ.reshape(nx // f, f, ny // f, f, nz // f, f).any(axis=(1, 3, 5))
+    p2 = pitch * f
+    import hashlib
+    np.savez_compressed(out_npz, occupied=occ, origin=origin, pitch=np.float64(p2),
+                        dims=np.asarray(occ.shape, int),
+                        content_sha=np.array(hashlib.sha256(
+                            np.ascontiguousarray(occ).tobytes()).hexdigest()[:32]),
+                        convention=np.array('voxel_center = origin + (index+0.5)*pitch'))
+    return str(out_npz), p2
+
+
 def build_collision(occ_npz, out_dir, pitch=0.002, downsample=1):
     out = pathlib.Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)

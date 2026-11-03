@@ -1,0 +1,40 @@
+{
+  "schema": "v3-publish-status/v1",
+  "generated_at": "2026-11-03T13:38:15+0800",
+  "state": "blocked_on_credentials",
+  "blocked_reason": "缺少 GITHUB_TOKEN/GH_TOKEN 且无 gh/git-lfs，无法创建 Release 或 LFS 上传；只有 SSH git push 权限",
+  "volumes": [
+    {
+      "volume_id": "v3_bundle",
+      "bytes": 68639799,
+      "n_files": 271
+    },
+    {
+      "volume_id": "v3_media",
+      "bytes": 10263003,
+      "n_files": 14
+    },
+    {
+      "volume_id": "legacy_p58_preview",
+      "bytes": 165609798,
+      "n_files": 13
+    },
+    {
+      "volume_id": "v3_records",
+      "bytes": 222902,
+      "n_files": 6
+    }
+  ],
+  "missing": [
+    {
+      "path": "runs/unseen/delivery_v7/v7_20261030_r1/gen_v2/P58_S2/raw/*/results.zip",
+      "status": "recovered",
+      "note": "原件不在本机；已按 tasks.json 的 task_id 从 API 原样重新下载，未新建任务、未消耗积分；文件与 task_id 绑定"
+    },
+    {
+      "path": "runs/unseen/delivery_v7/v7_20261030_r1/v3batch_nominal/P58_S2/*/coll",
+      "status": "asset_missing",
+      "note": "该目录整体不存在；同批 v3batch/* 所有状态目录为空（0 文件），无法用新生成替代。需要确认是否有其他副本或从 task 重算"
+    }
+  ]
+}

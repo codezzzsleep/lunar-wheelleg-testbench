@@ -47,3 +47,10 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_rock_actions.py --state runs/v3/s
 
 - 可以对外说：A/B/F 通过；C 部分；D 未通过；E 无正例、展示边界。
 - 不可以说：腿式攀越完成、腿式相对轮式有价值、20 m 路线证明腿式能力。
+
+## 6. 一致性检查
+
+- `docs/CONSISTENCY.md`：12/12 通过（route 的 rigid/nominal 数值、basic_cycle 8 run、
+  CLIMB failure 状态、E 的 14/12/0/1、证据索引存在）。
+- `dist/publish/PUBLISH_STATUS.json` 的 `code_sha` 是旧提交（9bd2b4c），但
+  `blocked_on_release_channel` 的原因仍成立：LFS 客户端 segfault、无 gh/token。

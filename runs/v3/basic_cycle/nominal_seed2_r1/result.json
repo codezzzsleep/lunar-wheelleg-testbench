@@ -1,0 +1,382 @@
+{
+  "schema": "v3-basic-cycle/v1",
+  "env": "flat",
+  "soil": "nominal",
+  "swing": "FR",
+  "init": {
+    "seed": 2,
+    "qpos": [
+      -0.003862,
+      0.020207,
+      0.384078,
+      0.99995,
+      -1.2e-05,
+      -0.000999,
+      0.009961,
+      -3.8e-05,
+      0.850495,
+      -1.654451,
+      0.013333,
+      0.000299,
+      0.850376,
+      -1.65475,
+      0.013167,
+      6e-06,
+      0.845993,
+      -1.6591,
+      0.00762,
+      0.000111,
+      0.846055,
+      -1.659151,
+      0.007394
+    ],
+    "qvel": [
+      0.002112,
+      6.9e-05,
+      0.00025,
+      9e-05,
+      0.002593,
+      0.000128,
+      -0.0002,
+      0.003521,
+      -0.001612,
+      0.001514,
+      -0.000251,
+      0.003733,
+      -0.001435,
+      0.00066,
+      -8.7e-05,
+      0.001651,
+      0.004397,
+      -0.007043,
+      -0.000115,
+      0.001834,
+      0.004352,
+      -0.007099
+    ],
+    "qpos_sha256": "b8759b4e2cf0968ac26a7533a07c5ad18322407b2cafa0b896785e82a8a29b1a",
+    "qvel_sha256": "d8bb589658f127e366cefb106b2a0a07f899547edc6b5a70d29641a5c7c795a7",
+    "perturbation": {
+      "lateral_m": 0.05,
+      "yaw_rad": 0.05
+    }
+  },
+  "cycles_requested": 3,
+  "cycles_completed": 3,
+  "total_mass_kg": 19.1264,
+  "weight_n": 30.985,
+  "cycles": [
+    {
+      "cycle": 0,
+      "phases": [
+        {
+          "phase": "stand",
+          "seconds": 0.8,
+          "tilt_max_deg": 0.112,
+          "speed_max_mps": 0.002,
+          "ang_speed_max_radps": 0.0025,
+          "track_err_max_rad": 0.0091,
+          "margin_min_m": 0.00241,
+          "swing_load_n": 7.59,
+          "swing_load_frac": 0.245,
+          "support_loads_n": {
+            "FL": 7.423,
+            "RR": 8.009,
+            "RL": 7.957
+          },
+          "support_frac": {
+            "FL": 0.2396,
+            "RR": 0.2585,
+            "RL": 0.2568
+          },
+          "ok": true
+        },
+        {
+          "phase": "shift_support",
+          "margin_m": 0.01587,
+          "best_margin_m": 0.015871086662599357,
+          "com": [
+            -0.01457,
+            0.02846,
+            0.30418
+          ],
+          "steps": 60,
+          "ok": true
+        },
+        {
+          "phase": "small_lift",
+          "dz_m": 0.0248,
+          "clearance_m": 0.0254,
+          "steps": 80,
+          "ok": true
+        },
+        {
+          "phase": "hold",
+          "seconds": 1.2,
+          "tilt_max_deg": 1.43,
+          "speed_max_mps": 0.0002,
+          "ang_speed_max_radps": 0.0009,
+          "track_err_max_rad": 0.0162,
+          "margin_min_m": 0.01652,
+          "swing_load_n": 0.0,
+          "swing_load_frac": 0.0,
+          "support_loads_n": {
+            "FL": 14.242,
+            "RR": 14.603,
+            "RL": 2.134
+          },
+          "support_frac": {
+            "FL": 0.4596,
+            "RR": 0.4713,
+            "RL": 0.0689
+          },
+          "ok": true
+        },
+        {
+          "phase": "lower_until_contact",
+          "contact_at_t": 6.45999999999995,
+          "steps_to_contact": 83,
+          "swing_load_n": 5.864,
+          "ok": true
+        },
+        {
+          "phase": "load_transfer",
+          "swing_load_n": 5.316,
+          "frac": 0.1716,
+          "contact_sustained_s": 0.4,
+          "ok": true
+        },
+        {
+          "phase": "return_body",
+          "ok": true
+        }
+      ],
+      "terminated": false,
+      "errors": []
+    },
+    {
+      "cycle": 1,
+      "phases": [
+        {
+          "phase": "stand",
+          "seconds": 0.8,
+          "tilt_max_deg": 0.199,
+          "speed_max_mps": 0.001,
+          "ang_speed_max_radps": 0.0091,
+          "track_err_max_rad": 0.0118,
+          "margin_min_m": 0.00449,
+          "swing_load_n": 10.752,
+          "swing_load_frac": 0.347,
+          "support_loads_n": {
+            "FL": 4.369,
+            "RR": 4.595,
+            "RL": 11.249
+          },
+          "support_frac": {
+            "FL": 0.141,
+            "RR": 0.1483,
+            "RL": 0.363
+          },
+          "ok": true
+        },
+        {
+          "phase": "shift_support",
+          "margin_m": 0.01501,
+          "best_margin_m": 0.015007764303101878,
+          "com": [
+            -0.01418,
+            0.02764,
+            0.30418
+          ],
+          "steps": 60,
+          "ok": true
+        },
+        {
+          "phase": "small_lift",
+          "dz_m": 0.0248,
+          "clearance_m": 0.0254,
+          "steps": 80,
+          "ok": true
+        },
+        {
+          "phase": "hold",
+          "seconds": 1.2,
+          "tilt_max_deg": 1.407,
+          "speed_max_mps": 0.0002,
+          "ang_speed_max_radps": 0.0009,
+          "track_err_max_rad": 0.0157,
+          "margin_min_m": 0.01567,
+          "swing_load_n": 0.0,
+          "swing_load_frac": 0.0,
+          "support_loads_n": {
+            "FL": 14.288,
+            "RR": 14.605,
+            "RL": 2.085
+          },
+          "support_frac": {
+            "FL": 0.4611,
+            "RR": 0.4714,
+            "RL": 0.0673
+          },
+          "ok": true
+        },
+        {
+          "phase": "lower_until_contact",
+          "contact_at_t": 14.49999999999978,
+          "steps_to_contact": 82,
+          "swing_load_n": 5.867,
+          "ok": true
+        },
+        {
+          "phase": "load_transfer",
+          "swing_load_n": 5.238,
+          "frac": 0.169,
+          "contact_sustained_s": 0.4,
+          "ok": true
+        },
+        {
+          "phase": "return_body",
+          "ok": true
+        }
+      ],
+      "terminated": false,
+      "errors": []
+    },
+    {
+      "cycle": 2,
+      "phases": [
+        {
+          "phase": "stand",
+          "seconds": 0.8,
+          "tilt_max_deg": 0.194,
+          "speed_max_mps": 0.0016,
+          "ang_speed_max_radps": 0.0099,
+          "track_err_max_rad": 0.0119,
+          "margin_min_m": 0.00509,
+          "swing_load_n": 10.796,
+          "swing_load_frac": 0.3484,
+          "support_loads_n": {
+            "FL": 4.264,
+            "RR": 4.58,
+            "RL": 11.326
+          },
+          "support_frac": {
+            "FL": 0.1376,
+            "RR": 0.1478,
+            "RL": 0.3655
+          },
+          "ok": true
+        },
+        {
+          "phase": "shift_support",
+          "margin_m": 0.01578,
+          "best_margin_m": 0.011359745356593828,
+          "com": [
+            -0.01806,
+            0.02991,
+            0.30398
+          ],
+          "steps": 90,
+          "ok": true
+        },
+        {
+          "phase": "small_lift",
+          "dz_m": 0.0247,
+          "clearance_m": 0.0253,
+          "steps": 80,
+          "ok": true
+        },
+        {
+          "phase": "hold",
+          "seconds": 1.2,
+          "tilt_max_deg": 1.484,
+          "speed_max_mps": 0.0002,
+          "ang_speed_max_radps": 0.0009,
+          "track_err_max_rad": 0.0153,
+          "margin_min_m": 0.01625,
+          "swing_load_n": 0.0,
+          "swing_load_frac": 0.0,
+          "support_loads_n": {
+            "FL": 14.122,
+            "RR": 14.244,
+            "RL": 2.613
+          },
+          "support_frac": {
+            "FL": 0.4558,
+            "RR": 0.4597,
+            "RL": 0.0843
+          },
+          "ok": true
+        },
+        {
+          "phase": "lower_until_contact",
+          "contact_at_t": 23.119999999999596,
+          "steps_to_contact": 81,
+          "swing_load_n": 5.653,
+          "ok": true
+        },
+        {
+          "phase": "load_transfer",
+          "swing_load_n": 5.152,
+          "frac": 0.1663,
+          "contact_sustained_s": 0.4,
+          "ok": true
+        },
+        {
+          "phase": "return_body",
+          "ok": true
+        }
+      ],
+      "terminated": false,
+      "errors": []
+    }
+  ],
+  "checks": {
+    "c0_stand": true,
+    "c0_shift_support": true,
+    "c0_small_lift": true,
+    "c0_hold": true,
+    "c0_lower_until_contact": true,
+    "c0_load_transfer": true,
+    "c0_return_body": true,
+    "c1_stand": true,
+    "c1_shift_support": true,
+    "c1_small_lift": true,
+    "c1_hold": true,
+    "c1_lower_until_contact": true,
+    "c1_load_transfer": true,
+    "c1_return_body": true,
+    "c2_stand": true,
+    "c2_shift_support": true,
+    "c2_small_lift": true,
+    "c2_hold": true,
+    "c2_lower_until_contact": true,
+    "c2_load_transfer": true,
+    "c2_return_body": true
+  },
+  "terminated": false,
+  "errors": [],
+  "all_ok": true,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/basic_cycle/nominal_seed2_r1/record/index.json",
+    "trajectory_sha256": "76f457cb0e2b97802dd5d7ffef5e5be4d855b6f355c8a68a324dd7acfa8550f4",
+    "frame_count": 1236,
+    "record_hz": 50.0,
+    "duration_s": 24.699999999999562,
+    "n_chunks": 5,
+    "contacts_n": 9906
+  },
+  "thresholds": {
+    "hold_s": 1.2,
+    "lift_m": 0.02,
+    "margin_m": 0.01,
+    "swing_load_frac": 0.02,
+    "support_frac": 0.05,
+    "tilt_deg": 5.0,
+    "speed_mps": 0.03,
+    "ang_speed_radps": 0.1,
+    "track_err_rad": 0.15,
+    "contact_load_n": 5.0,
+    "contact_sustained_s": 0.2
+  }
+}

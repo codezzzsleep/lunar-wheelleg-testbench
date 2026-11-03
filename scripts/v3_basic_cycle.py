@@ -16,6 +16,7 @@
       --out runs/v3/basic_cycle/rigid_r1
 """
 import argparse
+import hashlib
 import json
 import math
 import pathlib
@@ -427,6 +428,8 @@ def main():
     ap.add_argument('--record', action='store_true')
     ap.add_argument('--hold', type=float, default=1.2)
     ap.add_argument('--cycles', type=int, default=1)
+    ap.add_argument('--init-seed', type=int, default=0,
+                    help='初态扰动种子；实际 qpos/qvel 哈希写入结果，seed 名不等于初态相同')
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
@@ -436,7 +439,16 @@ def main():
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=15.0 + 8.0 * a.cycles)
-    env.reset(seed=0)
+    env.reset(seed=a.init_seed)
+    q0 = np.asarray(env.data.qpos, dtype=np.float64).copy()
+    v0 = np.asarray(env.data.qvel, dtype=np.float64).copy()
+    init = {'seed': int(a.init_seed),
+            'qpos': [round(float(x), 6) for x in q0],
+            'qvel': [round(float(x), 6) for x in v0],
+            'qpos_sha256': hashlib.sha256(q0.tobytes()).hexdigest(),
+            'qvel_sha256': hashlib.sha256(v0.tobytes()).hexdigest(),
+            'perturbation': {'lateral_m': env.init_perturbation['lateral'],
+                             'yaw_rad': env.init_perturbation['yaw']}}
     rec = None
     if a.record:
         rec = v3_record.Recorder(out / 'record',
@@ -478,6 +490,7 @@ def main():
     all_ok = all(checks.values()) and not cyc.terminated
     res = {'schema': 'v3-basic-cycle/v1',
            'env': 'flat', 'soil': a.soil, 'swing': a.swing,
+           'init': init,
            'cycles_requested': a.cycles, 'cycles_completed': len(cycles),
            'total_mass_kg': round(float(mujoco.mj_getTotalmass(env.model)), 4),
            'weight_n': round(cyc.W, 3),

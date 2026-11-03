@@ -53,7 +53,9 @@ def main():
         'parent_run': a.parent,
         'inputs': {'result_schema': res.get('schema'),
                    'soil': res.get('soil'), 'swing': res.get('swing'),
-                   'cycles_requested': res.get('cycles_requested')},
+                   'cycles_requested': res.get('cycles_requested'),
+                   'init_seed': (res.get('init') or {}).get('seed'),
+                   'init_qpos_sha256': (res.get('init') or {}).get('qpos_sha256')},
         'outputs': files,
         'result_sha256': files.get('result.json', {}).get('sha256'),
     }

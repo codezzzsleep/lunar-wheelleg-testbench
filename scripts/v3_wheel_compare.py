@@ -107,9 +107,10 @@ def run_one(soil, dx, dy, dyaw, speed, rec_dir=None):
     traj = rec.close() if rec is not None else None
     rec_info = None
     if traj is not None:
-        z = np.load(sorted(pathlib.Path(traj['trajectory_path']).parent.glob('chunk_*.npz'))[0])
+        chunks = sorted(pathlib.Path(traj['trajectory_path']).parent.glob('chunk_*.npz'))
+        last_t = float(np.load(chunks[-1])['t'][-1])
         rec_info = {'frames': traj['frame_count'], 'duration_s': traj['duration_s'],
-                    'last_t': round(float(z['t'][-1]), 3),
+                    'last_t': round(last_t, 3),
                     'sha256': traj['trajectory_sha256']}
     tt = vc.terminal_ok(rows, float(d.qpos[0]), wheel_z, FAR_X, env.terminated)
     return {'state': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw, 'qpos_sha256': qh},
@@ -117,7 +118,7 @@ def run_one(soil, dx, dy, dyaw, speed, rec_dir=None):
             'grounded': tt['grounded'], 'final_x': round(float(d.qpos[0]), 4),
             'wheel_z': wheel_z, 'tilt_max': tt['tilt_max_deg'], 'vx_max': tt['vx_max'],
             'termination': term, 'time_s': round(float(env.t), 3),
-            'trajectory': traj, 'record': rec_info,
+            'trajectory_ref': traj, 'record': rec_info,
             'record_consistent': bool(rec_info is not None
                                       and rec_info['last_t'] <= float(env.t) + 1e-6
                                       and rec_info['last_t'] >= float(env.t) - 1.5)}

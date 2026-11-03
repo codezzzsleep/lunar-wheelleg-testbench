@@ -16,6 +16,6 @@
 | perturbed S1 n=3 | 通过 | 3 |
 | perturbed S1 unified=2 | 通过 | 2 |
 | perturbed hashes distinct | 通过 | 3 |
-| evidence index present | 通过 | 57 |
+| evidence index present | 通过 | 82 |
 
 总计：15/15 通过。

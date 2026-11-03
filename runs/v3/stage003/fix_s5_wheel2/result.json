@@ -1,0 +1,242 @@
+{
+  "schema": "v3-wheel-compare/v1",
+  "soil": "nominal",
+  "far_x": 2.35,
+  "criterion": "same terminal function: crossed + grounded + tilt<=10 + vx<=0.03 + no term",
+  "rows": [
+    {
+      "state": {
+        "dx": 0.0,
+        "dy": 0.0,
+        "dyaw_deg": 0.0,
+        "qpos_sha256": "dfea15f0d47d05408c9b78dcf53f3a8d4145fe77046593e5097433f9551e8a87"
+      },
+      "speed_mps": 0.3,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7154,
+      "wheel_z": {
+        "FR": 0.0868,
+        "FL": 0.0867,
+        "RR": 0.0869,
+        "RL": 0.087
+      },
+      "tilt_max": 0.055,
+      "vx_max": 0.0001,
+      "termination": {},
+      "time_s": 14.72,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_00/index.json",
+        "trajectory_sha256": "c376413296239d244e8efb41d9e4047d75e7c998fb281c9350514a1b42cd41e6",
+        "frame_count": 736,
+        "record_hz": 50.0,
+        "duration_s": 14.699999999999775,
+        "n_chunks": 3,
+        "contacts_n": 4330
+      },
+      "record": {
+        "frames": 736,
+        "duration_s": 14.699999999999775,
+        "last_t": 14.72,
+        "sha256": "c376413296239d244e8efb41d9e4047d75e7c998fb281c9350514a1b42cd41e6"
+      },
+      "record_consistent": true
+    },
+    {
+      "state": {
+        "dx": 0.0,
+        "dy": 0.0,
+        "dyaw_deg": 0.0,
+        "qpos_sha256": "dfea15f0d47d05408c9b78dcf53f3a8d4145fe77046593e5097433f9551e8a87"
+      },
+      "speed_mps": 0.15,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7045,
+      "wheel_z": {
+        "FR": 0.0868,
+        "FL": 0.0868,
+        "RR": 0.0868,
+        "RL": 0.0868
+      },
+      "tilt_max": 0.013,
+      "vx_max": 0.0001,
+      "termination": {},
+      "time_s": 28.12,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_01/index.json",
+        "trajectory_sha256": "ce76b0e6b4395cdf876a5e0bd45bfda06c92317c840a17571f1d89b569809df3",
+        "frame_count": 1406,
+        "record_hz": 50.0,
+        "duration_s": 28.09999999999949,
+        "n_chunks": 6,
+        "contacts_n": 10336
+      },
+      "record": {
+        "frames": 1406,
+        "duration_s": 28.09999999999949,
+        "last_t": 28.12,
+        "sha256": "ce76b0e6b4395cdf876a5e0bd45bfda06c92317c840a17571f1d89b569809df3"
+      },
+      "record_consistent": true
+    },
+    {
+      "state": {
+        "dx": 0.02,
+        "dy": 0.01,
+        "dyaw_deg": 1.0,
+        "qpos_sha256": "264be46ef65ae20fe3068e51f81d6df24fdcf31e3741735d82e77d4d13e39e81"
+      },
+      "speed_mps": 0.3,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7161,
+      "wheel_z": {
+        "FR": 0.0868,
+        "FL": 0.0867,
+        "RR": 0.0869,
+        "RL": 0.087
+      },
+      "tilt_max": 0.05,
+      "vx_max": 0.0003,
+      "termination": {},
+      "time_s": 14.64,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_02/index.json",
+        "trajectory_sha256": "db53ecaef8c1f35602e1e94e30177f8b6d9643fa08a046c8e6b707472c19c890",
+        "frame_count": 732,
+        "record_hz": 50.0,
+        "duration_s": 14.619999999999777,
+        "n_chunks": 3,
+        "contacts_n": 4522
+      },
+      "record": {
+        "frames": 732,
+        "duration_s": 14.619999999999777,
+        "last_t": 14.64,
+        "sha256": "db53ecaef8c1f35602e1e94e30177f8b6d9643fa08a046c8e6b707472c19c890"
+      },
+      "record_consistent": true
+    },
+    {
+      "state": {
+        "dx": 0.02,
+        "dy": 0.01,
+        "dyaw_deg": 1.0,
+        "qpos_sha256": "264be46ef65ae20fe3068e51f81d6df24fdcf31e3741735d82e77d4d13e39e81"
+      },
+      "speed_mps": 0.15,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7046,
+      "wheel_z": {
+        "FR": 0.0867,
+        "FL": 0.0867,
+        "RR": 0.0869,
+        "RL": 0.0868
+      },
+      "tilt_max": 0.01,
+      "vx_max": 0.0001,
+      "termination": {},
+      "time_s": 27.92,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_03/index.json",
+        "trajectory_sha256": "3ef02cc967a85223bfbf83c92aa665a04b6b2afbb7f5d0e625dcc180eb747d07",
+        "frame_count": 1396,
+        "record_hz": 50.0,
+        "duration_s": 27.899999999999494,
+        "n_chunks": 6,
+        "contacts_n": 10230
+      },
+      "record": {
+        "frames": 1396,
+        "duration_s": 27.899999999999494,
+        "last_t": 27.92,
+        "sha256": "3ef02cc967a85223bfbf83c92aa665a04b6b2afbb7f5d0e625dcc180eb747d07"
+      },
+      "record_consistent": true
+    },
+    {
+      "state": {
+        "dx": -0.02,
+        "dy": -0.01,
+        "dyaw_deg": -1.0,
+        "qpos_sha256": "7e321110887b1c08f0bd5ec782bdcd3d9616ab865f61bd8cff19711814650718"
+      },
+      "speed_mps": 0.3,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7142,
+      "wheel_z": {
+        "FR": 0.0867,
+        "FL": 0.0868,
+        "RR": 0.087,
+        "RL": 0.0869
+      },
+      "tilt_max": 0.061,
+      "vx_max": 0.0002,
+      "termination": {},
+      "time_s": 14.82,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_04/index.json",
+        "trajectory_sha256": "53e7a1526421b99911a5628ee0ee723b69113356f7d954d6b2a43116b76e7bb7",
+        "frame_count": 741,
+        "record_hz": 50.0,
+        "duration_s": 14.799999999999773,
+        "n_chunks": 3,
+        "contacts_n": 4511
+      },
+      "record": {
+        "frames": 741,
+        "duration_s": 14.799999999999773,
+        "last_t": 14.82,
+        "sha256": "53e7a1526421b99911a5628ee0ee723b69113356f7d954d6b2a43116b76e7bb7"
+      },
+      "record_consistent": true
+    },
+    {
+      "state": {
+        "dx": -0.02,
+        "dy": -0.01,
+        "dyaw_deg": -1.0,
+        "qpos_sha256": "7e321110887b1c08f0bd5ec782bdcd3d9616ab865f61bd8cff19711814650718"
+      },
+      "speed_mps": 0.15,
+      "passed": true,
+      "crossed": true,
+      "grounded": true,
+      "final_x": 2.7055,
+      "wheel_z": {
+        "FR": 0.0867,
+        "FL": 0.0867,
+        "RR": 0.0868,
+        "RL": 0.0868
+      },
+      "tilt_max": 0.013,
+      "vx_max": 0.0001,
+      "termination": {},
+      "time_s": 28.3,
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage003/fix_s5_wheel2/record_05/index.json",
+        "trajectory_sha256": "91e151dc69a56fb1568b1d09113afc99319446275bf500f93a0688142846c7bf",
+        "frame_count": 1415,
+        "record_hz": 50.0,
+        "duration_s": 28.279999999999486,
+        "n_chunks": 6,
+        "contacts_n": 10421
+      },
+      "record": {
+        "frames": 1415,
+        "duration_s": 28.279999999999486,
+        "last_t": 28.3,
+        "sha256": "91e151dc69a56fb1568b1d09113afc99319446275bf500f93a0688142846c7bf"
+      },
+      "record_consistent": true
+    }
+  ]
+}

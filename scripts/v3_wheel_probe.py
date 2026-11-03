@@ -25,14 +25,15 @@ WHEEL_R = vc.WHEEL_R
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--speed', type=float, default=0.30)
+    ap.add_argument('--step-h', type=float, default=0.05)
     ap.add_argument('--soil', default='rigid', choices=['rigid', 'nominal'])
     ap.add_argument('--out', default='runs/v3/wheel_probe')
     a = ap.parse_args()
     out = ROOT / a.out / f'{a.soil}_v{a.speed:.2f}'
     out.mkdir(parents=True, exist_ok=True)
     sx_ledge = 0.5
-    box_fr = vc.make_step(out / 'step_fr.stl', h=0.05, sx=sx_ledge, sy=0.27)
-    box_fl = vc.make_step(out / 'step_fl.stl', h=0.05, sx=sx_ledge, sy=0.27)
+    box_fr = vc.make_step(out / 'step_fr.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
+    box_fl = vc.make_step(out / 'step_fl.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
     faces = {'FR': 0.95, 'FL': 1.13}
     spec = terrain.make_spec(kind='flat', seed=0, goal_x=4.0, name='wheel_probe',
                              objects=[{'mesh_file': box_fr,
@@ -62,11 +63,11 @@ def main():
             break
     x = float(env.data.qpos[0])
     res = {'schema': 'v3-wheel-probe/v1', 'soil': a.soil, 'speed_mps': a.speed,
-           'step_h_m': 0.05, 'wheel_radius_m': WHEEL_R,
+           'step_h_m': a.step_h, 'wheel_radius_m': WHEEL_R,
            'final_x': round(x, 4), 'passed': bool(x >= 1.50),
            'tilt_max_deg': round(max(f['tilt'] for f in frames), 3) if frames else None,
            'termination': term, 'frames': len(frames),
-           'note': '纯轮式、无腿动作；只用于判断 5 cm 台是否已经需要腿'}
+           f'note': '纯轮式、无腿动作；只用于判断 {a.step_h:.2f} m 台是否已经需要腿'}
     (out / 'result.json').write_text(json.dumps(res, ensure_ascii=False, indent=2))
     print(json.dumps(res, ensure_ascii=False))
     return 0 if res['passed'] else 1

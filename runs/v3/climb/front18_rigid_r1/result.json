@@ -1,0 +1,46 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.18,
+    "face_x": 0.95
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0108,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.012096152441809171,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.2392,
+      "target_z": 0.291,
+      "ok": false
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": false
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": "FR_lift",
+  "all_ok": false,
+  "trajectory_ref": null
+}

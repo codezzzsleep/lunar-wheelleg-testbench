@@ -1,0 +1,115 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.12,
+    "face_x": 0.95
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0108,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.012096638508670321,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.2324,
+      "target_z": 0.231,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.0204,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 12.879999999999814,
+      "steps": 15,
+      "load_n": 12.785,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 6.07,
+      "frac": 0.1959,
+      "tilt_max_deg": 0.725,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "margin_m": 0.01312353922371759,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.2295,
+      "target_z": 0.231,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2002,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 23.759999999999582,
+      "steps": 13,
+      "load_n": 12.671,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 5.815,
+      "frac": 0.1877,
+      "tilt_max_deg": 0.389,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 8.952,
+      "fl_load_n": 5.635,
+      "fr_frac": 0.2889,
+      "fl_frac": 0.1819,
+      "tilt_max_deg": 0.374,
+      "ok": true
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": null,
+  "all_ok": true,
+  "trajectory_ref": null
+}

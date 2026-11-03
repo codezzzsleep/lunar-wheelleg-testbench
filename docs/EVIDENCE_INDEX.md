@@ -97,3 +97,4 @@
 | `runs/v3/stage007/summary.json` | stage7-integration-summary/v1 | 边界 | Lux3D candidates do not reproduce the clean BODY pass |
 | `runs/v3/stage007/stage007_pack.tar.gz` | pack | — | reference replay + textured stills + candidate table + README |
 | `runs/v3/stage007/retrieval.json` | stage7-retrieval/v1 | — | 6/6 GLB sha verified, 48/48 action records verified, 12/12 arm coll; local-only, gitignored |
+| `runs/v3/stage007/cand_small/widths.json` | stage7-widths/v1 | — | wheel-band widths 0.240-0.288 m (full) vs ~0.28 m gap |

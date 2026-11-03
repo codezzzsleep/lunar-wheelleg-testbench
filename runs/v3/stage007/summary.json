@@ -140,5 +140,32 @@
     "textured_scene": "runs/v3/stage007/render1/scene_1536.png",
     "textured_target": "runs/v3/stage007/render1/target_1536.png",
     "candidate_table": "runs/v3/stage007/cand_small/table.json"
-  }
+  },
+  "candidate_widths_at_wheel_band_m": {
+    "4632564": {
+      "full": 0.272,
+      "obs": 0.208
+    },
+    "4632603": {
+      "full": 0.256,
+      "obs": 0.224
+    },
+    "4632618": {
+      "full": 0.24,
+      "obs": 0.112
+    },
+    "4632621": {
+      "full": 0.24,
+      "obs": 0.232
+    },
+    "4632624": {
+      "full": 0.264,
+      "obs": 0.256
+    },
+    "4632627": {
+      "full": 0.288,
+      "obs": 0.256
+    }
+  },
+  "width_interpretation": "full arms are 0.240-0.288 m at the wheel band, at or beyond the ~0.28 m wheel gap; OBS arms are narrower (0.112-0.256) because only the front 0.10 m is kept. Candidate 4632618 is 0.24 m wide and its wheels do pass (R2/D1), yet BODY still stalls, which points at the fixed straight drive inside BODY_CLEARANCE: it has no lateral path adaptation, so a candidate not centred like the reference rock blocks it even when the wheels could get through."
 }

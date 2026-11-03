@@ -54,6 +54,14 @@
       "aborted": "tilt>20deg"
     },
     {
+      "phase": "lower_half",
+      "aborted": "tilt>20deg"
+    },
+    {
+      "phase": "lower_settle",
+      "aborted": "tilt>20deg"
+    },
+    {
       "phase": "lower_FR",
       "aborted": "tilt>20deg"
     }
@@ -61,6 +69,14 @@
   "aborted": [
     {
       "phase": "hold_FR",
+      "aborted": "tilt>20deg"
+    },
+    {
+      "phase": "lower_half",
+      "aborted": "tilt>20deg"
+    },
+    {
+      "phase": "lower_settle",
       "aborted": "tilt>20deg"
     },
     {
@@ -74,12 +90,12 @@
   "all_ok": false,
   "trajectory_ref": {
     "trajectory_path": "/workspace/lunar-lab/runs/v3/control/legtest/record/index.json",
-    "trajectory_sha256": "db89f02c2221e1d418cec09c68cc137d8479568dcf5c8ff09159148a528b6258",
-    "frame_count": 98,
+    "trajectory_sha256": "d83a7cf41262e0cbe1ce03182d8fd9de7ed9d45e59ba23b8e3af2e70fb732bdb",
+    "frame_count": 100,
     "record_hz": 50.0,
-    "duration_s": 1.9400000000000013,
+    "duration_s": 1.9800000000000013,
     "n_chunks": 1,
-    "contacts_n": 548
+    "contacts_n": 550
   },
   "note": "终止检查触发：倾角过大，未完成抬轮-保持-落轮"
 }

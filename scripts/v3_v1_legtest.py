@@ -131,7 +131,12 @@ def main():
     # 抬/保持/落全程不刹死轮子：让轮子能滚动来释放力矩，落轮才可能重新建立接触
     ph_lift = run_phase('lift_FR', 0.8, lift, ramp=0.35, brake=0.0)
     ph_hold = run_phase('hold_FR', 0.4, lift, ramp=0.05, brake=0.0)
-    ph_down = run_phase('lower_FR', 1.2, stance_targets(), ramp=0.9, brake=0.0)
+    # 两段式下落：先落一半并停 0.25 s 让接触建立，再落到底
+    half = {leg: {pp: lift[leg][pp] + 0.5 * (stance_targets()[leg][pp] - lift[leg][pp])
+                  for pp in ('hip', 'thigh', 'calf')} for leg in LEG}
+    ph_down1 = run_phase('lower_half', 0.7, half, ramp=0.5, brake=0.0)
+    ph_down2 = run_phase('lower_settle', 0.25, half, ramp=0.05, brake=0.0)
+    ph_down = run_phase('lower_FR', 0.9, stance_targets(), ramp=0.7, brake=0.0)
     ref = rec.close()
     aborted = [p for p in phases if 'aborted' in p]
     if aborted:

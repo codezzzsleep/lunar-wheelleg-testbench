@@ -210,6 +210,18 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
                      'error': f'{type(e).__name__}: {e}', 'success': False,
                      'outcome': 'rehearsal_error', 'cost': 60.0}
             r['candidate'] = cid
+            # 这一格实际加载的几何身份（碰撞清单里的源占据内容 SHA）；旧清单没有
+            # source 字段时记 unverifiable_legacy，不能拿初态哈希冒充几何身份。
+            try:
+                man = json.loads((pathlib.Path(geom[cid]) / 'manifest.json').read_text())
+                src = (man.get('source') or {}).get('occ_sha256')
+                r['geometry_id'] = src
+                r['geometry_id_status'] = ('ok' if src else 'unverifiable_legacy')
+                r['collision_sha'] = man.get('collision_sha')
+                r['collision_cache_key'] = man.get('cache_key')
+            except Exception:
+                r['geometry_id'] = None
+                r['geometry_id_status'] = 'manifest_unreadable'
             r['applicable'] = True if a not in applic else bool(applic[a][0])
             rows.append(r)
     return rows, {a: (bool(applic[a][0]), applic[a][1]) for a in opts}
@@ -344,7 +356,7 @@ def downsample_occ(occ_npz, out_npz, factor):
     np.savez_compressed(out_npz, occupied=occ, origin=origin, pitch=np.float64(p2),
                         dims=np.asarray(occ.shape, int),
                         content_sha=np.array(hashlib.sha256(
-                            np.ascontiguousarray(occ).tobytes()).hexdigest()[:32]),
+                            np.ascontiguousarray(occ).tobytes()).hexdigest()),
                         convention=np.array('voxel_center = origin + (index+0.5)*pitch'))
     return str(out_npz), p2
 
@@ -428,48 +440,6 @@ def build_collision(occ_npz, out_dir, pitch=0.002, downsample=1,
     return {'ok': True, 'cached': False, 'n_boxes': man.get('n_boxes'),
             'collision_sha': man.get('collision_sha'), 'cache_key': key,
             'source': ident, 'cache_rebuilt_reason': stale_reason}
-
-
-def downsample_occ(occ_npz, out_npz, factor):
-    """占据按 factor 块降采样（any），写一个新的 occ.npz（pitch×factor）。"""
-    d = np.load(occ_npz)
-    occ = np.asarray(d['occupied'], dtype=bool)
-    origin = np.asarray(d['origin'], float)
-    pitch = float(d['pitch'])
-    if int(factor) <= 1:
-        return str(occ_npz), pitch
-    f = int(factor)
-    nx, ny, nz = occ.shape
-    occ = occ[:nx // f * f, :ny // f * f, :nz // f * f]
-    occ = occ.reshape(nx // f, f, ny // f, f, nz // f, f).any(axis=(1, 3, 5))
-    p2 = pitch * f
-    import hashlib
-    np.savez_compressed(out_npz, occupied=occ, origin=origin, pitch=np.float64(p2),
-                        dims=np.asarray(occ.shape, int),
-                        content_sha=np.array(hashlib.sha256(
-                            np.ascontiguousarray(occ).tobytes()).hexdigest()[:32]),
-                        convention=np.array('voxel_center = origin + (index+0.5)*pitch'))
-    return str(out_npz), p2
-
-
-def build_collision(occ_npz, out_dir, pitch=0.002, downsample=1):
-    out = pathlib.Path(out_dir)
-    out.mkdir(parents=True, exist_ok=True)
-    if int(downsample) > 1 and (out / 'manifest.json').is_file():
-        return {'ok': True, 'cached': True,
-                'manifest': json.loads((out / 'manifest.json').read_text()),
-                'n_boxes': json.loads((out / 'manifest.json').read_text()).get('n_boxes'),
-                'collision_sha': json.loads((out / 'manifest.json').read_text()).get('collision_sha')}
-    src, eff_pitch = downsample_occ(occ_npz, out / '_occ_ds.npz', downsample)
-    cmd = [sys.executable, str(ROOT / 'scripts/collision_box_union.py'),
-           '--occupancy', str(src), '--out', str(out), '--pitch', str(eff_pitch)]
-    r = subprocess.run(cmd, capture_output=True, text=True, cwd=str(ROOT))
-    if r.returncode != 0:
-        return {'ok': False, 'error': (r.stderr or r.stdout)[-400:]}
-    man = json.loads((out / 'manifest.json').read_text())
-    return {'ok': True, 'manifest': man, 'n_boxes': man.get('n_boxes'),
-            'collision_sha': man.get('collision_sha'), 'pitch_m': eff_pitch,
-            'downsample': int(downsample)}
 
 
 def main():

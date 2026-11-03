@@ -1,0 +1,130 @@
+{
+  "schema": "v3-v1-legtest/v1",
+  "env": "flat",
+  "seed": 0,
+  "lift_command_source": {
+    "file": "runs/v3/control/legsweep.json",
+    "d_thigh": 0.3,
+    "d_calf": -0.3,
+    "sweep_dz_m": 0.0372
+  },
+  "phases": [
+    {
+      "phase": "stand",
+      "seconds": 0.8,
+      "wheel_z_before": {
+        "FR": 0.0869,
+        "FL": 0.0869,
+        "RR": 0.0869,
+        "RL": 0.0869
+      },
+      "wheel_z_after": {
+        "FR": 0.0869,
+        "FL": 0.0869,
+        "RR": 0.0869,
+        "RL": 0.0869
+      },
+      "mean_contact_load": {
+        "FR": 7.579,
+        "FL": 7.484,
+        "RR": 7.919,
+        "RL": 7.997
+      },
+      "max_joint_track_err_rad": 0.0087
+    },
+    {
+      "phase": "lift_FR",
+      "seconds": 0.5,
+      "wheel_z_before": {
+        "FR": 0.0869,
+        "FL": 0.0869,
+        "RR": 0.0869,
+        "RL": 0.0869
+      },
+      "wheel_z_after": {
+        "FR": 0.1488,
+        "FL": 0.1347,
+        "RR": 0.1946,
+        "RL": 0.137
+      },
+      "mean_contact_load": {
+        "FR": 0.0,
+        "FL": 48.231,
+        "RR": 15.84,
+        "RL": 13.17
+      },
+      "max_joint_track_err_rad": 0.3751
+    },
+    {
+      "phase": "hold_FR",
+      "seconds": 0.4,
+      "wheel_z_before": {
+        "FR": 0.1488,
+        "FL": 0.1347,
+        "RR": 0.1946,
+        "RL": 0.137
+      },
+      "wheel_z_after": {
+        "FR": 0.1068,
+        "FL": 0.1368,
+        "RR": 0.0955,
+        "RL": 0.1061
+      },
+      "mean_contact_load": {
+        "FR": 28.479,
+        "FL": 0.0,
+        "RR": 20.537,
+        "RL": 61.293
+      },
+      "max_joint_track_err_rad": 0.4066
+    },
+    {
+      "phase": "lower_FR",
+      "seconds": 0.8,
+      "wheel_z_before": {
+        "FR": 0.1068,
+        "FL": 0.1368,
+        "RR": 0.0955,
+        "RL": 0.1061
+      },
+      "wheel_z_after": {
+        "FR": 0.568,
+        "FL": 0.2738,
+        "RR": 0.6963,
+        "RL": 0.3211
+      },
+      "mean_contact_load": {
+        "FR": 7.526,
+        "FL": 0.0,
+        "RR": 8.415,
+        "RL": 0.0
+      },
+      "max_joint_track_err_rad": 0.4418
+    }
+  ],
+  "checks": {
+    "lift_height_m": 0.0199,
+    "lift_height_ok": false,
+    "fr_load_during_hold": 28.479,
+    "fr_unloaded_ok": false,
+    "other_legs_loaded_ok": false,
+    "fr_load_after_lower": 7.526,
+    "relower_ok": true,
+    "tracking_ok": false
+  },
+  "all_ok": false,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/control/legtest/record/index.json",
+    "trajectory_sha256": "f1b435810682c8284f1936f0672a4cf1f99cad1db300144faa446a5cf6cebc66",
+    "frame_count": 125,
+    "record_hz": 50.0,
+    "duration_s": 2.4800000000000018,
+    "n_chunks": 1,
+    "contacts_n": 547
+  },
+  "command_contract": {
+    "joint_targets_rad": "[4,3] rad (hip,thigh,calf)",
+    "wheel_omega_rad_s": "[4] rad/s",
+    "wheel_brake": "[4] 0/1"
+  }
+}

@@ -1090,6 +1090,76 @@ class WheelLegEnv:
         return {'dx_by_assumed_sign': {str(k): v for k, v in rec.items()},
                 'chosen_sign': best, 'positive_means_forward': rec[best] > 0}
 
+    # ------------------------------------------------------------------ V1 命令合同
+    def apply_command(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
+                      wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None):
+        """统一关节命令：12 关节目标(rad, [4,3] 或 {leg: {hip,thigh,calf}}) + 4 轮。
+
+        单位与顺序：关节 rad（hi/thigh/calf 按 LEG 顺序），轮 rad/s，制动 0/1。
+        只写 data.ctrl，不碰 qpos/qvel（不得瞬移）。返回实际下发的 ctrl（含饱和）。
+        """
+        import numpy as _np
+        d, m = self.data, self.model
+        kp = float(KP if kp is None else kp)
+        kd = float(KD if kd is None else kd)
+        ctrl = {}
+        for li, leg in enumerate(LEG):
+            for ji, part in enumerate(('hip', 'thigh', 'calf')):
+                e = self.J[f'{leg}_{part}_joint']
+                if joint_targets_rad is None:
+                    tgt = STANCE[part]
+                elif isinstance(joint_targets_rad, dict):
+                    tgt = float(joint_targets_rad[leg][part])
+                else:
+                    tgt = float(_np.asarray(joint_targets_rad)[li, ji])
+                vff = 0.0
+                if joint_velocity_targets_rad_s is not None:
+                    if isinstance(joint_velocity_targets_rad_s, dict):
+                        vff = float(joint_velocity_targets_rad_s[leg][part])
+                    else:
+                        vff = float(_np.asarray(joint_velocity_targets_rad_s)[li, ji])
+                u = kp * (tgt - d.qpos[e['qadr']]) + kd * (vff - d.qvel[e['vadr']])
+                u = float(_np.clip(u, -LEG_MAX, LEG_MAX))
+                d.ctrl[e['act']] = u
+                ctrl[f'{leg}_{part}'] = u
+            e = self.J[f'{leg}_wheel_joint']
+            if wheel_brake is not None and bool(_np.asarray(wheel_brake).reshape(-1)[li]):
+                u = float(_np.clip(-6.0 * d.qvel[e['vadr']], -WHEEL_MAX, WHEEL_MAX))
+            elif wheel_omega_rad_s is not None:
+                want = float(_np.asarray(wheel_omega_rad_s).reshape(-1)[li])
+                u = float(_np.clip(WHEEL_KP * (want - d.qvel[e['vadr']]),
+                                   -WHEEL_MAX, WHEEL_MAX))
+            else:
+                u = float(_np.clip(WHEEL_KP * (0.0 - d.qvel[e['vadr']]),
+                                   -WHEEL_MAX, WHEEL_MAX))
+            d.ctrl[e['act']] = u
+            ctrl[f'{leg}_wheel'] = u
+        self._last_joint_targets = (None if joint_targets_rad is None else
+                                    _np.asarray([[joint_targets_rad[leg][part]
+                                                  for part in ('hip', 'thigh', 'calf')]
+                                                 for leg in LEG], dtype=float)
+                                    if isinstance(joint_targets_rad, dict)
+                                    else _np.asarray(joint_targets_rad, float))
+        self._last_joint_vel_targets = None
+        self._last_wheel_omega = (None if wheel_omega_rad_s is None
+                                  else _np.asarray(wheel_omega_rad_s, float))
+        self._last_wheel_brake = (None if wheel_brake is None
+                                  else _np.asarray(wheel_brake, float))
+        return ctrl
+
+    def step_command(self, joint_targets_rad=None, joint_velocity_targets_rad_s=None,
+                     wheel_omega_rad_s=None, wheel_brake=None, kp=None, kd=None):
+        """用统一命令推进一个控制步（与 step/step_drive 相同的物理子步与计时）。"""
+        ctrl = self.apply_command(joint_targets_rad, joint_velocity_targets_rad_s,
+                                  wheel_omega_rad_s, wheel_brake, kp=kp, kd=kd)
+        for _ in range(self.substeps):
+            self._soil_step()
+            mujoco.mj_step(self.model, self.data)
+            self.n_physics += 1
+        self.n_control += 1
+        self.t += self.substeps * self.dt
+        return ctrl
+
     def brake_step(self, return_info=False):
         """显式刹车一步（轮速目标 0）：实测 a[2]=-1 不停车，A0 必须走这条。"""
         for _ in range(self.substeps):

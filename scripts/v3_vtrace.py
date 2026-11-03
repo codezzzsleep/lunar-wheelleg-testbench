@@ -176,7 +176,15 @@ def trace_candidate(state_dir, proto, cid):
         # ---- S5 碰撞 ----
         coll = jl(out / 'coll' / 'manifest.json', {}) or {}
         coll_obs = jl(state_dir / 'obs_only' / 'coll' / 'manifest.json', {}) or {}
+        fused_sha = arr_sha(full_saved.astype(bool))
+        def _verdict(src):
+            if not src:
+                return 'unverifiable_legacy'
+            return 'ok' if src == fused_sha else 'mismatch'
         tr['S5_collision'] = {
+            'identity_verdict': _verdict((coll.get('source') or {}).get('occ_sha256')),
+            'fused_full_sha256': fused_sha,
+            'hash_len_note': '全部为 64 位十六进制内容 SHA；初态哈希与几何哈希不同名不同义',
             'full': {'n_boxes': coll.get('n_boxes'), 'collision_sha': coll.get('collision_sha'),
                      'source': coll.get('source'), 'params': coll.get('params'),
                      'algo': coll.get('algo'), 'cache_key': coll.get('cache_key')},
@@ -186,8 +194,7 @@ def trace_candidate(state_dir, proto, cid):
             'hidden_increment_boxes': (None if coll.get('n_boxes') is None
                                        or coll_obs.get('n_boxes') is None
                                        else int(coll['n_boxes']) - int(coll_obs['n_boxes'])),
-            'source_matches_fusion': (coll.get('source') or {}).get('occ_sha256')
-            == arr_sha(full_saved.astype(bool))}
+            'source_matches_fusion': _verdict((coll.get('source') or {}).get('occ_sha256')) == 'ok'}
         # ---- S6 预演加载 ----
         mat = state_dir / 'decision' / 'matrix_FULL.jsonl'
         hashes = set()
@@ -199,11 +206,24 @@ def trace_candidate(state_dir, proto, cid):
                     continue
                 if r.get('candidate') == cid and r.get('initial_full_hash'):
                     hashes.add(r['initial_full_hash'])
+        geom_ids = set()
+        if mat.is_file():
+            for line in mat.read_text().splitlines():
+                try:
+                    r = json.loads(line)
+                except Exception:
+                    continue
+                if r.get('candidate') == cid and r.get('geometry_id'):
+                    geom_ids.add(r['geometry_id'])
         tr['S6_rehearsal_loaded'] = {
-            'initial_full_hashes_in_matrix': sorted(hashes)[:4],
-            'matches_fused_full': (arr_sha(full_saved.astype(bool))[:16] in
-                                   {h[:16] if h else None for h in hashes}) if hashes else None,
-            'note': ('矩阵里记录的哈希来自当次加载的碰撞/几何；不一致说明预演加载的不是本次融合结果')}
+            # 这两个是不同的东西：initial_full_hash 是 runner 对初态 qpos/qvel 的哈希，
+            # geometry_id 是碰撞清单里源占据的内容 SHA。禁止交叉比较。
+            'initial_state_hashes_in_matrix': sorted(hashes)[:4],
+            'geometry_ids_in_matrix': sorted(geom_ids)[:4],
+            'geometry_matches_fused_full': (fused_sha in geom_ids) if geom_ids else None,
+            'geometry_status': ('ok' if geom_ids and fused_sha in geom_ids
+                                else ('mismatch' if geom_ids else 'unverifiable_legacy')),
+            'note': ('初态哈希 != 几何哈希；旧矩阵没有 geometry_id，只能记 unverifiable_legacy')}
         # ---- 真值（同一 grid/同一 U/同一 ROI）----
         T, tinfo, tart = FZ.truth_occupancy(state_dir, proto)
         # 真值必须与融合同一栅格：dims/pitch/origin 全一致才比较

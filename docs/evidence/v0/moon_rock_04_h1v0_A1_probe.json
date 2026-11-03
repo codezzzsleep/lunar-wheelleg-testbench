@@ -1,0 +1,157 @@
+{
+  "schema": "v3-v0-probe/v1",
+  "state_id": "moon_rock_04_h1v0",
+  "candidate": "A1",
+  "task_id": null,
+  "identity": "5a1430dfe52d3badfa4073da2acd420966be5bf8f6fde370f6c99eeed907034c",
+  "raw_sha256": "c741717f271d12628a2b543399f2f3771a1afb0524fcd1baaa4c3f66e2c39986",
+  "parent_sha256_in_candidate": "d9697b0e715534579d40ad9e1c929ce7b1285cf1027a6ef6a8d75b677f4bffcb",
+  "registration_matrix": [
+    [
+      0.43610306983454156,
+      0.26024175124394355,
+      0.4931829162955762,
+      1.2264210438038026
+    ],
+    [
+      0.5370288248030406,
+      -0.027382711757339733,
+      -0.46042510136059306,
+      0.08444328048413675
+    ],
+    [
+      -0.1501838851108464,
+      0.6577731094699244,
+      -0.21429041660025733,
+      0.08569322636903487
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "registration_diagnostics": {
+    "mask_iou": 0.6669,
+    "depth_median_mm": 19.634,
+    "depth_p95_mm": 100.482,
+    "visible_median_mm": 7.35,
+    "visible_p95_mm": 48.621,
+    "n_candidate_pixels": 46731,
+    "n_mask_pixels": 67710
+  },
+  "raw_glb": {
+    "path": "runs/v3/generation/cache/5a1430dfe52d3badfa4073da2acd420966be5bf8f6fde370f6c99eeed907034c/model.glb",
+    "sha256": "c741717f271d12628a2b543399f2f3771a1afb0524fcd1baaa4c3f66e2c39986",
+    "sha_matches_candidate_raw": true,
+    "n_nodes": 1,
+    "nodes": [
+      {
+        "name": "geometry_0",
+        "n_faces": 28746,
+        "extents": [
+          0.45,
+          0.226621,
+          0.459205
+        ],
+        "node_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    ],
+    "as_scene": {
+      "n_vertices": 16637,
+      "n_faces": 28746,
+      "extents": [
+        0.45,
+        0.226621,
+        0.459205
+      ],
+      "aabb_volume": 0.04683,
+      "area": 0.663904,
+      "signed_volume": 0.000598,
+      "is_watertight": false,
+      "n_components": 118
+    },
+    "as_force_mesh": {
+      "n_vertices": 16637,
+      "n_faces": 28746,
+      "extents": [
+        0.45,
+        0.226621,
+        0.459205
+      ],
+      "aabb_volume": 0.04683,
+      "area": 0.663904,
+      "signed_volume": 0.000598,
+      "is_watertight": false,
+      "n_components": 118
+    },
+    "scene_vs_force_extent_ratio": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "parent_world": {
+    "sha256": "d9697b0e715534579d40ad9e1c929ce7b1285cf1027a6ef6a8d75b677f4bffcb",
+    "n_vertices": 86238,
+    "n_faces": 28746,
+    "extents": [
+      0.143819,
+      0.429452,
+      0.169772
+    ],
+    "aabb_volume": 0.010486,
+    "area": 0.33271,
+    "signed_volume": 0.000212,
+    "is_watertight": false,
+    "n_components": 28746,
+    "vs_raw_extent_ratio": [
+      0.319598,
+      1.895023,
+      0.369709
+    ],
+    "vs_raw_area_ratio": 0.501142,
+    "vs_raw_volume_ratio": 0.354515
+  },
+  "occupancy_parent_world": {
+    "n_voxels": 17510,
+    "sha256": "78648bd93b9114911db0b43d2b0b23b0",
+    "volume_m3": 0.000213,
+    "pitch_m": 0.0023,
+    "dims": [
+      267,
+      399,
+      100
+    ]
+  },
+  "occupancy_raw_unregistered": {
+    "error": "IndexError: too many indices for array: array is 1-dimensional, but 2 were indexed"
+  },
+  "registration_scale_from_matrix": 0.707913
+}

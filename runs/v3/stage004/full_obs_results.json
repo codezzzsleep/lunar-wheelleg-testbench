@@ -1,0 +1,134 @@
+{
+  "schema": "stage004-full-obs-summary/v1",
+  "contract": "FULL = V | (P & U); OBS_ONLY = V; shared V, 2 mm occupancy -> 4 mm box union; majority vote; decision saved before truth execution",
+  "configs": [
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "dir": "e2e_04_h1v0_v2",
+      "FULL": {
+        "chosen": "R2",
+        "votes": {
+          "R1": 0,
+          "R2": 6,
+          "L1": 0,
+          "L2": 0,
+          "S1": 0,
+          "D1": 0,
+          "D2": 0
+        },
+        "outcome": "pass",
+        "t_end": 9.42
+      },
+      "OBS": {
+        "chosen": "R2",
+        "votes": {
+          "R1": 0,
+          "R2": 1,
+          "L1": 0,
+          "L2": 0,
+          "S1": 0,
+          "D1": 0,
+          "D2": 0
+        },
+        "outcome": "pass",
+        "t_end": 9.42
+      },
+      "decision_differs": false,
+      "outcome_differs": false,
+      "truth_reference": {
+        "truth_plan": "R2",
+        "truth_outcome": "pass",
+        "obs_plan": "L2",
+        "obs_outcome": "physical_failure"
+      }
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "dir": "e2e_moon_rock_01_h2v0",
+      "FULL": {
+        "chosen": "A0",
+        "votes": {
+          "R1": 0,
+          "R2": 0,
+          "L1": 0,
+          "L2": 1,
+          "S1": 0,
+          "D1": 0,
+          "D2": 0
+        },
+        "outcome": "safe_stop",
+        "t_end": 3.6000000000000028
+      },
+      "OBS": {
+        "chosen": "A0",
+        "votes": {
+          "R1": 0,
+          "R2": 0,
+          "L1": 0,
+          "L2": 0,
+          "S1": 0,
+          "D1": 0,
+          "D2": 0
+        },
+        "outcome": "safe_stop",
+        "t_end": 3.6000000000000028
+      },
+      "decision_differs": false,
+      "outcome_differs": false,
+      "truth_reference": {
+        "truth_plan": "L2",
+        "truth_outcome": "pass",
+        "obs_plan": "A0",
+        "obs_outcome": "safe_stop"
+      }
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "dir": "e2e_moon_rock_05_h1v1",
+      "FULL": {
+        "chosen": "S1",
+        "votes": {
+          "R1": 0,
+          "R2": 6,
+          "L1": 6,
+          "L2": 0,
+          "S1": 6,
+          "D1": 2,
+          "D2": 0
+        },
+        "outcome": "physical_failure",
+        "t_end": 5.2
+      },
+      "OBS": {
+        "chosen": "S1",
+        "votes": {
+          "R1": 0,
+          "R2": 1,
+          "L1": 1,
+          "L2": 0,
+          "S1": 1,
+          "D1": 0,
+          "D2": 0
+        },
+        "outcome": "physical_failure",
+        "t_end": 5.2
+      },
+      "decision_differs": false,
+      "outcome_differs": false,
+      "truth_reference": {
+        "truth_plan": "D1",
+        "truth_outcome": "pass",
+        "obs_plan": "L2",
+        "obs_outcome": "physical_failure"
+      }
+    }
+  ],
+  "answer_full_vs_obs": "0/3 decision or outcome differences with the deployed fusion",
+  "answer_vs_truth": "FULL missed the truth-passing action in 2/3: 01_h2v0 truth L2 pass but L2 got 1/6 votes -> A0; 05_h1v1 truth D1 pass but D1 got 2/6 -> S1 chosen and tipped",
+  "q1_leg_value": "no leg-only config; L2 cheaper in 01_h2v0, D1 cheaper in 05_h1v1 at truth reference",
+  "limitations": [
+    "candidate fusion did not reproduce the truth-reference differences",
+    "05_h1v1 S1 passed previews but failed in truth (estimation error, real physical failure)",
+    "config 01 safe-stopped because candidate L2 support was 1/6"
+  ]
+}

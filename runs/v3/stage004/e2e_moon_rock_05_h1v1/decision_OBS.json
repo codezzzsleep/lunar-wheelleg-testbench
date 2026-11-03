@@ -1,0 +1,113 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "moon_rock_05_h1v1",
+  "arm": "OBS",
+  "decided_at": "2026-11-03T23:27:36+0800",
+  "state_hash": "1db594799efa9678be2b9dc6afb2a151",
+  "visible": {
+    "n_pixels": 20138,
+    "x_front": 1.2766017945552814,
+    "y_center": 0.15195277690813314,
+    "W_vis": 0.18508862178894148,
+    "H_vis": 0.1716164081289551
+  },
+  "matrix_sha256": "ba946ffbde48cb727e4044b61adf75e43a17fe2a8c336ee9c1ba93d4d25ac9ea",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 1,
+      "L1": 1,
+      "L2": 0,
+      "S1": 1,
+      "D1": 0,
+      "D2": 0
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 8.6,
+      "L1": 7.8,
+      "L2": 60.0,
+      "S1": 7.3,
+      "D1": 60.0,
+      "D2": 60.0
+    },
+    "chosen": "S1",
+    "safe_set": [
+      "R2",
+      "L1",
+      "S1"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "OBS": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.68,
+          "final_x": 1.485
+        },
+        "R2": {
+          "success": true,
+          "reason": "success",
+          "cost": 8.6,
+          "t_end": 9.2,
+          "final_x": 3.643
+        },
+        "L1": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.800000000000001,
+          "t_end": 8.4,
+          "final_x": 3.753
+        },
+        "L2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.12,
+          "final_x": 2.199
+        },
+        "S1": {
+          "success": true,
+          "reason": "success",
+          "cost": 7.300000000000001,
+          "t_end": 7.9,
+          "final_x": 3.851
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.58,
+          "final_x": 2.409
+        },
+        "D2": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.72,
+          "final_x": 1.343
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "candidates": [
+    "OBS"
+  ],
+  "decision_sha": "4765605bb7b0e4d4369cbc5f12b944ce"
+}

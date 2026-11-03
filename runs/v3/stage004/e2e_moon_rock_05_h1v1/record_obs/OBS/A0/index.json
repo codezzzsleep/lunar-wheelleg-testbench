@@ -1,0 +1,92 @@
+{
+  "schema": "v3-trajectory/v2",
+  "meta": {
+    "scenario": null,
+    "candidate": "OBS",
+    "method": "rehearsal",
+    "state_mode": "project",
+    "action": "A0",
+    "mode": "project",
+    "seed": 0,
+    "started_at": "2026-11-03T23:27:36+0800"
+  },
+  "record_hz": 50.0,
+  "fields": {
+    "t": "s",
+    "control_index": "1",
+    "physics_index": "1",
+    "qpos": "m / rad (MuJoCo 顺序)",
+    "qvel": "m/s / rad/s (MuJoCo 顺序)",
+    "action_raw": "控制器输出（归一化，含义见 action_names）",
+    "joint_target": "rad",
+    "joint_vel_target": "rad/s",
+    "wheel_omega_target": "rad/s",
+    "wheel_brake": "0/1",
+    "joint_torque": "N*m (实际执行器)",
+    "wheel_torque": "N*m (实际执行器)",
+    "nav_target_y": "m (机体横向目标)",
+    "tilt_deg": "deg",
+    "n_contact": "1"
+  },
+  "field_keys": [
+    "action_raw",
+    "control_index",
+    "joint_target",
+    "joint_torque",
+    "joint_vel_target",
+    "n_contact",
+    "nav_target_y",
+    "physics_index",
+    "qpos",
+    "qvel",
+    "t",
+    "tilt_deg",
+    "wheel_brake",
+    "wheel_omega_target",
+    "wheel_torque"
+  ],
+  "array_names": {
+    "joint": [
+      "FR_hip",
+      "FR_thigh",
+      "FR_calf",
+      "FL_hip",
+      "FL_thigh",
+      "FL_calf",
+      "RR_hip",
+      "RR_thigh",
+      "RR_calf",
+      "RL_hip",
+      "RL_thigh",
+      "RL_calf"
+    ],
+    "wheel": [
+      "FR",
+      "FL",
+      "RR",
+      "RL"
+    ],
+    "qpos": "MuJoCo model.nq",
+    "qvel": "MuJoCo model.nv"
+  },
+  "units_note": "关节/轮的量都按关节名顺序；qpos/qvel 是 MuJoCo 原生顺序，渲染与回放必须读同一模型",
+  "unavailable": [],
+  "chunks": [
+    {
+      "chunk": 0,
+      "frames": 150,
+      "arrays": "chunk_00000.npz",
+      "arrays_sha256": "72977bb0ef17cfa4c4a640b5e849edd71e8b1ebe457e219936570dcef81b19a3",
+      "contacts": "contacts_00000.jsonl",
+      "contacts_sha256": "cefff71c1a607314144a213db09d1d677a12c7a407eb195550779f011f3db57f",
+      "contacts_n": 1350,
+      "t_first": 0.6200000000000002,
+      "t_last": 3.6000000000000028
+    }
+  ],
+  "frame_count": 150,
+  "contacts_n": 1350,
+  "started_at": "2026-11-03T23:27:36+0800",
+  "closed_at": "2026-11-03T23:27:36+0800",
+  "duration_s": 2.9800000000000026
+}

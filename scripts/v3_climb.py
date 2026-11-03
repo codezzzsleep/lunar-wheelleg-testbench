@@ -430,6 +430,146 @@ class Climb:
                 'loads_n': {k: round(v, 3) for k, v in loads.items()},
                 'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
 
+    # ---- Stage003 末段：FL 实测方向下放 + 姿态调平 + 整体下放 + 预压 + 稳定窗口 + 下降
+    def fl_lower(self, max_ticks=8):
+        env = self.env
+        for _ in range(max_ticks):
+            if contact_load(env, 'FL') >= 1.0:
+                break
+            lo, hi = jlim(env, 'FL', 'thigh')
+            self.targets['FL']['thigh'] = float(np.clip(
+                self.targets['FL']['thigh'] - 0.03, lo, hi))
+            lo, hi = jlim(env, 'FL', 'calf')
+            self.targets['FL']['calf'] = float(np.clip(
+                self.targets['FL']['calf'] + 0.10, lo, hi))
+            for _ in range(5):
+                self.step('FL_lower')
+                if self.terminated:
+                    break
+        load = contact_load(env, 'FL', 'top')
+        return {'phase': 'FL_lower', 'load_n': round(load, 3),
+                'ok': bool(load >= 1.0 and not self.terminated)}
+
+    def level_roll(self, seconds=1.5):
+        env = self.env
+        for k in range(int(seconds * 50)):
+            self.step('level_roll')
+            if self.terminated:
+                break
+            if k % 5:
+                continue
+            for leg in ('FL', 'RL'):
+                lo, hi = jlim(env, leg, 'thigh')
+                self.targets[leg]['thigh'] = float(np.clip(self.targets[leg]['thigh'] + 0.004, lo, hi))
+                lo, hi = jlim(env, leg, 'calf')
+                self.targets[leg]['calf'] = float(np.clip(self.targets[leg]['calf'] - 0.014, lo, hi))
+            for leg in ('FR', 'RR'):
+                lo, hi = jlim(env, leg, 'thigh')
+                self.targets[leg]['thigh'] = float(np.clip(self.targets[leg]['thigh'] - 0.004, lo, hi))
+                lo, hi = jlim(env, leg, 'calf')
+                self.targets[leg]['calf'] = float(np.clip(self.targets[leg]['calf'] + 0.014, lo, hi))
+        rows = self.frames[-max(1, int(0.2 * 50)):]
+        tilt = max((f['tilt'] for f in rows), default=99)
+        return {'phase': 'level_roll', 'tilt_max_deg': round(tilt, 3),
+                'ok': bool(tilt <= 10.0 and not self.terminated)}
+
+    def body_until_support(self, max_ticks=20, dz=0.001):
+        env = self.env
+        for _ in range(max_ticks):
+            loads = {leg: contact_load(env, leg) for leg in LEG}
+            if all(v >= 1.0 for v in loads.values()):
+                break
+            dp = np.array([0.0, 0.0, -dz])
+            for leg in LEG:
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.03, 0.03)
+                for p_, v in zip(('hip', 'thigh', 'calf'), dq):
+                    lo, hi = jlim(env, leg, p_)
+                    self.targets[leg][p_] = float(np.clip(self.targets[leg][p_] + float(v), lo, hi))
+            for _ in range(5):
+                self.step('body_down')
+                if self.terminated:
+                    break
+        loads = {leg: contact_load(env, leg) for leg in LEG}
+        return {'phase': 'body_down',
+                'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                'ok': bool(all(v >= 1.0 for v in loads.values()) and not self.terminated)}
+
+    def preload_min(self, max_ticks=3):
+        env = self.env
+        for _ in range(max_ticks):
+            loads = {leg: contact_load(env, leg) for leg in LEG}
+            leg = min(loads, key=loads.get)
+            if loads[leg] >= 3.0:
+                break
+            lo, hi = jlim(env, leg, 'thigh')
+            self.targets[leg]['thigh'] = float(np.clip(self.targets[leg]['thigh'] - 0.01, lo, hi))
+            lo, hi = jlim(env, leg, 'calf')
+            self.targets[leg]['calf'] = float(np.clip(self.targets[leg]['calf'] + 0.035, lo, hi))
+            for _ in range(10):
+                self.step('preload_min')
+                if self.terminated:
+                    break
+        loads = {leg: contact_load(env, leg) for leg in LEG}
+        return {'phase': 'preload_min',
+                'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                'ok': bool(min(loads.values()) >= 1.0 and not self.terminated)}
+
+    def stable_window(self, seconds=1.0):
+        env = self.env
+        rows = []
+        for _ in range(int(seconds * 50)):
+            rows.append(self.step('stable'))
+            if self.terminated:
+                break
+        loads_last = {leg: contact_load(env, leg) for leg in LEG}
+        pts = []
+        for leg in LEG:
+            if loads_last[leg] >= 1.0:
+                pts += [np.asarray(q[:2]) for q in contact_points(env, leg)]
+        margin = None
+        if len(pts) >= 3:
+            mm, _ = bc.nearest_edge(pts, bc.com(env)[:2])
+            margin = round(float(mm), 4) if mm > -0.5 else None
+        tilt = max((r['tilt'] for r in rows), default=99)
+        vx = max((abs(r['vx']) for r in rows), default=99)
+        w = max((float(np.linalg.norm(env.data.qvel[3:6])) for _ in [0]), default=99)
+        return {'phase': 'stable', 'tilt_max_deg': round(tilt, 3),
+                'vx_max': round(vx, 4), 'margin_m': margin,
+                'n_support': sum(1 for v in loads_last.values() if v >= 1.0),
+                'ok': bool(rows and tilt <= 10.0 and vx <= 0.03
+                           and margin is not None and margin >= 0.010
+                           and sum(1 for v in loads_last.values() if v >= 1.0) >= 3
+                           and not self.terminated)}
+
+    def descend_action(self, far_x, speed=0.15, max_s=25.0):
+        env = self.env
+        for _ in range(int(max_s * 50)):
+            self.step('descent_drive', omega=speed / WHEEL_R)
+            if self.terminated or float(env.data.qpos[0]) >= far_x + 0.30:
+                break
+        for _ in range(60):
+            if abs(float(env.data.qvel[0])) <= 0.03:
+                break
+            self.step('descent_stop', omega=0.0)
+            if self.terminated:
+                break
+        rows = []
+        for _ in range(75):
+            rows.append(self.step('descent_hold'))
+            if self.terminated:
+                break
+        wheel_z = {leg: float(env.data.xpos[bc.wheel_body(env, leg)][2]) for leg in LEG}
+        tilt = max((r['tilt'] for r in rows), default=99)
+        vx = max((abs(r['vx']) for r in rows), default=99)
+        grounded = all(z <= 0.12 for z in wheel_z.values())
+        crossed = float(env.data.qpos[0]) >= far_x + 0.25
+        return {'phase': 'descent', 'final_x': round(float(env.data.qpos[0]), 4),
+                'wheel_z': {k: round(v, 4) for k, v in wheel_z.items()},
+                'grounded': grounded, 'tilt_max_deg': round(tilt, 3),
+                'vx_max': round(vx, 4),
+                'ok': bool(rows and crossed and grounded and tilt <= 10.0
+                           and vx <= 0.03 and not self.terminated)}
+
     # ---- 下降：四轮越过台面最远后缘，落地并稳定保持
     def descend(self, far_x, max_s=10.0, speed=0.08):
         env = self.env
@@ -695,25 +835,18 @@ def main():
         sp.parent.mkdir(parents=True, exist_ok=True)
         sp.write_text(json.dumps({'snapshot': snap, 'spec': spec}, ensure_ascii=False))
         print(json.dumps({'saved_state': str(sp), 'bytes': sp.stat().st_size}))
-    if ok and not stop() and a.rear:
-        ok = add(c.side_level(2.5))
-    if ok and not stop() and a.rear:
-        rows = []
-        for _ in range(int(1.5 * 50)):
-            rows.append(c.step('hold_all'))
-            if c.terminated:
-                break
-        loads = {leg: contact_load(env, leg) for leg in LEG}
-        tilt = max((r['tilt'] for r in rows), default=99)
-        ok = add({'phase': 'hold_all',
-                  'loads_n': {k: round(v, 3) for k, v in loads.items()},
-                  'frac': {k: round(v / c.W, 4) for k, v in loads.items()},
-                  'tilt_max_deg': round(tilt, 3),
-                  'ok': bool(rows and all(v >= 0.05 * c.W for v in loads.values())
-                             and tilt <= 10.0)})
-
-    if ok and not stop() and a.rear:
-        ok = add(c.descend(far_x))
+    if a.rear and not stop():
+        ok = add(c.fl_lower())
+        if ok:
+            ok = add(c.level_roll(1.5))
+        if ok:
+            ok = add(c.body_until_support())
+        if ok:
+            ok = add(c.preload_min())
+        if ok:
+            ok = add(c.stable_window(1.0))
+        if ok:
+            ok = add(c.descend_action(far_x))
 
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}

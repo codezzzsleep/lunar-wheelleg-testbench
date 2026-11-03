@@ -33,6 +33,8 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/v3/stage006/matrix')
     ap.add_argument('--height', type=float, default=0.30)
+    ap.add_argument('--obs', action='store_true',
+                    help='OBS 策略：后缘未知，保持抬高到目标区再降身')
     a = ap.parse_args()
     out = (ROOT / a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads((ROOT / 'configs/stage6_protocol.json').read_text())
@@ -44,10 +46,16 @@ def main():
             'visible': {'x_front': 0.855, 'W_vis': 0.30, 'H_vis': a.height},
             'state': {'state_id': f'stage6_rock_{int(a.height*1000)}',
                       'state_hash': snap.get('state_hash')}}
-    lower_at = 1.145 + 0.35
+    if a.obs:
+        lower_at = 2.45
+        source = 'far_edge_unknown_hold_until_goal'
+    else:
+        lower_at = 1.145 + 0.35
+        source = 'truth_far_edge_known'
     plan = {'raise_z': 0.06, 'ramp_steps': 100, 'speed': 0.15,
             'lower_at_x': lower_at, 'pass_x': lower_at, 'time_limit': 80.0,
-            'stop_tilt_deg': 12.0, 'plan_id': hashlib.sha256(
+            'stop_tilt_deg': 12.0, 'far_edge_source': source,
+            'plan_id': hashlib.sha256(
                 json.dumps({'raise_z': 0.06, 'speed': 0.15, 'lower_at_x': lower_at},
                            sort_keys=True).encode()).hexdigest()[:16]}
     rows, app = v3_core.rehearse_on_spec(core, spec, snap, proto,
@@ -73,6 +81,7 @@ def main():
     res = {'schema': 'stage6-matrix/v1', 'rock_height': a.height,
            'plan': plan, 'votes': dec['votes'], 'costs': dec['mean_cost_s'],
            'chosen': dec['chosen'], 'reason': dec['reason'],
+           'obs_mode': bool(a.obs), 'far_edge_source': source,
            'rows': [{k: r.get(k) for k in ('action', 'success', 'outcome', 'reason',
                                            'cost', 't_end', 'chassis_contacts',
                                            'base_rise', 'clearance_gain', 'plan_id')}

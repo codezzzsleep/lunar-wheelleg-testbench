@@ -1,0 +1,144 @@
+{
+  "schema": "stage6-matrix/v1",
+  "rock_height": 0.3,
+  "plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 2.45,
+    "pass_x": 2.45,
+    "time_limit": 80.0,
+    "stop_tilt_deg": 12.0,
+    "far_edge_source": "far_edge_unknown_hold_until_goal",
+    "plan_id": "03a96a7fbe2a1709"
+  },
+  "votes": {
+    "R1": 0,
+    "R2": 0,
+    "D1": 1,
+    "D2": 1,
+    "L1": 0,
+    "L2": 0,
+    "CLIMB": 0,
+    "BODY_CLEARANCE": 1
+  },
+  "costs": {
+    "R1": 60.0,
+    "R2": 60.0,
+    "D1": 7.9,
+    "D2": 9.3,
+    "L1": 60.0,
+    "L2": 60.0,
+    "CLIMB": 60.0,
+    "BODY_CLEARANCE": 28.58
+  },
+  "chosen": "D1",
+  "reason": "majority_traversal",
+  "obs_mode": true,
+  "far_edge_source": "far_edge_unknown_hold_until_goal",
+  "rows": [
+    {
+      "action": "R1",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": null,
+      "cost": 60.0,
+      "t_end": 40.0,
+      "chassis_contacts": 1860,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "R2",
+      "success": false,
+      "outcome": "chassis_contact",
+      "reason": "chassis_obstacle_contact",
+      "cost": 7.9,
+      "t_end": 7.9,
+      "chassis_contacts": 6,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "D1",
+      "success": true,
+      "outcome": "pass",
+      "reason": "success",
+      "cost": 7.9,
+      "t_end": 7.9,
+      "chassis_contacts": 0,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "outcome": "pass",
+      "reason": "success",
+      "cost": 9.3,
+      "t_end": 9.3,
+      "chassis_contacts": 0,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "L1",
+      "success": false,
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "cost": 60.0,
+      "t_end": 3.76,
+      "chassis_contacts": 32,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "L2",
+      "success": false,
+      "outcome": "chassis_contact",
+      "reason": "chassis_obstacle_contact",
+      "cost": 8.94,
+      "t_end": 8.94,
+      "chassis_contacts": 20,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    },
+    {
+      "action": "BODY_CLEARANCE",
+      "success": true,
+      "outcome": "pass",
+      "reason": "success",
+      "cost": 28.58,
+      "t_end": 28.58,
+      "chassis_contacts": 0,
+      "base_rise": 0.0585,
+      "clearance_gain": 0.0584,
+      "plan_id": "03a96a7fbe2a1709"
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "outcome": "safe_stop",
+      "reason": "abort",
+      "cost": 60.0,
+      "t_end": 3.000000000000002,
+      "chassis_contacts": 0,
+      "base_rise": null,
+      "clearance_gain": null,
+      "plan_id": null
+    }
+  ],
+  "exec": {
+    "action": "D1",
+    "outcome": "pass",
+    "t_end": 7.9,
+    "chassis_contacts": null
+  },
+  "budget_s": 120.0
+}

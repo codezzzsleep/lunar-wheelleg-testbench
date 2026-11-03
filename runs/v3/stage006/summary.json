@@ -1,0 +1,80 @@
+{
+  "schema": "stage6-summary/v1",
+  "flat_calibration": {
+    "targets": [
+      0.02,
+      0.04,
+      0.06
+    ],
+    "all_stable": true,
+    "base_gain": [
+      0.0198,
+      0.0398,
+      0.0595
+    ],
+    "clearance_gain": [
+      0.0197,
+      0.0396,
+      0.0594
+    ],
+    "tilt_max": [
+      0.05,
+      0.04,
+      0.06
+    ],
+    "source": "runs/v3/stage006/calib/result.json"
+  },
+  "frozen_size_variants": [
+    {
+      "rock_height_m": 0.279,
+      "hypothesis": "below chassis clearance: no chassis contrast",
+      "stance_chassis_contacts": 0,
+      "body_chassis_contacts": 0,
+      "result": "both arms pass with wheel rub only; not a valid capability contrast"
+    },
+    {
+      "rock_height_m": 0.3,
+      "hypothesis": "above stance clearance, below 6 cm raised clearance",
+      "stance_R2_chassis_contacts": 6,
+      "stance_R2_outcome": "chassis_contact",
+      "body_chassis_contacts": 0,
+      "body_outcome": "pass",
+      "body_cost_s": 19.38,
+      "detour_D1_cost_s": 7.9,
+      "result": "valid contrast: stance scrapes chassis, BODY passes clean; detour still cheaper"
+    },
+    {
+      "rock_height_m": 0.32,
+      "hypothesis": "above raised clearance at 6 cm",
+      "body_chassis_contacts": 59,
+      "body_outcome": "blocked",
+      "result": "BODY blocked at 6 cm (59 chassis contacts, 82.3 s); beyond current raise range"
+    }
+  ],
+  "full_vs_obs_body_plan": {
+    "FULL": {
+      "lower_at_x": 1.495,
+      "far_edge_source": "truth_far_edge_known",
+      "plan_id": "3486801220cdd943",
+      "cost_s": 19.38,
+      "outcome": "pass"
+    },
+    "OBS": {
+      "lower_at_x": 2.45,
+      "far_edge_source": "far_edge_unknown_hold_until_goal",
+      "plan_id": "03a96a7fbe2a1709",
+      "cost_s": 28.58,
+      "outcome": "pass"
+    },
+    "chosen_action": {
+      "FULL": "D1",
+      "OBS": "D1"
+    },
+    "conclusion": "same decision (D1) and same outcome; only the BODY plan cost differs (19.38 vs 28.58 s) -> no meaningful decision/outcome difference, so no Lux3D candidates are started"
+  },
+  "stage_outcome": "BODY_CLEARANCE is available and clean; Lux3D shows no increment on this scene",
+  "notes": [
+    "wheel actions were not deleted; cheaper detour D1 wins in both arms",
+    "chassis contacts counted from recorded body-name contacts, not distance heuristics"
+  ]
+}

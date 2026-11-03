@@ -1,0 +1,118 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "stage6_rock_320",
+  "arm": "TRUTH",
+  "decided_at": "2026-11-04T02:40:06+0800",
+  "state_hash": "e620b637a73a0aa72e48e7410bacd075",
+  "visible": {
+    "x_front": 0.855,
+    "W_vis": 0.3,
+    "H_vis": 0.32
+  },
+  "matrix_sha256": "ddb18f8631de73eac1a51cb02fec15e1530749160340f76aba34f94a0b831452",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 0,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 0
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "D1": 60.0,
+      "D2": 60.0,
+      "L1": 60.0,
+      "L2": 60.0,
+      "CLIMB": 60.0,
+      "BODY_CLEARANCE": 60.0
+    },
+    "chosen": "A0",
+    "safe_set": [],
+    "reason": "no_safe_traversal",
+    "errors": [],
+    "per_candidate": {
+      "truth": {
+        "R1": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.0,
+          "final_x": 0.958
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 9.22,
+          "t_end": 9.22,
+          "final_x": 3.343
+        },
+        "D1": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.0,
+          "final_x": 0.963
+        },
+        "D2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.0,
+          "final_x": 1.035
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.2,
+          "final_x": 0.877
+        },
+        "L2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.0,
+          "final_x": 1.051
+        },
+        "BODY_CLEARANCE": {
+          "success": false,
+          "reason": "not_reached",
+          "cost": 82.3,
+          "t_end": 82.3,
+          "final_x": 0.9279
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.000000000000002,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "body_plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 1.495,
+    "pass_x": 1.495,
+    "time_limit": 80.0,
+    "stop_tilt_deg": 12.0,
+    "far_edge_source": "truth_far_edge_known",
+    "plan_id": "3486801220cdd943"
+  },
+  "scene_criterion": "success requires no chassis-obstacle contact (counted from the recorded contacts)",
+  "decision_sha": "4d7a6a77ee4a92e4e50c8d8b648f4419"
+}

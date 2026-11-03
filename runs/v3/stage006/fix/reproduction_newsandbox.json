@@ -1,0 +1,26 @@
+{
+  "schema": "stage6-reproduction/v1",
+  "sandbox": "cnb-b5t-1k6hgejmv-001 (new)",
+  "full": {
+    "reached": true,
+    "chassis_contacts": 0,
+    "tipped_or_stuck": false,
+    "stable_exit": true,
+    "safe_pass": true,
+    "cost": 30.06,
+    "n_control_steps": 1503,
+    "plan_id": "c5d227f104e349a5"
+  },
+  "obs": {
+    "reached": true,
+    "chassis_contacts": 0,
+    "tipped_or_stuck": false,
+    "stable_exit": true,
+    "safe_pass": true,
+    "cost": 30.16,
+    "n_control_steps": 1508,
+    "plan_id": "861beea42332ed6d"
+  },
+  "match_original": "identical costs (30.06/30.16 s), identical phase times and plan IDs, 1503/1508 steps",
+  "note": "wheel recheck is null on the new sandbox because the matrix2 R2/D1 raw records were not synced; their numbers remain in result.json from the original run"
+}

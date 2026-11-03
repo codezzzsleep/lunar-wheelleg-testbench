@@ -109,58 +109,16 @@
   },
   "recheck_wheels": {
     "R2": {
-      "max_x": 3.340632915496826,
-      "chassis_contacts": 6,
-      "reached_end": true,
-      "reusable": true
+      "max_x": null,
+      "chassis_contacts": null,
+      "reached_end": false,
+      "reusable": false
     },
     "D1": {
-      "max_x": 3.551845073699951,
-      "chassis_contacts": 0,
-      "reached_end": true,
-      "reusable": true
+      "max_x": null,
+      "chassis_contacts": null,
+      "reached_end": false,
+      "reusable": false
     }
-  },
-  "same_task": {
-    "end_x": 2.6,
-    "criterion": "reached 2.6 with zero chassis-obstacle contacts and stable exit",
-    "times_s": {
-      "R2": 6.5,
-      "D1": 6.56,
-      "BODY_full_reference": 30.06,
-      "BODY_obs": 30.16
-    },
-    "wheel_reuse": {
-      "R2": {
-        "t_to_2.6": 6.5,
-        "chassis_contacts": 6,
-        "max_x": 3.341
-      },
-      "D1": {
-        "t_to_2.6": 6.56,
-        "chassis_contacts": 0,
-        "max_x": 3.552
-      },
-      "note": "reused matrix2 records; times re-extracted at the common 2.6 m endpoint, no rerun"
-    },
-    "body": {
-      "full_reference": {
-        "safe_pass": true,
-        "chassis_contacts": 0,
-        "cost_s": 30.06,
-        "plan_id": "c5d227f104e349a5",
-        "lower_at_x": 1.495,
-        "end_x": 2.6
-      },
-      "obs": {
-        "safe_pass": true,
-        "chassis_contacts": 0,
-        "cost_s": 30.16,
-        "plan_id": "861beea42332ed6d",
-        "lower_at_x": 2.45,
-        "end_x": 2.6
-      }
-    },
-    "old_times_note": "the earlier 19.38 s and 28.58 s were measured to different stopping points; do not compare them"
   }
 }

@@ -63,6 +63,16 @@ def expand(root, pats):
     return uniq
 
 
+def code_tree_sha(root):
+    """实际代码内容身份：scripts/*.py + plans/*.json 的 (path, sha256) 排序哈希。"""
+    items = []
+    for pat in ('scripts/*.py', 'plans/*.json'):
+        for f in sorted(root.glob(pat)):
+            items.append((str(f.relative_to(root)), sha256_file(f)))
+    h = hashlib.sha256(json.dumps(items, sort_keys=True).encode()).hexdigest()
+    return h
+
+
 def git_sha(root):
     try:
         return subprocess.run(['git', '-C', str(root), 'rev-parse', 'HEAD'],
@@ -74,7 +84,8 @@ def git_sha(root):
 def plan(args):
     out = ROOT / args.out
     out.mkdir(parents=True, exist_ok=True)
-    code_sha = git_sha(ROOT)
+    code_sha = args.code_sha or git_sha(ROOT)
+    tree_sha = code_tree_sha(ROOT)
     proto = ROOT / 'plans/v3_protocol.json'
     proto_sha = sha256_file(proto) if proto.is_file() else None
     vols = []
@@ -84,12 +95,14 @@ def plan(args):
                  'sha256': sha256_file(f)} for f in files]
         vols.append({'volume_id': v['id'], 'content': v['content'], 'scope': v['scope'],
                      'n_files': len(recs), 'bytes': sum(r['bytes'] for r in recs),
-                     'code_sha': code_sha, 'protocol_sha256': proto_sha,
+                     'code_sha': code_sha, 'code_tree_sha256': tree_sha,
+                     'protocol_sha256': proto_sha,
                      'download_url': None, 'status': 'staged', 'files': recs})
     idx = {'schema': 'v3-publish-index/v1',
            'generated_at': time.strftime('%Y-%m-%dT%H:%M:%S%z'),
            'repo': 'codezzzsleep/lunar-wheelleg-testbench',
-           'code_sha': code_sha, 'protocol_sha256': proto_sha,
+           'code_sha': code_sha, 'code_tree_sha256': tree_sha,
+           'protocol_sha256': proto_sha,
            'volumes': vols}
     (out / 'INDEX.json').write_text(json.dumps(idx, ensure_ascii=False, indent=2))
     missing = [
@@ -171,6 +184,8 @@ def main():
     ap.add_argument('--verify', action='store_true')
     ap.add_argument('--upload', action='store_true')
     ap.add_argument('--out', default='dist/publish')
+    ap.add_argument('--code-sha', default=None,
+                    help='记录用的仓库提交号（在沙箱里生成时传入宿主 git HEAD）')
     a = ap.parse_args()
     if a.verify:
         return verify(type('A', (), {'plan_dir': a.out})())

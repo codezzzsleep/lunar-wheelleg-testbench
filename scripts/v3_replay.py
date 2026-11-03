@@ -23,14 +23,15 @@ import v3_climb as vc     # noqa: E402
 
 def load_qpos(record_dir):
     chunks = sorted(pathlib.Path(record_dir).glob('chunk_*.npz'))
-    qs = []
+    qs, ts = [], []
     for c in chunks:
         z = np.load(c)
         if 'qpos' in z:
             qs.append(np.asarray(z['qpos'], dtype=np.float64))
+            ts.append(np.asarray(z['t'], dtype=np.float64))
     if not qs:
         raise SystemExit(f'no qpos in {record_dir}')
-    return np.concatenate(qs, axis=0)
+    return np.concatenate(qs, axis=0), np.concatenate(ts, axis=0)
 
 
 def build_env(run_dir, soil):
@@ -61,12 +62,13 @@ def main():
     ap.add_argument('--height', type=int, default=1080)
     a = ap.parse_args()
     run_dir = (ROOT / a.run).resolve()
-    qpos = load_qpos(run_dir / 'record')
+    qpos, ts = load_qpos(run_dir / 'record')
     env = build_env(run_dir, a.soil)
     d = env.data
     if qpos.shape[0] == 0:
         raise SystemExit('empty qpos')
-    n_out = int(len(qpos) / 50.0 * a.fps)
+    t0 = float(ts[0])
+    n_out = int((float(ts[-1]) - t0) * a.fps) + 1
     frames = run_dir / 'replay_frames'
     frames.mkdir(parents=True, exist_ok=True)
     renderer = mujoco.Renderer(env.model, a.height, a.width)
@@ -78,7 +80,9 @@ def main():
     cam.elevation = -18.0
     nq = env.model.nq
     for i in range(n_out):
-        k = min(len(qpos) - 1, int(i / a.fps * 50.0))
+        target = t0 + i / a.fps
+        k = int(np.searchsorted(ts, target))
+        k = min(len(qpos) - 1, max(0, k))
         d.qpos[:nq] = qpos[k][:nq]
         mujoco.mj_forward(env.model, d)
         renderer.update_scene(d, camera=cam)
@@ -90,7 +94,8 @@ def main():
     subprocess.check_call(['ffmpeg', '-y', '-framerate', str(a.fps),
                            '-i', str(frames / '%05d.png'), '-c:v', 'libx264',
                            '-pix_fmt', 'yuv420p', '-crf', '18', str(out)])
-    print(json.dumps({'out': str(out), 'frames': n_out, 'qpos_frames': len(qpos)}))
+    print(json.dumps({'out': str(out), 'frames': n_out, 'qpos_frames': len(qpos),
+                      't_first': round(t0, 3), 't_last': round(float(ts[-1]), 3)}))
     return 0
 
 

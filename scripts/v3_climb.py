@@ -35,6 +35,21 @@ import v3_basic_cycle as bc   # noqa: E402
 LEG = bc.LEG
 STANCE = {leg: dict(bc.STANCE) for leg in LEG}
 WHEEL_R = wheelleg_env.WHEEL_R
+BUDGET_S = 120.0   # 两臂统一时间预算（自共同 S0 起算）
+
+
+def terminal_ok(rows, final_x, wheel_z, far_x, terminated, window=50):
+    """两臂共用的终态判定：越过后缘、四轮落地、最后 1 s 稳定。"""
+    win = rows[-window:] if len(rows) >= window else rows
+    tilt = max((r['tilt'] for r in win), default=99)
+    vx = max((abs(r['vx']) for r in win), default=99)
+    grounded = all(z <= 0.12 for z in wheel_z.values())
+    crossed = float(final_x) >= far_x + 0.25
+    ok = bool(win and crossed and grounded and tilt <= 10.0 and vx <= 0.03
+              and not terminated)
+    return {'ok': ok, 'crossed': bool(crossed), 'grounded': bool(grounded),
+            'tilt_max_deg': round(float(tilt), 3), 'vx_max': round(float(vx), 4),
+            'window': len(win)}
 
 
 def jlim(env, leg, part):
@@ -564,18 +579,12 @@ class Climb:
             rows.append(self.step('descent_hold', omega=0.0))
             if self.terminated:
                 break
-        win = rows[-50:] if len(rows) >= 50 else rows   # 取最后 1 s 作为稳定窗口
         wheel_z = {leg: float(env.data.xpos[bc.wheel_body(env, leg)][2]) for leg in LEG}
-        tilt = max((r['tilt'] for r in win), default=99)
-        vx = max((abs(r['vx']) for r in win), default=99)
-        grounded = all(z <= 0.12 for z in wheel_z.values())
-        crossed = float(env.data.qpos[0]) >= far_x + 0.25
+        term = terminal_ok(rows, float(env.data.qpos[0]), wheel_z, far_x,
+                           self.terminated)
         return {'phase': 'descent', 'final_x': round(float(env.data.qpos[0]), 4),
                 'wheel_z': {k: round(v, 4) for k, v in wheel_z.items()},
-                'grounded': grounded, 'tilt_max_deg': round(tilt, 3),
-                'vx_max': round(vx, 4),
-                'ok': bool(rows and crossed and grounded and tilt <= 10.0
-                           and vx <= 0.03 and not self.terminated)}
+                **term}
 
     # ---- 下降：四轮越过台面最远后缘，落地并稳定保持
     def descend(self, far_x, max_s=10.0, speed=0.08):

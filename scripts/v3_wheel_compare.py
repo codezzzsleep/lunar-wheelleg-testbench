@@ -37,7 +37,7 @@ def build_env(soil):
                                        'yaw_deg': 0.0}])
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=90.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=vc.BUDGET_S)
     env.reset(seed=0)
     return env
 
@@ -70,7 +70,7 @@ def run_one(soil, dx, dy, dyaw, speed, rec_dir=None):
                                            'action': f'wheel_{speed:.2f}',
                                            'state': [dx, dy, dyaw]}, hz=50.0)
     term = {}
-    for _ in range(int(45.0 * 50)):
+    for _ in range(int(vc.BUDGET_S * 50)):
         env.step_command(joint_targets_rad=STANCE,
                          wheel_omega_rad_s=np.full(4, speed / vc.WHEEL_R),
                          wheel_mode='velocity')
@@ -103,19 +103,24 @@ def run_one(soil, dx, dy, dyaw, speed, rec_dir=None):
                      'vx': round(float(d.qvel[0]), 4)})
         if env.terminated or env.truncated:
             break
-    win = rows[-50:]
     wheel_z = {leg: round(float(d.xpos[bc.wheel_body(env, leg)][2]), 4) for leg in LEG}
-    tilt = max((r['tilt'] for r in win), default=99)
-    vx = max((abs(r['vx']) for r in win), default=99)
-    grounded = all(z <= 0.12 for z in wheel_z.values())
-    crossed = float(d.qpos[0]) >= FAR_X + 0.25
-    ok = bool(win and crossed and grounded and tilt <= 10.0 and vx <= 0.03
-              and not env.terminated)
+    traj = rec.close() if rec is not None else None
+    rec_info = None
+    if traj is not None:
+        z = np.load(sorted(pathlib.Path(traj['trajectory_path']).parent.glob('chunk_*.npz'))[0])
+        rec_info = {'frames': traj['frame_count'], 'duration_s': traj['duration_s'],
+                    'last_t': round(float(z['t'][-1]), 3),
+                    'sha256': traj['trajectory_sha256']}
+    tt = vc.terminal_ok(rows, float(d.qpos[0]), wheel_z, FAR_X, env.terminated)
     return {'state': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw, 'qpos_sha256': qh},
-            'speed_mps': speed, 'passed': ok, 'crossed': crossed,
-            'grounded': grounded, 'final_x': round(float(d.qpos[0]), 4),
-            'wheel_z': wheel_z, 'tilt_max': tilt, 'vx_max': vx,
-            'termination': term, 'time_s': round(float(env.t), 3)}
+            'speed_mps': speed, 'passed': tt['ok'], 'crossed': tt['crossed'],
+            'grounded': tt['grounded'], 'final_x': round(float(d.qpos[0]), 4),
+            'wheel_z': wheel_z, 'tilt_max': tt['tilt_max_deg'], 'vx_max': tt['vx_max'],
+            'termination': term, 'time_s': round(float(env.t), 3),
+            'trajectory': traj, 'record': rec_info,
+            'record_consistent': bool(rec_info is not None
+                                      and rec_info['last_t'] <= float(env.t) + 1e-6
+                                      and rec_info['last_t'] >= float(env.t) - 1.5)}
 
 
 def main():

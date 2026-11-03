@@ -53,6 +53,20 @@ def sha256_file(p):
     return h.hexdigest()
 
 
+def _copy_frame(frame):
+    """入队时深拷贝所有可变数组，避免后续仿真步改写已记录帧。"""
+    import copy as _copy
+    out = {}
+    for k, v in frame.items():
+        if isinstance(v, np.ndarray):
+            out[k] = v.copy()
+        elif k == 'contacts' and isinstance(v, list):
+            out[k] = _copy.deepcopy(v)
+        else:
+            out[k] = v
+    return out
+
+
 class Recorder:
     def __init__(self, out_dir, meta, hz=50.0, chunk_frames=CHUNK_FRAMES):
         self.dir = pathlib.Path(out_dir)
@@ -71,7 +85,7 @@ class Recorder:
     def add(self, frame):
         if self.closed:
             raise RuntimeError('recorder already closed')
-        self.buf.append(frame)
+        self.buf.append(_copy_frame(frame))
         if len(self.buf) >= self.chunk_frames:
             self._flush()
 
@@ -162,26 +176,29 @@ def frame_from_env(env, skill, action_raw, steps, t, extra=None):
     """从当前仿真状态取一帧；拿不到的量写 None 并登记 unavailable。"""
     import numpy as np
     d = env.data
+    # 采样即拷贝：d.qpos/d.qvel/actuator_force 是 MuJoCo 的原地缓冲区，
+    # 若只存 view，后续仿真步会改写已入队的帧（记录器缺陷）。
     f = {'t': float(t), 'control_index': int(steps),
          'physics_index': int(getattr(env, 'n_physics', 0)),
-         'qpos': np.asarray(d.qpos, dtype=np.float64),
-         'qvel': np.asarray(d.qvel, dtype=np.float64),
-         'action_raw': np.asarray(action_raw, dtype=np.float64).reshape(-1),
+         'qpos': np.array(d.qpos, dtype=np.float64, copy=True),
+         'qvel': np.array(d.qvel, dtype=np.float64, copy=True),
+         'action_raw': np.array(action_raw, dtype=np.float64, copy=True).reshape(-1),
          'tilt_deg': float(env._tilt()),
          'nav_target_y': float(getattr(env, 'nav_target_y', np.nan)),
          'contacts': _contacts(env)}
     # 关节目标 / 轮目标：环境当前保存的最近一次控制（有则记，没有记 None）
-    jt = getattr(env, '_last_joint_targets', None)
-    f['joint_target'] = jt
-    f['joint_vel_target'] = getattr(env, '_last_joint_vel_targets', None)
-    f['wheel_omega_target'] = getattr(env, '_last_wheel_omega', None)
-    f['wheel_brake'] = getattr(env, '_last_wheel_brake', None)
+    def _snap(v):
+        return None if v is None else np.array(v, dtype=np.float64, copy=True)
+    f['joint_target'] = _snap(getattr(env, '_last_joint_targets', None))
+    f['joint_vel_target'] = _snap(getattr(env, '_last_joint_vel_targets', None))
+    f['wheel_omega_target'] = _snap(getattr(env, '_last_wheel_omega', None))
+    f['wheel_brake'] = _snap(getattr(env, '_last_wheel_brake', None))
     # 实际执行器力矩
     try:
-        act = np.asarray(d.actuator_force, dtype=np.float64)
+        act = np.array(d.actuator_force, dtype=np.float64, copy=True)
         nw = 4
-        f['wheel_torque'] = act[-nw:] if act.size >= nw else None
-        f['joint_torque'] = act[:-nw] if act.size > nw else None
+        f['wheel_torque'] = act[-nw:].copy() if act.size >= nw else None
+        f['joint_torque'] = act[:-nw].copy() if act.size > nw else None
     except Exception:  # noqa: BLE001
         f['joint_torque'] = None
         f['wheel_torque'] = None

@@ -1,0 +1,207 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.05,
+    "face_x": 0.95,
+    "far_x": 2.35
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0089,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.013674418644330139,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.0205,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 12.239999999999828,
+      "steps": 25,
+      "load_n": 9.25,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 4.277,
+      "frac": 0.138,
+      "tilt_max_deg": 1.175,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "margin_m": 0.012748454937019094,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2004,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 21.619999999999628,
+      "steps": 22,
+      "load_n": 8.422,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 2.861,
+      "frac": 0.0924,
+      "tilt_max_deg": 1.222,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 11.726,
+      "fl_load_n": 2.718,
+      "fr_frac": 0.3785,
+      "fl_frac": 0.0877,
+      "tilt_max_deg": 1.222,
+      "ok": true
+    },
+    {
+      "phase": "center_lateral",
+      "loads_n": {
+        "FR": 12.722,
+        "FL": 1.584,
+        "RR": 3.246,
+        "RL": 13.428
+      },
+      "ok": true
+    },
+    {
+      "phase": "center_forward",
+      "loads_n": {
+        "FR": 13.988,
+        "FL": 2.889,
+        "RR": 2.124,
+        "RL": 12.407
+      },
+      "ok": true
+    },
+    {
+      "phase": "RR_shift",
+      "margin_m": 0.015388956176072555,
+      "ok": true
+    },
+    {
+      "phase": "RR_lift",
+      "wheel_center_z": 0.1626,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "RR_advance",
+      "wheel_x": 1.0206,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "RR_lower",
+      "contact_at_t": 33.19999999999959,
+      "steps": 28,
+      "load_n": 7.943,
+      "ok": true
+    },
+    {
+      "phase": "RR_hold",
+      "load_n": 4.195,
+      "frac": 0.1354,
+      "tilt_max_deg": 1.484,
+      "ok": true
+    },
+    {
+      "phase": "RL_wheel_assist",
+      "wheel_x": 1.2013,
+      "x_target": 1.2,
+      "load_n": 13.968,
+      "ok": true
+    },
+    {
+      "phase": "advance_body",
+      "x": 1.5421,
+      "x_target": 1.5421,
+      "ok": true
+    },
+    {
+      "phase": "hold_all",
+      "loads_n": {
+        "FR": 15.17,
+        "FL": 4.295,
+        "RR": 0.0,
+        "RL": 11.519
+      },
+      "frac": {
+        "FR": 0.4896,
+        "FL": 0.1386,
+        "RR": 0.0,
+        "RL": 0.3718
+      },
+      "tilt_max_deg": 9.036,
+      "ok": false
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true,
+    "center_lateral": true,
+    "center_forward": true,
+    "RR_shift": true,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RR_hold": true,
+    "RL_wheel_assist": true,
+    "advance_body": true,
+    "hold_all": false
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": "hold_all",
+  "all_ok": false,
+  "trajectory_ref": null
+}

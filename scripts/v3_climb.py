@@ -219,7 +219,7 @@ class Climb:
         best = 0.0
         for _ in range(rounds):
             need = target_center_z - float(env.data.xpos[b][2])
-            if need <= 0.004:
+            if abs(need) <= 0.004:
                 break
             dp = np.zeros(3)
             dp[2] = float(np.clip(need, -0.06, 0.06))
@@ -283,6 +283,33 @@ class Climb:
                 break
         loads = {leg: contact_load(env, leg) for leg in LEG}
         return {'phase': 'center_lateral',
+                'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
+
+    # ---- 四轮都在支撑面上时，做纵向 CoM 前移（小步、多轮）
+    def center_forward(self, dx=0.006, rounds=3, ramp=15):
+        env = self.env
+        for _ in range(rounds):
+            dp = np.array([float(dx), 0.0, 0.0])
+            start = {leg: dict(self.targets[leg]) for leg in LEG}
+            goal = {leg: dict(self.targets[leg]) for leg in LEG}
+            for leg in LEG:
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.04, 0.04)
+                for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                    goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+            for i in range(ramp):
+                a = (i + 1) / ramp
+                for leg in LEG:
+                    for p in ('hip', 'thigh', 'calf'):
+                        self.targets[leg][p] = float(
+                            start[leg][p] + a * (goal[leg][p] - start[leg][p]))
+                self.step('center_forward')
+                if self.terminated:
+                    break
+            if self.terminated:
+                break
+        loads = {leg: contact_load(env, leg) for leg in LEG}
+        return {'phase': 'center_forward',
                 'loads_n': {k: round(v, 3) for k, v in loads.items()},
                 'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
 
@@ -519,7 +546,9 @@ def main():
     if ok and not stop() and a.rear:
         ok = add(c.center_lateral(-0.003, rounds=2))
     if ok and not stop() and a.rear:
-        for leg, face in (('RR', faces['FR']), ('RL', faces['FL'])):
+        ok = add(c.center_forward(0.008, rounds=4))
+    if ok and not stop() and a.rear:
+        for leg, face in (('RR', faces['FR']),):
             if stop() or not ok:
                 break
             c.set_swing(leg)
@@ -539,8 +568,36 @@ def main():
                 ok = add(c.hold_leg(leg))
 
     if ok and not stop() and a.rear:
+        # RL 最后一条腿：准静态支撑角不足，改用轮式助爬（5 cm < 轮半径）
+        b = bc.wheel_body(env, 'RL')
+        x_target = faces['FL'] + 0.07
+        for _ in range(int(8.0 * 50)):
+            if (float(env.data.xpos[b][0]) >= x_target
+                    and contact_load(env, 'RL') > 3.0):
+                break
+            c.step('RL_wheel_assist', omega=0.12 / WHEEL_R)
+            if c.terminated:
+                break
+        ok = add({'phase': 'RL_wheel_assist',
+                  'wheel_x': round(float(env.data.xpos[b][0]), 4),
+                  'x_target': round(x_target, 4),
+                  'load_n': round(contact_load(env, 'RL'), 3),
+                  'ok': bool(float(env.data.xpos[b][0]) >= x_target - 0.01
+                             and contact_load(env, 'RL') >= 0.05 * c.W
+                             and not c.terminated)})
+
+    if ok and not stop() and a.rear:
+        # 四轮上台后再前进 10 cm，让对角支撑的 FL/RR 落地
+        ok = add(c.advance_body(float(env.data.qpos[0]) + 0.10, max_s=3.0, speed=0.05))
+    if ok and not stop() and a.rear:
+        # 把仍未落地的轮子向下压 3 cm，直到接触
+        for leg in LEG:
+            if contact_load(env, leg) < 0.05 * c.W:
+                z = float(env.data.xpos[bc.wheel_body(env, leg)][2])
+                c.lift_leg(leg, z - 0.03, max_dq=0.2, rounds=2, ramp=20)
+    if ok and not stop() and a.rear:
         rows = []
-        for _ in range(int(1.0 * 50)):
+        for _ in range(int(1.5 * 50)):
             rows.append(c.step('hold_all'))
             if c.terminated:
                 break

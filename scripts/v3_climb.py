@@ -174,30 +174,45 @@ class Climb:
         return f
 
     # ---- 支撑转移（与 B 相同：最近支撑边内法向 + 分轮次斜坡）
-    def shift(self, target_margin=0.012, max_dp=0.03, ramp=30):
+    def measure_support(self):
         env = self.env
-        best = None
-        gentle = self.swing == 'RL'   # 最后一条腿：小步、只走一轮，避免丢接触
-        rounds = 1 if gentle else 3
-        max_dp = 0.004 if gentle else max_dp
-        for _ in range(rounds):
-            c = bc.com(env)
-            pts = [np.asarray(p[:2]) for leg in self.support
-                   for p in contact_points(env, leg)]
-            if len(pts) < 3:
+        c = bc.com(env)
+        pts = [np.asarray(p[:2]) for leg in self.support
+               for p in contact_points(env, leg)]
+        loads = {leg: round(contact_load(env, leg), 3) for leg in LEG}
+        out = {'com': [round(float(x), 4) for x in c[:3]],
+               'n_points': len(pts), 'loads': loads,
+               'points': [np.round(p, 4).tolist() for p in pts]}
+        if len(pts) < 3:
+            out['margin_m'] = None
+            return out
+        margin, _ = bc.nearest_edge(pts, c[:2])
+        out['margin_m'] = round(float(margin), 4)
+        return out
+
+    def shift(self, target_margin=0.012, max_dp=0.02, ramp=25, settle=12):
+        """移动 -> 稳定窗口重测，最多 3 轮；用最终稳定状态判定，记录前后。"""
+        env = self.env
+        before = self.measure_support()
+        current = before
+        for _ in range(3):
+            if current['margin_m'] is None:
                 break
-            margin, inward = bc.nearest_edge(pts, c[:2])
-            best = margin if best is None else max(best, margin)
-            if margin >= target_margin:
+            if current['margin_m'] >= target_margin:
+                break
+            pts = [np.asarray(q, dtype=float) for q in current['points']]
+            _, inward = bc.nearest_edge(pts, np.asarray(current['com'][:2]))
+            deficit = float(target_margin - current['margin_m'] + 0.004)
+            if deficit <= 0.0005:
                 break
             dp = np.zeros(3)
-            dp[:2] = inward * float(np.clip(target_margin - margin + 0.004, 0, max_dp))
+            dp[:2] = inward * float(np.clip(deficit, 0.0, max_dp))
             start = {leg: dict(self.targets[leg]) for leg in LEG}
             goal = {leg: dict(self.targets[leg]) for leg in LEG}
             for leg in self.support:
-                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.08, 0.08)
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.06, 0.06)
                 for p, v in zip(('hip', 'thigh', 'calf'), dq):
-                    goal[leg][p] = float(np.clip(start[leg][p] + v, -2.5, 2.5))
+                    goal[leg][p] = float(np.clip(start[leg][p] + float(v), -2.5, 2.5))
             for i in range(ramp):
                 a = (i + 1) / ramp
                 for leg in LEG:
@@ -207,10 +222,54 @@ class Climb:
                 self.step(f'{self.swing}_shift')
                 if self.terminated:
                     break
+            for _ in range(settle):
+                self.step(f'{self.swing}_shift_settle')
+                if self.terminated:
+                    break
+            prev = current
+            current = self.measure_support()
+            if (current['margin_m'] is not None and prev['margin_m'] is not None
+                    and current['margin_m'] < prev['margin_m'] - 0.002):
+                break
             if self.terminated:
                 break
-        return {'phase': f'{self.swing}_shift', 'margin_m': best,
-                'ok': bool(best is not None and best >= target_margin)}
+        after = current
+        ok = bool(after['margin_m'] is not None
+                  and after['margin_m'] >= target_margin)
+        return {'phase': f'{self.swing}_shift', 'before': before, 'after': after,
+                'margin_m': after['margin_m'], 'ok': ok}
+
+    # ---- 轮腿协同：最后一轮保持接触滚上台；支撑轮掉载时向下补 4 mm
+    def push_last_wheel(self, leg, x_target, speed=0.10, max_s=8.0,
+                        min_load=1.5, adjust_every=5):
+        env = self.env
+        b = bc.wheel_body(env, leg)
+        for k in range(int(max_s * 50)):
+            if (float(env.data.xpos[b][0]) >= x_target
+                    and contact_load(env, leg) >= 0.05 * self.W):
+                break
+            self.step(f'{leg}_push', omega=speed / WHEEL_R)
+            if self.terminated:
+                break
+            if k % adjust_every == 0:
+                for other in LEG:
+                    if other == leg:
+                        continue
+                    if contact_load(env, other) < min_load:
+                        dp = np.array([0.0, 0.0, -0.004])
+                        dq = np.clip(bc.damped_ls(bc.leg_jac(env, other), -dp),
+                                     -0.02, 0.02)
+                        for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                            self.targets[other][p] = float(np.clip(
+                                self.targets[other][p] + float(v), -2.5, 2.5))
+        x = float(env.data.xpos[b][0])
+        load = contact_load(env, leg)
+        loads = {l: round(contact_load(env, l), 3) for l in LEG}
+        return {'phase': f'{leg}_push', 'wheel_x': round(x, 4),
+                'x_target': round(x_target, 4), 'load_n': round(load, 3),
+                'loads_n': loads,
+                'ok': bool(x >= x_target - 0.01 and load >= 0.05 * self.W
+                           and not self.terminated)}
 
     # ---- 抬单腿到目标轮心高度
     def lift_leg(self, leg, target_center_z, max_dq=0.45, rounds=4, ramp=45):
@@ -568,33 +627,8 @@ def main():
                 ok = add(c.hold_leg(leg))
 
     if ok and not stop() and a.rear:
-        # RL 最后一条腿：准静态支撑角不足，改用轮式助爬（5 cm < 轮半径）
-        b = bc.wheel_body(env, 'RL')
-        x_target = faces['FL'] + 0.07
-        for _ in range(int(8.0 * 50)):
-            if (float(env.data.xpos[b][0]) >= x_target
-                    and contact_load(env, 'RL') > 3.0):
-                break
-            c.step('RL_wheel_assist', omega=0.12 / WHEEL_R)
-            if c.terminated:
-                break
-        ok = add({'phase': 'RL_wheel_assist',
-                  'wheel_x': round(float(env.data.xpos[b][0]), 4),
-                  'x_target': round(x_target, 4),
-                  'load_n': round(contact_load(env, 'RL'), 3),
-                  'ok': bool(float(env.data.xpos[b][0]) >= x_target - 0.01
-                             and contact_load(env, 'RL') >= 0.05 * c.W
-                             and not c.terminated)})
-
-    if ok and not stop() and a.rear:
-        # 四轮上台后再前进 10 cm，让对角支撑的 FL/RR 落地
-        ok = add(c.advance_body(float(env.data.qpos[0]) + 0.10, max_s=3.0, speed=0.05))
-    if ok and not stop() and a.rear:
-        # 把仍未落地的轮子向下压 3 cm，直到接触
-        for leg in LEG:
-            if contact_load(env, leg) < 0.05 * c.W:
-                z = float(env.data.xpos[bc.wheel_body(env, leg)][2])
-                c.lift_leg(leg, z - 0.03, max_dq=0.2, rounds=2, ramp=20)
+        # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
+        ok = add(c.push_last_wheel('RL', faces['FL'] + 0.07, speed=0.10))
     if ok and not stop() and a.rear:
         rows = []
         for _ in range(int(1.5 * 50)):

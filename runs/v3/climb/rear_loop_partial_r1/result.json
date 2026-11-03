@@ -1,0 +1,428 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.05,
+    "face_x": 0.95,
+    "far_x": 2.35
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0089,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "before": {
+        "com": [
+          0.6707,
+          0.0612,
+          0.3047
+        ],
+        "n_points": 8,
+        "loads": {
+          "FR": 13.706,
+          "FL": 3.978,
+          "RR": 10.327,
+          "RL": 10.061
+        },
+        "points": [
+          [
+            0.8605,
+            0.2593
+          ],
+          [
+            0.8605,
+            0.2593
+          ],
+          [
+            0.4818,
+            -0.1365
+          ],
+          [
+            0.4887,
+            -0.1363
+          ],
+          [
+            0.4818,
+            -0.1365
+          ],
+          [
+            0.4887,
+            -0.1363
+          ],
+          [
+            0.4832,
+            0.2466
+          ],
+          [
+            0.4832,
+            0.2466
+          ]
+        ],
+        "margin_m": 0.0026
+      },
+      "after": {
+        "com": [
+          0.6581,
+          0.0699,
+          0.3041
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 7.619,
+          "FL": 6.654,
+          "RR": 7.205,
+          "RL": 9.609
+        },
+        "points": [
+          [
+            0.8603,
+            0.2591
+          ],
+          [
+            0.8603,
+            0.2591
+          ],
+          [
+            0.4818,
+            -0.1367
+          ],
+          [
+            0.4818,
+            -0.1367
+          ],
+          [
+            0.4732,
+            0.2464
+          ],
+          [
+            0.4732,
+            0.2464
+          ]
+        ],
+        "margin_m": 0.0154
+      },
+      "margin_m": 0.0154,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.0201,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 12.499999999999822,
+      "steps": 25,
+      "load_n": 9.037,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 4.112,
+      "frac": 0.1327,
+      "tilt_max_deg": 1.196,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "before": {
+        "com": [
+          0.8269,
+          0.0721,
+          0.3061
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 4.064,
+          "FL": 10.269,
+          "RR": 10.777,
+          "RL": 5.875
+        },
+        "points": [
+          [
+            1.0259,
+            -0.1115
+          ],
+          [
+            1.0259,
+            -0.1115
+          ],
+          [
+            0.6527,
+            -0.1356
+          ],
+          [
+            0.6527,
+            -0.1356
+          ],
+          [
+            0.646,
+            0.2537
+          ],
+          [
+            0.646,
+            0.2537
+          ]
+        ],
+        "margin_m": 0.0056
+      },
+      "after": {
+        "com": [
+          0.8165,
+          0.0656,
+          0.3054
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 4.419,
+          "FL": 9.392,
+          "RR": 11.306,
+          "RL": 5.931
+        },
+        "points": [
+          [
+            1.0166,
+            -0.1092
+          ],
+          [
+            1.0166,
+            -0.1092
+          ],
+          [
+            0.6527,
+            -0.1356
+          ],
+          [
+            0.6527,
+            -0.1356
+          ],
+          [
+            0.646,
+            0.2537
+          ],
+          [
+            0.646,
+            0.2537
+          ]
+        ],
+        "margin_m": 0.0152
+      },
+      "margin_m": 0.0152,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1627,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2006,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 22.8799999999996,
+      "steps": 23,
+      "load_n": 8.149,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 3.742,
+      "frac": 0.1208,
+      "tilt_max_deg": 1.121,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 10.792,
+      "fl_load_n": 3.582,
+      "fr_frac": 0.3483,
+      "fl_frac": 0.1156,
+      "tilt_max_deg": 1.116,
+      "ok": true
+    },
+    {
+      "phase": "center_lateral",
+      "loads_n": {
+        "FR": 11.818,
+        "FL": 2.51,
+        "RR": 4.273,
+        "RL": 12.374
+      },
+      "ok": true
+    },
+    {
+      "phase": "center_forward",
+      "loads_n": {
+        "FR": 13.163,
+        "FL": 3.658,
+        "RR": 3.158,
+        "RL": 11.381
+      },
+      "ok": true
+    },
+    {
+      "phase": "RR_shift",
+      "before": {
+        "com": [
+          1.0343,
+          0.0674,
+          0.3082
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 13.163,
+          "FL": 3.658,
+          "RR": 3.158,
+          "RL": 11.381
+        },
+        "points": [
+          [
+            1.2176,
+            -0.104
+          ],
+          [
+            1.2176,
+            -0.104
+          ],
+          [
+            1.2036,
+            0.2553
+          ],
+          [
+            1.2036,
+            0.2553
+          ],
+          [
+            0.8369,
+            0.259
+          ],
+          [
+            0.8369,
+            0.259
+          ]
+        ],
+        "margin_m": -0.0024
+      },
+      "after": {
+        "com": [
+          1.05,
+          0.0787,
+          0.3084
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 8.434,
+          "FL": 9.103,
+          "RR": 6.576,
+          "RL": 6.905
+        },
+        "points": [
+          [
+            1.2177,
+            -0.104
+          ],
+          [
+            1.2177,
+            -0.104
+          ],
+          [
+            1.2136,
+            0.2555
+          ],
+          [
+            1.2136,
+            0.2555
+          ],
+          [
+            0.8369,
+            0.2589
+          ],
+          [
+            0.8369,
+            0.2589
+          ]
+        ],
+        "margin_m": 0.0165
+      },
+      "margin_m": 0.0165,
+      "ok": true
+    },
+    {
+      "phase": "RR_lift",
+      "wheel_center_z": 0.1628,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "RR_advance",
+      "wheel_x": 1.0204,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "RR_lower",
+      "contact_at_t": 34.19999999999975,
+      "steps": 3,
+      "load_n": 5.043,
+      "ok": true
+    },
+    {
+      "phase": "RR_hold",
+      "load_n": 0.0,
+      "frac": 0.0,
+      "tilt_max_deg": 3.833,
+      "ok": false
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true,
+    "center_lateral": true,
+    "center_forward": true,
+    "RR_shift": true,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RR_hold": false
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": "RR_hold",
+  "all_ok": false,
+  "trajectory_ref": null
+}

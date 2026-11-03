@@ -1,0 +1,37 @@
+{
+  "schema": "v3-climb-failure/v1",
+  "date": "2026-11-03",
+  "status": "not_passed",
+  "dev_scene": "two staggered 5 cm ledges, 0.45 m wide, common far edge x=2.35 m",
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "paths": [
+    {
+      "name": "quasi_static_per_leg_lift",
+      "runs": ["rear_easy3_partial_r1", "rear_center_partial_r1", "rear_loop_partial_r1"],
+      "placed": ["FR", "FL", "RR"],
+      "blocked_at": "RL_shift",
+      "evidence": {
+        "rl_shift_margin_mm": [10.2, -9.6, -13.6],
+        "note": "after RR lands, the support triangle FR/FL/RR omits the left-rear corner where the CoM sits; measured shift sometimes degrades the margin, and larger incenter/forward moves unload a support wheel"
+      }
+    },
+    {
+      "name": "wheel_leg_coordinated_push",
+      "runs": ["rear_wheelassist_partial_r1"],
+      "placed": ["FR", "FL", "RR"],
+      "rl_push": {"wheel_x": 1.2013, "load_n": 13.968, "ok": true},
+      "blocked_at": "hold_all",
+      "evidence": {
+        "hold_all_loads_n": {"FR": 15.11, "FL": 4.358, "RR": 0.0, "RL": 11.517},
+        "hold_all_frac": {"FR": 0.4877, "FL": 0.1407, "RR": 0.0, "RL": 0.3717},
+        "tilt_max_deg": 9.059,
+        "note": "after RL rolls up, the body ends on FR/FL/RL and RR hangs; pressing RR down 3 cm does not load it"
+      }
+    }
+  ],
+  "explicit_gap": "four-wheel hold on the platform: RR top contact 0 N after the last wheel climbs; no descent attempted",
+  "descent": "not_run",
+  "decision": "per SPEC D5: CLIMB not passed; pause dependent leg demonstration; evaluate BODY_CLEARANCE fallback; do not relabel a wheel-assist as leg placement",
+  "next": ["BODY_CLEARANCE evaluation", "D2 wheel comparison on real rocks", "E prep with existing evidence"]
+}

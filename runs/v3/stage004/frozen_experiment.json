@@ -1,0 +1,395 @@
+{
+  "schema": "stage004-frozen-experiment/v1",
+  "frozen_at": "2026-11-03T23:11:58+0800",
+  "frozen_at_commit": "0c389b7738469f48dc352be2f67416149350c394",
+  "note": "frozen before any Lux3D candidate is loaded; truth reference from runs/v3/screen is allowed",
+  "selection": "3 hidden-sensitive + complete-feasible states with action_and_outcome truth-vs-V difference",
+  "configs": [
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "state_dir": "runs/v3/states/moon_rock_04_h1v0",
+      "hashes": {
+        "scene_spec_sha256": "82513d50edbebd04ad0f85431fa8013bacabf4740fcadb50f0edfe130591ba9a",
+        "truth_mesh_sha256": "bfe50a29c16f8587c3e048d82df574627631e8abb5569df7c275c4f5095e9e02",
+        "truth_occ_sha256": null,
+        "visible_points_sha256": "04528c41a0eaf7dd089e47ad6b8673990010fb53c1de7f34eaa2a3ab6f589dd5",
+        "state_snapshot_sha256": "4dfb7228b8dc61206fe1398ee84c565dda76c61d072d97720bec9fdcb1c3a8a1"
+      },
+      "geometry_scan": null,
+      "actions": [
+        "R1",
+        "R2",
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "A0"
+      ],
+      "budget_s": 30.0,
+      "decision_rule": "majority over applicable actions (v3_core.aggregate, majority); worst case as secondary",
+      "criteria": {
+        "pass": "outcome=pass (four wheels past far edge, stable)",
+        "safe_stop": "A0/abort with no tip",
+        "physical_failure": "tip/out_of_bounds",
+        "pipeline_failure": "recorded separately, not counted as either"
+      },
+      "truth_reference": {
+        "truth_plan_chosen": "R2",
+        "obs_plan_chosen": "L2",
+        "truth_exec": {
+          "action": "R2",
+          "outcome": "pass",
+          "reason": "success",
+          "final_x": 3.642,
+          "t_end": 9.42
+        },
+        "obs_exec": {
+          "action": "L2",
+          "outcome": "physical_failure",
+          "reason": "tipped",
+          "final_x": 2.109,
+          "t_end": 4.94
+        },
+        "traverse": {
+          "R1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "R2": {
+            "success": true,
+            "reason": "success",
+            "cost": 8.82
+          },
+          "L1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "L2": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "D1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "D2": {
+            "success": false,
+            "reason": "out_of_bounds",
+            "cost": 60.0
+          }
+        },
+        "layer": "action_and_outcome",
+        "hidden_sensitive": true,
+        "complete_feasible": true
+      },
+      "arms": {
+        "TRUTH": "plan on full truth occupancy",
+        "OBS_ONLY": "plan on V (observed shell) only",
+        "FULL_candidates": "plan on V union (P cap U) from Lux3D candidates (to run after freeze)"
+      },
+      "lux3d_used": false
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "state_dir": "runs/v3/states/moon_rock_01_h2v0",
+      "hashes": {
+        "scene_spec_sha256": "61284239b83e2dadb25cd64dac06d65031b2268ebd49e31a42d44361cb700f15",
+        "truth_mesh_sha256": "59d8234c08699a1aa7c9d57d6345ef271b0adcd2b4c517bb6e9bea7615638756",
+        "truth_occ_sha256": null,
+        "visible_points_sha256": "b165a5414936d2ff2501adb8c2628b6135da529e0aefb4efe1afe8630c32f0ec",
+        "state_snapshot_sha256": "a27db039c718c014a0f66d2d01f629da1fb7606537d2bf7a8273b18a94fb5838"
+      },
+      "geometry_scan": {
+        "state": "runs/v3/states/moon_rock_01_h2v0",
+        "truth": {
+          "valid": false,
+          "reason": "FileNotFoundError: [Errno 2] No such file or directory: 'runs/v3/states/moon_rock_01_h2v0/truth/truth_occ.npz'"
+        },
+        "visible": {
+          "valid": false,
+          "reason": "skipped"
+        }
+      },
+      "actions": [
+        "R1",
+        "R2",
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "A0"
+      ],
+      "budget_s": 30.0,
+      "decision_rule": "majority over applicable actions (v3_core.aggregate, majority); worst case as secondary",
+      "criteria": {
+        "pass": "outcome=pass (four wheels past far edge, stable)",
+        "safe_stop": "A0/abort with no tip",
+        "physical_failure": "tip/out_of_bounds",
+        "pipeline_failure": "recorded separately, not counted as either"
+      },
+      "truth_reference": {
+        "truth_plan_chosen": "L2",
+        "obs_plan_chosen": "A0",
+        "truth_exec": {
+          "action": "L2",
+          "outcome": "pass",
+          "reason": "success",
+          "final_x": 3.918,
+          "t_end": 8.36
+        },
+        "obs_exec": {
+          "action": "A0",
+          "outcome": "safe_stop",
+          "reason": "abort",
+          "final_x": -0.003,
+          "t_end": 3.6000000000000028
+        },
+        "traverse": {
+          "R1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "R2": {
+            "success": true,
+            "reason": "success",
+            "cost": 9.82
+          },
+          "L1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "L2": {
+            "success": true,
+            "reason": "success",
+            "cost": 7.76
+          },
+          "D1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "D2": {
+            "success": true,
+            "reason": "success",
+            "cost": 8.280000000000001
+          }
+        },
+        "layer": "action_and_outcome",
+        "hidden_sensitive": true,
+        "complete_feasible": true
+      },
+      "arms": {
+        "TRUTH": "plan on full truth occupancy",
+        "OBS_ONLY": "plan on V (observed shell) only",
+        "FULL_candidates": "plan on V union (P cap U) from Lux3D candidates (to run after freeze)"
+      },
+      "lux3d_used": false
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "state_dir": "runs/v3/states/moon_rock_05_h1v1",
+      "hashes": {
+        "scene_spec_sha256": "991a19a7f324a2b0762a82f231df792cfd82aa2bd1fe30e9752b1fc4cff97971",
+        "truth_mesh_sha256": "a46e922db4fc1f152caefd0efd9efe7241a833873c969dc897571071596aebd3",
+        "truth_occ_sha256": null,
+        "visible_points_sha256": "9753fdbb902d2c72f8ed53fb8feeb3699f47f02305d32c095e04fa1c9830dc00",
+        "state_snapshot_sha256": "a7d5e4999b23addd40d4cb5fdf1f4f61ec4fa48c9179452b04b429c8882686ac"
+      },
+      "geometry_scan": null,
+      "actions": [
+        "R1",
+        "R2",
+        "D1",
+        "D2",
+        "L1",
+        "L2",
+        "A0"
+      ],
+      "budget_s": 30.0,
+      "decision_rule": "majority over applicable actions (v3_core.aggregate, majority); worst case as secondary",
+      "criteria": {
+        "pass": "outcome=pass (four wheels past far edge, stable)",
+        "safe_stop": "A0/abort with no tip",
+        "physical_failure": "tip/out_of_bounds",
+        "pipeline_failure": "recorded separately, not counted as either"
+      },
+      "truth_reference": {
+        "truth_plan_chosen": "D1",
+        "obs_plan_chosen": "L2",
+        "truth_exec": {
+          "action": "D1",
+          "outcome": "pass",
+          "reason": "success",
+          "final_x": 3.733,
+          "t_end": 7.54
+        },
+        "obs_exec": {
+          "action": "L2",
+          "outcome": "physical_failure",
+          "reason": "tipped",
+          "final_x": 2.234,
+          "t_end": 5.12
+        },
+        "traverse": {
+          "R1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "R2": {
+            "success": true,
+            "reason": "success",
+            "cost": 8.44
+          },
+          "L1": {
+            "success": true,
+            "reason": "success",
+            "cost": 7.32
+          },
+          "L2": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "S1": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          },
+          "D1": {
+            "success": true,
+            "reason": "success",
+            "cost": 6.94
+          },
+          "D2": {
+            "success": false,
+            "reason": "tipped",
+            "cost": 60.0
+          }
+        },
+        "layer": "action_and_outcome",
+        "hidden_sensitive": true,
+        "complete_feasible": true
+      },
+      "arms": {
+        "TRUTH": "plan on full truth occupancy",
+        "OBS_ONLY": "plan on V (observed shell) only",
+        "FULL_candidates": "plan on V union (P cap U) from Lux3D candidates (to run after freeze)"
+      },
+      "lux3d_used": false
+    }
+  ],
+  "truth_reference_answers": {
+    "q1_leg_value": {
+      "question": "any config where a leg skill passes but applicable wheels fail or cost more?",
+      "rows": [
+        {
+          "state_id": "moon_rock_04_h1v0",
+          "leg_success": [],
+          "wheel_success": [
+            "R2"
+          ],
+          "leg_only": false,
+          "leg_cheaper": false,
+          "leg_costs": {},
+          "wheel_costs": {
+            "R2": 8.82
+          }
+        },
+        {
+          "state_id": "moon_rock_01_h2v0",
+          "leg_success": [
+            "L2"
+          ],
+          "wheel_success": [
+            "R2",
+            "D2"
+          ],
+          "leg_only": false,
+          "leg_cheaper": true,
+          "leg_costs": {
+            "L2": 7.76
+          },
+          "wheel_costs": {
+            "R2": 9.82,
+            "D2": 8.280000000000001
+          }
+        },
+        {
+          "state_id": "moon_rock_05_h1v1",
+          "leg_success": [
+            "L1"
+          ],
+          "wheel_success": [
+            "R2",
+            "D1"
+          ],
+          "leg_only": false,
+          "leg_cheaper": false,
+          "leg_costs": {
+            "L1": 7.32
+          },
+          "wheel_costs": {
+            "R2": 8.44,
+            "D1": 6.94
+          }
+        }
+      ],
+      "answer": "legs pass in 2/3; no config has leg-only success; L2 is cheaper in 01_h2v0, D1 cheaper in 05_h1v1"
+    },
+    "q2_backside": {
+      "question": "does full truth vs surface-only change decision or outcome?",
+      "rows": [
+        {
+          "state_id": "moon_rock_04_h1v0",
+          "truth": {
+            "chosen": "R2",
+            "outcome": "pass",
+            "t_end": 9.42
+          },
+          "obs": {
+            "chosen": "L2",
+            "outcome": "physical_failure",
+            "t_end": 4.94
+          },
+          "layer": "action_and_outcome"
+        },
+        {
+          "state_id": "moon_rock_01_h2v0",
+          "truth": {
+            "chosen": "L2",
+            "outcome": "pass",
+            "t_end": 8.36
+          },
+          "obs": {
+            "chosen": "A0",
+            "outcome": "safe_stop",
+            "t_end": 3.6000000000000028
+          },
+          "layer": "action_and_outcome"
+        },
+        {
+          "state_id": "moon_rock_05_h1v1",
+          "truth": {
+            "chosen": "D1",
+            "outcome": "pass",
+            "t_end": 7.54
+          },
+          "obs": {
+            "chosen": "L2",
+            "outcome": "physical_failure",
+            "t_end": 5.12
+          },
+          "layer": "action_and_outcome"
+        }
+      ],
+      "answer": "3/3 action_and_outcome differences at truth reference: truth passes, obs tips or aborts"
+    }
+  }
+}

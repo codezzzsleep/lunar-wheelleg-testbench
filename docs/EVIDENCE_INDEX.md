@@ -89,3 +89,5 @@
 | `runs/v3/stage006/matrix2` | stage6-matrix/v1 | 通过 | chosen=D1 7.9 s; BODY pass 19.38 s, chassis_contacts=0 |
 | `runs/v3/stage006/matrix_032` | stage6-matrix/v1 | 失败 | 0.32 m: BODY blocked, chassis_contacts=59 |
 | `runs/v3/stage006/matrix_030_obs` | stage6-matrix/v1 | 通过 | OBS hold-raised BODY 28.58 s; chosen=D1 |
+| `runs/v3/stage006/fix` | stage6-fix/v1 | 通过 | common end 2.6 m; BODY ref 30.06 s / OBS 30.16 s, 0 chassis contacts, 1503/1508 control steps |
+| `runs/v3/stage006/replay_fix` | mp4 | — | stance vs BODY, 30.07 s, raise frame @10 s, lowered @28 s, sha256 f7c8a5d9... |

@@ -2,11 +2,21 @@
 
 > 本块由人工维护；`scripts/v3_docs.py` 生成 `CURRENT_STATUS.md` 时置顶拼接。
 > 它是交接说明，不是第二份状态文档；数字口径仍以 v3 唯一源表为准。
-> 最近更新：2026-11-03 17:15 +0800。
+> 最近更新：2026-11-03 19:45 +0800。
+
+## 最新结论（截至第 37 轮，2026-11-03 晚）
+
+- **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。
+- **C 预演保真：部分**（五臂均 physical_failure；A-B 第 72 步分叉，残差已解释）。
+- **D 腿式能力：未通过**。CLIMB 未完成；D3 原始初态 1/2、扰动初态 2/3。
+- **E 主角对照：无正例**。14 例中仅 FULL 成功 0、仅 OBS 成功 0、选择不同 1。
+- 交付入口：`dist/minimal/index.html`、`docs/G6_DELIVERY.md`、`docs/G6_STATUS.md`、
+  `docs/BOUNDARY.md`、`docs/EVIDENCE_INDEX.md`。
+- 数据回传：**已完成**（`states/` 7.0 GB、`generation/cache` 4.7 GB 均在本机）。
 
 ## 代码基准
 
-- 实际 HEAD / origin/main：`f8ce2a1b7`。
+- 实际 HEAD / origin/main：`ddbb9cb66`（2026-11-03 晚）。
 - 审阅基线 `a984c8818` 因作者署名校验被重写为 `f8ce2a1b7`：tree/blob/message 逐字节不变，
   只有 32 个提交的 author/committer 从 `lunar-lab <lunar@local>` 改为
   `codezzzsleep <codezzzsleep@gmail.com>`。两者 `HEAD^{tree}` 相同（`0be7eaf…`）。
@@ -25,7 +35,7 @@
 - 数据回传：`runs/v3/states/*/{decision,metrics,state.json,state_snapshot.json}`、
   `runs/v3/screen`、`selected.json/txt`、`states_index.json`、
   `generation/{tasks.json,ledger.jsonl}`、`control/`、`assets/v3/rocks` 已回传本机；
-  `generation/cache`（4.7 GB）与全量 `states/`（7 GB）在后台继续同步。
+  `generation/cache`（4.7 GB）与全量 `states/`（7 GB）**已完成同步**（后台任务已结束）。
 - 密钥只从环境变量注入，不在仓库、文档、命令行或打包内；本文件不记录路径。
 
 ## 本轮已完成（工作包 A）

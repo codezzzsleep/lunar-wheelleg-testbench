@@ -22,6 +22,8 @@ def main():
     ap.add_argument('--state', required=True)
     ap.add_argument('--soil', default='rigid', choices=['rigid', 'nominal'])
     ap.add_argument('--seconds', type=float, default=2.0)
+    ap.add_argument('--wheel-mode', default='velocity', choices=['velocity', 'coast', 'brake', 'decel'])
+    ap.add_argument('--decel-seconds', type=float, default=0.5)
     ap.add_argument('--out', required=True)
     a = ap.parse_args()
     bundle = json.loads(pathlib.Path(a.state).read_text())
@@ -41,9 +43,21 @@ def main():
     rb = bc.wheel_body(env, 'RR')
     rows = []
     for k in range(int(a.seconds * 50)):
-        env.step_command(joint_targets_rad=jt,
-                         wheel_omega_rad_s=np.full(4, omega),
-                         wheel_mode='velocity')
+        if a.wheel_mode == 'velocity':
+            env.step_command(joint_targets_rad=jt,
+                             wheel_omega_rad_s=np.full(4, omega),
+                             wheel_mode='velocity')
+        elif a.wheel_mode == 'decel':
+            n_dec = max(1, int(a.decel_seconds * 50))
+            w = omega * max(0.0, 1.0 - k / n_dec)
+            if w > 1e-6:
+                env.step_command(joint_targets_rad=jt,
+                                 wheel_omega_rad_s=np.full(4, w),
+                                 wheel_mode='velocity')
+            else:
+                env.step_command(joint_targets_rad=jt, wheel_mode='coast')
+        else:
+            env.step_command(joint_targets_rad=jt, wheel_mode=a.wheel_mode)
         loads = {leg: vc.contact_load(env, leg) for leg in LEG}
         rows.append({'k': k, 't': round(float(env.t), 3),
                      'tilt': round(float(np.degrees(np.arccos(
@@ -61,13 +75,26 @@ def main():
         if env.terminated or env.truncated:
             break
     first = next((r for r in rows if r['rr_load'] < 0.5), None)
+    tail = rows[-50:]
+    fl_vals = [r['loads']['FL'] for r in tail]
+    rr_vals = [r['loads']['RR'] for r in tail]
+    summary = {'fl_mean': round(float(np.mean(fl_vals)), 3) if fl_vals else None,
+               'fl_frac_ge1': round(float(np.mean([v >= 1.0 for v in fl_vals])), 3) if fl_vals else None,
+               'rr_mean': round(float(np.mean(rr_vals)), 3) if rr_vals else None,
+               'rr_frac_ge1': round(float(np.mean([v >= 1.0 for v in rr_vals])), 3) if rr_vals else None,
+               'tilt_max': max((r['tilt'] for r in tail), default=None),
+               'vx_last': rows[-1]['vx'] if rows else None,
+               'window_s': round(len(tail) / 50.0, 2)}
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
     (out / 'trace.json').write_text(json.dumps(
         {'schema': 'v3-endgame-trace/v1', 'soil': a.soil, 'omega': omega,
-         'rr_target': jt['RR'], 'first_zero': first, 'rows': rows},
+         'wheel_mode': a.wheel_mode,
+         'rr_target': jt['RR'], 'first_zero': first, 'tail_summary': summary,
+         'rows': rows},
         ensure_ascii=False, indent=2))
-    print(json.dumps({'rows': len(rows), 'first_zero': first}, ensure_ascii=False))
+    print(json.dumps({'rows': len(rows), 'first_zero': first,
+                      'tail_summary': summary}, ensure_ascii=False))
     return 0
 
 

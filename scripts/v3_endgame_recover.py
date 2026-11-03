@@ -25,7 +25,7 @@ def main():
     ap.add_argument('--dz', type=float, default=0.003)
     ap.add_argument('--out', required=True)
     ap.add_argument('--save-final', default='')
-    ap.add_argument('--mode', default='unloaded', choices=['unloaded', 'body'])
+    ap.add_argument('--mode', default='unloaded', choices=['unloaded', 'body', 'fl_joint'])
     a = ap.parse_args()
     bundle = json.loads(pathlib.Path(a.state).read_text())
     snap, spec = bundle['snapshot'], dict(bundle['spec'])
@@ -44,8 +44,13 @@ def main():
         env.step_command(joint_targets_rad=targets, wheel_mode='coast')
         if k % 5 == 0 and not env.terminated:
             loads = {leg: vc.contact_load(env, leg) for leg in LEG}
+            if a.mode == 'fl_joint':
+                if loads.get('FL', 0.0) < 1.0:
+                    targets['FL']['thigh'] = float(np.clip(targets['FL']['thigh'] - 0.03, -1.571, 3.491))
+                    targets['FL']['calf'] = float(np.clip(targets['FL']['calf'] + 0.10, -2.723, -0.838))
+                    changes.append({'k': k, 'leg': 'FL', 'dq': [-0.03, 0.10]})
             for leg in LEG:
-                if a.mode == 'body' or loads[leg] < 1.0:
+                if a.mode in ('body',) or (a.mode == 'unloaded' and loads[leg] < 1.0):
                     dp = np.array([0.0, 0.0, -a.dz])
                     dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.03, 0.03)
                     for p, v in zip(('hip', 'thigh', 'calf'), dq):

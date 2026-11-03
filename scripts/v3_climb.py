@@ -14,6 +14,7 @@
   MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_climb.py --soil nominal --out runs/v3/climb/front2_r1
 """
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -685,6 +686,7 @@ def main():
     ap.add_argument('--step-w', type=float, default=0.90)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--record', action='store_true')
+    ap.add_argument('--perturb', default='', help='dx,dy,dyaw_deg 冻结初态扰动')
     ap.add_argument('--save-endgame', default='',
                     help='在后轮末段保存完整状态快照到该路径')
     ap.add_argument('--no-shift', action='store_true',
@@ -715,6 +717,29 @@ def main():
     spec['soil'] = v7_soil.resolve(a.soil)
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=120.0 if a.rear else 40.0)
     env.reset(seed=0)
+    dx = dy = dyaw = 0.0
+    if a.perturb:
+        parts = [float(x) for x in a.perturb.split(',')]
+        while len(parts) < 3:
+            parts.append(0.0)
+        dx, dy, dyaw = parts[:3]
+    if dx or dy or dyaw:
+        q = env.data.qpos
+        q[0] += dx
+        q[1] += dy
+        if abs(dyaw) > 1e-9:
+            th = np.deg2rad(dyaw)
+            c, sn = np.cos(th / 2), np.sin(th / 2)
+            w, x, y, z = (float(v) for v in q[3:7])
+            q[3] = c * w - sn * z
+            q[4] = c * x + sn * y
+            q[5] = c * y - sn * x
+            q[6] = c * z + sn * w
+        mujoco.mj_forward(env.model, env.data)
+    init_qpos_sha = hashlib.sha256(
+        np.asarray(env.data.qpos, dtype=np.float64).tobytes()).hexdigest()
+    init_qvel_sha = hashlib.sha256(
+        np.asarray(env.data.qvel, dtype=np.float64).tobytes()).hexdigest()
     rec = None
     if a.record:
         rec = v3_record.Recorder(out / 'record',
@@ -855,6 +880,9 @@ def main():
         blocked_at = phases[-1]['phase']
     res = {'schema': 'v3-climb-front2/v2', 'soil': a.soil,
            'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x, 'far_x': round(far_x, 4)},
+           'init_qpos_sha256': init_qpos_sha,
+           'init_qvel_sha256': init_qvel_sha,
+           'perturb': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw},
            'robot_mass_kg': round(float(bc.robot_mass(env)), 4),
            'robot_weight_n': round(float(c.W), 3),
            'phases': phases, 'checks': checks,

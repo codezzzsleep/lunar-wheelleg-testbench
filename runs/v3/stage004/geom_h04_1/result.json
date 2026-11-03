@@ -1,0 +1,561 @@
+{
+  "schema": "v3-climb-front2/v3",
+  "soil": "nominal",
+  "scene": {
+    "name": "dev_h04",
+    "ledges": [
+      {
+        "face_x": 0.95,
+        "length": 1.4,
+        "top_z": 0.04,
+        "center_y": -0.115,
+        "width": 0.45
+      },
+      {
+        "face_x": 1.13,
+        "length": 1.22,
+        "top_z": 0.04,
+        "center_y": 0.185,
+        "width": 0.45
+      }
+    ],
+    "goal_x": 2.95
+  },
+  "scene_far_x": 2.35,
+  "obs_geometry": {
+    "face_FR": 0.95,
+    "face_FL": 1.13,
+    "top_z": 0.04,
+    "far_x": 2.35,
+    "landing": null,
+    "source": "obs_dev",
+    "provenance": {
+      "method": "hand-frozen dev observation (height 4 cm)"
+    }
+  },
+  "skill_params": {
+    "face_FR": 0.95,
+    "face_FL": 1.13,
+    "top_z": 0.04,
+    "brake_x": 0.6,
+    "place_RR_x": 1.02,
+    "assist_FL_x": 1.2,
+    "lift_center_z": 0.151,
+    "far_x": 2.35,
+    "descent": {
+      "mode": "forward_drop",
+      "target_x": 2.65
+    },
+    "landing": null
+  },
+  "param_sources": {
+    "face_FR": "obs_dev",
+    "face_FL": "obs_dev",
+    "top_z": "obs_dev",
+    "far_x": "obs_dev",
+    "descent": "derived_from_far_x",
+    "landing": "unknown"
+  },
+  "unknowns": [
+    "landing"
+  ],
+  "geometry_source": "obs_dev",
+  "step": {
+    "x": 1.2,
+    "h": 0.04,
+    "face_x": 0.95,
+    "far_x": 2.35
+  },
+  "init_qpos_sha256": "dfea15f0d47d05408c9b78dcf53f3a8d4145fe77046593e5097433f9551e8a87",
+  "init_qvel_sha256": "7f81821c13ffab6bf946d5fb46d771424f23349f4bfcdda8850e7af874daeaad",
+  "perturb": {
+    "dx": 0.0,
+    "dy": 0.0,
+    "dyaw_deg": 0.0
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6002,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0035,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "before": {
+        "com": [
+          0.6748,
+          0.0592,
+          0.3045
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 7.93,
+          "FL": 5.284,
+          "RR": 7.132,
+          "RL": 9.937
+        },
+        "points": [
+          [
+            0.871,
+            0.26
+          ],
+          [
+            0.871,
+            0.26
+          ],
+          [
+            0.4936,
+            -0.1415
+          ],
+          [
+            0.4936,
+            -0.1415
+          ],
+          [
+            0.4784,
+            0.2463
+          ],
+          [
+            0.4784,
+            0.2463
+          ]
+        ],
+        "margin_m": 0.0055
+      },
+      "after": {
+        "com": [
+          0.6637,
+          0.0675,
+          0.3039
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 7.244,
+          "FL": 7.128,
+          "RR": 8.042,
+          "RL": 8.661
+        },
+        "points": [
+          [
+            0.861,
+            0.2596
+          ],
+          [
+            0.861,
+            0.2596
+          ],
+          [
+            0.4936,
+            -0.1415
+          ],
+          [
+            0.4936,
+            -0.1415
+          ],
+          [
+            0.4784,
+            0.2463
+          ],
+          [
+            0.4784,
+            0.2463
+          ]
+        ],
+        "margin_m": 0.0157
+      },
+      "margin_m": 0.0157,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1526,
+      "target_z": 0.151,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.02,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 13.839999999999794,
+      "steps": 28,
+      "load_n": 9.152,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 3.858,
+      "frac": 0.1245,
+      "tilt_max_deg": 1.075,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "before": {
+        "com": [
+          0.8244,
+          0.0705,
+          0.3054
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 3.764,
+          "FL": 10.71,
+          "RR": 10.976,
+          "RL": 5.494
+        },
+        "points": [
+          [
+            1.019,
+            -0.1114
+          ],
+          [
+            1.019,
+            -0.1114
+          ],
+          [
+            0.6544,
+            -0.1385
+          ],
+          [
+            0.6544,
+            -0.1385
+          ],
+          [
+            0.6361,
+            0.2515
+          ],
+          [
+            0.6361,
+            0.2515
+          ]
+        ],
+        "margin_m": 0.0018
+      },
+      "after": {
+        "com": [
+          0.8159,
+          0.0635,
+          0.3048
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 3.984,
+          "FL": 9.799,
+          "RR": 11.887,
+          "RL": 5.487
+        },
+        "points": [
+          [
+            1.0194,
+            -0.1101
+          ],
+          [
+            1.0194,
+            -0.1101
+          ],
+          [
+            0.6444,
+            -0.1387
+          ],
+          [
+            0.6444,
+            -0.1387
+          ],
+          [
+            0.6361,
+            0.2516
+          ],
+          [
+            0.6361,
+            0.2516
+          ]
+        ],
+        "margin_m": 0.0134
+      },
+      "margin_m": 0.0134,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1528,
+      "target_z": 0.151,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2001,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 24.27999999999957,
+      "steps": 25,
+      "load_n": 8.609,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 3.083,
+      "frac": 0.0995,
+      "tilt_max_deg": 1.33,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 11.573,
+      "fl_load_n": 2.961,
+      "fr_frac": 0.3735,
+      "fl_frac": 0.0956,
+      "tilt_max_deg": 1.326,
+      "ok": true
+    },
+    {
+      "phase": "center_lateral",
+      "loads_n": {
+        "FR": 12.39,
+        "FL": 2.043,
+        "RR": 3.364,
+        "RL": 13.173
+      },
+      "ok": true
+    },
+    {
+      "phase": "center_forward",
+      "loads_n": {
+        "FR": 13.64,
+        "FL": 3.156,
+        "RR": 2.674,
+        "RL": 11.891
+      },
+      "ok": true
+    },
+    {
+      "phase": "RR_shift",
+      "before": {
+        "com": [
+          1.0365,
+          0.0698,
+          0.3064
+        ],
+        "n_points": 6,
+        "loads": {
+          "FR": 13.64,
+          "FL": 3.156,
+          "RR": 2.674,
+          "RL": 11.891
+        },
+        "points": [
+          [
+            1.2202,
+            -0.1018
+          ],
+          [
+            1.2202,
+            -0.1018
+          ],
+          [
+            1.2101,
+            0.262
+          ],
+          [
+            1.2101,
+            0.262
+          ],
+          [
+            0.8269,
+            0.2596
+          ],
+          [
+            0.8269,
+            0.2596
+          ]
+        ],
+        "margin_m": 0.0021
+      },
+      "after": {
+        "com": [
+          1.049,
+          0.0789,
+          0.3067
+        ],
+        "n_points": 8,
+        "loads": {
+          "FR": 11.072,
+          "FL": 6.403,
+          "RR": 4.043,
+          "RL": 9.484
+        },
+        "points": [
+          [
+            1.2203,
+            -0.1018
+          ],
+          [
+            1.2302,
+            -0.1014
+          ],
+          [
+            1.2203,
+            -0.1018
+          ],
+          [
+            1.2302,
+            -0.1014
+          ],
+          [
+            1.2101,
+            0.262
+          ],
+          [
+            1.2101,
+            0.262
+          ],
+          [
+            0.8369,
+            0.2599
+          ],
+          [
+            0.8369,
+            0.2599
+          ]
+        ],
+        "margin_m": 0.0139
+      },
+      "margin_m": 0.0139,
+      "ok": true
+    },
+    {
+      "phase": "RR_lift",
+      "wheel_center_z": 0.1527,
+      "target_z": 0.151,
+      "ok": true
+    },
+    {
+      "phase": "RR_advance",
+      "wheel_x": 1.0205,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "RR_lower",
+      "contact_at_t": 36.40000000000009,
+      "steps": 3,
+      "load_n": 4.888,
+      "ok": true
+    },
+    {
+      "phase": "RL_assist",
+      "wheel_x": 1.2005,
+      "x_target": 1.2,
+      "load_n": 12.435,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "load_n": 6.422,
+      "ok": true
+    },
+    {
+      "phase": "level_roll",
+      "tilt_max_deg": 2.598,
+      "ok": true
+    },
+    {
+      "phase": "body_down",
+      "loads_n": {
+        "FR": 4.326,
+        "FL": 14.169,
+        "RR": 6.132,
+        "RL": 8.528
+      },
+      "ok": true
+    },
+    {
+      "phase": "preload_min",
+      "loads_n": {
+        "FR": 4.326,
+        "FL": 14.169,
+        "RR": 6.132,
+        "RL": 8.528
+      },
+      "ok": true
+    },
+    {
+      "phase": "stable",
+      "tilt_max_deg": 2.689,
+      "vx_max": 0.0036,
+      "margin_m": 0.1637,
+      "n_support": 4,
+      "ok": true
+    },
+    {
+      "phase": "descent",
+      "final_x": 2.6551,
+      "wheel_z": {
+        "FR": 0.0872,
+        "FL": 0.0899,
+        "RR": 0.0868,
+        "RL": 0.0885
+      },
+      "ok": true,
+      "crossed": true,
+      "grounded": true,
+      "tilt_max_deg": 2.807,
+      "vx_max": 0.0001,
+      "window": 50
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true,
+    "center_lateral": true,
+    "center_forward": true,
+    "RR_shift": true,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RL_assist": true,
+    "level_roll": true,
+    "body_down": true,
+    "preload_min": true,
+    "stable": true,
+    "descent": true
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": null,
+  "all_ok": true,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/stage004/geom_h04_1/record/index.json",
+    "trajectory_sha256": "dfe8c94cb8891a1d1eeb6bd2a20fa48a4ecca3cbd33ca6e7d04385d2c9dd16ca",
+    "frame_count": 2817,
+    "record_hz": 50.0,
+    "duration_s": 56.320000000003205,
+    "n_chunks": 12,
+    "contacts_n": 23019
+  }
+}

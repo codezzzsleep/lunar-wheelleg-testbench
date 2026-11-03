@@ -30,6 +30,7 @@ import terrain            # noqa: E402
 import v7_soil            # noqa: E402
 import wheelleg_env       # noqa: E402
 import v3_record          # noqa: E402
+import stage4_geometry as s4geo  # noqa: E402
 import v3_basic_cycle as bc   # noqa: E402
 
 LEG = bc.LEG
@@ -706,32 +707,64 @@ def main():
                     help='在后轮末段保存完整状态快照到该路径')
     ap.add_argument('--no-shift', action='store_true',
                     help='开发场景实验：跳过 FL/RR/RL 的支撑转移')
+    ap.add_argument('--scene-json', default='',
+                    help='场景几何 JSON（ledge 列表 + goal_x）；空则开发场景')
+    ap.add_argument('--obs-json', default='',
+                    help='观测/融合几何 JSON；空则开发回归用 truth_dev')
     ap.add_argument('--rear', action='store_true',
                     help='实验路径：长台面 + 后轮搭台（当前未通过，默认关闭）')
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
-    # 开发场景：两块加宽、错开、同后缘（2.35 m）的台面，便于稳定支撑与完整下降
-    faces = {'FR': 0.95, 'FL': 1.13}
-    if a.rear:
-        len_fr, len_fl, ledge_w = 1.40, 1.22, 0.45
+    # 场景创建与技能执行分离：场景几何来自 JSON（或开发默认场景），
+    # 技能只接收 derive_skill_params(obs) 的结果。
+    if a.scene_json:
+        scene = json.loads((ROOT / a.scene_json).read_text())
     else:
-        len_fr, len_fl, ledge_w = 0.5, 0.5, 0.27
-    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=len_fr, sy=ledge_w)
-    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=len_fl, sy=ledge_w)
-    far_x = faces['FR'] + len_fr
-    spec = terrain.make_spec(kind='flat', seed=0, goal_x=far_x + 0.6,
-                             name='climb_front2',
-                             objects=[{'mesh_file': box_fr,
-                                       'x': faces['FR'] + len_fr / 2.0, 'y': -0.115,
-                                       'yaw_deg': 0.0},
-                                      {'mesh_file': box_fl,
-                                       'x': faces['FL'] + len_fl / 2.0, 'y': 0.185,
-                                       'yaw_deg': 0.0}])
+        if a.rear:
+            ledges = [{'face_x': 0.95, 'length': 1.40, 'top_z': a.step_h,
+                       'center_y': -0.115, 'width': 0.45},
+                      {'face_x': 1.13, 'length': 1.22, 'top_z': a.step_h,
+                       'center_y': 0.185, 'width': 0.45}]
+        else:
+            ledges = [{'face_x': 0.95, 'length': 0.50, 'top_z': a.step_h,
+                       'center_y': -0.115, 'width': 0.27},
+                      {'face_x': 1.13, 'length': 0.50, 'top_z': a.step_h,
+                       'center_y': 0.185, 'width': 0.27}]
+        scene = {'name': 'dev2', 'ledges': ledges,
+                 'goal_x': min(l['face_x'] + l['length'] for l in ledges) + 0.6}
+    objects = []
+    for i, l in enumerate(scene['ledges']):
+        nm = 'step_fr.stl' if i == 0 else ('step_fl.stl' if i == 1 else f'step_{i}.stl')
+        mesh = make_step(out / nm, h=float(l['top_z']), sx=float(l['length']),
+                         sy=float(l['width']))
+        objects.append({'mesh_file': mesh,
+                        'x': float(l['face_x']) + float(l['length']) / 2.0,
+                        'y': float(l['center_y']), 'yaw_deg': 0.0})
+    far_x_scene = min(float(l['face_x']) + float(l['length']) for l in scene['ledges'])
+    spec = terrain.make_spec(kind='flat', seed=0, goal_x=float(scene.get('goal_x', far_x_scene + 0.6)),
+                             name=str(scene.get('name', 'climb_front2')), objects=objects)
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=120.0 if a.rear else 40.0)
     env.reset(seed=0)
+    if a.obs_json:
+        obs = json.loads((ROOT / a.obs_json).read_text())
+    else:
+        obs = s4geo.truth_geometry_from_scene(scene)
+    gp = s4geo.derive_skill_params(obs)
+    if not gp['valid']:
+        res = {'schema': 'v3-climb-front2/v3', 'soil': a.soil, 'scene': scene,
+               'obs_geometry': obs, 'skill_params': gp['params'],
+               'param_sources': gp['sources'], 'unknowns': gp['unknowns'],
+               'invalid_reasons': gp['invalid_reasons'],
+               'all_ok': False, 'blocked_at': 'geometry_invalid'}
+        (out / 'result.json').write_text(json.dumps(res, ensure_ascii=False, indent=2))
+        print(json.dumps({'all_ok': False, 'blocked_at': 'geometry_invalid',
+                          'invalid_reasons': gp['invalid_reasons']}, ensure_ascii=False))
+        return 1
+    P = gp['params']
+    faces = {'FR': P['face_FR'], 'FL': P['face_FL']}
     dx = dy = dyaw = 0.0
     if a.perturb:
         parts = [float(x) for x in a.perturb.split(',')]
@@ -771,7 +804,7 @@ def main():
         return c.terminated
 
     # APPROACH
-    brake_x = faces['FR'] - 0.35
+    brake_x = float(P['brake_x'])
     ok = False
     for _ in range(int(4.0 * 50)):
         if float(env.data.qpos[0]) >= brake_x:
@@ -802,7 +835,7 @@ def main():
     add({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
         'ok': bool(stopped)})
 
-    z_target = a.step_h + WHEEL_R + 0.025
+    z_target = float(P['lift_center_z'])
     ok = True
     for leg in ('FR', 'FL'):
         if stop() or not ok:
@@ -848,7 +881,7 @@ def main():
     if ok and not stop() and a.rear:
         ok = add(c.center_forward(0.008, rounds=4))
     if ok and not stop() and a.rear:
-        for leg, face in (('RR', faces['FR']),):
+        for leg, face in (('RR', P['face_FR']),):
             if stop() or not ok:
                 break
             c.set_swing(leg)
@@ -856,7 +889,7 @@ def main():
             if ok and not stop():
                 ok = add(c.lift_leg(leg, z_target))
             if ok and not stop():
-                ok = add(c.advance_to_ledge(leg, face + 0.07))
+                ok = add(c.advance_to_ledge(leg, float(P['place_RR_x'])))
             if ok and not stop():
                 ok = add(c.lower_leg(leg))
             if ok and not stop():
@@ -868,7 +901,7 @@ def main():
 
     if ok and not stop() and a.rear:
         # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
-        ok = add(c.wheel_assist('RL', faces['FL'] + 0.07, speed=0.12))
+        ok = add(c.wheel_assist('RL', float(P['assist_FL_x']), speed=0.12))
     if a.save_endgame and not stop():
         snap = env.save_state()
         sp = ROOT / a.save_endgame
@@ -885,16 +918,24 @@ def main():
             ok = add(c.preload_min())
         if ok:
             ok = add(c.stable_window(1.0))
-        if ok:
-            ok = add(c.descend_action(far_x))
+        if ok and P.get('descent') is None:
+            add({'phase': 'descent', 'ok': False, 'blocked_by': 'far_x_unknown',
+                 'unknowns': gp['unknowns']})
+        elif ok:
+            ok = add(c.descend_action(float(P['far_x'])))
 
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}
     blocked_at = None
     if phases and not phases[-1].get('ok'):
         blocked_at = phases[-1]['phase']
-    res = {'schema': 'v3-climb-front2/v2', 'soil': a.soil,
-           'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x, 'far_x': round(far_x, 4)},
+    res = {'schema': 'v3-climb-front2/v3', 'soil': a.soil,
+           'scene': scene, 'scene_far_x': round(far_x_scene, 4),
+           'obs_geometry': obs, 'skill_params': P,
+           'param_sources': gp['sources'], 'unknowns': gp['unknowns'],
+           'geometry_source': gp['obs_source'],
+           'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x,
+                    'far_x': round(float(P['far_x']) if P['far_x'] is not None else -1, 4)},
            'init_qpos_sha256': init_qpos_sha,
            'init_qvel_sha256': init_qvel_sha,
            'perturb': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw},

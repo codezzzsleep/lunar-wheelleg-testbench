@@ -1,0 +1,236 @@
+{
+  "schema": "stage004-interface-check/v1",
+  "note": "one skill entry point, geometry passed as data; each run is one continuous env (no reset between phases)",
+  "runs": [
+    {
+      "run": "dev_regression1",
+      "all_ok": true,
+      "blocked_at": null,
+      "geometry_source": "truth_dev",
+      "params": {
+        "face_FR": 0.95,
+        "face_FL": 1.13,
+        "top_z": 0.05,
+        "far_x": 2.3499999999999996,
+        "brake_x": 0.6,
+        "assist_FL_x": 1.2,
+        "lift_center_z": 0.161,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 2.6499999999999995
+        }
+      },
+      "sources": {
+        "face_FR": "truth_dev",
+        "face_FL": "truth_dev",
+        "top_z": "truth_dev",
+        "far_x": "truth_dev",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ],
+      "descent": {
+        "phase": "descent",
+        "final_x": 2.6531,
+        "wheel_z": {
+          "FR": 0.0878,
+          "FL": 0.0895,
+          "RR": 0.088,
+          "RL": 0.0876
+        },
+        "ok": true,
+        "crossed": true,
+        "grounded": true,
+        "tilt_max_deg": 4.351,
+        "vx_max": 0.0003,
+        "window": 50
+      },
+      "phases_ok": 26,
+      "phases_total": 26
+    },
+    {
+      "run": "geom_h04_1",
+      "all_ok": true,
+      "blocked_at": null,
+      "geometry_source": "obs_dev",
+      "params": {
+        "face_FR": 0.95,
+        "face_FL": 1.13,
+        "top_z": 0.04,
+        "far_x": 2.35,
+        "brake_x": 0.6,
+        "assist_FL_x": 1.2,
+        "lift_center_z": 0.151,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 2.65
+        }
+      },
+      "sources": {
+        "face_FR": "obs_dev",
+        "face_FL": "obs_dev",
+        "top_z": "obs_dev",
+        "far_x": "obs_dev",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ],
+      "descent": {
+        "phase": "descent",
+        "final_x": 2.6551,
+        "wheel_z": {
+          "FR": 0.0872,
+          "FL": 0.0899,
+          "RR": 0.0868,
+          "RL": 0.0885
+        },
+        "ok": true,
+        "crossed": true,
+        "grounded": true,
+        "tilt_max_deg": 2.807,
+        "vx_max": 0.0001,
+        "window": 50
+      },
+      "phases_ok": 26,
+      "phases_total": 26
+    },
+    {
+      "run": "geom_shift1",
+      "all_ok": false,
+      "blocked_at": "descent",
+      "geometry_source": "obs_dev",
+      "params": {
+        "face_FR": 1.05,
+        "face_FL": 1.23,
+        "top_z": 0.05,
+        "far_x": 2.3,
+        "brake_x": 0.7000000000000001,
+        "assist_FL_x": 1.3,
+        "lift_center_z": 0.161,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 2.5999999999999996
+        }
+      },
+      "sources": {
+        "face_FR": "obs_dev",
+        "face_FL": "obs_dev",
+        "top_z": "obs_dev",
+        "far_x": "obs_dev",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ],
+      "descent": {
+        "phase": "descent",
+        "final_x": 2.1699,
+        "wheel_z": {
+          "FR": 0.127,
+          "FL": 0.0973,
+          "RR": 0.1828,
+          "RL": 0.1468
+        },
+        "ok": false,
+        "crossed": false,
+        "grounded": false,
+        "tilt_max_deg": 15.423,
+        "vx_max": 0.1566,
+        "window": 1
+      },
+      "phases_ok": 25,
+      "phases_total": 26
+    },
+    {
+      "run": "geom_shift_pos1",
+      "all_ok": false,
+      "blocked_at": "descent",
+      "geometry_source": "obs_dev",
+      "params": {
+        "face_FR": 1.05,
+        "face_FL": 1.23,
+        "top_z": 0.05,
+        "far_x": 2.45,
+        "brake_x": 0.7000000000000001,
+        "assist_FL_x": 1.3,
+        "lift_center_z": 0.161,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 2.75
+        }
+      },
+      "sources": {
+        "face_FR": "obs_dev",
+        "face_FL": "obs_dev",
+        "top_z": "obs_dev",
+        "far_x": "obs_dev",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ],
+      "descent": {
+        "phase": "descent",
+        "final_x": 2.1214,
+        "wheel_z": {
+          "FR": 0.1261,
+          "FL": 0.0974,
+          "RR": 0.18,
+          "RL": 0.1468
+        },
+        "ok": false,
+        "crossed": false,
+        "grounded": false,
+        "tilt_max_deg": 15.785,
+        "vx_max": 0.1666,
+        "window": 1
+      },
+      "phases_ok": 25,
+      "phases_total": 26
+    },
+    {
+      "run": "geom_unknown_far1",
+      "all_ok": false,
+      "blocked_at": "descent",
+      "geometry_source": "obs_dev",
+      "params": {
+        "face_FR": 0.95,
+        "face_FL": 1.13,
+        "top_z": 0.05,
+        "far_x": null,
+        "brake_x": 0.6,
+        "assist_FL_x": 1.2,
+        "lift_center_z": 0.161,
+        "descent": null
+      },
+      "sources": {
+        "face_FR": "obs_dev",
+        "face_FL": "obs_dev",
+        "top_z": "obs_dev",
+        "far_x": "unknown",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "far_x",
+        "landing"
+      ],
+      "descent": {
+        "phase": "descent",
+        "ok": false,
+        "blocked_by": "far_x_unknown",
+        "unknowns": [
+          "far_x",
+          "landing"
+        ]
+      },
+      "phases_ok": 25,
+      "phases_total": 26
+    }
+  ]
+}

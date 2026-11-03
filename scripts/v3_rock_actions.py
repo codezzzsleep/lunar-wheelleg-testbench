@@ -8,6 +8,7 @@
 每个动作都在 truth 网格、same_scene、同一初态上独立执行。
 """
 import argparse
+import hashlib
 import json
 import pathlib
 
@@ -45,6 +46,7 @@ def main():
     ap.add_argument('--out', required=True)
     ap.add_argument('--budget', type=float, default=None)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
+    ap.add_argument('--perturb', default='', help='dx,dy,dyaw_deg 轻微初态扰动')
     a = ap.parse_args()
     sd = (ROOT / a.state).resolve()
     st = v3_core.load_state(sd)
@@ -58,12 +60,39 @@ def main():
         rock_max_x = float(mesh.bounds[1][0])
     out = (ROOT / a.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
+    dx = dy = dyaw = 0.0
+    if a.perturb:
+        parts = [float(x) for x in a.perturb.split(',')]
+        while len(parts) < 3:
+            parts.append(0.0)
+        dx, dy, dyaw = parts[:3]
+
+    cap = {}
+
+    def hook(e, info):
+        q = e.data.qpos
+        q[0] += dx
+        q[1] += dy
+        if abs(dyaw) > 1e-9:
+            th = np.deg2rad(dyaw)
+            c, s = np.cos(th / 2), np.sin(th / 2)
+            w, x, y, z = (float(v) for v in q[3:7])
+            q[3] = c * w - s * z
+            q[4] = c * x + s * y
+            q[5] = c * y - s * x
+            q[6] = c * z + s * w
+        mujoco.mj_forward(e.model, e.data)
+        info['perturbed'] = {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw}
+        cap['init_qpos_sha256'] = hashlib.sha256(
+            np.asarray(e.data.qpos, dtype=np.float64).tobytes()).hexdigest()
+
     rows = []
     for name in [x.strip() for x in a.actions.split(',') if x.strip()]:
         env = v3_core.make_env(spec, proto, budget=a.budget)
         try:
             r = v3_core.run_action(env, st['snapshot'], name, st['visible'],
-                                   mode='same_scene', seed=0, record=True)
+                                   mode='same_scene', seed=0, record=True,
+                                   pre_step_hook=hook)
             wheel_x = {leg: round(float(env.data.xpos[vc.bc.wheel_body(env, leg)][0]), 4)
                        for leg in vc.LEG}
             # 动作结束后先 mj_forward 刷新接触表，再查四轮落地
@@ -90,7 +119,9 @@ def main():
                          'wheel_x': wheel_x, 'grounded': grounded,
                          'final_tilt': final_tilt, 'base_z': base_z,
                          'crossed': crossed, 'descended': descended,
-                         'unified': unified})
+                         'unified': unified,
+                         'perturb': {'dx': dx, 'dy': dy, 'dyaw_deg': dyaw},
+                         'init_qpos_sha256': cap.get('init_qpos_sha256')})
         except Exception as e:  # noqa: BLE001
             rows.append({'action': name, 'success': False,
                          'reason': f'exception:{type(e).__name__}:{e}'})

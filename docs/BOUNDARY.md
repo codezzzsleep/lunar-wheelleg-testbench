@@ -8,7 +8,8 @@
   - 轮腿协同 push：`runs/v3/climb/rear_wheelassist_partial_r1`（hold_all，RR 0 N）。
   - 最小失败报告：`runs/v3/climb/CLIMB_failure_report.json`、`docs/D_FAILURE_REPORT.md`。
 - **D3 不成立**：唯一候选 `moon_rock_04_h2` 上，S1 只在 h2v0 通过（unified），
-  h2v1 的 S1/L1/L2 全部翻倒；腿式通过率 1/2，不是 3/3。
+  h2v1 的 S1/L1/L2 全部翻倒；再加三个轻微扰动初态，S1 也只有 **2/3**（第三态翻倒）。
+  综合：原始两态 1/2，扰动三态 2/3，都不是 3/3。
 - 第二技能：SIDE_LEVEL 已实现但未获干净评估；BODY_CLEARANCE 未实现。
 - 不宣称腿式相对轮式有价值。
 

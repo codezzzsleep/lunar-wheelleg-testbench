@@ -1,0 +1,36 @@
+{
+  "schema": "v3-run-manifest/v1",
+  "run_id": "rear_partial_r1",
+  "created_at": "2026-11-03T18:35:01+0800",
+  "code_commit": "67b95afaa3677edfc2ffa8a32be278a4af2b8e2b",
+  "sandbox": "",
+  "command": "see result.json",
+  "parent_run": null,
+  "inputs": {
+    "result_schema": "v3-climb-front2/v2",
+    "soil": "rigid",
+    "swing": null,
+    "cycles_requested": null,
+    "init_seed": null,
+    "init_qpos_sha256": null
+  },
+  "outputs": {
+    "frames.npz": {
+      "bytes": 27033,
+      "sha256": "eeac05b37c70b83a46f55e038c8432803d3a6b2244f695285986345b4477f367"
+    },
+    "result.json": {
+      "bytes": 2986,
+      "sha256": "ca46c69ff4bcefff6720a4cf3c6414b3d709e71beef17e791a6da8a991311853"
+    },
+    "step_fl.stl": {
+      "bytes": 684,
+      "sha256": "574d116c17bec39dc867a95415221bceaa61a90467d6ef168309126aba6c3068"
+    },
+    "step_fr.stl": {
+      "bytes": 684,
+      "sha256": "22cb7fa70bc8151edcb1ed10a0f325e4e4cd1aa8122a2454e7378811ffa75c25"
+    }
+  },
+  "result_sha256": "ca46c69ff4bcefff6720a4cf3c6414b3d709e71beef17e791a6da8a991311853"
+}

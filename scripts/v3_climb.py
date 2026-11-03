@@ -94,6 +94,18 @@ def contact_points(env, leg, min_load=0.5):
     return pts
 
 
+def ground_contact(env, leg):
+    """轮是否与地面（world，body 0）接触；用于下降后的落地判定。"""
+    m, d = env.model, env.data
+    b = bc.wheel_body(env, leg)
+    for i in range(int(d.ncon)):
+        c = d.contact[i]
+        b1, b2 = int(m.geom_bodyid[c.geom1]), int(m.geom_bodyid[c.geom2])
+        if b in (b1, b2) and (b2 if b1 == b else b1) == 0:
+            return True
+    return False
+
+
 def make_step(path, h=0.05, sx=0.5, sy=0.9):
     box = trimesh.creation.box(extents=[sx, sy, h])
     box.apply_translation([0, 0, h / 2.0])
@@ -172,6 +184,9 @@ class Climb:
             if len(pts) < 3:
                 break
             margin, inward = bc.nearest_edge(pts, c[:2])
+            if self.swing == 'RL':
+                print('DBG_RL margin', round(float(margin), 4), 'com', np.round(c[:2], 3).tolist(),
+                      'inward', np.round(inward, 2).tolist(), 'npts', len(pts))
             best = margin if best is None else max(best, margin)
             if margin >= target_margin:
                 break
@@ -243,6 +258,29 @@ class Climb:
         return {'phase': f'{leg}_advance', 'wheel_x': round(x, 4),
                 'x_target': round(x_target, 4),
                 'ok': bool(x >= x_target - 0.01)}
+
+    # ---- 下降：四轮越过台面最远后缘，落地并稳定保持
+    def descend(self, far_x, max_s=10.0, speed=0.08):
+        env = self.env
+        for _ in range(int(max_s * 50)):
+            if float(env.data.qpos[0]) >= far_x + 0.35:
+                break
+            self.step('descend', omega=speed / WHEEL_R)
+            if self.terminated:
+                break
+        rows = []
+        for _ in range(int(1.5 * 50)):
+            rows.append(self.step('descend_hold'))
+            if self.terminated:
+                break
+        wx = {leg: float(env.data.xpos[bc.wheel_body(env, leg)][0]) for leg in LEG}
+        grounded = {leg: ground_contact(env, leg) for leg in LEG}
+        tilt = max((r['tilt'] for r in rows), default=99)
+        crossed = all(x >= far_x - 0.02 for x in wx.values())
+        return {'phase': 'descend', 'wheel_x': {k: round(v, 4) for k, v in wx.items()},
+                'grounded': grounded, 'tilt_max_deg': round(tilt, 3),
+                'ok': bool(crossed and all(grounded.values()) and tilt <= 10.0
+                           and not self.terminated)}
 
     # ---- 前轴预压：机身向 +x 平移，前轮被压向台面、后轮伸长
     def preload(self, dx=0.005, ramp=30):
@@ -340,20 +378,26 @@ def main():
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
-    sx_ledge = 1.0 if a.rear else 0.5
-    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
-    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
-    faces = {'FR': a.step_x - 0.25, 'FL': a.step_x + 0.18 - 0.25}
-    spec = terrain.make_spec(kind='flat', seed=0, goal_x=3.0, name='climb_front2',
+    # 开发场景：两块加宽、错开、同后缘（2.35 m）的台面，便于稳定支撑与完整下降
+    faces = {'FR': 0.95, 'FL': 1.13}
+    if a.rear:
+        len_fr, len_fl, ledge_w = 1.40, 1.22, 0.45
+    else:
+        len_fr, len_fl, ledge_w = 0.5, 0.5, 0.27
+    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=len_fr, sy=ledge_w)
+    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=len_fl, sy=ledge_w)
+    far_x = faces['FR'] + len_fr
+    spec = terrain.make_spec(kind='flat', seed=0, goal_x=far_x + 0.6,
+                             name='climb_front2',
                              objects=[{'mesh_file': box_fr,
-                                       'x': faces['FR'] + sx_ledge / 2.0, 'y': -0.115,
+                                       'x': faces['FR'] + len_fr / 2.0, 'y': -0.115,
                                        'yaw_deg': 0.0},
                                       {'mesh_file': box_fl,
-                                       'x': faces['FL'] + sx_ledge / 2.0, 'y': 0.185,
+                                       'x': faces['FL'] + len_fl / 2.0, 'y': 0.185,
                                        'yaw_deg': 0.0}])
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=80.0 if a.rear else 40.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=120.0 if a.rear else 40.0)
     env.reset(seed=0)
     rec = None
     if a.record:
@@ -423,8 +467,7 @@ def main():
         if ok and not stop():
             ok = add(c.hold_leg(leg))
 
-    if ok and not stop() and a.rear:
-        ok = add(c.preload())
+    # 预压已停用：前轮在宽台上载荷已够，侧向预压会引入滚转
 
     if ok and not stop():
         rows = []
@@ -442,8 +485,7 @@ def main():
                   'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
                              and tilt <= 10.0)})
 
-    if ok and not stop() and a.rear:
-        ok = add(c.advance_body(faces['FR'] + 0.19 - 0.03))
+    # 后轮不先做整体前移：像前轮一样，抬起来再前进，避免四轮承重时 FR 卸载
 
     if ok and not stop() and a.rear:
         for leg, face in (('RR', faces['FR']), ('RL', faces['FL'])):
@@ -480,13 +522,16 @@ def main():
                   'ok': bool(rows and all(v >= 0.05 * c.W for v in loads.values())
                              and tilt <= 10.0)})
 
+    if ok and not stop() and a.rear:
+        ok = add(c.descend(far_x))
+
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}
     blocked_at = None
     if phases and not phases[-1].get('ok'):
         blocked_at = phases[-1]['phase']
     res = {'schema': 'v3-climb-front2/v2', 'soil': a.soil,
-           'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x},
+           'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x, 'far_x': round(far_x, 4)},
            'robot_mass_kg': round(float(bc.robot_mass(env)), 4),
            'robot_weight_n': round(float(c.W), 3),
            'phases': phases, 'checks': checks,

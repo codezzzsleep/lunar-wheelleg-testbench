@@ -1,7 +1,9 @@
-"""D2 先行检查：同一个 5 cm 台，纯轮式驱动能不能过。
+"""完整通行判据下的纯轮式探针。
 
-不做腿动作、不做决策；只回答"这个障碍是否已经需要腿"。
-  MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_wheel_probe.py --speed 0.30
+成功 = 整车四轮都越过障碍最远后缘 + 完成下降 + 稳定保持 + 无终止。
+不再用"机身 x 超过某个值"代替。
+
+  MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_wheel_probe.py --step-h 0.05 --speed 0.30
 """
 import argparse
 import json
@@ -28,46 +30,93 @@ def main():
     ap.add_argument('--step-h', type=float, default=0.05)
     ap.add_argument('--soil', default='rigid', choices=['rigid', 'nominal'])
     ap.add_argument('--out', default='runs/v3/wheel_probe')
+    ap.add_argument('--face-x', type=float, default=0.95)
+    ap.add_argument('--length', type=float, default=1.40)
+    ap.add_argument('--width', type=float, default=0.90)
     a = ap.parse_args()
-    out = ROOT / a.out / f'{a.soil}_v{a.speed:.2f}'
+    tag = f'h{a.step_h:.2f}_v{a.speed:.2f}'
+    out = ROOT / a.out / tag
     out.mkdir(parents=True, exist_ok=True)
-    sx_ledge = 0.5
-    box_fr = vc.make_step(out / 'step_fr.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
-    box_fl = vc.make_step(out / 'step_fl.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
-    faces = {'FR': 0.95, 'FL': 1.13}
-    spec = terrain.make_spec(kind='flat', seed=0, goal_x=4.0, name='wheel_probe',
-                             objects=[{'mesh_file': box_fr,
-                                       'x': faces['FR'] + sx_ledge / 2, 'y': -0.115,
-                                       'yaw_deg': 0.0},
-                                      {'mesh_file': box_fl,
-                                       'x': faces['FL'] + sx_ledge / 2, 'y': 0.185,
+    box = vc.make_step(out / 'platform.stl', h=a.step_h, sx=a.length, sy=a.width)
+    far_x = a.face_x + a.length
+    spec = terrain.make_spec(kind='flat', seed=0, goal_x=far_x + 0.6,
+                             name='wheel_probe',
+                             objects=[{'mesh_file': box,
+                                       'x': a.face_x + a.length / 2, 'y': 0.0,
                                        'yaw_deg': 0.0}])
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=20.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=25.0)
     env.reset(seed=0)
-    frames = []
+    import mujoco
+    m, d = env.model, env.data
+    wheels = {leg: vc.bc.wheel_body(env, leg) for leg in LEG}
+
+    def wheel_x():
+        return {leg: float(d.xpos[b][0]) for leg, b in wheels.items()}
+
+    def ground_contact(leg):
+        b = wheels[leg]
+        for i in range(int(d.ncon)):
+            c = d.contact[i]
+            b1, b2 = int(m.geom_bodyid[c.geom1]), int(m.geom_bodyid[c.geom2])
+            if b in (b1, b2):
+                other = b2 if b1 == b else b1
+                if other == 0:
+                    return True
+        return False
+
+    crossed_at = None
     term = {}
-    for k in range(int(12.0 * 50)):
+    for k in range(int(18.0 * 50)):
+        if all(x >= far_x - 0.02 for x in wheel_x().values()):
+            crossed_at = float(env.t)
+            break
         env.step_command(joint_targets_rad=STANCE,
                          wheel_omega_rad_s=np.full(4, a.speed / WHEEL_R),
                          wheel_mode='velocity')
-        frames.append({'t': round(float(env.t), 3), 'x': round(float(env.data.qpos[0]), 4),
-                       'tilt': round(float(env._tilt()), 3)})
         if env.terminated or env.truncated:
             term = {'terminated': bool(env.terminated),
                     'truncated': bool(env.truncated),
                     'reason': env.last_termination.get('reason')}
             break
-        if float(env.data.qpos[0]) >= 1.55:
+    # 越过后缘后继续前进，让后轮完全落地并稳定，再保持
+    settle_until = float(env.t) + 3.0
+    while float(env.t) < settle_until and float(d.qpos[0]) < far_x + 0.45:
+        env.step_command(joint_targets_rad=STANCE,
+                         wheel_omega_rad_s=np.full(4, a.speed / WHEEL_R),
+                         wheel_mode='velocity')
+        if env.terminated or env.truncated:
+            term = {'terminated': bool(env.terminated),
+                    'truncated': bool(env.truncated),
+                    'reason': env.last_termination.get('reason')}
             break
-    x = float(env.data.qpos[0])
-    res = {'schema': 'v3-wheel-probe/v1', 'soil': a.soil, 'speed_mps': a.speed,
+    # 下降 + 稳定保持
+    hold = []
+    for k in range(int(1.5 * 50)):
+        env.step_command(joint_targets_rad=STANCE, wheel_mode='coast')
+        hold.append({'t': round(float(env.t), 3),
+                     'tilt': round(float(env._tilt()), 3),
+                     'x': round(float(d.qpos[0]), 4)})
+        if env.terminated or env.truncated:
+            term = {'terminated': bool(env.terminated),
+                    'truncated': bool(env.truncated),
+                    'reason': env.last_termination.get('reason')}
+            break
+    wx = wheel_x()
+    crossed = all(x >= far_x - 0.02 for x in wx.values())
+    grounded = {leg: ground_contact(leg) for leg in LEG}
+    tilt_max = max((h['tilt'] for h in hold), default=99)
+    stable = bool(hold and tilt_max <= 10.0 and all(grounded.values()))
+    res = {'schema': 'v3-wheel-probe/v2', 'soil': a.soil, 'speed_mps': a.speed,
            'step_h_m': a.step_h, 'wheel_radius_m': WHEEL_R,
-           'final_x': round(x, 4), 'passed': bool(x >= 1.50),
-           'tilt_max_deg': round(max(f['tilt'] for f in frames), 3) if frames else None,
-           'termination': term, 'frames': len(frames),
-           f'note': '纯轮式、无腿动作；只用于判断 {a.step_h:.2f} m 台是否已经需要腿'}
+           'face_x': a.face_x, 'far_x': round(far_x, 4),
+           'crossed_at_t': crossed_at, 'crossed': bool(crossed),
+           'wheel_x': {k: round(v, 4) for k, v in wx.items()},
+           'grounded': grounded, 'tilt_max_deg': round(tilt_max, 3),
+           'stable': stable, 'passed': bool(crossed and stable and not term),
+           'termination': term, 'final_x': round(float(d.qpos[0]), 4),
+           'note': '完整通行：四轮越过后缘 + 下降 + 稳定保持 + 无终止'}
     (out / 'result.json').write_text(json.dumps(res, ensure_ascii=False, indent=2))
     print(json.dumps(res, ensure_ascii=False))
     return 0 if res['passed'] else 1

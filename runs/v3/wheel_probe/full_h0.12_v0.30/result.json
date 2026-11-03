@@ -1,0 +1,33 @@
+{
+  "schema": "v3-wheel-probe/v2",
+  "soil": "rigid",
+  "speed_mps": 0.3,
+  "step_h_m": 0.12,
+  "wheel_radius_m": 0.086,
+  "face_x": 0.95,
+  "far_x": 2.35,
+  "crossed_at_t": null,
+  "crossed": false,
+  "wheel_x": {
+    "FR": 1.0553,
+    "FL": 1.0553,
+    "RR": 0.8637,
+    "RL": 0.8638
+  },
+  "grounded": {
+    "FR": false,
+    "FL": false,
+    "RR": false,
+    "RL": true
+  },
+  "tilt_max_deg": 60.388,
+  "stable": false,
+  "passed": false,
+  "termination": {
+    "terminated": true,
+    "truncated": false,
+    "reason": "tipped"
+  },
+  "final_x": 0.6984,
+  "note": "完整通行：四轮越过后缘 + 下降 + 稳定保持 + 无终止"
+}

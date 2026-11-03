@@ -217,6 +217,15 @@ def voxelize_columns(mesh, grid, z_start=-0.05):
         s = breaks[k]
         e = breaks[k + 1] if k + 1 < len(breaks) else len(ray_i)
         zz = np.sort(zs[s:e])
+        # 重复壳（同一次元表面被导出成两层、间距 << 体素）会把奇偶求交打乱：
+        # 3 次命中会配成 (z0,z1) 一条薄片，实体被掏空。先把 pitch/2 内的命中
+        # 合并成一个表面（同一层的重复交点），再做奇偶配对。
+        if len(zz) > 1:
+            merged = [zz[0]]
+            for z in zz[1:]:
+                if z - merged[-1] > 0.5 * float(grid['pitch']):
+                    merged.append(z)
+            zz = np.asarray(merged)
         if len(zz) == 1:
             lo, hi = max(0.0, z_start), zz[0]
             pairs = [(lo, hi)]

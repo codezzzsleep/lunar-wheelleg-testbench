@@ -1,12 +1,12 @@
 # 《看不见的那一面》v3 结果报告（由唯一源表生成）
 
-> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `f884bb48a68d1e42b35bb7ca2de15f17069375dc6e5dbba84a51b435a742c9b6`　生成时点 `2026-11-03T13:29:39+0800`
+> 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `d569502101729bbd9da0ec6378134fd947ae3637100cb2e0805900d33b74b233`　生成时点 `2026-11-03T14:16:36+0800`
 > 三份文档（CURRENT_STATUS / V3_FINAL_REPORT / V3_RESULTS_TABLE）都由该表生成；数字口径见表中 `definitions`。
 
 ## 0 回答
 
-- 有效配对 **14** 个；FULL 更好 1、OBS_ONLY 更好 0、相同 13。
-- 风险低估：FULL 1、OBS_ONLY 2；过度保守：FULL 1、OBS_ONLY 1。
+- 有效配对 **3** 个；FULL 更好 0、OBS_ONLY 更好 0、相同 3。
+- 风险低估：FULL 2、OBS_ONLY 2；过度保守：FULL 0、OBS_ONLY 0。
 - 隐藏误差覆盖 1 状态 / 6 候选行；生成先验的隐藏区是否可用，以该分布为准，不以单次成功推断。
 
 ## 1 筛选漏斗
@@ -34,36 +34,25 @@
 
 | 指标 | FULL | OBS_ONLY |
 | --- | --- | --- |
-| pass | 12 | 11 |
-| safe_stop | 1 | 1 |
-| physical_failure | 1 | 2 |
-| 风险低估 | 1 | 2 |
-| 过度保守 | 1 | 1 |
+| pass | 1 | 1 |
+| safe_stop | 0 | 0 |
+| physical_failure | 2 | 2 |
+| 风险低估 | 2 | 2 |
+| 过度保守 | 0 | 0 |
 | 参考未评估 | 0 | 0 |
-| 有效执行 | 14 | 14 |
+| 有效执行 | 3 | 3 |
 
 ## 4 配对比较
 
-- 有效配对：**14** 个（定义：两臂 decision+execution 齐全、action 与 decision 一致、state_mode=same_scene、同一 state_hash、轨迹可读且首尾时间可核）。
-- 结局更好：FULL 1 / OBS_ONLY 0 / 相同 13。
+- 有效配对：**3** 个（定义：两臂 decision+execution 齐全、action 与 decision 一致、state_mode=same_scene、同一 state_hash、轨迹可读且首尾时间可核）。
+- 结局更好：FULL 0 / OBS_ONLY 0 / 相同 3。
 - 这只陈述**当前已测配对计数**，不能据此推出“总体没有变差”或“方法有效”。
 
 | 状态 | FULL | OBS_ONLY | 更好 | FULL 动作 | OBS 动作 |
 | --- | --- | --- | --- | --- | --- |
 | moon_rock_01_h0v0 | pass | pass | same | D1 | D1 |
-| moon_rock_01_h0v1 | pass | pass | same | D1 | D1 |
-| moon_rock_01_h2v0 | safe_stop | safe_stop | same | A0 | A0 |
-| moon_rock_02_h0v1 | pass | pass | same | D1 | D1 |
-| moon_rock_02_h2v0 | pass | pass | same | L2 | L2 |
-| moon_rock_02_h2v1 | pass | pass | same | D1 | D1 |
-| moon_rock_03_h1v0 | pass | pass | same | L2 | L2 |
-| moon_rock_03_h2v1 | pass | pass | same | R1 | R1 |
-| moon_rock_04_h0v1 | pass | pass | same | L2 | L2 |
-| moon_rock_04_h1v0 | pass | physical_failure | FULL | R2 | L2 |
-| moon_rock_05_h1v0 | pass | pass | same | D1 | D1 |
+| moon_rock_04_h1v0 | physical_failure | physical_failure | same | L2 | L2 |
 | moon_rock_05_h1v1 | physical_failure | physical_failure | same | L2 | L2 |
-| moon_rock_05_h2v0 | pass | pass | same | R1 | R1 |
-| moon_rock_05_h2v1 | pass | pass | same | R2 | R2 |
 
 ## 5 隐藏区误差
 
@@ -95,7 +84,7 @@
 | moon_rock_03_h1v0 | 0.172 | executed_pair | L2/pass | L2/pass |
 | moon_rock_03_h2v1 | 0.224 | executed_pair | R1/pass | R1/pass |
 | moon_rock_04_h0v1 | 0.120 | executed_pair | L2/pass | L2/pass |
-| moon_rock_04_h1v0 | 0.172 | executed_pair | R2/pass | L2/physical_failure |
+| moon_rock_04_h1v0 | 0.172 | executed_pair | L2/physical_failure | L2/physical_failure |
 | moon_rock_05_h1v0 | 0.172 | executed_pair | D1/pass | D1/pass |
 | moon_rock_05_h1v1 | 0.172 | executed_pair | L2/physical_failure | L2/physical_failure |
 | moon_rock_05_h2v0 | 0.224 | executed_pair | R1/pass | R1/pass |

@@ -120,7 +120,19 @@ def classify_arm(rec):
     return 'valid'
 
 
+def _revalidated_ids():
+    p = RUNS / 'report' / 'revalidation.json'
+    if not p.is_file():
+        return set()
+    try:
+        d = json.loads(p.read_text())
+    except Exception:
+        return set()
+    return {r['state_id'] for r in d.get('rows') or []}
+
+
 def collect(proto):
+    fresh = _revalidated_ids()
     states = []
     for p in sorted((RUNS / 'states').glob('*/state.json')):
         st = jl(p)
@@ -133,6 +145,10 @@ def collect(proto):
         for arm in ('FULL', 'OBS_ONLY'):
             row[arm] = arm_record(sd, arm)
         row['pair_status'] = _pair_status(row)
+        # 实体化/缓存修复后，只有重跑过的状态才算“当前有效”；其余标 needs_revalidation，
+        # 保留在总数里但不进入新结论的配对计数。
+        row['freshness'] = ('revalidated' if row['state_id'] in fresh
+                            else 'needs_revalidation') if fresh else 'unverified'
         met = jl(sd / 'metrics' / 'summary.json')
         if met:
             row['metrics'] = met['rows']
@@ -193,6 +209,9 @@ def per_method(states):
             rec = row[arm]
             if classify_arm(rec) != 'valid':
                 continue
+            if row.get('freshness') == 'needs_revalidation':
+                m['needs_revalidation'] = m.get('needs_revalidation', 0) + 1
+                continue
             m['n_valid_runs'] += 1
             oc = rec['outcome']
             if oc in m:
@@ -218,7 +237,8 @@ def per_method(states):
 
 
 def method_compare(states):
-    pairs = [r for r in states if r['pair_status'] == 'executed_pair']
+    pairs = [r for r in states if r['pair_status'] == 'executed_pair'
+             and r.get('freshness', 'unverified') in ('revalidated', 'unverified')]
     order = {'pass': 3, 'safe_stop': 2, 'physical_failure': 1}
     better = {'FULL': 0, 'OBS_ONLY': 0, 'same': 0}
     rows = []
@@ -331,6 +351,12 @@ def main():
         'method_compare': method_compare(states),
         'hidden_error': hidden_error(states),
         'known_answer': known_answer_all(states),
+        'freshness': {'revalidation_scope': 'runs/v3/report/revalidation.json',
+                      'n_revalidated': sum(1 for s in states
+                                           if s.get('freshness') == 'revalidated'),
+                      'n_needs_revalidation': sum(
+                          1 for s in states
+                          if s.get('freshness') == 'needs_revalidation')},
         'states': states,
     }
     out = ROOT / 'runs/v3/report'

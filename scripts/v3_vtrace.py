@@ -83,6 +83,17 @@ def trace_candidate(state_dir, proto, cid):
                    'grid_sha256': jl(state_dir / 'fusion' / 'V.json', {}).get('grid_sha256')}}
     # ---- S0 原始 GLB ----
     raw = cand.get('glb_path') or cand.get('source_glb') or cand.get('parent_source')
+    # 旧批次 candidate.json 没写 glb_path：用 identity 回到生成缓存里找原始 GLB，
+    # 找不到就明确记 missing（不允许把 parent_world 当成原始件）。
+    if not raw:
+        ident = cand.get('identity')
+        if isinstance(ident, dict):
+            ident = ident.get('identity') or ident.get('id')
+        cand_cache = state_dir.parent.parent / 'generation' / 'cache'
+        for guess in ([cand_cache / str(ident) / 'model.glb'] if ident else []):
+            if pathlib.Path(guess).is_file():
+                raw = str(pathlib.Path(guess).relative_to(ROOT))
+                break
     s0 = {'path': raw, 'status': 'missing'}
     if raw and (ROOT / raw).is_file():
         try:
@@ -109,6 +120,13 @@ def trace_candidate(state_dir, proto, cid):
                           ('matrix', 'scale', 'rigid', 'mask_iou', 'surface_median_mm',
                            'surface_p95_mm', 'method', 'matrix_sha256')
                           if k in reg} if isinstance(reg, dict) else reg
+    if (s0.get('status') == 'ok' and s1.get('status') == 'ok'):
+        s1['extent_ratio_parent_over_raw'] = [
+            round(float(b) / float(a), 4) if a else None
+            for a, b in zip(s0.get('extents') or [], s1.get('extents') or [])]
+        s1['volume_ratio_parent_over_raw'] = (
+            round(float(s1['volume_m3']) / float(s0['volume_m3']), 5)
+            if s0.get('volume_m3') and s1.get('volume_m3') else None)
     tr['S1_registration'] = s1
     # ---- S2 占据化 ----
     P = None

@@ -36,14 +36,19 @@ def wheel_contact(env, leg):
     b = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, f'{leg}_wheel_link')
     if b < 0:
         return 0.0
-    total = 0.0
+    ground = 0.0
     for i in range(int(d.ncon)):
         c = d.contact[i]
-        if m.geom_bodyid[c.geom1] == b or m.geom_bodyid[c.geom2] == b:
-            f = np.zeros(6)
-            mujoco.mj_contactForce(m, d, i, f)
-            total += abs(float(f[0]))
-    return total
+        b1, b2 = int(m.geom_bodyid[c.geom1]), int(m.geom_bodyid[c.geom2])
+        if b not in (b1, b2):
+            continue
+        other = b2 if b1 == b else b1
+        if other not in (0, int(getattr(env, 'terrain_body_id', -1))):
+            continue
+        f = np.zeros(6)
+        mujoco.mj_contactForce(m, d, i, f)
+        ground += abs(float(f[0]))
+    return ground
 
 
 def wheel_z(env, leg):

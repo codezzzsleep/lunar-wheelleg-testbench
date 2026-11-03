@@ -1,0 +1,30 @@
+{
+  "schema": "v3-fidelity-selftest/v1",
+  "state": "runs/v3/states/moon_rock_04_h1v0",
+  "action": "L2",
+  "runs": {
+    "same_scene": [
+      {
+        "outcome": "physical_failure",
+        "final_x": 2.109
+      },
+      {
+        "outcome": "physical_failure",
+        "final_x": 2.109
+      }
+    ],
+    "project": [
+      {
+        "outcome": "physical_failure",
+        "final_x": 2.109
+      },
+      {
+        "outcome": "physical_failure",
+        "final_x": 2.109
+      }
+    ]
+  },
+  "deterministic_within_mode": true,
+  "modes_agree": true,
+  "pass": true
+}

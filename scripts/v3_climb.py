@@ -239,6 +239,31 @@ class Climb:
         return {'phase': f'{self.swing}_shift', 'before': before, 'after': after,
                 'margin_m': after['margin_m'], 'ok': ok}
 
+    # ---- SIDE_LEVEL：闭环调左右腿长，把机身滚转拉平，让悬空轮落地
+    def side_level(self, seconds=2.5, gain=1.2, max_step=0.004):
+        env = self.env
+        for k in range(int(seconds * 50)):
+            self.step('side_level')
+            if self.terminated:
+                break
+            if k % 5:
+                continue
+            roll, _ = bc.attitude(env)
+            d = float(np.clip(gain * roll, -max_step, max_step))
+            for leg in LEG:
+                sign = 1.0 if leg in ('FL', 'RL') else -1.0
+                dp = np.array([0.0, 0.0, -sign * d])
+                dq = np.clip(bc.damped_ls(bc.leg_jac(env, leg), -dp), -0.02, 0.02)
+                for p, v in zip(('hip', 'thigh', 'calf'), dq):
+                    self.targets[leg][p] = float(np.clip(
+                        self.targets[leg][p] + float(v), -2.5, 2.5))
+        loads = {leg: round(contact_load(env, leg), 3) for leg in LEG}
+        roll, pitch = bc.attitude(env)
+        return {'phase': 'side_level', 'loads_n': loads,
+                'roll_deg': round(float(np.degrees(roll)), 3),
+                'pitch_deg': round(float(np.degrees(pitch)), 3),
+                'ok': bool(all(v > 0.5 for v in loads.values()) and not self.terminated)}
+
     # ---- 轮腿协同：最后一轮保持接触滚上台；支撑轮掉载时向下补 4 mm
     def push_last_wheel(self, leg, x_target, speed=0.10, max_s=8.0,
                         min_load=1.5, adjust_every=5):
@@ -629,6 +654,8 @@ def main():
     if ok and not stop() and a.rear:
         # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
         ok = add(c.push_last_wheel('RL', faces['FL'] + 0.07, speed=0.10))
+    if ok and not stop() and a.rear:
+        ok = add(c.side_level(2.5))
     if ok and not stop() and a.rear:
         rows = []
         for _ in range(int(1.5 * 50)):

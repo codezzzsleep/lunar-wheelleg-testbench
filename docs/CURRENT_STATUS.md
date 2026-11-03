@@ -284,6 +284,16 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 `shift()` 已改为移动后稳定窗口重测、按最终状态判定（见上一节），后续不再用
 “结构无解”下结论，除非两条实现路径都按有限尝试规则失败。
 
+## 回退技能 SIDE_LEVEL 已实现（待独立评估）
+
+- `side_level`：闭环按 roll 调整左右腿长（每 5 步一次，小步 4 mm），把机身滚转拉平，
+  让悬空轮落地；设计上用于“四轮上台后 RR 悬空”的收尾，也符合 SPEC D4 的
+  SIDE_LEVEL 第二技能。
+- 当前 `--rear` 仍保留单腿 hold 安全门，停在 `RR_hold`，所以还没有干净的
+  SIDE_LEVEL 评估；强制绕过安全门时 `RL_push` 会倾到 15.03°，不采纳。
+- CLIMB 仍按 D5 标未过；下一步做 BODY_CLEARANCE / SIDE_LEVEL 的独立评估，
+  以及真实岩石上的完整轮式库（同一完整通行判据）。
+
 # 当前状态（唯一入口）
 
 > 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `091b4104216279974b424d2ec81270817048bc6e4db4fdcdcd4f6d3f93fe3130`　生成时点 `2026-11-03T15:19:20+0800`

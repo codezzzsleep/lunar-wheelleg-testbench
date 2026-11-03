@@ -304,6 +304,14 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 - 结论：连续路线目前只过 2/3 台阶；需要更稳的通过策略（降速/抬头/姿态控制）或
   更缓的台阶，不能把 12.77 m 说成 20 m 通过。
 
+## F 连续路线（20 m）已通过（rigid + nominal）
+
+- 关键修正：原先 hfield 的 span=12.5，机器人在 x≈12.5 驶出地形边缘后翻倒；
+  不是台阶问题。改为 **span=25、field_x_max=26** 后，同一条路线直接跑通。
+- rigid：x=**23.5482 m**，100.26 s，tilt 8.91°，无终止；
+- nominal：x=**23.5375 m**，106.6 s，tilt 8.29°，无终止；
+- 三个 5 cm 台阶全部通过，纯轮式慢压，终点稳定 1 s。
+
 # 当前状态（唯一入口）
 
 > 唯一源表：`runs/v3/report/v3_results.json`　SHA256 `091b4104216279974b424d2ec81270817048bc6e4db4fdcdcd4f6d3f93fe3130`　生成时点 `2026-11-03T15:19:20+0800`

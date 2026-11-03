@@ -27,23 +27,24 @@ def main():
     ap.add_argument('--speed', type=float, default=0.30)
     ap.add_argument('--out', default='runs/v3/route/r1')
     ap.add_argument('--goal-x', type=float, default=23.5)
+    ap.add_argument('--step-h', type=float, default=0.05)
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
     boxes = []
     for i, x in enumerate((4.0, 10.0, 16.0)):
-        p = vc.make_step(out / f'step_{i}.stl', h=0.05, sx=1.0, sy=0.9)
+        p = vc.make_step(out / f'step_{i}.stl', h=a.step_h, sx=1.0, sy=0.9)
         boxes.append({'mesh_file': p, 'x': x, 'y': 0.0, 'yaw_deg': 0.0})
     spec = terrain.make_spec(kind='flat', seed=0, goal_x=24.0, name='route_20m',
-                             span=12.5, objects=boxes)
-    spec['terrain']['field_x_max'] = 25.0
+                             span=25.0, objects=boxes)
+    spec['terrain']['field_x_max'] = 26.0
     spec['channel'] = {'center_y': 0.0, 'half_width': 3.0}
     spec['soil'] = v7_soil.resolve(a.soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=60.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=200.0)
     env.reset(seed=0)
     frames = []
     term = {}
-    for k in range(int(60.0 * 50)):
+    for k in range(int(190.0 * 50)):
         env.step_command(joint_targets_rad=STANCE,
                          wheel_omega_rad_s=np.full(4, a.speed / WHEEL_R),
                          wheel_mode='velocity')
@@ -68,7 +69,7 @@ def main():
     x = float(env.data.qpos[0])
     tilt_max = max([f['tilt'] for f in frames] + hold)
     res = {'schema': 'v3-route/v1', 'soil': a.soil, 'speed_mps': a.speed,
-           'steps_m': [4.0, 10.0, 16.0], 'step_h_m': 0.05,
+           'steps_m': [4.0, 10.0, 16.0], 'step_h_m': a.step_h,
            'final_x': round(x, 4), 'goal_x': a.goal_x,
            'passed': bool(x >= a.goal_x - 0.05 and not term and tilt_max <= 10.0),
            'tilt_max_deg': round(tilt_max, 3), 'termination': term,

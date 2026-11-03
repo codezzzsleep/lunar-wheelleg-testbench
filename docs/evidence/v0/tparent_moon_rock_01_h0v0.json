@@ -1,0 +1,49 @@
+{
+  "schema": "v3-tparent/v1",
+  "state_id": "moon_rock_01_h0v0",
+  "note": "真值网格直接当父先验（已在世界系，不做配准）",
+  "n_truth_total": 343356,
+  "n_v": 25411,
+  "n_generated_unknown": 325064,
+  "n_full": 350475,
+  "assertions": {
+    "diff_subset_u": true,
+    "free_clear": true,
+    "obs_equals_v": true
+  },
+  "truth_hidden_roi": {
+    "T": 173810,
+    "P": 173810,
+    "intersection": 173810,
+    "missing": 0,
+    "overfill": 0,
+    "missing_rate": 0.0,
+    "overfill_rate": 0.0,
+    "iou": 1.0
+  },
+  "collision": {
+    "ok": true,
+    "n_boxes": 1154,
+    "cache_key": "24fdf45ae8aa7d1557671a435f87dde2ac8fe4073a4f579e03f18332ab2bc3d1"
+  },
+  "decision": {
+    "chosen": "R1",
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "L1": 1,
+      "L2": 1,
+      "S1": 1,
+      "D1": 1,
+      "D2": 1
+    },
+    "reason": "majority_traversal",
+    "n_valid": 1
+  },
+  "execution": {
+    "action": "R1",
+    "outcome": "pass",
+    "reason": "success",
+    "final_x": 3.922
+  }
+}

@@ -96,3 +96,4 @@
 | `runs/v3/stage007/cand_small` | stage7-screen/v1 | 边界 | 6 candidates FULL/OBS: BODY stalls 120 s, 0 chassis contacts on all |
 | `runs/v3/stage007/summary.json` | stage7-integration-summary/v1 | 边界 | Lux3D candidates do not reproduce the clean BODY pass |
 | `runs/v3/stage007/stage007_pack.tar.gz` | pack | — | reference replay + textured stills + candidate table + README |
+| `runs/v3/stage007/retrieval.json` | stage7-retrieval/v1 | — | 6/6 GLB sha verified, 48/48 action records verified, 12/12 arm coll; local-only, gitignored |

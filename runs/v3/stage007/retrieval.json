@@ -1,0 +1,64 @@
+{
+  "schema": "stage7-retrieval/v1",
+  "at": "2026-11-04T04:05+08:00",
+  "retrieved": {
+    "glbs": [
+      {
+        "task": 4632564,
+        "bytes": 8348812,
+        "sha256": "9bf975219b2998b76273f31843eb129dd2aedb9b22559e89814a4677621edb61",
+        "manifest_sha": "9bf975219b2998b76273f31843eb129dd2aedb9b22559e89814a4677621edb61",
+        "verified": true
+      },
+      {
+        "task": 4632603,
+        "bytes": 8118684,
+        "sha256": "407c1f700191754cdb8a55a4be86c672ec5f75dd4bad0cdb419efd5bf58516a8",
+        "manifest_sha": "407c1f700191754cdb8a55a4be86c672ec5f75dd4bad0cdb419efd5bf58516a8",
+        "verified": true
+      },
+      {
+        "task": 4632618,
+        "bytes": 9507772,
+        "sha256": "8e5c112b3ed84559c7751b7d77b39bbca6d8514d806c9eeac70d4bb227fd2a81",
+        "manifest_sha": "8e5c112b3ed84559c7751b7d77b39bbca6d8514d806c9eeac70d4bb227fd2a81",
+        "verified": true
+      },
+      {
+        "task": 4632621,
+        "bytes": 7513320,
+        "sha256": "51c541bcbf53e558ace8cf3fdfdda2d03fcf15b8b61d485d984d6b05d31b1d4b",
+        "manifest_sha": "51c541bcbf53e558ace8cf3fdfdda2d03fcf15b8b61d485d984d6b05d31b1d4b",
+        "verified": true
+      },
+      {
+        "task": 4632624,
+        "bytes": 7581380,
+        "sha256": "f7a91ff6d6359a3614f3062c49fef5b1e3a0d3b5c28ef30dbf2a65dbdb94d63a",
+        "manifest_sha": "f7a91ff6d6359a3614f3062c49fef5b1e3a0d3b5c28ef30dbf2a65dbdb94d63a",
+        "verified": true
+      },
+      {
+        "task": 4632627,
+        "bytes": 7739584,
+        "sha256": "083447c5023f7b1604decc6918c5759b2769de96ac865a998a912ea8d87365be",
+        "manifest_sha": "083447c5023f7b1604decc6918c5759b2769de96ac865a998a912ea8d87365be",
+        "verified": true
+      }
+    ],
+    "candidate_arms": 12,
+    "action_records": 48,
+    "cand_small_bytes": 264241152,
+    "glb_bytes": 48809552
+  },
+  "verification": {
+    "glb": "6/6 sha256 match task manifests",
+    "records": "48/48 index SHA match (6 candidates x 2 arms x 4 actions)",
+    "coll": "12/12 arm collision manifests present"
+  },
+  "not_retrieved": {
+    "matrix2_R2_D1_records": "~5.4 MB; sandbox disconnected during transfer. Key numbers (R2 6.50 s/6 contacts, D1 6.56 s/0) are in runs/v3/stage006/fix/result.json",
+    "layout1": "~15 MB superseded failed layout (inner walls +/-0.38); final layout2 is committed"
+  },
+  "storage": "large files live in the host workspace and are gitignored; only this manifest is committed"
+}

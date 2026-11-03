@@ -45,3 +45,10 @@ runs/v3/selftest_collision/
 
 # C 包隔离实验的粗盒产物可重建，只保留 result/manifest
 runs/v3/isolation5_r*/coll_truth_ds2/parts/
+
+# Stage007 回取的大体量资产（保留在主机工作区，不入库）
+runs/v3/stage007/lux3d/generation/**/*.glb
+runs/v3/stage007/lux3d/generation/**/*.zip
+runs/v3/stage007/cand_small/**/record/**/chunk_*.npz
+runs/v3/stage007/cand_small/**/*_coll/parts/
+runs/v3/stage007/cand_small/**/*_coll/*.npz

@@ -1,0 +1,249 @@
+{
+  "schema": "v3-isolation5/v1",
+  "state": "runs/v3/states/moon_rock_04_h1v0",
+  "action": "L2",
+  "arms": {
+    "truth_mesh_same_scene": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 2.109,
+      "steps": 217,
+      "env_before": {
+        "ngeom": 54,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 8,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 0.124005,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 4,
+        "time": 0.0,
+        "env_t": 0.0
+      },
+      "env_after": {
+        "ngeom": 54,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 0,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 327.620632,
+        "soil_mode": "soil",
+        "soil_limits": false,
+        "soil_prev_force_n": 0,
+        "time": 4.94,
+        "env_t": 4.94
+      }
+    },
+    "truth_mesh_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 2.109,
+      "steps": 217,
+      "env_before": {
+        "ngeom": 54,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 8,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 0.124005,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 4,
+        "time": 0.0,
+        "env_t": 0.0
+      },
+      "env_after": {
+        "ngeom": 54,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 0,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 327.967417,
+        "soil_mode": "soil",
+        "soil_limits": false,
+        "soil_prev_force_n": 0,
+        "time": 4.94,
+        "env_t": 4.94
+      }
+    },
+    "T_boxes_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.63,
+      "steps": 201,
+      "env_before": {
+        "ngeom": 2846,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 8,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 0.124005,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 4,
+        "time": 0.0,
+        "env_t": 0.0
+      },
+      "env_after": {
+        "ngeom": 2846,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 2,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 48.148152,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 1,
+        "time": 4.62,
+        "env_t": 4.62
+      }
+    },
+    "A1_boxes_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.695,
+      "steps": 205,
+      "env_before": {
+        "ngeom": 2916,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 8,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 0.124005,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 4,
+        "time": 0.0,
+        "env_t": 0.0
+      },
+      "env_after": {
+        "ngeom": 2916,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 2,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 83.622165,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 1,
+        "time": 4.7,
+        "env_t": 4.7
+      }
+    },
+    "obs_boxes_project": {
+      "outcome": "physical_failure",
+      "reason": "tipped",
+      "final_x": 1.63,
+      "steps": 201,
+      "env_before": {
+        "ngeom": 2167,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 8,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 0.124005,
+        "soil_mode": "soil",
+        "soil_limits": true,
+        "soil_prev_force_n": 4,
+        "time": 0.0,
+        "env_t": 0.0
+      },
+      "env_after": {
+        "ngeom": 2167,
+        "nq": 23,
+        "nv": 22,
+        "xfrc_nonzero": 0,
+        "ctrl_nonzero": 16,
+        "qacc_warmstart_norm": 41.354598,
+        "soil_mode": "soil",
+        "soil_limits": false,
+        "soil_prev_force_n": 0,
+        "time": 4.62,
+        "env_t": 4.62
+      }
+    }
+  },
+  "pairs": [
+    {
+      "a": "truth_mesh_same_scene",
+      "b": "truth_mesh_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_same_scene",
+      "b": "T_boxes_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_same_scene",
+      "b": "A1_boxes_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_same_scene",
+      "b": "obs_boxes_project",
+      "first_divergence_step": 72,
+      "max_abs_qpos_diff_at_div": 1.0190582173663643e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_project",
+      "b": "T_boxes_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.005701498213367628,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_project",
+      "b": "A1_boxes_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.014064239919944654,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "truth_mesh_project",
+      "b": "obs_boxes_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.00570149837811762,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "T_boxes_project",
+      "b": "A1_boxes_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.008362741706577026,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "T_boxes_project",
+      "b": "obs_boxes_project",
+      "first_divergence_step": 99,
+      "max_abs_qpos_diff_at_div": 1.2063274112961153e-06,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    },
+    {
+      "a": "A1_boxes_project",
+      "b": "obs_boxes_project",
+      "first_divergence_step": 92,
+      "max_abs_qpos_diff_at_div": 0.008362741541827035,
+      "outcome_a": "physical_failure",
+      "outcome_b": "physical_failure"
+    }
+  ]
+}

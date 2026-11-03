@@ -1,6 +1,7 @@
 {
   "schema": "v3-revalidation/v2",
-  "generated_at": "2026-11-03T14:57:13+0800",
+  "baseline_source": "commit 5e3600d89 (P0-B report, pre-fix)",
+  "generated_at": "2026-11-03T14:59:17+0800",
   "trigger": "voxelize_columns 重复壳合并 + 碰撞身份缓存 + 64 位哈希统一",
   "scope": "全部 14 个已执行状态用修好的代码重跑融合/碰撞/决策/执行",
   "rows": [
@@ -18,11 +19,7 @@
         "FULL": "D1",
         "OBS_ONLY": "D1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "3a7aa1eb5a9b1a074a4f9049651f11fb",
-        "OBS_ONLY": "8b21c2eca8e8e5db98ffb576e1d6454e"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_01_h0v1",
@@ -38,11 +35,7 @@
         "FULL": "D1",
         "OBS_ONLY": "D1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "f86817f18d36e70310aa2b4901474fa7",
-        "OBS_ONLY": "bdcbd959f90806341938a3d5ce285f28"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_01_h2v0",
@@ -58,11 +51,7 @@
         "FULL": "A0",
         "OBS_ONLY": "A0"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "3a1a7baae232b4e2a013a172d689f276",
-        "OBS_ONLY": "640b5a768a5f69535b8d9520240441c9"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_02_h0v1",
@@ -78,11 +67,7 @@
         "FULL": "D1",
         "OBS_ONLY": "D1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "6c2847c0716bdc6124de9e798cb61474",
-        "OBS_ONLY": "e6a5aa5201977ba57d9bc4f92ad07349"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_02_h2v0",
@@ -98,11 +83,7 @@
         "FULL": "D1",
         "OBS_ONLY": "L2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "331b623baff2bfed77660f8d2ff573a6",
-        "OBS_ONLY": "2c921a64f2a83b8036cc2415bc62c3c2"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_02_h2v1",
@@ -118,11 +99,7 @@
         "FULL": "D1",
         "OBS_ONLY": "D1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "2ceb4ce97ff5cad14b4be0a0ebad511e",
-        "OBS_ONLY": "6c5258930ce80424d9baa425f0f89304"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_03_h1v0",
@@ -138,11 +115,7 @@
         "FULL": "L2",
         "OBS_ONLY": "L2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "da790a556de659492beca5bffdab60bc",
-        "OBS_ONLY": "022ac31fd3ee505a9ca23defb109da6d"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_03_h2v1",
@@ -158,11 +131,7 @@
         "FULL": "R1",
         "OBS_ONLY": "R1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "be8bc4e8182898d6095d8f210ca6f2ae",
-        "OBS_ONLY": "89d1ea72bcab3140380a99f5237fa98d"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_04_h0v1",
@@ -178,16 +147,12 @@
         "FULL": "L2",
         "OBS_ONLY": "L2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "892547ef4bbf5c8ecf233eee53cc4b66",
-        "OBS_ONLY": "332bbad9fea646dbff15444a0e006cc9"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_04_h1v0",
       "old": {
-        "FULL": "physical_failure",
+        "FULL": "pass",
         "OBS_ONLY": "physical_failure"
       },
       "new": {
@@ -198,11 +163,7 @@
         "FULL": "L2",
         "OBS_ONLY": "L2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "375536eeb587ede6791eba24d1c6f714",
-        "OBS_ONLY": "529a6e7e695a5b5e2eb42099e1e1dbb6"
-      }
+      "changed": true
     },
     {
       "state_id": "moon_rock_05_h1v0",
@@ -218,11 +179,7 @@
         "FULL": "D1",
         "OBS_ONLY": "D1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "1092b690340540e2fe21d977de368c7c",
-        "OBS_ONLY": "4cdac07fde4267b887117540847a934d"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_05_h1v1",
@@ -238,11 +195,7 @@
         "FULL": "L2",
         "OBS_ONLY": "L2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "e8ddf6e1230989bb5a737b29e3d636bf",
-        "OBS_ONLY": "4582bc89d0ba2de85d76ad02fbdb33a0"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_05_h2v0",
@@ -258,11 +211,7 @@
         "FULL": "R1",
         "OBS_ONLY": "R1"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "f961e2f0d6d294dbe52880d827ba49ee",
-        "OBS_ONLY": "b5f7bee4fcf22abfc701b31111dfe1e6"
-      }
+      "changed": false
     },
     {
       "state_id": "moon_rock_05_h2v1",
@@ -278,13 +227,11 @@
         "FULL": "R2",
         "OBS_ONLY": "R2"
       },
-      "changed": false,
-      "decision_sha": {
-        "FULL": "31ad53337e48bb4457abf0d3fa151557",
-        "OBS_ONLY": "3421871a6d29d3774e81d29c11e0aa21"
-      }
+      "changed": false
     }
   ],
-  "n_changed": 0,
-  "changed_states": []
+  "n_changed": 1,
+  "changed_states": [
+    "moon_rock_04_h1v0"
+  ]
 }

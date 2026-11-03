@@ -1,8 +1,8 @@
 {
   "schema": "v3-publish-status/v1",
   "generated_at": "2026-11-03T13:40:22+0800",
-  "state": "blocked_on_credentials",
-  "blocked_reason": "缺少 GITHUB_TOKEN/GH_TOKEN 且无 gh/git-lfs，无法创建 Release 或 LFS 上传；只有 SSH git push 权限",
+  "state": "blocked_on_release_channel",
+  "blocked_reason": "SSH 可推送真实数据（5 MB 已验证）；LFS 客户端在本机 segfault；Release 需要 API token/gh，当前均无。因此大卷仍未发布，不能声称已发布。",
   "volumes": [
     {
       "volume_id": "v3_bundle",
@@ -36,5 +36,60 @@
       "status": "asset_missing",
       "note": "该目录整体不存在；同批 v3batch/* 所有状态目录为空（0 文件），无法用新生成替代。需要确认是否有其他副本或从 task 重算"
     }
-  ]
+  ],
+  "transport_probe": {
+    "date": "2026-11-03",
+    "ssh_data_push": {
+      "tested": true,
+      "payload_bytes": 5242880,
+      "branch": "probe/data-transfer",
+      "result": "pushed then deleted",
+      "conclusion": "SSH 认证可承载真实二进制数据（不只元数据）"
+    },
+    "git_lfs": {
+      "installed_locally": true,
+      "binary": "git-lfs 3.5.1 (linux-amd64)",
+      "result": "segfault on this host (glibc/kernel mismatch)",
+      "conclusion": "LFS 客户端在本机无法运行；这是工具链限制，不是凭据缺失"
+    },
+    "release_api": {
+      "token": null,
+      "gh_cli": false,
+      "conclusion": "Release 分卷上传需要 API token 或 gh；当前两者都没有，不能把「缺程序」与「缺凭据」混为一谈"
+    }
+  },
+  "completeness": {
+    "manifest_selfcheck": {
+      "checked": 304,
+      "missing": 0,
+      "sha_mismatch": 0,
+      "meaning": "本清单内文件齐全且哈希一致，不代表所需资料齐全"
+    },
+    "material_completeness": {
+      "present": [
+        "v3_bundle",
+        "v3_media",
+        "legacy_p58_preview (6 results.zip)",
+        "v3_records"
+      ],
+      "missing_or_published_elsewhere": [
+        {
+          "item": "v3batch_nominal/P58_S2/*/coll",
+          "status": "asset_missing",
+          "reason": "目录不存在，同批 v3batch/* 全空"
+        },
+        {
+          "item": "v3 其余 10 个已执行状态的素材",
+          "status": "not_exported",
+          "reason": "只导出 4 个状态；重跑后再导出"
+        },
+        {
+          "item": "V1 腿控证据链（CLIMB/第二技能/软土脱困）",
+          "status": "not_produced"
+        }
+      ]
+    },
+    "publish_state": "blocked_on_release_channel",
+    "note": "P58 原件已随 git 提交发布；其余卷仍待 Release/LFS；「0 缺失」只描述清单自检"
+  }
 }

@@ -9,7 +9,8 @@ sys.path.insert(0, str(ROOT / 'scripts'))
 import v3_core  # noqa: E402
 import actions as ACT  # noqa: E402
 
-FROZEN = ['R1', 'R2', 'D1', 'D2', 'L1', 'L2']
+import stage4_config as S4C  # noqa: E402
+FROZEN = [a for a in S4C.traverse_actions() if a != 'CLIMB']
 
 
 def main():

@@ -1,0 +1,156 @@
+{
+  "schema": "stage4-g1/v1",
+  "protocol": "stage4-climb-v1",
+  "budget_s": 120.0,
+  "plan": {
+    "action": "CLIMB",
+    "params": {
+      "face_FR": 0.95,
+      "face_FL": 1.13,
+      "top_z": 0.05,
+      "brake_x": 0.6,
+      "place_RR_x": 1.02,
+      "assist_FL_x": 1.2,
+      "lift_center_z": 0.161,
+      "far_x": 2.3499999999999996,
+      "descent": {
+        "mode": "forward_drop",
+        "target_x": 2.6499999999999995
+      },
+      "landing": null
+    },
+    "source": "dev_truth_wiring",
+    "applicable": true,
+    "plan_id": "dev_g1"
+  },
+  "climb_matrix": {
+    "action": "CLIMB",
+    "success": true,
+    "outcome": "pass",
+    "cost": 57.4,
+    "t_end": 57.4,
+    "plan_id": "dev_g1"
+  },
+  "climb_phases_ok": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true,
+    "center_lateral": true,
+    "center_forward": true,
+    "RR_shift": true,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RL_assist": true,
+    "level_roll": true,
+    "body_down": true,
+    "preload_min": true,
+    "stable": true,
+    "descent": true
+  },
+  "votes": {
+    "R1": 0,
+    "R2": 1,
+    "D1": 1,
+    "D2": 1,
+    "L1": 1,
+    "L2": 1,
+    "CLIMB": 1
+  },
+  "costs": {
+    "R1": 60.0,
+    "R2": 8.88,
+    "D1": 7.32,
+    "D2": 7.78,
+    "L1": 9.0,
+    "L2": 7.5,
+    "CLIMB": 57.4
+  },
+  "chosen": "D1",
+  "reason": "majority_traversal",
+  "exec": {
+    "action": "D1",
+    "success": true,
+    "outcome": "pass",
+    "t_end": 7.32
+  },
+  "note": "wiring only; wheels are expected to be cheaper and may be chosen",
+  "matrix_rows": [
+    {
+      "action": "R1",
+      "success": false,
+      "outcome": "physical_failure",
+      "cost": 60.0,
+      "t_end": 6.7,
+      "reason": "out_of_field"
+    },
+    {
+      "action": "R2",
+      "success": true,
+      "outcome": "pass",
+      "cost": 8.88,
+      "t_end": 8.88,
+      "reason": "success"
+    },
+    {
+      "action": "D1",
+      "success": true,
+      "outcome": "pass",
+      "cost": 7.32,
+      "t_end": 7.32,
+      "reason": "success"
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "outcome": "pass",
+      "cost": 7.78,
+      "t_end": 7.78,
+      "reason": "success"
+    },
+    {
+      "action": "L1",
+      "success": true,
+      "outcome": "pass",
+      "cost": 9.0,
+      "t_end": 9.0,
+      "reason": "success"
+    },
+    {
+      "action": "L2",
+      "success": true,
+      "outcome": "pass",
+      "cost": 7.5,
+      "t_end": 7.5,
+      "reason": "success"
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "outcome": "safe_stop",
+      "cost": 60.0,
+      "t_end": 3.000000000000002,
+      "reason": "abort"
+    },
+    {
+      "action": "CLIMB",
+      "success": true,
+      "outcome": "pass",
+      "cost": 57.4,
+      "t_end": 57.4,
+      "reason": "success"
+    }
+  ],
+  "n_valid": 1,
+  "agg_errors": []
+}

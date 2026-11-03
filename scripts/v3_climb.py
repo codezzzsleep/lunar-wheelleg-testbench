@@ -694,6 +694,147 @@ class Climb:
 
 
 
+def run_climb_episode(env, P, faces, out, rec=None, rear=True, no_shift=False,
+                      save_endgame=None):
+    """Stage003 验证过的完整 CLIMB 执行状态机（正式技能入口调用）。
+
+    env/spec 由调用方建立；P 来自 derive_skill_params；本函数不读场景真值。
+    返回 (phases, climb 实例)。
+    """
+    c = Climb(env, 1.20, float(P['top_z']), 0.5, record=rec, faces=faces)
+    phases = []
+
+    def add(ph):
+        phases.append(ph)
+        return bool(ph.get('ok'))
+
+    def stop():
+        return c.terminated
+
+    # APPROACH
+    brake_x = float(P['brake_x'])
+    ok = False
+    for _ in range(int(4.0 * 50)):
+        if float(env.data.qpos[0]) >= brake_x:
+            ok = True
+            break
+        c.step('approach', omega=0.25 / WHEEL_R)
+        if c.terminated:
+            break
+    add({'phase': 'approach', 'x': round(float(env.data.qpos[0]), 4),
+         'target_x': round(brake_x, 4), 'ok': bool(ok)})
+
+    # BRAKE（速度斜坡）
+    stopped = False
+    v0 = max(0.02, abs(float(env.data.qvel[0])))
+    n = 60
+    for i in range(n):
+        v_cmd = v0 * max(0.0, 1.0 - (i + 1) / n)
+        c.step('brake', omega=v_cmd / WHEEL_R)
+        if abs(float(env.data.qvel[0])) < 0.02:
+            stopped = True
+            break
+        if c.terminated:
+            break
+    for _ in range(10):
+        c.step('brake', omega=0.0)
+        if c.terminated:
+            break
+    add({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
+        'ok': bool(stopped)})
+
+    z_target = float(P['lift_center_z'])
+    ok = True
+    for leg in ('FR', 'FL'):
+        if stop() or not ok:
+            break
+        c.set_swing(leg)
+        ok = add(c.shift())  # 前腿仍需支撑转移
+        if ok and not stop():
+            ok = add(c.lift_leg(leg, z_target))
+        if ok and not stop():
+            ok = add(c.advance_to_ledge(leg))
+        if ok and not stop():
+            ok = add(c.lower_leg(leg))
+        if ok and not stop():
+            for _ in range(30):
+                c.step(f'{leg}_settle')
+                if stop():
+                    break
+        if ok and not stop():
+            ok = add(c.hold_leg(leg))
+
+    # 预压已停用：前轮在宽台上载荷已够，侧向预压会引入滚转
+
+    if ok and not stop():
+        rows = []
+        for _ in range(int(0.6 * 50)):
+            rows.append(c.step('hold_both'))
+            if c.terminated:
+                break
+        fr = contact_load(env, 'FR')
+        fl = contact_load(env, 'FL')
+        tilt = max((r['tilt'] for r in rows), default=99)
+        ok = add({'phase': 'hold_both',
+                  'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
+                  'fr_frac': round(fr / c.W, 4), 'fl_frac': round(fl / c.W, 4),
+                  'tilt_max_deg': round(tilt, 3),
+                  'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
+                             and tilt <= 10.0)})
+
+    # 后轮不先做整体前移：像前轮一样，抬起来再前进，避免四轮承重时 FR 卸载
+
+    if ok and not stop() and rear:
+        ok = add(c.center_lateral(-0.003, rounds=2))
+    if ok and not stop() and rear:
+        ok = add(c.center_forward(0.008, rounds=4))
+    if ok and not stop() and rear:
+        for leg, face in (('RR', P['face_FR']),):
+            if stop() or not ok:
+                break
+            c.set_swing(leg)
+            ok = True if no_shift else add(c.shift())  # 后腿可选跳过
+            if ok and not stop():
+                ok = add(c.lift_leg(leg, z_target))
+            if ok and not stop():
+                ok = add(c.advance_to_ledge(leg, float(P['place_RR_x'])))
+            if ok and not stop():
+                ok = add(c.lower_leg(leg))
+            if ok and not stop():
+                for _ in range(30):
+                    c.step(f'{leg}_settle')
+                    if stop():
+                        break
+            # SPEC 003 6.1：三点支撑中间态允许，不要求 RR 先单独 hold 到 5%
+
+    if ok and not stop() and rear:
+        # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
+        ok = add(c.wheel_assist('RL', float(P['assist_FL_x']), speed=0.12))
+    if save_endgame and not stop():
+        snap = env.save_state()
+        sp = ROOT / save_endgame
+        sp.parent.mkdir(parents=True, exist_ok=True)
+        sp.write_text(json.dumps({'snapshot': snap, 'spec': spec}, ensure_ascii=False))
+        print(json.dumps({'saved_state': str(sp), 'bytes': sp.stat().st_size}))
+    if rear and not stop():
+        ok = add(c.fl_lower())
+        if ok:
+            ok = add(c.level_roll(1.5))
+        if ok:
+            ok = add(c.body_until_support())
+        if ok:
+            ok = add(c.preload_min())
+        if ok:
+            ok = add(c.stable_window(1.0))
+        if ok and P.get('descent') is None:
+            add({'phase': 'descent', 'ok': False, 'blocked_by': 'far_x_unknown',
+                 'unknowns': gp['unknowns']})
+        elif ok:
+            ok = add(c.descend_action(float(P['far_x'])))
+
+    return phases, c
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/v3/climb/front2_r1')
@@ -803,126 +944,9 @@ def main():
     def stop():
         return c.terminated
 
-    # APPROACH
-    brake_x = float(P['brake_x'])
-    ok = False
-    for _ in range(int(4.0 * 50)):
-        if float(env.data.qpos[0]) >= brake_x:
-            ok = True
-            break
-        c.step('approach', omega=0.25 / WHEEL_R)
-        if c.terminated:
-            break
-    add({'phase': 'approach', 'x': round(float(env.data.qpos[0]), 4),
-         'target_x': round(brake_x, 4), 'ok': bool(ok)})
-
-    # BRAKE（速度斜坡）
-    stopped = False
-    v0 = max(0.02, abs(float(env.data.qvel[0])))
-    n = 60
-    for i in range(n):
-        v_cmd = v0 * max(0.0, 1.0 - (i + 1) / n)
-        c.step('brake', omega=v_cmd / WHEEL_R)
-        if abs(float(env.data.qvel[0])) < 0.02:
-            stopped = True
-            break
-        if c.terminated:
-            break
-    for _ in range(10):
-        c.step('brake', omega=0.0)
-        if c.terminated:
-            break
-    add({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
-        'ok': bool(stopped)})
-
-    z_target = float(P['lift_center_z'])
-    ok = True
-    for leg in ('FR', 'FL'):
-        if stop() or not ok:
-            break
-        c.set_swing(leg)
-        ok = add(c.shift())  # 前腿仍需支撑转移
-        if ok and not stop():
-            ok = add(c.lift_leg(leg, z_target))
-        if ok and not stop():
-            ok = add(c.advance_to_ledge(leg))
-        if ok and not stop():
-            ok = add(c.lower_leg(leg))
-        if ok and not stop():
-            for _ in range(30):
-                c.step(f'{leg}_settle')
-                if stop():
-                    break
-        if ok and not stop():
-            ok = add(c.hold_leg(leg))
-
-    # 预压已停用：前轮在宽台上载荷已够，侧向预压会引入滚转
-
-    if ok and not stop():
-        rows = []
-        for _ in range(int(0.6 * 50)):
-            rows.append(c.step('hold_both'))
-            if c.terminated:
-                break
-        fr = contact_load(env, 'FR')
-        fl = contact_load(env, 'FL')
-        tilt = max((r['tilt'] for r in rows), default=99)
-        ok = add({'phase': 'hold_both',
-                  'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
-                  'fr_frac': round(fr / c.W, 4), 'fl_frac': round(fl / c.W, 4),
-                  'tilt_max_deg': round(tilt, 3),
-                  'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
-                             and tilt <= 10.0)})
-
-    # 后轮不先做整体前移：像前轮一样，抬起来再前进，避免四轮承重时 FR 卸载
-
-    if ok and not stop() and a.rear:
-        ok = add(c.center_lateral(-0.003, rounds=2))
-    if ok and not stop() and a.rear:
-        ok = add(c.center_forward(0.008, rounds=4))
-    if ok and not stop() and a.rear:
-        for leg, face in (('RR', P['face_FR']),):
-            if stop() or not ok:
-                break
-            c.set_swing(leg)
-            ok = True if a.no_shift else add(c.shift())  # 后腿可选跳过
-            if ok and not stop():
-                ok = add(c.lift_leg(leg, z_target))
-            if ok and not stop():
-                ok = add(c.advance_to_ledge(leg, float(P['place_RR_x'])))
-            if ok and not stop():
-                ok = add(c.lower_leg(leg))
-            if ok and not stop():
-                for _ in range(30):
-                    c.step(f'{leg}_settle')
-                    if stop():
-                        break
-            # SPEC 003 6.1：三点支撑中间态允许，不要求 RR 先单独 hold 到 5%
-
-    if ok and not stop() and a.rear:
-        # 轮腿协同：RL 保持接触滚上台，其他轮掉载时闭环补下压
-        ok = add(c.wheel_assist('RL', float(P['assist_FL_x']), speed=0.12))
-    if a.save_endgame and not stop():
-        snap = env.save_state()
-        sp = ROOT / a.save_endgame
-        sp.parent.mkdir(parents=True, exist_ok=True)
-        sp.write_text(json.dumps({'snapshot': snap, 'spec': spec}, ensure_ascii=False))
-        print(json.dumps({'saved_state': str(sp), 'bytes': sp.stat().st_size}))
-    if a.rear and not stop():
-        ok = add(c.fl_lower())
-        if ok:
-            ok = add(c.level_roll(1.5))
-        if ok:
-            ok = add(c.body_until_support())
-        if ok:
-            ok = add(c.preload_min())
-        if ok:
-            ok = add(c.stable_window(1.0))
-        if ok and P.get('descent') is None:
-            add({'phase': 'descent', 'ok': False, 'blocked_by': 'far_x_unknown',
-                 'unknowns': gp['unknowns']})
-        elif ok:
-            ok = add(c.descend_action(float(P['far_x'])))
+    phases, c = run_climb_episode(env, P, faces, out, rec=rec, rear=a.rear,
+                                no_shift=a.no_shift,
+                                save_endgame=a.save_endgame)
 
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}

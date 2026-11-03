@@ -157,7 +157,7 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene'):
     """在给定场景 spec（可以是真值网格）上跑完整动作矩阵。"""
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
-    opts = [a for a in ACT.OPTIONS if a != ACT.FALLBACK]
+    opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
     applic = {a: ACT.applicable(a, visible, ch) for a in opts}
     rows = []
     for a in [x for x in opts if applic[x][0]] + [ACT.FALLBACK]:
@@ -184,7 +184,7 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
     """
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
-    opts = [a for a in ACT.OPTIONS if a != ACT.FALLBACK]
+    opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
     applic = {a: ACT.applicable(a, visible, ch) for a in opts}
     rows = []
     for cid, pd in geom.items():
@@ -228,9 +228,9 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
 
 
 def aggregate(rows, cand_ids, geom_sha, rule, proto, threshold_mode='majority',
-              applic=None):
+              applic=None, options=None):
     """把逐候选矩阵聚合成一个决策。"""
-    opts = [a for a in ACT.OPTIONS if a != ACT.FALLBACK]
+    opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
     by_c = {}
     errors = []
     for r in rows:
@@ -262,7 +262,7 @@ def aggregate(rows, cand_ids, geom_sha, rule, proto, threshold_mode='majority',
         votes[a] = v
         costs[a] = round(float(np.mean(cs)), 4) if cs else 60.0
     passing = [a for a in opts if a in required and votes[a] >= need and need > 0]
-    order = {a: i for i, a in enumerate(ACT.OPTIONS)}
+    order = {a: i for i, a in enumerate(options or ACT.OPTIONS)}
     if passing:
         chosen = sorted(passing, key=lambda a: (costs[a], -votes[a], order[a]))[0]
         reason = 'majority_traversal' if threshold_mode == 'majority' else 'worst_case_traversal'

@@ -1,0 +1,127 @@
+{
+  "schema": "v3-rock-actions/v1",
+  "state": "runs/v3/states/moon_rock_04_h1v0",
+  "soil": "nominal",
+  "rows": [
+    {
+      "action": "R1",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 1.431,
+      "displacement_x": 1.434,
+      "max_tilt": 61.12,
+      "steps": 168,
+      "cost": 60.0,
+      "phases": []
+    },
+    {
+      "action": "R2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.642,
+      "displacement_x": 3.645,
+      "max_tilt": 0.11,
+      "steps": 441,
+      "cost": 8.82,
+      "phases": []
+    },
+    {
+      "action": "D1",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 1.302,
+      "displacement_x": 1.305,
+      "max_tilt": 60.87,
+      "steps": 191,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.12,
+          "phase": "shift"
+        }
+      ]
+    },
+    {
+      "action": "D2",
+      "success": false,
+      "reason": "out_of_bounds",
+      "final_x": 2.104,
+      "displacement_x": 2.107,
+      "max_tilt": 8.35,
+      "steps": 253,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.12,
+          "phase": "shift"
+        },
+        {
+          "t": 5.06,
+          "phase": "return"
+        }
+      ]
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003,
+      "displacement_x": 0.0,
+      "max_tilt": 0.06945254473532983,
+      "steps": 150,
+      "cost": 60.0,
+      "phases": []
+    },
+    {
+      "action": "L1",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 1.106,
+      "displacement_x": 1.109,
+      "max_tilt": 60.83,
+      "steps": 164,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.26,
+          "phase": "lift"
+        },
+        {
+          "t": 2.98,
+          "phase": "recover"
+        },
+        {
+          "t": 3.34,
+          "phase": "done"
+        }
+      ]
+    },
+    {
+      "action": "L2",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 2.109,
+      "displacement_x": 2.113,
+      "max_tilt": 60.55,
+      "steps": 217,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.26,
+          "phase": "lift"
+        },
+        {
+          "t": 2.98,
+          "phase": "recover"
+        },
+        {
+          "t": 3.34,
+          "phase": "done"
+        }
+      ]
+    }
+  ],
+  "wheel_ok": true,
+  "leg_ok": false,
+  "note": "轮式基线 = R1/R2/D1/D2/A0；L1/L2 为腿式对照"
+}

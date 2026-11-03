@@ -1,0 +1,87 @@
+{
+  "schema": "v3-rock-actions/v1",
+  "state": "runs/v3/states/moon_rock_03_h0v0",
+  "soil": "nominal",
+  "rows": [
+    {
+      "action": "R1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.92,
+      "displacement_x": 3.924,
+      "max_tilt": 1.63,
+      "steps": 288,
+      "cost": 5.760000000000001,
+      "phases": []
+    },
+    {
+      "action": "R2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.644,
+      "displacement_x": 3.647,
+      "max_tilt": 0.11,
+      "steps": 383,
+      "cost": 7.66,
+      "phases": []
+    },
+    {
+      "action": "D1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.895,
+      "displacement_x": 3.899,
+      "max_tilt": 1.03,
+      "steps": 301,
+      "cost": 6.0200000000000005,
+      "phases": [
+        {
+          "t": 2.22,
+          "phase": "shift"
+        },
+        {
+          "t": 4.08,
+          "phase": "return"
+        }
+      ]
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.908,
+      "displacement_x": 3.911,
+      "max_tilt": 1.15,
+      "steps": 311,
+      "cost": 6.220000000000001,
+      "phases": [
+        {
+          "t": 2.22,
+          "phase": "shift"
+        },
+        {
+          "t": 4.34,
+          "phase": "return"
+        },
+        {
+          "t": 4.36,
+          "phase": "done"
+        }
+      ]
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003,
+      "displacement_x": 0.0,
+      "max_tilt": 0.06945254473532983,
+      "steps": 150,
+      "cost": 60.0,
+      "phases": []
+    }
+  ],
+  "wheel_ok": true,
+  "leg_ok": null,
+  "note": "轮式基线 = R1/R2/D1/D2/A0；L1/L2 为腿式对照"
+}

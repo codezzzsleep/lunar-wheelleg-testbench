@@ -1,0 +1,135 @@
+{
+  "schema": "v3-rock-actions/v1",
+  "state": "runs/v3/states/moon_rock_05_h1v0",
+  "soil": "nominal",
+  "rows": [
+    {
+      "action": "R1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.915,
+      "displacement_x": 3.919,
+      "max_tilt": 1.19,
+      "steps": 298,
+      "cost": 5.96,
+      "phases": []
+    },
+    {
+      "action": "R2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.645,
+      "displacement_x": 3.648,
+      "max_tilt": 0.11,
+      "steps": 389,
+      "cost": 7.780000000000001,
+      "phases": []
+    },
+    {
+      "action": "D1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.894,
+      "displacement_x": 3.898,
+      "max_tilt": 1.08,
+      "steps": 301,
+      "cost": 6.0200000000000005,
+      "phases": [
+        {
+          "t": 2.26,
+          "phase": "shift"
+        },
+        {
+          "t": 4.12,
+          "phase": "return"
+        }
+      ]
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.928,
+      "displacement_x": 3.931,
+      "max_tilt": 1.96,
+      "steps": 334,
+      "cost": 6.680000000000001,
+      "phases": [
+        {
+          "t": 2.26,
+          "phase": "shift"
+        },
+        {
+          "t": 4.8,
+          "phase": "return"
+        },
+        {
+          "t": 5.94,
+          "phase": "done"
+        }
+      ]
+    },
+    {
+      "action": "A0",
+      "success": false,
+      "reason": "abort",
+      "final_x": -0.003,
+      "displacement_x": 0.0,
+      "max_tilt": 0.06945254473532983,
+      "steps": 150,
+      "cost": 60.0,
+      "phases": []
+    },
+    {
+      "action": "L1",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.923,
+      "displacement_x": 3.926,
+      "max_tilt": 1.43,
+      "steps": 316,
+      "cost": 6.32,
+      "phases": [
+        {
+          "t": 2.4,
+          "phase": "lift"
+        },
+        {
+          "t": 3.12,
+          "phase": "recover"
+        },
+        {
+          "t": 3.48,
+          "phase": "done"
+        }
+      ]
+    },
+    {
+      "action": "L2",
+      "success": true,
+      "reason": "success",
+      "final_x": 3.916,
+      "displacement_x": 3.919,
+      "max_tilt": 1.4,
+      "steps": 305,
+      "cost": 6.1000000000000005,
+      "phases": [
+        {
+          "t": 2.4,
+          "phase": "lift"
+        },
+        {
+          "t": 3.12,
+          "phase": "recover"
+        },
+        {
+          "t": 3.48,
+          "phase": "done"
+        }
+      ]
+    }
+  ],
+  "wheel_ok": true,
+  "leg_ok": true,
+  "note": "轮式基线 = R1/R2/D1/D2/A0；L1/L2 为腿式对照"
+}

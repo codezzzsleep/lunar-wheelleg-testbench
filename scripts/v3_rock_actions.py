@@ -14,6 +14,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
+import mujoco  # noqa: E402
 import trimesh  # noqa: E402
 import v3_core  # noqa: E402
 import v3_climb as vc  # noqa: E402
@@ -60,12 +61,30 @@ def main():
         env = v3_core.make_env(spec, proto, budget=a.budget)
         try:
             r = v3_core.run_action(env, st['snapshot'], name, st['visible'],
-                                   mode='same_scene', seed=0)
+                                   mode='same_scene', seed=0, record=True)
             wheel_x = {leg: round(float(env.data.xpos[vc.bc.wheel_body(env, leg)][0]), 4)
                        for leg in vc.LEG}
-            grounded = {leg: ground_contact(env, leg) for leg in vc.LEG}
-            final_tilt = round(float(env._tilt()), 3)
-            base_z = round(float(env.data.qpos[2]), 4)
+            traj = r.get('trajectory') or []
+            last = traj[-1] if traj else {}
+            cons = last.get('contacts') or []
+            m = env.model
+            wheel_ids = {leg: int(vc.bc.wheel_body(env, leg)) for leg in vc.LEG}
+            grounded = {leg: False for leg in vc.LEG}
+            for c in cons:
+                if 'geom1' not in c:
+                    continue
+                g1, g2 = int(c['geom1']), int(c['geom2'])
+                b1, b2 = int(m.geom_bodyid[g1]), int(m.geom_bodyid[g2])
+                for leg, wid in wheel_ids.items():
+                    if wid not in (b1, b2):
+                        continue
+                    og = g2 if b1 == wid else g1
+                    ob = b2 if b1 == wid else b1
+                    if ob == 0 or int(m.geom_type[og]) == int(mujoco.mjtGeom.mjGEOM_HEIGHTFIELD):
+                        grounded[leg] = True
+            q = last.get('qpos')
+            final_tilt = round(float(last.get('tilt_deg', env._tilt())), 3)
+            base_z = round(float(q[2]), 4) if q is not None else round(float(env.data.qpos[2]), 4)
             crossed = bool(rock_max_x is not None
                            and all(x > rock_max_x + 0.03 for x in wheel_x.values()))
             # 动作结束后接触表可能未刷新；用机身高度作为“已下降回平地”的代理

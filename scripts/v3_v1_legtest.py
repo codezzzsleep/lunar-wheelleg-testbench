@@ -26,6 +26,13 @@ LEG = ('FR', 'FL', 'RR', 'RL')
 STANCE = {'hip': 0.0, 'thigh': 0.85, 'calf': -1.65}
 
 
+def body_roll(env):
+    import math
+    q = env.data.qpos[3:7]
+    w, x, y, z = float(q[0]), float(q[1]), float(q[2]), float(q[3])
+    return math.atan2(2 * (w * x + y * z), 1 - 2 * (x * x + y * y))
+
+
 def stance_targets():
     return {leg: dict(STANCE) for leg in LEG}
 
@@ -61,6 +68,8 @@ def wheel_z(env, leg):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/v3/control/legtest')
+    ap.add_argument('--roll-gain', type=float, default=0.0,
+                    help='闭环支撑转移增益（按实测 roll 给支撑腿 hip 预压）')
     ap.add_argument('--sweep', default='runs/v3/control/legsweep.json',
                     help='抬腿幅度来自实测扫描，不写死方向')
     a = ap.parse_args()
@@ -74,7 +83,7 @@ def main():
                                               'action': 'LIFT_FR'}, hz=50.0)
     phases = []
 
-    def run_phase(name, seconds, targets, ramp=0.25, brake=1.0):
+    def run_phase(name, seconds, targets, ramp=0.25, brake=1.0, roll_gain=0.0):
         n = int(round(seconds * 50))
         n_ramp = max(1, int(round(ramp * 50)))
         q_now = {leg: {p: float(env.data.qpos[env.J[f'{leg}_{p}_joint']['qadr']])
@@ -86,6 +95,11 @@ def main():
             a = min(1.0, (k + 1) / n_ramp)
             cmd = {leg: {p: q_now[leg][p] + a * (targets[leg][p] - q_now[leg][p])
                          for p in ('hip', 'thigh', 'calf')} for leg in LEG}
+            if roll_gain:
+                # 闭环支撑转移：按实测 roll 给支撑腿 hip 预压，抵消机身滚转
+                r = body_roll(env)
+                for leg in ('FL', 'RR', 'RL'):
+                    cmd[leg]['hip'] = float(np.clip(cmd[leg]['hip'] - roll_gain * r, -1.0, 1.0))
             env.step_command(joint_targets_rad=cmd,
                              wheel_omega_rad_s=np.zeros(4),
                              wheel_brake=np.full(4, float(brake)))
@@ -129,8 +143,9 @@ def main():
     lift = stance_targets()
     lift['FR'] = {'hip': 0.0, 'thigh': STANCE['thigh'] + dt, 'calf': STANCE['calf'] + dc}
     # 抬/保持/落全程不刹死轮子：让轮子能滚动来释放力矩，落轮才可能重新建立接触
-    ph_lift = run_phase('lift_FR', 0.8, lift, ramp=0.35, brake=0.0)
-    ph_hold = run_phase('hold_FR', 0.4, lift, ramp=0.05, brake=0.0)
+    rg = float(a.roll_gain)
+    ph_lift = run_phase('lift_FR', 0.8, lift, ramp=0.35, brake=0.0, roll_gain=rg)
+    ph_hold = run_phase('hold_FR', 0.4, lift, ramp=0.05, brake=0.0, roll_gain=rg)
     # 两段式下落：先落一半并停 0.25 s 让接触建立，再落到底
     half = {leg: {pp: lift[leg][pp] + 0.5 * (stance_targets()[leg][pp] - lift[leg][pp])
                   for pp in ('hip', 'thigh', 'calf')} for leg in LEG}

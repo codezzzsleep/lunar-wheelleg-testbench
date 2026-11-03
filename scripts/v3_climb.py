@@ -177,16 +177,16 @@ class Climb:
     def shift(self, target_margin=0.012, max_dp=0.03, ramp=30):
         env = self.env
         best = None
-        for _ in range(3):
+        gentle = self.swing == 'RL'   # 最后一条腿：小步、只走一轮，避免丢接触
+        rounds = 1 if gentle else 3
+        max_dp = 0.004 if gentle else max_dp
+        for _ in range(rounds):
             c = bc.com(env)
             pts = [np.asarray(p[:2]) for leg in self.support
                    for p in contact_points(env, leg)]
             if len(pts) < 3:
                 break
             margin, inward = bc.nearest_edge(pts, c[:2])
-            if self.swing == 'RL':
-                print('DBG_RL margin', round(float(margin), 4), 'com', np.round(c[:2], 3).tolist(),
-                      'inward', np.round(inward, 2).tolist(), 'npts', len(pts))
             best = margin if best is None else max(best, margin)
             if margin >= target_margin:
                 break
@@ -373,6 +373,8 @@ def main():
     ap.add_argument('--step-w', type=float, default=0.90)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--record', action='store_true')
+    ap.add_argument('--no-shift', action='store_true',
+                    help='开发场景实验：跳过 FL/RR/RL 的支撑转移')
     ap.add_argument('--rear', action='store_true',
                     help='实验路径：长台面 + 后轮搭台（当前未通过，默认关闭）')
     a = ap.parse_args()
@@ -452,7 +454,7 @@ def main():
         if stop() or not ok:
             break
         c.set_swing(leg)
-        ok = add(c.shift())
+        ok = add(c.shift())  # 前腿仍需支撑转移
         if ok and not stop():
             ok = add(c.lift_leg(leg, z_target))
         if ok and not stop():
@@ -492,7 +494,7 @@ def main():
             if stop() or not ok:
                 break
             c.set_swing(leg)
-            ok = add(c.shift())
+            ok = True if a.no_shift else add(c.shift())  # 后腿可选跳过
             if ok and not stop():
                 ok = add(c.lift_leg(leg, z_target))
             if ok and not stop():

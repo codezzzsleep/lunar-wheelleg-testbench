@@ -1,0 +1,158 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "rigid",
+  "step": {
+    "x": 1.2,
+    "h": 0.03,
+    "face_x": 0.95,
+    "far_x": 2.35
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6006,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0136,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.016448086519791016,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1425,
+      "target_z": 0.141,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.0203,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 12.099999999999831,
+      "steps": 31,
+      "load_n": 8.117,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 2.972,
+      "frac": 0.0959,
+      "tilt_max_deg": 1.264,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "margin_m": 0.01714187750767099,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1424,
+      "target_z": 0.141,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.2002,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 22.41999999999961,
+      "steps": 28,
+      "load_n": 7.442,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 3.302,
+      "frac": 0.1066,
+      "tilt_max_deg": 1.339,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 11.124,
+      "fl_load_n": 3.128,
+      "fr_frac": 0.359,
+      "fl_frac": 0.101,
+      "tilt_max_deg": 1.334,
+      "ok": true
+    },
+    {
+      "phase": "RR_shift",
+      "margin_m": 0.017037289337190467,
+      "ok": true
+    },
+    {
+      "phase": "RR_lift",
+      "wheel_center_z": 0.1426,
+      "target_z": 0.141,
+      "ok": true
+    },
+    {
+      "phase": "RR_advance",
+      "wheel_x": 1.02,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "RR_lower",
+      "contact_at_t": 32.53999999999949,
+      "steps": 33,
+      "load_n": 7.328,
+      "ok": true
+    },
+    {
+      "phase": "RR_hold",
+      "load_n": 4.41,
+      "frac": 0.1423,
+      "tilt_max_deg": 1.897,
+      "ok": true
+    },
+    {
+      "phase": "RL_shift",
+      "margin_m": -0.009577040537883885,
+      "ok": false
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true,
+    "RR_shift": true,
+    "RR_lift": true,
+    "RR_advance": true,
+    "RR_lower": true,
+    "RR_hold": true,
+    "RL_shift": false
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": "RL_shift",
+  "all_ok": false,
+  "trajectory_ref": null
+}

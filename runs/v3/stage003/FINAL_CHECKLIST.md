@@ -10,7 +10,7 @@
 | 3a. 全轨迹（≥50 Hz） | **通过** | `s4_state1f/record` 2929 帧；字段见 `record_check.json` |
 | 3b. 关键快照 | **通过** | `support4/state.json`（四轮支撑）、`s1_rigid/endgame_state.json` |
 | 3c. 三维回放 | **通过** | `replay/leg_state1.mp4`、`wheel_state1_r1.mp4`、`side_by_side_state1.mp4` |
-| 3d. 新目录可复现离线包 | **通过（wheel）/待确认（all）** | `dist/stage003_bundle.tar.gz`；wheel exit 0；all 测试进行中 |
+| 3d. 新目录可复现离线包 | **通过** | `dist/stage003_bundle.tar.gz`；新目录 MANIFEST 273/273；`wheel` 与 `all` 均成功，side_by_side 1920×1080/58.6 s |
 | 4. 代码与小证据已推送，包 SHA 明确 | **通过** | commit 见各段；tar sha256 3347bf9b… |
 | 5. 不宣称腿式/Lux3D 增量价值 | **遵守** | 本场景轮式 6/6 且更便宜（14.6–28.3 s vs 56.8–58.7 s） |
 

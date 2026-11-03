@@ -53,8 +53,28 @@ def com(env):
     return np.asarray(env.data.subtree_com[base_id(env)], dtype=float).copy()
 
 
+def robot_mass(env):
+    """机器人基座子树质量；绝不把场景里的静态台块/岩石算进重力分母。"""
+    m = env.model
+    bid = base_id(env)
+    try:
+        mass = float(m.body_subtreemass[bid])
+        if mass > 1e-6:
+            return mass
+    except Exception:  # noqa: BLE001
+        pass
+    total = 0.0
+    for i in range(1, m.nbody):
+        name = m.body(i).name
+        if name.startswith('obstacle'):
+            continue
+        total += float(m.body_mass[i])
+    return total
+
+
 def total_weight(env):
-    return float(mujoco.mj_getTotalmass(env.model)) * G_MOON
+    """机器人重力（N）。只用于载荷比例；场景静态物体不参与。"""
+    return robot_mass(env) * G_MOON
 
 
 def attitude(env):

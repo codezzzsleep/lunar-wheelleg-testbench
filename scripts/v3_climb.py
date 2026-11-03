@@ -35,8 +35,14 @@ STANCE = {leg: dict(bc.STANCE) for leg in LEG}
 WHEEL_R = wheelleg_env.WHEEL_R
 
 
-def contact_load(env, leg):
-    """轮-支撑接触载荷：地面 + 障碍物（台沿/岩石），排除自碰撞。"""
+def contact_load(env, leg, kind='top'):
+    """轮-支撑接触载荷：地面 + 障碍物，排除自碰撞。
+
+    kind=top  只算竖直法向（真正承载，|n_z|>=0.7）；
+    kind=wall 只算侧壁碰撞（|n_z|<0.7，不算承载）；
+    kind=any  全部。
+    这样"顶住岩石侧壁"不会被算成"搭上岩石顶面"。
+    """
     import mujoco
     m, d = env.model, env.data
     b = bc.wheel_body(env, leg)
@@ -49,6 +55,12 @@ def contact_load(env, leg):
         other = b2 if b1 == b else b1
         name = m.body(other).name if other >= 0 else 'world'
         if other != 0 and not name.startswith('obstacle'):
+            continue
+        frame = np.asarray(c.frame, dtype=float).reshape(3, 3)
+        nz = abs(float(frame[2, 0]))
+        if kind == 'top' and nz < 0.7:
+            continue
+        if kind == 'wall' and nz >= 0.7:
             continue
         f = np.zeros(6)
         mujoco.mj_contactForce(m, d, i, f)
@@ -70,6 +82,9 @@ def contact_points(env, leg, min_load=0.5):
         other = b2 if b1 == b else b1
         name = m.body(other).name if other >= 0 else 'world'
         if other != 0 and not name.startswith('obstacle'):
+            continue
+        frame = np.asarray(c.frame, dtype=float).reshape(3, 3)
+        if abs(float(frame[2, 0])) < 0.7:
             continue
         f = np.zeros(6)
         mujoco.mj_contactForce(m, d, i, f)
@@ -126,7 +141,8 @@ class Climb:
              'vx': round(float(env.data.qvel[0]), 4),
              'loads': {leg: round(bc.wheel_ground(env, leg)['load'], 3)
                        for leg in LEG},
-             'support_load': round(contact_load(env, self.swing), 3),
+             'support_load': round(contact_load(env, self.swing, 'top'), 3),
+             'support_wall': round(contact_load(env, self.swing, 'wall'), 3),
              'wheel_z': {leg: round(float(env.data.xpos[bc.wheel_body(env, leg)][2]), 4)
                          for leg in LEG}}
         self.frames.append(f)
@@ -309,6 +325,7 @@ class Climb:
                 'ok': bool(rows and mean >= min_frac * self.W and tilt <= 10.0)}
 
 
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--out', default='runs/v3/climb/front2_r1')
@@ -322,7 +339,6 @@ def main():
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
-    # 默认：短台面只做两条前腿；--rear 实验路径用长台面并继续后轮
     sx_ledge = 1.0 if a.rear else 0.5
     box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
     box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
@@ -346,8 +362,15 @@ def main():
     c = Climb(env, a.step_x, a.step_h, 0.5, record=rec, faces=faces)
     phases = []
 
+    def add(ph):
+        phases.append(ph)
+        return bool(ph.get('ok'))
+
+    def stop():
+        return c.terminated
+
     # APPROACH
-    brake_x = c.face_x - 0.35
+    brake_x = faces['FR'] - 0.35
     ok = False
     for _ in range(int(4.0 * 50)):
         if float(env.data.qpos[0]) >= brake_x:
@@ -356,10 +379,10 @@ def main():
         c.step('approach', omega=0.25 / WHEEL_R)
         if c.terminated:
             break
-    phases.append({'phase': 'approach', 'x': round(float(env.data.qpos[0]), 4),
-                   'target_x': round(brake_x, 4), 'ok': bool(ok)})
+    add({'phase': 'approach', 'x': round(float(env.data.qpos[0]), 4),
+         'target_x': round(brake_x, 4), 'ok': bool(ok)})
 
-    # BRAKE（速度斜坡，避免后轮卸载）
+    # BRAKE（速度斜坡）
     stopped = False
     v0 = max(0.02, abs(float(env.data.qvel[0])))
     n = 60
@@ -375,36 +398,34 @@ def main():
         c.step('brake', omega=0.0)
         if c.terminated:
             break
-    phases.append({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
-                   'ok': bool(stopped)})
+    add({'phase': 'brake', 'vx': round(float(env.data.qvel[0]), 4),
+        'ok': bool(stopped)})
 
-    # 逐条前腿搭台
     z_target = a.step_h + WHEEL_R + 0.025
+    ok = True
     for leg in ('FR', 'FL'):
-        if c.terminated:
+        if stop() or not ok:
             break
         c.set_swing(leg)
-        phases.append(c.shift())
-        if not c.terminated:
-            phases.append(c.lift_leg(leg, z_target))
-        if not c.terminated:
-            phases.append(c.advance_to_ledge(leg))
-        if not c.terminated:
-            phases.append(c.lower_leg(leg))
-        if not c.terminated:
-            for _ in range(30):          # 落轮后先稳定 0.6 s，再判持续承载
+        ok = add(c.shift())
+        if ok and not stop():
+            ok = add(c.lift_leg(leg, z_target))
+        if ok and not stop():
+            ok = add(c.advance_to_ledge(leg))
+        if ok and not stop():
+            ok = add(c.lower_leg(leg))
+        if ok and not stop():
+            for _ in range(30):
                 c.step(f'{leg}_settle')
-                if c.terminated:
+                if stop():
                     break
-        if not c.terminated:
-            phases.append(c.hold_leg(leg))
+        if ok and not stop():
+            ok = add(c.hold_leg(leg))
 
-    # --rear：先做前轴预压，让两条前轮都真正吃上载荷
-    if a.rear and not c.terminated:
-        phases.append(c.preload())
+    if ok and not stop() and a.rear:
+        ok = add(c.preload())
 
-    # 两条前轮同时承载
-    if not c.terminated:
+    if ok and not stop():
         rows = []
         for _ in range(int(0.6 * 50)):
             rows.append(c.step('hold_both'))
@@ -413,41 +434,37 @@ def main():
         fr = contact_load(env, 'FR')
         fl = contact_load(env, 'FL')
         tilt = max((r['tilt'] for r in rows), default=99)
-        phases.append({'phase': 'hold_both',
-                       'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
-                       'fr_frac': round(fr / c.W, 4),
-                       'fl_frac': round(fl / c.W, 4),
-                       'tilt_max_deg': round(tilt, 3),
-                       'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
-                                  and tilt <= 10.0)})
+        ok = add({'phase': 'hold_both',
+                  'fr_load_n': round(fr, 3), 'fl_load_n': round(fl, 3),
+                  'fr_frac': round(fr / c.W, 4), 'fl_frac': round(fl / c.W, 4),
+                  'tilt_max_deg': round(tilt, 3),
+                  'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
+                             and tilt <= 10.0)})
 
-    # ---- --rear 实验路径：身体前移 + 后轮搭台（当前未通过）----
-    # 身体前移，让后轮接近台沿（RR 轮心到 FR 台沿前 3 cm 停）
-    if a.rear and not c.terminated:
-        phases.append(c.advance_body(faces['FR'] + 0.19 - 0.03))
+    if ok and not stop() and a.rear:
+        ok = add(c.advance_body(faces['FR'] + 0.19 - 0.03))
 
-    # 后轮逐条搭台：RR 上 FR 台，RL 上 FL 台
-    for leg, face in ((('RR', faces['FR']), ('RL', faces['FL'])) if a.rear else ()):
-        if c.terminated:
-            break
-        c.set_swing(leg)
-        phases.append(c.shift())
-        if not c.terminated:
-            phases.append(c.lift_leg(leg, z_target))
-        if not c.terminated:
-            phases.append(c.advance_to_ledge(leg, face + 0.07))
-        if not c.terminated:
-            phases.append(c.lower_leg(leg))
-        if not c.terminated:
-            for _ in range(30):
-                c.step(f'{leg}_settle')
-                if c.terminated:
-                    break
-        if not c.terminated:
-            phases.append(c.hold_leg(leg))
+    if ok and not stop() and a.rear:
+        for leg, face in (('RR', faces['FR']), ('RL', faces['FL'])):
+            if stop() or not ok:
+                break
+            c.set_swing(leg)
+            ok = add(c.shift())
+            if ok and not stop():
+                ok = add(c.lift_leg(leg, z_target))
+            if ok and not stop():
+                ok = add(c.advance_to_ledge(leg, face + 0.07))
+            if ok and not stop():
+                ok = add(c.lower_leg(leg))
+            if ok and not stop():
+                for _ in range(30):
+                    c.step(f'{leg}_settle')
+                    if stop():
+                        break
+            if ok and not stop():
+                ok = add(c.hold_leg(leg))
 
-    # 四条轮全部承载（仅 --rear）
-    if a.rear and not c.terminated:
+    if ok and not stop() and a.rear:
         rows = []
         for _ in range(int(1.0 * 50)):
             rows.append(c.step('hold_all'))
@@ -455,20 +472,25 @@ def main():
                 break
         loads = {leg: contact_load(env, leg) for leg in LEG}
         tilt = max((r['tilt'] for r in rows), default=99)
-        phases.append({'phase': 'hold_all',
-                       'loads_n': {k: round(v, 3) for k, v in loads.items()},
-                       'frac': {k: round(v / c.W, 4) for k, v in loads.items()},
-                       'tilt_max_deg': round(tilt, 3),
-                       'ok': bool(rows and all(v >= 0.05 * c.W
-                                               for v in loads.values())
-                                  and tilt <= 10.0)})
+        ok = add({'phase': 'hold_all',
+                  'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                  'frac': {k: round(v / c.W, 4) for k, v in loads.items()},
+                  'tilt_max_deg': round(tilt, 3),
+                  'ok': bool(rows and all(v >= 0.05 * c.W for v in loads.values())
+                             and tilt <= 10.0)})
 
     ref = rec.close() if rec is not None else None
     checks = {p['phase']: bool(p.get('ok')) for p in phases}
-    res = {'schema': 'v3-climb-front2/v1', 'soil': a.soil,
+    blocked_at = None
+    if phases and not phases[-1].get('ok'):
+        blocked_at = phases[-1]['phase']
+    res = {'schema': 'v3-climb-front2/v2', 'soil': a.soil,
            'step': {'x': a.step_x, 'h': a.step_h, 'face_x': c.face_x},
+           'robot_mass_kg': round(float(bc.robot_mass(env)), 4),
+           'robot_weight_n': round(float(c.W), 3),
            'phases': phases, 'checks': checks,
            'terminated': c.terminated, 'errors': c.errors,
+           'blocked_at': blocked_at,
            'all_ok': bool(all(checks.values()) and not c.terminated),
            'trajectory_ref': ref}
     (out / 'result.json').write_text(json.dumps(res, ensure_ascii=False, indent=2))
@@ -479,7 +501,10 @@ def main():
                         tilt=np.array([f['tilt'] for f in c.frames]),
                         loads=np.array([[f['loads'][l] for l in LEG] for f in c.frames]))
     print(json.dumps({'all_ok': res['all_ok'], 'checks': checks,
-                      'errors': c.errors[:2], 'terminated': c.terminated},
+                      'errors': c.errors[:2], 'terminated': c.terminated,
+                      'blocked_at': blocked_at,
+                      'robot_mass_kg': res['robot_mass_kg'],
+                      'robot_weight_n': res['robot_weight_n']},
                      ensure_ascii=False))
     return 0 if res['all_ok'] else 1
 

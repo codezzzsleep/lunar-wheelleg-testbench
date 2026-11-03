@@ -1,0 +1,123 @@
+{
+  "schema": "v3-climb-front2/v2",
+  "soil": "nominal",
+  "step": {
+    "x": 1.2,
+    "h": 0.05,
+    "face_x": 0.95
+  },
+  "robot_mass_kg": 19.1264,
+  "robot_weight_n": 30.985,
+  "phases": [
+    {
+      "phase": "approach",
+      "x": 0.6002,
+      "target_x": 0.6,
+      "ok": true
+    },
+    {
+      "phase": "brake",
+      "vx": -0.0044,
+      "ok": true
+    },
+    {
+      "phase": "FR_shift",
+      "margin_m": 0.016091467702769903,
+      "ok": true
+    },
+    {
+      "phase": "FR_lift",
+      "wheel_center_z": 0.1626,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FR_advance",
+      "wheel_x": 1.02,
+      "x_target": 1.02,
+      "ok": true
+    },
+    {
+      "phase": "FR_lower",
+      "contact_at_t": 13.599999999999799,
+      "steps": 25,
+      "load_n": 10.18,
+      "ok": true
+    },
+    {
+      "phase": "FR_hold",
+      "load_n": 4.408,
+      "frac": 0.1423,
+      "tilt_max_deg": 1.054,
+      "ok": true
+    },
+    {
+      "phase": "FL_shift",
+      "margin_m": 0.01599948730130697,
+      "ok": true
+    },
+    {
+      "phase": "FL_lift",
+      "wheel_center_z": 0.1626,
+      "target_z": 0.161,
+      "ok": true
+    },
+    {
+      "phase": "FL_advance",
+      "wheel_x": 1.1999,
+      "x_target": 1.2,
+      "ok": true
+    },
+    {
+      "phase": "FL_lower",
+      "contact_at_t": 24.439999999999568,
+      "steps": 22,
+      "load_n": 9.852,
+      "ok": true
+    },
+    {
+      "phase": "FL_hold",
+      "load_n": 3.135,
+      "frac": 0.1012,
+      "tilt_max_deg": 1.082,
+      "ok": true
+    },
+    {
+      "phase": "hold_both",
+      "fr_load_n": 11.155,
+      "fl_load_n": 2.996,
+      "fr_frac": 0.36,
+      "fl_frac": 0.0967,
+      "tilt_max_deg": 1.077,
+      "ok": true
+    }
+  ],
+  "checks": {
+    "approach": true,
+    "brake": true,
+    "FR_shift": true,
+    "FR_lift": true,
+    "FR_advance": true,
+    "FR_lower": true,
+    "FR_hold": true,
+    "FL_shift": true,
+    "FL_lift": true,
+    "FL_advance": true,
+    "FL_lower": true,
+    "FL_hold": true,
+    "hold_both": true
+  },
+  "terminated": false,
+  "errors": [],
+  "blocked_at": null,
+  "all_ok": true,
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/climb/front3_nominal_r1/record/index.json",
+    "trajectory_sha256": "721c05493bcaccd38b96450854692a6d10ec37ffac862fa0820ba05a93816f8b",
+    "frame_count": 1322,
+    "record_hz": 50.0,
+    "duration_s": 26.419999999999526,
+    "n_chunks": 6,
+    "contacts_n": 10764
+  }
+}

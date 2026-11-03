@@ -227,6 +227,20 @@ class Climb:
                 'x_target': round(x_target, 4),
                 'ok': bool(x >= x_target - 0.01)}
 
+    # ---- 低速前进到指定机身 x（前后轮都在支撑面上时用）
+    def advance_body(self, x_target, max_s=8.0, speed=0.05):
+        env = self.env
+        for _ in range(int(max_s * 50)):
+            if float(env.data.qpos[0]) >= x_target:
+                break
+            self.step('advance_body', omega=speed / WHEEL_R)
+            if self.terminated:
+                break
+        x = float(env.data.qpos[0])
+        return {'phase': 'advance_body', 'x': round(x, 4),
+                'x_target': round(x_target, 4),
+                'ok': bool(x >= x_target - 0.01)}
+
     # ---- 落腿：持续载荷触发后停住
     def lower_leg(self, leg, load_thr=3.0, hold_steps=3, max_s=1.6):
         env = self.env
@@ -277,21 +291,26 @@ def main():
     ap.add_argument('--step-w', type=float, default=0.90)
     ap.add_argument('--soil', default='nominal', choices=['rigid', 'nominal'])
     ap.add_argument('--record', action='store_true')
+    ap.add_argument('--rear', action='store_true',
+                    help='实验路径：长台面 + 后轮搭台（当前未通过，默认关闭）')
     a = ap.parse_args()
     out = ROOT / a.out
     out.mkdir(parents=True, exist_ok=True)
-    # 两块窄台：FR 与 FL 各一块，台沿 x 错开，避免先抬的那条腿被另一块台挡住
-    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=0.5, sy=0.27)
-    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=0.5, sy=0.27)
+    # 默认：短台面只做两条前腿；--rear 实验路径用长台面并继续后轮
+    sx_ledge = 1.0 if a.rear else 0.5
+    box_fr = make_step(out / 'step_fr.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
+    box_fl = make_step(out / 'step_fl.stl', h=a.step_h, sx=sx_ledge, sy=0.27)
     faces = {'FR': a.step_x - 0.25, 'FL': a.step_x + 0.18 - 0.25}
     spec = terrain.make_spec(kind='flat', seed=0, goal_x=3.0, name='climb_front2',
-                             objects=[{'mesh_file': box_fr, 'x': a.step_x, 'y': -0.115,
+                             objects=[{'mesh_file': box_fr,
+                                       'x': faces['FR'] + sx_ledge / 2.0, 'y': -0.115,
                                        'yaw_deg': 0.0},
-                                      {'mesh_file': box_fl, 'x': a.step_x + 0.18,
-                                       'y': 0.185, 'yaw_deg': 0.0}])
+                                      {'mesh_file': box_fl,
+                                       'x': faces['FL'] + sx_ledge / 2.0, 'y': 0.185,
+                                       'yaw_deg': 0.0}])
     spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
     spec['soil'] = v7_soil.resolve(a.soil)
-    env = wheelleg_env.WheelLegEnv(spec, max_seconds=40.0)
+    env = wheelleg_env.WheelLegEnv(spec, max_seconds=80.0 if a.rear else 40.0)
     env.reset(seed=0)
     rec = None
     if a.record:
@@ -357,7 +376,7 @@ def main():
     # 两条前轮同时承载
     if not c.terminated:
         rows = []
-        for _ in range(int(0.8 * 50)):
+        for _ in range(int(0.6 * 50)):
             rows.append(c.step('hold_both'))
             if c.terminated:
                 break
@@ -370,6 +389,48 @@ def main():
                        'fl_frac': round(fl / c.W, 4),
                        'tilt_max_deg': round(tilt, 3),
                        'ok': bool(rows and fr >= 0.05 * c.W and fl >= 0.05 * c.W
+                                  and tilt <= 10.0)})
+
+    # ---- --rear 实验路径：身体前移 + 后轮搭台（当前未通过）----
+    # 身体前移，让后轮接近台沿（RR 轮心到 FR 台沿前 3 cm 停）
+    if a.rear and not c.terminated:
+        phases.append(c.advance_body(faces['FR'] + 0.19 - 0.03))
+
+    # 后轮逐条搭台：RR 上 FR 台，RL 上 FL 台
+    for leg, face in ((('RR', faces['FR']), ('RL', faces['FL'])) if a.rear else ()):
+        if c.terminated:
+            break
+        c.set_swing(leg)
+        phases.append(c.shift())
+        if not c.terminated:
+            phases.append(c.lift_leg(leg, z_target))
+        if not c.terminated:
+            phases.append(c.advance_to_ledge(leg, face + 0.07))
+        if not c.terminated:
+            phases.append(c.lower_leg(leg))
+        if not c.terminated:
+            for _ in range(30):
+                c.step(f'{leg}_settle')
+                if c.terminated:
+                    break
+        if not c.terminated:
+            phases.append(c.hold_leg(leg))
+
+    # 四条轮全部承载（仅 --rear）
+    if a.rear and not c.terminated:
+        rows = []
+        for _ in range(int(1.0 * 50)):
+            rows.append(c.step('hold_all'))
+            if c.terminated:
+                break
+        loads = {leg: contact_load(env, leg) for leg in LEG}
+        tilt = max((r['tilt'] for r in rows), default=99)
+        phases.append({'phase': 'hold_all',
+                       'loads_n': {k: round(v, 3) for k, v in loads.items()},
+                       'frac': {k: round(v / c.W, 4) for k, v in loads.items()},
+                       'tilt_max_deg': round(tilt, 3),
+                       'ok': bool(rows and all(v >= 0.05 * c.W
+                                               for v in loads.values())
                                   and tilt <= 10.0)})
 
     ref = rec.close() if rec is not None else None

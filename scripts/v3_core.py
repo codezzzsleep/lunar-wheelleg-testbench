@@ -203,6 +203,27 @@ def run_climb_cell(spec, snapshot, plan, proto, mode='project', seed=0,
     return row
 
 
+def run_body_clearance_cell(spec, snapshot, plan, proto, mode='project', seed=0,
+                            record_dir=None, record_meta=None, budget=120.0):
+    """BODY_CLEARANCE：抬身->行驶->降低->稳定；每格带 plan_id 与底盘接触数。"""
+    import stage6_body_skill as S6
+    env = make_env(spec, proto, budget=budget)
+    env.reset(seed=0)
+    try:
+        env.restore_state(snapshot, mode=mode)
+        env.data.qacc_warmstart[:] = 0.0
+        import mujoco as _mj
+        _mj.mj_forward(env.model, env.data)
+    except Exception as e:  # noqa: BLE001
+        return {'action': 'BODY_CLEARANCE', 'ok': False, 'error_class': 'restore',
+                'error': f'{type(e).__name__}: {e}', 'success': False,
+                'outcome': 'pipeline_failure', 'cost': 60.0, 't_end': None,
+                'plan_id': plan.get('plan_id') if plan else None}
+    row = S6.run_body_clearance(env, plan, record_dir=record_dir, meta=record_meta)
+    row['state_mode'] = mode
+    return row
+
+
 def truth_spec(state):
     spec = json.loads(json.dumps(state['spec']))
     spec.pop('object_material', None)
@@ -210,24 +231,38 @@ def truth_spec(state):
 
 
 def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
-                     options=None, climb_plan=None, climb_budget=120.0, budget=None):
+                     options=None, climb_plan=None, climb_budget=120.0, budget=None,
+                     body_plan=None, record_cells=False, record_root=None):
     """在给定场景 spec（可以是真值网格）上跑完整动作矩阵。"""
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
-    applic = {a: (ACT.applicable(a, visible, ch) if a != 'CLIMB'
-                  else (bool(climb_plan and climb_plan.get('applicable')),
-                        None if (climb_plan and climb_plan.get('applicable')) else 'climb_not_applicable'))
-              for a in opts}
+    def _applic(a):
+        if a == 'CLIMB':
+            ok = bool(climb_plan and climb_plan.get('applicable'))
+            return (ok, None if ok else 'climb_not_applicable')
+        if a == 'BODY_CLEARANCE':
+            ok = bool(body_plan and body_plan.get('applicable', True))
+            return (ok, None if ok else 'body_clearance_not_applicable')
+        return ACT.applicable(a, visible, ch)
+    applic = {a: _applic(a) for a in opts}
     rows = []
     for a in [x for x in opts if applic[x][0]] + [ACT.FALLBACK]:
+        rdir = None
+        if record_cells:
+            rdir = pathlib.Path(record_root or (pathlib.Path(state.get('state_dir', '.')) / 'matrix')) / str(a)
         try:
             if a == 'CLIMB':
                 r = run_climb_cell(spec, snapshot, climb_plan, proto, mode=mode,
-                                   seed=seed, budget=climb_budget)
+                                   seed=seed, budget=climb_budget, record_dir=rdir)
+            elif a == 'BODY_CLEARANCE':
+                r = run_body_clearance_cell(spec, snapshot, body_plan, proto, mode=mode,
+                                            seed=seed, budget=budget or climb_budget,
+                                            record_dir=rdir)
             else:
                 env = make_env(spec, proto, budget=budget or climb_budget)
-                r = run_action(env, snapshot, a, visible, mode=mode, seed=seed)
+                r = run_action(env, snapshot, a, visible, mode=mode, seed=seed,
+                               record_dir=rdir)
                 del env
         except Exception as e:  # noqa: BLE001
             r = {'action': a, 'ok': False, 'error_class': 'episode',
@@ -241,7 +276,7 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
 
 def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
              record_root=None, options=None, climb_plan=None, climb_budget=120.0,
-             budget=None):
+             budget=None, body_plan=None):
     """对一组几何候选跑完整预演矩阵。geom: {candidate_id: posed_dir}
 
     record_cells=True 时每个矩阵格写一条 >=50Hz 全状态轨迹到
@@ -250,10 +285,15 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
     visible = state['visible']
     ch = float(proto['scene']['channel_half_m'])
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
-    applic = {a: (ACT.applicable(a, visible, ch) if a != 'CLIMB'
-                  else (bool(climb_plan and climb_plan.get('applicable')),
-                        None if (climb_plan and climb_plan.get('applicable')) else 'climb_not_applicable'))
-              for a in opts}
+    def _applic(a):
+        if a == 'CLIMB':
+            ok = bool(climb_plan and climb_plan.get('applicable'))
+            return (ok, None if ok else 'climb_not_applicable')
+        if a == 'BODY_CLEARANCE':
+            ok = bool(body_plan and body_plan.get('applicable', True))
+            return (ok, None if ok else 'body_clearance_not_applicable')
+        return ACT.applicable(a, visible, ch)
+    applic = {a: _applic(a) for a in opts}
     rows = []
     for cid, pd in geom.items():
         spec = spec_with_geometry(state['spec'], pd)
@@ -272,6 +312,15 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
                                                     'method': 'rehearsal',
                                                     'state_mode': 'project'},
                                        budget=climb_budget)
+                elif a == 'BODY_CLEARANCE':
+                    r = run_body_clearance_cell(spec, snapshot, body_plan, proto,
+                                                mode='project', seed=seed,
+                                                record_dir=rdir,
+                                                record_meta={'scenario': state.get('state_id'),
+                                                             'candidate': cid,
+                                                             'method': 'rehearsal',
+                                                             'state_mode': 'project'},
+                                                budget=budget or climb_budget)
                 else:
                     # 每个动作一个全新 env：复用 env 会把上一回合的土壤/摩擦残余带进来
                     env = make_env(spec, proto, budget=budget or climb_budget)
@@ -379,7 +428,7 @@ def write_decision(out_dir, state, arm, rows, dec, extra=None):
 
 
 def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene',
-                  climb_plan=None, climb_budget=120.0, budget=None):
+                  climb_plan=None, climb_budget=120.0, budget=None, body_plan=None):
     """在真值场景从同一个 S0 续行执行。"""
     spec = json.loads(json.dumps(state['spec']))
     spec.pop('object_material', None)
@@ -391,6 +440,13 @@ def truth_execute(state, action, proto, out_dir, arm, seed=0, mode='same_scene',
                                record_meta={'scenario': state['state'].get('state_id'),
                                             'method': arm, 'state_mode': mode},
                                budget=climb_budget)
+        elif action == 'BODY_CLEARANCE':
+            r = run_body_clearance_cell(spec, state['snapshot'], body_plan, proto, mode=mode,
+                                        seed=seed,
+                                        record_dir=pathlib.Path(out_dir) / 'record' / str(arm),
+                                        record_meta={'scenario': state['state'].get('state_id'),
+                                                     'method': arm, 'state_mode': mode},
+                                        budget=budget or climb_budget)
         else:
             r = run_action(env, state['snapshot'], action, state['visible'],
                            mode=mode, seed=seed, record=True,

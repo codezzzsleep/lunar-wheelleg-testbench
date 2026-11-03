@@ -218,8 +218,12 @@ def _contacts(env):
             mujoco.mj_contactForce(m, d, i, force)
         except Exception:  # noqa: BLE001
             pass
+        b1 = int(m.geom_bodyid[c.geom1]); b2 = int(m.geom_bodyid[c.geom2])
+        n1 = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_BODY, b1) or ''
+        n2 = mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_BODY, b2) or ''
         out.append({'i': i,
                     'geom1': int(c.geom1), 'geom2': int(c.geom2),
+                    'g1_body': n1, 'g2_body': n2,
                     'dist': float(c.dist),
                     'pos': [round(float(x), 6) for x in c.pos],
                     'frame': [round(float(x), 6) for x in c.frame],

@@ -1,0 +1,11 @@
+{
+  "schema": "stage6-protocol/v1",
+  "revision": "stage6-body-clearance-v1",
+  "actions": ["R1", "R2", "D1", "D2", "L1", "L2", "CLIMB", "BODY_CLEARANCE", "A0"],
+  "traverse_actions": ["R1", "R2", "D1", "D2", "L1", "L2", "CLIMB", "BODY_CLEARANCE"],
+  "budget_s": 120.0,
+  "decision_rule": "majority",
+  "scene_criterion": "success requires no chassis-obstacle contact (counted from the recorded contacts)",
+  "body_clearance": {"raise_z_default": 0.06, "ramp_steps": 100, "speed": 0.15,
+                      "plan_fixed_across_candidates": true}
+}

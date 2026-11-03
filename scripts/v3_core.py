@@ -153,8 +153,19 @@ def run_climb_cell(spec, snapshot, plan, proto, mode='project', seed=0,
     import v3_climb
     import v3_record
     env = make_env(spec, proto, budget=budget)
+    # 先 reset 初始化地形/材质/摩擦，再恢复状态：否则目标 env 用的是未初始化的
+    # 默认材质，same_scene 搬材质后与候选 project 路径会产生本不该有的分歧。
+    env.reset(seed=0)
     try:
         env.restore_state(snapshot, mode=mode)
+        # 两条路径统一 warmstart 策略：project 本就会清零，same_scene 若保留
+        # reset 残留会在边界动作上造成不该有的分歧（已实测 FL_lower 翻转）。
+        try:
+            import mujoco as _mj
+            env.data.qacc_warmstart[:] = 0.0
+            _mj.mj_forward(env.model, env.data)
+        except Exception:
+            pass
     except Exception as e:  # noqa: BLE001
         return {'action': 'CLIMB', 'ok': False, 'error_class': 'restore',
                 'error': f'{type(e).__name__}: {e}', 'success': False,
@@ -183,6 +194,9 @@ def run_climb_cell(spec, snapshot, plan, proto, mode='project', seed=0,
            'max_tilt': max((p.get('tilt_max_deg', 0.0) for p in phases), default=0.0),
            'plan_id': plan.get('plan_id') if plan else None,
            'phases': phases, 'checks': checks, 'terminated': bool(c.terminated),
+           'env_t_end': round(float(env.t), 3),
+           'max_seconds': float(getattr(env, 'max_seconds', 0.0)),
+           'termination': getattr(env, 'last_termination', None),
            'applicable': True}
     if ref:
         row['trajectory_ref'] = ref

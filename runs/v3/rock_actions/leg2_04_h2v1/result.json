@@ -1,0 +1,97 @@
+{
+  "schema": "v3-rock-actions/v2",
+  "state": "runs/v3/states/moon_rock_04_h2v1",
+  "soil": "nominal",
+  "rock_max_x": 1.6029,
+  "rows": [
+    {
+      "action": "L1",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 0.875,
+      "displacement_x": 0.878,
+      "max_tilt": 61.39,
+      "steps": 171,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.16,
+          "phase": "lift"
+        },
+        {
+          "t": 2.88,
+          "phase": "recover"
+        },
+        {
+          "t": 3.24,
+          "phase": "done"
+        }
+      ],
+      "rock_max_x": 1.6029,
+      "wheel_x": {
+        "FR": 1.2257,
+        "FL": 1.0275,
+        "RR": 1.1136,
+        "RL": 0.9166
+      },
+      "grounded": {
+        "FR": false,
+        "FL": false,
+        "RR": true,
+        "RL": true
+      },
+      "final_tilt": 61.388,
+      "base_z": 0.4064,
+      "crossed": false,
+      "descended": true,
+      "unified": false
+    },
+    {
+      "action": "L2",
+      "success": false,
+      "reason": "tipped",
+      "final_x": 1.767,
+      "displacement_x": 1.77,
+      "max_tilt": 60.04,
+      "steps": 217,
+      "cost": 60.0,
+      "phases": [
+        {
+          "t": 2.16,
+          "phase": "lift"
+        },
+        {
+          "t": 2.88,
+          "phase": "recover"
+        },
+        {
+          "t": 3.24,
+          "phase": "done"
+        }
+      ],
+      "rock_max_x": 1.6029,
+      "wheel_x": {
+        "FR": 1.9589,
+        "FL": 1.8678,
+        "RR": 1.5973,
+        "RL": 1.5043
+      },
+      "grounded": {
+        "FR": false,
+        "FL": false,
+        "RR": true,
+        "RL": false
+      },
+      "final_tilt": 60.039,
+      "base_z": 0.414,
+      "crossed": false,
+      "descended": true,
+      "unified": false
+    }
+  ],
+  "wheel_ok": false,
+  "wheel_unified_ok": false,
+  "leg_unified_ok": false,
+  "leg_ok": false,
+  "note": "轮式基线 = R1/R2/D1/D2/A0；L1/L2 为腿式对照"
+}

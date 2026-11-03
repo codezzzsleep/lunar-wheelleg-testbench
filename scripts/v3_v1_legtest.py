@@ -154,12 +154,43 @@ def main():
                   for pp in ('hip', 'thigh', 'calf')} for leg in LEG}
     # 下落时给一个小前向轮速：让 FR 轮滚进接触，而不是被竖直放到地面
     vw = float(a.lower_omega)
-    ph_down1 = run_phase('lower_half', 0.7, half, ramp=0.5, brake=0.0, roll_gain=rg,
-                         wheel_omega=vw)
-    ph_down2 = run_phase('lower_settle', 0.25, half, ramp=0.05, brake=0.0, roll_gain=rg,
-                         wheel_omega=vw)
-    ph_down = run_phase('lower_FR', 0.9, stance_targets(), ramp=0.7, brake=0.0,
-                        roll_gain=rg, wheel_omega=vw)
+    # 接触触发的回位：每步只把 FR 放下一点点，一旦测到地面载荷就停住保持
+    def lower_until_contact(name, seconds, start_targets, end_targets, load_thr=5.0):
+        n = int(round(seconds * 50))
+        loads = 0.0
+        steps = 0
+        for k in range(n):
+            a_k = (k + 1) / n
+            cmd = {leg: {pp: start_targets[leg][pp] + a_k * (end_targets[leg][pp]
+                                                            - start_targets[leg][pp])
+                         for pp in ('hip', 'thigh', 'calf')} for leg in LEG}
+            env.step_command(joint_targets_rad=cmd, wheel_omega_rad_s=np.full(4, vw),
+                             wheel_brake=np.zeros(4))
+            steps = k + 1
+            loads = wheel_contact(env, 'FR')
+            rec.add(v3_record.frame_from_env(env, None, np.zeros(3), k, env.t,
+                                             extra={'skill_phase': name}))
+            if loads > load_thr and k > 5:
+                break
+            if float(env._tilt()) > 20.0:
+                return {'phase': name, 'aborted': 'tilt>20deg', 'contact': loads,
+                        'steps': steps}
+        return {'phase': name, 'seconds': seconds, 'steps': steps,
+                'contact_at_stop': round(loads, 2),
+                'contact_ok': loads > load_thr,
+                'tilt_end': round(float(env._tilt()), 2)}
+    ph_contact = lower_until_contact('lower_until_contact', 1.4, lift, stance_targets())
+    if 'aborted' in ph_contact:
+        phases.append(ph_contact)
+        ref = rec.close()
+        (out / 'result.json').write_text(json.dumps(
+            {'schema': 'v3-v1-legtest/v1', 'phases': phases, 'all_ok': False,
+             'trajectory_ref': ref}, ensure_ascii=False, indent=2))
+        print(json.dumps({'all_ok': False, 'aborted': ph_contact,
+                          'traj': ref.get('frame_count')}, ensure_ascii=False))
+        return 1
+    ph_down = run_phase('settle_after_contact', 0.4, stance_targets(), ramp=0.15,
+                        brake=1.0)
     ref = rec.close()
     aborted = [p for p in phases if 'aborted' in p]
     if aborted:

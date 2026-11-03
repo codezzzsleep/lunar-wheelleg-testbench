@@ -23,7 +23,7 @@ def load_occ(path, space_path=None):
     return shell, space, origin, pitch
 
 
-def corridor_metrics(shell, space, origin, pitch, cfg):
+def corridor_metrics(shell, space, origin, pitch, cfg, assume_far_known=False):
     half_y = float(cfg['corridor_half_y_m'])
     nx, ny, nz = shell.shape
     ys = origin[1] + (np.arange(ny) + 0.5) * pitch
@@ -51,6 +51,9 @@ def corridor_metrics(shell, space, origin, pitch, cfg):
     y_span = float((yy.max() - yy.min() + 1) * pitch) if len(yy) else 0.0
     # 后缘已知性：far 之后 2-6 cm 的低处是 free 还是 unknown
     far_known = None
+    if space is None and assume_far_known:
+        # truth 占据 / FULL 候选：几何完整（FULL 的后缘由 P∩U 生成），后缘已知
+        far_known = True
     if space is not None:
         j0 = min(nx - 1, i1 + int(0.02 / pitch))
         j1 = min(nx, i1 + int(0.06 / pitch) + 1)

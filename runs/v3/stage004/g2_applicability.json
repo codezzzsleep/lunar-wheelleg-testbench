@@ -1,0 +1,457 @@
+{
+  "schema": "stage4-g2/v1",
+  "climb_cfg": {
+    "expected_duration_s": [
+      57,
+      60
+    ],
+    "corridor_half_y_m": 0.22,
+    "top_width_min_m": 0.4,
+    "top_len_min_m": 0.2,
+    "top_z_range_m": [
+      0.02,
+      0.15
+    ],
+    "flatness_max_m": 0.03
+  },
+  "rows": [
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "arm": "truth",
+      "occ": "runs/v3/states/moon_rock_04_h1v0/truth/truth_occ.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.1603,
+        "far_x": 1.5398,
+        "top_z": 0.1725,
+        "top_len": 0.3795,
+        "top_flatness": 0.1265,
+        "y_span_top": 0.2599,
+        "back_drop_5cm": 0.1725,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.260<0.4)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.127)"
+      ],
+      "plan_id": "bf8035ad60b5cd19",
+      "params": {
+        "face_FR": 1.1603,
+        "face_FL": 1.1603,
+        "top_z": 0.1725,
+        "brake_x": 0.8103000000000001,
+        "place_RR_x": 1.2303000000000002,
+        "assist_FL_x": 1.2303000000000002,
+        "lift_center_z": 0.2835,
+        "far_x": 1.5398,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.8398
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "truth_occ",
+        "face_FL": "truth_occ",
+        "top_z": "truth_occ",
+        "far_x": "truth_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "arm": "obs",
+      "occ": "runs/v3/states/moon_rock_04_h1v0/fusion/V.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.1534,
+        "far_x": 1.4984,
+        "top_z": 0.1725,
+        "top_len": 0.345,
+        "top_flatness": 0.1725,
+        "y_span_top": 0.2645,
+        "back_drop_5cm": null,
+        "far_known": false
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.265<0.4)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.172)",
+        "far_edge_unknown"
+      ],
+      "plan_id": "eaae5098a4420db3",
+      "params": {
+        "face_FR": 1.1534,
+        "face_FL": 1.1534,
+        "top_z": 0.1725,
+        "brake_x": 0.8034,
+        "place_RR_x": 1.2234,
+        "assist_FL_x": 1.2234,
+        "lift_center_z": 0.2835,
+        "far_x": null,
+        "descent": null,
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "obs_occ",
+        "face_FL": "obs_occ",
+        "top_z": "obs_occ",
+        "far_x": "unknown",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "far_x",
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_04_h1v0",
+      "arm": "full",
+      "occ": "runs/v3/states/moon_rock_04_h1v0/candidates/A1/fused/occ_full.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.1534,
+        "far_x": 1.4984,
+        "top_z": 0.1725,
+        "top_len": 0.345,
+        "top_flatness": 0.1725,
+        "y_span_top": 0.2645,
+        "back_drop_5cm": 0.1725,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.265<0.4)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.172)"
+      ],
+      "plan_id": "4f0b5ad45e1017c3",
+      "params": {
+        "face_FR": 1.1534,
+        "face_FL": 1.1534,
+        "top_z": 0.1725,
+        "brake_x": 0.8034,
+        "place_RR_x": 1.2234,
+        "assist_FL_x": 1.2234,
+        "lift_center_z": 0.2835,
+        "far_x": 1.4984,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.7984
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "full_occ",
+        "face_FL": "full_occ",
+        "top_z": "full_occ",
+        "far_x": "full_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "arm": "truth",
+      "occ": "runs/v3/states/moon_rock_01_h2v0/truth/truth_occ.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.035,
+        "far_x": 1.429,
+        "top_z": 0.21,
+        "top_len": 0.394,
+        "top_flatness": 0.118,
+        "y_span_top": 0.064,
+        "back_drop_5cm": 0.0,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.064<0.4)",
+        "top_z_out_of_range(0.210)",
+        "top_not_flat(0.118)"
+      ],
+      "plan_id": "70631d169d8df3cf",
+      "params": {
+        "face_FR": 1.035,
+        "face_FL": 1.035,
+        "top_z": 0.21,
+        "brake_x": 0.6849999999999999,
+        "place_RR_x": 1.105,
+        "assist_FL_x": 1.105,
+        "lift_center_z": 0.321,
+        "far_x": 1.429,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.729
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "truth_occ",
+        "face_FL": "truth_occ",
+        "top_z": "truth_occ",
+        "far_x": "truth_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "arm": "obs",
+      "occ": "runs/v3/states/moon_rock_01_h2v0/fusion/V.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.029,
+        "far_x": 1.429,
+        "top_z": 0.21,
+        "top_len": 0.4,
+        "top_flatness": 0.126,
+        "y_span_top": 0.064,
+        "back_drop_5cm": null,
+        "far_known": false
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.064<0.4)",
+        "top_z_out_of_range(0.210)",
+        "top_not_flat(0.126)",
+        "far_edge_unknown"
+      ],
+      "plan_id": "f362076c66922cce",
+      "params": {
+        "face_FR": 1.029,
+        "face_FL": 1.029,
+        "top_z": 0.21,
+        "brake_x": 0.6789999999999999,
+        "place_RR_x": 1.099,
+        "assist_FL_x": 1.099,
+        "lift_center_z": 0.321,
+        "far_x": null,
+        "descent": null,
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "obs_occ",
+        "face_FL": "obs_occ",
+        "top_z": "obs_occ",
+        "far_x": "unknown",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "far_x",
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_01_h2v0",
+      "arm": "full",
+      "occ": "runs/v3/states/moon_rock_01_h2v0/candidates/A1/fused/occ_full.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.029,
+        "far_x": 1.429,
+        "top_z": 0.21,
+        "top_len": 0.4,
+        "top_flatness": 0.126,
+        "y_span_top": 0.064,
+        "back_drop_5cm": 0.0,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.064<0.4)",
+        "top_z_out_of_range(0.210)",
+        "top_not_flat(0.126)"
+      ],
+      "plan_id": "f754554a10693481",
+      "params": {
+        "face_FR": 1.029,
+        "face_FL": 1.029,
+        "top_z": 0.21,
+        "brake_x": 0.6789999999999999,
+        "place_RR_x": 1.099,
+        "assist_FL_x": 1.099,
+        "lift_center_z": 0.321,
+        "far_x": 1.429,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.729
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "full_occ",
+        "face_FL": "full_occ",
+        "top_z": "full_occ",
+        "far_x": "full_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "arm": "truth",
+      "occ": "runs/v3/states/moon_rock_05_h1v1/truth/truth_occ.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.283,
+        "far_x": 1.451,
+        "top_z": 0.172,
+        "top_len": 0.168,
+        "top_flatness": 0.148,
+        "y_span_top": 0.054,
+        "back_drop_5cm": 0.172,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.054<0.4)",
+        "top_too_short(0.168)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.148)"
+      ],
+      "plan_id": "300665119366ae9a",
+      "params": {
+        "face_FR": 1.283,
+        "face_FL": 1.283,
+        "top_z": 0.172,
+        "brake_x": 0.9329999999999999,
+        "place_RR_x": 1.353,
+        "assist_FL_x": 1.353,
+        "lift_center_z": 0.28300000000000003,
+        "far_x": 1.451,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.7510000000000001
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "truth_occ",
+        "face_FL": "truth_occ",
+        "top_z": "truth_occ",
+        "far_x": "truth_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "arm": "obs",
+      "occ": "runs/v3/states/moon_rock_05_h1v1/fusion/V.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.277,
+        "far_x": 1.447,
+        "top_z": 0.172,
+        "top_len": 0.17,
+        "top_flatness": 0.144,
+        "y_span_top": 0.056,
+        "back_drop_5cm": null,
+        "far_known": false
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.056<0.4)",
+        "top_too_short(0.170)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.144)",
+        "far_edge_unknown"
+      ],
+      "plan_id": "021c16fe1f57a298",
+      "params": {
+        "face_FR": 1.277,
+        "face_FL": 1.277,
+        "top_z": 0.172,
+        "brake_x": 0.9269999999999999,
+        "place_RR_x": 1.347,
+        "assist_FL_x": 1.347,
+        "lift_center_z": 0.28300000000000003,
+        "far_x": null,
+        "descent": null,
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "obs_occ",
+        "face_FL": "obs_occ",
+        "top_z": "obs_occ",
+        "far_x": "unknown",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "far_x",
+        "landing"
+      ]
+    },
+    {
+      "state_id": "moon_rock_05_h1v1",
+      "arm": "full",
+      "occ": "runs/v3/states/moon_rock_05_h1v1/candidates/A1/fused/occ_full.npz",
+      "metrics": {
+        "valid": true,
+        "face_x": 1.277,
+        "far_x": 1.459,
+        "top_z": 0.172,
+        "top_len": 0.182,
+        "top_flatness": 0.144,
+        "y_span_top": 0.056,
+        "back_drop_5cm": 0.172,
+        "far_known": true
+      },
+      "applicable": false,
+      "reject_reasons": [
+        "top_too_narrow(0.056<0.4)",
+        "top_too_short(0.182)",
+        "top_z_out_of_range(0.172)",
+        "top_not_flat(0.144)"
+      ],
+      "plan_id": "f6a58fab21d261e5",
+      "params": {
+        "face_FR": 1.277,
+        "face_FL": 1.277,
+        "top_z": 0.172,
+        "brake_x": 0.9269999999999999,
+        "place_RR_x": 1.347,
+        "assist_FL_x": 1.347,
+        "lift_center_z": 0.28300000000000003,
+        "far_x": 1.459,
+        "descent": {
+          "mode": "forward_drop",
+          "target_x": 1.7590000000000001
+        },
+        "landing": null
+      },
+      "params_source": {
+        "face_FR": "full_occ",
+        "face_FL": "full_occ",
+        "top_z": "full_occ",
+        "far_x": "full_occ",
+        "descent": "derived_from_far_x",
+        "landing": "unknown"
+      },
+      "unknowns": [
+        "landing"
+      ]
+    }
+  ]
+}

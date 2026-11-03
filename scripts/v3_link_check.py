@@ -4,9 +4,12 @@ import re
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 pat = re.compile(r'\]\(([^)]+)\)')
+hpat = re.compile(r'href="([^"]+)"')
 rows = []
-for md in sorted((ROOT / 'docs').glob('*.md')):
-    for m in pat.finditer(md.read_text()):
+for md in sorted((ROOT / 'docs').glob('*.md')) + [ROOT / 'dist/minimal/index.html']:
+    text = md.read_text()
+    found = hpat.finditer(text) if md.suffix == '.html' else pat.finditer(text)
+    for m in found:
         target = m.group(1).strip()
         if target.startswith(('http://', 'https://', '#', 'mailto:')):
             continue

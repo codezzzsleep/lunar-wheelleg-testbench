@@ -21,7 +21,7 @@
 
 ## 链接检查
 
-- `scripts/v3_link_check.py`：docs 中 6 个相对链接，缺失 0（`docs/LINK_CHECK.md`）。
+- `scripts/v3_link_check.py`：docs Markdown + `dist/minimal/index.html` 共 **11** 个相对链接，缺失 **0**（`docs/LINK_CHECK.md`）。
 
 ## 仍成立的外部阻塞
 

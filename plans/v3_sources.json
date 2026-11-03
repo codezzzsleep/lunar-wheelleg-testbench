@@ -1,0 +1,30 @@
+{
+  "schema": "v3-sources/v1",
+  "generated_for": "SPEC-UNSEEN-V3",
+  "provider": "Poly Haven",
+  "license": "CC0-1.0",
+  "license_url": "https://polyhaven.com/license",
+  "selection_rule": [
+    "单个独立实物的摄影测量扫描件（CC0），不是同一物体拆件/旋转/缩放；",
+    "优先 rocks 分类下形制完整的独立岩石；",
+    "按 asset_id 字典序固定顺序，先到先用，不按未来 Lux3D 表现挑选；",
+    "名称中的 moon 只是 Poly Haven 合集名，不代表月球采样返回样品。"
+  ],
+  "pool": [
+    {"order": 1, "asset_id": "moon_rock_01", "note": "moon 合集，独立岩石扫描"},
+    {"order": 2, "asset_id": "moon_rock_02", "note": "moon 合集，独立岩石扫描"},
+    {"order": 3, "asset_id": "moon_rock_03", "note": "moon 合集，独立岩石扫描"},
+    {"order": 4, "asset_id": "moon_rock_04", "note": "moon 合集，独立岩石扫描"},
+    {"order": 5, "asset_id": "moon_rock_05", "note": "moon 合集，独立岩石扫描"},
+    {"order": 6, "asset_id": "moon_rock_06", "note": "moon 合集，独立岩石扫描"},
+    {"order": 7, "asset_id": "moon_rock_07", "note": "moon 合集，独立岩石扫描"},
+    {"order": 8, "asset_id": "rock_07", "note": "verdant_trail 合集，独立岩石扫描"},
+    {"order": 9, "asset_id": "rock_09", "note": "verdant_trail 合集，独立岩石扫描"},
+    {"order": 10, "asset_id": "stone_01", "note": "verdant_trail 合集，独立岩石扫描"},
+    {"order": 11, "asset_id": "rock_face_01", "note": "备用：岩壁类扫描，仅当形制适合单块放置时入选"},
+    {"order": 12, "asset_id": "boulder_01", "note": "备用：大型单体巨石扫描，可等比缩小"}
+  ],
+  "max_pool": 12,
+  "target_rocks": "8-10",
+  "note": "池上限 12 块；不足 8 块或凑不齐状态时按实际规模报告，不扩池硬凑。"
+}

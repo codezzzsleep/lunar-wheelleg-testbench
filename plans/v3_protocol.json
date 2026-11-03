@@ -1,0 +1,362 @@
+{
+  "schema": "v3-protocol/v1",
+  "version": "v3.0",
+  "frozen_at": "2026-11-03T05:00:00+08:00",
+  "spec": "SPEC_UNSEEN_V3_EXECUTION.txt",
+  "note": "先冻结规则再看 Lux3D 结果；只允许修实现错误并定向重跑受影响行，不允许看到生成结果后改入选规则。",
+  "assets": {
+    "rock_root": "assets/v3/rocks",
+    "source_pool": "plans/v3_sources.json",
+    "provider": "Poly Haven",
+    "license": "CC0-1.0",
+    "wheel_radius_m": 0.086,
+    "wheel_radius_source": "scripts/process_asset.py:17 WHEEL_R=0.086（go2w 轮半径实测）",
+    "levels_hr": [
+      1.4,
+      2.0,
+      2.6
+    ],
+    "level_index": [
+      0,
+      1,
+      2
+    ],
+    "capability_note": "初始三档 H/r=0.6/1.0/1.4 实测对现有 go2w 不产生轮接触：轨道 0.284 m、轮宽 0.053 m，居中岩石（宽<0.19 m）整块落在两轮之间，R1/S1/D1 结局与空场逐项相同（见 runs/v3/calibration/contact_sweep.json）。按 SPEC §4.4“最终由完整真值的越过类动作实跑决定”，在不改变等比缩放规则的前提下把三档改为 1.4/2.0/2.6，并让岩石横向偏置进入轮迹；该改动发生在任何 Lux3D 生成之前，属能力标定而非事后择优选点。"
+  },
+  "grid": {
+    "rocks": [
+      "moon_rock_01",
+      "moon_rock_02",
+      "moon_rock_03",
+      "moon_rock_04",
+      "moon_rock_05",
+      "moon_rock_06",
+      "moon_rock_07",
+      "rock_07"
+    ],
+    "levels": [
+      0,
+      1,
+      2
+    ],
+    "views": [
+      0,
+      1
+    ],
+    "reserve_rocks": [
+      "rock_09",
+      "stone_01",
+      "rock_face_01",
+      "boulder_01"
+    ],
+    "reserve_reason": "主网格先按 8 块石头展开；备用石头只在主池形制不合格（非独立实物/无法落地/尺度不可达）时按来源顺序补位。",
+    "max_screen_states": 48,
+    "target_states": 24,
+    "target_states_range": [
+      20,
+      30
+    ]
+  },
+  "views": [
+    {
+      "id": 0,
+      "obstacle_y_m": 0.1,
+      "rock_yaw_deg": 0.0,
+      "robot_lateral_m": 0.0,
+      "note": "岩石左偏 0.10 m，前缘进入单侧轮迹；首视角正对"
+    },
+    {
+      "id": 1,
+      "obstacle_y_m": 0.15,
+      "rock_yaw_deg": 15.0,
+      "robot_lateral_m": 0.02,
+      "note": "岩石左偏 0.15 m + 转 15°；与 V0 不是同一张图、也不是同一物理状态"
+    },
+    {
+      "id": 2,
+      "obstacle_y_m": -0.12,
+      "rock_yaw_deg": -18.0,
+      "robot_lateral_m": -0.02,
+      "note": "备用第三视角（镜像侧）"
+    }
+  ],
+  "scene": {
+    "obstacle_x": 1.35,
+    "robot_start_x": 0.0,
+    "goal_x": 2.9,
+    "channel_half_m": 1.2,
+    "soil": "nominal",
+    "planning_soils": [
+      "nominal"
+    ],
+    "budget_s": 30.0,
+    "control_hz": 50.0,
+    "tip_deg": 60.0,
+    "settle_seconds": 1.0,
+    "terrain_seed": 0,
+    "reset_seed": 0,
+    "observation_cost_s": 0.0,
+    "clock_note": "S0 在固定观察位采集（reset 后的 0.6 s 停稳 + 0.6 s 制动保持，env_t≈1.2 s）；观测渲染不推进物理时钟；两臂共享同一个 S0 与同一 max_seconds=30 s，不重置。"
+  },
+  "cameras": {
+    "planning": {
+      "local_pos": [
+        0.42,
+        0.0,
+        0.0
+      ],
+      "pitch_deg": -25.0,
+      "fovy_deg": 70.0,
+      "width": 1600,
+      "height": 1200,
+      "role": "公共观测 O、V、公共可见量、配准目标的唯一来源",
+      "unchanged_between_arms": true
+    },
+    "generation": {
+      "same_optical_center_and_orientation": true,
+      "same_fovy_as_planning": true,
+      "aspect": 1.3333333333,
+      "target_object_px": 640.0,
+      "min_height_px": 1536,
+      "max_height_px": 8192,
+      "why": "同一光心/朝向/视场，只提高渲染分辨率，保证原生目标高度≥512 px（目标 640），再裁切上传；不新增观察角度、不改变可见区域，也避免窄视场裁断目标。",
+      "resolution_note": "目标在原生渲染里 ≥512 px（目标 640）；分辨率按渲染后实测迭代提高，上限 8192 高，必要时逐张串行渲染，避免并行 OOM。"
+    }
+  },
+  "visibility": {
+    "depth_noise_sigma_m": 0.002,
+    "depth_noise_seed": 12345,
+    "free_epsilon_m": 0.004,
+    "band_m": 0.006,
+    "shell_offset_voxels": 0.5,
+    "pitch_m": 0.002,
+    "grid_margin_m": 0.02,
+    "grid_hidden_extent_m": 0.4,
+    "grid_max_voxels": 12000000,
+    "mask_dilate_px": 0,
+    "min_mask_px": 400,
+    "convention": "0=未知 1=测量带 2=已知自由；V 只由观测深度在测量带内、按像素掩码生成，厚度有限，不向未知区无限挤出。",
+    "grid_note": "x 从可见前缘向后 0.40 m（或 1.1×可见最大边）、y ±(W_vis/2+0.10~0.35W_vis)、z 到 H_vis+0.07~0.30H_vis；栅格只由观测决定。"
+  },
+  "screen": {
+    "order": "按 (rock 来源顺序, level 升序, view 升序) 取样，先到先得",
+    "rule": "hidden_sensitive AND complete_feasible",
+    "hidden_sensitive": "在同一 S、同一动作集/控制器、nominal 土壤、同一时间预算与代价规则下，分别用真值完整体 T 与观测体 V 规划；两动作不同 或 两动作在完整真值上的三结局不同。",
+    "complete_feasible": "完整真值下至少有一个越过类动作实测 pass。",
+    "rounding": "浮点比较用登记值；阈值不参与判定。",
+    "no_truth_leak": "筛选阶段不加载任何 Lux3D 候选/结果；机器人观测、配准、候选处理、FULL/OBS_ONLY 规划不读隐藏真值。",
+    "stop": "12 块池仍凑不齐 20 状态/8 岩石时停止筛选并报告实际规模，不改规则硬凑。"
+  },
+  "inputs": {
+    "classes": [
+      "A",
+      "B",
+      "C"
+    ],
+    "repeats_per_class": 2,
+    "candidates_per_view": 6,
+    "first_candidate": "A1",
+    "upload_px": 1536,
+    "tight_pad_frac": 0.1,
+    "context_pad_frac": 0.6,
+    "min_native_px": 512,
+    "class_definition": {
+      "A": "真实纹理与光影的紧裁剪（同一张生成图的真实像素）",
+      "B": "同一次图像的掩码合成图，保留目标内部真实颜色/阴影，不伪造几何",
+      "C": "同一次完整 RGB 的较大裁剪，保留真实地面上下文"
+    },
+    "no_best_pick": "三类输入不预设优劣，全部保留；不事后只挑最好的单候选。",
+    "note_pad": "C 的裁剪要在 1024 的上传图里仍保住目标 ≥512 px（目标≈55% 画面），因此上下文外扩 25%，不是纯色补边。"
+  },
+  "generation": {
+    "provider": "Lux3D",
+    "endpoint": "https://api.aholo3d.cn",
+    "mode": "img-to-3d",
+    "version": "G1-Turbo",
+    "face_count": 30000,
+    "concurrency": 4,
+    "identity": "sha256(img_bytes)→有序图片 SHA + version + face_count + repeat_idx",
+    "on_timeout": "uncertain：先查询，不重复 create",
+    "on_failure": "不自动重提；记 failed，不补新任务",
+    "credits_upper_per_task": 20,
+    "budget_credits": 500,
+    "ledger": "runs/v3/generation/ledger.jsonl"
+  },
+  "registration": {
+    "coarse": "align24 24 朝向 + 多尺度初值，保留 top-k 不同朝向候选（不只精修同一朝向）",
+    "fine": "观测点云 ↔ 候选从该视角可见表面的多尺度鲁棒 ICP：10/5/2.5 mm 三级点云、点到面、Huber 核、只求刚体 + 正等比尺度",
+    "scales": [
+      0.01,
+      0.005,
+      0.0025
+    ],
+    "huber_delta_m": [
+      0.03,
+      0.012,
+      0.005
+    ],
+    "iterations": [
+      18,
+      14,
+      10
+    ],
+    "rays_per_level": [
+      2500,
+      6000,
+      12000
+    ],
+    "scale_bounds": [
+      0.5,
+      2.0
+    ],
+    "final_matrix": "唯一放置：评估、导出、融合、碰撞全部用同一个 M；不再贴地/缩放一次",
+    "known_answer": "真实扫描网格施加已知正尺度与刚体变换，只给渲染的可见观测，走同一生产链恢复；至少两块形状、多个初值",
+    "diagnostic_only": [
+      "IoU",
+      "P95",
+      "visible_median_mm"
+    ],
+    "gate": "不设形状准入；只排除内容身份错/矩阵无效/无法渲染/度量异常，并记可复算原因",
+    "surface_samples": 40000,
+    "method": "投影式多尺度鲁棒 ICP：候选表面采样点投到同一相机，逐像素取最近表面点与观测点云对应，Huber 核，只解刚体 + 粗值附近 ±8% 的正等比尺度",
+    "scale_note": "尺度由粗搜索按可见高度/宽度估计，ICP 只解刚体；部分可见面对相似尺度是病态的，自由优化会系统性缩小物体（已实测）。",
+    "polish_rounds": 4,
+    "polish_samples": 20000,
+    "coarse_yaw_step_deg": 5.0,
+    "polish_yaw_step_deg": 2.0
+  },
+  "fusion": {
+    "version": "v3.1-common-observed",
+    "grid": "每个状态一个冻结栅格，只由公共观测 O 决定；所有候选/OBS_ONLY/真值共用",
+    "space": "F=已知自由 B=测量带 U=未知；无效深度/视野外/相机后方默认未知",
+    "V": "公共观测壳层（有限厚度，位于测量误差邻域）",
+    "FULL": "V ∪ (aligned_parent ∩ U)",
+    "OBS_ONLY": "V",
+    "rules": [
+      "V 与候选无关，逐体素在所有 FULL/OBS_ONLY 之间完全一致",
+      "删除生成未知区后不得再做 largest_component/prune_components/补洞/闭合/重贴地/换栅格",
+      "自由空间不得被生成实体占据：assert (FULL ∩ F) == 0",
+      "多候选用独立几何，不做候选实体并集"
+    ],
+    "assertions": [
+      "V_shared",
+      "diff_subset_of_U",
+      "F_clear",
+      "OBS_ONLY_equals_V"
+    ]
+  },
+  "collision": {
+    "representation": "box union（由同一占据直接生成，不经网格来回转换）",
+    "pitch_m": 0.002,
+    "fine_reference": "mesh/CoACD 参考表示",
+    "decision_equivalence": "对相关动作比较参考细表示与部署表示的可行集与选择；分歧则该资产用参考表示并标 representation_sensitive",
+    "no_gate": "不因占据 IoU 未到 0.95 自动拒绝",
+    "occupancy_pitch_m": 0.002,
+    "box_downsample": 2,
+    "box_pitch_m": 0.004,
+    "note": "占据在 2 mm 冻结栅格上融合；构建碰撞盒时按 2×2×2 取 any 降到 4 mm，再由 box union 合并。粗细由决策等价检验（representation_sensitive）判断，不以 IoU 0.95 作准入。"
+  },
+  "planning": {
+    "actions": [
+      "R1",
+      "R2",
+      "L1",
+      "L2",
+      "S1",
+      "D1",
+      "D2",
+      "A0"
+    ],
+    "applicability": "actions/applicability/v2（只读公开可见量）",
+    "majority": "votes(a)=sum_j safe_j(a) ≥ floor(n/2)+1；n=6 需 4 票，n=4 需 3 票，n=2 需 2 票",
+    "worst": "worst 规则要求 n/n 票",
+    "first": "固定首候选 A1（处理失败不换 A2，记 pipeline_failure）",
+    "cost": "每候选成功成本=真实执行秒数，失败=60；对候选取均值；按票数较多、固定动作顺序破平局",
+    "no_vote": "无过票动作 → A0；n=0 单独写 no_compatible_candidate",
+    "dedupe": "归一到相同几何内容的任务只算一个独立几何票，任务分母保留；记 n_tasks/n_unique_geometries",
+    "state_mode": "预演在独立候选环境投射状态（mode=project，标 projected）；正式执行在同一真值环境 same_scene 续行"
+  },
+  "execution": {
+    "outcomes": {
+      "pass": "真实完成通行（reason=success）",
+      "safe_stop": "A0 且实测停稳（reason=abort）",
+      "physical_failure": "翻覆/卡死/通行超时/越界/出场地",
+      "pipeline_failure": "加载/计算/度量错误（不写 safe_stop，也不写机器人失败）"
+    },
+    "error_layers": [
+      "risk_underestimate",
+      "over_conservative"
+    ],
+    "budget": "两臂各自从同一个 S0 恢复到同一真值、独立执行；不 reset、不重新出生、不多给 30 s"
+  },
+  "hidden_error": {
+    "roi": "首视角 U 与所有预登记可通行动作的几何通行走廊/轮迹/绕行回位区相交",
+    "corridor_half_width_m": 0.16,
+    "sample_step_m": 0.002,
+    "A_hidden_occupancy": [
+      "missing_rate",
+      "overfill_rate",
+      "iou",
+      "truth_hidden_voxels",
+      "eval_domain_voxels"
+    ],
+    "B_path_top": [
+      "mae_mm",
+      "p95_mm",
+      "over_mm",
+      "under_mm",
+      "profile"
+    ],
+    "C_back_structure": [
+      "rear_edge_x_error_mm",
+      "length_error_mm",
+      "back_drop_mm",
+      "drop_position_error_mm",
+      "missing"
+    ],
+    "obs_only_assumption": "OBS_ONLY 没有物体的格在物理规划中等同可通行地面；顶面计分按公共地面高处理，并另报无隐藏表面比例",
+    "no_hiding_missing": "不对预测/真值重叠部分单独算误差；空预测仍承担遗漏误差"
+  },
+  "observe": {
+    "max_states": 4,
+    "priority": [
+      "first 或 FULL 多数出现错误安全预测优先",
+      "其次安全停下但真值可通行",
+      "再按固定状态 ID 排序"
+    ],
+    "trigger_rule": "由候选决策/安全集明显分歧决定，规则先写入协议；不得先看真实成功再伪造触发",
+    "arms": {
+      "A": "真实移动到 S1，但只用 V0 信息规划/续行",
+      "B": "同一个 S1，用 V0+V1 筛选/更新后规划/续行",
+      "C": "从 S0 用 V0 直接行动"
+    },
+    "two_view_candidates": "最多 2 份两图候选 imgs=[V0,V1]，不传 img，显式 version，记录有序图 SHA"
+  },
+  "media": {
+    "resolution": [
+      1920,
+      1080
+    ],
+    "fps": 30,
+    "no_ui": true,
+    "shots": [
+      "establishing",
+      "robot_view_and_upload",
+      "lux3d_process",
+      "candidate_turntable",
+      "observed_vs_candidate_overlay",
+      "rehearsal_grid",
+      "full_vs_obs_only",
+      "truth_reveal",
+      "look_again",
+      "closing_wide"
+    ],
+    "truth_rule": "正例从实际结果挑 1–2 个，另 1 个边界；没有正例就用可运行完整链与失败解释，不改轨迹制造救命画面"
+  },
+  "package": {
+    "max_mib": 300,
+    "offline_default": true,
+    "online_optional": true
+  },
+  "revision_policy": "只允许修实现错误；受影响行标 void 后定向重跑，并在 run 记录里写明原因。"
+}

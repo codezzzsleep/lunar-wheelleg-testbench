@@ -1,0 +1,56 @@
+{
+  "schema": "v3-selected/v1",
+  "protocol": "plans/v3_protocol.json",
+  "selection_rule": "hidden_sensitive AND complete_feasible，按来源顺序取样",
+  "funnel": {
+    "n_pool_rocks": 8,
+    "n_states_planned": 48,
+    "n_states_captured": 48,
+    "n_complete_feasible": 44,
+    "n_hidden_sensitive": 23,
+    "n_selected": 22,
+    "rocks_in_selection": [
+      "moon_rock_01",
+      "moon_rock_02",
+      "moon_rock_03",
+      "moon_rock_04",
+      "moon_rock_05",
+      "moon_rock_06",
+      "moon_rock_07",
+      "rock_07"
+    ],
+    "layers": {
+      "action_only": 18,
+      "none": 25,
+      "action_and_outcome": 5
+    },
+    "exclusions": {
+      "not_hidden_sensitive": 22,
+      "no_feasible_traversal": 4
+    }
+  },
+  "selected": [
+    "moon_rock_01_h0v0",
+    "moon_rock_01_h0v1",
+    "moon_rock_01_h2v0",
+    "moon_rock_02_h0v1",
+    "moon_rock_02_h2v0",
+    "moon_rock_02_h2v1",
+    "moon_rock_03_h1v0",
+    "moon_rock_03_h2v1",
+    "moon_rock_04_h0v1",
+    "moon_rock_04_h1v0",
+    "moon_rock_05_h1v0",
+    "moon_rock_05_h1v1",
+    "moon_rock_05_h2v0",
+    "moon_rock_05_h2v1",
+    "moon_rock_06_h1v0",
+    "moon_rock_06_h1v1",
+    "moon_rock_06_h2v1",
+    "moon_rock_07_h0v1",
+    "moon_rock_07_h2v0",
+    "rock_07_h0v0",
+    "rock_07_h1v0",
+    "rock_07_h1v1"
+  ]
+}

@@ -84,3 +84,8 @@
 | `runs/v3/stage003/s4_state3` | v3-climb-front2/v2 | 通过 | blocked_at=None, phases=26, ok_phases=26 |
 | `runs/v3/stage003/s5_wheel` | v3-wheel-compare/v1 | — | actions=6, ok_actions=0, unified_actions=0 |
 | `runs/v3/stage003/s5_wheel_rigid` | v3-wheel-compare/v1 | — | actions=6, ok_actions=0, unified_actions=0 |
+| `runs/v3/stage006/calib` | stage6-calib/v1 | 通过 | targets=3, all_stable=true, clearance_gain up to 0.0594 |
+| `runs/v3/stage006/rock5` | stage6-rock/v1 | 有效对照 | 0.30 m: stance chassis contact, body pass 26.8 s |
+| `runs/v3/stage006/matrix2` | stage6-matrix/v1 | 通过 | chosen=D1 7.9 s; BODY pass 19.38 s, chassis_contacts=0 |
+| `runs/v3/stage006/matrix_032` | stage6-matrix/v1 | 失败 | 0.32 m: BODY blocked, chassis_contacts=59 |
+| `runs/v3/stage006/matrix_030_obs` | stage6-matrix/v1 | 通过 | OBS hold-raised BODY 28.58 s; chosen=D1 |

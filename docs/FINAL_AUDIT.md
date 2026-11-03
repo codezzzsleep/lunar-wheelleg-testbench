@@ -19,6 +19,10 @@
 - `scripts/v3_consistency.py`：**15/15 通过**。
 - git 工作区：tracked-dirty **0**；HEAD `452b78fcfff65844768a13374828d388bceff7b3`。
 
+## 链接检查
+
+- `scripts/v3_link_check.py`：docs 中 6 个相对链接，缺失 0（`docs/LINK_CHECK.md`）。
+
 ## 仍成立的外部阻塞
 
 - `dist/v3_bundle` 旧批次；`plans/unseen_delivery_v5.json` 与 `build_delivery_v5.py`

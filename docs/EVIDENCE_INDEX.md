@@ -127,3 +127,4 @@
 | `runs/v3/stage012/registered/registration.json` | stage8-registration/v1 | 阴性 | six GLBs IoU 0.617-0.811, depth P95 52.9-109.1 -> still incompatible |
 | `runs/v3/stage012/fusion/fusion_summary.json` | stage8-fusion-v2/v1 | 完成 | new FULL shas, hidden rears 1.041-1.127 m |
 | `runs/v3/stage012/soft_soil_min/traction_test.json` | soil-traction | 完成 | first minimal soft-soil traction run (not full escape) |
+| `runs/v3/stage012/compare/ref/result.json` | stage12-compare/v1 | 阴性 | FULL votes R2 6, D2 5, L2 6, BODY 6 -> L2; OBS L2 1; both truth exec physical_failure 40.6 s |

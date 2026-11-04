@@ -47,7 +47,8 @@ def main():
             r['candidate']=t
         rows[t]=rr; geom[t]=sha
         print(t,'done',round(rear,3),flush=True)
-    dec=v3_core.aggregate(sum(rows.values(),[]),TASKS,geom,'majority',proto,threshold_mode='majority',options=actions)
+    applic={a:(a!='CLIMB', None if a!='CLIMB' else 'climb_not_applicable') for a in actions}
+    dec=v3_core.aggregate(sum(rows.values(),[]),TASKS,geom,'majority',proto,threshold_mode='majority',applic=applic,options=actions)
     # OBS 单臂
     occ_obs=V; d=out/'obs'; d.mkdir(parents=True,exist_ok=True)
     spec,env,osha=M.make_scene(M.resample_walls(occ_obs,o,p),d,'obs'); M.restore_common(env,snap,s0,mode='project',ref=s0_ref)
@@ -59,7 +60,7 @@ def main():
             c=S6M.chassis_contacts_from_record(tref); r['chassis_contacts']=c
             if c>0 and r.get('success'): r['success']=False; r['outcome']='chassis_contact'
         r['candidate']='OBS'
-    dec_obs=v3_core.aggregate(orows,['OBS'],{},'majority',proto,threshold_mode='majority',options=actions)
+    dec_obs=v3_core.aggregate(orows,['OBS'],{},'majority',proto,threshold_mode='majority',applic=applic,options=actions)
     # 执行：多数 FULL 与 OBS 都在真值场景
     res={'scenario':a.scenario,'full_votes':dec['votes'],'full_chosen':dec['chosen'],'obs_votes':dec_obs['votes'],'obs_chosen':dec_obs['chosen'],'per_candidate':{t:[{'action':r['action'],'success':r['success'],'cost':r['cost']} for r in rows[t]] for t in TASKS}}
     for arm,ch,plan in (('full',dec['chosen'],fsum['plans']['full']),('obs',dec_obs['chosen'],obs_plan)):

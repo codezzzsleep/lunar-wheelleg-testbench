@@ -1,6 +1,9 @@
 {
   "schema": "stage8-cache-entry-verification/v1",
   "entry": "stage8_matrix2.py --verify-only",
+  "mode": "read_only",
+  "physics_rerun": false,
+  "collision_built": false,
   "FULL": {
     "chosen": "BODY_CLEARANCE",
     "votes": {
@@ -13,7 +16,17 @@
       "CLIMB": 0,
       "BODY_CLEARANCE": 5
     },
-    "cached_chosen": "BODY_CLEARANCE"
+    "cached_chosen": "BODY_CLEARANCE",
+    "cached_votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 2,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 5
+    }
   },
   "OBS": {
     "chosen": "BODY_CLEARANCE",
@@ -27,8 +40,29 @@
       "CLIMB": 0,
       "BODY_CLEARANCE": 1
     },
-    "cached_chosen": "BODY_CLEARANCE"
+    "cached_chosen": "BODY_CLEARANCE",
+    "cached_votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 0,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 1
+    }
   },
   "equal": true,
-  "physics_rerun": false
+  "inputs_unchanged": true,
+  "input_sha256": {
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632564.jsonl": "e888d88d39d0d7f89cd8ca6c3db382cb0ca9cbd94f03577326c834ada04a8121",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632603.jsonl": "b7de2a3c3adb2c5bc31cedc9b3462553a790aecd804f849db96b48c45213b50f",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632618.jsonl": "661b696c1a758789ed4641c281b8f72991860ae127548fe1436d4245a2cd641a",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632621.jsonl": "efcf42a7edc01521c8eea4dd235803fc97a9abee1dc42bc9f0b3cb38a46efbf8",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632624.jsonl": "35d6d38107643f8b0aa9f5367cc9b2588bd0fe03b6a7abf9fad76c98a8715070",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/full_4632627.jsonl": "84742198829028147b94644e2729086bd044b4f9d42726ae9684468994c9d2ec",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/cache/obs.jsonl": "a12143aaef906143799a4f3452fcc8a522eb2443c3e640e96d3f6d93ecf2fa17",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/decision_FULL.json": "f46fe2dceba84f972303cf58b5ed0a090776e768ea6272212ea99e16a0ac89fa",
+    "/workspace/lunar-lab/runs/v3/stage008/formal_v2/decision_OBS.json": "9f7fd5790132f11e68f00e80bdbad2b44b109294be302435c45356d7e1fc49b8"
+  }
 }

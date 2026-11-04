@@ -98,6 +98,68 @@ def restore_common(env, snap, s0_hash, mode='project', ref=None):
     return None
 
 
+
+def verify_only_run(out, truth, fus, cfg, proto):
+    """只读：配置、身份缓存、既有决策；不建碰撞、不启仿真、不写决策。"""
+    out = pathlib.Path(out)
+    tm = json.loads((pathlib.Path(truth) / 'truth_manifest.json').read_text())
+    fsum = json.loads((pathlib.Path(fus) / 'fusion_summary.json').read_text())
+    actions = cfg['actions']; plans = fsum['plans']
+    applic_all = {}
+    for act in actions:
+        if act in ('CLIMB', 'BODY_CLEARANCE', 'A0'):
+            applic_all[act] = True if act != 'CLIMB' else False
+        else:
+            applic_all[act] = bool(v3_core.ACT.applicable(
+                act, {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30},
+                float(proto['scene']['channel_half_m']))[0])
+    def app_from(applic):
+        return {a: (bool(applic[a]), None) for a in actions}
+    psha = C.protocol_sha(root=ROOT)
+    files = sorted((out / 'cache').glob('*.jsonl')) + [out / 'decision_FULL.json', out / 'decision_OBS.json']
+    before = {str(f): C.sha(f) for f in files if f.exists()}
+    rows = {}; app = None
+    for tid in TASKS:
+        ident = C.make_identity(s0_hash=tm['s0_state_hash'],
+                                scene_sha=fsum['candidates'][tid]['full_sha'],
+                                plan_id=plans['full']['plan_id'], actions=actions,
+                                applic=applic_all, protocol=psha)
+        rr, applic = C.read_cache(out / 'cache' / f'full_{tid}.jsonl', ident)
+        rows[tid] = rr
+        if app is None:
+            app = app_from(applic)
+    ident_obs = C.make_identity(s0_hash=tm['s0_state_hash'], scene_sha=tm['v_sha'],
+                                plan_id=plans['obs']['plan_id'], actions=actions,
+                                applic=applic_all, protocol=psha)
+    obs_rows, applic_obs = C.read_cache(out / 'cache' / 'obs.jsonl', ident_obs)
+    app_obs = app_from(applic_obs)
+    geom = {t: fsum['candidates'][t]['full_sha'] for t in TASKS}
+    dec_full = v3_core.aggregate(sum(rows.values(), []), TASKS, geom, 'majority', proto,
+                                 threshold_mode='majority', applic=app, options=actions)
+    dec_obs = v3_core.aggregate(obs_rows, ['OBS'], {}, 'majority', proto,
+                                threshold_mode='majority', applic=app_obs, options=actions)
+    prev_full = json.loads((out / 'decision_FULL.json').read_text())
+    prev_obs = json.loads((out / 'decision_OBS.json').read_text())
+    after = {str(f): C.sha(f) for f in files if f.exists()}
+    equal = (dec_full['chosen'] == prev_full['decision']['chosen']
+             and dec_full['votes'] == prev_full['decision']['votes']
+             and dec_obs['chosen'] == prev_obs['decision']['chosen']
+             and dec_obs['votes'] == prev_obs['decision']['votes'])
+    rep = {'schema': 'stage8-cache-entry-verification/v1', 'entry': 'stage8_matrix2.py --verify-only',
+           'mode': 'read_only', 'physics_rerun': False, 'collision_built': False,
+           'FULL': {'chosen': dec_full['chosen'], 'votes': dec_full['votes'],
+                    'cached_chosen': prev_full['decision']['chosen'],
+                    'cached_votes': prev_full['decision']['votes']},
+           'OBS': {'chosen': dec_obs['chosen'], 'votes': dec_obs['votes'],
+                   'cached_chosen': prev_obs['decision']['chosen'],
+                   'cached_votes': prev_obs['decision']['votes']},
+           'equal': equal, 'inputs_unchanged': before == after,
+           'input_sha256': before}
+    (out / 'cache_entry_verification.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
+    print(json.dumps(rep, ensure_ascii=False))
+    return 0 if (equal and before == after) else 1
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--verify-only', action='store_true',
@@ -110,6 +172,8 @@ def main():
     out = (ROOT / a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     cfg = json.loads((ROOT / 'configs/stage6_protocol.json').read_text())
     proto = json.loads((ROOT / 'plans/v3_protocol.json').read_text())
+    if a.verify_only:
+        return verify_only_run(out, (ROOT / a.truth).resolve(), (ROOT / a.fusion).resolve(), cfg, proto)
     tm = json.loads((truth / 'truth_manifest.json').read_text())
     snap = json.loads((truth / 'state_snapshot.json').read_text())
     s0 = tm['s0_state_hash']
@@ -222,28 +286,12 @@ def main():
                 if c > 0 and r.get('success'):
                     r['success'] = False; r['outcome'] = 'chassis_contact'; r['reason'] = 'chassis_obstacle_contact'
             r['candidate'] = tid
-        save_rows(cache_i, rr)
+        if not a.verify_only:
+            C.write_cache(cache_i, ident_i, rr)
         rows_all += rr
     geom = {t: fsum['candidates'][t]['full_sha'] for t in TASKS if t in fsum['candidates']}
     dec_full = v3_core.aggregate(rows_all, list(geom.keys()), geom, 'majority', proto,
                                  threshold_mode='majority', applic=app, options=actions)
-    if a.verify_only:
-        prev_full = json.loads((out / 'decision_FULL.json').read_text()) if (out / 'decision_FULL.json').exists() else None
-        prev_obs = json.loads((out / 'decision_OBS.json').read_text()) if (out / 'decision_OBS.json').exists() else None
-        ok = bool(prev_full and prev_obs
-                  and dec_full['chosen'] == prev_full['decision']['chosen']
-                  and dec_full['votes'] == prev_full['decision']['votes']
-                  and dec_obs['chosen'] == prev_obs['decision']['chosen']
-                  and dec_obs['votes'] == prev_obs['decision']['votes'])
-        rep = {'schema': 'stage8-cache-entry-verification/v1', 'entry': 'stage8_matrix2.py --verify-only',
-               'FULL': {'chosen': dec_full['chosen'], 'votes': dec_full['votes'],
-                        'cached_chosen': prev_full['decision']['chosen'] if prev_full else None},
-               'OBS': {'chosen': dec_obs['chosen'], 'votes': dec_obs['votes'],
-                       'cached_chosen': prev_obs['decision']['chosen'] if prev_obs else None},
-               'equal': ok, 'physics_rerun': False}
-        (out / 'cache_entry_verification.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
-        print(json.dumps(rep, ensure_ascii=False))
-        return 0 if ok else 1
     drec_full = v3_core.write_decision(out, {'state': {'state_id': 'stage8_full_aggregate'},
                                              'visible': {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30}},
                                        'FULL', rows_all, dec_full, {'plan': plans['full']})

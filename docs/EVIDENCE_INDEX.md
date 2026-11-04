@@ -107,3 +107,5 @@
 | `runs/v3/stage008/pack_manifest_release.json` | stage9-release-manifest/v1 | 通过 | runnable release bfa74cee..., demo 12974f5e..., archive 60a16a97... |
 | `runs/v3/stage008/traceability.json` | stage9-traceability/v1 | — | 56 cells + 2 exec links, post-hoc flags, missing fields listed |
 | `runs/v3/stage008/formal_v2/cache_entry_verification.json` | stage8-cache-entry-verification/v1 | 通过 | via entry --verify-only; FULL/OBS equal to cached decisions, no physics rerun |
+| `runs/v3/stage010/g1_summary.json` | g1-summary/v1 | 完成 | 6 scenarios; decision diff 0; both pass 5, both fail 1 |
+| `runs/v3/stage010/g2_summary.json` | g2-summary/v1 | 完成 | 6 candidates; hidden median 15.3-25.3 mm; 1/6 observation ambiguity |

@@ -1,0 +1,76 @@
+{
+  "schema": "g2-summary/v1",
+  "candidates": [
+    {
+      "task": "4632564",
+      "n_plausible": 8,
+      "obs_c2t_best_mm": 17.655,
+      "obs_c2t_worst_mm": 20.296,
+      "spread_mm": 2.6409999999999982,
+      "ambiguous": false,
+      "ideal_c2t_median_mm": 18.222,
+      "ideal_c2t_p95_mm": 56.619
+    },
+    {
+      "task": "4632603",
+      "n_plausible": 6,
+      "obs_c2t_best_mm": 15.273,
+      "obs_c2t_worst_mm": 16.916,
+      "spread_mm": 1.6430000000000007,
+      "ambiguous": false,
+      "ideal_c2t_median_mm": 17.107,
+      "ideal_c2t_p95_mm": 57.386
+    },
+    {
+      "task": "4632618",
+      "n_plausible": 6,
+      "obs_c2t_best_mm": 23.752,
+      "obs_c2t_worst_mm": 25.325,
+      "spread_mm": 1.5730000000000004,
+      "ambiguous": false,
+      "ideal_c2t_median_mm": 19.806,
+      "ideal_c2t_p95_mm": 55.773
+    },
+    {
+      "task": "4632621",
+      "n_plausible": 8,
+      "obs_c2t_best_mm": 18.925,
+      "obs_c2t_worst_mm": 21.768,
+      "spread_mm": 2.843,
+      "ambiguous": false,
+      "ideal_c2t_median_mm": 17.907,
+      "ideal_c2t_p95_mm": 48.36
+    },
+    {
+      "task": "4632624",
+      "n_plausible": 4,
+      "obs_c2t_best_mm": 15.681,
+      "obs_c2t_worst_mm": 22.992,
+      "spread_mm": 7.311000000000002,
+      "ambiguous": true,
+      "ideal_c2t_median_mm": 16.515,
+      "ideal_c2t_p95_mm": 54.831
+    },
+    {
+      "task": "4632627",
+      "n_plausible": 4,
+      "obs_c2t_best_mm": 21.301,
+      "obs_c2t_worst_mm": 23.12,
+      "spread_mm": 1.8190000000000026,
+      "ambiguous": false,
+      "ideal_c2t_median_mm": 18.582,
+      "ideal_c2t_p95_mm": 67.401
+    }
+  ],
+  "n_candidates": 6,
+  "n_ambiguous": 1,
+  "observation_hidden_error_range_mm": [
+    15.273,
+    25.325
+  ],
+  "ideal_hidden_error_range_mm": [
+    16.515,
+    19.806
+  ],
+  "note": "truth-aided ICP is diagnostic only; hidden surface error measured on the same U region; candidate meshes are open shells, so shell-vs-solid voxel IoU is not used as the error"
+}

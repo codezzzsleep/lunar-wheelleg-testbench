@@ -1,0 +1,200 @@
+{
+  "schema": "g1-summary/v1",
+  "denominator": 6,
+  "scenarios": [
+    {
+      "scenario": "ref_full",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "5aaab4e16df304dee2fdad7e12d390f0",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.42,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    },
+    {
+      "scenario": "rear_short",
+      "hidden_rear_x": 1.003,
+      "truth_sha": "e51b1f1b79c7a2bb1f188366685a5f18",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.6,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "8bc085729394ed07"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.76,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    },
+    {
+      "scenario": "rear_mid",
+      "hidden_rear_x": 1.079,
+      "truth_sha": "4f9a52ecaa4986fdc7920544eadd3d42",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "517e9d9b3a53e20a"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.66,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    },
+    {
+      "scenario": "rear_low",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "de9259ca9e1163bebb61a020a8eee46f",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.48,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 30.62,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    },
+    {
+      "scenario": "rear_high",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "18d9675cb768f5194ca9cb388a7f8c14",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "physical_failure",
+          "t_end": 120.022,
+          "chassis_contacts": 0,
+          "safe_pass": false,
+          "reached": false,
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "physical_failure",
+          "t_end": 120.022,
+          "chassis_contacts": 0,
+          "safe_pass": false,
+          "reached": false,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    },
+    {
+      "scenario": "rear_long",
+      "hidden_rear_x": 1.235,
+      "truth_sha": "be54c36e01b5a92cec83e840a84b6986",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 47.16,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "e30bf1abdcb78acc"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 47.28,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false
+    }
+  ],
+  "counts": {
+    "both_safe_pass": 5,
+    "full_only": 0,
+    "obs_only": 0,
+    "neither": 1
+  },
+  "decision_diff": 0,
+  "conclusion": "six controlled hidden-rear variants from the real scan; completion and V-only arms chose the same action and reached the same outcome in all six. No scene in this family required the generated backside for success; rear_high fails in both arms. This does not generalise beyond this scene family."
+}

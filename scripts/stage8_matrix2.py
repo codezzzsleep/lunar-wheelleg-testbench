@@ -14,6 +14,7 @@ import terrain  # noqa: E402
 import v7_soil  # noqa: E402
 import wheelleg_env  # noqa: E402
 import stage6_matrix as S6M  # noqa: E402
+import stage8_cache as C  # noqa: E402
 
 TASKS = ['4632564', '4632603', '4632618', '4632621', '4632624', '4632627']
 PITCH = 0.004
@@ -47,6 +48,7 @@ def rows_cache(path):
 
 
 def load_rows(path):
+    """旧的无身份缓存：只用于探测，不再作为可复用输入。"""
     if not pathlib.Path(path).exists():
         return None
     return [json.loads(l) for l in open(path)]
@@ -98,6 +100,8 @@ def restore_common(env, snap, s0_hash, mode='project', ref=None):
 
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument('--verify-only', action='store_true',
+                    help='只经本入口读取身份缓存并重聚合，与已有 decision 对比，不重跑物理')
     ap.add_argument('--truth', default='runs/v3/stage008/truth_v2')
     ap.add_argument('--fusion', default='runs/v3/stage008/fusion_v2')
     ap.add_argument('--out', default='runs/v3/stage008/formal_v2')
@@ -121,19 +125,43 @@ def main():
     fsum = json.loads((fus / 'fusion_summary.json').read_text())
     plans = fsum['plans']
     actions = cfg['actions']
+    vis = {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30}
+    applic_all = {}
+    for act in actions:
+        if act in ('CLIMB', 'BODY_CLEARANCE', 'A0'):
+            applic_all[act] = True if act != 'CLIMB' else False
+        else:
+            applic_all[act] = bool(v3_core.ACT.applicable(act, vis, float(proto['scene']['channel_half_m']))[0])
+    psha = C.protocol_sha(root=ROOT)
+    def app_from(applic):
+        return {a: (bool(applic[a]), None) for a in actions}
     obs_core = {'spec': obs_spec, 'snapshot': snap,
                 'visible': {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30},
                 'state': {'state_id': 'stage8_obs_v2', 'state_hash': s0}}
-    cache_obs = out / 'rows_obs.jsonl'
-    rows_obs = load_rows(cache_obs)
+    ident_obs = C.make_identity(s0_hash=s0, scene_sha=tm['v_sha'],
+                                plan_id=plans['obs']['plan_id'], actions=actions,
+                                applic=applic_all, protocol=psha)
+    cache_obs = out / 'cache' / 'obs.jsonl'
+    rows_obs = None; app = None
+    if cache_obs.exists() and not a.verify_only:
+        rows_obs, applic = C.read_cache(cache_obs, ident_obs)
+        app = app_from(applic)
+    elif a.verify_only:
+        if not cache_obs.exists():
+            legacy = (out / 'rows_obs.jsonl').exists()
+            print(json.dumps({'refused': 'identity-less legacy cache' if legacy else 'missing identity cache',
+                              'arm': 'OBS', 'exit': 2}, ensure_ascii=False))
+            return 2
+        rows_obs, applic = C.read_cache(cache_obs, ident_obs)
+        app = app_from(applic)
     if rows_obs is None:
+        if (out / 'rows_obs.jsonl').exists():
+            print('refusing identity-less legacy cache rows_obs.jsonl')
         rows_obs, app = v3_core.rehearse_on_spec(obs_core, obs_spec, snap, proto, mode='project',
                                                  options=actions, body_plan=plans['obs'],
                                                  budget=float(cfg['budget_s']),
                                                  record_cells=True, record_root=out / 'record_obs')
-        save_rows(cache_obs, rows_obs)
-    else:
-        app = {x: (True, None) for x in actions}
+        C.write_cache(cache_obs, ident_obs, rows_obs)
     for r in rows_obs:
         tref = r.get('trajectory_ref')
         if tref:
@@ -158,13 +186,34 @@ def main():
         core = {'spec': spec, 'snapshot': snap,
                 'visible': {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30},
                 'state': {'state_id': f'stage8_full_{tid}', 'state_hash': s0}}
-        cache_i = out / f'rows_full_{tid}.jsonl'
-        rr = load_rows(cache_i)
+        ident_i = C.make_identity(s0_hash=s0, scene_sha=fsum['candidates'][tid]['full_sha'],
+                                  plan_id=plans['full']['plan_id'], actions=actions,
+                                  applic=applic_all, protocol=psha)
+        cache_i = out / 'cache' / f'full_{tid}.jsonl'
+        rr = None
+        if not a.verify_only:
+            if cache_i.exists():
+                rr, applic_i = C.read_cache(cache_i, ident_i)
+                if app is None:
+                    app = app_from(applic_i)
+            else:
+                if (out / f'rows_full_{tid}.jsonl').exists():
+                    print(f'refusing identity-less legacy cache rows_full_{tid}.jsonl')
+        if rr is None and a.verify_only:
+            if not cache_i.exists():
+                legacy = (out / f'rows_full_{tid}.jsonl').exists()
+                print(json.dumps({'refused': 'identity-less legacy cache' if legacy else 'missing identity cache',
+                                  'candidate': tid, 'exit': 2}, ensure_ascii=False))
+                return 2
+            rr, applic_i = C.read_cache(cache_i, ident_i)
+            if app is None:
+                app = app_from(applic_i)
         if rr is None:
             rr, _ = v3_core.rehearse_on_spec(core, spec, snap, proto, mode='project',
                                              options=actions, body_plan=plans['full'],
                                              budget=float(cfg['budget_s']),
                                              record_cells=True, record_root=out / f'record_full_{tid}')
+            C.write_cache(cache_i, ident_i, rr)
         for r in rr:
             tref = r.get('trajectory_ref')
             if tref:
@@ -178,6 +227,23 @@ def main():
     geom = {t: fsum['candidates'][t]['full_sha'] for t in TASKS if t in fsum['candidates']}
     dec_full = v3_core.aggregate(rows_all, list(geom.keys()), geom, 'majority', proto,
                                  threshold_mode='majority', applic=app, options=actions)
+    if a.verify_only:
+        prev_full = json.loads((out / 'decision_FULL.json').read_text()) if (out / 'decision_FULL.json').exists() else None
+        prev_obs = json.loads((out / 'decision_OBS.json').read_text()) if (out / 'decision_OBS.json').exists() else None
+        ok = bool(prev_full and prev_obs
+                  and dec_full['chosen'] == prev_full['decision']['chosen']
+                  and dec_full['votes'] == prev_full['decision']['votes']
+                  and dec_obs['chosen'] == prev_obs['decision']['chosen']
+                  and dec_obs['votes'] == prev_obs['decision']['votes'])
+        rep = {'schema': 'stage8-cache-entry-verification/v1', 'entry': 'stage8_matrix2.py --verify-only',
+               'FULL': {'chosen': dec_full['chosen'], 'votes': dec_full['votes'],
+                        'cached_chosen': prev_full['decision']['chosen'] if prev_full else None},
+               'OBS': {'chosen': dec_obs['chosen'], 'votes': dec_obs['votes'],
+                       'cached_chosen': prev_obs['decision']['chosen'] if prev_obs else None},
+               'equal': ok, 'physics_rerun': False}
+        (out / 'cache_entry_verification.json').write_text(json.dumps(rep, ensure_ascii=False, indent=2))
+        print(json.dumps(rep, ensure_ascii=False))
+        return 0 if ok else 1
     drec_full = v3_core.write_decision(out, {'state': {'state_id': 'stage8_full_aggregate'},
                                              'visible': {'x_front': 0.834, 'W_vis': 0.275, 'H_vis': 0.30}},
                                        'FULL', rows_all, dec_full, {'plan': plans['full']})

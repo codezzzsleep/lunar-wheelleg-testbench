@@ -106,3 +106,4 @@
 | `runs/v3/stage009/demo/stage9_demo.mp4` | demo | — | five panels, 176.3 s, sha256 5dc71984..., from recorded data only |
 | `runs/v3/stage008/pack_manifest_release.json` | stage9-release-manifest/v1 | 通过 | runnable release bfa74cee..., demo 12974f5e..., archive 60a16a97... |
 | `runs/v3/stage008/traceability.json` | stage9-traceability/v1 | — | 56 cells + 2 exec links, post-hoc flags, missing fields listed |
+| `runs/v3/stage008/formal_v2/cache_entry_verification.json` | stage8-cache-entry-verification/v1 | 通过 | via entry --verify-only; FULL/OBS equal to cached decisions, no physics rerun |

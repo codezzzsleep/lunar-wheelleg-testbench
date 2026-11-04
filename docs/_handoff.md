@@ -222,6 +222,15 @@
 - 归档分支 `archive/stage008` 发布提交 `60a16a97…`，含 release 包与 demo 包；
   下载：`git clone -b archive/stage008 https://cnb.cool/ycyc755/lunar-lab-r1.git`。
 
+## STAGE009 冻结：生产入口缓存修复（2026-11-04）
+
+- `stage8_matrix2.py` 是**唯一有效的正式入口**（未废弃）；缓存命中不再把适用性全设 True：
+  统一读取 `cache/*.jsonl` 身份头（S0、几何 SHA、plan_id、协议 SHA、动作集、原适用性），
+  缺失或身份不匹配即拒绝；旧无身份 `rows_*.jsonl` 明确不复用（verify-only 下 exit 2）。
+- 经实际入口 `--verify-only` 重聚合已有矩阵：FULL（BODY 5、D2 2 → BODY）与 OBS（BODY 1）
+  均与缓存 decision 一致，`equal=true`、`physics_rerun=false`；未重跑物理、未新增验收框架。
+- Stage009 冻结：一个场景、一个 S0，两臂都通过（114.24/114.40 s），**想象收益尚未建立**；
+  不再打磨旧案例或展示视频。
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

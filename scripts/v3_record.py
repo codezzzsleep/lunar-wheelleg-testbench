@@ -36,6 +36,8 @@ FIELDS = {
     'wheel_brake': '0/1',
     'joint_torque': 'N*m (实际执行器)',
     'wheel_torque': 'N*m (实际执行器)',
+    'wheel_sinkage_m': 'm',
+    'wheel_slip_ratio': '1',
     'nav_target_y': 'm (机体横向目标)',
     'tilt_deg': 'deg',
     'n_contact': '1',
@@ -100,7 +102,8 @@ class Recorder:
         for k in keys:
             vals = [f.get(k) for f in self.buf]
             if k in ('action_raw', 'qpos', 'qvel', 'joint_target', 'joint_vel_target',
-                     'wheel_omega_target', 'wheel_brake', 'joint_torque', 'wheel_torque'):
+                     'wheel_omega_target', 'wheel_brake', 'joint_torque', 'wheel_torque',
+                     'wheel_sinkage_m', 'wheel_slip_ratio'):
                 arrs = [None if v is None else np.asarray(v, dtype=np.float32)
                         for v in vals]
                 shapes = {a.shape for a in arrs if a is not None}
@@ -202,6 +205,27 @@ def frame_from_env(env, skill, action_raw, steps, t, extra=None):
     except Exception:  # noqa: BLE001
         f['joint_torque'] = None
         f['wheel_torque'] = None
+    # 轮下陷与滑移率（仅平地可算；拿不到写 None 并登记 unavailable）
+    unavail = []
+    try:
+        import numpy as _np
+        rad = 0.086
+        bodies = [b for b in getattr(env, '_wheel_bodies', []) if b is not None]
+        zs = [float(env.data.xpos[b][2]) for b in bodies]
+        f['wheel_sinkage_m'] = [round(max(0.0, rad - z), 6) for z in zs] if zs else None
+        if f['wheel_sinkage_m'] is None: unavail.append('wheel_sinkage_m')
+        om = f.get('wheel_omega_target')
+        vx = float(env.data.qvel[0])
+        if om is not None and len(om):
+            surf = _np.asarray(om, float) * rad
+            denom = _np.maximum(_np.abs(surf), 0.05)
+            f['wheel_slip_ratio'] = [round(float((s - vx) / d), 4) for s, d in zip(surf, denom)]
+        else:
+            f['wheel_slip_ratio'] = None; unavail.append('wheel_slip_ratio')
+    except Exception:
+        f['wheel_sinkage_m'] = None; f['wheel_slip_ratio'] = None
+        unavail += ['wheel_sinkage_m', 'wheel_slip_ratio']
+    f['unavailable'] = unavail
     if extra:
         f.update(extra)
     return f

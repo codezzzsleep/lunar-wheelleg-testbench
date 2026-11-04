@@ -60,22 +60,36 @@ def main():
                 plan = {'raise_z': 0.06, 'ramp_steps': 100, 'speed': 0.15,
                         'lower_at_x': 1.165, 'end_x': round(float(spec.get('goal_x')) + offset, 3),
                         'stop_tilt_deg': 12.0, 'plan_id': 'stage11_unified'}
-                row = SB.run_body_clearance(env, plan, record_dir=d / 'record',
-                                            meta={'action': 'BODY', 'method': 'stage11_endpoint'})
+                import v3_record
+                rec = v3_record.Recorder(d / 'record', {'action': 'BODY',
+                                                       'method': 'stage11_endpoint'}, hz=50.0)
+                ctl = (d / 'record' / 'control.jsonl').open('w')
+                row = SB.run_body_clearance(env, plan, meta={'action': 'BODY'},
+                                            recorder=rec, control_file=ctl, close=False)
                 # 统一任务终点：底盘到达后继续以同一速度行驶，直到后轮越过 goal_x；
                 # 再制动并满足 settle，全部按 env 任务合同判定。
                 targets = {leg: dict(bc.STANCE) for leg in bc.LEG}
+                k_rec = 90000
                 while (not env.terminated and env.t < 120.0
                        and min(env._wheel_xs()) < float(spec.get('goal_x', 2.6)) + 0.02):
                     env.step_command(joint_targets_rad=targets,
                                      wheel_omega_rad_s=np.full(4, 0.15 / 0.086),
                                      wheel_mode='velocity')
+                    rec.add(v3_record.frame_from_env(env, None, [0, 0, 0], k_rec, env.t,
+                                                     extra={'phase': 'task_drive'}))
+                    ctl.write(json.dumps({'t': round(float(env.t), 5),
+                                          'phase': 'task_drive'}) + '\n'); k_rec += 1
+                k_rec = 100000
                 while not env.terminated and env.t < 120.0:
-                    # 刹车保持（避免零速控制滚回终点线以下），仍走 env.step 的任务检查
                     env.step_command(joint_targets_rad=targets, wheel_brake=np.ones(4, bool))
+                    rec.add(v3_record.frame_from_env(env, None, [0, 0, 0], k_rec, env.t,
+                                                     extra={'phase': 'task_settle'}))
+                    ctl.write(json.dumps({'t': round(float(env.t), 5), 'phase': 'task_settle',
+                                          'brake': True}) + '\n'); k_rec += 1
                 term = dict(getattr(env, 'last_termination', {}) or {})
                 success = term.get('reason') == 'success'
                 t_end = float(env.t)
+                ref = rec.close(); ctl.close()
             rec_dir = d / 'record'
             chunks = sorted(rec_dir.glob('chunk_*.npz'))
             q = np.concatenate([np.load(c)['qpos'] for c in chunks]) if chunks else None

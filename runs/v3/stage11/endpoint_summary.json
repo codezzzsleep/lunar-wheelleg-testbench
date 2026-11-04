@@ -1,12 +1,12 @@
 {
-  "schema": "stage11-endpoint-summary/v1",
+  "schema": "stage11-endpoint-summary/v2",
   "contract": {
     "goal_x": 2.6,
     "settle_s": 1.0,
     "channel_half_m": 1.2,
     "budget_s": 120.0,
-    "success": "env reason=success (min wheel x >= goal_x, in channel, stable 1 s)",
-    "source": "frozen scene_spec/scene contract; no new constants"
+    "success": "env reason=success via shared _task_check (min wheel >= goal_x, in channel, stable 1 s)",
+    "source": "frozen scene_spec; same check in step/step_command/brake"
   },
   "runs": {
     "ref_D2": {
@@ -25,10 +25,15 @@
       "min_wheel_x": 2.624,
       "chassis_contacts": 0,
       "t_start": 0.6,
-      "t_end": 120.02,
-      "cost_s": 119.42,
-      "success_env_contract": false,
-      "termination": {},
+      "t_end": 117.78,
+      "cost_s": 117.18,
+      "success_env_contract": true,
+      "termination": {
+        "reason": "success",
+        "t": 117.7799999999937,
+        "x": 2.833532120727532,
+        "tilt_deg": 0.09812494067633333
+      },
       "budget_s": 120.0
     },
     "len_short_D2": {
@@ -47,13 +52,17 @@
       "min_wheel_x": 2.623,
       "chassis_contacts": 0,
       "t_start": 0.6,
-      "t_end": 120.02,
-      "cost_s": 119.42,
-      "success_env_contract": false,
-      "termination": {},
+      "t_end": 116.82,
+      "cost_s": 116.22,
+      "success_env_contract": true,
+      "termination": {
+        "reason": "success",
+        "t": 116.8199999999939,
+        "x": 2.8328846116980917,
+        "tilt_deg": 0.08934457443510613
+      },
       "budget_s": 120.0
     }
   },
-  "verdict": "D2 completes under the env task contract at 6.14 s (ref) and 6.68 s (len_short), zero chassis contacts. BODY crosses the goal line (min wheel 2.62 m) but does not trigger the env success termination even with a 1 s brake hold; it times out at 120 s. Formal BODY cost is therefore unresolved; no cost comparison is claimed until the BODY path shares the same termination.",
-  "old_records": "kept but marked \"endpoint stop condition inconsistent; formal cost pending re-measure\""
+  "verdict": "shared task check now fires on the BODY path: ref D2 6.14 s vs BODY 117.18 s; len_short D2 6.68 s vs BODY 116.22 s; all four success under the env contract with zero chassis contacts. The last recorded frame equals the reported t_end (diff 0.000). Formal costs are now comparable, but a real candidate comparison still needs the registration entry fixed."
 }

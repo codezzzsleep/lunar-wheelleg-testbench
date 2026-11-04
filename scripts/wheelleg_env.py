@@ -1053,6 +1053,38 @@ class WheelLegEnv:
                 'n_physics': self.n_physics,
                 'time_offset': round(float(self.t - d.time), 6)}
 
+    def _task_check(self):
+        """共同任务检查：四轮过线 + 通道内 + 稳定保持。step/step_command/brake 共用。
+
+        只更新 passed_at 并给出（是否终止, 原因）；奖励与安全判据由调用方分别处理。
+        """
+        d = self.data
+        min_wheel_x = min(self._wheel_xs())
+        task = self.task
+        if task == 'K' and self.obj_bounds:
+            finish_x = max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
+        else:
+            finish_x = float(self.spec.get('goal_x', 3.0))
+        lat = float(d.qpos[1]) - self.channel_center
+        in_channel = abs(lat) <= self.channel_half_width
+        if min_wheel_x >= finish_x and in_channel:
+            if self.passed_at is None:
+                self.passed_at = float(self.t)
+        else:
+            if self.passed_at is not None and min_wheel_x < finish_x - 0.02:
+                self.passed_at = None
+            if not in_channel:
+                self.passed_at = None
+        if (self.passed_at is not None
+                and (float(self.t) - self.passed_at) >= self.settle_seconds):
+            if task == 'K' and self.require_contact and self.first_contact_t is None:
+                return True, 'bypass'
+            return True, 'success'
+        if (self.passed_at is None
+                and float(d.qpos[0]) >= float(self.spec.get('goal_x', 6.0)) + 1.0):
+            return True, 'failed_to_pass'
+        return False, None
+
     def _check_termination(self):
         """
         统一的终止判定：倾覆 / 越界 / 出场地 / 超时。
@@ -1264,6 +1296,12 @@ class WheelLegEnv:
                 break
         self.n_control += 1
         self.t += n_sub * self.dt
+        if not te and not tr:
+            tt, treason = self._task_check()
+            if tt:
+                te = True
+                info = {'reason': treason, 't': float(self.t),
+                        'x': float(self.data.qpos[0]), 'tilt_deg': self._tilt()}
         self.terminated, self.truncated = bool(te), bool(tr)
         self.last_termination = dict(info or {})
         if return_info:
@@ -1352,37 +1390,21 @@ class WheelLegEnv:
         terminated = False
         truncated = False
 
-        # ---- 任务 M / K 分开定义（训练前冻结，不按成绩修改） ----
-        #   M 安全通行：四轮越过终点线 + 通道内稳定保持；允许绕行/跨骑/接触
-        #   K 接触越障：四轮越过障碍**变换后**远端 + 净空 + 稳定保持，且必须接触
-        min_wheel_x = min(self._wheel_xs())
-        task = self.task
-        if task == 'K' and self.obj_bounds:
-            finish_x = max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
-        else:
-            finish_x = float(self.spec.get('goal_x', 3.0))
-
+        # ---- 共同任务检查（与 step_command 同一时机） ----
+        task_term, task_reason = self._task_check()
+        if task_term:
+            terminated, reason = True, task_reason
+            if task_reason == 'success':
+                reward += self.w_success
+            else:
+                reward -= self.w_oob * 0.5
         lat = y - self.channel_center
         in_channel = abs(lat) <= self.channel_half_width
-
-        # 连续稳定保持：进入完成区开始计时；退回、倾覆或出通道都清零
-        if min_wheel_x >= finish_x and in_channel:
-            if self.passed_at is None:
-                self.passed_at = self.t
-        else:
-            if self.passed_at is not None and min_wheel_x < finish_x - 0.02:
-                self.passed_at = None
-            if not in_channel:
-                self.passed_at = None
-
-        if (self.passed_at is not None
-                and (self.t - self.passed_at) >= self.settle_seconds):
-            if task == 'K' and self.require_contact and self.first_contact_t is None:
-                terminated, reason = True, 'bypass'      # K 任务：无接触不算接触越障
-                reward -= self.w_oob * 0.5
-            else:
-                terminated, reason = True, 'success'
-                reward += self.w_success
+        task = self.task
+        min_wheel_x = min(self._wheel_xs())
+        finish_x = (max(b['x_max'] for b in self.obj_bounds) + self.pass_clearance
+                    if (self.task == 'K' and self.obj_bounds)
+                    else float(self.spec.get('goal_x', 3.0)))
 
         if not terminated and tilt > self.tip_deg:
             terminated, reason = True, 'tipped'
@@ -1390,11 +1412,6 @@ class WheelLegEnv:
         if not terminated and not in_channel:
             terminated, reason = True, 'out_of_bounds'
             reward -= self.w_oob
-        # 兜底：K 任务里跑过整个场景仍未满足完成条件 -> 记为未通过，不再伪装成出界
-        if (not terminated and self.passed_at is None
-                and x >= float(self.spec.get('goal_x', 6.0)) + 1.0):
-            terminated, reason = True, 'failed_to_pass'
-            reward -= self.w_oob * 0.5
         if not terminated and self.t >= self.max_seconds:
             truncated, reason = True, 'time_limit'
 

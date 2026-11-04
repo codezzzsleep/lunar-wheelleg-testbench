@@ -2,9 +2,7 @@
   "schema": "v3-trajectory/v2",
   "meta": {
     "action": "BODY",
-    "method": "stage11_endpoint",
-    "skill": "BODY_CLEARANCE",
-    "plan_id": "stage11_unified"
+    "method": "stage11_endpoint"
   },
   "record_hz": 50.0,
   "fields": {
@@ -323,19 +321,19 @@
     },
     {
       "chunk": 23,
-      "frames": 50,
+      "frames": 109,
       "arrays": "chunk_00023.npz",
-      "arrays_sha256": "6bb82a3d3fc386d047f2a830eb2259deb8343317ba8b06543151069572ae5699",
+      "arrays_sha256": "52af449cd210c09c77318e1cc8657c0c78bd0e725022e72bd87f05829936422b",
       "contacts": "contacts_00023.jsonl",
-      "contacts_sha256": "0576f3c4b2fc5fd1f1393cd2edc9495209efbdf5ef21bb8b5146b12034b232ca",
-      "contacts_n": 404,
+      "contacts_sha256": "bf99b16944ee9b9fe3af5e28d85cb5030e8f38076aa557e1704615cd215bc3d3",
+      "contacts_n": 919,
       "t_first": 115.61999999999414,
-      "t_last": 116.59999999999394
+      "t_last": 117.7799999999937
     }
   ],
-  "frame_count": 5800,
-  "contacts_n": 39516,
-  "started_at": "2026-11-04T20:17:42+0800",
-  "closed_at": "2026-11-04T20:18:03+0800",
-  "duration_s": 115.97999999999394
+  "frame_count": 5859,
+  "contacts_n": 40031,
+  "started_at": "2026-11-04T20:42:12+0800",
+  "closed_at": "2026-11-04T20:42:33+0800",
+  "duration_s": 117.1599999999937
 }

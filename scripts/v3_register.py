@@ -447,13 +447,52 @@ def scan_scale(mesh, obs, M, cfg, span=0.10, steps=9):
                      'best_depth_median_m': round(best[0], 6), 'rows': rows}
 
 
+
+def rasterize_mesh(mesh, obs, M, W=None, H=None):
+    """三角形 z-buffer 光栅：透视正确深度 (1/z 线性插值)，原生分辨率。"""
+    import camera_io as _cio
+    cam = obs['camera']
+    if W is None or H is None:
+        H, W = obs['mask'].shape
+    V = np.asarray(mesh.vertices, float)
+    V = V @ np.asarray(M)[:3, :3].T + np.asarray(M)[:3, 3]
+    u, v, z = _cio.project(V, cam)
+    depth = np.full((H, W), np.inf)
+    mask = np.zeros((H, W), bool)
+    faces = np.asarray(mesh.faces)
+    for tri in faces:
+        xs, ys, zs = u[tri], v[tri], z[tri]
+        if not (np.all(np.isfinite(xs)) and np.all(np.isfinite(ys))):
+            continue
+        if np.any(zs <= 1e-9):
+            continue
+        x0, x1 = int(np.floor(max(0.0, xs.min()))), int(np.ceil(min(W - 1.0, xs.max())))
+        y0, y1 = int(np.floor(max(0.0, ys.min()))), int(np.ceil(min(H - 1.0, ys.max())))
+        if x1 < x0 or y1 < y0:
+            continue
+        xg, yg = np.meshgrid(np.arange(x0, x1 + 1) + 0.5, np.arange(y0, y1 + 1) + 0.5)
+        den = (xs[1] - xs[0]) * (ys[2] - ys[0]) - (xs[2] - xs[0]) * (ys[1] - ys[0])
+        if abs(den) < 1e-12:
+            continue
+        w0 = ((xs[1] - xg) * (ys[2] - yg) - (xs[2] - xg) * (ys[1] - yg)) / den
+        w1 = ((xs[2] - xg) * (ys[0] - yg) - (xs[0] - xg) * (ys[2] - yg)) / den
+        w2 = 1.0 - w0 - w1
+        inside = (w0 >= 0) & (w1 >= 0) & (w2 >= 0)
+        if not inside.any():
+            continue
+        invz = w0 / zs[0] + w1 / zs[1] + w2 / zs[2]
+        zz = 1.0 / np.maximum(invz, 1e-12)      # 透视正确深度
+        ys_i, xs_i = np.nonzero(inside)
+        yy = y0 + ys_i; xx = x0 + xs_i
+        better = zz[inside] < depth[yy, xx]
+        depth[yy[better], xx[better]] = zz[inside][better]
+        mask[yy[better], xx[better]] = True
+    return mask, depth
+
 def evaluate_matrix(mesh, obs, M):
-    """投影评估：掩码 IoU、深度 P95、可见点 P95。"""
-    V = np.asarray(trimesh.sample.sample_surface(mesh, 30000, seed=0)[0], dtype=np.float64)
-    Q = V @ M[:3, :3].T + M[:3, 3]
-    u, v, z = _project(Q, obs['camera'])
-    m, dm = _rasterize(u, v, z, obs['mask'].shape[1], obs['mask'].shape[0], radius=1)
+    """投影评估：三角光栅的掩码 IoU、透视正确深度 P95、可见点 P95。"""
     mask = obs['mask']
+    m, dm = rasterize_mesh(mesh, obs, M)
     iou = float((m & mask).sum()) / max(1, int((m | mask).sum()))
     depth = obs['depth']
     both = m & mask & np.isfinite(dm) & np.isfinite(depth)
@@ -464,6 +503,8 @@ def evaluate_matrix(mesh, obs, M):
     else:
         depth_p95 = depth_med = float('nan')
     # 可见点 -> 候选表面距离（近似：最近顶点）
+    V = np.asarray(trimesh.sample.sample_surface(mesh, 30000, seed=0)[0], dtype=np.float64)
+    Q = V @ np.asarray(M)[:3, :3].T + np.asarray(M)[:3, 3]
     vis = obs['points']
     if len(vis) > 0 and len(Q) > 0:
         from scipy.spatial import cKDTree

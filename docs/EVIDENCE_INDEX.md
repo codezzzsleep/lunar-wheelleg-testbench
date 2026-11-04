@@ -119,3 +119,6 @@
 | `runs/v3/stage11/metric/metric_check.json` | metric-check/v1 | 通过（修正度量） | identity pose: triangle raster IoU 0.9955, depth 0.29/1.20 mm vs point-splat 0.64/30.8/276.9 |
 | `runs/v3/stage11/registration/layers_metric.json` | reg-layers-metric/v1 | 完成 | L1 0.9955/0.29; L2 0.9765/8.5; L3 0.733/22.1 -> coarse search fails |
 | `runs/v3/stage11/endpoint_summary.json` | stage11-endpoint-summary/v1 | 部分完成 | D2 env-success 6.14/6.68 s; BODY crosses goal but does not trigger env success (120 s timeout) |
+| `runs/v3/stage11/endpoint_summary.json` | stage11-endpoint-summary/v2 | 通过 | shared task check; D2 6.14/6.68 s vs BODY 117.18/116.22 s, 0 contacts, last frame == t_end |
+| `runs/v3/stage11/registration/layers.json` | reg-layers/v1 | 部分通过 | L1 0.9955/1.22, L2 0.9765/13.5, L3 0.7327/98.0 -> coarse ranking still fails |
+| `runs/v3/stage11/registration/coarse_diag.json` | coarse-coverage/v1 | 完成 | correct pose present at coarse rank 2/3 (12.8 mm) |

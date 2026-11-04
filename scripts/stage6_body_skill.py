@@ -35,11 +35,11 @@ def tilt_deg(env):
     return float(np.degrees(np.arccos(np.clip(env.data.xmat[bid][8], -1, 1))))
 
 
-def run_body_clearance(env, plan, record_dir=None, meta=None):
+def run_body_clearance(env, plan, record_dir=None, meta=None, recorder=None, control_file=None, close=True):
     """逐控制步：同一步内写 >=50Hz 帧 + 控制/阶段/接触 sidecar，步号连续。"""
     record_dir = pathlib.Path(record_dir) if record_dir else None
-    rec = None; ctl = None
-    if record_dir is not None:
+    rec = recorder; ctl = control_file
+    if rec is None and record_dir is not None:
         record_dir.mkdir(parents=True, exist_ok=True)
         m = dict(meta or {}); m.update({'skill': 'BODY_CLEARANCE',
                                         'plan_id': plan.get('plan_id')})
@@ -125,8 +125,8 @@ def run_body_clearance(env, plan, record_dir=None, meta=None):
         for _ in range(int(plan.get('settle_steps', 15))):
             if tick('recover'): break
     x_end = float(env.data.qpos[0]); z_end = float(env.data.qpos[2])
-    ref = rec.close() if rec is not None else None
-    if ctl is not None:
+    ref = rec.close() if (rec is not None and close) else None
+    if ctl is not None and close:
         ctl.close()
     reached = bool(x_end >= end_x - 1e-3)
     tipped_or_stuck = bool(fail_phase is not None)
@@ -147,6 +147,7 @@ def run_body_clearance(env, plan, record_dir=None, meta=None):
            'termination': termination or {},
            'final_x': round(x_end, 4), 't_end': round(float(env.t), 3),
            'cost': round(float(env.t), 3), 'tilt_max': round(tilt_max, 3),
+           'recorder_open': bool(rec is not None and not close),
            'base_rise': round(z_raise - z0, 4), 'clearance_gain': round(c_raise - c0, 4),
            'end_x': end_x, 'lower_at_x': lower_at,
            'phase_times': {k2: [round(v[0], 3), round(v[1], 3)] for k2, v in phase_times.items()},

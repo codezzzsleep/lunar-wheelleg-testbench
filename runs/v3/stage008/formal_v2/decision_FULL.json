@@ -1,0 +1,408 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "stage8_full_aggregate",
+  "arm": "FULL",
+  "decided_at": "2026-11-04T13:08:36+0800",
+  "state_hash": null,
+  "visible": {
+    "x_front": 0.834,
+    "W_vis": 0.275,
+    "H_vis": 0.3
+  },
+  "matrix_sha256": "d7065e087ac5e0bf01dbae3d0200f16d60e8d922314343914b5cbfa559c8b51e",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 6,
+    "n_valid": 6,
+    "n_unique_geometries": 6,
+    "threshold": 4,
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 2,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 5
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "D1": 60.0,
+      "D2": 42.6033,
+      "L1": 60.0,
+      "L2": 60.0,
+      "CLIMB": 60.0,
+      "BODY_CLEARANCE": 104.6667
+    },
+    "chosen": "BODY_CLEARANCE",
+    "safe_set": [
+      "BODY_CLEARANCE"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "4632564": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.06,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.32,
+          "t_end": 7.92,
+          "final_x": 3.339
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.56,
+          "final_x": 0.883
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 8.68,
+          "t_end": 9.28,
+          "final_x": 3.285
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.61
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.6,
+          "t_end": 113.6,
+          "final_x": 2.6095
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "4632603": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.06,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.52,
+          "t_end": 8.12,
+          "final_x": 3.334
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.58,
+          "final_x": 0.886
+        },
+        "D2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.08,
+          "t_end": 7.68,
+          "final_x": 3.608
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.6,
+          "final_x": 1.009
+        },
+        "BODY_CLEARANCE": {
+          "success": false,
+          "reason": "failed_at_drive_to_end",
+          "cost": 120.022,
+          "t_end": 120.022,
+          "final_x": 1.161
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "4632618": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.18,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.32,
+          "t_end": 7.92,
+          "final_x": 3.339
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.54,
+          "final_x": 0.876
+        },
+        "D2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.6,
+          "final_x": 1.074
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.61
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.6,
+          "t_end": 113.6,
+          "final_x": 2.6095
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "4632621": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.94,
+          "final_x": 0.915
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.36,
+          "t_end": 7.96,
+          "final_x": 3.341
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.32,
+          "final_x": 0.826
+        },
+        "D2": {
+          "success": true,
+          "reason": "success",
+          "cost": 6.94,
+          "t_end": 7.54,
+          "final_x": 3.603
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.618
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.6,
+          "t_end": 113.6,
+          "final_x": 2.6095
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "4632624": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.94,
+          "final_x": 0.915
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.36,
+          "t_end": 7.96,
+          "final_x": 3.341
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.56,
+          "final_x": 0.876
+        },
+        "D2": {
+          "success": false,
+          "reason": "out_of_bounds",
+          "cost": 60.0,
+          "t_end": 8.36,
+          "final_x": 1.752
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.618
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.6,
+          "t_end": 113.6,
+          "final_x": 2.6095
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      },
+      "4632627": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.18,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.32,
+          "t_end": 7.92,
+          "final_x": 3.339
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.58,
+          "final_x": 0.886
+        },
+        "D2": {
+          "success": false,
+          "reason": null,
+          "cost": 60.0,
+          "t_end": 40.6,
+          "final_x": 1.086
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.61
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.6,
+          "t_end": 113.6,
+          "final_x": 2.6095
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 1.165,
+    "end_x": 2.6,
+    "stop_tilt_deg": 12.0,
+    "far_edge_source": "candidate_4632564_hidden_rear",
+    "plan_id": "005f113f5e67e4c9"
+  },
+  "decision_sha": "45564c1019296322cc210b6d8679a68f"
+}

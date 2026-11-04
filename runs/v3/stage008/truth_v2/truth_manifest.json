@@ -1,0 +1,25 @@
+{
+  "schema": "stage8-truth-scene/v1",
+  "truth_occ_sha256": "0f8706f479de52a260aee04cd1703f32d9141f0a3b144b3ddd91b51e1e105546",
+  "coll_dir": "runs/v3/stage008/truth_v2/truth_coll",
+  "s0_state_hash": "8c287b848532e84f06f2a51c5f279308",
+  "v_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+  "v_stats": {
+    "n_voxels": 9792510,
+    "n_free": 5650622,
+    "n_band": 60996,
+    "n_unknown": 4080892,
+    "n_in_fov": 9792510,
+    "n_masked_fov": 2933380,
+    "n_shell": 60996,
+    "valid_depth_frac": 0.756951,
+    "free_eps_m": 0.004,
+    "band_m": 0.006,
+    "shell_offset_m": 0.001,
+    "pitch_m": 0.002,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "observation_sha256": "a2661d6fe7da5a8423b72179393a734ae62f1d1bfeec43cb60d3c6487d1533e3",
+  "reconstructed_observation": true,
+  "note": "single truth scene for every FULL/OBS/reference execution"
+}

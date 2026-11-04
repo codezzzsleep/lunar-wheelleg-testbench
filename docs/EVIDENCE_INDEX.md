@@ -100,3 +100,6 @@
 | `runs/v3/stage007/cand_small/widths.json` | stage7-widths/v1 | — | wheel-band widths 0.240-0.288 m (full) vs ~0.28 m gap |
 | `runs/v3/stage008/formal_final.json` | stage8-formal-final/v1 | 通过 | 7 cases FULL/OBS; decision diff 5/7; FULL truth fail 0, OBS truth fail 5 |
 | `runs/v3/stage008/pack_manifest.json` | stage8-pack-manifest/v1 | 通过 | runnable+demo packs, sha256, fresh-dir validation, archive branch b7b8140 |
+| `runs/v3/stage008/formal_v2/result.json` | stage8-formal-v2/v1 | 通过 | single truth scene 0f8706f4..., S0 8c287b84...; FULL/OBS both BODY pass 114.24/114.40 s |
+| `runs/v3/stage008/formal_final_PENDING_CORRECTION.md` | note | — | old formal_final numbers superseded, file unchanged |
+| `runs/v3/stage008/pack_manifest_v2.json` | stage8-pack-manifest-v2/v1 | 通过 | pack sha be114bd3..., offline full case validated, archive 6da3075a |

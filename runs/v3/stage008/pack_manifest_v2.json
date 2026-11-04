@@ -1,0 +1,30 @@
+{
+  "schema": "stage8-pack-manifest-v2/v1",
+  "runnable_v2": {
+    "file": "stage008_runnable_v2.tar.gz",
+    "bytes": 14287776,
+    "sha256": "be114bd35fc8ec0bcfde4c396d2d558da754ec4b71e22dd6bcad9667ad2ad8d9",
+    "contents": [
+      "run_offline.py (3 s boot: sim + replay)",
+      "run_case_offline.py (full cached case)",
+      "data/truth (single truth scene, S0, collision, occupancy)",
+      "data/fusion (V + per-candidate occ_full + plans)",
+      "data/decisions (cached matrices + decision files)",
+      "data/exec (recorded truth executions)",
+      "scripts, configs, plans, vendor go2w"
+    ],
+    "validation": {
+      "where": "fresh dir /tmp/pack_test2 on new sandbox",
+      "boot_sim": "base 0.3841->0.4429 m, chassis 0.2775->0.3362 m, 150 steps",
+      "boot_replay": "91 frames / 3.03 s",
+      "full_case": "cache checks both true; FULL BODY pass 114.24 s; OBS BODY pass 114.40 s; truth sha 0f8706f4..., S0 8c287b84... restored identically",
+      "exec_replay": "121 frames / 4.03 s from the recorded execution"
+    }
+  },
+  "persistent_remote": {
+    "branch": "archive/stage008",
+    "commit": "6da3075abecaeaaddbc6b32e5a2c959149c50736",
+    "note": "previous originals commit fa66c604 and earlier packs b7b8140 remain"
+  },
+  "supersedes": "runs/v3/stage008/formal_final.json is marked pending correction and kept unchanged"
+}

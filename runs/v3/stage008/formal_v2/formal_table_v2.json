@@ -1,0 +1,93 @@
+{
+  "schema": "stage8-formal-v2-table/v1",
+  "truth": {
+    "occ_sha256": "0f8706f479de52a260aee04cd1703f32d9141f0a3b144b3ddd91b51e1e105546",
+    "v_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+    "s0_state_hash": "8c287b848532e84f06f2a51c5f279308",
+    "restored_state_hash": "8c287b848532e84f06f2a51c5f279308"
+  },
+  "rows": [
+    {
+      "arm": "FULL (complete geometry reference: V|(P&U))",
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 2,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 5
+      },
+      "exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 114.24,
+        "chassis_contacts": 0,
+        "safe_pass": true,
+        "reached": true,
+        "plan_id": "005f113f5e67e4c9"
+      },
+      "plan_id": "005f113f5e67e4c9",
+      "decision_sha": "45564c1019296322cc210b6d8679a68f",
+      "plan": {
+        "raise_z": 0.06,
+        "ramp_steps": 100,
+        "speed": 0.15,
+        "lower_at_x": 1.165,
+        "end_x": 2.6,
+        "stop_tilt_deg": 12.0,
+        "far_edge_source": "candidate_4632564_hidden_rear",
+        "plan_id": "005f113f5e67e4c9"
+      }
+    },
+    {
+      "arm": "OBS (V only)",
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      },
+      "exec": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 114.4,
+        "chassis_contacts": 0,
+        "safe_pass": true,
+        "reached": true,
+        "plan_id": "4e74d6988d7f7d01"
+      },
+      "plan_id": "4e74d6988d7f7d01",
+      "decision_sha": "1149cf3207765f71bf4a3fb18184dd64",
+      "plan": {
+        "raise_z": 0.06,
+        "ramp_steps": 100,
+        "speed": 0.15,
+        "lower_at_x": 2.45,
+        "end_x": 2.6,
+        "stop_tilt_deg": 12.0,
+        "far_edge_source": "unknown_hold",
+        "plan_id": "4e74d6988d7f7d01"
+      },
+      "exec_repeat": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "t_end": 114.4,
+        "chassis_contacts": 0
+      }
+    }
+  ],
+  "conclusion": "both arms choose BODY_CLEARANCE on the single truth scene and both executions pass with zero chassis contacts; the decisions and outcomes do not differ, only the lowering plan differs (FULL: candidate hidden rear 1.165 m; OBS: hold raised to 2.45 m)",
+  "notes": [
+    "FULL plan params come from the first generated candidate hidden rear, not truth geometry",
+    "OBS plan holds raised because the rear is unknown; truth execution still restores the common S0",
+    "OBS chosen re-executed twice with identical outcome/t_end (114.4 s)"
+  ]
+}

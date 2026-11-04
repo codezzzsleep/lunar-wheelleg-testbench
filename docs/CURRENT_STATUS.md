@@ -180,6 +180,24 @@
   接触更“毛”，正对照仍通过；该差异已记录，不归因 Lux3D。
 - 交付：可运行包 `stage008_runnable.tar.gz`（sha 见 pack_manifest，sim/replay 在新目录实测）、
   展示包 `stage008_demo.tar.gz`；均推送到 `archive/stage008`（commit b7b8140）。
+## STAGE008 修正：单一真值场景 + 共同 S0（2026-11-04）
+
+- 唯一真实执行场景：真实扫描岩石 + 两侧墙 + 地面 + nominal，4 mm 占据，冻结 SHA
+  `0f8706f4…`；碰撞 `truth_coll`；共同 S0 `8c287b84…` 只在该场景采集一次。
+- 重建观测在真实场景 S0 采集（mask 115,858 px），共享 V sha `ed44fbe6…`，只建一次。
+- 六个 GLB 先应用节点变换，再走**已验观测配准入口**（silhouette+depth ICP，mask IoU
+  0.49–0.56，可见中位误差 5.6–11.5 mm），随后 `FULL=V∪(P∩U)`、`OBS=V`。
+- BODY 方案固定：可见前缘由观测给出，隐藏后缘来自**首候选**（1.065 m → lower_at 1.165 m，
+  plan `005f113f5e67e4c9`），不使用真值后缘；OBS 方案保持抬高到 2.45 m（plan `4e74d6988d7f7d01`）。
+- 六候选 FULL 矩阵多数聚合（阈值 3）：BODY 5/6、D2 2/6 → 选 **BODY_CLEARANCE**
+  （decision_sha `45564c10…`）；OBS 单矩阵：BODY 1、其余 0 → 也选 **BODY_CLEARANCE**
+  （decision_sha `1149cf32…`）。
+- 两条决策都在**同一真实场景**恢复同一 S0 执行：FULL BODY pass 114.24 s、OBS BODY pass
+  114.40 s，均 0 次机身接触、`safe_pass=true`、到达 2.6 m；OBS 决策重复执行一次结果完全一致。
+- 结论：修正后 FULL 与 OBS **决策与结局一致**，差异只在降身计划；此前 `formal_final.json`
+  的“决策差异 5/7”作废，文件保留并标 `PENDING_CORRECTION`。
+- 可运行包 v2（sha `be114bd3…`）在新目录实测：3 s 启动、完整缓存案例（聚合→决策校验→真值执行→
+  回放）均通过；归档分支 `archive/stage008` 提交 `6da3075a`。
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

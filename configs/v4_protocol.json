@@ -1,0 +1,13 @@
+{
+  "schema": "v4-protocol/v1",
+  "baseline": "a00fce37b",
+  "arms": {
+    "PERFECT": {"geometry": "V | (T & U)", "plan": "BODY lower_at from truth hidden rear + 0.10; no extra filter"},
+    "OBS_CONS": {"geometry": "V", "plan": "unknown_hold: BODY lower_at 2.45", "filter": "D1/D2 unsafe if the lateral detour band intersects any U voxel in x in [0.8,2.0]"},
+    "OBS_OPT": {"geometry": "V", "plan": "unknown as free: BODY lower_at x_front+0.10 (0.95)", "filter": "none"}
+  },
+  "task": {"goal_x": 2.6, "settle_s": 1.0, "budget_s": 120, "channel_half_m": 1.2},
+  "actions": ["R1", "R2", "D1", "D2", "L1", "L2", "BODY_CLEARANCE", "A0"],
+  "decision": "single-candidate majority threshold 1; chose cheapest safe action",
+  "cost": ["t_end", "distance", "energy_J", "stops", "chassis_contacts"]
+}

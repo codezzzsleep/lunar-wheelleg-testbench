@@ -1,0 +1,47 @@
+{
+  "schema": "g2-positive-control/v1",
+  "input": "/workspace/lunar-lab/runs/v3/stage008/truth_v2/truth/body_world.stl",
+  "pose_world_expected": "identity (mesh is already in the truth world frame)",
+  "M": [
+    [
+      -0.30757273982825506,
+      0.18775144868996532,
+      -0.7506915201001274,
+      1.3613239554694236
+    ],
+    [
+      0.7356450071664017,
+      0.3215241548775732,
+      -0.22099320438032538,
+      -0.6999477221441304
+    ],
+    [
+      0.24003080691145376,
+      -0.7448227752062636,
+      -0.2846288818590882,
+      -0.05744604392720415
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "rotation_error_deg": 131.493,
+  "translation_m": [
+    1.36132,
+    -0.69995,
+    -0.05745
+  ],
+  "best_diagnostics": {
+    "mask_iou": 0.5537,
+    "depth_median_mm": 38.871,
+    "depth_p95_mm": 184.262,
+    "visible_median_mm": 10.864,
+    "visible_p95_mm": 28.186,
+    "n_candidate_pixels": 81101,
+    "n_mask_pixels": 115858
+  },
+  "n_refined": 6
+}

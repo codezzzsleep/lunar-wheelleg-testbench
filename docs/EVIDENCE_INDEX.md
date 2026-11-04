@@ -113,3 +113,5 @@
 | `runs/v3/stage010/g2_method_verification.json` | g2-method-verification/v1 | 完成（修正方法） | dedup 8->2/4; depth p95 178-234 mm; 0 compatible; truth-aided reference c2t 16.8/15.9, t2c 52.5/36.3 mm |
 | `runs/v3/stage010/g1v2_summary.json` | g1v2-summary/v1 | 完成 | U-consistent 6 scenes; decision diff 2 (D2 vs BODY), outcome diff 0, both safe, no OBS-only failure |
 | `runs/v3/stage010/g1v2/scenes.json` | g1v2-scenes/v1 | 完成 | outside-U XOR 0; no new known-free hits; shell p99 2.83 mm |
+| `runs/v3/stage010/d2_verification.json` | g1v2-d2-verification/v1 | 完成（阴性） | D2 final_x 3.618/3.610 m past endpoint; fails common completion standard |
+| `runs/v3/stage010/g2_control/control.json` | g2-positive-control/v1 | 失败 | truth mesh via same entry: rot err 131.5 deg, depth P95 184 mm; entry itself suspect |

@@ -329,5 +329,14 @@
     "full_cheaper": 2,
     "obs_cheaper": 1
   },
-  "conclusion": "U-consistent screen (6 scenarios): completion and V-only both stay safe in all six. Two backside-length cases give a decision difference: completion picks D2 (7.2-7.3 s) while V-only conservatively picks BODY (112.9-113.9 s); both pass. Hidden-height cases show no decision difference. Backside is a cost/decision benefit here, not a safety necessity; no scene required it for success."
+  "conclusion": "U-consistent screen (6 scenarios): completion and V-only both stay safe in all six. Two backside-length cases give a decision difference: completion picks D2 (7.2-7.3 s) while V-only conservatively picks BODY (112.9-113.9 s); both pass. Hidden-height cases show no decision difference. Backside is a cost/decision benefit here, not a safety necessity; no scene required it for success.",
+  "strict_standard_recheck": {
+    "file": "runs/v3/stage010/g1v2_d2_summary.json",
+    "endpoint_m": 2.6,
+    "tolerance_m": 0.05,
+    "full_safe": 2,
+    "obs_safe": 4,
+    "full_fail_obs_safe": 2,
+    "note": "D2 in len_short/len_mid ends at 3.618/3.610 m, i.e. about 1 m past 2.6 m; the execution-reported success is the detour skill's own termination. Under the common endpoint standard D2 fails completion, so the \"perfect-completion cost benefit\" is withdrawn. The decision difference remains recorded but is not a benefit."
+  }
 }

@@ -1,0 +1,298 @@
+{
+  "schema": "g1v2-d2-verification/v1",
+  "standard": {
+    "end_x": 2.6,
+    "tolerance_m": 0.05,
+    "budget_s": 120.0,
+    "tip_deg": 30.0,
+    "channel_half_m": 0.55,
+    "chassis_contacts_must_be": 0,
+    "note": "same standard as BODY; fields computed from recorded qpos/contacts"
+  },
+  "scenarios": {
+    "len_short": {
+      "full": {
+        "action": "D2",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 334,
+          "t_end": 7.28,
+          "final_x": 3.618,
+          "final_y": -0.1068,
+          "max_abs_y": 0.107,
+          "max_tilt_deg": 3.391,
+          "chassis_contacts": 0,
+          "reached": false,
+          "within_budget": true,
+          "contacts_n": 1257
+        },
+        "verdict": {
+          "safe": false,
+          "checks": {
+            "reached": false,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 7.28,
+          "final_x": 3.618,
+          "safe_pass": null,
+          "reached": null,
+          "chassis_contacts": null
+        }
+      },
+      "obs": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5666,
+          "t_end": 113.92,
+          "final_x": 2.6105,
+          "final_y": -0.2562,
+          "max_abs_y": 0.2565,
+          "max_tilt_deg": 0.824,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37211
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 113.92,
+          "final_x": 2.6105,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      },
+      "comparison": {
+        "D2_safe_same_standard": false,
+        "BODY_safe_same_standard": true,
+        "cost_D2_s": 7.28,
+        "cost_BODY_s": 113.92
+      }
+    },
+    "len_mid": {
+      "full": {
+        "action": "D2",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 332,
+          "t_end": 7.24,
+          "final_x": 3.6101,
+          "final_y": -0.1185,
+          "max_abs_y": 0.1188,
+          "max_tilt_deg": 2.874,
+          "chassis_contacts": 0,
+          "reached": false,
+          "within_budget": true,
+          "contacts_n": 1222
+        },
+        "verdict": {
+          "safe": false,
+          "checks": {
+            "reached": false,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 7.24,
+          "final_x": 3.61,
+          "safe_pass": null,
+          "reached": null,
+          "chassis_contacts": null
+        }
+      },
+      "obs": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5615,
+          "t_end": 112.9,
+          "final_x": 2.6093,
+          "final_y": -0.2548,
+          "max_abs_y": 0.2551,
+          "max_tilt_deg": 0.822,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37038
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 112.9,
+          "final_x": 2.6093,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      },
+      "comparison": {
+        "D2_safe_same_standard": false,
+        "BODY_safe_same_standard": true,
+        "cost_D2_s": 7.24,
+        "cost_BODY_s": 112.9
+      }
+    },
+    "ref": {
+      "full": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5641,
+          "t_end": 113.42,
+          "final_x": 2.6111,
+          "final_y": -0.2567,
+          "max_abs_y": 0.257,
+          "max_tilt_deg": 0.819,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37129
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 113.42,
+          "final_x": 2.6111,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      },
+      "obs": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5646,
+          "t_end": 113.52,
+          "final_x": 2.6105,
+          "final_y": -0.2554,
+          "max_abs_y": 0.2557,
+          "max_tilt_deg": 0.819,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37130
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 113.52,
+          "final_x": 2.6105,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      }
+    },
+    "len_long": {
+      "full": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5640,
+          "t_end": 113.4,
+          "final_x": 2.6088,
+          "final_y": -0.2564,
+          "max_abs_y": 0.2568,
+          "max_tilt_deg": 0.819,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37064
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 113.4,
+          "final_x": 2.6088,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      },
+      "obs": {
+        "action": "BODY_CLEARANCE",
+        "outcome": "pass",
+        "metrics": {
+          "frames": 5646,
+          "t_end": 113.52,
+          "final_x": 2.6105,
+          "final_y": -0.2554,
+          "max_abs_y": 0.2557,
+          "max_tilt_deg": 0.819,
+          "chassis_contacts": 0,
+          "reached": true,
+          "within_budget": true,
+          "contacts_n": 37130
+        },
+        "verdict": {
+          "safe": true,
+          "checks": {
+            "reached": true,
+            "no_chassis_contact": true,
+            "tilt_ok": true,
+            "lateral_ok": true,
+            "budget_ok": true
+          }
+        },
+        "exec_reported": {
+          "t_end": 113.52,
+          "final_x": 2.6105,
+          "safe_pass": true,
+          "reached": true,
+          "chassis_contacts": 0
+        }
+      }
+    }
+  }
+}

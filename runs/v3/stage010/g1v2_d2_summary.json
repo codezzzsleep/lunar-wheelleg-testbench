@@ -1,0 +1,104 @@
+{
+  "schema": "g1v2-d2-summary/v1",
+  "standard": "endpoint 2.6 ±0.05 m, chassis contacts 0, tilt<=30°, |y|<=0.55, budget 120 s",
+  "scenarios": [
+    {
+      "scenario": "len_short",
+      "full_action": "D2",
+      "full_safe_same_standard": false,
+      "full_final_x": 3.618,
+      "full_checks": {
+        "reached": false,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      },
+      "obs_action": "BODY_CLEARANCE",
+      "obs_safe_same_standard": true,
+      "obs_final_x": 2.6105,
+      "obs_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      }
+    },
+    {
+      "scenario": "len_mid",
+      "full_action": "D2",
+      "full_safe_same_standard": false,
+      "full_final_x": 3.6101,
+      "full_checks": {
+        "reached": false,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      },
+      "obs_action": "BODY_CLEARANCE",
+      "obs_safe_same_standard": true,
+      "obs_final_x": 2.6093,
+      "obs_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      }
+    },
+    {
+      "scenario": "ref",
+      "full_action": "BODY_CLEARANCE",
+      "full_safe_same_standard": true,
+      "full_final_x": 2.6111,
+      "full_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      },
+      "obs_action": "BODY_CLEARANCE",
+      "obs_safe_same_standard": true,
+      "obs_final_x": 2.6105,
+      "obs_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      }
+    },
+    {
+      "scenario": "len_long",
+      "full_action": "BODY_CLEARANCE",
+      "full_safe_same_standard": true,
+      "full_final_x": 2.6088,
+      "full_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      },
+      "obs_action": "BODY_CLEARANCE",
+      "obs_safe_same_standard": true,
+      "obs_final_x": 2.6105,
+      "obs_checks": {
+        "reached": true,
+        "no_chassis_contact": true,
+        "tilt_ok": true,
+        "lateral_ok": true,
+        "budget_ok": true
+      }
+    }
+  ],
+  "verdict": "D2 in len_short/len_mid does NOT meet the common endpoint: final_x 3.618/3.610 m, i.e. about 1 m past 2.6 m; the execution-reported \"success\" is the detour skill's own termination, not the shared endpoint. Under the BODY-equivalent standard D2 fails completion, so the earlier \"perfect-completion cost benefit\" is withdrawn; the two cases are reclassified as a detour/endpoint evaluation defect, not a backside benefit.",
+  "counts": {
+    "full_safe": 2,
+    "obs_safe": 4,
+    "full_fail_obs_safe": 2
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schema": "stage11-endpoint/v1",
+  "contract": {
+    "goal_x": 2.6,
+    "settle_s": 1.0,
+    "tip_deg": 60.0,
+    "budget_s": 120.0,
+    "success": "env reason=success (min wheel x >= goal_x, in channel, stable settle)",
+    "timing": "env.t from common S0 until termination"
+  },
+  "runs": {
+    "ref_D2": {
+      "base_x": 3.61,
+      "min_wheel_x": 3.403,
+      "chassis_contacts": 0,
+      "t_start": 0.6,
+      "t_end": 6.74,
+      "cost_s": 6.14,
+      "success_env_contract": true,
+      "termination": {},
+      "budget_s": 120.0
+    },
+    "ref_BODY": {
+      "base_x": 2.834,
+      "min_wheel_x": 2.624,
+      "chassis_contacts": 0,
+      "t_start": 0.6,
+      "t_end": 120.02,
+      "cost_s": 119.42,
+      "success_env_contract": false,
+      "termination": {},
+      "budget_s": 120.0
+    },
+    "len_short_D2": {
+      "base_x": 3.618,
+      "min_wheel_x": 3.423,
+      "chassis_contacts": 0,
+      "t_start": 0.6,
+      "t_end": 7.28,
+      "cost_s": 6.68,
+      "success_env_contract": true,
+      "termination": {},
+      "budget_s": 120.0
+    },
+    "len_short_BODY": {
+      "base_x": 2.833,
+      "min_wheel_x": 2.623,
+      "chassis_contacts": 0,
+      "t_start": 0.6,
+      "t_end": 120.02,
+      "cost_s": 119.42,
+      "success_env_contract": false,
+      "termination": {},
+      "budget_s": 120.0
+    }
+  }
+}

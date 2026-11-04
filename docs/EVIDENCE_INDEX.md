@@ -122,3 +122,5 @@
 | `runs/v3/stage11/endpoint_summary.json` | stage11-endpoint-summary/v2 | 通过 | shared task check; D2 6.14/6.68 s vs BODY 117.18/116.22 s, 0 contacts, last frame == t_end |
 | `runs/v3/stage11/registration/layers.json` | reg-layers/v1 | 部分通过 | L1 0.9955/1.22, L2 0.9765/13.5, L3 0.7327/98.0 -> coarse ranking still fails |
 | `runs/v3/stage11/registration/coarse_diag.json` | coarse-coverage/v1 | 完成 | correct pose present at coarse rank 2/3 (12.8 mm) |
+| `runs/v3/stage11/registration/pose_trace.json` | pose-trace/v1 | 完成 | M0/ICP/polish metrics: polish 0.961/10.74 mm; hidden faces excluded |
+| `runs/v3/stage11/registration/layers.json` | reg-layers/v1 | 通过 | L1 0.9955/1.22, L2 0.9765/13.5, L3 0.9609/19.87 -> acceptance (IoU>=0.9, P95<=20mm) |

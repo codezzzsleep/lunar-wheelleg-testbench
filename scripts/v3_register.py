@@ -276,6 +276,10 @@ def refine_icp(mesh, obs, M0, cfg, rng):
     pix_mask_sorted = np.sort(pix_mask)
     M = np.array(M0, dtype=np.float64)
     s0 = float(np.cbrt(np.linalg.det(M[:3, :3])))
+    _sc = observation_score(mesh, obs, M)
+    best_M = M.copy()
+    best_val = ((_sc['depth_median_mm'] if np.isfinite(_sc['depth_median_mm']) else 1e9)
+                + 40.0 * (1.0 - _sc['iou_points']) + 20.0 * (1.0 - _sc['coverage']))
     hist = []
     levels = list(zip(cfg['scales'], cfg['huber_delta_m'], cfg['iterations']))
     for li, (vox, delta, iters) in enumerate(levels):
@@ -329,7 +333,7 @@ def refine_icp(mesh, obs, M0, cfg, rng):
                          'median_mm': round(float(np.median(r[keep])) * 1000, 3),
                          'p95_mm': round(float(np.percentile(r[keep], 95)) * 1000, 3),
                          'scale': round(s_total, 6)})
-    return M, hist
+    return best_M, hist
 
 
 def _depth_residual(mesh, obs, M, samples=20000):
@@ -359,41 +363,45 @@ def _depth_residual(mesh, obs, M, samples=20000):
     return float(np.median(np.abs(zmin[ok] - obs_d[ok])))
 
 
-def local_polish(mesh, obs, M, cfg):
-    """在 ICP 之后做一次局部坐标下降（dx,dy,dz,dyaw），目标=可见点云到候选表面的中位距离。
 
-    这一步直接优化"观测可见面 ↔ 候选可见面"的贴合度，修正 15° 粗网格留下的残差；
-    只用观测点云，不读真值，也不改尺度。
-    """
+def observation_score(mesh, obs, M, samples=8000):
+    """只用观测的可见面相容性评分：候选可见表面 vs 观测深度/掩码，隐藏面不参与。"""
     import trimesh as _tm
-    from scipy.spatial import cKDTree
-    surf = np.asarray(_tm.sample.sample_surface(mesh, int(cfg.get('polish_samples', 20000)),
-                                                seed=0)[0], float)
-    tree = cKDTree(np.asarray(obs['points'], float))
-    mask4, _, W4, H4 = _downsample_mask(obs['mask'], obs['depth'], 4)
-    flat = mask4.ravel()
+    surf = np.asarray(_tm.sample.sample_surface(mesh, samples, seed=0)[0], float)
+    Q = surf @ np.asarray(M)[:3, :3].T + np.asarray(M)[:3, 3]
+    u, v, z = _project(Q, obs['camera'])
+    H, W = obs['mask'].shape
+    good = np.isfinite(u) & np.isfinite(v) & (z > 0)
+    ui = np.round(u[good]).astype(np.int64); vi = np.round(v[good]).astype(np.int64)
+    zz = z[good]
+    inside = (ui >= 0) & (ui < W) & (vi >= 0) & (vi < H)
+    ui, vi, zz = ui[inside], vi[inside], zz[inside]
+    if len(ui) < 50:
+        return {'depth_median_mm': float('nan'), 'depth_p95_mm': float('nan'),
+                'coverage': 0.0, 'iou_points': 0.0, 'n_visible': int(len(ui))}
+    depth = np.full((H, W), np.inf)
+    np.minimum.at(depth, (vi, ui), zz)
+    m = np.isfinite(depth)
+    obs_depth = obs['depth']; mask = obs['mask']
+    both = m & mask & np.isfinite(depth) & np.isfinite(obs_depth)
+    if both.sum() > 20:
+        dd = np.abs(depth[both] - obs_depth[both]) * 1000
+        med = float(np.median(dd)); p95 = float(np.percentile(dd, 95))
+    else:
+        med = p95 = float('nan')
+    inter = int((m & mask).sum()); union = int((m | mask).sum())
+    return {'depth_median_mm': round(med, 3), 'depth_p95_mm': round(p95, 3),
+            'coverage': round(float((m & mask).sum() / max(1, int(mask.sum()))), 4),
+            'iou_points': round(inter / max(1, union), 4), 'n_visible': int(len(ui))}
 
+def local_polish(mesh, obs, M, cfg):
+    """局部坐标下降：只优化候选**可见表面**与观测的轮廓+深度相容性，隐藏面不罚。"""
     def score(Mx):
-        Q = surf @ Mx[:3, :3].T + Mx[:3, 3]
-        d, _ = tree.query(Q)
-        med = float(np.median(d))
-        # 轮廓项：单视角下光滑正面存在"沿面滑动"的歧义，靠轮廓把横向自由度和深度项一起约束
-        u, v, z = _project(Q, obs['camera'])
-        ok = np.isfinite(u) & np.isfinite(v) & (z > 0)
-        ui = np.floor(u[ok] / 4.0).astype(np.int64)
-        vi = np.floor(v[ok] / 4.0).astype(np.int64)
-        inb = (ui >= 0) & (ui < W4) & (vi >= 0) & (vi < H4)
-        occ = np.zeros(W4 * H4, dtype=bool)
-        if inb.any():
-            occ[vi[inb] * W4 + ui[inb]] = True
-        inter = int((occ & flat).sum()); union = int((occ | flat).sum())
-        iou = inter / max(1, union)
-        return med * 1000.0 + 30.0 * (1.0 - iou)
-
-    def score_mm(Mx):
-        Q = surf @ Mx[:3, :3].T + Mx[:3, 3]
-        d, _ = tree.query(Q)
-        return float(np.median(d)) * 1000.0
+        sc = observation_score(mesh, obs, Mx, samples=int(cfg.get('polish_samples', 12000)))
+        med = sc['depth_median_mm']
+        if not np.isfinite(med):
+            return 1e9
+        return med + 40.0 * (1.0 - sc['iou_points']) + 20.0 * (1.0 - sc['coverage'])
 
     bb = np.asarray(mesh.bounds.mean(0), float)
     best_M = M.copy()
@@ -421,8 +429,10 @@ def local_polish(mesh, obs, M, cfg):
                     best, best_M, improved = sc, c, True
         if not improved:
             break
+    _fin = observation_score(mesh, obs, best_M)
     return best_M, {'score': round(best, 3),
-                    'visible_median_mm': round(score_mm(best_M), 3),
+                    'visible_median_mm': _fin['depth_median_mm'],
+                    'visible_p95_mm': _fin['depth_p95_mm'],
                     'steps': {k: float(v) for k, v in steps.items()}}
 
 
@@ -545,8 +555,11 @@ def register(candidate_path, obs_dir, proto, out_dir, *, coarse=None, top_k=None
                         'M': M.tolist(), 'diagnostics': ev, 'icp_history': hist[-6:],
                         'scale_scan': scan,
                         'n_icp_steps': len(hist)})
-    results.sort(key=lambda r: (-r['diagnostics']['mask_iou'],
-                                r['diagnostics']['visible_median_mm']))
+    for r in results:
+        dg = r['diagnostics']
+        r['quality'] = round((dg['depth_median_mm'] if np.isfinite(dg['depth_median_mm']) else 1e6)
+                             + 40.0 * (1.0 - dg['mask_iou']), 4)
+    results.sort(key=lambda r: (r['quality'], r['diagnostics']['depth_p95_mm']))
     best = results[0]
     out = pathlib.Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)

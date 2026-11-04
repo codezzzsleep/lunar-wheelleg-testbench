@@ -1,0 +1,333 @@
+{
+  "schema": "g1v2-summary/v1",
+  "denominator": 6,
+  "scenarios": [
+    {
+      "scenario": "ref",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "5aaab4e16df304dee2fdad7e12d390f0",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.42,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "13cdef8c2a4a418c"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.265,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": 0.1
+    },
+    {
+      "scenario": "len_short",
+      "hidden_rear_x": 1.019,
+      "truth_sha": "559c492dd4069a68463fe5b4ef461b00",
+      "full": {
+        "chosen": "D2",
+        "exec": {
+          "action": "D2",
+          "outcome": "pass",
+          "t_end": 7.28,
+          "chassis_contacts": null,
+          "safe_pass": null,
+          "reached": null,
+          "plan_id": null
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.119,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "8bf64c96eb68b770"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.92,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": true,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": 106.64
+    },
+    {
+      "scenario": "len_mid",
+      "hidden_rear_x": 1.079,
+      "truth_sha": "7ce9244f05e8b8b5ad5192a57173f1f7",
+      "full": {
+        "chosen": "D2",
+        "exec": {
+          "action": "D2",
+          "outcome": "pass",
+          "t_end": 7.24,
+          "chassis_contacts": null,
+          "safe_pass": null,
+          "reached": null,
+          "plan_id": null
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.179,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "517e9d9b3a53e20a"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 112.9,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": true,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": 105.66
+    },
+    {
+      "scenario": "len_long",
+      "hidden_rear_x": 1.139,
+      "truth_sha": "8b3c932d49a1f0a48a53f56ae1398ac1",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.4,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "1d047411321a6ceb"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.239,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "1d047411321a6ceb"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": 0.12
+    },
+    {
+      "scenario": "rear_low",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "acf2773c4677c20d057e49154348956b",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.42,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "13cdef8c2a4a418c"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.265,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 113.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": 0.1
+    },
+    {
+      "scenario": "rear_high",
+      "hidden_rear_x": 1.165,
+      "truth_sha": "0d72e8a4a039d4c3e744ba13417e0c52",
+      "full": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 69.52,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "13cdef8c2a4a418c"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 1.265,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "hidden_part_of_this_scenario",
+          "plan_id": "13cdef8c2a4a418c"
+        }
+      },
+      "obs": {
+        "chosen": "BODY_CLEARANCE",
+        "exec": {
+          "action": "BODY_CLEARANCE",
+          "outcome": "pass",
+          "t_end": 65.86,
+          "chassis_contacts": 0,
+          "safe_pass": true,
+          "reached": true,
+          "plan_id": "4e74d6988d7f7d01"
+        },
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 100,
+          "speed": 0.15,
+          "lower_at_x": 2.45,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "unknown_hold",
+          "plan_id": "4e74d6988d7f7d01"
+        }
+      },
+      "decision_diff": false,
+      "outcome_diff": false,
+      "both_safe": true,
+      "cost_diff_s": -3.66
+    }
+  ],
+  "counts": {
+    "decision_diff": 2,
+    "outcome_diff": 0,
+    "both_safe": 6,
+    "obs_fail_full_safe": 0,
+    "full_cheaper": 2,
+    "obs_cheaper": 1
+  },
+  "conclusion": "U-consistent screen (6 scenarios): completion and V-only both stay safe in all six. Two backside-length cases give a decision difference: completion picks D2 (7.2-7.3 s) while V-only conservatively picks BODY (112.9-113.9 s); both pass. Hidden-height cases show no decision difference. Backside is a cost/decision benefit here, not a safety necessity; no scene required it for success."
+}

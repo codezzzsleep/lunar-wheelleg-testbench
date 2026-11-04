@@ -111,3 +111,5 @@
 | `runs/v3/stage010/g2_summary.json` | g2-summary/v1 | 完成 | 6 candidates; hidden median 15.3-25.3 mm; 1/6 observation ambiguity |
 | `runs/v3/stage010/verify/g1_verification.json` | g1-verification/v1 | 完成（阴性） | variants violate fixed observation: outside-U diff 49,861/54,304; free-space hits 44,039/42,359 |
 | `runs/v3/stage010/g2_method_verification.json` | g2-method-verification/v1 | 完成（修正方法） | dedup 8->2/4; depth p95 178-234 mm; 0 compatible; truth-aided reference c2t 16.8/15.9, t2c 52.5/36.3 mm |
+| `runs/v3/stage010/g1v2_summary.json` | g1v2-summary/v1 | 完成 | U-consistent 6 scenes; decision diff 2 (D2 vs BODY), outcome diff 0, both safe, no OBS-only failure |
+| `runs/v3/stage010/g1v2/scenes.json` | g1v2-scenes/v1 | 完成 | outside-U XOR 0; no new known-free hits; shell p99 2.83 mm |

@@ -1,0 +1,1230 @@
+{
+  "schema": "g1v2-screening/v1",
+  "denominator": 6,
+  "scenarios": {
+    "ref": {
+      "hidden_rear_x": 1.165,
+      "truth_sha": "5aaab4e16df304dee2fdad7e12d390f0",
+      "arms": {
+        "full": {
+          "geometry_sha": "5ebd41808fbc3adb0015033461e9b0c0",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.265,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "13cdef8c2a4a418c"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 106
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 3295
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.180000000000001,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 112.86,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.42,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "13cdef8c2a4a418c"
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.52,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    },
+    "len_short": {
+      "hidden_rear_x": 1.019,
+      "truth_sha": "559c492dd4069a68463fe5b4ef461b00",
+      "arms": {
+        "full": {
+          "geometry_sha": "d27c8eeacfa5b15407a452591f8cc51a",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.119,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "8bf64c96eb68b770"
+          },
+          "chosen": "D2",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 1,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 101
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 9.22,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.180000000000001,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.4,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "D2",
+            "outcome": "pass",
+            "t_end": 7.28,
+            "chassis_contacts": null,
+            "safe_pass": null,
+            "reached": null,
+            "plan_id": null
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.92,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    },
+    "len_mid": {
+      "hidden_rear_x": 1.079,
+      "truth_sha": "7ce9244f05e8b8b5ad5192a57173f1f7",
+      "arms": {
+        "full": {
+          "geometry_sha": "65d32417560310dafc2fd4c14bfd055f",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.179,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "517e9d9b3a53e20a"
+          },
+          "chosen": "D2",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 1,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 106
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 8.860000000000001,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.180000000000001,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.24,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "D2",
+            "outcome": "pass",
+            "t_end": 7.24,
+            "chassis_contacts": null,
+            "safe_pass": null,
+            "reached": null,
+            "plan_id": null
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 112.9,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    },
+    "len_long": {
+      "hidden_rear_x": 1.139,
+      "truth_sha": "8b3c932d49a1f0a48a53f56ae1398ac1",
+      "arms": {
+        "full": {
+          "geometry_sha": "458c8d4dd2c1232a26b8e5946f0dc566",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.239,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "1d047411321a6ceb"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 106
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 3633
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.180000000000001,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 112.84,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.4,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "1d047411321a6ceb"
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.52,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    },
+    "rear_low": {
+      "hidden_rear_x": 1.165,
+      "truth_sha": "acf2773c4677c20d057e49154348956b",
+      "arms": {
+        "full": {
+          "geometry_sha": "4230abf972cf4a7c995a7fae34a1e676",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.265,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "13cdef8c2a4a418c"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 107
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 3315
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.180000000000001,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 112.86,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.42,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "13cdef8c2a4a418c"
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 113.52,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    },
+    "rear_high": {
+      "hidden_rear_x": 1.165,
+      "truth_sha": "0d72e8a4a039d4c3e744ba13417e0c52",
+      "arms": {
+        "full": {
+          "geometry_sha": "7f2697406faab8a7ef5ccdaf25432503",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 1.265,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "hidden_part_of_this_scenario",
+            "plan_id": "13cdef8c2a4a418c"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 190
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.36,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 1859
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 5
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.28,
+              "chassis_contacts": 12
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 36.32,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 69.52,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "13cdef8c2a4a418c"
+          }
+        },
+        "obs": {
+          "geometry_sha": "b55c6c7c69a205000cf11829657cfec6",
+          "plan": {
+            "raise_z": 0.06,
+            "ramp_steps": 100,
+            "speed": 0.15,
+            "lower_at_x": 2.45,
+            "end_x": 2.6,
+            "stop_tilt_deg": 12.0,
+            "far_edge_source": "unknown_hold",
+            "plan_id": "4e74d6988d7f7d01"
+          },
+          "chosen": "BODY_CLEARANCE",
+          "votes": {
+            "R1": 0,
+            "R2": 0,
+            "D1": 0,
+            "D2": 0,
+            "L1": 0,
+            "L2": 0,
+            "CLIMB": 0,
+            "BODY_CLEARANCE": 1
+          },
+          "rows": [
+            {
+              "action": "R1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 115
+            },
+            {
+              "action": "R2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 7.32,
+              "chassis_contacts": 8
+            },
+            {
+              "action": "D1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 13
+            },
+            {
+              "action": "D2",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": null,
+              "cost": 60.0,
+              "chassis_contacts": 2417
+            },
+            {
+              "action": "L1",
+              "success": false,
+              "outcome": "physical_failure",
+              "reason": "tipped",
+              "cost": 60.0,
+              "chassis_contacts": 7
+            },
+            {
+              "action": "L2",
+              "success": false,
+              "outcome": "chassis_contact",
+              "reason": "chassis_obstacle_contact",
+              "cost": 6.16,
+              "chassis_contacts": 14
+            },
+            {
+              "action": "BODY_CLEARANCE",
+              "success": true,
+              "outcome": "pass",
+              "reason": "success",
+              "cost": 113.72,
+              "chassis_contacts": 0
+            },
+            {
+              "action": "A0",
+              "success": false,
+              "outcome": "safe_stop",
+              "reason": "abort",
+              "cost": 60.0,
+              "chassis_contacts": 0
+            }
+          ],
+          "exec": {
+            "action": "BODY_CLEARANCE",
+            "outcome": "pass",
+            "t_end": 65.86,
+            "chassis_contacts": 0,
+            "safe_pass": true,
+            "reached": true,
+            "plan_id": "4e74d6988d7f7d01"
+          }
+        }
+      }
+    }
+  }
+}

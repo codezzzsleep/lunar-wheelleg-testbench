@@ -1,0 +1,99 @@
+{
+  "schema": "g1v2-scenes/v1",
+  "rule": {
+    "schema": "g1v2-screening-rule/v1",
+    "denominator": 6,
+    "arms": [
+      "perfect_completion V | (truth & U)",
+      "obs_only V"
+    ],
+    "execution": "both chosen plans executed on the same complete truth scene (project S0)",
+    "budget_s": 120,
+    "actions": "configs/stage6_protocol.json",
+    "decision_rule": "single-candidate majority (threshold=1), unchanged",
+    "primary": "decision difference and outcome difference",
+    "secondary": "cost/time; OBS is never weakened",
+    "families": {
+      "backside_length": [
+        "len_short",
+        "len_mid",
+        "len_long"
+      ],
+      "hidden_height": [
+        "rear_low",
+        "rear_high"
+      ]
+    },
+    "controls": [
+      "ref"
+    ]
+  },
+  "scenarios": {
+    "ref": {
+      "kind": "none",
+      "param": null,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 1256301,
+      "delta_vs_old": 0,
+      "shell_max_mm": 4.47,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    },
+    "len_short": {
+      "kind": "cut_x",
+      "param": 1.02,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 646834,
+      "delta_vs_old": 609467,
+      "shell_max_mm": 10.77,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    },
+    "len_mid": {
+      "kind": "cut_x",
+      "param": 1.08,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 1016175,
+      "delta_vs_old": 240126,
+      "shell_max_mm": 4.47,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    },
+    "len_long": {
+      "kind": "cut_x",
+      "param": 1.14,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 1237052,
+      "delta_vs_old": 19249,
+      "shell_max_mm": 4.47,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    },
+    "rear_low": {
+      "kind": "low_z",
+      "param": 0.18,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 1163841,
+      "delta_vs_old": 92460,
+      "shell_max_mm": 6.32,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    },
+    "rear_high": {
+      "kind": "high_z",
+      "param": 0.3,
+      "outside_U_xor": 0,
+      "known_free_hits": 3403,
+      "n_voxels": 1707185,
+      "delta_vs_old": 450884,
+      "shell_max_mm": 4.47,
+      "shell_p99_mm": 2.83,
+      "z_max": 0.299
+    }
+  }
+}

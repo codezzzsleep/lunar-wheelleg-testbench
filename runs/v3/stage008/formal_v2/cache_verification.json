@@ -1,0 +1,85 @@
+{
+  "FULL": {
+    "first": {
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 2,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 5
+      },
+      "costs": {
+        "R1": 60.0,
+        "R2": 60.0,
+        "D1": 60.0,
+        "D2": 42.6033,
+        "L1": 60.0,
+        "L2": 60.0,
+        "CLIMB": 60.0,
+        "BODY_CLEARANCE": 104.6667
+      }
+    },
+    "cached": {
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 2,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 5
+      },
+      "costs": {
+        "R1": 60.0,
+        "R2": 60.0,
+        "D1": 60.0,
+        "D2": 42.6033,
+        "L1": 60.0,
+        "L2": 60.0,
+        "CLIMB": 60.0,
+        "BODY_CLEARANCE": 104.6667
+      }
+    },
+    "equal": true,
+    "mismatch_refused": true,
+    "mismatch_msg": "identity mismatch on plan_id: 005f113f5e67e4c9 != WRONG"
+  },
+  "OBS": {
+    "first": {
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    "cached": {
+      "chosen": "BODY_CLEARANCE",
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      }
+    },
+    "equal": true
+  },
+  "protocol_sha256": "088a6e17393ea0c28c335a15d534e6f8055fd217de6424f3d7326cfb4b2c5a7b",
+  "s0_state_hash": "8c287b848532e84f06f2a51c5f279308",
+  "note": "no physics rerun; the same existing matrices were re-aggregated from cache"
+}

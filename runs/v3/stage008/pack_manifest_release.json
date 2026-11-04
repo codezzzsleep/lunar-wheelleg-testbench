@@ -1,0 +1,42 @@
+{
+  "schema": "stage9-release-manifest/v1",
+  "baseline": "8c1054ac5",
+  "runnable_release": {
+    "file": "stage008_runnable_release.tar.gz",
+    "bytes": 14313982,
+    "sha256": "bfa74cee51d00f88c07cf6e46e91e7068cb50aeb598122439e2d30394992e4e4",
+    "validation": {
+      "where": "fresh dir /tmp/release_test on the sandbox",
+      "sim": "base 0.3841->0.4429 m, chassis 0.2775->0.3362 m",
+      "full_case": "exit 0; all 6 candidate cache identities + OBS + chosen-match checks true; FULL BODY pass 114.24 s; OBS BODY pass 114.40 s; run_manifest written before execution"
+    }
+  },
+  "demo": {
+    "mp4": "runs/v3/stage009/demo/stage9_demo.mp4",
+    "mp4_sha256": "5dc71984a8765d13516f48ad679e40081edbebc7e7b6886052567bbe682d45ac",
+    "duration_s": 176.333333,
+    "tar": "runs/v3/stage009/stage9_demo.tar.gz",
+    "tar_sha256": "12974f5e376f3d83422a851c192a0340a4ba3f3113e6af9e79f1f7ee64c3711b",
+    "panels": [
+      "SEEING",
+      "SIX IMAGINATIONS",
+      "TRIALS",
+      "MAJORITY",
+      "REVEAL + textured replay",
+      "skill comparison clip"
+    ]
+  },
+  "traceability": "runs/v3/stage008/traceability.json",
+  "cache_verification": "runs/v3/stage008/formal_v2/cache_verification.json",
+  "persistent_remote": {
+    "branch": "archive/stage008",
+    "commit": "60a16a97a6eefbdbaac820da7e506309945c9004",
+    "url": "https://cnb.cool/ycyc755/lunar-lab-r1",
+    "clone": "git clone -b archive/stage008 https://cnb.cool/ycyc755/lunar-lab-r1.git"
+  },
+  "notes": [
+    "no API calls, no new generation/scene/initial state/control in this release",
+    "old formal_final.json kept and marked SUPERSEDED",
+    "FULL and OBS both choose BODY and both pass in this single case; no generalisation claimed"
+  ]
+}

@@ -103,3 +103,6 @@
 | `runs/v3/stage008/formal_v2/result.json` | stage8-formal-v2/v1 | 通过 | single truth scene 0f8706f4..., S0 8c287b84...; FULL/OBS both BODY pass 114.24/114.40 s |
 | `runs/v3/stage008/formal_final_PENDING_CORRECTION.md` | note | — | old formal_final numbers superseded, file unchanged |
 | `runs/v3/stage008/pack_manifest_v2.json` | stage8-pack-manifest-v2/v1 | 通过 | pack sha be114bd3..., offline full case validated, archive 6da3075a |
+| `runs/v3/stage009/demo/stage9_demo.mp4` | demo | — | five panels, 176.3 s, sha256 5dc71984..., from recorded data only |
+| `runs/v3/stage008/pack_manifest_release.json` | stage9-release-manifest/v1 | 通过 | runnable release bfa74cee..., demo 12974f5e..., archive 60a16a97... |
+| `runs/v3/stage008/traceability.json` | stage9-traceability/v1 | — | 56 cells + 2 exec links, post-hoc flags, missing fields listed |

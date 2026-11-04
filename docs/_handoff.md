@@ -198,6 +198,30 @@
   的“决策差异 5/7”作废，文件保留并标 `PENDING_CORRECTION`。
 - 可运行包 v2（sha `be114bd3…`）在新目录实测：3 s 启动、完整缓存案例（聚合→决策校验→真值执行→
   回放）均通过；归档分支 `archive/stage008` 提交 `6da3075a`。
+## STAGE009 发布收尾（2026-11-04，基线 8c1054ac5）
+
+- 矩阵缓存回归修复：缓存带头部身份（S0、几何 SHA、plan_id、协议 SHA、动作集、适用性），
+  读取时逐项匹配，不匹配即拒绝；用已有矩阵重聚合验证“首次 == 缓存”（FULL/OBS 均一致，
+  不匹配用例被拒），未重跑物理。
+- 离线入口：任一 cache_check 为 False 立即非零退出（实测 exit=2 且不执行）；执行前先写
+  本次决策与 run_manifest，绑定真值 SHA、S0、plan_id、协议与缓存身份。
+- 外部追溯清单 `traceability.json`：引用现有 index SHA、decision SHA、truth SHA、plan_id，
+  标注 post_hoc 关联与缺失字段（轨迹 meta 未内嵌 truth/decision）；未改写或重采轨迹。
+- 结果入口统一：`formal_v2` 为权威；旧 `formal_final.json` 标 **SUPERSEDED**，其“5/7 差异”
+  撤回；命名统一为完整几何参考 FULL、OBS_ONLY、真值参考；本例配准拟合仍弱
+  （mask IoU 0.49–0.56）、仅一个场景一个 S0，不推广为 Lux3D 总体有效/无效。
+- 五画面展示 `runs/v3/stage009/demo/stage9_demo.mp4`：看见、六份想象、逐候选试走、
+  多数决定、真值执行与揭晓；第 5 画面为带纹理三维回放（真实 qpos，不改轨迹）；
+  普通站姿 vs 抬身的技能对照单独片段并标注。
+- 发布交付：可运行包 `stage008_runnable_release.tar.gz`（sha256 `bfa74cee…`，14.3 MB）
+  在全新目录验证：3 s 启动 + 完整缓存案例 exit 0，6/6 候选缓存身份 + OBS + 决策匹配全 true，
+  FULL/OBS 均 BODY pass（114.24/114.40 s）；`run_manifest.json` 执行前写入。
+- 五画面展示 `runs/v3/stage009/demo/stage9_demo.mp4`（sha256 `5dc71984…`，176.3 s）：
+  看见、六份想象（配准后几何）、逐候选试走、多数决定、真值执行与揭晓 + 带纹理回放；
+  技能对照片段单独标注。FULL/OBS 都通过如实展示。
+- 归档分支 `archive/stage008` 发布提交 `60a16a97…`，含 release 包与 demo 包；
+  下载：`git clone -b archive/stage008 https://cnb.cool/ycyc755/lunar-lab-r1.git`。
+
 ## 最新结论（截至第 37 轮，2026-11-03 晚）
 
 - **A 控制接口 / B 基础周期 / F 20 m 路线：通过**。

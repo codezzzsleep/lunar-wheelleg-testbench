@@ -1,0 +1,20 @@
+{
+  "schema": "reg-layers-metric/v1",
+  "layers": {
+    "1_identity": {
+      "mask_iou": 0.9955,
+      "depth_median_mm": 0.291,
+      "depth_p95_mm": 1.204
+    },
+    "2_known_init": {
+      "mask_iou": 0.9765,
+      "depth_median_mm": 8.532,
+      "depth_p95_mm": 13.521
+    },
+    "3_normal_coarse": {
+      "mask_iou": 0.7327,
+      "depth_median_mm": 22.074,
+      "depth_p95_mm": 98.027
+    }
+  }
+}

@@ -116,3 +116,5 @@
 | `runs/v3/stage010/d2_verification.json` | g1v2-d2-verification/v1 | 完成（阴性） | D2 final_x 3.618/3.610 m past endpoint; fails common completion standard |
 | `runs/v3/stage010/g2_control/control.json` | g2-positive-control/v1 | 失败 | truth mesh via same entry: rot err 131.5 deg, depth P95 184 mm; entry itself suspect |
 | `runs/v3/stage010/g2_control2/control2.json` | g2-positive-control2/v1 | 失败 | truth mesh in local frame: rot 169.7 deg, scale err 8%, surface median 207 mm |
+| `runs/v3/stage11/metric/metric_check.json` | metric-check/v1 | 通过（修正度量） | identity pose: triangle raster IoU 0.9955, depth 0.29/1.20 mm vs point-splat 0.64/30.8/276.9 |
+| `runs/v3/stage11/registration/layers_metric.json` | reg-layers-metric/v1 | 完成 | L1 0.9955/0.29; L2 0.9765/8.5; L3 0.733/22.1 -> coarse search fails |

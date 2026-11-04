@@ -1,0 +1,199 @@
+{
+  "schema": "stage013-zero-qualified-table/v1",
+  "original_six": {
+    "registration_run": "stage013-reg-r2",
+    "generated": 6,
+    "registration_evaluated": 6,
+    "matrix_run": 0,
+    "qualified": 0,
+    "rejections": {
+      "4632564": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "4632603": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "4632618": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "4632621": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "4632624": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "4632627": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ]
+    },
+    "full": {
+      "chosen": "BODY_CLEARANCE",
+      "effective_chosen": "BODY_CLEARANCE",
+      "fallback_reason": "zero_qualified_candidates",
+      "plan_id": "4e74d6988d7f7d01",
+      "decision_sha": "423e5d9d49ceee1c1b81643714d2a50e",
+      "execution_ref": "shared_obs_fallback"
+    },
+    "obs": {
+      "votes": {
+        "R1": 0,
+        "R2": 0,
+        "D1": 0,
+        "D2": 0,
+        "L1": 0,
+        "L2": 0,
+        "CLIMB": 0,
+        "BODY_CLEARANCE": 1
+      },
+      "chosen": "BODY_CLEARANCE",
+      "effective_chosen": "BODY_CLEARANCE",
+      "plan_id": "4e74d6988d7f7d01",
+      "decision_sha": "c1a83c68388f8e57a9dba9bbe3838c66",
+      "execution_ref": "shared_obs_fallback"
+    },
+    "shared_execution": {
+      "action": "BODY_CLEARANCE",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 114.4,
+      "cost": 114.4,
+      "safe_pass": true,
+      "chassis_contacts": 0,
+      "reached": true,
+      "plan_id": "4e74d6988d7f7d01",
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage013/compare/ref/exec/record/OBS_FALLBACK_SHARED/index.json",
+        "trajectory_sha256": "1270eb46e4f24bc3f9110be9a553b4b2ee7ec518f421c5f7abd477ad540d9d11",
+        "frame_count": 5690,
+        "record_hz": 50.0,
+        "duration_s": 113.77999999999437,
+        "n_chunks": 23,
+        "contacts_n": 38728
+      },
+      "execution_id": "stage12_ref_OBS_FALLBACK_SHARED_1793809866",
+      "independent_sample": false
+    }
+  },
+  "input_batch": {
+    "generated": 6,
+    "download": 5,
+    "rejected_tasks": [
+      "stage013_white_native_r0"
+    ],
+    "registration_evaluated": 5,
+    "matrix_run": 0,
+    "qualified": 0,
+    "candidates": [
+      {
+        "candidate": "stage013_masked_native_r0",
+        "task_id": 4667175,
+        "mask_iou": 0.7617,
+        "depth_p95_mm": 84.225,
+        "visible_median_mm": 6.906,
+        "qualified": false,
+        "rejection": "mask_iou<0.90 and depth_p95>20mm"
+      },
+      {
+        "candidate": "stage013_masked_native_r1",
+        "task_id": 4667174,
+        "mask_iou": 0.7971,
+        "depth_p95_mm": 126.199,
+        "visible_median_mm": 7.333,
+        "qualified": false,
+        "rejection": "mask_iou<0.90 and depth_p95>20mm"
+      },
+      {
+        "candidate": "stage013_raw_native_r0",
+        "task_id": 4667178,
+        "mask_iou": 0.801,
+        "depth_p95_mm": 46.893,
+        "visible_median_mm": 8.932,
+        "qualified": false,
+        "rejection": "mask_iou<0.90 and depth_p95>20mm"
+      },
+      {
+        "candidate": "stage013_raw_native_r1",
+        "task_id": 4667177,
+        "mask_iou": 0.8107,
+        "depth_p95_mm": 47.61,
+        "visible_median_mm": 8.583,
+        "qualified": false,
+        "rejection": "mask_iou<0.90 and depth_p95>20mm"
+      },
+      {
+        "candidate": "stage013_white_native_r1",
+        "task_id": 4667176,
+        "mask_iou": 0.7139,
+        "depth_p95_mm": 69.644,
+        "visible_median_mm": 17.267,
+        "qualified": false,
+        "rejection": "mask_iou<0.90 and depth_p95>20mm"
+      }
+    ],
+    "rejections": {
+      "stage013_masked_native_r0": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "stage013_masked_native_r1": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "stage013_raw_native_r0": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "stage013_raw_native_r1": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ],
+      "stage013_white_native_r1": [
+        "mask_iou_below_gate",
+        "depth_p95_above_gate"
+      ]
+    },
+    "full": {
+      "chosen": "BODY_CLEARANCE",
+      "effective_chosen": "BODY_CLEARANCE",
+      "fallback_reason": "zero_qualified_candidates",
+      "plan_id": "4e74d6988d7f7d01",
+      "decision_sha": "86a71476a39d5ac0d6a8f3c9802efc54",
+      "execution_ref": "shared_obs_fallback"
+    },
+    "shared_execution": {
+      "action": "BODY_CLEARANCE",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 114.4,
+      "cost": 114.4,
+      "safe_pass": true,
+      "chassis_contacts": 0,
+      "reached": true,
+      "plan_id": "4e74d6988d7f7d01",
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/compare/ref/exec/record/OBS_FALLBACK_SHARED/index.json",
+        "trajectory_sha256": "247112ff29bae61c0fa0594ae99af9b196bd718198043a5808e5deca9f27b565",
+        "frame_count": 5690,
+        "record_hz": 50.0,
+        "duration_s": 113.77999999999437,
+        "n_chunks": 23,
+        "contacts_n": 38728
+      },
+      "execution_id": "stage12_ref_OBS_FALLBACK_SHARED_1793811770",
+      "independent_sample": false
+    }
+  },
+  "not_applicable": {
+    "fixed_first_candidate": "no admitted candidate (0/6)",
+    "majority_vote": "no admitted candidate; formal path is OBS fallback",
+    "worst_case": "no admitted candidate; formal path is OBS fallback",
+    "candidate_matrix": "not run for unqualified candidates (would be exploratory only)"
+  },
+  "conclusion": "both the original six and the one-case input-improvement batch yield zero admitted candidates. Formal system result is OBS fallback BODY_CLEARANCE 114.4 s, zero chassis contacts, one shared truth execution; FULL and OBS reference the same execution, not two samples. No generative benefit."
+}

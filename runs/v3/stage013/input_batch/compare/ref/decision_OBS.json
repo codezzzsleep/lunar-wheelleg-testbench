@@ -1,0 +1,120 @@
+{
+  "schema": "v3-decision/v1",
+  "state_id": "stage12_ref",
+  "arm": "OBS",
+  "decided_at": "2026-11-05T01:02:30+0800",
+  "state_hash": "8c287b848532e84f06f2a51c5f279308",
+  "visible": {
+    "x_front": 0.834,
+    "W_vis": 0.275,
+    "H_vis": 0.3
+  },
+  "matrix_sha256": "f93275492c83b80d9cdf3a7c9d729ffa20c631d70f85076dcc1078ebe5a05dbf",
+  "decision": {
+    "rule": "majority/v1",
+    "version": "v3-decision/v1",
+    "n_tasks": 1,
+    "n_valid": 1,
+    "n_unique_geometries": 1,
+    "threshold": 1,
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 0,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 1
+    },
+    "mean_cost_s": {
+      "R1": 60.0,
+      "R2": 60.0,
+      "D1": 60.0,
+      "D2": 60.0,
+      "L1": 60.0,
+      "L2": 60.0,
+      "CLIMB": 60.0,
+      "BODY_CLEARANCE": 113.72
+    },
+    "chosen": "BODY_CLEARANCE",
+    "safe_set": [
+      "BODY_CLEARANCE"
+    ],
+    "reason": "majority_traversal",
+    "errors": [],
+    "per_candidate": {
+      "OBS": {
+        "R1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 5.18,
+          "final_x": 0.918
+        },
+        "R2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 7.32,
+          "t_end": 7.92,
+          "final_x": 3.339
+        },
+        "D1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.58,
+          "final_x": 0.886
+        },
+        "D2": {
+          "success": false,
+          "reason": "time_limit",
+          "cost": 60.0,
+          "t_end": 120.02,
+          "final_x": 1.075
+        },
+        "L1": {
+          "success": false,
+          "reason": "tipped",
+          "cost": 60.0,
+          "t_end": 3.36,
+          "final_x": 0.91
+        },
+        "L2": {
+          "success": false,
+          "reason": "chassis_obstacle_contact",
+          "cost": 6.16,
+          "t_end": 6.76,
+          "final_x": 3.61
+        },
+        "BODY_CLEARANCE": {
+          "success": true,
+          "reason": "success",
+          "cost": 113.72,
+          "t_end": 113.72,
+          "final_x": 2.6096
+        },
+        "A0": {
+          "success": false,
+          "reason": "abort",
+          "cost": 60.0,
+          "t_end": 3.6000000000000028,
+          "final_x": -0.003
+        }
+      }
+    }
+  },
+  "plan": {
+    "raise_z": 0.06,
+    "ramp_steps": 100,
+    "speed": 0.15,
+    "lower_at_x": 2.45,
+    "end_x": 2.6,
+    "stop_tilt_deg": 12.0,
+    "far_edge_source": "unknown_hold",
+    "plan_id": "4e74d6988d7f7d01"
+  },
+  "truth_sha": "0f8706f479de52a260aee04cd1703f32d9141f0a3b144b3ddd91b51e1e105546",
+  "s0_state_hash": "8c287b848532e84f06f2a51c5f279308",
+  "decision_sha": "d7da47178f3cc52870ee667cba9db5ba"
+}

@@ -1,0 +1,100 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "protocol": "plans/v3_protocol.json",
+  "n": 6,
+  "states": [
+    "stage013_input_batch"
+  ],
+  "variants": [
+    "masked_native",
+    "raw_native",
+    "white_native"
+  ],
+  "note": "one case, three existing input presentations x two repeats; no upscaling",
+  "tasks": [
+    {
+      "id": "stage013_raw_native_r0",
+      "state_id": "stage013_input_batch",
+      "variant": "raw_native",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/raw_native_rep0.png",
+      "image_sha256": "b078b8f58191537e36cb02355b9fd710680d4f75aafdd74570561cd3b59930bb",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "stage013_raw_native_r1",
+      "state_id": "stage013_input_batch",
+      "variant": "raw_native",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/raw_native_rep1.png",
+      "image_sha256": "b078b8f58191537e36cb02355b9fd710680d4f75aafdd74570561cd3b59930bb",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 2,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "stage013_white_native_r0",
+      "state_id": "stage013_input_batch",
+      "variant": "white_native",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/white_native_rep0.png",
+      "image_sha256": "d21b707bebcbcb19f28fbbb93926c5798c45a414ac97579dec4910ffc0f5b828",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 3,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "stage013_white_native_r1",
+      "state_id": "stage013_input_batch",
+      "variant": "white_native",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/white_native_rep1.png",
+      "image_sha256": "d21b707bebcbcb19f28fbbb93926c5798c45a414ac97579dec4910ffc0f5b828",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 4,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "stage013_masked_native_r0",
+      "state_id": "stage013_input_batch",
+      "variant": "masked_native",
+      "repeat_idx": 0,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/masked_native_rep0.png",
+      "image_sha256": "5daf091028eed378d34ea6052779d807438430f041360cf7091f17f326fe1e87",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 5,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "stage013_masked_native_r1",
+      "state_id": "stage013_input_batch",
+      "variant": "masked_native",
+      "repeat_idx": 1,
+      "image": "/workspace/lunar-lab/runs/v3/stage013/input_batch/masked_native_rep1.png",
+      "image_sha256": "5daf091028eed378d34ea6052779d807438430f041360cf7091f17f326fe1e87",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 6,
+      "estimated_credits": 20.0
+    }
+  ]
+}

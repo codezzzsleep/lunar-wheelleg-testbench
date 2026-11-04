@@ -1,0 +1,90 @@
+{
+  "schema": "stage013-input-batch-result/v1",
+  "case": "stage013_input_batch",
+  "generated_denominator": 6,
+  "submitted": 6,
+  "downloaded": 5,
+  "rejected_tasks": [
+    "stage013_white_native_r0"
+  ],
+  "rejected_attempt_events": 4,
+  "registration_evaluated": 5,
+  "qualified": 0,
+  "matrix_run": 0,
+  "candidates": [
+    {
+      "candidate": "stage013_masked_native_r0",
+      "task_id": 4667175,
+      "mask_iou": 0.7617,
+      "depth_p95_mm": 84.225,
+      "visible_median_mm": 6.906,
+      "qualified": false,
+      "rejection": "mask_iou<0.90 and depth_p95>20mm"
+    },
+    {
+      "candidate": "stage013_masked_native_r1",
+      "task_id": 4667174,
+      "mask_iou": 0.7971,
+      "depth_p95_mm": 126.199,
+      "visible_median_mm": 7.333,
+      "qualified": false,
+      "rejection": "mask_iou<0.90 and depth_p95>20mm"
+    },
+    {
+      "candidate": "stage013_raw_native_r0",
+      "task_id": 4667178,
+      "mask_iou": 0.801,
+      "depth_p95_mm": 46.893,
+      "visible_median_mm": 8.932,
+      "qualified": false,
+      "rejection": "mask_iou<0.90 and depth_p95>20mm"
+    },
+    {
+      "candidate": "stage013_raw_native_r1",
+      "task_id": 4667177,
+      "mask_iou": 0.8107,
+      "depth_p95_mm": 47.61,
+      "visible_median_mm": 8.583,
+      "qualified": false,
+      "rejection": "mask_iou<0.90 and depth_p95>20mm"
+    },
+    {
+      "candidate": "stage013_white_native_r1",
+      "task_id": 4667176,
+      "mask_iou": 0.7139,
+      "depth_p95_mm": 69.644,
+      "visible_median_mm": 17.267,
+      "qualified": false,
+      "rejection": "mask_iou<0.90 and depth_p95>20mm"
+    }
+  ],
+  "formal": {
+    "fallback_reason": "zero_qualified_candidates",
+    "effective_chosen": "BODY_CLEARANCE",
+    "plan_id": "4e74d6988d7f7d01",
+    "favorable_claims": null,
+    "shared_execution": {
+      "action": "BODY_CLEARANCE",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 114.4,
+      "cost": 114.4,
+      "safe_pass": true,
+      "chassis_contacts": 0,
+      "reached": true,
+      "plan_id": "4e74d6988d7f7d01",
+      "trajectory_ref": {
+        "trajectory_path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/compare/ref/exec/record/OBS_FALLBACK_SHARED/index.json",
+        "trajectory_sha256": "247112ff29bae61c0fa0594ae99af9b196bd718198043a5808e5deca9f27b565",
+        "frame_count": 5690,
+        "record_hz": 50.0,
+        "duration_s": 113.77999999999437,
+        "n_chunks": 23,
+        "contacts_n": 38728
+      },
+      "execution_id": "stage12_ref_OBS_FALLBACK_SHARED_1793811770",
+      "independent_sample": false
+    }
+  },
+  "conclusion": "input improvement batch (3 existing presentations x 2 repeats) still yields 0/6 admitted candidates; formal result is OBS fallback BODY 114.4 s, zero chassis contacts, shared single execution (not two independent samples). No generative benefit is claimed."
+}

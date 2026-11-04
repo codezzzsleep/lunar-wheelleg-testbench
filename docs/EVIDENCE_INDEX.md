@@ -133,3 +133,5 @@
 | `runs/v3/stage013/registered/registration.json` | stage8-registration/v2 | 阴性 | run stage013-reg-r2; 6/6 evaluated, 0 qualified |
 | `runs/v3/stage013/compare/ref/result.json` | stage12-compare/v2 | 正式回退 | FULL falls back to OBS BODY 4e74d6988d7f7d01; shared execution pass 114.4 s |
 | `runs/v3/stage013/input_batch/manifest.json` | stage013-input-batch/v1 | 已准备 | 3 input presentations × 2 repeats, no upscale; not submitted |
+| `runs/v3/stage013/formal_zero_qualified_table.json` | stage013-zero-qualified-table/v1 | 正式阴性 | original 0/6 and input batch 0/6; OBS fallback BODY 114.4 s shared execution |
+| `runs/v3/stage013/input_batch/registration.json` | stage013 batch | 阴性 | 6 generated, 5 downloaded, 1 rejected; 5 registered, 0 qualified |

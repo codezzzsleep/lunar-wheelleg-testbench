@@ -8,10 +8,10 @@ import v3_core, wheelleg_env, stage8_matrix2 as M, stage6_matrix as S6M
 TASKS=['4632564','4632603','4632618','4632621','4632624','4632627']
 GATE={'mask_iou_min':0.90,'depth_p95_max_mm':20.0}
 
-def qualify_candidates(registration, generated_ids=TASKS):
-    """Only generated Lux3D ids enter the denominator; diagnostic controls stay separate."""
+def qualify_candidates(registration, generated_ids=None):
+    """Only ids present in the registration record enter the gate; diagnostics stay separate."""
     out={}
-    for t in generated_ids:
+    for t in (generated_ids or list(registration.keys())):
         c=registration.get(t)
         dg=(c or {}).get('diagnostics') or (c or {}).get('diag') or {}
         iou=dg.get('mask_iou'); p95=dg.get('depth_p95_mm')

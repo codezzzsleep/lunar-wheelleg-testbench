@@ -1,0 +1,175 @@
+{
+  "schema": "stage013-fusion/v1",
+  "truth": "runs/v3/stage008/truth_v2",
+  "v_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+  "v_stats": {
+    "n_voxels": 9792510,
+    "n_free": 5650622,
+    "n_band": 60996,
+    "n_unknown": 4080892,
+    "n_in_fov": 9792510,
+    "n_masked_fov": 2933380,
+    "n_shell": 60996,
+    "valid_depth_frac": 0.756951,
+    "free_eps_m": 0.004,
+    "band_m": 0.006,
+    "shell_offset_m": 0.001,
+    "pitch_m": 0.002,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "candidates": {
+    "stage013_masked_native_r0": {
+      "full_sha": "78b806b57cbc413ed14350c04d7bf8a535957c054e37191f76d8ce7f49b9bd11",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 42516,
+        "n_generated_unknown": 23112,
+        "n_full": 84108,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 23112,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.54361,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.129
+    },
+    "stage013_masked_native_r1": {
+      "full_sha": "f77b8d3864eff513c97feaddb9f16bd7a43205c7cbdef5e54b95f2e1e73111d2",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 42719,
+        "n_generated_unknown": 23646,
+        "n_full": 84642,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 23646,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.55352,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.119
+    },
+    "stage013_raw_native_r0": {
+      "full_sha": "cb08febf66897bf27dc80956ab9dc90c2b94caa5e544b600f35928bfc4d8e2e2",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 58958,
+        "n_generated_unknown": 40924,
+        "n_full": 101920,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 40924,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.69412,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.131
+    },
+    "stage013_raw_native_r1": {
+      "full_sha": "541bc7376523ea0f6dec28712873093ce2f460decadc626f6d1f0a34ad26cc20",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 53904,
+        "n_generated_unknown": 36361,
+        "n_full": 97357,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 36361,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.67455,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.131
+    },
+    "stage013_white_native_r1": {
+      "full_sha": "27dc5d234673b387203c94743ee986b46ee9e80510e1adf16db61ad4d3bc551f",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 45335,
+        "n_generated_unknown": 29926,
+        "n_full": 90922,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 29926,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.66011,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.143
+    }
+  },
+  "plans": {
+    "full": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 1.229,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "stage013_stage013_masked_native_r0_hidden_rear",
+      "plan_id": "53564751c52a0287"
+    },
+    "obs": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "unknown_hold",
+      "plan_id": "4e74d6988d7f7d01"
+    }
+  },
+  "plan_source_note": "fixed BODY plan from first downloaded input-batch candidate; never truth rear"
+}

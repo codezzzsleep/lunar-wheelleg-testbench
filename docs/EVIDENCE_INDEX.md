@@ -130,3 +130,6 @@
 | `runs/v3/stage012/compare/ref/result.json` | stage12-compare/v1 | 阴性 | FULL votes R2 6, D2 5, L2 6, BODY 6 -> L2; OBS L2 1; both truth exec physical_failure 40.6 s |
 | `runs/v3/stage012/compare/ref/result.json` | stage12-compare/v1 | 门控生效 | qualified=[] -> FULL fallback OBS; OBS BODY 1 vote; unqualified matrices exploratory only |
 | `runs/v3/stage012/compare/ref/CLASSIFICATION_CORRECTION.md` | note | — | old 40.6 s reclassified as step-cap truncation |
+| `runs/v3/stage013/registered/registration.json` | stage8-registration/v2 | 阴性 | run stage013-reg-r2; 6/6 evaluated, 0 qualified |
+| `runs/v3/stage013/compare/ref/result.json` | stage12-compare/v2 | 正式回退 | FULL falls back to OBS BODY 4e74d6988d7f7d01; shared execution pass 114.4 s |
+| `runs/v3/stage013/input_batch/manifest.json` | stage013-input-batch/v1 | 已准备 | 3 input presentations × 2 repeats, no upscale; not submitted |

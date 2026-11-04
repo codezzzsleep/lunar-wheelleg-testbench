@@ -1,0 +1,99 @@
+{
+  "schema": "v3-trajectory/v2",
+  "meta": {
+    "action": "L2",
+    "mode": "project",
+    "seed": 0,
+    "started_at": "2026-11-05T00:30:23+0800"
+  },
+  "record_hz": 50.0,
+  "fields": {
+    "t": "s",
+    "control_index": "1",
+    "physics_index": "1",
+    "qpos": "m / rad (MuJoCo 顺序)",
+    "qvel": "m/s / rad/s (MuJoCo 顺序)",
+    "action_raw": "控制器输出（归一化，含义见 action_names）",
+    "joint_target": "rad",
+    "joint_vel_target": "rad/s",
+    "wheel_omega_target": "rad/s",
+    "wheel_brake": "0/1",
+    "joint_torque": "N*m (实际执行器)",
+    "wheel_torque": "N*m (实际执行器)",
+    "nav_target_y": "m (机体横向目标)",
+    "tilt_deg": "deg",
+    "n_contact": "1"
+  },
+  "field_keys": [
+    "action_raw",
+    "control_index",
+    "joint_target",
+    "joint_torque",
+    "joint_vel_target",
+    "n_contact",
+    "nav_target_y",
+    "physics_index",
+    "qpos",
+    "qvel",
+    "t",
+    "tilt_deg",
+    "wheel_brake",
+    "wheel_omega_target",
+    "wheel_torque"
+  ],
+  "array_names": {
+    "joint": [
+      "FR_hip",
+      "FR_thigh",
+      "FR_calf",
+      "FL_hip",
+      "FL_thigh",
+      "FL_calf",
+      "RR_hip",
+      "RR_thigh",
+      "RR_calf",
+      "RL_hip",
+      "RL_thigh",
+      "RL_calf"
+    ],
+    "wheel": [
+      "FR",
+      "FL",
+      "RR",
+      "RL"
+    ],
+    "qpos": "MuJoCo model.nq",
+    "qvel": "MuJoCo model.nv"
+  },
+  "units_note": "关节/轮的量都按关节名顺序；qpos/qvel 是 MuJoCo 原生顺序，渲染与回放必须读同一模型",
+  "unavailable": [],
+  "chunks": [
+    {
+      "chunk": 0,
+      "frames": 250,
+      "arrays": "chunk_00000.npz",
+      "arrays_sha256": "f057ae6fa3c08967a98bfeec2790e850fb4172ba629516ee86d09c4e59eb21b1",
+      "contacts": "contacts_00000.jsonl",
+      "contacts_sha256": "ede2e4fae4aa07e563c84939a70be4b948ecc71f56db3e7ccc0e56ba0ab0dab0",
+      "contacts_n": 880,
+      "t_first": 0.6200000000000002,
+      "t_last": 5.599999999999969
+    },
+    {
+      "chunk": 1,
+      "frames": 58,
+      "arrays": "chunk_00001.npz",
+      "arrays_sha256": "88f91b3d68ac3e224e4b1b6894fbe7883d4d6d6dcfdb28b02c4a67edfa318ec7",
+      "contacts": "contacts_00001.jsonl",
+      "contacts_sha256": "15b7feb953c4988a340d67f7f2d891a99d81037f1ab95ea222ca81ed33a9e2d9",
+      "contacts_n": 216,
+      "t_first": 5.619999999999968,
+      "t_last": 6.759999999999944
+    }
+  ],
+  "frame_count": 308,
+  "contacts_n": 1096,
+  "started_at": "2026-11-05T00:30:23+0800",
+  "closed_at": "2026-11-05T00:30:24+0800",
+  "duration_s": 6.139999999999944
+}

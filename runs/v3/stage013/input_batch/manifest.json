@@ -1,0 +1,72 @@
+{
+  "schema": "stage013-input-batch/v1",
+  "source_raw": "/workspace/lunar-lab/runs/v3/stage008/truth_v2/crop_raw.png",
+  "source_raw_sha256": "b078b8f58191537e36cb02355b9fd710680d4f75aafdd74570561cd3b59930bb",
+  "source_raw_size": [
+    571,
+    859
+  ],
+  "variants": [
+    {
+      "variant": "raw_native",
+      "repeat_idx": 0,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/raw_native_rep0.png",
+      "source": "/workspace/lunar-lab/runs/v3/stage008/truth_v2/crop_raw.png",
+      "width": 571,
+      "height": 859,
+      "sha256": "b078b8f58191537e36cb02355b9fd710680d4f75aafdd74570561cd3b59930bb",
+      "upscaled": false
+    },
+    {
+      "variant": "raw_native",
+      "repeat_idx": 1,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/raw_native_rep1.png",
+      "source": "/workspace/lunar-lab/runs/v3/stage008/truth_v2/crop_raw.png",
+      "width": 571,
+      "height": 859,
+      "sha256": "b078b8f58191537e36cb02355b9fd710680d4f75aafdd74570561cd3b59930bb",
+      "upscaled": false
+    },
+    {
+      "variant": "white_native",
+      "repeat_idx": 0,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/white_native_rep0.png",
+      "source": "existing_truth_v2_asset",
+      "width": 858,
+      "height": 858,
+      "sha256": "d21b707bebcbcb19f28fbbb93926c5798c45a414ac97579dec4910ffc0f5b828",
+      "upscaled": false
+    },
+    {
+      "variant": "white_native",
+      "repeat_idx": 1,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/white_native_rep1.png",
+      "source": "existing_truth_v2_asset",
+      "width": 858,
+      "height": 858,
+      "sha256": "d21b707bebcbcb19f28fbbb93926c5798c45a414ac97579dec4910ffc0f5b828",
+      "upscaled": false
+    },
+    {
+      "variant": "masked_native",
+      "repeat_idx": 0,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/masked_native_rep0.png",
+      "source": "existing_truth_v2_asset",
+      "width": 571,
+      "height": 859,
+      "sha256": "5daf091028eed378d34ea6052779d807438430f041360cf7091f17f326fe1e87",
+      "upscaled": false
+    },
+    {
+      "variant": "masked_native",
+      "repeat_idx": 1,
+      "path": "/workspace/lunar-lab/runs/v3/stage013/input_batch/masked_native_rep1.png",
+      "source": "existing_truth_v2_asset",
+      "width": 571,
+      "height": 859,
+      "sha256": "5daf091028eed378d34ea6052779d807438430f041360cf7091f17f326fe1e87",
+      "upscaled": false
+    }
+  ],
+  "note": "three existing input presentations x two repeats; no new image generation, no upscale, no crop enlargement"
+}

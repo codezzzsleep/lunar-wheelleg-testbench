@@ -1,0 +1,66 @@
+{
+  "action": "BODY_CLEARANCE",
+  "ok": true,
+  "success": true,
+  "outcome": "pass",
+  "reason": "success",
+  "reached": true,
+  "chassis_contacts": 0,
+  "tipped_or_stuck": false,
+  "stable_exit": true,
+  "safe_pass": true,
+  "failed_phase": null,
+  "termination": {},
+  "final_x": 2.6091,
+  "t_end": 114.4,
+  "cost": 114.4,
+  "tilt_max": 0.835,
+  "recorder_open": false,
+  "base_rise": 0.0585,
+  "clearance_gain": 0.0585,
+  "end_x": 2.6,
+  "lower_at_x": 2.45,
+  "phase_times": {
+    "settle": [
+      0.62,
+      0.9
+    ],
+    "raise": [
+      0.92,
+      2.9
+    ],
+    "drive_to_lower": [
+      2.92,
+      110.5
+    ],
+    "lower": [
+      110.52,
+      112.5
+    ],
+    "drive_to_end": [
+      112.52,
+      114.1
+    ],
+    "recover": [
+      114.12,
+      114.4
+    ]
+  },
+  "n_control_steps": 5690,
+  "plan_id": "4e74d6988d7f7d01",
+  "applicable": true,
+  "state_mode": "same_scene",
+  "arm": "OBS_FALLBACK_SHARED",
+  "run_id": "stage12_ref_OBS_FALLBACK_SHARED_1793809866",
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/lunar-lab/runs/v3/stage013/compare/ref/exec/record/OBS_FALLBACK_SHARED/index.json",
+    "trajectory_sha256": "1270eb46e4f24bc3f9110be9a553b4b2ee7ec518f421c5f7abd477ad540d9d11",
+    "frame_count": 5690,
+    "record_hz": 50.0,
+    "duration_s": 113.77999999999437,
+    "n_chunks": 23,
+    "contacts_n": 38728
+  },
+  "record_hz": 50.0,
+  "trajectory_frames": 5690
+}

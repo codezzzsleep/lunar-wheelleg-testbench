@@ -1,0 +1,268 @@
+{
+  "schema": "stage8-registration/v2",
+  "state": "runs/v3/stage008/truth_v2",
+  "run_id": "stage013-reg-r2",
+  "code_commit": "d1345d09a7f5f42c376c18d4ae861915b5a4a764",
+  "protocol_sha256": "1b066aab347e51309ca213d232885734cb5d1fb9bd8de294304d94d147428882",
+  "script_sha256": "488a5fe28bf7a032cc7632765c4fd33dde19b28aa0867b1d4e72228ec55c9fe2",
+  "observation_path": "/workspace/lunar-lab/runs/v3/stage008/truth_v2/observation",
+  "observation_sha256": "a2661d6fe7da5a8423b72179393a734ae62f1d1bfeec43cb60d3c6487d1533e3",
+  "generated_denominator": 6,
+  "diagnostic_assets": [],
+  "candidates": {
+    "4632564": {
+      "M": [
+        [
+          0.0,
+          0.415786815195355,
+          0.7500992706246347,
+          0.9653104333042309
+        ],
+        [
+          0.0,
+          -0.7500992706246347,
+          0.415786815195355,
+          0.007341890255684399
+        ],
+        [
+          0.8576290523774863,
+          0.0,
+          0.0,
+          0.14208955081859023
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632564/mesh/tex_mesh.glb",
+      "source_glb_sha256": "9bf975219b2998b76273f31843eb129dd2aedb9b22559e89814a4677621edb61",
+      "asset_sha256": "e9eb71e66c28ce29a9eb20bc188103b5e957f89d180b746c1b14f2506d0be78f",
+      "world_sha256": "503b523576499949848d2029441df40b12b2882c8e99a81d3fbdda0cb46a1d5d",
+      "diagnostics": {
+        "mask_iou": 0.7026,
+        "depth_median_mm": 19.797,
+        "depth_p95_mm": 63.851,
+        "visible_median_mm": 8.856,
+        "visible_p95_mm": 31.618,
+        "n_candidate_pixels": 106667,
+        "n_mask_pixels": 115858
+      }
+    },
+    "4632603": {
+      "M": [
+        [
+          0.0,
+          0.47856877235960854,
+          0.7095073826494145,
+          0.9771471934672559
+        ],
+        [
+          0.0,
+          -0.7095073826494145,
+          0.4785687723596086,
+          0.001039278802432271
+        ],
+        [
+          0.8558205395477521,
+          0.0,
+          0.0,
+          0.15707480578209065
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632603/mesh/tex_mesh.glb",
+      "source_glb_sha256": "407c1f700191754cdb8a55a4be86c672ec5f75dd4bad0cdb419efd5bf58516a8",
+      "asset_sha256": "aaf8216bccffc21fd47b9534b5dd1d2be1fed79ede7ec9d66dff36088f524f3f",
+      "world_sha256": "375995554089388fa0dfd7276a4752352e8680b2c7d7b1a842d8f554a66b3e85",
+      "diagnostics": {
+        "mask_iou": 0.7891,
+        "depth_median_mm": 21.079,
+        "depth_p95_mm": 87.518,
+        "visible_median_mm": 8.56,
+        "visible_p95_mm": 29.529,
+        "n_candidate_pixels": 125555,
+        "n_mask_pixels": 115858
+      }
+    },
+    "4632618": {
+      "M": [
+        [
+          0.0,
+          0.3663335171036685,
+          0.5641041480589095,
+          0.9619132357961162
+        ],
+        [
+          0.0,
+          -0.5641041480589094,
+          0.3663335171036685,
+          0.0012529686074370817
+        ],
+        [
+          0.6726170794819379,
+          0.0,
+          0.0,
+          0.13225479818544755
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632618/mesh/tex_mesh.glb",
+      "source_glb_sha256": "8e5c112b3ed84559c7751b7d77b39bbca6d8514d806c9eeac70d4bb227fd2a81",
+      "asset_sha256": "7597e56c38937e60908d7fe8cb7102f57ad389c299f4fb9bfae1ce6b0124d1f0",
+      "world_sha256": "1e63b832f1d19b48aae06a0a429fb1da1fd1a9d8031ee80624d19d208f70c9d1",
+      "diagnostics": {
+        "mask_iou": 0.6172,
+        "depth_median_mm": 20.36,
+        "depth_p95_mm": 72.966,
+        "visible_median_mm": 10.937,
+        "visible_p95_mm": 44.149,
+        "n_candidate_pixels": 82726,
+        "n_mask_pixels": 115858
+      }
+    },
+    "4632621": {
+      "M": [
+        [
+          -0.6974958963831384,
+          0.0,
+          0.08564172736898151,
+          0.9691168182663241
+        ],
+        [
+          0.08564172736898154,
+          0.0,
+          0.6974958963831387,
+          0.014641292801072606
+        ],
+        [
+          0.0,
+          0.7027339688232387,
+          0.0,
+          0.13096618324539958
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632621/mesh/tex_mesh.glb",
+      "source_glb_sha256": "51c541bcbf53e558ace8cf3fdfdda2d03fcf15b8b61d485d984d6b05d31b1d4b",
+      "asset_sha256": "16fd60aec230b76e7b2ead20c73c1023defc778163fad34eb8c733f8bae7e9a8",
+      "world_sha256": "7b4b8a066640d16fa0f770f67cfcf51dbc0d3f071027202cd91d009314c36a76",
+      "diagnostics": {
+        "mask_iou": 0.6965,
+        "depth_median_mm": 22.824,
+        "depth_p95_mm": 89.455,
+        "visible_median_mm": 12.832,
+        "visible_p95_mm": 63.235,
+        "n_candidate_pixels": 104225,
+        "n_mask_pixels": 115858
+      }
+    },
+    "4632624": {
+      "M": [
+        [
+          0.0,
+          0.49761750029363594,
+          0.6603607269123618,
+          1.005520857556562
+        ],
+        [
+          0.0,
+          -0.660360726912362,
+          0.4976175002936358,
+          0.007874928494234044
+        ],
+        [
+          0.8268612134129338,
+          0.0,
+          0.0,
+          0.15841393092616046
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632624/mesh/tex_mesh.glb",
+      "source_glb_sha256": "f7a91ff6d6359a3614f3062c49fef5b1e3a0d3b5c28ef30dbf2a65dbdb94d63a",
+      "asset_sha256": "07877521509ba6f1d36da722f5c3adfb6c1549cd35472a0b1b35037b7146508c",
+      "world_sha256": "395cebfd08447d33627936a20691d0247a060ff9ec8632ae8e193f5e5afae00d",
+      "diagnostics": {
+        "mask_iou": 0.8112,
+        "depth_median_mm": 15.54,
+        "depth_p95_mm": 52.922,
+        "visible_median_mm": 6.857,
+        "visible_p95_mm": 17.234,
+        "n_candidate_pixels": 128800,
+        "n_mask_pixels": 115858
+      }
+    },
+    "4632627": {
+      "M": [
+        [
+          0.0,
+          0.4661404028681955,
+          -0.4827025176525649,
+          0.9986285171431322
+        ],
+        [
+          0.0,
+          0.4827025176525649,
+          0.46614040286819547,
+          0.042176392221005735
+        ],
+        [
+          0.6710354653326814,
+          0.0,
+          0.0,
+          0.1552714159848237
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "scale": 0.0,
+      "source_glb": "/workspace/lunar-lab/runs/v3/stage007/lux3d/generation/task_4632627/mesh/tex_mesh.glb",
+      "source_glb_sha256": "083447c5023f7b1604decc6918c5759b2769de96ac865a998a912ea8d87365be",
+      "asset_sha256": "bd3874a96f45e9c2c558fca90150dcf55b26b3305296e54c5aef8c52a58a59bf",
+      "world_sha256": "a4cf815518392650df3f816ea17f1a1a57a4d55343d2c5c1215e0e53ca900bec",
+      "diagnostics": {
+        "mask_iou": 0.7679,
+        "depth_median_mm": 30.395,
+        "depth_p95_mm": 109.121,
+        "visible_median_mm": 11.778,
+        "visible_p95_mm": 39.988,
+        "n_candidate_pixels": 112331,
+        "n_mask_pixels": 115858
+      }
+    }
+  },
+  "registration_evaluated_denominator": 6,
+  "manifest_sha256": "d9f1f519206d199f1a3e7cfeee9d1a434c710d6ef9e2541f044935fe50753b26"
+}

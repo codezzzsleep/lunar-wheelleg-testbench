@@ -115,3 +115,4 @@
 | `runs/v3/stage010/g1v2/scenes.json` | g1v2-scenes/v1 | 完成 | outside-U XOR 0; no new known-free hits; shell p99 2.83 mm |
 | `runs/v3/stage010/d2_verification.json` | g1v2-d2-verification/v1 | 完成（阴性） | D2 final_x 3.618/3.610 m past endpoint; fails common completion standard |
 | `runs/v3/stage010/g2_control/control.json` | g2-positive-control/v1 | 失败 | truth mesh via same entry: rot err 131.5 deg, depth P95 184 mm; entry itself suspect |
+| `runs/v3/stage010/g2_control2/control2.json` | g2-positive-control2/v1 | 失败 | truth mesh in local frame: rot 169.7 deg, scale err 8%, surface median 207 mm |

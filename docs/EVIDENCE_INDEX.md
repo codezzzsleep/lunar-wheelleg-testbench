@@ -124,3 +124,6 @@
 | `runs/v3/stage11/registration/coarse_diag.json` | coarse-coverage/v1 | 完成 | correct pose present at coarse rank 2/3 (12.8 mm) |
 | `runs/v3/stage11/registration/pose_trace.json` | pose-trace/v1 | 完成 | M0/ICP/polish metrics: polish 0.961/10.74 mm; hidden faces excluded |
 | `runs/v3/stage11/registration/layers.json` | reg-layers/v1 | 通过 | L1 0.9955/1.22, L2 0.9765/13.5, L3 0.9609/19.87 -> acceptance (IoU>=0.9, P95<=20mm) |
+| `runs/v3/stage012/registered/registration.json` | stage8-registration/v1 | 阴性 | six GLBs IoU 0.617-0.811, depth P95 52.9-109.1 -> still incompatible |
+| `runs/v3/stage012/fusion/fusion_summary.json` | stage8-fusion-v2/v1 | 完成 | new FULL shas, hidden rears 1.041-1.127 m |
+| `runs/v3/stage012/soft_soil_min/traction_test.json` | soil-traction | 完成 | first minimal soft-soil traction run (not full escape) |

@@ -1,0 +1,201 @@
+{
+  "schema": "stage8-fusion-v2/v1",
+  "truth": "runs/v3/stage008/truth_v2",
+  "v_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+  "v_stats": {
+    "n_voxels": 9792510,
+    "n_free": 5650622,
+    "n_band": 60996,
+    "n_unknown": 4080892,
+    "n_in_fov": 9792510,
+    "n_masked_fov": 2933380,
+    "n_shell": 60996,
+    "valid_depth_frac": 0.756951,
+    "free_eps_m": 0.004,
+    "band_m": 0.006,
+    "shell_offset_m": 0.001,
+    "pitch_m": 0.002,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "candidates": {
+    "4632564": {
+      "full_sha": "cfed1ca832f9c57ef80872a39442931fea89177174a149006974b4416d039b84",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 32298,
+        "n_generated_unknown": 16045,
+        "n_full": 77041,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 16045,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.49678,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.041
+    },
+    "4632603": {
+      "full_sha": "56f39ad1ad0cfff5633dc02859eeec9e5bd4909abb69fa5c001488cc8ab438ce",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 36721,
+        "n_generated_unknown": 17817,
+        "n_full": 78813,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 17817,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.4852,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.065
+    },
+    "4632618": {
+      "full_sha": "5f2b6256d5508ae36970e249c44b8572063dd8d6bee9a24aa71b87a2333192a6",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 29560,
+        "n_generated_unknown": 16361,
+        "n_full": 77357,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 16361,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.55348,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.047
+    },
+    "4632621": {
+      "full_sha": "5d1631f5039f90a9b8b9b7630095546ad9bd4b19407223dba9098460d4cb9235",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 73333,
+        "n_generated_unknown": 47179,
+        "n_full": 108175,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 47179,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.64335,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.127
+    },
+    "4632624": {
+      "full_sha": "fbf2fb64f39ed9751dfeee9e7a64eba25a878b3b08636eeecbbb985470c6a83a",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 51738,
+        "n_generated_unknown": 24193,
+        "n_full": 85189,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 24193,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.46761,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.113
+    },
+    "4632627": {
+      "full_sha": "6b72e1bdddebed1509683c962b69d5c96a4eba33f0c9f0d991f42d54aee1e074",
+      "obs_sha": "ed44fbe6371b764decd906ca6e40e946792507d57bbe9e72f42b1082e2d99d01",
+      "stats": {
+        "n_parent_voxels": 36494,
+        "n_generated_unknown": 18227,
+        "n_full": 79223,
+        "n_obs_only": 60996,
+        "n_v": 60996,
+        "n_free": 5650622,
+        "n_unknown": 4080892,
+        "n_band": 60996,
+        "parent_in_band_not_added": 0,
+        "full_minus_obs": 18227,
+        "free_violations_full": 0,
+        "free_violations_obs": 0,
+        "kept_ratio_of_generated": 0.49945,
+        "assertions": {
+          "obs_equals_v": true,
+          "diff_subset_u": true,
+          "free_clear": true,
+          "band_consistent": true
+        }
+      },
+      "hidden_rear_x": 1.117
+    }
+  },
+  "plans": {
+    "full": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 1.141,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "candidate_4632564_hidden_rear",
+      "plan_id": "edf193346adbb06f"
+    },
+    "obs": {
+      "raise_z": 0.06,
+      "ramp_steps": 100,
+      "speed": 0.15,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "unknown_hold",
+      "plan_id": "4e74d6988d7f7d01"
+    }
+  },
+  "plan_source_note": "BODY plan is fixed across candidates; its hidden rear comes from the first generated candidate (creation order), never from truth geometry"
+}

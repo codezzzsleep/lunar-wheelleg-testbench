@@ -1,5 +1,6 @@
 """WP0: build GLB/results manifest and publish to a GitHub Release."""
 import argparse, hashlib, json, pathlib, re, sys, time, urllib.request, urllib.error, os
+from concurrent.futures import ThreadPoolExecutor
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 API='https://api.github.com/repos/codezzzsleep/lunar-wheelleg-testbench'
 
@@ -47,7 +48,7 @@ def build():
                           'sha256':sha(p),'bytes':p.stat().st_size,'source_rock':rock,'view':view,
                           'crop':crop,'variant':variant,'release_asset':f'v3/{d.name}/{fn}'})
     for f in sorted((ROOT/'runs/v3/stage007/lux3d/generation').glob('task_*/mesh/*.glb')):
-        task=f.parents[2].name.replace('task_','')
+        task=f.parents[1].name.replace('task_','')
         E.append({'task_id':task,'identity':f'stage007_{task}','kind':'glb',
                   'path':str(f.relative_to(ROOT)),'sha256':sha(f),'bytes':f.stat().st_size,
                   'source_rock':'moon_rock_05','view':'front_stage7','crop':'target_1536',
@@ -89,18 +90,24 @@ def ensure_release(tok):
         if r.get('tag_name')=='v4-data': return r
     return req(f'{API}/releases',tok,'POST',json.dumps({'tag_name':'v4-data','name':'v4 data (GLB/results)','draft':True}).encode(),'application/json')
 
-def upload(tok, rel, e):
+def existing_names(tok, rel):
+    out=set(); page=1
+    while True:
+        rows=req(f"{API}/releases/{rel['id']}/assets?per_page=100&page={page}",tok)
+        out |= {a['name'] for a in rows}
+        if len(rows)<100: break
+        page+=1
+    return out
+
+def upload_one(tok, rel, e):
     name=e['release_asset'].replace('/','__')
-    existing={a['name'] for a in req(f"{API}/releases/{rel['id']}/assets?per_page=100",tok)}
-    if name in existing:
-        return 'skip'
     p=ROOT/e['path']; data=p.read_bytes()
     url=f"https://uploads.github.com/repos/codezzzsleep/lunar-wheelleg-testbench/releases/{rel['id']}/assets?name={name}"
-    for k in range(3):
+    for k in range(4):
         try:
             req(url,tok,'POST',data,'application/octet-stream'); return 'ok'
         except Exception as ex:
-            if k==2: return f'FAIL {ex}'
+            if k==3: return f'FAIL {ex}'
             time.sleep(5*(k+1))
 
 def main():
@@ -110,9 +117,14 @@ def main():
     if a.upload:
         tok=token(); rel=ensure_release(tok); print('release',rel['id'])
         log=ROOT/'dist/v4/upload_log.jsonl'
-        for i,e in enumerate(man['entries']):
-            st=upload(tok,rel,e)
+        have=existing_names(tok,rel)
+        todo=[(i,e) for i,e in enumerate(man['entries']) if e['release_asset'].replace('/','__') not in have]
+        print('todo',len(todo),'existing',len(have),flush=True)
+        def work(item):
+            i,e=item; st=upload_one(tok,rel,e)
             with log.open('a') as f: f.write(json.dumps({'i':i,'asset':e['release_asset'],'status':st,'sha256':e['sha256']})+'\n')
-            print(i,st,e['release_asset'],flush=True)
+            print(i,st,e['release_asset'],flush=True); return st
+        with ThreadPoolExecutor(max_workers=4) as ex:
+            list(ex.map(work,todo))
     return 0
 if __name__=='__main__': sys.exit(main())

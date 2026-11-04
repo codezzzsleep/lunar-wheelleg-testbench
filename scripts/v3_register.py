@@ -276,10 +276,12 @@ def refine_icp(mesh, obs, M0, cfg, rng):
     pix_mask_sorted = np.sort(pix_mask)
     M = np.array(M0, dtype=np.float64)
     s0 = float(np.cbrt(np.linalg.det(M[:3, :3])))
-    _sc = observation_score(mesh, obs, M)
+    def _quality(Mx):
+        ev = evaluate_matrix(mesh, obs, Mx)
+        return ((ev['depth_median_mm'] if np.isfinite(ev['depth_median_mm']) else 1e9)
+                + 40.0 * (1.0 - ev['mask_iou']))
     best_M = M.copy()
-    best_val = ((_sc['depth_median_mm'] if np.isfinite(_sc['depth_median_mm']) else 1e9)
-                + 40.0 * (1.0 - _sc['iou_points']) + 20.0 * (1.0 - _sc['coverage']))
+    best_val = _quality(best_M)
     hist = []
     levels = list(zip(cfg['scales'], cfg['huber_delta_m'], cfg['iterations']))
     for li, (vox, delta, iters) in enumerate(levels):
@@ -333,6 +335,15 @@ def refine_icp(mesh, obs, M0, cfg, rng):
                          'median_mm': round(float(np.median(r[keep])) * 1000, 3),
                          'p95_mm': round(float(np.percentile(r[keep], 95)) * 1000, 3),
                          'scale': round(s_total, 6)})
+        # 每层结束用与最终筛选一致的可见面评分检查，保留最好位姿（初值也算候选）
+        q = _quality(M)
+        hist.append({'level': li, 'iter': 'level_end', 'quality': round(q, 4)})
+        if q < best_val:
+            best_val, best_M = q, M.copy()
+    q_end = _quality(M)
+    if q_end < best_val:
+        best_val, best_M = q_end, M.copy()
+    hist.append({'level': 'final', 'best_quality': round(best_val, 4)})
     return best_M, hist
 
 

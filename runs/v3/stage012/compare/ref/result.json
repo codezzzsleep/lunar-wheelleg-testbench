@@ -1,295 +1,71 @@
 {
+  "schema": "stage12-compare/v1",
   "scenario": "ref",
-  "full_votes": {
-    "R1": 0,
-    "R2": 6,
-    "D1": 0,
-    "D2": 5,
-    "L1": 0,
-    "L2": 6,
-    "CLIMB": 0,
-    "BODY_CLEARANCE": 6
+  "gate": {
+    "mask_iou_min": 0.9,
+    "depth_p95_max_mm": 20.0
   },
-  "full_chosen": "L2",
-  "obs_votes": {
-    "R1": 0,
-    "R2": 1,
-    "D1": 0,
-    "D2": 0,
-    "L1": 0,
-    "L2": 1,
-    "CLIMB": 0,
-    "BODY_CLEARANCE": 1
+  "registration": {
+    "4632564": {
+      "mask_iou": 0.7026,
+      "depth_p95_mm": 63.851,
+      "qualified": false
+    },
+    "4632603": {
+      "mask_iou": 0.7891,
+      "depth_p95_mm": 87.518,
+      "qualified": false
+    },
+    "4632618": {
+      "mask_iou": 0.6172,
+      "depth_p95_mm": 72.966,
+      "qualified": false
+    },
+    "4632621": {
+      "mask_iou": 0.6965,
+      "depth_p95_mm": 89.455,
+      "qualified": false
+    },
+    "4632624": {
+      "mask_iou": 0.8112,
+      "depth_p95_mm": 52.922,
+      "qualified": false
+    },
+    "4632627": {
+      "mask_iou": 0.7679,
+      "depth_p95_mm": 109.121,
+      "qualified": false
+    }
   },
-  "obs_chosen": "L2",
-  "per_candidate": {
-    "4632564": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": true,
-        "cost": 9.08
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.16
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 113.6
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ],
-    "4632603": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": true,
-        "cost": 6.680000000000001
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.180000000000001
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 114.6
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ],
-    "4632618": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": true,
-        "cost": 6.66
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.16
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 114.08
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ],
-    "4632621": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.16
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 113.56
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ],
-    "4632624": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": true,
-        "cost": 7.340000000000001
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.16
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 113.64
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ],
-    "4632627": [
-      {
-        "action": "R1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "R2",
-        "success": true,
-        "cost": 7.32
-      },
-      {
-        "action": "D1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "D2",
-        "success": true,
-        "cost": 9.44
-      },
-      {
-        "action": "L1",
-        "success": false,
-        "cost": 60.0
-      },
-      {
-        "action": "L2",
-        "success": true,
-        "cost": 6.16
-      },
-      {
-        "action": "BODY_CLEARANCE",
-        "success": true,
-        "cost": 113.6
-      },
-      {
-        "action": "A0",
-        "success": false,
-        "cost": 60.0
-      }
-    ]
-  },
-  "full": {
-    "action": "L2",
-    "outcome": "physical_failure",
-    "t_end": 40.6,
-    "safe_pass": null,
-    "chassis_contacts": null,
-    "reached": null
+  "qualified": [],
+  "generated_denominator": 2,
+  "rejections": {
+    "4632624": "not_qualified",
+    "4632618": "not_qualified"
   },
   "obs": {
-    "action": "L2",
-    "outcome": "physical_failure",
-    "t_end": 40.6,
-    "safe_pass": null,
-    "chassis_contacts": null,
-    "reached": null
+    "votes": {
+      "R1": 0,
+      "R2": 0,
+      "D1": 0,
+      "D2": 0,
+      "L1": 0,
+      "L2": 0,
+      "CLIMB": 0,
+      "BODY_CLEARANCE": 1
+    },
+    "chosen": "BODY_CLEARANCE",
+    "fallback_note": "OBS is the only admissible arm"
+  },
+  "exploratory_only": true,
+  "ran_candidates": [
+    "4632624",
+    "4632618"
+  ],
+  "full": {
+    "chosen": "A0",
+    "votes": {},
+    "fallback": "obs",
+    "reason": "zero_qualified_candidates"
   }
 }

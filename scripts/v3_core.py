@@ -121,7 +121,11 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
         meta.update({'action': action, 'mode': mode, 'seed': int(seed),
                      'started_at': time.strftime('%Y-%m-%dT%H:%M:%S%z')})
         rec = v3_record.Recorder(record_dir, meta, hz=50.0)
+    _budget = float(getattr(env, 'max_seconds', 120.0))
+    _hz = float(getattr(env, 'control_hz', 50.0))
+    _max_steps = int(round(_budget * _hz))
     ep = runner.EpisodeRunner(env, sk, visible=visible, seed=seed,
+                              max_steps=_max_steps,
                               record_trajectory=record, recorder=rec)
     t0 = time.time()
     out = ep.run_from_state(snapshot, mode=mode, pre_step_hook=pre_step_hook)
@@ -138,6 +142,8 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
            'max_tilt': out['max_tilt'], 'contact': out['contact'],
            'triggered': out['triggered'], 'state_mode': out.get('state_mode', mode),
            'wall_s': round(wall, 3), 'steps': out['steps'],
+           'step_cap': _max_steps,
+           'truncated_by_cap': bool(out['steps'] >= _max_steps and out.get('reason') is None),
            'n_actions': out['n_actions'],
            'action_fingerprint': out['action_fingerprint'],
            'initial_full_hash': out.get('initial_full_hash'),

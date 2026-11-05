@@ -64,3 +64,20 @@
 
 C2 R2：在 0.90 的 `moon_rock_05_h2v1` 上用该状态 6 份候选跑 FULL；本文的 I 类是否能在 FULL 上保持，
 见 `docs/v5/C2_R2_REPORT.md`。
+
+## 追加筛选（4 个状态 × 0.90）
+
+| 状态 | PERFECT | OBS_CONS | 类型 |
+| --- | --- | --- | --- |
+| moon_rock_03_h2v1 | A0 safe_stop | A0 | 无 |
+| moon_rock_04_h0v1 | L1 pass 7.00 | L1 pass 7.00 | 无 |
+| moon_rock_07_h2v1 | L1 pass 7.76 | D2 pass 7.46 | 无 |
+| rock_07_h1v1 | D2 physical_failure 3.48 | A0 safe_stop | 无 |
+
+- 追加 4 个状态后，0.90 档仍只有 `moon_rock_05_h2v1` 一个 I 类。
+- `rock_07_h1v1` 的 PERFECT 也失败（D2 翻车），说明该状态真值上绕行本身不可行，不是 OBS 保守造成的差距。
+
+## 汇总
+
+- 共筛 8 状态 × 0.60–0.90（其中 4 状态只跑 0.90），20 个组合，I 类 1 个、II 类 0 个。
+- 该 I 类在 C2 R2 中 FULL 失败（见 C2_R2_REPORT），本轮没有 FULL 正例。

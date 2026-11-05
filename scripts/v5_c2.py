@@ -2,7 +2,7 @@
 import argparse,json,pathlib,sys,hashlib,csv
 import numpy as np,trimesh
 ROOT=pathlib.Path(__file__).resolve().parent.parent; sys.path.insert(0,str(ROOT/'scripts'))
-import v5_core as C,v5_metrics_ref as R,v3_core,v3_register,wheelleg_env,stage8_matrix2 as M,stage6_matrix as S6M
+import v5_core as C,v5_metrics_ref as R,v3_core,v3_register,v3_generate,wheelleg_env,stage8_matrix2 as M,stage6_matrix as S6M
 from v4_wp2 import cost_from_record
 WHEEL={'R1','R2','D1','D2','L1','L2'}
 def plan_for(arm,low):
@@ -20,14 +20,19 @@ def choose(dec,rows):
    if costs[best] <= 0.95*body.get('cost',60): return best,'wheel_priority_5pct'
  return ch,'majority'
 def main():
- ap=argparse.ArgumentParser(); ap.add_argument('--states',default='moon_rock_05_h2v1'); ap.add_argument('--out',default='runs/v5/c2'); a=ap.parse_args()
+ ap=argparse.ArgumentParser(); ap.add_argument('--states',default='moon_rock_05_h2v1'); ap.add_argument('--out',default='runs/v5/c2'); ap.add_argument('--channel',type=float,default=None); ap.add_argument('--tasks',default=None); a=ap.parse_args()
  out=ROOT/a.out; out.mkdir(parents=True,exist_ok=True); proto=json.loads((ROOT/'plans/v3_protocol.json').read_text()); cfg=json.loads((ROOT/'configs/stage6_protocol.json').read_text()); actions=[x for x in cfg['actions'] if x!='CLIMB']; adcfg=json.loads((ROOT/'configs/v5_admission.json').read_text())
  table=[]
  for name in a.states.split(','):
   d=ROOT/'runs/v3/states'/name; od=out/name; od.mkdir(parents=True,exist_ok=True)
   V=np.load(d/'fusion/V.npz'); g=C.grid_from_V(V); U=(V['space']==0); Vsh=V['shell']
   tm=trimesh.load(str(d/'truth/body_world.stl'),force='mesh',process=False); T=R.column_fill_top(tm,g)
-  snap=json.loads((d/'state_snapshot.json').read_text()); spec_truth=json.loads((d/'scene_spec.json').read_text()); s0h=json.loads((d/'state.json').read_text()).get('state_hash')
+  spec_truth=json.loads((d/'scene_spec.json').read_text())
+  if a.channel: spec_truth['channel']={'center_y':0.0,'half_width':float(a.channel)}
+  if a.channel:
+   e0=wheelleg_env.WheelLegEnv(spec_truth,max_seconds=120); e0.reset(seed=0); snap=e0.save_state(); s0h=snap.get('state_hash'); ref0=(np.asarray(e0.data.qpos,float).copy(),np.asarray(e0.data.qvel,float).copy())
+  else:
+   snap=json.loads((d/'state_snapshot.json').read_text()); s0h=json.loads((d/'state.json').read_text()).get('state_hash'); ref0=None
   obs=v3_register.load_observation(str(d/'observation'))
   # per-state KA1/KA5/KA6
   ev_t=v3_register.evaluate_matrix(tm,obs,np.eye(4)); m_t=C.admission_metrics(tm,np.eye(4),V,g,ev_t)
@@ -39,22 +44,37 @@ def main():
   (od/'ka_checks.json').write_text(json.dumps({'KA1':ka1,'KA5':ka5,'KA6':ka6,'KA5_rear':hmc['rear_err_m'],'KA6_iou':ev_t.get('mask_iou')},ensure_ascii=False,indent=2))
   print('KA',name,ka1,ka5,ka6)
   cands=[]; admitted=[]
+  items=[]
   for cd in sorted((d/'candidates').glob('*')):
    mp=cd/'parent_world'/'body.stl'
-   if not mp.exists(): continue
-   mesh=trimesh.load(str(mp),force='mesh',process=False)
-   ev=v3_register.evaluate_matrix(mesh,obs,np.eye(4)); m=C.admission_metrics(mesh,np.eye(4),V,g,ev)
+   if mp.exists(): items.append((cd.name,str(mp),None))
+  if not items and a.tasks:
+   tj=json.loads((ROOT/a.tasks).read_text())['tasks']
+   for t in tj:
+    ident=v3_generate.identity_of(t); glb=ROOT/'runs/v3/generation/cache'/ident/'model.glb'
+    if glb.exists(): items.append((t['id'],str(glb),ident))
+  for cid,mp,ident in items:
+   if ident:
+    rd=od/'reg'/cid; rd.mkdir(parents=True,exist_ok=True); rec=v3_register.register(mp,str(d/'observation'),proto,rd,top_k=6); Mreg=np.asarray(rec['best']['M'],float)
+    mesh=trimesh.load(mp,force='mesh',process=False).apply_transform(Mreg); Mworld=np.eye(4)
+   else:
+    mesh=trimesh.load(mp,force='mesh',process=False); Mworld=np.eye(4)
+   ev=v3_register.evaluate_matrix(mesh,obs,Mworld); m=C.admission_metrics(mesh,Mworld,V,g,ev)
    ok=bool(adcfg['scale_ratio']['min']<=m['scale_ratio']<=adcfg['scale_ratio']['max'] and m['hidden_frac']>=adcfg['hidden_frac_min'] and m['shell_contact']>=adcfg['shell_contact_min'] and m['free_intrusion_frac']<=adcfg['free_intrusion_max'] and m['contour_iou']>=adcfg['contour_iou_min'])
    hm=R.hidden_metrics(m['P'],T,U,g)
-   cands.append({'id':cd.name,'admitted':ok,'scale_ratio':m['scale_ratio'],'hidden_frac':m['hidden_frac'],'shell_contact':m['shell_contact'],'free_intrusion_frac':m['free_intrusion_frac'],'contour_iou':m['contour_iou'],'rear_err_m':hm['rear_err_m'],'top_err_m':hm['top_err_m'],'path_p95_mm':hm['path_p95_mm'],'hidden_iou':round(float((m['P']&U&T).sum())/max(1,int(((m['P']&U)|(T&U)).sum())),4),'P':m['P'],'mesh':mesh})
+   cands.append({'id':cid,'admitted':ok,'scale_ratio':m['scale_ratio'],'hidden_frac':m['hidden_frac'],'shell_contact':m['shell_contact'],'free_intrusion_frac':m['free_intrusion_frac'],'contour_iou':m['contour_iou'],'rear_err_m':hm['rear_err_m'],'top_err_m':hm['top_err_m'],'path_p95_mm':hm['path_p95_mm'],'hidden_iou':round(float((m['P']&U&T).sum())/max(1,int(((m['P']&U)|(T&U)).sum())),4),'P':m['P'],'mesh':mesh})
    if ok: admitted.append(cands[-1])
   (od/'candidates.json').write_text(json.dumps([{k:v for k,v in c.items() if k not in ('P','mesh')} for c in cands],ensure_ascii=False,indent=2))
-  env0=wheelleg_env.WheelLegEnv(spec_truth,max_seconds=120); env0.reset(seed=0); env0.restore_state(snap,mode='same_scene'); ref=(np.asarray(env0.data.qpos,float).copy(),np.asarray(env0.data.qvel,float).copy())
+  if a.channel: ref=ref0
+  else:
+   env0=wheelleg_env.WheelLegEnv(spec_truth,max_seconds=120); env0.reset(seed=0); env0.restore_state(snap,mode='same_scene'); ref=(np.asarray(env0.data.qpos,float).copy(),np.asarray(env0.data.qvel,float).copy())
   # truth arms
   arms={}
   for arm in ('PERFECT','OBS_CONS','OBS_OPT'):
    occ=T if arm=='PERFECT' else Vsh
-   ad=od/arm; ad.mkdir(exist_ok=True); spec,env,sha=M.make_scene(M.resample_walls(occ,V['origin'],float(V['pitch'])),ad,'arm'); M.restore_common(env,snap,s0h,mode='project',ref=ref)
+   ad=od/arm; ad.mkdir(exist_ok=True); spec,env,sha=M.make_scene(M.resample_walls(occ,V['origin'],float(V['pitch'])),ad,'arm')
+   if a.channel: spec['channel']={'center_y':0.0,'half_width':float(a.channel)}
+   M.restore_common(env,snap,s0h,mode='project',ref=ref)
    low=float(g['xs'][(T&U).any(axis=(1,2))].max())+0.10 if (T&U).any() else 2.45
    low=2.45 if arm=='OBS_CONS' else (0.95 if arm=='OBS_OPT' else low)
    plan=plan_for(arm,low); core={'spec':spec,'snapshot':snap,'visible':{'x_front':0.834,'W_vis':0.275,'H_vis':0.30},'state':{'state_id':name,'state_hash':s0h}}

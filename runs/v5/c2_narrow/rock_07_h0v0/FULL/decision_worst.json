@@ -1,0 +1,387 @@
+{
+  "rule": "worst/v1",
+  "version": "v3-decision/v1",
+  "n_tasks": 6,
+  "n_valid": 6,
+  "n_unique_geometries": 6,
+  "threshold": 6,
+  "votes": {
+    "R1": 6,
+    "R2": 6,
+    "D1": 6,
+    "D2": 0,
+    "L1": 6,
+    "L2": 6,
+    "BODY_CLEARANCE": 6
+  },
+  "mean_cost_s": {
+    "R1": 6.3233,
+    "R2": 7.98,
+    "D1": 6.54,
+    "D2": 60.0,
+    "L1": 6.7167,
+    "L2": 6.5067,
+    "BODY_CLEARANCE": 11.36
+  },
+  "chosen": "R1",
+  "safe_set": [
+    "R1",
+    "R2",
+    "D1",
+    "L1",
+    "L2",
+    "BODY_CLEARANCE"
+  ],
+  "reason": "worst_case_traversal",
+  "errors": [],
+  "per_candidate": {
+    "v5_rock_07_h0v0_A1_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.32,
+        "t_end": 6.32,
+        "final_x": 3.597
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.98,
+        "t_end": 7.98,
+        "final_x": 3.349
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.88,
+        "final_x": 0.93
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.72,
+        "t_end": 6.72,
+        "final_x": 3.594
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5,
+        "t_end": 6.5,
+        "final_x": 3.601
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6622
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    },
+    "v5_rock_07_h0v0_A2_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.32,
+        "t_end": 6.32,
+        "final_x": 3.597
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.98,
+        "t_end": 7.98,
+        "final_x": 3.349
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.88,
+        "final_x": 0.93
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.72,
+        "t_end": 6.72,
+        "final_x": 3.594
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5,
+        "t_end": 6.5,
+        "final_x": 3.601
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6649
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    },
+    "v5_rock_07_h0v0_B1_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.32,
+        "t_end": 6.32,
+        "final_x": 3.595
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 8.0,
+        "t_end": 8.0,
+        "final_x": 3.344
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.9,
+        "final_x": 0.931
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.72,
+        "t_end": 6.72,
+        "final_x": 3.594
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5,
+        "t_end": 6.5,
+        "final_x": 3.601
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6624
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    },
+    "v5_rock_07_h0v0_B2_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.34,
+        "t_end": 6.34,
+        "final_x": 3.591
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.94,
+        "t_end": 7.94,
+        "final_x": 3.342
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.9,
+        "final_x": 0.931
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.7,
+        "t_end": 6.7,
+        "final_x": 3.592
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.59
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6645
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    },
+    "v5_rock_07_h0v0_C1_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.32,
+        "t_end": 6.32,
+        "final_x": 3.595
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.98,
+        "t_end": 7.98,
+        "final_x": 3.35
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.9,
+        "final_x": 0.931
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.72,
+        "t_end": 6.72,
+        "final_x": 3.594
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5,
+        "t_end": 6.5,
+        "final_x": 3.601
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6645
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    },
+    "v5_rock_07_h0v0_C2_exposed": {
+      "R1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.32,
+        "t_end": 6.32,
+        "final_x": 3.595
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 8.0,
+        "t_end": 8.0,
+        "final_x": 3.345
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.54,
+        "t_end": 6.54,
+        "final_x": 3.591
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.82,
+        "final_x": 0.923
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.72,
+        "t_end": 6.72,
+        "final_x": 3.594
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5,
+        "t_end": 6.5,
+        "final_x": 3.601
+      },
+      "BODY_CLEARANCE": {
+        "success": true,
+        "reason": "success",
+        "cost": 11.36,
+        "t_end": 11.36,
+        "final_x": 2.6624
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.000000000000002,
+        "final_x": -0.003
+      }
+    }
+  }
+}

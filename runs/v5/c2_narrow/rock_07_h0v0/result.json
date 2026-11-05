@@ -1,0 +1,111 @@
+{
+  "state": "rock_07_h0v0",
+  "arms": {
+    "PERFECT": {
+      "chosen": "R2",
+      "outcome": "pass",
+      "t_end": 8.42
+    },
+    "OBS_CONS": {
+      "chosen": "R2",
+      "outcome": "pass",
+      "t_end": 8.42
+    },
+    "OBS_OPT": {
+      "chosen": "R2",
+      "outcome": "pass",
+      "t_end": 8.42
+    }
+  },
+  "full": {
+    "fallback": false,
+    "n_admitted": 6,
+    "majority": "R1",
+    "worst": "R1",
+    "chosen": "R1",
+    "why": "majority_wheel",
+    "outcome": "physical_failure",
+    "t_end": 4.3,
+    "worst_different": false
+  },
+  "candidates": [
+    {
+      "id": "v5_rock_07_h0v0_A1_exposed",
+      "admitted": true,
+      "scale_ratio": 1.0,
+      "hidden_frac": 0.8123,
+      "shell_contact": 0.7846,
+      "free_intrusion_frac": 0.14478,
+      "contour_iou": 0.7933,
+      "rear_err_m": 0.07,
+      "top_err_m": -0.002,
+      "path_p95_mm": 91.0,
+      "hidden_iou": 0.6151
+    },
+    {
+      "id": "v5_rock_07_h0v0_A2_exposed",
+      "admitted": true,
+      "scale_ratio": 0.9833,
+      "hidden_frac": 0.8073,
+      "shell_contact": 0.8362,
+      "free_intrusion_frac": 0.13929,
+      "contour_iou": 0.8236,
+      "rear_err_m": 0.06,
+      "top_err_m": -0.004,
+      "path_p95_mm": 91.0,
+      "hidden_iou": 0.6384
+    },
+    {
+      "id": "v5_rock_07_h0v0_B1_exposed",
+      "admitted": true,
+      "scale_ratio": 0.9833,
+      "hidden_frac": 0.8114,
+      "shell_contact": 0.8817,
+      "free_intrusion_frac": 0.1228,
+      "contour_iou": 0.8422,
+      "rear_err_m": 0.048,
+      "top_err_m": -0.002,
+      "path_p95_mm": 89.0,
+      "hidden_iou": 0.6996
+    },
+    {
+      "id": "v5_rock_07_h0v0_B2_exposed",
+      "admitted": true,
+      "scale_ratio": 1.0,
+      "hidden_frac": 0.8024,
+      "shell_contact": 0.9049,
+      "free_intrusion_frac": 0.13014,
+      "contour_iou": 0.842,
+      "rear_err_m": 0.046,
+      "top_err_m": -0.002,
+      "path_p95_mm": 88.0,
+      "hidden_iou": 0.7061
+    },
+    {
+      "id": "v5_rock_07_h0v0_C1_exposed",
+      "admitted": true,
+      "scale_ratio": 1.0,
+      "hidden_frac": 0.7983,
+      "shell_contact": 0.8865,
+      "free_intrusion_frac": 0.1424,
+      "contour_iou": 0.8091,
+      "rear_err_m": 0.054,
+      "top_err_m": -0.002,
+      "path_p95_mm": 91.0,
+      "hidden_iou": 0.6791
+    },
+    {
+      "id": "v5_rock_07_h0v0_C2_exposed",
+      "admitted": true,
+      "scale_ratio": 1.0167,
+      "hidden_frac": 0.7936,
+      "shell_contact": 0.8726,
+      "free_intrusion_frac": 0.1472,
+      "contour_iou": 0.8113,
+      "rear_err_m": 0.052,
+      "top_err_m": -0.002,
+      "path_p95_mm": 89.0,
+      "hidden_iou": 0.6846
+    }
+  ]
+}

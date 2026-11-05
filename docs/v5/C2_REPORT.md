@@ -1,63 +1,66 @@
-# C2 核心闭环（首个正例）
+# C2 核心闭环（窄道 0.35，负结果）
 
 ## 本步问题
 
-在 C1 的 I 类价值场景上，用该状态自己的 v3 Lux3D 候选，经过配准→C0 准入→FULL 融合→
-预演矩阵→多数/最坏决策→真值执行，FULL 是否与 OBS_CONS 决策不同且结果更好。
+在 C1 窄道 I 类场景 `rock_07_h0v0`（channel half 0.35）上，用该状态曝光归一化后的
+6 份 Lux3D 候选跑完整闭环，FULL 是否做出与 OBS_CONS 不同且更好的决定。
 
 ## 命令
 
-- `python3 scripts/v5_c2.py --states moon_rock_05_h2v1`
+- `python3 scripts/v5_c2.py --states rock_07_h0v0 --channel 0.35 --tasks runs/v5/c2/rock_07_h0v0/tasks_exposed.json --out runs/v5/c2_narrow`
 
 ## 结果表
 
-| 场景 | 候选/准入 | FULL 决策 | FULL 结局 | OBS_CONS | PERFECT | 类型 |
-| --- | --- | --- | --- | --- | --- | --- |
-| `moon_rock_05_h2v1` | 6 / **6** | **D1**（多数=最坏=D1，轮子优先） | **pass，6.68 s** | R1，tipped，3.68 s | D1，pass，6.68 s | **I 类** |
+| 项 | 结果 |
+| --- | --- |
+| 每状态 KA1/KA5/KA6 | true / true / true |
+| 候选 / 准入 | 6 / **6** |
+| FULL 多数 / 最坏 | R1 / R1（轮子优先） |
+| FULL 真值执行 | **R1，physical_failure，4.30 s** |
+| OBS_CONS | **R2，pass，8.42 s** |
+| PERFECT | R2，pass，8.42 s |
+| 类型 | **无**（FULL 比 OBS 差） |
 
-- FULL 决策与 OBS_CONS 不同：**是**（D1 vs R1）。
-- FULL 结局与真值上限一致（同为 D1/pass 6.68 s），且明显优于 OBS 的翻车。
-- 多数规则与最坏规则选择相同（D1），没有第二个需要执行的分支。
+### 候选想象质量
 
-### 准入指标（6/6 通过，C0 门槛）
-
-| 候选 | 尺度比 | 隐藏占比 | 壳相接 | 空地侵入 | 轮廓 IoU |
+| 候选 | admitted | rear_err (m) | top_err (m) | path_p95 (mm) | 隐藏 IoU |
 | --- | --- | --- | --- | --- | --- |
-| A1 | 0.991 | 0.849 | 0.841 | 0.095 | 0.904 |
-| A2 | 1.000 | 0.867 | 0.898 | 0.065 | 0.933 |
-| B1 | 1.000 | 0.830 | 0.925 | 0.111 | 0.905 |
-| B2 | 0.982 | 0.847 | 0.843 | 0.096 | 0.921 |
-| C1/C2 | 0.98–1.0 | 0.83–0.85 | 0.84–0.90 | ≤0.11 | 0.90–0.92 |
+| A1 | true | +0.070 | −0.002 | 91 | 0.615 |
+| A2 | true | +0.060 | −0.004 | 91 | 0.638 |
+| B1 | true | +0.048 | −0.002 | 89 | 0.700 |
+| B2 | true | +0.046 | −0.002 | 88 | 0.706 |
+| C1 | true | +0.054 | −0.002 | 91 | 0.679 |
+| C2 | true | +0.052 | −0.002 | 89 | 0.685 |
+
+- 6/6 候选都把隐藏区后缘**多想象 4.6–7.0 cm**（rear_err 正），路径高度误差 P95 88–91 mm，
+  隐藏 IoU 只有 0.62–0.71。
+- 后果：FULL 认为右侧有足够空间，选 R1；真值里右侧被真实岩石挡住，R1 翻车。
+- OBS_CONS 选 R2，真值通过；PERFECT 也是 R2/pass。
 
 ## 未做到
 
-- 第二个 I 类场景 `rock_07_h1v1` 没有可用的 6 份候选（目录里只有 candidate.json，无 mesh）。
-  按 C2 条款补生成 6 个任务，提交后 6 个任务全部返回 `status=4`；ledger 显示
-  首次原因是 `GENERATION_CONCURRENCY_LIMIT_EXCEEDED`，并发释放后重试仍被缓存判为失败。
-  该场景本轮没有 FULL 结果，不冒充。
-- 能耗与机身接触字段尚未从 exec 记录回填；决策文件与逐格矩阵已保存，但逐步记录仍在沙箱。
+- 没有找到 FULL 决策不同且满足 I/II 类的场景；本场景 FULL 反而比 OBS 差。
+- 只跑了这一个窄道价值场景；0.475 宽度无价值，开阔场无价值。
+- 预演矩阵已存 `runs/v5/c2_narrow/rock_07_h0v0/full/<候选>/matrix_rows.jsonl`，未逐格展开报告。
 
 ## 根因
 
-- 补生成失败根因：Lux3D 账号并发上限触发，任务创建后服务端 status=4；不是图像或代码错误。
-- 需要等并发窗口、清缓存后重试一次，或改用该状态已有的 `candidate.json` 对应 GLB（若存在）。
+- **测量/想象**：Lux3D 候选在隐藏区系统性偏长（后缘 +4.6–7.0 cm，超过 §6 的 3 cm 阈值），
+  路径高度误差近 9 cm；FULL 融合几何因此把右侧通道判为可通行。
+- **动作**：FULL 的多数/最坏规则都选 R1，真值执行在 4.30 s 翻车。
+- 这不是预演与执行不一致，而是**想象本身偏长**，属于 SPEC §5.3 的
+  “FULL 在多数价值场景上比 OBS_CONS 差”。
 
 ## 证据
 
-- `runs/v5/c2/moon_rock_05_h2v1/result.json`
-- `runs/v5/c2/moon_rock_05_h2v1/candidates.json`
-- `runs/v5/c2/moon_rock_05_h2v1/FULL/decision_majority.json`、`decision_worst.json`、`decision_chosen.json`
-- `runs/v5/c2/core_table.csv`
-- 沙箱逐步记录：`runs/v5/c2/moon_rock_05_h2v1/{PERFECT,OBS_CONS,FULL}/exec/run/record/`
+- `runs/v5/c2_narrow/rock_07_h0v0/result.json`
+- `runs/v5/c2_narrow/rock_07_h0v0/candidates.json`
+- `runs/v5/c2_narrow/rock_07_h0v0/FULL/decision_majority.json`、`decision_worst.json`
+- `runs/v5/c2_narrow/rock_07_h0v0/{PERFECT,OBS_CONS,FULL}/exec/run/`
+- `runs/v5/c1_narrow035/narrow_table.csv`（价值来源）
 
 ## 下一步
 
-- 补 `rock_07_h1v1` 的候选（等并发窗口）并跑 C2；或先用 `moon_rock_05_h2v1` 做 C3 重评与素材。
-
-## `rock_07_h1v1` 补生成重试结果（第二次）
-
-- 并发窗口已释放（WP3 全部结束）后，用新 identity + `retry_of` 重提 6 个任务。
-- 6 个任务均成功 create，但随即返回服务端 `status=4`（failed），不是并发错误。
-- 该状态的输入变体图整体偏暗（A1 均值 89.8/255、最大 151），推测为服务端内容拒收；
-  没有继续第三次调用（SPEC 只允许一次重试）。
-- 因此该场景仍无候选，C2 只有 `moon_rock_05_h2v1` 一个正例；核心闭环已达成 ≥1 场景要求。
+SPEC §5.3 触发：C2 的唯一价值场景上 FULL 比 OBS_CONS 差且根因明确（候选隐藏区系统性偏长）。
+按要求停下回报，不再扩大 C2；若继续，应先修候选的隐藏区偏长（例如加后缘约束/校准），
+或换用后缘误差在 3 cm 内的候选，而不是改门槛。

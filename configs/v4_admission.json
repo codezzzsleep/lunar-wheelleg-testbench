@@ -1,0 +1,162 @@
+{
+  "schema": "v4-admission/v1",
+  "calibrated_from": "runs/v3/stage008/truth_v2",
+  "scale_ratio": {
+    "min": 0.85,
+    "max": 1.16
+  },
+  "hidden_frac_min": 0.05,
+  "shell_contact_min": 0.005,
+  "free_intrusion_max": 0.02,
+  "contour_iou_min": 0.72,
+  "notes": "scale ratio = registered world height / V shell height; shell contact = fraction of V shell voxels touched by candidate after 1-voxel dilation; intrusion = candidate voxels in known free space / candidate voxels; contour_iou = visible mask IoU (calibrated, reported but not used as the old IoU gate); truth prior passes all; some +/-2cm or 1.1x perturbed priors fail the 2% intrusion hard rule",
+  "calibration": {
+    "schema": "v4-admission/v1",
+    "truth": "runs/v3/stage008/truth_v2",
+    "cases": {
+      "truth": {
+        "height_world_m": 0.3,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.0067,
+        "hidden_voxels": 1211217,
+        "hidden_frac": 0.96411,
+        "shell_contact": 0.93998,
+        "free_intrusion_frac": 0.00271,
+        "contour_iou": 0.9955,
+        "depth_p95_mm": 1.22,
+        "voxels": 1256301,
+        "converged": true
+      },
+      "truth_dx-0.02_s0.9": {
+        "height_world_m": 0.27,
+        "visible_height_m": 0.298,
+        "scale_ratio": 0.906,
+        "hidden_voxels": 878970,
+        "hidden_frac": 0.95893,
+        "shell_contact": 0.72624,
+        "free_intrusion_frac": 0.00302,
+        "contour_iou": 0.8493,
+        "depth_p95_mm": 17.348,
+        "voxels": 916615,
+        "converged": true
+      },
+      "truth_dx-0.02_s1.0": {
+        "height_world_m": 0.3,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.0067,
+        "hidden_voxels": 1077659,
+        "hidden_frac": 0.8578,
+        "shell_contact": 0.97285,
+        "free_intrusion_frac": 0.0957,
+        "contour_iou": 0.9235,
+        "depth_p95_mm": 43.135,
+        "voxels": 1256301,
+        "converged": true
+      },
+      "truth_dx-0.02_s1.1": {
+        "height_world_m": 0.33,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.1074,
+        "hidden_voxels": 1251421,
+        "hidden_frac": 0.75853,
+        "shell_contact": 0.99946,
+        "free_intrusion_frac": 0.20464,
+        "contour_iou": 0.7686,
+        "depth_p95_mm": 102.741,
+        "voxels": 1649807,
+        "converged": true
+      },
+      "truth_dx+0.00_s0.9": {
+        "height_world_m": 0.27,
+        "visible_height_m": 0.298,
+        "scale_ratio": 0.906,
+        "hidden_voxels": 915531,
+        "hidden_frac": 0.99882,
+        "shell_contact": 0.01182,
+        "free_intrusion_frac": 0.001,
+        "contour_iou": 0.801,
+        "depth_p95_mm": 57.355,
+        "voxels": 916615,
+        "converged": true
+      },
+      "truth_dx+0.00_s1.1": {
+        "height_world_m": 0.33,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.1074,
+        "hidden_voxels": 1404372,
+        "hidden_frac": 0.84833,
+        "shell_contact": 1.0,
+        "free_intrusion_frac": 0.11497,
+        "contour_iou": 0.8161,
+        "depth_p95_mm": 60.862,
+        "voxels": 1655453,
+        "converged": true
+      },
+      "truth_dx+0.02_s0.9": {
+        "height_world_m": 0.27,
+        "visible_height_m": 0.298,
+        "scale_ratio": 0.906,
+        "hidden_voxels": 916133,
+        "hidden_frac": 0.99947,
+        "shell_contact": 0.0062,
+        "free_intrusion_frac": 0.00045,
+        "contour_iou": 0.7568,
+        "depth_p95_mm": 95.729,
+        "voxels": 916615,
+        "converged": true
+      },
+      "truth_dx+0.02_s1.0": {
+        "height_world_m": 0.3,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.0067,
+        "hidden_voxels": 1253257,
+        "hidden_frac": 0.99758,
+        "shell_contact": 0.0148,
+        "free_intrusion_frac": 0.00229,
+        "contour_iou": 0.9226,
+        "depth_p95_mm": 40.391,
+        "voxels": 1256301,
+        "converged": true
+      },
+      "truth_dx+0.02_s1.1": {
+        "height_world_m": 0.33,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.1074,
+        "hidden_voxels": 1550098,
+        "hidden_frac": 0.93636,
+        "shell_contact": 0.78746,
+        "free_intrusion_frac": 0.04236,
+        "contour_iou": 0.8649,
+        "depth_p95_mm": 17.683,
+        "voxels": 1655453,
+        "converged": true
+      },
+      "bad_shift15cm": {
+        "height_world_m": 0.3,
+        "visible_height_m": 0.298,
+        "scale_ratio": 1.0067,
+        "hidden_voxels": 1021657,
+        "hidden_frac": 0.97582,
+        "shell_contact": 0.0,
+        "free_intrusion_frac": 0.02418,
+        "contour_iou": 0.5875,
+        "depth_p95_mm": 245.909,
+        "voxels": 1046976,
+        "converged": true
+      },
+      "bad_scale06": {
+        "height_world_m": 0.18,
+        "visible_height_m": 0.298,
+        "scale_ratio": 0.604,
+        "hidden_voxels": 0,
+        "hidden_frac": 0.0,
+        "shell_contact": 0.0,
+        "free_intrusion_frac": 0.0,
+        "contour_iou": 0.0,
+        "depth_p95_mm": NaN,
+        "voxels": 0,
+        "converged": true
+      }
+    }
+  }
+}

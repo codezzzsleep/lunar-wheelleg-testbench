@@ -9,8 +9,33 @@
   },
   "obs_cons_geometry": "V | U_shadow, where U_shadow = unknown voxels (space==0, z>0.02) inside the camera frustum whose projected depth is behind the observed depth at that pixel",
   "u_outside_frustum": "treated as near-ground / free (single-rock scenes are flat)",
-  "robust_rehearsal": {"perturbations": [[0.02, 0], [-0.02, 0], [0, 2.0]], "rule": "3/3 success and 0 chassis contacts"},
-  "decision": {"majority": ">= floor(n/2)+1", "worst": "n/n", "wheel_priority": "if cost difference <5% choose wheel action"},
-  "auto_exposure": {"rule": "if input mean < 100, linearly scale brightness so mean in [120,140], no crop/content change", "applies_to": "all Lux3D inputs"},
-  "chassis_contacts": "counted from execution records for every arm; >0 is fail"
+  "robust_rehearsal": {
+    "perturbations": [
+      [
+        0.02,
+        0
+      ],
+      [
+        -0.02,
+        0
+      ],
+      [
+        0,
+        2.0
+      ]
+    ],
+    "rule": "3/3 success and 0 chassis contacts"
+  },
+  "decision": {
+    "majority": ">= floor(n/2)+1",
+    "worst": "n/n",
+    "wheel_priority": "if cost difference <5% choose wheel action"
+  },
+  "auto_exposure": {
+    "rule": "if input mean < 100, linearly scale brightness so mean in [120,140], no crop/content change",
+    "applies_to": "all Lux3D inputs"
+  },
+  "chassis_contacts": "counted from execution records for every arm; >0 is fail",
+  "obs_cons_safe_set": "intersection of actions safe on V | U_shadow and actions safe on Vsh; 3/3 perturbations and zero contacts in each geometry",
+  "obs_cons_safe_reason": "column fill of unknown space creates a fictitious ramp; the solid geometry is not conservative for climbing actions, so both extremes must be safe"
 }

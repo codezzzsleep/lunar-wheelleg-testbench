@@ -50,24 +50,22 @@ def main():
    for si,s2 in enumerate(snaps):
     rr,_=v3_core.rehearse_on_spec(core,spec,s2,proto,mode='same_scene',options=actions,body_plan=plan,budget=120.0,record_cells=True,record_root=ad/f'p{si}')
     runs.append(rr)
-   combined=[]
+   combined=[]; detail=[]
    for act in actions:
-    ok=True; cost=[]; unassessed=False
-    for rr in runs:
+    perms=[]; ok=True; cost=[]; ts=[]
+    for si,rr in enumerate(runs):
      r=next((x for x in rr if x['action']==act),None)
-     if r is None or not r.get('success'): ok=False; break
-     tref=r.get('trajectory_ref')
-     if not tref: ok=False; unassessed=True; break
-     tp=tref.get('trajectory_path') if isinstance(tref,dict) else tref
-     c=contacts(pathlib.Path(tp).parent if str(tp).endswith('index.json') else tp)
-     if c is None: ok=False; unassessed=True; break
-     if c>0: ok=False; break
-     cost.append(r.get('cost',60))
-    ts=[]
-    for rr in runs:
-     r=next((x for x in rr if x['action']==act),None)
-     if r and r.get('t_end') is not None: ts.append(float(r['t_end']))
-    combined.append({'action':act,'success':bool(ok),'cost':float(np.mean(cost)) if cost else 60.0,'candidate':arm,'reason':'3of3' if ok else ('unassessed' if unassessed else 'failed'),'t_end':float(np.mean(ts)) if ts else 60.0,'final_x':None})
+     ent={'action':act,'perturb':si,'success':bool(r and r.get('success')),'reason':None if not r else r.get('reason'),'contacts':None,'cost':None if not r else r.get('cost'),'t_end':None if not r else r.get('t_end')}
+     if r and r.get('trajectory_ref'):
+      tp=r['trajectory_ref'].get('trajectory_path') if isinstance(r['trajectory_ref'],dict) else r['trajectory_ref']
+      ent['contacts']=contacts(pathlib.Path(tp).parent if str(tp).endswith('index.json') else tp)
+      ent['record_path']=str(tp)
+     if not ent['success'] or ent['contacts'] is None or (ent['contacts'] or 0)>0: ok=False
+     if ent['cost'] is not None and ent['success'] and (ent['contacts'] or 0)==0: cost.append(ent['cost'])
+     if ent['t_end'] is not None: ts.append(float(ent['t_end']))
+     perms.append(ent)
+    detail.extend(perms)
+    combined.append({'action':act,'success':bool(ok),'cost':float(np.mean(cost)) if cost else 60.0,'candidate':arm,'reason':'3of3' if ok else 'failed','t_end':float(np.mean(ts)) if ts else 60.0,'final_x':None})
    dec=v3_core.aggregate(combined,[arm],{},'majority',proto,threshold_mode='majority',applic={x:(True,None) for x in actions},options=actions)
    ch=dec['chosen']
    tcore={'spec':spec_truth,'snapshot':snap,'visible':vis,'state':{'state_id':name,'state_hash':s0h}}
@@ -75,13 +73,26 @@ def main():
    rd=ad/'exec'/'record'/'run'; cc=contacts(rd); e=cost_from_record(rd)
    outcom=ex.get('outcome');
    if cc is not None and cc>0: outcom='fail'; ex['reason']='chassis_contact'
-   arms[arm]={'chosen':ch,'outcome':outcom,'t_end':ex.get('t_end'),'chassis_contacts':cc,'energy_J':e.get('energy_J'),'distance_m':e.get('distance_m'),'pred_safe':bool(ch in dec.get('safe_set',[]))}
+   safe={c['action'] for c in combined if c['success']}
+   (ad/'rehearsal_3of3.json').write_text(json.dumps({'state':name,'arm':arm,'geometry':('T' if arm=='PERFECT' else ('V|U_shadow' if arm=='OBS_CONS' else 'Vsh')),'perturbations':[[0.02,0],[-0.02,0],[0,2.0]],'entries':detail,'safe_actions':sorted(safe)},ensure_ascii=False,indent=2))
+   arms[arm]={'chosen':ch,'outcome':outcom,'t_end':ex.get('t_end'),'chassis_contacts':cc,'energy_J':e.get('energy_J'),'distance_m':e.get('distance_m'),'pred_safe':bool(ch in dec.get('safe_set',[])),'safe':safe,'combined':combined,'detail':detail,'plan':plan,'spec':spec}
+  solid=arms['OBS_CONS']['safe']; empty=arms['OBS_OPT']['safe']; both=solid&empty
+  if both:
+   cands=[r for r in arms['OBS_CONS']['combined'] if r['action'] in both and r['success']]
+   cands.sort(key=lambda r:r['cost'])
+   pick=cands[0]['action']
+  else: pick='A0'
+  ad=out/name/'OBS_CONS'; plan=arms['OBS_CONS']['plan']
+  ex=v3_core.truth_execute({'spec':spec_truth,'snapshot':snap,'visible':vis,'state':{'state_id':name,'state_hash':s0h}},pick,proto,ad/'exec','dual',mode='same_scene',body_plan=plan,budget=120.0)
+  rd=ad/'exec'/'record'/'dual'; cc=contacts(rd); e=cost_from_record(rd); outcom=ex.get('outcome')
+  if cc is not None and cc>0: outcom='fail'; ex['reason']='chassis_contact'
+  arms['OBS_CONS'].update({'chosen':pick,'outcome':outcom,'t_end':ex.get('t_end'),'chassis_contacts':cc,'energy_J':e.get('energy_J'),'distance_m':e.get('distance_m'),'pred_safe':bool(pick in both),'safe_solid':sorted(solid),'safe_both':sorted(both)})
   p,o,opt=arms['PERFECT'],arms['OBS_CONS'],arms['OBS_OPT']
   typ=''
   if p['outcome']=='pass' and o['outcome']!='pass': typ='I'
   elif p['outcome']=='pass' and o['outcome']=='pass' and p['t_end'] is not None and o['t_end'] is not None and (o['t_end']-p['t_end'])>=max(3.0,0.3*o['t_end']): typ='II'
   agree=bool(p['pred_safe']==(p['outcome']=='pass'))
-  row={'state':name,'type':typ,'perfect_action':p['chosen'],'perfect_out':p['outcome'],'perfect_t':p['t_end'],'obs_action':o['chosen'],'obs_out':o['outcome'],'obs_t':o['t_end'],'obs_opt_out':opt['outcome'],'perfect_rehearsal_agree':agree,'chassis_contacts':None if o['chassis_contacts'] is None else o['chassis_contacts'],'u_shadow_vox':int(sh.sum()),'x_front':round(vis['x_front'],3),'W_vis':round(vis['W_vis'],3),'H_vis':round(vis['H_vis'],3)}
+  row={'state':name,'type':typ,'perfect_action':p['chosen'],'perfect_out':p['outcome'],'perfect_t':p['t_end'],'obs_action':o['chosen'],'obs_out':o['outcome'],'obs_t':o['t_end'],'obs_opt_out':opt['outcome'],'perfect_rehearsal_agree':agree,'chassis_contacts':None if o['chassis_contacts'] is None else o['chassis_contacts'],'u_shadow_vox':int(sh.sum()),'x_front':round(vis['x_front'],3),'W_vis':round(vis['W_vis'],3),'H_vis':round(vis['H_vis'],3),'obs_cons_safe_solid':','.join(o.get('safe_solid',[])),'obs_cons_safe_both':','.join(o.get('safe_both',[]))}
   rows.append(row); print(json.dumps(row,ensure_ascii=False),flush=True); (out/'value_rows.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
  if rows:
   with (out/'value_table.csv').open('w',newline='') as f:

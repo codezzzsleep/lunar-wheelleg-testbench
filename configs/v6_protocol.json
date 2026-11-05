@@ -1,0 +1,11 @@
+{
+  "schema": "v6-protocol/v1",
+  "bad_imagination": {
+    "frozen_at": "2026-11-06 before M1 statistics",
+    "rule": "|rear_err_m| > 0.05 OR path_p95_mm > 80"
+  },
+  "admission": "configs/v5_admission.json unchanged",
+  "imagination_trigger_height_m": 0.10,
+  "rehearsal": "3/3 perturbations, lateral margin 0.05, dual-geometry OBS_CONS",
+  "detour": "per-arm footprint offset/leave from v5_eval.plan_detour"
+}

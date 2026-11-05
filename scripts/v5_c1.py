@@ -22,7 +22,7 @@ def perturb_snaps(env,snap,ref):
   mujoco.mj_forward(e.model,e.data); out.append(e.save_state())
  return out
 def main():
- ap=argparse.ArgumentParser(); ap.add_argument('--states',default=None); ap.add_argument('--limit',type=int,default=0); ap.add_argument('--out',default='runs/v5/c1'); a=ap.parse_args()
+ ap=argparse.ArgumentParser(); ap.add_argument('--states',default=None); ap.add_argument('--limit',type=int,default=0); ap.add_argument('--out',default='runs/v5/c1'); ap.add_argument('--channel',type=float,default=None); a=ap.parse_args()
  out=ROOT/a.out; out.mkdir(parents=True,exist_ok=True)
  proto=json.loads((ROOT/'plans/v3_protocol.json').read_text()); cfg=json.loads((ROOT/'configs/stage6_protocol.json').read_text()); actions=[x for x in cfg['actions'] if x!='CLIMB']
  if a.states: names=a.states.split(',')
@@ -36,12 +36,14 @@ def main():
   V=np.load(d/'fusion/V.npz'); g=C.grid_from_V(V); U=(V['space']==0); Vsh=V['shell']; obs=v3_register.load_observation(str(d/'observation')) if False else __import__('v3_register').load_observation(str(d/'observation'))
   tm=trimesh.load(str(d/'truth/body_world.stl'),force='mesh',process=False); T=R.column_fill_top(tm,g)
   sh=C.shadow_mask(V,g,obs); vis=C.visible_dims(d/'observation')
-  snap=json.loads((d/'state_snapshot.json').read_text()); spec_truth=json.loads((d/'scene_spec.json').read_text()); s0h=json.loads((d/'state.json').read_text()).get('state_hash')
+  snap=json.loads((d/'state_snapshot.json').read_text()); spec_truth=json.loads((d/'scene_spec.json').read_text())
+  if a.channel: spec_truth['channel']={'center_y':0.0,'half_width':float(a.channel)}; s0h=json.loads((d/'state.json').read_text()).get('state_hash')
   env0=wheelleg_env.WheelLegEnv(spec_truth,max_seconds=120); env0.reset(seed=0); env0.restore_state(snap,mode='same_scene'); ref=(np.asarray(env0.data.qpos,float).copy(),np.asarray(env0.data.qvel,float).copy())
   arms={}
   for arm in ('PERFECT','OBS_CONS','OBS_OPT'):
    occ=T if arm=='PERFECT' else ((Vsh|sh) if arm=='OBS_CONS' else Vsh)
    ad=out/name/arm; ad.mkdir(parents=True,exist_ok=True); spec,env,sha=M.make_scene(M.resample_walls(occ,V['origin'],float(V['pitch'])),ad,'arm')
+   if a.channel: spec['channel']={'center_y':0.0,'half_width':float(a.channel)}
    M.restore_common(env,snap,s0h,mode='project',ref=ref); snaps=perturb_snaps(env,snap,ref)
    low=float(g['xs'][(T&U).any(axis=(1,2))].max())+0.10 if (T&U).any() else 2.45
    low=2.45 if arm=='OBS_CONS' else (0.95 if arm=='OBS_OPT' else low)

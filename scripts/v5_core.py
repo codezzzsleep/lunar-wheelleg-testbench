@@ -32,3 +32,25 @@ def admission_metrics(mesh,M,V,g,ev=None):
             'shell_contact':round(float(touched.sum())/max(int(shell.sum()),1),4),
             'free_intrusion_frac':intr['free_intrusion_frac'],'intrusion_depth_p95_mm':intr['intrusion_depth_p95_mm'],
             'voxels':int(P.sum()),'contour_iou':None if ev is None else round(float(ev.get('mask_iou',0)),4)}
+
+def visible_dims(obs_dir):
+    import numpy as np,pathlib
+    p=pathlib.Path(obs_dir)/'visible_points.npy'
+    pts=np.load(p); return {'x_front':float(pts[:,0].min()),'W_vis':float(pts[:,1].max()-pts[:,1].min()),'H_vis':float(pts[:,2].max()-pts[:,2].min())}
+
+def shadow_mask(V,g,obs):
+    """Unknown voxels inside the camera frustum that lie behind the observed depth."""
+    import numpy as np, camera_io
+    U=(V['space']==0); zs=g['zs']; above=zs[None,None,:]>0.02; cand=U&above
+    ix,iy,iz=np.nonzero(cand)
+    if len(ix)==0: return np.zeros_like(U)
+    pts=np.stack([g['xs'][ix],g['ys'][iy],g['zs'][iz]],1)
+    cam=obs['camera']; u,v,depth=camera_io.project(pts,cam)
+    H,W=obs['depth'].shape; ok=np.isfinite(u)&np.isfinite(v)&(depth>0)
+    ui=np.clip(np.round(u).astype(int),0,W-1); vi=np.clip(np.round(v).astype(int),0,H-1)
+    inside=ok&(u>=0)&(u<W)&(v>=0)&(v<H)
+    behind=np.zeros(len(pts),bool)
+    d_obs=obs['depth'][vi[inside],ui[inside]]
+    behind[inside]=depth[inside] > (d_obs + 0.01)
+    out=np.zeros_like(U); out[ix[behind],iy[behind],iz[behind]]=True
+    return out

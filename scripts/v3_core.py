@@ -114,6 +114,8 @@ def env_unguard(env, g):
 def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
                record=False, record_dir=None, record_meta=None, pre_step_hook=None):
     sk = skills.make_skill(action)
+    try: sk.channel_half = float(env.channel_half_width)
+    except Exception: pass
     rec = None
     if record_dir is not None:
         import v3_record
@@ -241,7 +243,7 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
                      body_plan=None, record_cells=False, record_root=None):
     """在给定场景 spec（可以是真值网格）上跑完整动作矩阵。"""
     visible = state['visible']
-    ch = float(proto['scene']['channel_half_m'])
+    ch = float((spec.get('channel') or {}).get('half_width', proto['scene']['channel_half_m']))
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
     def _applic(a):
         if a == 'CLIMB':
@@ -289,7 +291,7 @@ def rehearse(state, geom, snapshot, proto, seed=0, record_cells=False,
     record_root/<candidate>/<action>/，矩阵行里只放 trajectory_ref。
     """
     visible = state['visible']
-    ch = float(proto['scene']['channel_half_m'])
+    ch = float((spec.get('channel') or {}).get('half_width', proto['scene']['channel_half_m']))
     opts = [a for a in (options or ACT.OPTIONS) if a != ACT.FALLBACK]
     def _applic(a):
         if a == 'CLIMB':

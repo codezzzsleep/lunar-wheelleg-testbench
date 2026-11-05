@@ -188,10 +188,12 @@ class Detour(Skill):
         if self.r is None:
             w_vis = (self.params.get('W_vis')
                      or (self.plan.get('W_vis') if self.plan else None))
+            ch = float(getattr(self, 'channel_half', 1.2))
+            room = max(0.0, ch - self.ROBOT_HALF_W - 0.05)
             if w_vis is not None:
-                self.r = float(w_vis) / 2.0 + self.ROBOT_HALF_W + 0.10
+                self.r = min(float(w_vis) / 2.0 + self.ROBOT_HALF_W + 0.10, room)
             else:
-                self.r = 0.5
+                self.r = min(0.5, room)
         if x_front is None:
             approach = 0.6
             leave = 0.9

@@ -60,7 +60,7 @@ def save_rows(path, rows):
             f.write(json.dumps(r, ensure_ascii=False) + '\n')
 
 
-def make_scene(occ, out, tag, budget=120.0):
+def make_scene(occ, out, tag, budget=120.0, channel_half=1.2):
     grid = out / f'occ_{tag}.npz'
     sha = hashlib.sha256(np.ascontiguousarray(occ).tobytes()).hexdigest()[:32]
     np.savez_compressed(grid, occupied=occ, origin=ORIGIN, pitch=np.float64(PITCH),
@@ -72,7 +72,7 @@ def make_scene(occ, out, tag, budget=120.0):
         raise SystemExit(f'collision {tag}: {r.get("error")}')
     spec = terrain.make_spec(kind='flat', seed=0, goal_x=2.6, objects=[{'posed_dir': str(coll)}],
                              name=f'stage8_{tag}')
-    spec['channel'] = {'center_y': 0.0, 'half_width': 1.2}
+    spec['channel'] = {'center_y': 0.0, 'half_width': float(channel_half)}
     spec['soil'] = v7_soil.resolve('nominal')
     env = wheelleg_env.WheelLegEnv(spec, max_seconds=budget); env.reset(seed=0)
     return spec, env, sha

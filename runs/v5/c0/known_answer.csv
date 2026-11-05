@@ -1,0 +1,7 @@
+case,input,admitted,rear_err_m,top_err_m,path_p95_mm,scale_ratio,shell_contact,free_intrusion_frac,contour_iou,voxels,ka4_voxel_diff_frac
+KA1_truth,truth,True,0.0,0.0,0.0,1.0,0.9449,0.05699,0.9955,1483153,
+KA2_shift15cm,truth+15cm,False,0.07,-0.016,263.0,0.953,0.0004,0.0233,0.5875,1211339,
+KA3_scale06,truth*0.6,False,-0.062,-0.072,193.0,0.745,0.0001,0.0,0.3477,458200,
+KA4_bottom_removed_dup,shell dup,True,0.0,0.0,0.0,1.0,0.9449,0.05699,0.9904,1483119,2e-05
+KA5_cut10cm,rear cut,True,-0.1,0.0,139.0,1.0,0.9336,0.07601,0.9903,1091694,
+KA6_projection,truth proj,True,0.0,0.0,0.0,1.0,0.9449,0.05699,0.9955,1483153,

@@ -92,29 +92,28 @@ def build_heightfield(spec):
         parts['pit_depth_m'] = float(t.get('pit_depth', 0.0))
         parts['pits'] = int(t['pits'])
 
-    h = h - h.min()                     # 最低点归零（不改变形状与幅度）
-    zmax = float(h.max())
-    if zmax <= 1e-9:
-        zmax = 1e-3                     # 纯平地也要有正的 size[2]
-    return h, {'zmax': round(zmax, 6), 'actual_max_m': round(float(h.max()), 4),
-               'actual_min_m': 0.0, 'components': parts, 'kind_label': kind,
-               'grid': N, 'span_m': SPAN}
+    zmin = float(h.min()); zmax = float(h.max())
+    if zmax - zmin <= 1e-9:
+        zmax = zmin + 1e-3               # 纯平地也要有正的尺寸
+    return h, {'zmin': round(zmin, 6), 'zmax': round(zmax, 6),
+               'actual_max_m': round(float(h.max()), 4), 'actual_min_m': round(zmin, 4),
+               'components': parts, 'kind_label': kind, 'grid': N, 'span_m': SPAN}
 
 
-def write_heightfield_png(h, path, zmax=None):
-    """PNG 只做编码：value = h/zmax*255。物理尺度在 hfield 的 size[2] 里。"""
+def write_heightfield_png(h, path, zmax=None, zmin=0.0):
+    """PNG 只做编码：value = (h-zmin)/(zmax-zmin)*255；物理基面在 geom pos z=zmin。"""
     zmax = float(zmax if zmax is not None else (h.max() or 1e-3))
-    img = np.clip(np.round(h / zmax * PNG_LEVELS), 0, PNG_LEVELS).astype(np.uint8)
+    img = np.clip(np.round((h - zmin) / max(1e-9, (zmax - zmin)) * PNG_LEVELS), 0, PNG_LEVELS).astype(np.uint8)
     pathlib.Path(path).parent.mkdir(parents=True, exist_ok=True)
     Image.fromarray(img, mode='L').save(path)
     return path
 
 
-def heightfield_xml(spec, png_path, zmax):
-    # size = 半径x 半径y 最大高度 基底；第 4 个值必须为正
+def heightfield_xml(spec, png_path, zmax, zmin=0.0):
+    # size z = 高差；geom 的 pos z = zmin（可负，用于坑）
     span = float((spec.get('terrain') or {}).get('span') or SPAN)
     return (f'<hfield name="terrain" nrow="{N}" ncol="{N}" '
-            f'size="{span} {span} {zmax} 0.01" file="{png_path}"/>')
+            f'size="{span} {span} {zmax - zmin} 0.01" file="{png_path}"/>')
 
 
 def terrain_geom_xml(pos='0 0 0', rgba='.32 .32 .36 1', friction='0.9 0.02 0.001'):

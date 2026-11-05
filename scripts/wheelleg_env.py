@@ -176,6 +176,7 @@ class WheelLegEnv:
     # ---------------------------------------------------------------- 场景
     def _compose(self):
         h, meta = terrain.build_heightfield(self.spec)
+        self._zmin = float(meta.get('zmin', 0.0))
         self._h = h
         self._zmax = meta['zmax']
         self._terrain_meta = meta
@@ -183,7 +184,7 @@ class WheelLegEnv:
                               (pathlib.Path(__file__).resolve().parent.parent / 'runs/_hfield'))
         hf_dir.mkdir(parents=True, exist_ok=True)
         png = hf_dir / f"{terrain.scene_identity(self.spec)}.png"
-        terrain.write_heightfield_png(h, png, zmax=meta['zmax'])   # 每次重写，避免陈旧地形
+        terrain.write_heightfield_png(h, png, zmax=meta['zmax'], zmin=meta['zmin'])   # 每次重写，避免陈旧地形
 
         # 有地形 heightfield 时不要再叠一块平面地面（会填平坑洼、遮挡射线测量）
         xml = build_scene.moon_scene_xml(floor=False)
@@ -234,7 +235,7 @@ class WheelLegEnv:
                        f'<material name="{mat["name"]}" texture="{mat["name"]}_tex" '
                        f'specular="0.05" shininess="0.1"/>')
             xml = xml.replace('<asset>', '<asset>' + tex_xml)
-        xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax']))
+        xml = xml.replace('<asset>', '<asset>' + terrain.heightfield_xml(self.spec, png, meta['zmax'], meta['zmin']))
 
         assets, bodies, placements, bounds = [], [], [], []
         for i, obj in enumerate(self.spec.get('objects', [])):
@@ -394,7 +395,7 @@ class WheelLegEnv:
 
         self.placements = placements
         self.obj_bounds = bounds
-        block = terrain.terrain_geom_xml() + '\n' + '\n'.join(bodies)
+        block = terrain.terrain_geom_xml(pos=f'0 0 {meta.get("zmin", 0.0)}') + '\n' + '\n'.join(bodies)
         xml = xml.replace('</worldbody>', block + '\n  </worldbody>')
         xml = xml.replace('<asset>', '<asset>' + ''.join(assets))
         self._obstacle_bodies = [f'obstacle{i}' for i in range(len(self.spec.get('objects', [])))]

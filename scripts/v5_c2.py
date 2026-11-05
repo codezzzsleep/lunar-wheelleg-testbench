@@ -29,6 +29,15 @@ def main():
   tm=trimesh.load(str(d/'truth/body_world.stl'),force='mesh',process=False); T=R.column_fill_top(tm,g)
   snap=json.loads((d/'state_snapshot.json').read_text()); spec_truth=json.loads((d/'scene_spec.json').read_text()); s0h=json.loads((d/'state.json').read_text()).get('state_hash')
   obs=v3_register.load_observation(str(d/'observation'))
+  # per-state KA1/KA5/KA6
+  ev_t=v3_register.evaluate_matrix(tm,obs,np.eye(4)); m_t=C.admission_metrics(tm,np.eye(4),V,g,ev_t)
+  ka1=bool(adcfg['scale_ratio']['min']<=m_t['scale_ratio']<=adcfg['scale_ratio']['max'] and m_t['hidden_frac']>=adcfg['hidden_frac_min'] and m_t['shell_contact']>=adcfg['shell_contact_min'] and m_t['free_intrusion_frac']<=adcfg['free_intrusion_max'] and m_t['contour_iou']>=adcfg['contour_iou_min'])
+  rear=float(g['xs'][T.any(axis=(1,2))].max()); cents=tm.vertices[tm.faces].mean(axis=1); keepf=cents[:,0]<=rear-0.10
+  cut=trimesh.Trimesh(tm.vertices.copy(),tm.faces[keepf],process=False); Pc=R.column_fill_top(cut,g); hmc=R.hidden_metrics(Pc,T,U,g)
+  ka5=bool(hmc['rear_err_m'] is not None and abs(hmc['rear_err_m']+0.10)<=0.003)
+  ka6=bool(ev_t.get('mask_iou',0)>=0.95)
+  (od/'ka_checks.json').write_text(json.dumps({'KA1':ka1,'KA5':ka5,'KA6':ka6,'KA5_rear':hmc['rear_err_m'],'KA6_iou':ev_t.get('mask_iou')},ensure_ascii=False,indent=2))
+  print('KA',name,ka1,ka5,ka6)
   cands=[]; admitted=[]
   for cd in sorted((d/'candidates').glob('*')):
    mp=cd/'parent_world'/'body.stl'
@@ -36,7 +45,8 @@ def main():
    mesh=trimesh.load(str(mp),force='mesh',process=False)
    ev=v3_register.evaluate_matrix(mesh,obs,np.eye(4)); m=C.admission_metrics(mesh,np.eye(4),V,g,ev)
    ok=bool(adcfg['scale_ratio']['min']<=m['scale_ratio']<=adcfg['scale_ratio']['max'] and m['hidden_frac']>=adcfg['hidden_frac_min'] and m['shell_contact']>=adcfg['shell_contact_min'] and m['free_intrusion_frac']<=adcfg['free_intrusion_max'] and m['contour_iou']>=adcfg['contour_iou_min'])
-   cands.append({'id':cd.name,'admitted':ok,'scale_ratio':m['scale_ratio'],'hidden_frac':m['hidden_frac'],'shell_contact':m['shell_contact'],'free_intrusion_frac':m['free_intrusion_frac'],'contour_iou':m['contour_iou'],'P':m['P'],'mesh':mesh})
+   hm=R.hidden_metrics(m['P'],T,U,g)
+   cands.append({'id':cd.name,'admitted':ok,'scale_ratio':m['scale_ratio'],'hidden_frac':m['hidden_frac'],'shell_contact':m['shell_contact'],'free_intrusion_frac':m['free_intrusion_frac'],'contour_iou':m['contour_iou'],'rear_err_m':hm['rear_err_m'],'top_err_m':hm['top_err_m'],'path_p95_mm':hm['path_p95_mm'],'hidden_iou':round(float((m['P']&U&T).sum())/max(1,int(((m['P']&U)|(T&U)).sum())),4),'P':m['P'],'mesh':mesh})
    if ok: admitted.append(cands[-1])
   (od/'candidates.json').write_text(json.dumps([{k:v for k,v in c.items() if k not in ('P','mesh')} for c in cands],ensure_ascii=False,indent=2))
   env0=wheelleg_env.WheelLegEnv(spec_truth,max_seconds=120); env0.reset(seed=0); env0.restore_state(snap,mode='same_scene'); ref=(np.asarray(env0.data.qpos,float).copy(),np.asarray(env0.data.qvel,float).copy())

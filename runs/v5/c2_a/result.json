@@ -1,0 +1,116 @@
+{
+  "row": {
+    "state": "moon_rock_02_h2v1",
+    "channel": 0.9,
+    "n_cand": 6,
+    "n_adm": 6,
+    "type": "",
+    "perfect": "D2",
+    "perfect_out": "pass",
+    "obs": "A0",
+    "obs_out": "safe_stop",
+    "full": "A0",
+    "full_out": "safe_stop",
+    "full_t": 3.000000000000002,
+    "obs_t": 3.000000000000002,
+    "differs": false,
+    "contacts": 0
+  },
+  "arms": {
+    "PERFECT": {
+      "action": "D2",
+      "outcome": "pass",
+      "reason": "success",
+      "t_end": 8.14,
+      "contacts": 0
+    },
+    "OBS_CONS": {
+      "action": "A0",
+      "outcome": "safe_stop",
+      "reason": "abort",
+      "t_end": 3.000000000000002,
+      "contacts": 0
+    },
+    "OBS_OPT": {
+      "action": "A0",
+      "outcome": "safe_stop",
+      "reason": "abort",
+      "t_end": 3.000000000000002,
+      "contacts": 0
+    },
+    "FULL": {
+      "action": "A0",
+      "outcome": "safe_stop",
+      "reason": "abort",
+      "t_end": 3.000000000000002,
+      "contacts": 0
+    }
+  },
+  "full": {
+    "majority": "A0",
+    "worst": "A0",
+    "chosen": "A0"
+  },
+  "candidates": [
+    {
+      "id": "A1",
+      "admitted": true,
+      "rear_err_m": -0.016,
+      "top_err_m": -0.006,
+      "path_p95_mm": 25.999999999999996,
+      "hidden_iou": 0.8538,
+      "scale_ratio": 0.973,
+      "contour_iou": 0.9374
+    },
+    {
+      "id": "A2",
+      "admitted": true,
+      "rear_err_m": -0.022,
+      "top_err_m": -0.004,
+      "path_p95_mm": 50.000000000000014,
+      "hidden_iou": 0.8177,
+      "scale_ratio": 0.991,
+      "contour_iou": 0.8963
+    },
+    {
+      "id": "B1",
+      "admitted": true,
+      "rear_err_m": -0.022,
+      "top_err_m": -0.006,
+      "path_p95_mm": 30.0,
+      "hidden_iou": 0.8551,
+      "scale_ratio": 0.973,
+      "contour_iou": 0.9079
+    },
+    {
+      "id": "B2",
+      "admitted": true,
+      "rear_err_m": -0.014,
+      "top_err_m": -0.006,
+      "path_p95_mm": 32.0,
+      "hidden_iou": 0.8773,
+      "scale_ratio": 0.973,
+      "contour_iou": 0.8608
+    },
+    {
+      "id": "C1",
+      "admitted": true,
+      "rear_err_m": 0.006,
+      "top_err_m": 0.0,
+      "path_p95_mm": 57.99999999999999,
+      "hidden_iou": 0.8795,
+      "scale_ratio": 1.009,
+      "contour_iou": 0.925
+    },
+    {
+      "id": "C2",
+      "admitted": true,
+      "rear_err_m": 0.002,
+      "top_err_m": 0.0,
+      "path_p95_mm": 43.0,
+      "hidden_iou": 0.8924,
+      "scale_ratio": 1.0,
+      "contour_iou": 0.9586
+    }
+  ]
+}

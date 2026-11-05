@@ -185,6 +185,9 @@ class Detour(Skill):
         # 目标横向偏移：优先用调用方显式给的 r；
         # 否则按公开可见宽度推出（可见半宽 + 机体半宽 + 10 cm 余量）；
         # 都没有时退回保守常数 0.5 m（保持旧行为，便于回归测试）。
+        # 几何规划：plan 里带各臂自己算出的 offset_m / leave_x 时优先使用
+        if self.r is None:
+            self.r = self.plan.get('offset_m')
         if self.r is None:
             w_vis = (self.params.get('W_vis')
                      or (self.plan.get('W_vis') if self.plan else None))
@@ -199,7 +202,7 @@ class Detour(Skill):
             leave = 0.9
         else:
             approach = float(x_front) - 0.55
-            leave = float(x_front) + 0.75
+            leave = self.plan.get('leave_x', float(x_front) + 0.75)
         if self.phase == 'idle' and x >= approach:
             self.phase = 'shift'
         elif self.phase == 'shift' and x >= leave:

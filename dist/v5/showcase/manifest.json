@@ -1,0 +1,59 @@
+{
+  "schema": "v5-showcase/v1",
+  "generated": "2026-11-06T06:01:16+0800",
+  "items": [
+    {
+      "path": "runs/v5/c0/known_answer.csv",
+      "kind": "C0 known answers",
+      "sha256": "7dd221f50bba93251cf92100eefdf282a460e3ae3c5660ff37d91d8c7d478b40",
+      "bytes": 722,
+      "source": "python3 scripts/v5_c0_ka.py"
+    },
+    {
+      "path": "runs/v5/c0/v3_refuse.csv",
+      "kind": "C0 v3 re-fusion",
+      "sha256": "d2ac1331c997a43382fe1e75cbc8d169f19d20ca33f340eb5ed21398f25421d1",
+      "bytes": 4213,
+      "source": "python3 scripts/v5_c0_refuse.py"
+    },
+    {
+      "path": "configs/v5_admission.json",
+      "kind": "C0 admission",
+      "sha256": "c632c5878dc7af417047d8e3e46608161b22b09f959725657d6caa2fe45b98a0",
+      "bytes": 345,
+      "source": "frozen calibration"
+    },
+    {
+      "path": "runs/v5/c3/checkup.csv",
+      "kind": "C3 checkup",
+      "sha256": "d7d2d4a538a5a35ba5299fb3fa68a0d62686d811f2e90e30049ef694ad713ae4",
+      "bytes": 10041,
+      "source": "python3 scripts/v5_c3.py"
+    },
+    {
+      "path": "runs/v5/a_r3/a_table_all.csv",
+      "kind": "A four-width table",
+      "sha256": "2eb3b6b355d8b6e4b8ab760d82fe587c4385175a0c1d75af480c311121e9da8a",
+      "bytes": 6915,
+      "source": "python3 scripts/v5_a_r3.py; python3 scripts/v5_a_merge.py"
+    },
+    {
+      "path": "runs/v5/c2_narrow/rock_07_h0v0/result.json",
+      "kind": "C2 narrow negative",
+      "sha256": "caeb285a558c9e0a1cce0171a3a385a219eb4d439ad53c97d5c2eecb8aa4b4d3",
+      "bytes": 2617,
+      "source": "python3 scripts/v5_c2.py --states rock_07_h0v0 --channel 0.35"
+    },
+    {
+      "path": "runs/v4/wp7/A4_scene.json",
+      "kind": "WP7 scene",
+      "sha256": "e02474bc9e7fa56a9e72d305d86f6fe1f66180bea41f876245b6a0d1ec636695",
+      "bytes": 812,
+      "source": "A4_scene.json"
+    }
+  ],
+  "missing": {
+    "B2": "two-encounter route not rebuilt after sandbox recycle"
+  },
+  "notes": "GLB binaries are referenced from the repo cache; upload target is Release v5-showcase"
+}

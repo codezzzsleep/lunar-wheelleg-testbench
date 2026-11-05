@@ -73,3 +73,19 @@
 - 每组合每臂：`runs/v5/a_r3/<shard>/<state>_<ch>/<arm>/rehearsal_3of3.json`
 - `runs/v5/ka8/ka8.json`
 - C2：`runs/v5/c2_a/moon_rock_02_h2v1_0.9/result.json`
+
+## B 线状态（R3 §4）
+
+- **B1**：`moon_rock_05_h2v1` 开阔场，公共函数跑 C2：
+  - PERFECT D1 pass 7.74 s；OBS_CONS D1 pass 7.74 s；FULL L1 pass 8.78 s，6/6 准入。
+  - FULL 决策不同但更慢，不满足 II 类（差值 1.04 s，小于 30% 或 3 s）。B1 的“省时案例”未成立。
+- **B2**：未做。旧沙箱在重建两遭遇路线前被回收；新沙箱只迁了三个状态，WP8 路线未运行。
+- **B3**：`dist/v5/showcase/manifest.json` 已生成（7 项，含 C0/C3/A/B1/C2 文本证据）；
+  GLB 与执行记录未上传 Release `v5-showcase`，因为主机缓存里的 GLB 身份与 WP3 任务的 image_sha 不匹配，
+  需要从旧沙箱的生成缓存重新取回，而旧沙箱已销毁。B3 不完整。
+
+## 结论
+
+- A 线按要求完成 52/56 组合；唯一 I 类 `moon_rock_02_h2v1@0.90` 的 FULL 仍为 A0，没有 FULL 正例。
+- B1 无 II 类；B2/B3 因沙箱回收缺失。
+- 不再调参；本轮到此收口。

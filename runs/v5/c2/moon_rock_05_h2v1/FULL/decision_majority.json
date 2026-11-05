@@ -1,0 +1,385 @@
+{
+  "rule": "majority/v1",
+  "version": "v3-decision/v1",
+  "n_tasks": 6,
+  "n_valid": 6,
+  "n_unique_geometries": 6,
+  "threshold": 4,
+  "votes": {
+    "R1": 0,
+    "R2": 6,
+    "D1": 6,
+    "D2": 0,
+    "L1": 5,
+    "L2": 5,
+    "BODY_CLEARANCE": 0
+  },
+  "mean_cost_s": {
+    "R1": 60.0,
+    "R2": 20.13,
+    "D1": 6.4967,
+    "D2": 60.0,
+    "L1": 16.4933,
+    "L2": 15.2833,
+    "BODY_CLEARANCE": 60.0
+  },
+  "chosen": "D1",
+  "safe_set": [
+    "R2",
+    "D1",
+    "L1",
+    "L2"
+  ],
+  "reason": "majority_traversal",
+  "errors": [],
+  "per_candidate": {
+    "A1": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.16,
+        "final_x": 2.357
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 18.599999999999998,
+        "t_end": 19.2,
+        "final_x": 3.223
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.5600000000000005,
+        "t_end": 7.16,
+        "final_x": 3.507
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.6,
+        "final_x": 0.827
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.780000000000001,
+        "t_end": 8.38,
+        "final_x": 3.337
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.340000000000001,
+        "t_end": 6.94,
+        "final_x": 3.618
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_drive_to_end",
+        "cost": 14.344,
+        "t_end": 14.344,
+        "final_x": 2.5743
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    },
+    "A2": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.38,
+        "final_x": 2.533
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 19.06,
+        "t_end": 19.66,
+        "final_x": 3.218
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.46,
+        "t_end": 7.06,
+        "final_x": 3.524
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.62,
+        "final_x": 0.821
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.780000000000001,
+        "t_end": 8.38,
+        "final_x": 3.341
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.340000000000001,
+        "t_end": 6.94,
+        "final_x": 3.618
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_recover",
+        "cost": 14.368,
+        "t_end": 14.368,
+        "final_x": 2.6421
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    },
+    "B1": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.16,
+        "final_x": 2.357
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 21.56,
+        "t_end": 22.16,
+        "final_x": 3.221
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.46,
+        "t_end": 7.06,
+        "final_x": 3.526
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.6,
+        "final_x": 0.823
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.800000000000001,
+        "t_end": 8.4,
+        "final_x": 3.341
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.340000000000001,
+        "t_end": 6.94,
+        "final_x": 3.618
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_recover",
+        "cost": 14.338,
+        "t_end": 14.338,
+        "final_x": 2.6388
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    },
+    "B2": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 4.74,
+        "final_x": 2.018
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 20.22,
+        "t_end": 20.82,
+        "final_x": 3.22
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.58,
+        "t_end": 7.18,
+        "final_x": 3.518
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.6,
+        "final_x": 0.827
+      },
+      "L1": {
+        "success": false,
+        "reason": "out_of_bounds",
+        "cost": 60.0,
+        "t_end": 6.92,
+        "final_x": 1.985
+      },
+      "L2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.42,
+        "final_x": 2.18
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_recover",
+        "cost": 14.374,
+        "t_end": 14.374,
+        "final_x": 2.6123
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    },
+    "C1": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.16,
+        "final_x": 2.358
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 20.82,
+        "t_end": 21.42,
+        "final_x": 3.211
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.46,
+        "t_end": 7.06,
+        "final_x": 3.526
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.6,
+        "final_x": 0.827
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.800000000000001,
+        "t_end": 8.4,
+        "final_x": 3.341
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.340000000000001,
+        "t_end": 6.94,
+        "final_x": 3.618
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_recover",
+        "cost": 14.364,
+        "t_end": 14.364,
+        "final_x": 2.6402
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    },
+    "C2": {
+      "R1": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 5.34,
+        "final_x": 2.481
+      },
+      "R2": {
+        "success": true,
+        "reason": "success",
+        "cost": 20.52,
+        "t_end": 21.12,
+        "final_x": 3.214
+      },
+      "D1": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.46,
+        "t_end": 7.06,
+        "final_x": 3.525
+      },
+      "D2": {
+        "success": false,
+        "reason": "tipped",
+        "cost": 60.0,
+        "t_end": 3.6,
+        "final_x": 0.826
+      },
+      "L1": {
+        "success": true,
+        "reason": "success",
+        "cost": 7.800000000000001,
+        "t_end": 8.4,
+        "final_x": 3.341
+      },
+      "L2": {
+        "success": true,
+        "reason": "success",
+        "cost": 6.340000000000001,
+        "t_end": 6.94,
+        "final_x": 3.618
+      },
+      "BODY_CLEARANCE": {
+        "success": false,
+        "reason": "failed_at_drive_to_end",
+        "cost": 14.214,
+        "t_end": 14.214,
+        "final_x": 2.5974
+      },
+      "A0": {
+        "success": false,
+        "reason": "abort",
+        "cost": 60.0,
+        "t_end": 3.6000000000000028,
+        "final_x": -0.003
+      }
+    }
+  }
+}

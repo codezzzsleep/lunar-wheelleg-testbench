@@ -1,0 +1,87 @@
+{
+  "state": "moon_rock_05_h2v1",
+  "arms": {
+    "PERFECT": {
+      "chosen": "D1",
+      "outcome": "pass",
+      "t_end": 6.68
+    },
+    "OBS_CONS": {
+      "chosen": "R1",
+      "outcome": "physical_failure",
+      "t_end": 3.68
+    },
+    "OBS_OPT": {
+      "chosen": "R1",
+      "outcome": "physical_failure",
+      "t_end": 3.68
+    }
+  },
+  "full": {
+    "fallback": false,
+    "n_admitted": 6,
+    "majority": "D1",
+    "worst": "D1",
+    "chosen": "D1",
+    "why": "majority_wheel",
+    "outcome": "pass",
+    "t_end": 6.68,
+    "worst_different": false
+  },
+  "candidates": [
+    {
+      "id": "A1",
+      "admitted": true,
+      "scale_ratio": 0.991,
+      "hidden_frac": 0.8493,
+      "shell_contact": 0.8409,
+      "free_intrusion_frac": 0.09463,
+      "contour_iou": 0.9039
+    },
+    {
+      "id": "A2",
+      "admitted": true,
+      "scale_ratio": 1.0,
+      "hidden_frac": 0.8665,
+      "shell_contact": 0.8978,
+      "free_intrusion_frac": 0.06453,
+      "contour_iou": 0.9329
+    },
+    {
+      "id": "B1",
+      "admitted": true,
+      "scale_ratio": 1.0,
+      "hidden_frac": 0.8296,
+      "shell_contact": 0.9248,
+      "free_intrusion_frac": 0.11052,
+      "contour_iou": 0.9053
+    },
+    {
+      "id": "B2",
+      "admitted": true,
+      "scale_ratio": 0.982,
+      "hidden_frac": 0.8465,
+      "shell_contact": 0.8426,
+      "free_intrusion_frac": 0.09324,
+      "contour_iou": 0.9082
+    },
+    {
+      "id": "C1",
+      "admitted": true,
+      "scale_ratio": 0.973,
+      "hidden_frac": 0.8547,
+      "shell_contact": 0.8414,
+      "free_intrusion_frac": 0.08528,
+      "contour_iou": 0.9002
+    },
+    {
+      "id": "C2",
+      "admitted": true,
+      "scale_ratio": 0.955,
+      "hidden_frac": 0.8448,
+      "shell_contact": 0.7732,
+      "free_intrusion_frac": 0.10145,
+      "contour_iou": 0.8891
+    }
+  ]
+}

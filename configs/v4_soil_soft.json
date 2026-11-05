@@ -1,0 +1,8 @@
+{
+  "schema": "v4-soil-soft/v1",
+  "note": "uniform soft field for the WP5 probe; spatially limited 1.5 m patch still to be added",
+  "params": {"n": 1.0, "kc": 250.0, "kphi": 50000.0, "cohesion_pa": 35.0, "phi_deg": 21.0, "k_shear": 0.03},
+  "baseline": {"action": "R1", "duration_s": 10, "advance_m": -1.976, "body_z_m": 0.383, "reason": "time_limit"},
+  "acceptance": {"stuck": "10 s advance < 0.1 m and slip ratio > 0.8 in >=2 of 3 initial states",
+                  "escape": "SOFT_ESCAPE reaches 1 m past the soft patch in >=2 of 3 initial states"}
+}

@@ -8,8 +8,10 @@ def plan_for(arm,low):
  p={'raise_z':0.06,'ramp_steps':40,'speed':0.4,'lower_at_x':round(low,3),'end_x':2.6,'stop_tilt_deg':12.0,'far_edge_source':arm}
  p['plan_id']=hashlib.sha256(json.dumps(p,sort_keys=True).encode()).hexdigest()[:16]; return p
 def contacts(rd):
- try: return int(S6M.chassis_contacts_from_record({'trajectory_path':str(pathlib.Path(rd)/'index.json')}))
- except Exception: return None
+ p=pathlib.Path(rd)
+ if not p.is_absolute(): p=ROOT/p
+ try: return int(S6M.chassis_contacts_from_record({'trajectory_path':str(p/'index.json')}))
+ except Exception as e: return None
 def perturb_snaps(env,snap,ref):
  out=[]
  for dx,dyaw in ((0.02,0.0),(-0.02,0.0),(0.0,2.0)):
@@ -46,18 +48,20 @@ def main():
    plan=plan_for(arm,low); core={'spec':spec,'snapshot':snap,'visible':vis,'state':{'state_id':name,'state_hash':s0h}}
    runs=[]
    for si,s2 in enumerate(snaps):
-    rr,_=v3_core.rehearse_on_spec(core,spec,s2,proto,mode='same_scene' if si==0 else 'project',options=actions,body_plan=plan,budget=120.0,record_cells=(si==0),record_root=ad/f'p{si}')
+    rr,_=v3_core.rehearse_on_spec(core,spec,s2,proto,mode='same_scene',options=actions,body_plan=plan,budget=120.0,record_cells=True,record_root=ad/f'p{si}')
     runs.append(rr)
    combined=[]
    for act in actions:
-    ok=True; cost=[]; ct=0
+    ok=True; cost=[]; unassessed=False
     for rr in runs:
      r=next((x for x in rr if x['action']==act),None)
      if r is None or not r.get('success'): ok=False; break
      tref=r.get('trajectory_ref')
-     if tref:
-      c=contacts(tref); ct+= (c or 0)
-      if c is not None and c>0: ok=False; break
+     if not tref: ok=False; unassessed=True; break
+     tp=tref.get('trajectory_path') if isinstance(tref,dict) else tref
+     c=contacts(pathlib.Path(tp).parent if str(tp).endswith('index.json') else tp)
+     if c is None: ok=False; unassessed=True; break
+     if c>0: ok=False; break
      cost.append(r.get('cost',60))
     if ok: combined.append({'action':act,'success':True,'cost':float(np.mean(cost)),'candidate':arm,'reason':'3of3'})
    dec=v3_core.aggregate(combined,[arm],{},'majority',proto,threshold_mode='majority',applic={x:(True,None) for x in actions},options=actions)
@@ -73,7 +77,7 @@ def main():
   if p['outcome']=='pass' and o['outcome']!='pass': typ='I'
   elif p['outcome']=='pass' and o['outcome']=='pass' and p['t_end'] is not None and o['t_end'] is not None and (o['t_end']-p['t_end'])>=max(3.0,0.3*o['t_end']): typ='II'
   agree=bool(p['pred_safe']==(p['outcome']=='pass'))
-  row={'state':name,'type':typ,'perfect_action':p['chosen'],'perfect_out':p['outcome'],'perfect_t':p['t_end'],'obs_action':o['chosen'],'obs_out':o['outcome'],'obs_t':o['t_end'],'obs_opt_out':opt['outcome'],'perfect_rehearsal_agree':agree,'chassis_contacts':None if o['chassis_contacts'] is None else o['chassis_contacts'],'u_shadow_vox':int(sh.sum()),'u_in_frustum_vox':int(((V['space']==0)&sh).sum())}
+  row={'state':name,'type':typ,'perfect_action':p['chosen'],'perfect_out':p['outcome'],'perfect_t':p['t_end'],'obs_action':o['chosen'],'obs_out':o['outcome'],'obs_t':o['t_end'],'obs_opt_out':opt['outcome'],'perfect_rehearsal_agree':agree,'chassis_contacts':None if o['chassis_contacts'] is None else o['chassis_contacts'],'u_shadow_vox':int(sh.sum()),'x_front':round(vis['x_front'],3),'W_vis':round(vis['W_vis'],3),'H_vis':round(vis['H_vis'],3)}
   rows.append(row); print(json.dumps(row,ensure_ascii=False),flush=True); (out/'value_rows.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
  if rows:
   with (out/'value_table.csv').open('w',newline='') as f:

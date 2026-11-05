@@ -40,6 +40,9 @@ def main():
  rear=float(g['xs'][Tp.any(axis=(1,2))].max()); cut=mesh0.slice_plane([rear-0.10,0,0],[-1,0,0],cap=False)
  m5,h5=add('KA5_cut10cm','rear cut',cut,I); rows[-1]['admitted']=bool(abs((h5['rear_err_m'] or 0)+0.10)<=0.0025)
  add('KA6_projection','truth proj',mesh0,I); rows[-1]['admitted']=bool(rows[-1]['contour_iou']>=0.95)
+ vd=C.visible_dims(T/'observation'); ok7=(abs(vd['x_front']-0.834)<=0.03 and abs(vd['W_vis']-0.275)<=0.02 and abs(vd['H_vis']-0.30)<=0.02)
+ rows.append({'case':'KA7_visible_dims','input':'truth obs','admitted':bool(ok7),'rear_err_m':None,'top_err_m':None,'path_p95_mm':None,'scale_ratio':None,'shell_contact':None,'free_intrusion_frac':None,'contour_iou':None,'voxels':None,'x_front':round(vd['x_front'],4),'W_vis':round(vd['W_vis'],4),'H_vis':round(vd['H_vis'],4),'expected_pass':bool(ok7)})
+ rows[-1].pop('expected_pass',None)
  out=ROOT/'runs/v5/c0'; out.mkdir(parents=True,exist_ok=True)
  fields=[]
  for r in rows:
@@ -51,7 +54,7 @@ def main():
  for r in rows: print(json.dumps(r,ensure_ascii=False))
  ok={'KA1_truth':lambda r:r['admitted'],'KA2_shift15cm':lambda r:not r['admitted'],'KA3_scale06':lambda r:not r['admitted'],
      'KA4_bottom_removed_dup':lambda r:r['admitted'] and r.get('ka4_voxel_diff_frac',1)<=0.02,
-     'KA5_cut10cm':lambda r:abs((r['rear_err_m'] or 0)+0.10)<=0.0025,'KA6_projection':lambda r:r['contour_iou']>=0.95}
+     'KA5_cut10cm':lambda r:abs((r['rear_err_m'] or 0)+0.10)<=0.0025,'KA6_projection':lambda r:r['contour_iou']>=0.95,'KA7_visible_dims':lambda r:r['admitted']}
  for r in rows: r['expected_pass']=bool(ok[r['case']](r))
  print('all_pass',all(r['expected_pass'] for r in rows))
 if __name__=='__main__': main()

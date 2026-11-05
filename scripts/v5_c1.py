@@ -63,7 +63,7 @@ def main():
      if c is None: ok=False; unassessed=True; break
      if c>0: ok=False; break
      cost.append(r.get('cost',60))
-    if ok: combined.append({'action':act,'success':True,'cost':float(np.mean(cost)),'candidate':arm,'reason':'3of3'})
+    combined.append({'action':act,'success':bool(ok),'cost':float(np.mean(cost)) if cost else 60.0,'candidate':arm,'reason':'3of3' if ok else ('unassessed' if unassessed else 'failed')})
    dec=v3_core.aggregate(combined,[arm],{},'majority',proto,threshold_mode='majority',applic={x:(True,None) for x in actions},options=actions)
    ch=dec['chosen']
    tcore={'spec':spec_truth,'snapshot':snap,'visible':vis,'state':{'state_id':name,'state_hash':s0h}}

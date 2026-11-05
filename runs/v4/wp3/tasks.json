@@ -1,0 +1,2476 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "wp": "WP3",
+  "n": 144,
+  "rocks": [
+    "moon_rock_05",
+    "moon_rock_01",
+    "moon_rock_02",
+    "moon_rock_03",
+    "moon_rock_04",
+    "moon_rock_06",
+    "moon_rock_07",
+    "rock_07"
+  ],
+  "views": [
+    "+0",
+    "+25",
+    "-25"
+  ],
+  "crops": [
+    "raw",
+    "white",
+    "masked"
+  ],
+  "note": "144 tasks: 8 rocks x 3 yaw views x 3 crops x 2 repeats; G1-Turbo 30000 faces; no upscaling (512px canvas)",
+  "tasks": [
+    {
+      "id": "v4_moon_rock_05_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/raw/rep0.png",
+      "image_sha256": "34d69d3f8b95461887cad58fee48172a45c1af6bf04389b9db01c34d553cfe9a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/raw/rep1.png",
+      "image_sha256": "34d69d3f8b95461887cad58fee48172a45c1af6bf04389b9db01c34d553cfe9a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 2,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/white/rep0.png",
+      "image_sha256": "1669417d82d4d29364ab3b0765d50acdba18e1fc8a2e1956fa96e89568b6cab2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 3,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/white/rep1.png",
+      "image_sha256": "1669417d82d4d29364ab3b0765d50acdba18e1fc8a2e1956fa96e89568b6cab2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 4,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/masked/rep0.png",
+      "image_sha256": "2211fa772620d95ddd03a43322930484edcaf5e0fbba8e9442915562cbcc8d2c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 5,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+0/masked/rep1.png",
+      "image_sha256": "2211fa772620d95ddd03a43322930484edcaf5e0fbba8e9442915562cbcc8d2c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 6,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/raw/rep0.png",
+      "image_sha256": "d5ffacf45346317ff0634a6fe396ba5d8b76ab90e0cc3f9b2fb001bbca302085",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 7,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/raw/rep1.png",
+      "image_sha256": "d5ffacf45346317ff0634a6fe396ba5d8b76ab90e0cc3f9b2fb001bbca302085",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 8,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/white/rep0.png",
+      "image_sha256": "be8c572abe23cc0cb39a8dc8979f9e4feea58370ef1a7e753ad198e2503ebd90",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 9,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/white/rep1.png",
+      "image_sha256": "be8c572abe23cc0cb39a8dc8979f9e4feea58370ef1a7e753ad198e2503ebd90",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 10,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/masked/rep0.png",
+      "image_sha256": "96c848b5635bb0d175231afc778654e18a33b05744880ce1c3e4a70fac6ad28e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 11,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw+25/masked/rep1.png",
+      "image_sha256": "96c848b5635bb0d175231afc778654e18a33b05744880ce1c3e4a70fac6ad28e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 12,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/raw/rep0.png",
+      "image_sha256": "c58c1d8dab0023e8290612961131de37ca23b840afe0c75e120634d6633bd220",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 13,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/raw/rep1.png",
+      "image_sha256": "c58c1d8dab0023e8290612961131de37ca23b840afe0c75e120634d6633bd220",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 14,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/white/rep0.png",
+      "image_sha256": "f88575a2ab4b2f7cec69ccca60d071c60a9f7f16fa58f92269e841438dc655fe",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 15,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/white/rep1.png",
+      "image_sha256": "f88575a2ab4b2f7cec69ccca60d071c60a9f7f16fa58f92269e841438dc655fe",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 16,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/masked/rep0.png",
+      "image_sha256": "906abb50cc01ad00c57ae889ffe39680d21aa83929f6b06f4154367914e87c60",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 17,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_05_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_05",
+      "rock": "moon_rock_05",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_05/yaw-25/masked/rep1.png",
+      "image_sha256": "906abb50cc01ad00c57ae889ffe39680d21aa83929f6b06f4154367914e87c60",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 18,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/raw/rep0.png",
+      "image_sha256": "bf06cf958e6227b7da5a605e5e38ceed304334a3e8f6c39b6665ff091c95b8e4",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 19,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/raw/rep1.png",
+      "image_sha256": "bf06cf958e6227b7da5a605e5e38ceed304334a3e8f6c39b6665ff091c95b8e4",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 20,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/white/rep0.png",
+      "image_sha256": "89bd6810814213e8eb44ab6a1860646b91b38772ca5ae517a013146b1453feee",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 21,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/white/rep1.png",
+      "image_sha256": "89bd6810814213e8eb44ab6a1860646b91b38772ca5ae517a013146b1453feee",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 22,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/masked/rep0.png",
+      "image_sha256": "51c1fa5008ae2e3b8dde1642766cbcc7d2057c3d06cd08a8daf3d3bd37bd8e18",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 23,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+0/masked/rep1.png",
+      "image_sha256": "51c1fa5008ae2e3b8dde1642766cbcc7d2057c3d06cd08a8daf3d3bd37bd8e18",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 24,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/raw/rep0.png",
+      "image_sha256": "12d1ae266c3f8579ccb2dcd515c018977487519e95c86e0e200e3370e6563ef0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 25,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/raw/rep1.png",
+      "image_sha256": "12d1ae266c3f8579ccb2dcd515c018977487519e95c86e0e200e3370e6563ef0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 26,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/white/rep0.png",
+      "image_sha256": "7d3d1b59fc277b2d18830cb4cf6a2d80d0202387c93bb31ae4d1d6f273c8b23d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 27,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/white/rep1.png",
+      "image_sha256": "7d3d1b59fc277b2d18830cb4cf6a2d80d0202387c93bb31ae4d1d6f273c8b23d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 28,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/masked/rep0.png",
+      "image_sha256": "501ed694d49eb28101d1748336ebc65ccca6d29b6ed48d2627318fc591850be6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 29,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw+25/masked/rep1.png",
+      "image_sha256": "501ed694d49eb28101d1748336ebc65ccca6d29b6ed48d2627318fc591850be6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 30,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/raw/rep0.png",
+      "image_sha256": "519b65094b60a472a59cd05dfee3865ab83f798b1d0a4fd79cbdcdbb04febf56",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 31,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/raw/rep1.png",
+      "image_sha256": "519b65094b60a472a59cd05dfee3865ab83f798b1d0a4fd79cbdcdbb04febf56",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 32,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/white/rep0.png",
+      "image_sha256": "fb9f8b4a97e3619d1f93d49e5ac7ecd43f3af3dcaf432ad7f5eda4789daebd7d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 33,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/white/rep1.png",
+      "image_sha256": "fb9f8b4a97e3619d1f93d49e5ac7ecd43f3af3dcaf432ad7f5eda4789daebd7d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 34,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/masked/rep0.png",
+      "image_sha256": "cd246628a4c4b9143a0681aaca7b7acd0b5ab75669505c8a56d10755bc0c8612",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 35,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_01_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_01",
+      "rock": "moon_rock_01",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_01/yaw-25/masked/rep1.png",
+      "image_sha256": "cd246628a4c4b9143a0681aaca7b7acd0b5ab75669505c8a56d10755bc0c8612",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 36,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/raw/rep0.png",
+      "image_sha256": "49abad4d785d300efe6a3008a5b537fc9f7a3f4191b824269db315f6cf350efe",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 37,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/raw/rep1.png",
+      "image_sha256": "49abad4d785d300efe6a3008a5b537fc9f7a3f4191b824269db315f6cf350efe",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 38,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/white/rep0.png",
+      "image_sha256": "8373d8bd64e540ad99aa1e98e5c1070678c6240889720c8b38cdc4e06cb19af2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 39,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/white/rep1.png",
+      "image_sha256": "8373d8bd64e540ad99aa1e98e5c1070678c6240889720c8b38cdc4e06cb19af2",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 40,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/masked/rep0.png",
+      "image_sha256": "b4b72332081ffbeb6c617874d91b7c194858e7783f27604f9991dbe5287b4322",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 41,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+0/masked/rep1.png",
+      "image_sha256": "b4b72332081ffbeb6c617874d91b7c194858e7783f27604f9991dbe5287b4322",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 42,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/raw/rep0.png",
+      "image_sha256": "a002127c1d020879aedb40a4cf4b379e9c0eaf3a425c5508fc8ae049287f635b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 43,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/raw/rep1.png",
+      "image_sha256": "a002127c1d020879aedb40a4cf4b379e9c0eaf3a425c5508fc8ae049287f635b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 44,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/white/rep0.png",
+      "image_sha256": "09c6b73153c8caa512d7cdfb207d76745aaa195fa2bca409c99f06acdbee4802",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 45,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/white/rep1.png",
+      "image_sha256": "09c6b73153c8caa512d7cdfb207d76745aaa195fa2bca409c99f06acdbee4802",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 46,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/masked/rep0.png",
+      "image_sha256": "99c8af62aad7d06199679767b320e6774e940cce866eae5c5c58c53c7203a1b9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 47,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw+25/masked/rep1.png",
+      "image_sha256": "99c8af62aad7d06199679767b320e6774e940cce866eae5c5c58c53c7203a1b9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 48,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/raw/rep0.png",
+      "image_sha256": "eb63fbadc9eb5e5a646323ca1ee0b718424ca21fa5581564ad2b750b3ad94853",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 49,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/raw/rep1.png",
+      "image_sha256": "eb63fbadc9eb5e5a646323ca1ee0b718424ca21fa5581564ad2b750b3ad94853",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 50,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/white/rep0.png",
+      "image_sha256": "02ee5940406f409185e62797ef7442e51e8b39b42799c56dd7d80cc4132969b9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 51,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/white/rep1.png",
+      "image_sha256": "02ee5940406f409185e62797ef7442e51e8b39b42799c56dd7d80cc4132969b9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 52,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/masked/rep0.png",
+      "image_sha256": "e5b33f2f040d23e072c57546aac5e0becdd650cc3eef68554a82b5f3fa5ef79c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 53,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_02_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_02",
+      "rock": "moon_rock_02",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_02/yaw-25/masked/rep1.png",
+      "image_sha256": "e5b33f2f040d23e072c57546aac5e0becdd650cc3eef68554a82b5f3fa5ef79c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 54,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/raw/rep0.png",
+      "image_sha256": "8cffd3531d64b5dfa6c53d5bc1cca5525dd92ae4ccb566bda0c426dfc2fa1201",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 55,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/raw/rep1.png",
+      "image_sha256": "8cffd3531d64b5dfa6c53d5bc1cca5525dd92ae4ccb566bda0c426dfc2fa1201",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 56,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/white/rep0.png",
+      "image_sha256": "7e8989a5e6ea7f239e29e66882e814258e058bc4830b6ddcaeab3b228e304e8c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 57,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/white/rep1.png",
+      "image_sha256": "7e8989a5e6ea7f239e29e66882e814258e058bc4830b6ddcaeab3b228e304e8c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 58,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/masked/rep0.png",
+      "image_sha256": "286d764deaf06641e05acbb8edaccfce0d501eb8bb621dd75ca78ee6d2f6047f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 59,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+0/masked/rep1.png",
+      "image_sha256": "286d764deaf06641e05acbb8edaccfce0d501eb8bb621dd75ca78ee6d2f6047f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 60,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/raw/rep0.png",
+      "image_sha256": "ea96be5e4734ed8b70419928483b902fe8f88f77dc1fcb2b718e3e0dd7547db5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 61,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/raw/rep1.png",
+      "image_sha256": "ea96be5e4734ed8b70419928483b902fe8f88f77dc1fcb2b718e3e0dd7547db5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 62,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/white/rep0.png",
+      "image_sha256": "65c40bd7492b5aeac4921e587e399dce3591a45f7badec3e55f9e9364fed18ea",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 63,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/white/rep1.png",
+      "image_sha256": "65c40bd7492b5aeac4921e587e399dce3591a45f7badec3e55f9e9364fed18ea",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 64,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/masked/rep0.png",
+      "image_sha256": "abed025c46329efe17e8376d5ddd89e2b9274c8db1dc722e8d71458124e1d163",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 65,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw+25/masked/rep1.png",
+      "image_sha256": "abed025c46329efe17e8376d5ddd89e2b9274c8db1dc722e8d71458124e1d163",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 66,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/raw/rep0.png",
+      "image_sha256": "6c633c12b90219f993cc7d1ccbcb9ec94dadabacd0745e19449cbd686ab35760",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 67,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/raw/rep1.png",
+      "image_sha256": "6c633c12b90219f993cc7d1ccbcb9ec94dadabacd0745e19449cbd686ab35760",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 68,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/white/rep0.png",
+      "image_sha256": "c4afc9a207dc1154589c8ffa1ce9797452f68dd6aca1c18da235a37243a9135e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 69,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/white/rep1.png",
+      "image_sha256": "c4afc9a207dc1154589c8ffa1ce9797452f68dd6aca1c18da235a37243a9135e",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 70,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/masked/rep0.png",
+      "image_sha256": "a3452b9c7044c8ff756a978a87c9153265e88916acb40f53904efa4a461576ae",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 71,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_03_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_03",
+      "rock": "moon_rock_03",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_03/yaw-25/masked/rep1.png",
+      "image_sha256": "a3452b9c7044c8ff756a978a87c9153265e88916acb40f53904efa4a461576ae",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 72,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/raw/rep0.png",
+      "image_sha256": "86b0a4db239950a1182f38b68e4df5729f3df64ac280c1c1609eaf589559600d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 73,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/raw/rep1.png",
+      "image_sha256": "86b0a4db239950a1182f38b68e4df5729f3df64ac280c1c1609eaf589559600d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 74,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/white/rep0.png",
+      "image_sha256": "620f5c0f1c24a11bf611b3f44286f8036a01a8590a8fa4f61fb2d95f52de809a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 75,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/white/rep1.png",
+      "image_sha256": "620f5c0f1c24a11bf611b3f44286f8036a01a8590a8fa4f61fb2d95f52de809a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 76,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/masked/rep0.png",
+      "image_sha256": "1f02c943d76f5ebc3ee10d5c50ddc90744621189727e2165bfcad7bed428f4b7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 77,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+0/masked/rep1.png",
+      "image_sha256": "1f02c943d76f5ebc3ee10d5c50ddc90744621189727e2165bfcad7bed428f4b7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 78,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/raw/rep0.png",
+      "image_sha256": "f3e70fff1d3a9d50fa2999370801ac6051946eada9c8f3180f94df8e9eb94e19",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 79,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/raw/rep1.png",
+      "image_sha256": "f3e70fff1d3a9d50fa2999370801ac6051946eada9c8f3180f94df8e9eb94e19",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 80,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/white/rep0.png",
+      "image_sha256": "8998a1bb65bc5054c92aa8aa6f2da6d37548684b24f3353b85e4499a7b350c64",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 81,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/white/rep1.png",
+      "image_sha256": "8998a1bb65bc5054c92aa8aa6f2da6d37548684b24f3353b85e4499a7b350c64",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 82,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/masked/rep0.png",
+      "image_sha256": "b413251134b1358a15e53f4818eeccd73925137a526eab4302f2b13f16101391",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 83,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw+25/masked/rep1.png",
+      "image_sha256": "b413251134b1358a15e53f4818eeccd73925137a526eab4302f2b13f16101391",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 84,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/raw/rep0.png",
+      "image_sha256": "936d644c04b1825f180db606ad5d19ebce09e7a6350488fd381bc87ceeb44c3c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 85,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/raw/rep1.png",
+      "image_sha256": "936d644c04b1825f180db606ad5d19ebce09e7a6350488fd381bc87ceeb44c3c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 86,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/white/rep0.png",
+      "image_sha256": "f64fc37652f472cd49a5f9ee28bab63fc6f05a9f01f4d397269b5d6a156b9ca3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 87,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/white/rep1.png",
+      "image_sha256": "f64fc37652f472cd49a5f9ee28bab63fc6f05a9f01f4d397269b5d6a156b9ca3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 88,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/masked/rep0.png",
+      "image_sha256": "a56c7d02038a31756b9b83052c4f6199cf1421d6967dd11e1e7937af126586b0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 89,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_04_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_04",
+      "rock": "moon_rock_04",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_04/yaw-25/masked/rep1.png",
+      "image_sha256": "a56c7d02038a31756b9b83052c4f6199cf1421d6967dd11e1e7937af126586b0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 90,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/raw/rep0.png",
+      "image_sha256": "ce5d90e11ad4c850921fdc35b4cc2f044cc5355c7cf01275622dd7b6d985bc00",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 91,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/raw/rep1.png",
+      "image_sha256": "ce5d90e11ad4c850921fdc35b4cc2f044cc5355c7cf01275622dd7b6d985bc00",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 92,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/white/rep0.png",
+      "image_sha256": "55db7f053dbc84f8257c5a97f4448598b0c86a5719d730313d09a43623d45fc5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 93,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/white/rep1.png",
+      "image_sha256": "55db7f053dbc84f8257c5a97f4448598b0c86a5719d730313d09a43623d45fc5",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 94,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/masked/rep0.png",
+      "image_sha256": "f014fe05f1e8956362fa5dd2f9b2bc0c6c719713b4bb17e360493c005ede303d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 95,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+0/masked/rep1.png",
+      "image_sha256": "f014fe05f1e8956362fa5dd2f9b2bc0c6c719713b4bb17e360493c005ede303d",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 96,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/raw/rep0.png",
+      "image_sha256": "8c82adf7f32029b9bb3034cea7422a4480c9ecbb60ce3a2a1d3a5b97e07f49c0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 97,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/raw/rep1.png",
+      "image_sha256": "8c82adf7f32029b9bb3034cea7422a4480c9ecbb60ce3a2a1d3a5b97e07f49c0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 98,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/white/rep0.png",
+      "image_sha256": "0b289460d75e74acc87ea6f89f1ebe7e9fc357cec212336d3a5478ded8542df9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 99,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/white/rep1.png",
+      "image_sha256": "0b289460d75e74acc87ea6f89f1ebe7e9fc357cec212336d3a5478ded8542df9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 100,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/masked/rep0.png",
+      "image_sha256": "0636f5a66c1e41fbbab28f9a93560d59eaf969cf9f3dbe67e88475715c82817c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 101,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw+25/masked/rep1.png",
+      "image_sha256": "0636f5a66c1e41fbbab28f9a93560d59eaf969cf9f3dbe67e88475715c82817c",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 102,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/raw/rep0.png",
+      "image_sha256": "eb3e28e8565e53a20fc73989d02fef853ccd17828c93c02196a7c9d64300fd82",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 103,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/raw/rep1.png",
+      "image_sha256": "eb3e28e8565e53a20fc73989d02fef853ccd17828c93c02196a7c9d64300fd82",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 104,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/white/rep0.png",
+      "image_sha256": "a76b8c41df76a7696cbf71bb709a388d26a309c580aa04b45f4329e142fe2cda",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 105,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/white/rep1.png",
+      "image_sha256": "a76b8c41df76a7696cbf71bb709a388d26a309c580aa04b45f4329e142fe2cda",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 106,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/masked/rep0.png",
+      "image_sha256": "f229e6acb1be31ba30f57e6529c624327eb90c51e16e38004f682282c7395ab7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 107,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_06_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_06",
+      "rock": "moon_rock_06",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_06/yaw-25/masked/rep1.png",
+      "image_sha256": "f229e6acb1be31ba30f57e6529c624327eb90c51e16e38004f682282c7395ab7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 108,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_raw_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/raw/rep0.png",
+      "image_sha256": "dac9d524476df449c12f0aa2e57c47de4a6b2a9d333d19a9cbbab196b11591c0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 109,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_raw_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/raw/rep1.png",
+      "image_sha256": "dac9d524476df449c12f0aa2e57c47de4a6b2a9d333d19a9cbbab196b11591c0",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 110,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_white_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/white/rep0.png",
+      "image_sha256": "516e11b6d5caa92cd623bd772ace7ef5b11017bde0bb3d03dac719c1367574b1",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 111,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_white_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/white/rep1.png",
+      "image_sha256": "516e11b6d5caa92cd623bd772ace7ef5b11017bde0bb3d03dac719c1367574b1",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 112,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_masked_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/masked/rep0.png",
+      "image_sha256": "0dad71a05d860fdcab710f2387521b89097745012fddefea0acceb242884d99b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 113,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+0_masked_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+0/masked/rep1.png",
+      "image_sha256": "0dad71a05d860fdcab710f2387521b89097745012fddefea0acceb242884d99b",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 114,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/raw/rep0.png",
+      "image_sha256": "ee95924f64b010ff08b49c8e6e0bdb0a4b9fc841cd4c4214b98606a556aaa048",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 115,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/raw/rep1.png",
+      "image_sha256": "ee95924f64b010ff08b49c8e6e0bdb0a4b9fc841cd4c4214b98606a556aaa048",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 116,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_white_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/white/rep0.png",
+      "image_sha256": "15ac140ca87a7eac821418702cfb503ba37671706730624fcab6a58f5abbfbdc",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 117,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_white_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/white/rep1.png",
+      "image_sha256": "15ac140ca87a7eac821418702cfb503ba37671706730624fcab6a58f5abbfbdc",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 118,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/masked/rep0.png",
+      "image_sha256": "2fdc82507670ff0232bb671d3e3725fd71de291224f19b7d03465cd31e19d8ff",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 119,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw+25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw+25/masked/rep1.png",
+      "image_sha256": "2fdc82507670ff0232bb671d3e3725fd71de291224f19b7d03465cd31e19d8ff",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 120,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_raw_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/raw/rep0.png",
+      "image_sha256": "11a57a836f7bd326259c199c5e7cddf6a6d25f64553c6de973adcf11b4f546ee",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 121,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_raw_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/raw/rep1.png",
+      "image_sha256": "11a57a836f7bd326259c199c5e7cddf6a6d25f64553c6de973adcf11b4f546ee",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 122,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_white_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/white/rep0.png",
+      "image_sha256": "d6e5e9215117d5669641adbd24e43047ec4709398890dc655fbe8ad2ac280ca6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 123,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_white_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/white/rep1.png",
+      "image_sha256": "d6e5e9215117d5669641adbd24e43047ec4709398890dc655fbe8ad2ac280ca6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 124,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_masked_r0",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/masked/rep0.png",
+      "image_sha256": "d6f905cec0bf5a986c4dea7a5c92569d23f8a7f60a32c38767324b78ada1940a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 125,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_moon_rock_07_yaw-25_masked_r1",
+      "state_id": "v4_wp3_moon_rock_07",
+      "rock": "moon_rock_07",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/moon_rock_07/yaw-25/masked/rep1.png",
+      "image_sha256": "d6f905cec0bf5a986c4dea7a5c92569d23f8a7f60a32c38767324b78ada1940a",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 126,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_raw_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/raw/rep0.png",
+      "image_sha256": "03ab86a7853235eb17d8c3ff01147d04aba9a3ff25ae2beddfdc2417d9c2eb82",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 127,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_raw_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/raw/rep1.png",
+      "image_sha256": "03ab86a7853235eb17d8c3ff01147d04aba9a3ff25ae2beddfdc2417d9c2eb82",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 128,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_white_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/white/rep0.png",
+      "image_sha256": "e1390f6ed0550ee9d35d51fa2cfe7282dd0d6a4d8b830b61e6e788cc6c4ce517",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 129,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_white_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/white/rep1.png",
+      "image_sha256": "e1390f6ed0550ee9d35d51fa2cfe7282dd0d6a4d8b830b61e6e788cc6c4ce517",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 130,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_masked_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/masked/rep0.png",
+      "image_sha256": "8cc2480bb81e9e0896b3ffb65a4192dd51d229b50bdbaa8c291b4b895fc48d37",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 131,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+0_masked_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 0,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+0/masked/rep1.png",
+      "image_sha256": "8cc2480bb81e9e0896b3ffb65a4192dd51d229b50bdbaa8c291b4b895fc48d37",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 132,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_raw_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/raw/rep0.png",
+      "image_sha256": "0430bdca1a21b386c8ce5ef6f26284059cba3b99360558c9d504024db1a670bc",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 133,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_raw_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/raw/rep1.png",
+      "image_sha256": "0430bdca1a21b386c8ce5ef6f26284059cba3b99360558c9d504024db1a670bc",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 134,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_white_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/white/rep0.png",
+      "image_sha256": "1adb017659c82dee22608c7963963a194248649d898e100cdbfc71d0701506b8",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 135,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_white_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/white/rep1.png",
+      "image_sha256": "1adb017659c82dee22608c7963963a194248649d898e100cdbfc71d0701506b8",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 136,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_masked_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/masked/rep0.png",
+      "image_sha256": "2ce544696580ef6f48b606ff7ef3757d2cb120526ebda740d4da8c3bcf57c982",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 137,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw+25_masked_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": 25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw+25/masked/rep1.png",
+      "image_sha256": "2ce544696580ef6f48b606ff7ef3757d2cb120526ebda740d4da8c3bcf57c982",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 138,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_raw_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/raw/rep0.png",
+      "image_sha256": "ddda292b227133084a3cd2a60c5ca51cb1e77ce7408d87aa19c8047edc1d061f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 139,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_raw_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "raw",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/raw/rep1.png",
+      "image_sha256": "ddda292b227133084a3cd2a60c5ca51cb1e77ce7408d87aa19c8047edc1d061f",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 140,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_white_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/white/rep0.png",
+      "image_sha256": "7aea814247d0cf1f57d1f3ca0b0ca606519c7ebbbc1b53e8687e882f8413ce43",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 141,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_white_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "white",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/white/rep1.png",
+      "image_sha256": "7aea814247d0cf1f57d1f3ca0b0ca606519c7ebbbc1b53e8687e882f8413ce43",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 142,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_masked_r0",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/masked/rep0.png",
+      "image_sha256": "91e005a626f781565110abf79272fc8f038f8802f3d0c54192d77084b9573763",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 143,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v4_rock_07_yaw-25_masked_r1",
+      "state_id": "v4_wp3_rock_07",
+      "rock": "rock_07",
+      "view_yaw_deg": -25,
+      "crop": "masked",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/workspace/work/lunar-lab/runs/v4/wp3/crops/rock_07/yaw-25/masked/rep1.png",
+      "image_sha256": "91e005a626f781565110abf79272fc8f038f8802f3d0c54192d77084b9573763",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 144,
+      "estimated_credits": 20.0
+    }
+  ]
+}

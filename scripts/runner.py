@@ -179,7 +179,7 @@ class EpisodeRunner:
             if ph != last_phase:
                 phases.append({'t': round(float(env.t), 3), 'phase': ph})
                 last_phase = ph
-            if float(env.data.qpos[0]) > FIELD_X_MAX:
+            if float(env.data.qpos[0]) > float(getattr(env, 'field_x_max', FIELD_X_MAX)):
                 info = dict(info, reason='out_of_field')
                 done = True
 

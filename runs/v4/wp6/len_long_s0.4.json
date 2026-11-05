@@ -1,0 +1,66 @@
+{
+  "action": "BODY_CLEARANCE",
+  "ok": true,
+  "success": true,
+  "outcome": "pass",
+  "reason": "success",
+  "reached": true,
+  "chassis_contacts": 0,
+  "tipped_or_stuck": false,
+  "stable_exit": true,
+  "safe_pass": true,
+  "failed_phase": null,
+  "termination": {},
+  "final_x": 2.6648,
+  "t_end": 11.78,
+  "cost": 11.78,
+  "tilt_max": 1.917,
+  "recorder_open": false,
+  "base_rise": 0.0571,
+  "clearance_gain": 0.057,
+  "end_x": 2.6,
+  "lower_at_x": 1.165,
+  "phase_times": {
+    "settle": [
+      0.62,
+      0.9
+    ],
+    "raise": [
+      0.92,
+      1.7
+    ],
+    "drive_to_lower": [
+      1.72,
+      5.92
+    ],
+    "lower": [
+      5.94,
+      6.72
+    ],
+    "drive_to_end": [
+      6.74,
+      11.48
+    ],
+    "recover": [
+      11.5,
+      11.78
+    ]
+  },
+  "n_control_steps": 559,
+  "plan_id": "efccecd785c00386",
+  "applicable": true,
+  "state_mode": "same_scene",
+  "arm": "len_long_s0.4",
+  "run_id": "wp6_len_long_len_long_s0.4_1793856321",
+  "trajectory_ref": {
+    "trajectory_path": "/workspace/work/lunar-lab/runs/v4/wp6/exec/record/len_long_s0.4/index.json",
+    "trajectory_sha256": "a84470c4143194d2a40d77f0f7c249179bdf9838b23a1c1afc2d84dc9cad4b62",
+    "frame_count": 559,
+    "record_hz": 50.0,
+    "duration_s": 11.159999999999837,
+    "n_chunks": 3,
+    "contacts_n": 3183
+  },
+  "record_hz": 50.0,
+  "trajectory_frames": 559
+}

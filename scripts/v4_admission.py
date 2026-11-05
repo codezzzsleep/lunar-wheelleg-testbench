@@ -18,13 +18,17 @@ def metrics(mesh,M,V,g,diag):
         P,_=v3_fuse.voxelize_columns(w,g)
     except Exception:
         P=np.zeros(tuple(int(x) for x in V['dims']),dtype=bool)
-    n=int(P.sum()); Ucount=int((P&U).sum()); free=int((P&(space==2)).sum())
+    above=g['zs'][None,None,:]>0.02
+    n=int((P&above).sum()); Ucount=int((P&U&above).sum()); free=int((P&(space==2)&above).sum())
     # shell contact: boundary of P adjacent to shell
     from scipy import ndimage
     touched=ndimage.binary_dilation(P,iterations=1)&shell
     contact=int(touched.sum())
     zs=g['zs']; vis_h=float(zs[shell.any(axis=(0,1))].max()-zs[shell.any(axis=(0,1))].min())
-    h=float(w.bounds[1][2]-w.bounds[0][2])
+    # visible-surface height: candidate height restricted to columns where V shell exists (hidden peak excluded)
+    vis_cols=shell.any(axis=2)
+    vis_z=(P&vis_cols[:,:,None]).any(axis=(0,1))
+    h=float(zs[vis_z].max()-zs[vis_z].min()) if vis_z.any() else 0.0
     return {'height_world_m':round(h,5),'visible_height_m':round(vis_h,5),
             'scale_ratio':round(h/max(vis_h,1e-6),4),
             'hidden_voxels':int(Ucount),'hidden_frac':round(Ucount/max(n,1),5),

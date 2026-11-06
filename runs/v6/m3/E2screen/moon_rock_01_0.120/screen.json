@@ -1,0 +1,49 @@
+{
+  "rock": "moon_rock_01",
+  "height_m": 0.12,
+  "actions": [
+    {
+      "action": "R1",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "R2",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "D1",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "D2",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "L1",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "L2",
+      "success": true,
+      "contacts": null
+    },
+    {
+      "action": "BODY_CLEARANCE",
+      "success": false,
+      "error": ",sa,a,{'x_front':0.834,'W_vis':0.275,'H_vis':0.30},mode='same_scene',record_dir=out/a)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/work/lunar-lab/scripts/v3_core.py\", line 116, in run_action\n    sk = skills.make_skill(action)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/work/lunar-lab/scripts/skills.py\", line 241, in make_skill\n    f = SKILLS[name]\n        ~~~~~~^^^^^^\nKeyError: 'BODY_CLEARANCE'\n"
+    }
+  ],
+  "safe": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2"
+  ]
+}

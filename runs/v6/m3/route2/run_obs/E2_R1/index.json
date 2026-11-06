@@ -4,7 +4,7 @@
     "action": "R1",
     "mode": "same_scene",
     "seed": 0,
-    "started_at": "2026-11-07T07:08:33+0800"
+    "started_at": "2026-11-07T07:35:52+0800"
   },
   "record_hz": 50.0,
   "fields": {
@@ -74,19 +74,41 @@
   "chunks": [
     {
       "chunk": 0,
-      "frames": 1,
+      "frames": 250,
       "arrays": "chunk_00000.npz",
-      "arrays_sha256": "132a897bcb7fa2fbbf5753b14600a605af4e8c8c8b821fdf4cbca17d0b6d9fcc",
+      "arrays_sha256": "2b4fc17fce5c183548d29cf1dc02dff4f7297eb5387d7149b606688bff8799ae",
       "contacts": "contacts_00000.jsonl",
-      "contacts_sha256": "b6c0ab691461d886e851cd5dad4a5d76063f61fd2488139474e7ad32cee378b4",
-      "contacts_n": 3,
-      "t_first": 55.08000000000301,
-      "t_last": 55.08000000000301
+      "contacts_sha256": "4efe32db8bc1547c8fd84e15d9fdfcabd86010d7d5e6ab2fd9f782ca731c4388",
+      "contacts_n": 766,
+      "t_first": 45.4000000000015,
+      "t_last": 50.380000000002276
+    },
+    {
+      "chunk": 1,
+      "frames": 250,
+      "arrays": "chunk_00001.npz",
+      "arrays_sha256": "2c96928aea4b40c8337e87ca0c16a87893798e0cdfdfef1897c430fd3f88c7b1",
+      "contacts": "contacts_00001.jsonl",
+      "contacts_sha256": "6645d5281d71cb3ace6b2e7e25b2a0c5a4417f8bc5fc2ae257a34072f8664d76",
+      "contacts_n": 830,
+      "t_first": 50.40000000000228,
+      "t_last": 55.38000000000306
+    },
+    {
+      "chunk": 2,
+      "frames": 38,
+      "arrays": "chunk_00002.npz",
+      "arrays_sha256": "63f4a268f510d0954fc4d88111df2d9a0e82943495cddfb953432108c7debc8f",
+      "contacts": "contacts_00002.jsonl",
+      "contacts_sha256": "a76568350dc082e534ab18f1d80afe5af1e12f9eb09f1658cca945740bc3d7ca",
+      "contacts_n": 126,
+      "t_first": 55.40000000000306,
+      "t_last": 56.14000000000318
     }
   ],
-  "frame_count": 1,
-  "contacts_n": 3,
-  "started_at": "2026-11-07T07:08:33+0800",
-  "closed_at": "2026-11-07T07:08:33+0800",
-  "duration_s": 0.0
+  "frame_count": 538,
+  "contacts_n": 1722,
+  "started_at": "2026-11-07T07:35:52+0800",
+  "closed_at": "2026-11-07T07:35:55+0800",
+  "duration_s": 10.740000000001679
 }

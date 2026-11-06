@@ -25,9 +25,12 @@ def main():
    if getattr(env,'terminated',False): break
    env.step_command(joint_targets_rad=BASE,wheel_brake=np.ones(4,bool)); add('OBSERVE',phase)
  events=[]
+ env.spec['goal_x']=12.8
  drive_to(7.653,'CRUISE','E0_gravel'); stop('E1_observe'); snap=env.save_state(); events.append({'encounter':'E0','action':'CRUISE','x':float(env.data.qpos[0])})
- act=DEC['E1']; r=v3_core.run_action(env,snap,act,{'x_front':0.834,'W_vis':0.275,'H_vis':0.30},mode='same_scene',record_dir=out/f'E1_{act}'); events.append({'encounter':'E1','action':act,'outcome':r.get('outcome'),'t':r.get('t_end')})
+ act=DEC['E1']; r=v3_core.run_action(env,snap,act,{'x_front':0.834,'W_vis':0.275,'H_vis':0.30},mode='same_scene',record_dir=out/f'E1_{act}'); events.append({'encounter':'E1','action':act,'outcome':r.get('outcome'),'t':r.get('t_end'),'x':float(env.data.qpos[0])})
+ env.spec['goal_x']=21.0
  drive_to(13.654,'CRUISE','E1_to_E2'); stop('E2_observe'); snap2=env.save_state()
+ env.spec['goal_x']=21.0
  act2=DEC['E2']; r2=v3_core.run_action(env,snap2,act2,{'x_front':0.834,'W_vis':0.275,'H_vis':0.30},mode='same_scene',record_dir=out/f'E2_{act2}'); events.append({'encounter':'E2','action':act2,'outcome':r2.get('outcome'),'t':r2.get('t_end')})
  drive_to(21.0,'CRUISE','E2_to_goal',limit_t=200); stop('goal',20)
  rec.close(); res={'arm':ARM,'events':events,'final_x':float(env.data.qpos[0]),'t_end':float(env.t),'term':getattr(env,'last_termination',None)}; (out/'result.json').write_text(json.dumps(res,default=str,indent=2)); print(json.dumps(res,default=str))

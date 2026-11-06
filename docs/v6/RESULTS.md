@@ -85,9 +85,9 @@
 | E1 单独执行 | pass 52.48 s | pass 52.44 s | 同上 | 各 1 |
 | E2 第一眼 | 0/6 准入 | 0/6 | `runs/v6/m3/E2/admission_local.csv` | 6 |
 | E2 第二眼 imgs | 0/4 准入 | 0/4 | `runs/v6/m3/E2/admission_second.csv` | 4 |
-| 连续路线终点 | x=21.74，63.12 s | x=22.03，55.08 s | `runs/v6/m3/route2/run_*/result.json` | 各 1 |
+| 连续路线终点 | x=22.01，59.76 s | x=22.00，56.16 s | `runs/v6/m3/route2/run_*/result.json` | 各 1 |
 | 结局 | success | success | 同上 | 各 1 |
-| 重放 | 3156 帧，0.804 mm，20 障碍 | 2754 帧，0.804 mm，20 障碍 | `dist/v6/showcase_manifest.json` | 各 1 |
+| 重放 | 3154 帧，0.804 mm，20 障碍 | 2808 帧，0.804 mm，20 障碍 | `dist/v6/showcase_manifest.json` | 各 1 |
 
 - 两臂都在 E2 全拒后 A0 停车；E1 动作不同、结局相同。
 

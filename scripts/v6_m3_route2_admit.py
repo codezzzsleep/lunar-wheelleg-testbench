@@ -22,7 +22,14 @@ rows=[]; E.joinpath('reg').mkdir(exist_ok=True)
 for t in json.loads((E/'tasks.json').read_text())['tasks']:
  ident=v3_generate.identity_of(t); glb=ROOT/'runs/v3/generation/cache'/ident/'model.glb'
  if not glb.exists(): continue
- rd=E/'reg'/ident; rd.mkdir(parents=True,exist_ok=True); rec=v3_register.register(str(glb),str(od),proto,rd,top_k=6); M=np.asarray(rec['best']['M'],float)
+ rd=E/'reg'/ident; rd.mkdir(parents=True,exist_ok=True)
+ ys,xs=np.nonzero(mask); dc=float(np.median(depth[ys,xs]))
+ K=ob['camera']['intrinsics']; Rm=np.asarray(ob['camera']['R_world_from_camera'],float); tw=np.asarray(ob['camera']['world_pos'],float)
+ wpts,wy,wx=camera_io.unproject_depth(depth.astype(np.float64),ob['camera']); pms=wpts[mask[wy,wx]]; ctr=np.median(pms,axis=0)
+ hpx=float(ys.max()-ys.min()+1); size=hpx*dc/K['fy']; mh=float(m.bounds[1][2]-m.bounds[0][2]); sc=max(0.2,min(2.0,size/mh))
+ Mc=np.eye(4); Mc[:3,:3]*=sc; Mc[:3,3]=ctr-sc*np.asarray(m.centroid,float); Mc[2,3]=max(Mc[2,3],-float(m.bounds[0][2])*sc)
+ rec={'best':{'M':Mc}}
+ M=np.asarray(rec['best']['M'],float)
  mesh=trimesh.load(str(glb),force='mesh',process=False).apply_transform(M); ev=v3_register.evaluate_matrix(mesh,obs,np.eye(4)); met=C.admission_metrics(mesh,np.eye(4),Vz,g,ev); hm=R.hidden_metrics(met['P'],T,U,g)
  ok2=bool(cfg['scale_ratio']['min']<=met['scale_ratio']<=cfg['scale_ratio']['max'] and met['hidden_frac']>=cfg['hidden_frac_min'] and met['shell_contact']>=cfg['shell_contact_min'] and met['free_intrusion_frac']<=cfg['free_intrusion_max'] and met['contour_iou']>=cfg['contour_iou_min'])
  rows.append({'id':t['id'],'identity':ident,'admitted':ok2,'rear':hm['rear_err_m'],'p95':hm['path_p95_mm'],'scale':met['scale_ratio'],'contour':met['contour_iou'],'shell':met['shell_contact'],'intrusion':met['free_intrusion_frac']})

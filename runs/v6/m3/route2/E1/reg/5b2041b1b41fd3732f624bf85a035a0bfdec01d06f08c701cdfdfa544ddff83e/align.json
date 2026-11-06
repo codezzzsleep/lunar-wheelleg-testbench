@@ -1,0 +1,211 @@
+{
+  "schema": "v3-registration/v1",
+  "version": "v3-register/v1",
+  "candidate": "/var/lib/deepseek-harness/lunar-lab/runs/v3/generation/cache/5b2041b1b41fd3732f624bf85a035a0bfdec01d06f08c701cdfdfa544ddff83e/model.glb",
+  "candidate_sha256": "c326a4679a1dde7b39a56281417b360cfde9e0e102caf15c3090320a855b4648",
+  "observation": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E1/observation",
+  "observation_sha256": "a986ce53b2ceb0f81a1571ca0cab9d1489b976f74870378f50f70975591044e1",
+  "n_coarse_evaluated": 0,
+  "n_refined": 1,
+  "distinct_orientations": 1,
+  "best": {
+    "rank": 0,
+    "coarse": {
+      "R_index": -1,
+      "score": null,
+      "iou": null,
+      "rim_hit": null,
+      "depth_err_m": null,
+      "yaw_deg": null,
+      "scale": null
+    },
+    "M": [
+      [
+        1.1657972806180734,
+        0.0,
+        0.0,
+        -1.6010422129005821
+      ],
+      [
+        0.0,
+        1.1657972806180734,
+        0.0,
+        -0.2525904351612253
+      ],
+      [
+        0.0,
+        0.0,
+        1.1657972806180734,
+        0.0138657919755132
+      ],
+      [
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "diagnostics": {
+      "mask_iou": 0.0,
+      "depth_median_mm": NaN,
+      "depth_p95_mm": NaN,
+      "visible_median_mm": 16393.483,
+      "visible_p95_mm": 16712.104,
+      "n_candidate_pixels": 0,
+      "n_mask_pixels": 12261
+    },
+    "icp_history": [
+      {
+        "level": 0,
+        "iter": "level_end",
+        "quality": 1000000040.0
+      },
+      {
+        "level": 1,
+        "iter": "level_end",
+        "quality": 1000000040.0
+      },
+      {
+        "level": 2,
+        "iter": "level_end",
+        "quality": 1000000040.0
+      },
+      {
+        "level": "final",
+        "best_quality": 1000000040.0
+      }
+    ],
+    "scale_scan": {
+      "score": 1000000000.0,
+      "visible_median_mm": NaN,
+      "visible_p95_mm": NaN,
+      "steps": {
+        "dx": 0.004,
+        "dy": 0.004,
+        "dz": 0.003,
+        "dyaw": 0.03490658503988659
+      }
+    },
+    "n_icp_steps": 4,
+    "quality": 1000040.0
+  },
+  "all": [
+    {
+      "rank": 0,
+      "coarse": {
+        "R_index": -1,
+        "score": null,
+        "iou": null,
+        "rim_hit": null,
+        "depth_err_m": null,
+        "yaw_deg": null,
+        "scale": null
+      },
+      "M": [
+        [
+          1.1657972806180734,
+          0.0,
+          0.0,
+          -1.6010422129005821
+        ],
+        [
+          0.0,
+          1.1657972806180734,
+          0.0,
+          -0.2525904351612253
+        ],
+        [
+          0.0,
+          0.0,
+          1.1657972806180734,
+          0.0138657919755132
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "diagnostics": {
+        "mask_iou": 0.0,
+        "depth_median_mm": NaN,
+        "depth_p95_mm": NaN,
+        "visible_median_mm": 16393.483,
+        "visible_p95_mm": 16712.104,
+        "n_candidate_pixels": 0,
+        "n_mask_pixels": 12261
+      },
+      "icp_history": [
+        {
+          "level": 0,
+          "iter": "level_end",
+          "quality": 1000000040.0
+        },
+        {
+          "level": 1,
+          "iter": "level_end",
+          "quality": 1000000040.0
+        },
+        {
+          "level": 2,
+          "iter": "level_end",
+          "quality": 1000000040.0
+        },
+        {
+          "level": "final",
+          "best_quality": 1000000040.0
+        }
+      ],
+      "scale_scan": {
+        "score": 1000000000.0,
+        "visible_median_mm": NaN,
+        "visible_p95_mm": NaN,
+        "steps": {
+          "dx": 0.004,
+          "dy": 0.004,
+          "dz": 0.003,
+          "dyaw": 0.03490658503988659
+        }
+      },
+      "n_icp_steps": 4,
+      "quality": 1000040.0
+    }
+  ],
+  "M": [
+    [
+      1.1657972806180734,
+      0.0,
+      0.0,
+      -1.6010422129005821
+    ],
+    [
+      0.0,
+      1.1657972806180734,
+      0.0,
+      -0.2525904351612253
+    ],
+    [
+      0.0,
+      0.0,
+      1.1657972806180734,
+      0.0138657919755132
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "diagnostics": {
+    "mask_iou": 0.0,
+    "depth_median_mm": NaN,
+    "depth_p95_mm": NaN,
+    "visible_median_mm": 16393.483,
+    "visible_p95_mm": 16712.104,
+    "n_candidate_pixels": 0,
+    "n_mask_pixels": 12261
+  },
+  "note": "M = T_world_from_asset（含尺度）；只允许刚体 + 正等比尺度；下游唯一放置，不再二次贴地/缩放"
+}

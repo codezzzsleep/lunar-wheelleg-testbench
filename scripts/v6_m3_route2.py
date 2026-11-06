@@ -69,7 +69,7 @@ def run_phase(phase):
  od=OUT/'phase1_obs'; od.mkdir(parents=True,exist_ok=True); Image.fromarray(rgb).save(od/'rgb.png'); np.save(od/'depth.npy',dep.astype(np.float32)); mask=np.zeros(seg.shape[:2],np.uint8)
  for bid in range(m.nbody):
   nm=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,bid) or ''
-  if nm.startswith('obstacle') and float(d.xpos[bid][0])>6.5:
+  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.0:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
  Image.fromarray(mask).save(od/'mask.png')
@@ -94,7 +94,7 @@ def phase_e1_capture():
  Image.fromarray(rgb).save(od/'rgb.png'); np.save(od/'depth.npy',dep.astype(np.float32)); mask=np.zeros(seg.shape[:2],np.uint8)
  for bid in range(m.nbody):
   nm=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,bid) or ''
-  if nm.startswith('obstacle') and float(d.xpos[bid][0])>6.5:
+  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.0:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
  Image.fromarray(mask).save(od/'mask.png')

@@ -6,3 +6,6 @@
 - 2026-11-06 M1（部分）：122 份（v3 75 + WP3 yaw0 47），通过组 rear −2 mm/P95 56 mm，拒绝组 −117 mm/97 mm；敏感度 0.426、特异度 0.167；缺 ±25° 96 份。
 - 2026-11-06 M5（部分）：RESULTS.md 已列 M0/M1/M2/V5 数字与来源；M3/M4 未执行。
 - 2026-11-06 M4（部分）：v6_replay_check.py 完成并在自测包通过（穿透 0 mm、EGL 渲染 true）；尚无真实展示单元打包。
+- 2026-11-06 资产保全：80 份旧 GLB 已按时间归档到 assets/v6/archive（最早 2026-11-03 11:35，最晚 2026-11-05 00:42），Git LFS 推送；assets/v3 岩石资产入 assets/v6/rocks。
+- 2026-11-06 重建：用新 key 重提 30 个 v3 候选任务，22 下载成功、8 服务端 status=4；GLB 存 assets/v6/rebuild，LFS 推送（191 MB），Release v6-showcase 已上传。
+- 2026-11-06 沙箱 cnb-ihh... 已不可连接，WP3 144 任务重建需新沙箱做渲染。

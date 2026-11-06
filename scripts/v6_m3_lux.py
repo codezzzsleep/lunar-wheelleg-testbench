@@ -4,7 +4,7 @@ from PIL import Image
 ROOT=pathlib.Path(__file__).resolve().parent.parent; sys.path.insert(0,str(ROOT/'scripts'))
 from v4_wp3_tasks import crop
 enc=sys.argv[1]; tag=sys.argv[2] if len(sys.argv)>2 else enc.replace('/','_')
-obs=ROOT/'runs/v6/m3'/enc/'observation'; out=ROOT/'runs/v6/m3'/enc
+obs=pathlib.Path(sys.argv[3]) if len(sys.argv)>3 else ROOT/'runs/v6/m3'/enc/'observation'; out=ROOT/'runs/v6/m3'/enc
 rgb=np.asarray(Image.open(obs/'rgb.png').convert('RGB')); mask=np.asarray(Image.open(obs/'mask.png').convert('L'))>127
 base,m=crop(rgb,mask); tasks=[]; order=0
 for cname in ('raw','white','masked'):

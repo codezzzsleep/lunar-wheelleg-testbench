@@ -20,7 +20,9 @@ def crop(img,mask,pad=1.15,size=512):
   crop=np.asarray(Image.fromarray(crop).resize((size,size),Image.LANCZOS)); m=np.asarray(Image.fromarray(m.astype(np.uint8)*255).resize((size,size),Image.NEAREST))>0
  else:
   canvas=np.full((size,size,3),255,np.uint8); mm=np.zeros((size,size),bool)
-  oy=(size-side)//2; ox=(size-side)//2; canvas[oy:oy+side,ox:ox+side]=crop; mm[oy:oy+side,ox:ox+side]=m; crop=canvas; m=mm
+  hh=min(crop.shape[0],m.shape[0],size); ww=min(crop.shape[1],m.shape[1],size)
+  oy=(size-hh)//2; ox=(size-ww)//2
+  canvas[oy:oy+hh,ox:ox+ww]=crop[:hh,:ww]; mm[oy:oy+hh,ox:ox+ww]=m[:hh,:ww]; crop=canvas; m=mm
  return crop,m
 def main():
     out=ROOT/'runs/v4/wp3'; out.mkdir(parents=True,exist_ok=True)

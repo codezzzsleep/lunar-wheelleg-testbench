@@ -16,3 +16,4 @@
 - 2026-11-06 M3 E1：FULL 全程跑通，R1 pass 52.48 s，x=21.02 success；准入 1/6；E0/E2 与 OBS_CONS 未做。
 - 2026-11-06 M3 E1 OBS_CONS：L2 pass 52.44 s，x=21.02 success；两臂均通过、动作不同（FULL R1 vs OBS L2）。
 - 2026-11-06 M3：E0 小石 0.08 m 不触发、两臂 88.96 s 到 x=20.02 success；E2 第一眼 0/6 准入，第二眼 imgs 未做。
+- 2026-11-06 M3 E2：第二眼 imgs 4/4 仍全拒（scale 2.29、contour 0.02–0.03），E2 结论为无法采纳；连续三遭遇路线尚未串起来。

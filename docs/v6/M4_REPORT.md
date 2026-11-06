@@ -60,3 +60,36 @@
 ## 下一步
 
 补 A4 多 run 打包；M1 岩石单元与 M3 路线单元在各自完成后按同流程打包。
+
+## R1 复核整改：编译模型重打包
+
+### 做法
+
+- 每个包现在带 `scene/compiled/model.xml`：由 `mujoco.mj_saveLastXML` 从 `WheelLegEnv.model` 直接导出，
+  资产复制到 `scene/compiled/assets/` 并改为相对路径；
+- 重放检查 v2（`scripts/v6_replay_check2.py`）直接加载该 XML，报告 `ngeom`、障碍 geom 数量、逐障碍最小距离；
+- 渲染改为跟随机器人相机，首/中/末帧机器人占画面约 1/3。
+
+### 七个 WP7 单元（v6r1）
+
+| 单元 | ngeom | 障碍 geom | 最大穿透 | 渲染 | ok |
+| --- | --- | --- | --- | --- | --- |
+| A1_cruise_10m | 53 | 0 | 0.000 mm | true | true |
+| A2_gravel | 97 | 44 | 2.882 mm | true | true |
+| A3_slope8 | 53 | 0 | 0.000 mm | true | true |
+| A4_R1 | 53 | 0 | 0.000 mm | true | true |
+| A4_BODY | 53 | 0 | 0.000 mm | true | true |
+| B1_boulder_detour | 55 | 2 | 0.000 mm | true | true |
+| B2_pit_side | 53 | 0 | 0.000 mm | true | true |
+
+### A2 / B1 查清结果
+
+- **A2**：场景描述里的 `posed_dir` 在包内被改成了错误的相对路径，导致重放时 `objects` 为空、地上没有碎石；
+  修正为 `scene/objects/obj_0` 后，编译模型里有 **44 个 obstacle geom**，位置与轨迹重叠，最小距离 0.0009 m。
+- **B1**：真实仿真是 `resample_walls` 生成的 **2 个 0.5×0.5×0.32 m 方块**（coll manifest），
+  `assets/body_world.stl` 只是可视参考；修正路径后编译模型含这 2 个 geom，全程最小距离 0.0009/0.0024 m，
+  轨迹最大横移 0.555 m 正贴石块，场景与轨迹一致。
+
+### 新资产名
+
+- `v6r1__units__<unit>.tar.gz`（7 个），旧 `v6__units__*` 保留不覆盖。

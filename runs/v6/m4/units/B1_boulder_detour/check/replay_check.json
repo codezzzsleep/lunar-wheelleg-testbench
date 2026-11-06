@@ -1,11 +1,25 @@
 {
   "package": "/workspace/work/lunar-lab/runs/v6/m4/units/B1_boulder_detour",
-  "ok": true,
   "errors": [],
+  "warnings": [],
   "sha_bad": [],
+  "ngeom": 55,
+  "nbody": 19,
+  "obstacle_bodies": [
+    "obstacle0"
+  ],
+  "obstacle_geoms": 2,
+  "robot_geoms": 53,
   "frames": 327,
   "max_penetration_mm": 0.0,
+  "obstacle_min_distance_m": {
+    "53": 0.0009,
+    "54": 0.0024
+  },
   "penetration_ok": true,
-  "end_qpos_match": true,
-  "render": true
+  "max_lateral_offset_m": 0.555,
+  "max_offset_x": 2.615,
+  "obstacle_near_max_offset": true,
+  "render": true,
+  "ok": true
 }

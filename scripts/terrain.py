@@ -78,6 +78,12 @@ def build_heightfield(spec):
     # 条件写了数字但物理地面没变 —— 这正是任务书禁止的静默映射。
     h = np.zeros((N, N))
     parts = {}
+    if t.get('custom_height_file'):
+        h = np.load(str(t['custom_height_file']))
+        zmin = float(h.min()); zmax = float(h.max())
+        if zmax - zmin <= 1e-9: zmax = zmin + 1e-3
+        parts['custom_height_file'] = str(t['custom_height_file'])
+        return h, {'zmin': round(zmin,6), 'zmax': round(zmax,6), 'actual_max_m': round(float(h.max()),4), 'actual_min_m': round(zmin,4), 'components': parts, 'kind_label': 'custom', 'grid': int(h.shape[0]), 'span_m': SPAN}
     deg = float(t.get('slope_deg', 0.0))
     if deg != 0.0:
         h += slope_height(N, deg)
@@ -172,6 +178,9 @@ def make_spec(kind='flat', seed=0, slope_deg=0.0, roughness=0.0, pits=0,
 
 
 def ground_height_many(h, xs, ys):
+    h=np.asarray(h)
+    if h.ndim!=2:
+        print('DEBUG h shape',h.shape,type(h),'xs',len(np.atleast_1d(xs)))
     """向量化版本的 ground_height_at，用于物体逐顶点落地。"""
     xs = np.asarray(xs, dtype=np.float64)
     ys = np.asarray(ys, dtype=np.float64)

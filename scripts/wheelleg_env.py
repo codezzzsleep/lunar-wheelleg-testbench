@@ -372,11 +372,11 @@ class WheelLegEnv:
                     lo = org + np.array([i0, j0, k0]) * pit
                     hi = org + np.array([i1 + 1, j1 + 1, k1 + 1]) * pit
                     c = (lo + hi) / 2.0
-                    h = np.maximum((hi - lo) / 2.0, 1e-4)
+                    hb = np.maximum((hi - lo) / 2.0, 1e-4)
                     inner.append(
                         f'<geom name="obj{i}_box{bi}" type="box" '
                         f'pos="{c[0]:.6f} {c[1]:.6f} {c[2]:.6f}" '
-                        f'size="{h[0]:.6f} {h[1]:.6f} {h[2]:.6f}" '
+                        f'size="{hb[0]:.6f} {hb[1]:.6f} {hb[2]:.6f}" '
                         f'rgba="{rgba}"{mat_attr} friction="0.9 0.02 0.001" '
                         f'contype="1" conaffinity="1"/>')
             for j, p_ in enumerate(res):

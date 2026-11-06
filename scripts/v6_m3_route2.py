@@ -27,7 +27,7 @@ def make_route_spec():
  hf=OUT/'scene'/'route2_height.npy'; OUT.joinpath('scene').mkdir(parents=True,exist_ok=True); np.save(hf,H); spec['terrain']['custom_height_file']=str(hf)
  spec['channel']={'center_y':0.0,'half_width':1.2}; spec['soil']=v7_soil.resolve('nominal')
  spec['objects']=[{'posed_dir':str(gdir)},{'mesh_file':str(e1),'x':8.5,'y':0.0,'target_height_m':0.172},{'mesh_file':str(e2),'x':15.0,'y':0.0,'target_height_m':0.120}]
- spec['front_cam']={'pos':[0.40,0,0.35],'pitch_deg':-20.0,'fovy':70.0}; spec['render']={'size':[1600,1200]}
+ spec['front_cam']={'pos':[0.40,0,0.35],'pitch_deg':-30.0,'fovy':70.0}; spec['render']={'size':[1600,1200]}
  spec['_route']={'gravel':[3.0,5.5],'e1':8.5,'slope':[10.5,12.5],'e2':15.0,'pit':[17.0,19.0],'goal':21.0}
  return spec
 def install_custom_terrain():
@@ -57,7 +57,7 @@ def run_phase(phase):
   y=float(env.data.qpos[1]); yd=float(np.clip(-1.2*y-0.8*yaw(),-0.4,0.4)); v=3.5
   env.step_command(joint_targets_rad=BASE,wheel_omega_rad_s=np.array([v+1.2*yd,v-1.2*yd,v+1.2*yd,v-1.2*yd]),wheel_mode='velocity')
   rec.add(v3_record.frame_from_env(env,None,np.zeros(3),k[0],env.t,extra={'phase':phase_name})); k[0]+=1
- while env.data.qpos[0]<6.8 and not getattr(env,'terminated',False) and env.t<120: step('CRUISE')
+ while env.data.qpos[0]<7.4 and not getattr(env,'terminated',False) and env.t<120: step('CRUISE')
  for _ in range(50):
   if getattr(env,'terminated',False): break
   env.step_command(joint_targets_rad=BASE,wheel_brake=np.ones(4,bool)); rec.add(v3_record.frame_from_env(env,None,np.zeros(3),k[0],env.t,extra={'phase':'OBSERVE'})); k[0]+=1
@@ -80,7 +80,7 @@ def phase_e1_capture():
  spec=make_route_spec(); env=wheelleg_env.WheelLegEnv(spec,max_seconds=200); env.reset(seed=0); BASE=np.array([[0,0.85,-1.65]]*4)
  def yaw():
   w,x,y,z=env.data.qpos[3:7]; return float(np.arctan2(2*(w*z+x*y),1-2*(y*y+z*z)))
- while env.data.qpos[0]<6.8 and not getattr(env,'terminated',False) and env.t<120:
+ while env.data.qpos[0]<7.4 and not getattr(env,'terminated',False) and env.t<120:
   y=float(env.data.qpos[1]); yd=float(np.clip(-1.2*y-0.8*yaw(),-0.4,0.4)); v=3.5
   env.step_command(joint_targets_rad=BASE,wheel_omega_rad_s=np.array([v+1.2*yd,v-1.2*yd,v+1.2*yd,v-1.2*yd]),wheel_mode='velocity')
  for _ in range(50):

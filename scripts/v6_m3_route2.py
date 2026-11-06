@@ -115,7 +115,42 @@ def phase_e1_capture():
  bid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_BODY,'obstacle1') if m.nbody>1 else -1
  print(json.dumps({'phase':'e1_capture','x':float(d.qpos[0]),'t':float(env.t),'mask':int((mask>0).sum()),'term':getattr(env,'last_termination',None),'rock_xpos':(np.array(d.xpos[bid]).tolist() if bid>=0 else None),'cam_pos':np.array(d.cam_xpos[cid]).tolist()},default=str))
 
+
+
+def phase_e2_capture():
+ spec=make_route_spec(); gm=json.loads((OUT/'E2'/'geometry.json').read_text())
+ spec['objects'][2]={'mesh_file':str(ROOT/gm['rock_mesh']),'x':15.0,'y':0.1,'target_height_m':gm['height']}
+ spec['front_cam']={'pos':gm['cam_local'],'pitch_deg':gm['pitch_deg'],'fovy':70.0}; stop=15.0-gm['delta_x']
+ env=wheelleg_env.WheelLegEnv(spec,max_seconds=200); env.reset(seed=0); BASE=np.array([[0,0.85,-1.65]]*4)
+ def yaw():
+  w,x,y,z=env.data.qpos[3:7]; return float(np.arctan2(2*(w*z+x*y),1-2*(y*y+z*z)))
+ while env.data.qpos[0]<stop and not getattr(env,'terminated',False) and env.t<150:
+  y=float(env.data.qpos[1]); yd=float(np.clip(-1.2*y-0.8*yaw(),-0.4,0.4)); v=3.5
+  env.step_command(joint_targets_rad=BASE,wheel_omega_rad_s=np.array([v+1.2*yd,v-1.2*yd,v+1.2*yd,v-1.2*yd]),wheel_mode='velocity')
+ for _ in range(50):
+  if getattr(env,'terminated',False): break
+  env.step_command(joint_targets_rad=BASE,wheel_brake=np.ones(4,bool))
+ import mujoco
+ m=env.model; d=env.data; cid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_CAMERA,'front_cam')
+ r=mujoco.Renderer(m,1200,1600); r.update_scene(d,camera=cid); rgb=r.render().copy(); r.enable_depth_rendering(); dep=r.render().copy(); r.enable_segmentation_rendering(); seg=r.render().copy(); r.close()
+ from PIL import Image
+ from scipy.ndimage import binary_fill_holes
+ mask=np.zeros(seg.shape[:2],np.uint8)
+ for bid in range(m.nbody):
+  nm=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,bid) or ''
+  if nm.startswith('obstacle') and 14.0<float(d.xpos[bid][0])<16.0:
+   for g in range(m.ngeom):
+    if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
+ mask=(binary_fill_holes(mask>0)*255).astype(np.uint8)
+ od=OUT/'E2'/'observation'; od.mkdir(parents=True,exist_ok=True)
+ Image.fromarray(rgb).save(od/'rgb.png'); np.save(od/'depth.npy',dep.astype(np.float32)); Image.fromarray(mask).save(od/'mask.png')
+ camj={'camera_schema':'camera-snapshot/v2','world_pos':np.array(d.cam_xpos[cid],float).tolist(),'R_world_from_camera':np.array(d.cam_xmat[cid],float).reshape(3,3).tolist(),'fovy_deg':70.0,'image_width':1600,'image_height':1200,'intrinsics':{'fx':0.5*1200/np.tan(np.deg2rad(70)/2),'fy':0.5*1200/np.tan(np.deg2rad(70)/2),'cx':799.5,'cy':599.5,'width':1600,'height':1200},'depth_convention':'positive_camera_minus_z'}
+ (od/'camera.json').write_text(json.dumps(camj,indent=2)); (od/'observation.json').write_text(json.dumps({'schema':'observation/v1','rock':'moon_rock_01','camera':camj,'intrinsics':camj['intrinsics'],'image':'rgb.png'},indent=2))
+ np.savez(OUT/'E2'/'state.npz',qpos=np.asarray(d.qpos,float),qvel=np.asarray(d.qvel,float),t=float(env.t))
+ print(json.dumps({'phase':'e2_capture','x':float(d.qpos[0]),'t':float(env.t),'mask':int((mask>0).sum()),'term':getattr(env,'last_termination',None)},default=str))
+
 if __name__=='__main__':
  cmd=sys.argv[1] if len(sys.argv)>1 else 'phase1'
  if cmd=='e1_capture': phase_e1_capture()
+ elif cmd=='e2_capture': phase_e2_capture()
  else: run_phase(cmd)

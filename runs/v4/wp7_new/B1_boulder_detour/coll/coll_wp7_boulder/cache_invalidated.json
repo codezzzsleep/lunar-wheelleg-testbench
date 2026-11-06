@@ -1,0 +1,28 @@
+{
+  "schema": "v3-collision-cache/v1",
+  "reason": "missing_downsampled_occ",
+  "expected_key": "80cfb633e08ee2eec485dbabbc50ee4dd006848b925964d00310b4eb685eee56",
+  "algo": "v3-collision/2",
+  "source": {
+    "occ_sha256": "962d6a98ac90c3fcde0ab5955121476d28e198b733f4af066a42cfcec89ede06",
+    "origin": [
+      0.6,
+      -0.8,
+      0.0
+    ],
+    "pitch": 0.004,
+    "dims": [
+      200,
+      400,
+      105
+    ],
+    "n_occ": 2500000,
+    "shape": [
+      200,
+      400,
+      105
+    ],
+    "convention": "voxel_center = origin + (index+0.5)*pitch"
+  },
+  "at": "2026-11-06T19:19:31+0800"
+}

@@ -1,0 +1,43 @@
+{
+  "name": "wp7_A4",
+  "seed": 0,
+  "split": "train",
+  "start": [
+    0.0,
+    0.0
+  ],
+  "goal_x": 5.0,
+  "terrain": {
+    "kind": "flat",
+    "slope_deg": 0.0,
+    "span": 8.0,
+    "roughness": 0.0,
+    "pits": 0,
+    "pit_depth": 0.0,
+    "field_x_max": 7.0
+  },
+  "objects": [],
+  "provenance": {
+    "generator": "scripts/terrain.py",
+    "terrain_representation": "heightfield",
+    "units": "meters",
+    "note": "地形高度为真实米制；物体静态刚性"
+  },
+  "channel": {
+    "center_y": 0.0,
+    "half_width": 1.2
+  },
+  "soil": {
+    "mode": "soil",
+    "label": "nominal",
+    "params": {
+      "n": 1.0,
+      "kc": 1400.0,
+      "kphi": 820000.0,
+      "cohesion_pa": 170.0,
+      "phi_deg": 35.0,
+      "k_shear": 0.018
+    },
+    "params_sha": "55848f80956792b4704ff3ec83678bf7"
+  }
+}

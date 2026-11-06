@@ -22,7 +22,7 @@
 4. `MUJOCO_GL=egl` 渲染首/中/末帧到 `check/`；
 5. 写 `check/replay_check.json`。
 
-### 已通过的真实展示单元（7 个）
+### 已通过的真实展示单元（9 个）
 
 | 单元 | 帧数 | 最大穿透 | 渲染 | 结果 |
 | --- | --- | --- | --- | --- |
@@ -33,8 +33,10 @@
 | B2_pit_side | 335 | 0.000 mm | true | ok |
 | A4_R1 | 441 | 0.000 mm | true | ok |
 | A4_BODY | 936 | 0.000 mm | true | ok |
+| M3_route_full | 3119 | 0.000 mm | true | ok |
+| M3_route_obs | 3119 | 0.000 mm | true | ok |
 
-- 7/7 通过 §4（穿透 ≤5 mm、渲染成功、manifest sha 全对）。
+- 9/9 通过 §4（穿透 ≤5 mm、渲染成功、manifest sha 全对）。
 - 打包：`dist/v6/units/<unit>.tar.gz`；清单 `dist/v6/showcase_manifest.json`。
 - 已上传 Release `v6-showcase`：`v6__units__<unit>.tar.gz`。
 

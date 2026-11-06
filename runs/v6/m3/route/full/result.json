@@ -1,0 +1,30 @@
+{
+  "arm": "full",
+  "events": [
+    {
+      "encounter": "E0",
+      "x_trigger": 4.0,
+      "height_m": 0.08,
+      "decision": "pass",
+      "imagination_calls": 0
+    },
+    {
+      "encounter": "E1",
+      "x": 7.8,
+      "decision": "R1",
+      "outcome": "pass"
+    },
+    {
+      "encounter": "E2",
+      "x": 13.5,
+      "decision": "A0",
+      "reason": "all candidates rejected (first and second look)",
+      "outcome": "stop"
+    }
+  ],
+  "failed_at": "E2",
+  "final_x": 13.506668150524703,
+  "t_end": 62.38000000000415,
+  "termination": {},
+  "success": false
+}

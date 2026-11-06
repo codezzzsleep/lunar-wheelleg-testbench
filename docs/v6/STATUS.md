@@ -25,3 +25,5 @@
 - 2026-11-07 R1-M4：7 个 WP7 单元重打包为 compiled/model.xml，v2 检查全过（A2 44 geom、B1 2 geom）；A2/B1 路径问题查清并写入 M4_REPORT；资产改 v6r1__units__*。
 - 2026-11-07 R1-M3：路线场景与 phase1 跑通（0→7.51 m，35.1 s，掩码 741 px）；修掉 env 高度场变量覆盖与 terrain.SPAN=4 两个底层 bug。
 - 2026-11-07 R2：E1 照搬 h2v0 几何 + 掩码 binary_fill_holes 后，纯 v3_register 准入 3/6 通过（轮廓 0.73–0.84）。
+- 2026-11-07 R2：gallery 218/218 已导出（v3 75 + ±25 96 + WP7 yaw0 47），index.json 记录 218 条；E2 第一眼已照搬 h0v0 几何拍到（x=13.654，掩码 7990 px）。
+- 2026-11-07 R2：E2 第一眼 6 份纯 v3_register 准入全拒（rear −0.21..−0.24，P95 84–92 mm），符合“全拒→第二眼”设计；第二眼尚未拍。

@@ -72,6 +72,8 @@ def run_phase(phase):
   if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.5:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
+ from scipy.ndimage import binary_fill_holes
+ mask=(binary_fill_holes(mask>0)*255).astype(np.uint8)
  Image.fromarray(mask).save(od/'mask.png')
  print(json.dumps({'phase':phase,'x':float(env.data.qpos[0]),'t':float(env.t),'mask_px':int((seg[:,:,0]>0).sum()),'terrain_meta':env._terrain_meta if hasattr(env,'_terrain_meta') else None},default=str))
 
@@ -104,6 +106,8 @@ def phase_e1_capture():
   if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.5:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
+ from scipy.ndimage import binary_fill_holes
+ mask=(binary_fill_holes(mask>0)*255).astype(np.uint8)
  Image.fromarray(mask).save(od/'mask.png')
  camj={'camera_schema':'camera-snapshot/v2','world_pos':np.array(d.cam_xpos[cid],float).tolist(),'R_world_from_camera':np.array(d.cam_xmat[cid],float).reshape(3,3).tolist(),'fovy_deg':70.0,'image_width':1600,'image_height':1200,'intrinsics':{'fx':0.5*1200/np.tan(np.deg2rad(70)/2),'fy':0.5*1200/np.tan(np.deg2rad(70)/2),'cx':799.5,'cy':599.5,'width':1600,'height':1200},'depth_convention':'positive_camera_minus_z'}
  (od/'camera.json').write_text(json.dumps(camj,indent=2)); (od/'observation.json').write_text(json.dumps({'schema':'observation/v1','rock':'moon_rock_02','camera':camj,'intrinsics':camj['intrinsics'],'image':'rgb.png'},indent=2))

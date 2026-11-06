@@ -24,3 +24,4 @@
 - 2026-11-06 R1 复核：已保存 REVIEW_R1.md/REVIEW_R1_ADD.md；M1 统计改为“正类=坏、预测正=拒绝”，主结论 122 份（坏拒 0.574、好留 0.833、通过组坏 0.392、拒绝组坏 0.813）；RESULTS 的 M3 行标“待核”。
 - 2026-11-07 R1-M4：7 个 WP7 单元重打包为 compiled/model.xml，v2 检查全过（A2 44 geom、B1 2 geom）；A2/B1 路径问题查清并写入 M4_REPORT；资产改 v6r1__units__*。
 - 2026-11-07 R1-M3：路线场景与 phase1 跑通（0→7.51 m，35.1 s，掩码 741 px）；修掉 env 高度场变量覆盖与 terrain.SPAN=4 两个底层 bug。
+- 2026-11-07 R2：E1 照搬 h2v0 几何 + 掩码 binary_fill_holes 后，纯 v3_register 准入 3/6 通过（轮廓 0.73–0.84）。

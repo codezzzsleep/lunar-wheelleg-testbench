@@ -57,7 +57,7 @@ def run_phase(phase):
   y=float(env.data.qpos[1]); yd=float(np.clip(-1.2*y-0.8*yaw(),-0.4,0.4)); v=3.5
   env.step_command(joint_targets_rad=BASE,wheel_omega_rad_s=np.array([v+1.2*yd,v-1.2*yd,v+1.2*yd,v-1.2*yd]),wheel_mode='velocity')
   rec.add(v3_record.frame_from_env(env,None,np.zeros(3),k[0],env.t,extra={'phase':phase_name})); k[0]+=1
- while env.data.qpos[0]<7.4 and not getattr(env,'terminated',False) and env.t<120: step('CRUISE')
+ while env.data.qpos[0]<stop and not getattr(env,'terminated',False) and env.t<120: step('CRUISE')
  for _ in range(50):
   if getattr(env,'terminated',False): break
   env.step_command(joint_targets_rad=BASE,wheel_brake=np.ones(4,bool)); rec.add(v3_record.frame_from_env(env,None,np.zeros(3),k[0],env.t,extra={'phase':'OBSERVE'})); k[0]+=1
@@ -69,7 +69,7 @@ def run_phase(phase):
  od=OUT/'phase1_obs'; od.mkdir(parents=True,exist_ok=True); Image.fromarray(rgb).save(od/'rgb.png'); np.save(od/'depth.npy',dep.astype(np.float32)); mask=np.zeros(seg.shape[:2],np.uint8)
  for bid in range(m.nbody):
   nm=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,bid) or ''
-  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.0:
+  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.5:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
  Image.fromarray(mask).save(od/'mask.png')
@@ -77,10 +77,17 @@ def run_phase(phase):
 
 
 def phase_e1_capture():
- spec=make_route_spec(); env=wheelleg_env.WheelLegEnv(spec,max_seconds=200); env.reset(seed=0); BASE=np.array([[0,0.85,-1.65]]*4)
+ spec=make_route_spec()
+ gm=json.loads((OUT/'E1'/'geometry.json').read_text()) if (OUT/'E1'/'geometry.json').exists() else None
+ stop=7.5
+ if gm:
+  spec['objects'][1]={'mesh_file':gm['rock_mesh'],'x':9.0,'y':0.1,'target_height_m':gm['height']}
+  spec['front_cam']={'pos':gm['cam_local'],'pitch_deg':gm['pitch_deg'],'fovy':70.0}
+  stop=9.0-gm['delta_x']
+ env=wheelleg_env.WheelLegEnv(spec,max_seconds=200); env.reset(seed=0); BASE=np.array([[0,0.85,-1.65]]*4)
  def yaw():
   w,x,y,z=env.data.qpos[3:7]; return float(np.arctan2(2*(w*z+x*y),1-2*(y*y+z*z)))
- while env.data.qpos[0]<7.4 and not getattr(env,'terminated',False) and env.t<120:
+ while env.data.qpos[0]<stop and not getattr(env,'terminated',False) and env.t<120:
   y=float(env.data.qpos[1]); yd=float(np.clip(-1.2*y-0.8*yaw(),-0.4,0.4)); v=3.5
   env.step_command(joint_targets_rad=BASE,wheel_omega_rad_s=np.array([v+1.2*yd,v-1.2*yd,v+1.2*yd,v-1.2*yd]),wheel_mode='velocity')
  for _ in range(50):
@@ -94,7 +101,7 @@ def phase_e1_capture():
  Image.fromarray(rgb).save(od/'rgb.png'); np.save(od/'depth.npy',dep.astype(np.float32)); mask=np.zeros(seg.shape[:2],np.uint8)
  for bid in range(m.nbody):
   nm=mujoco.mj_id2name(m,mujoco.mjtObj.mjOBJ_BODY,bid) or ''
-  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.0:
+  if nm.startswith('obstacle') and 8.0<float(d.xpos[bid][0])<9.5:
    for g in range(m.ngeom):
     if m.geom_bodyid[g]==bid: mask[seg[:,:,0]==g]=255
  Image.fromarray(mask).save(od/'mask.png')

@@ -1,0 +1,80 @@
+{
+  "source": "WP3pm25",
+  "rock": "rock_07",
+  "view": "-25",
+  "candidate": "10b8b6665098d5b045bd06b55443119674269407000585607aba5403768bbad7",
+  "validated": false,
+  "glb": {
+    "path": "runs/v3/generation/cache/10b8b6665098d5b045bd06b55443119674269407000585607aba5403768bbad7/model.glb",
+    "sha256": "0556408d34a8d61e80742bcb77ab382014bec1b6ec8c9ba57e352249eb67adf6"
+  },
+  "input_image": {
+    "path": "runs/v4/wp3/crops/rock_07/yaw-25/raw/rep1.png",
+    "sha256": "cb5f4fcba668ef55e919a93cdfabb7a062007c2f5865fdf67301502d5b9210d7"
+  },
+  "observation": {
+    "rgb": "runs/v6/m1/views/rock_07_yaw-25/observation/rgb.png",
+    "depth": "runs/v6/m1/views/rock_07_yaw-25/observation/depth.npy",
+    "mask": "runs/v6/m1/views/rock_07_yaw-25/observation/mask.png",
+    "camera": "runs/v6/m1/views/rock_07_yaw-25/observation/camera.json"
+  },
+  "M_world": [
+    [
+      0.013920766728995781,
+      -0.6998344665388682,
+      -0.05196063807179523,
+      1.270504427206613
+    ],
+    [
+      -0.6888390332655513,
+      -0.023554260920995076,
+      0.13269498578748473,
+      0.15907751795211586
+    ],
+    [
+      -0.13404840437077814,
+      0.04836209722103665,
+      -0.6872802259987723,
+      0.118495638101627
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "admission": {
+    "scale_ratio": 0.9863,
+    "contour_iou": 0.4172,
+    "shell_contact": 0.4312,
+    "hidden_frac": 0.621,
+    "free_intrusion_frac": 0.24932,
+    "thresholds": {
+      "schema": "v5-admission/v1",
+      "calibrated_from": "truth_v2 KA set",
+      "scale_ratio": {
+        "min": 0.889,
+        "max": 1.09
+      },
+      "hidden_frac_min": 0.3578,
+      "shell_contact_min": 0.0486,
+      "free_intrusion_max": 0.2864,
+      "contour_iou_min": 0.7068,
+      "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+    },
+    "admitted": false
+  },
+  "hidden_metrics": {
+    "rear_err_m": -0.2038,
+    "top_err_m": -0.0243,
+    "path_p95_mm": 159.705,
+    "hidden_iou": 0.1506
+  },
+  "truth": {
+    "asset": "assets/v3/rocks/rock_07/h1/body_vis.obj",
+    "pose": null,
+    "scale": null,
+    "texture": "none"
+  }
+}

@@ -65,3 +65,36 @@
 
 - M3 未执行；M4 素材包与重放检查未做；M0 159 任务失联；M1 缺 96 份 ±25°；M2 WP7 未重跑。
 - 上述缺口的共同根因：旧沙箱回收导致输入图、GLB、逐动作预演记录与 API 密钥丢失。
+
+
+## M3 连续路线（三遭遇）
+
+| 项 | FULL | OBS_CONS | 来源 | 样本 |
+| --- | --- | --- | --- | --- |
+| E0 0.08 m 小石 | 直接过 | 直接过 | `runs/v6/m3/E0/result.json` | 1 |
+| E1 准入 | 1/6 | 1/6 | `runs/v6/m3/E1/admission_local.csv` | 6 |
+| E1 决策 | R1 | L2 | `runs/v6/m3/E1/{full,obs}/result.json` | 各 1 |
+| E1 单独执行 | pass 52.48 s | pass 52.44 s | 同上 | 各 1 |
+| E2 第一眼 | 0/6 准入 | 0/6 | `runs/v6/m3/E2/admission_local.csv` | 6 |
+| E2 第二眼 imgs | 0/4 准入 | 0/4 | `runs/v6/m3/E2/admission_second.csv` | 4 |
+| 连续路线终点 | x=13.51，62.38 s | x=13.51，62.38 s | `runs/v6/m3/route/*/result.json` | 各 1 |
+| 结局 | 停在第 3 个遭遇 E2 | 同左 | 同上 | 各 1 |
+| 重放 | 3119 帧，0.000 mm | 3119 帧，0.000 mm | `dist/v6/showcase_manifest.json` | 各 1 |
+
+- 两臂都在 E2 全拒后 A0 停车；E1 动作不同、结局相同。
+
+## Lux3D 调用统计
+
+来源：`runs/v3/generation/ledger.jsonl`，命令 `python3 scripts/v6_m0_update.py` 与手工统计。
+
+| 指标 | 数值 | 说明 |
+| --- | --- | --- |
+| 唯一任务 id 上传 | 180 | v3 + WP3 + rebuild + M3 |
+| 唯一任务下载成功 | 171 | 成功率 **95.0%** |
+| failed | 8 | 服务端失败 |
+| uncertain | 12 | 轮询超时/状态不明 |
+| upload_failed | 5 | 创建前上传失败 |
+| 平均耗时 | 949.6 s | 含轮询等待 |
+| 中位耗时 | 387.0 s | 同上 |
+
+- 统计包含 M1 的 144 份 WP3、M0 的 22 份 v3 重建、M3 的 6+6+6 次现场调用。

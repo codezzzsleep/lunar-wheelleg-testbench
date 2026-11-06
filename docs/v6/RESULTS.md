@@ -98,3 +98,14 @@
 | 中位耗时 | 387.0 s | 同上 |
 
 - 统计包含 M1 的 144 份 WP3、M0 的 22 份 v3 重建、M3 的 6+6+6 次现场调用。
+
+
+## 已知限制（不隐藏）
+
+| 项 | 状态 | 来源 |
+| --- | --- | --- |
+| M1 逐视角 KA6 | 13/15 通过，中位 IoU 0.994；moon_rock_05 因渲染网格与 truth_v2 不一致失败 | `runs/v6/m1/view_ka.csv` |
+| M1 逐视角 KA1/KA5 | 13 视角试跑 0/13；视角级 V/U 为深度反投影近似，KA1 scale 1.118、KA5 切面为空 | `runs/v6/m1/view_ka15.csv` |
+| M0 失联任务 | 15 个（v3 9 + C2 6），原输入图与任务号均缺失 | `dist/v6/lux3d_manifest.json` |
+| M3 E2 第二眼 | 已单独拍摄并准入（0/4），未在连续时间线内实时重拍 | `runs/v6/m3/E2/admission_second.csv` |
+| M2 leg-only | 0 个；V5 逐动作 rehearsal 文件随旧沙箱丢失 | `runs/v6/m2/leg_only.csv` |

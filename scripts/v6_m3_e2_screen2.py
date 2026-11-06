@@ -2,7 +2,7 @@
 import json,pathlib,sys
 import numpy as np,trimesh,mujoco
 ROOT=pathlib.Path(__file__).resolve().parent.parent; sys.path.insert(0,str(ROOT/'scripts'))
-import wheelleg_env,v3_core,camera_io
+import wheelleg_env,v3_core,camera_io,v5_core as C,v3_register
 from PIL import Image
 E=ROOT/'runs/v6/m3/route2/E2'; ACTS=['R1','R2','D1','D2','L1','L2']
 def grid(): 
@@ -16,9 +16,10 @@ def build_VU(od,g,dims):
 def main():
  import v6_m3_route2 as RW
  g,dims=grid(); V,U=build_VU(E/'observation',g,dims); gm=json.loads((E/'geometry.json').read_text())
+ obs=v3_register.load_observation(str(E/'observation')); Vz={'shell':V,'space':np.where(V,1,np.where(U,0,2)),'origin':g['origin'],'pitch':0.004,'dims':g['dims']}; sh=C.shadow_mask(Vz,g,obs)
  st=np.load(E/'state.npz'); q0=st['qpos']; v0=st['qvel']
  results={}
- for name,occ in (('A_VplusU',V|U),('B_Vsh',V)):
+ for name,occ in (('A_Vsh_sh',V|sh),('B_Vsh',V)):
   d=E/'screen'/name; d.mkdir(parents=True,exist_ok=True); np.savez_compressed(d/'occ.npz',occupied=occ,origin=g['origin'],pitch=np.float64(0.004),dims=g['dims'],content_sha=np.array(name),convention=np.array('voxel_center = origin + (index+0.5)*pitch'))
   coll=d/'coll'; v3_core.build_collision(d/'occ.npz',coll,pitch=0.004,downsample=1)
   spec=RW.make_route_spec(); spec['objects'][2]={'posed_dir':str(coll)}; spec['front_cam']={'pos':gm['cam_local'],'pitch_deg':gm['pitch_deg'],'fovy':70.0}
@@ -46,7 +47,7 @@ def main():
     if r.get('success') and int(r.get('contacts') or 0)==0: ok3+=1
    rows.append({'action':a,'pass3':ok3,'min_dist_m':round(float(mind),4) if mind<1e8 else None})
   results[name]=rows
- safeA=[r['action'] for r in results['A_VplusU'] if r['pass3']==3 and (r['min_dist_m'] is None or r['min_dist_m']>=0.05)]
+ safeA=[r['action'] for r in results['A_Vsh_sh'] if r['pass3']==3 and (r['min_dist_m'] is None or r['min_dist_m']>=0.05)]
  safeB=[r['action'] for r in results['B_Vsh'] if r['pass3']==3 and (r['min_dist_m'] is None or r['min_dist_m']>=0.05)]
  out={'results':results,'safe_A':safeA,'safe_B':safeB,'intersection':sorted(set(safeA)&set(safeB))}
  (E/'screen/screen.json').write_text(json.dumps(out,indent=2)); print(json.dumps(out,indent=2))

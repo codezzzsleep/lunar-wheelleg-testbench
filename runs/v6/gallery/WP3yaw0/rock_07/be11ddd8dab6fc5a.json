@@ -1,0 +1,79 @@
+{
+  "source": "WP3yaw0",
+  "rock": "rock_07",
+  "view": "0",
+  "candidate": "be11ddd8dab6fc5a9e7afe5fa46bd6b3b0f74df4e097f17ac74abaf8beefee58",
+  "validated": true,
+  "glb": {
+    "path": "runs/v3/generation/cache/be11ddd8dab6fc5a9e7afe5fa46bd6b3b0f74df4e097f17ac74abaf8beefee58/model.glb",
+    "sha256": "2ee609d1e74f43c7a2080095e11f2e9f455c0a56a8ff4becd26be4c3643802c0"
+  },
+  "input_image": {
+    "path": "runs/v4/wp3/crops/rock_07/yaw+0/white/rep1.png",
+    "sha256": "46ddf9696df1ccddce28cc8777a524e2bfa1a2e9ad2bb9efcb92afd8adbd9833"
+  },
+  "observation": {
+    "rgb": "runs/v6/m1/views/rock_07_yaw+0/observation/rgb.png",
+    "depth": "runs/v6/m1/views/rock_07_yaw+0/observation/depth.npy",
+    "mask": "runs/v6/m1/views/rock_07_yaw+0/observation/mask.png",
+    "camera": "runs/v6/m1/views/rock_07_yaw+0/observation/observation.json"
+  },
+  "M_world": [
+    [
+      0.7397346758217023,
+      1.83090757114246,
+      0.0,
+      1.2769403741498506
+    ],
+    [
+      -1.8309075711424598,
+      0.7397346758217023,
+      0.0,
+      0.14354410779096785
+    ],
+    [
+      0.0,
+      0.0,
+      1.9746974261085724,
+      0.09350634249709854
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "admission": {
+    "scale_ratio": 0.9178,
+    "contour_iou": 0.5004,
+    "shell_contact": 0.3865,
+    "hidden_frac": 0.784,
+    "free_intrusion_frac": 0.10775,
+    "thresholds": {
+      "schema": "v5-admission/v1",
+      "calibrated_from": "truth_v2 KA set",
+      "scale_ratio": {
+        "min": 0.889,
+        "max": 1.09
+      },
+      "hidden_frac_min": 0.3578,
+      "shell_contact_min": 0.0486,
+      "free_intrusion_max": 0.2864,
+      "contour_iou_min": 0.7068,
+      "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+    },
+    "admitted": false
+  },
+  "hidden_metrics": {
+    "rear_err_m": -0.1491,
+    "top_err_m": -0.0243,
+    "path_p95_mm": 153.621
+  },
+  "truth": {
+    "asset": "assets/v3/rocks/rock_07/h1/body_vis.obj",
+    "pose": null,
+    "scale": null,
+    "texture": "none"
+  }
+}

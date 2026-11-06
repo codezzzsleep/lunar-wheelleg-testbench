@@ -1,0 +1,84 @@
+{
+  "source": "v3",
+  "rock": "moon_rock_02",
+  "state": "moon_rock_02_h0v1",
+  "candidate": "C1",
+  "validated": true,
+  "glb": {
+    "path": "runs/v3/generation/cache/44bc8b20d798715ee94bdd5a0210ae6fae2d273279688cf8ab198a215e6fe639/model.glb",
+    "sha256": "c75d4f2aae92acd2a6e97239eac50ac3c6c7e0f75fa9c954aa319761d0cba3f5"
+  },
+  "input_image": {
+    "path": "runs/v3/states/moon_rock_02_h0v1/observation/gen/variants/C1.png",
+    "sha256": "b47b0d7bd4029af09b07f88066b12d7caca36fdc0c8674623bcc4bb83b742072"
+  },
+  "observation": {
+    "rgb": "runs/v3/states/moon_rock_02_h0v1/observation/rgb.png",
+    "depth": "runs/v3/states/moon_rock_02_h0v1/observation/depth.npy",
+    "mask": "runs/v3/states/moon_rock_02_h0v1/observation/mask.png",
+    "camera": "runs/v3/states/moon_rock_02_h0v1/observation/observation.json"
+  },
+  "M_world": [
+    [
+      0.5592335247791395,
+      -0.02024640167619652,
+      -0.4929588355648156,
+      1.3547271227583038
+    ],
+    [
+      -0.49265583748278347,
+      -0.06311732242405135,
+      -0.5562974878455862,
+      0.14749780961138315
+    ],
+    [
+      -0.026618717782621183,
+      0.7428100379022476,
+      -0.060705494268846874,
+      0.059378976969301514
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "admission": {
+    "scale_ratio": 0.9833,
+    "contour_iou": 0.9093,
+    "shell_contact": 0.8725,
+    "hidden_frac": 0.851,
+    "free_intrusion_frac": 0.05527,
+    "thresholds": {
+      "schema": "v5-admission/v1",
+      "calibrated_from": "truth_v2 KA set",
+      "scale_ratio": {
+        "min": 0.889,
+        "max": 1.09
+      },
+      "hidden_frac_min": 0.3578,
+      "shell_contact_min": 0.0486,
+      "free_intrusion_max": 0.2864,
+      "contour_iou_min": 0.7068,
+      "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+    },
+    "admitted": true
+  },
+  "hidden_metrics": {
+    "rear_err_m": 0.006,
+    "top_err_m": -0.002,
+    "path_p95_mm": 20.000000000000004,
+    "hidden_iou": 0.8661
+  },
+  "truth": {
+    "asset": "/assets/v3/rocks/moon_rock_02/h0/body_vis.obj",
+    "pose": {
+      "x": 1.35,
+      "y": 0.15,
+      "yaw_deg": 15.0
+    },
+    "scale": 0.1204,
+    "texture": "none"
+  }
+}

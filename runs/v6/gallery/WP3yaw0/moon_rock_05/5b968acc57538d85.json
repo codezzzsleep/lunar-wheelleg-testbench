@@ -1,0 +1,79 @@
+{
+  "source": "WP3yaw0",
+  "rock": "moon_rock_05",
+  "view": "0",
+  "candidate": "5b968acc57538d855cc4a32a541da5041c3f05a21cbbd53dedc1329d58be0d33",
+  "validated": true,
+  "glb": {
+    "path": "runs/v3/generation/cache/5b968acc57538d855cc4a32a541da5041c3f05a21cbbd53dedc1329d58be0d33/model.glb",
+    "sha256": "95041298076dfd96930805050ff318fbe38f2fdc0fffa834cfe914b69975c4d3"
+  },
+  "input_image": {
+    "path": "runs/v4/wp3/crops/moon_rock_05/yaw+0/raw/rep0.png",
+    "sha256": "46c97b6b9b0c2c8fd15d5c940a2ebc3a67a1664c7fb006e92bcc31a1b3a201ed"
+  },
+  "observation": {
+    "rgb": "runs/v6/m1/views/moon_rock_05_yaw+0/observation/rgb.png",
+    "depth": "runs/v6/m1/views/moon_rock_05_yaw+0/observation/depth.npy",
+    "mask": "runs/v6/m1/views/moon_rock_05_yaw+0/observation/mask.png",
+    "camera": "runs/v6/m1/views/moon_rock_05_yaw+0/observation/observation.json"
+  },
+  "M_world": [
+    [
+      -0.5862727529578697,
+      0.9421815517995168,
+      -0.5527569347816529,
+      1.0478578812110322
+    ],
+    [
+      0.06356219355834813,
+      -0.5968497118389893,
+      -1.0847544954454549,
+      -0.02264897211155049
+    ],
+    [
+      -1.090507291608174,
+      -0.5413191214872481,
+      0.23394337353945882,
+      0.060490067895624264
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "admission": {
+    "scale_ratio": 0.9059,
+    "contour_iou": 0.8394,
+    "shell_contact": 0.6016,
+    "hidden_frac": 0.8622,
+    "free_intrusion_frac": 0.08063,
+    "thresholds": {
+      "schema": "v5-admission/v1",
+      "calibrated_from": "truth_v2 KA set",
+      "scale_ratio": {
+        "min": 0.889,
+        "max": 1.09
+      },
+      "hidden_frac_min": 0.3578,
+      "shell_contact_min": 0.0486,
+      "free_intrusion_max": 0.2864,
+      "contour_iou_min": 0.7068,
+      "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+    },
+    "admitted": true
+  },
+  "hidden_metrics": {
+    "rear_err_m": 0.018,
+    "top_err_m": -0.014,
+    "path_p95_mm": 57.0
+  },
+  "truth": {
+    "asset": "assets/v3/rocks/moon_rock_05/h1/body_vis.obj",
+    "pose": null,
+    "scale": null,
+    "texture": "none"
+  }
+}

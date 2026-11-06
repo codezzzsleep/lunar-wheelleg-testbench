@@ -1,0 +1,90 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "n": 6,
+  "tasks": [
+    {
+      "id": "v6_m3_r2e2_raw_r0",
+      "state_id": "m3_route2/E2",
+      "variant": "raw",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/raw/rep0.png",
+      "image_sha256": "2224331b469da980c78c8b6b3f9fcdf3ee57b432556662d0896bebdb08bf00bf",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v6_m3_r2e2_raw_r1",
+      "state_id": "m3_route2/E2",
+      "variant": "raw",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/raw/rep1.png",
+      "image_sha256": "2224331b469da980c78c8b6b3f9fcdf3ee57b432556662d0896bebdb08bf00bf",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 2,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v6_m3_r2e2_white_r0",
+      "state_id": "m3_route2/E2",
+      "variant": "white",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/white/rep0.png",
+      "image_sha256": "ce3ce1ddcae7ba814a4d68db13e7eeee484c9401d0390ee4ba140526564382e6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 3,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v6_m3_r2e2_white_r1",
+      "state_id": "m3_route2/E2",
+      "variant": "white",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/white/rep1.png",
+      "image_sha256": "ce3ce1ddcae7ba814a4d68db13e7eeee484c9401d0390ee4ba140526564382e6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 4,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v6_m3_r2e2_masked_r0",
+      "state_id": "m3_route2/E2",
+      "variant": "masked",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/masked/rep0.png",
+      "image_sha256": "ce3ce1ddcae7ba814a4d68db13e7eeee484c9401d0390ee4ba140526564382e6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 5,
+      "estimated_credits": 20.0
+    },
+    {
+      "id": "v6_m3_r2e2_masked_r1",
+      "state_id": "m3_route2/E2",
+      "variant": "masked",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v6/m3/route2/E2/crops/masked/rep1.png",
+      "image_sha256": "ce3ce1ddcae7ba814a4d68db13e7eeee484c9401d0390ee4ba140526564382e6",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 6,
+      "estimated_credits": 20.0
+    }
+  ]
+}

@@ -1,39 +1,63 @@
 {
-  "n": 122,
-  "n_admitted": 74,
-  "n_bad": 68,
+  "n": 206,
+  "n_admitted": 117,
+  "n_bad": 126,
   "pass_group": {
-    "n": 74,
-    "rear_median": -0.002,
-    "p95_median": 56.125
+    "n": 117,
+    "rear_median": -0.016,
+    "p95_median": 58.0,
+    "rear_q": {
+      "10": -0.13,
+      "25": -0.068,
+      "75": 0.008,
+      "90": 0.034
+    },
+    "p95_q": {
+      "10": 15.88,
+      "25": 39.0,
+      "75": 95.0,
+      "90": 123.83
+    }
   },
   "reject_group": {
-    "n": 48,
-    "rear_median": -0.117,
-    "p95_median": 97.0
+    "n": 89,
+    "rear_median": -0.136,
+    "p95_median": 118.45,
+    "rear_q": {
+      "10": -0.212,
+      "25": -0.184,
+      "75": -0.06,
+      "90": -0.013
+    },
+    "p95_q": {
+      "10": 48.96,
+      "25": 83.0,
+      "75": 143.0,
+      "90": 153.621
+    }
   },
   "confusion": {
-    "tp": 29,
-    "fp": 45,
-    "fn": 39,
-    "tn": 9,
-    "sensitivity": 0.426,
-    "specificity": 0.167,
-    "precision": 0.392
+    "tp": 52,
+    "fp": 65,
+    "fn": 74,
+    "tn": 15,
+    "sensitivity": 0.413,
+    "specificity": 0.188,
+    "precision": 0.444
   },
   "spearman_abs_rear": {
-    "scale_ratio": -0.128,
-    "hidden_frac": -0.495,
-    "shell_contact": -0.644,
-    "free_intrusion_frac": 0.462,
-    "contour_iou": -0.584
+    "scale_ratio": -0.165,
+    "hidden_frac": -0.37,
+    "shell_contact": -0.685,
+    "free_intrusion_frac": 0.253,
+    "contour_iou": -0.653
   },
   "by_rock": {
     "moon_rock_01": {
-      "n": 6,
+      "n": 18,
       "adm": 0,
-      "bad": 6,
-      "rear_median": -0.158
+      "bad": 18,
+      "rear_median": -0.156
     },
     "moon_rock_01_h0v0": {
       "n": 6,
@@ -54,10 +78,10 @@
       "rear_median": -0.105
     },
     "moon_rock_02": {
-      "n": 6,
-      "adm": 6,
-      "bad": 0,
-      "rear_median": -0.003
+      "n": 18,
+      "adm": 16,
+      "bad": 6,
+      "rear_median": -0.008
     },
     "moon_rock_02_h0v1": {
       "n": 6,
@@ -78,10 +102,10 @@
       "rear_median": -0.015
     },
     "moon_rock_03": {
-      "n": 6,
-      "adm": 4,
-      "bad": 6,
-      "rear_median": -0.068
+      "n": 18,
+      "adm": 14,
+      "bad": 18,
+      "rear_median": -0.076
     },
     "moon_rock_03_h1v0": {
       "n": 4,
@@ -96,10 +120,10 @@
       "rear_median": -0.128
     },
     "moon_rock_04": {
-      "n": 5,
+      "n": 17,
       "adm": 0,
-      "bad": 5,
-      "rear_median": -0.12
+      "bad": 12,
+      "rear_median": -0.156
     },
     "moon_rock_04_h0v1": {
       "n": 4,
@@ -144,21 +168,21 @@
       "rear_median": 0.026
     },
     "moon_rock_06": {
-      "n": 6,
-      "adm": 2,
-      "bad": 6,
-      "rear_median": -0.06
+      "n": 18,
+      "adm": 10,
+      "bad": 17,
+      "rear_median": -0.058
     },
     "moon_rock_07": {
-      "n": 6,
-      "adm": 1,
-      "bad": 0,
-      "rear_median": -0.012
+      "n": 18,
+      "adm": 11,
+      "bad": 1,
+      "rear_median": -0.026
     },
     "rock_07": {
-      "n": 6,
-      "adm": 0,
-      "bad": 6,
+      "n": 18,
+      "adm": 5,
+      "bad": 15,
       "rear_median": -0.151
     }
   }

@@ -1,0 +1,54 @@
+{
+  "schema": "observation/v1",
+  "rock": "moon_rock_02",
+  "camera": {
+    "camera_schema": "camera-snapshot/v2",
+    "world_pos": [
+      0.4890076023151827,
+      -0.30148734865366444,
+      0.47000000000000003
+    ],
+    "R_world_from_camera": [
+      [
+        0.4226182617406994,
+        0.387977987761052,
+        -0.8190646408288873
+      ],
+      [
+        -0.9063077870366496,
+        0.18091710688854498,
+        -0.38193611454248355
+      ],
+      [
+        5.551115123125783e-17,
+        0.9037378388935384,
+        0.4280863447390447
+      ]
+    ],
+    "fovy_deg": 45.0,
+    "image_width": 1600,
+    "image_height": 1200,
+    "intrinsics": {
+      "fx": 1448.528137423857,
+      "fy": 1448.528137423857,
+      "cx": 799.5,
+      "cy": 599.5,
+      "width": 1600,
+      "height": 1200
+    },
+    "depth_convention": "positive_camera_minus_z",
+    "view_yaw_deg": 25.0,
+    "source_rock": "moon_rock_02",
+    "level": "h1"
+  },
+  "intrinsics": {
+    "fx": 1448.528137423857,
+    "fy": 1448.528137423857,
+    "cx": 799.5,
+    "cy": 599.5,
+    "width": 1600,
+    "height": 1200
+  },
+  "image": "rgb.png",
+  "camera_schema": "camera-snapshot/v2"
+}

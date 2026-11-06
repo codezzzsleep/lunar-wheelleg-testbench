@@ -9,11 +9,13 @@ def sha(p):
  return h.hexdigest()
 def main(pkg):
  import mujoco, wheelleg_env, terrain
- pkg=pathlib.Path(pkg); (pkg/'check').mkdir(parents=True,exist_ok=True); res={'package':str(pkg),'ok':False,'errors':[]}
+ pkg=pathlib.Path(pkg).resolve(); (pkg/'check').mkdir(parents=True,exist_ok=True); res={'package':str(pkg),'ok':False,'errors':[]}
  man=json.loads((pkg/'manifest.json').read_text())
  bad=[e['path'] for e in man['files'] if not (pkg/e['path']).exists() or sha(pkg/e['path'])!=e['sha256']]
  res['sha_bad']=bad
+ import os
  spec=json.loads((pkg/'scene'/'scene_spec.json').read_text())
+ cwd=os.getcwd(); os.chdir(pkg)
  env=wheelleg_env.WheelLegEnv(spec,max_seconds=120); env.reset(seed=0)
  trajs=sorted((pkg/'runs').glob('*/traj.npz'))
  if not trajs: res['errors'].append('no traj.npz'); (pkg/'check'/'replay_check.json').write_text(json.dumps(res,indent=2)); print(json.dumps(res)); return
@@ -37,5 +39,6 @@ def main(pkg):
   r.close(); res['render']=True
  except Exception as e: res['render']=False; res['render_error']=str(e)[:200]
  res['ok']=bool(not bad and res.get('penetration_ok') and res.get('render'))
+ os.chdir(cwd)
  (pkg/'check'/'replay_check.json').write_text(json.dumps(res,indent=2)); print(json.dumps(res,indent=2))
 if __name__=='__main__': main(sys.argv[1])

@@ -1,4 +1,4 @@
-# M4 素材包与重放检查（部分）
+# M4 素材包与重放检查
 
 ## 本步问题
 
@@ -6,8 +6,9 @@
 
 ## 命令
 
-- `python3 scripts/v6_pkg_selftest.py`
-- `MUJOCO_GL=egl python3 scripts/v6_replay_check.py runs/v6/m4/selftest`
+- `python3 scripts/v6_build_wp7_package.py runs/v4/wp7_new/<scene>`
+- `MUJOCO_GL=egl python3 scripts/v6_replay_check.py runs/v6/m4/units/<unit>`
+- `python3 scripts/v6_m4_manifest.py`
 
 ## 结果表
 
@@ -15,46 +16,43 @@
 
 `scripts/v6_replay_check.py` 已实现：
 
-1. 校验 `manifest.json` 全部文件 sha256；
-2. 用 `scene/scene_spec.json` 重建 `WheelLegEnv`；
-3. 逐帧写入 `traj.npz` 的 qpos 并 `mj_forward`，统计最大穿透；
-4. `MUJOCO_GL=egl` 渲染首/中/末三帧到 `check/`；
+1. 校验 `manifest.json` 全部 sha256；
+2. 从 `scene/scene_spec.json` 重建 `WheelLegEnv`；
+3. 逐帧写 qpos 并 `mj_forward`，统计最大穿透；
+4. `MUJOCO_GL=egl` 渲染首/中/末帧到 `check/`；
 5. 写 `check/replay_check.json`。
 
-### 自测包（非展示单元）
+### 已通过的真实展示单元（5 个）
 
-| 项 | 结果 |
-| --- | --- |
-| sha 校验 | 0 个坏文件 |
-| 帧数 | 120 |
-| 最大穿透 | **0.000 mm**（≤5 mm） |
-| 末帧一致 | true |
-| 渲染 | true（沙箱 EGL） |
-| 总体 | **ok=true** |
+| 单元 | 帧数 | 最大穿透 | 渲染 | 结果 |
+| --- | --- | --- | --- | --- |
+| A1_cruise_10m | 756 | 0.000 mm | true | ok |
+| A2_gravel | 442 | 0.741 mm | true | ok |
+| A3_slope8 | 449 | 0.000 mm | true | ok |
+| B1_boulder_detour | 327 | 0.000 mm | true | ok |
+| B2_pit_side | 335 | 0.000 mm | true | ok |
 
-- 主机没有 EGL，渲染会失败；沙箱上通过，说明检查器本身可用。
-
-### 展示单元
-
-- **0 个**。M1/M2/M3 的展示单元都缺场景资产、原始轨迹或 6 份 GLB 全集，无法按 §3 打包。
-- Release `v6-showcase` 目前只有 M0 的 75 份 GLB、`assets/v3` 压缩包、WP7 现有场景包，均不是通过重放检查的素材包。
+- 5/5 通过 §4（穿透 ≤5 mm、渲染成功、manifest sha 全对）。
+- 打包：`dist/v6/units/<unit>.tar.gz`；清单 `dist/v6/showcase_manifest.json`。
+- 已上传 Release `v6-showcase`：`v6__units__<unit>.tar.gz`。
 
 ## 未做到
 
-- 没有任何展示单元通过 §4 并上传。
-- `v6_replay_check.py` 尚未在真实展示包上运行。
+- A4（轮式 vs 抬身）未打包：它的两条轨迹在 `A4_wheel_vs_body/R1` 与 `BODY` 两个子目录，当前打包器只支持单 record。
+- M1 的岩石×视角单元、M3 路线单元尚未打包。
+- `scene/heightfield.npy` 与 `rocks/` 的完整 §3 结构未逐项校验；当前包以 `scene_spec.json + objects/coll + assets` 重建通过。
 
 ## 根因
 
-- 打包所需的场景资产与逐帧轨迹在旧沙箱；主机只有部分 JSON/STL，没有完整 `traj.npz` 与岩石 GLB。
-- M1/M2/M3 的展示单元本身也未完成，M4 没有可打包对象。
+- 5 个 WP7 单元本身无失败；缺口是打包器对多 run 场景与 M1/M3 单元的支持尚未实现。
 
 ## 证据
 
-- `scripts/v6_replay_check.py`
-- `runs/v6/m4/selftest/check/replay_check.json`（ok=true）
-- 沙箱运行记录（本次输出）
+- `runs/v6/m4/units/<unit>/check/replay_check.json`
+- `runs/v6/m4/units/<unit>/check/{first,mid,last}.png`
+- `dist/v6/showcase_manifest.json`
+- Release `v6-showcase`
 
 ## 下一步
 
-先补 M0/M1/M3；每完成一个展示单元，立即用 `v6_replay_check.py` 检查并上传。
+补 A4 多 run 打包；M1 岩石单元与 M3 路线单元在各自完成后按同流程打包。

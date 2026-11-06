@@ -1,0 +1,56 @@
+{
+  "schema": "v6-showcase-manifest/v1",
+  "baseline": "7d0d3cd5c",
+  "units": [
+    {
+      "unit": "A1_cruise_10m",
+      "package": "runs/v6/m4/units/A1_cruise_10m",
+      "tarball": "dist/v6/units/A1_cruise_10m.tar.gz",
+      "sha256": "283000219773048853f2bb5538c3a1b5bb423c28cb8993cca13ffe923b957def",
+      "bytes": 137611,
+      "replay_ok": true,
+      "release_asset": "v6/units/A1_cruise_10m.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "A2_gravel",
+      "package": "runs/v6/m4/units/A2_gravel",
+      "tarball": "dist/v6/units/A2_gravel.tar.gz",
+      "sha256": "bd4ec1368b9e9a09ebd44edb3a1edce384e5608399394d23c47e91dd2dd68555",
+      "bytes": 98815,
+      "replay_ok": true,
+      "release_asset": "v6/units/A2_gravel.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "A3_slope8",
+      "package": "runs/v6/m4/units/A3_slope8",
+      "tarball": "dist/v6/units/A3_slope8.tar.gz",
+      "sha256": "20dfd4eeae6212bc88e1eae58b49d91cc5bea4cd770b74eb481969472d0e8562",
+      "bytes": 87322,
+      "replay_ok": true,
+      "release_asset": "v6/units/A3_slope8.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "B1_boulder_detour",
+      "package": "runs/v6/m4/units/B1_boulder_detour",
+      "tarball": "dist/v6/units/B1_boulder_detour.tar.gz",
+      "sha256": "03814713e021c8d62910b214d28c391ed47d0f1a1c54981a651660bc048ee11d",
+      "bytes": 303496,
+      "replay_ok": true,
+      "release_asset": "v6/units/B1_boulder_detour.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "B2_pit_side",
+      "package": "runs/v6/m4/units/B2_pit_side",
+      "tarball": "dist/v6/units/B2_pit_side.tar.gz",
+      "sha256": "1f60d419fe7c4c2055febc6e6d70a84777c4951973a93e67baac8cb3619e45c3",
+      "bytes": 75537,
+      "replay_ok": true,
+      "release_asset": "v6/units/B2_pit_side.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    }
+  ]
+}

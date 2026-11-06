@@ -69,6 +69,7 @@ def main(pkg):
  # follow-camera renders (robot ~1/3 frame height)
  try:
   import os; os.environ.setdefault('MUJOCO_GL','egl')
+  (pkg/'check').mkdir(exist_ok=True)
   r=mujoco.Renderer(m,480,640); cam=mujoco.MjvCamera(); frames_ok=[]
   q=qs[0] if qs else None
   if q is not None:

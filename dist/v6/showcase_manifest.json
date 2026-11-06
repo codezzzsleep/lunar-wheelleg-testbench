@@ -9,7 +9,7 @@
       "sha256": "38e63448c7aa499e1407516930a394b74b835165ec0d63e3a51f898d2cc27a09",
       "bytes": 6712913,
       "replay_ok": true,
-      "release_asset": "v6r1/units/A1_cruise_10m.tar.gz",
+      "release_asset": "v6/units/A1_cruise_10m.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -19,7 +19,7 @@
       "sha256": "af4a06fe3da128cf637c2d0bff5ff604b9d88ec4bd0b588c6e49f89dfd38ee76",
       "bytes": 6673822,
       "replay_ok": true,
-      "release_asset": "v6r1/units/A2_gravel.tar.gz",
+      "release_asset": "v6/units/A2_gravel.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -29,7 +29,7 @@
       "sha256": "008990dd02337c478464ef5c5a5b1352e8164e53a3bea1925815250bd6ed60fe",
       "bytes": 6661985,
       "replay_ok": true,
-      "release_asset": "v6r1/units/A3_slope8.tar.gz",
+      "release_asset": "v6/units/A3_slope8.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -39,7 +39,7 @@
       "sha256": "90e703533ef9248bda7142d3816c024a46dda8d6409c8218c8e4b514e45269e8",
       "bytes": 6744679,
       "replay_ok": true,
-      "release_asset": "v6r1/units/A4_BODY.tar.gz",
+      "release_asset": "v6/units/A4_BODY.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -49,7 +49,7 @@
       "sha256": "35e9be8d5a4d404131c8fbfa63340cf017be5aee85f8ee906cbfc6e8b0648517",
       "bytes": 6659084,
       "replay_ok": true,
-      "release_asset": "v6r1/units/A4_R1.tar.gz",
+      "release_asset": "v6/units/A4_R1.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -59,7 +59,7 @@
       "sha256": "3e2c4a6ff85e4c42cee1931dd52d99cff90d27b2c12f23dd3287a8bc519d8990",
       "bytes": 6877308,
       "replay_ok": true,
-      "release_asset": "v6r1/units/B1_boulder_detour.tar.gz",
+      "release_asset": "v6/units/B1_boulder_detour.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     },
     {
@@ -69,7 +69,27 @@
       "sha256": "c7e38c7363c7864e5f1d5b0461a1123462495b08dff083298811d5394d5013bf",
       "bytes": 6651234,
       "replay_ok": true,
-      "release_asset": "v6r1/units/B2_pit_side.tar.gz",
+      "release_asset": "v6/units/B2_pit_side.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "M3_route2_full",
+      "package": "runs/v6/m4/units/M3_route2_full",
+      "tarball": "dist/v6/units/M3_route2_full.tar.gz",
+      "sha256": "2745beb41e972d4b367a20ee5f2e94b4f4b49fbcbe1ad5e97d3808059fe0dc0e",
+      "bytes": 7937300,
+      "replay_ok": true,
+      "release_asset": "v6r2/units/M3_route2_full.tar.gz",
+      "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
+    },
+    {
+      "unit": "M3_route2_obs",
+      "package": "runs/v6/m4/units/M3_route2_obs",
+      "tarball": "dist/v6/units/M3_route2_obs.tar.gz",
+      "sha256": "191a3b9bcdd84413c34d943a42a24cea54c1480d890eaed7ff2206d13e4fbefb",
+      "bytes": 7849348,
+      "replay_ok": true,
+      "release_asset": "v6r2/units/M3_route2_obs.tar.gz",
       "source": "scripts/v6_build_wp7_package.py + v6_replay_check.py"
     }
   ]

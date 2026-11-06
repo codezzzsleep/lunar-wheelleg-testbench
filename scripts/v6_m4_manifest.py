@@ -2,7 +2,7 @@ import hashlib,json,pathlib,subprocess
 ROOT=pathlib.Path(__file__).resolve().parent.parent
 units=[]; base=ROOT/'runs/v6/m4/units'
 for u in sorted(base.iterdir()):
- if not u.is_dir(): continue
+ if not u.is_dir() or u.name in ('M3_route_full','M3_route_obs'): continue
  chk=u/'check'/'replay_check.json'
  if not chk.exists(): continue
  ok=json.loads(chk.read_text()).get('ok')

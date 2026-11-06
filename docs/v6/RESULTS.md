@@ -72,9 +72,9 @@
 - 上述缺口的共同根因：旧沙箱回收导致输入图、GLB、逐动作预演记录与 API 密钥丢失。
 
 
-## M3 连续路线（三遭遇，**待核**）
+## M3 连续路线（三遭遇，R2 重跑）
 
-> R1 复核发现两臂轨迹 qpos 逐帧完全相同，与决策不同矛盾；查明前本节数字不得引用。
+> 旧 R1 两臂 qpos 相同的包已废弃；以下为 R2 重建后的结果。
 
 
 | 项 | FULL | OBS_CONS | 来源 | 样本 |
@@ -85,9 +85,9 @@
 | E1 单独执行 | pass 52.48 s | pass 52.44 s | 同上 | 各 1 |
 | E2 第一眼 | 0/6 准入 | 0/6 | `runs/v6/m3/E2/admission_local.csv` | 6 |
 | E2 第二眼 imgs | 0/4 准入 | 0/4 | `runs/v6/m3/E2/admission_second.csv` | 4 |
-| 连续路线终点 | x=13.51，62.38 s | x=13.51，62.38 s | `runs/v6/m3/route/*/result.json` | 各 1 |
-| 结局 | 停在第 3 个遭遇 E2 | 同左 | 同上 | 各 1 |
-| 重放 | 3119 帧，0.000 mm | 3119 帧，0.000 mm | `dist/v6/showcase_manifest.json` | 各 1 |
+| 连续路线终点 | x=21.74，63.12 s | x=22.03，55.08 s | `runs/v6/m3/route2/run_*/result.json` | 各 1 |
+| 结局 | success | success | 同上 | 各 1 |
+| 重放 | 3156 帧，0.804 mm，20 障碍 | 2754 帧，0.804 mm，20 障碍 | `dist/v6/showcase_manifest.json` | 各 1 |
 
 - 两臂都在 E2 全拒后 A0 停车；E1 动作不同、结局相同。
 

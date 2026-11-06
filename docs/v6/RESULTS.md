@@ -6,16 +6,16 @@
 
 | 数字 | 值 | 来源 | 样本 |
 | --- | --- | --- | --- |
-| 候选总数 | 122 | `runs/v6/m1/checkup_all.csv` | v3 75 + WP3 yaw0 47 |
-| 准入通过 | 74 | 同上 | 122 |
-| 坏想象（|rear|>5 cm 或 P95>80 mm） | 68 | `runs/v6/m1/selfcheck.json` | 122 |
-| 通过组 rear 中位数 | −0.002 m | `selfcheck.json` | 74 |
-| 通过组 path P95 中位数 | 56.1 mm | 同上 | 74 |
-| 拒绝组 rear 中位数 | −0.117 m | 同上 | 48 |
-| 拒绝组 path P95 中位数 | 97.0 mm | 同上 | 48 |
-| 敏感度 / 特异度 / 精确率 | 0.426 / 0.167 / 0.392 | 同上 | 122 |
-| shell_contact 与 |rear| Spearman | −0.644 | 同上 | 122 |
-| contour_iou 与 |rear| Spearman | −0.584 | 同上 | 122 |
+| 候选总数 | 218（206 有完整指标） | `runs/v6/m1/checkup_all.csv` | v3 75 + WP3 143 |
+| 准入通过 | 117 | 同上 | 206 |
+| 坏想象（|rear|>5 cm 或 P95>80 mm） | 126 | `runs/v6/m1/selfcheck.json` | 206 |
+| 通过组 rear 中位数 | −0.016 m | `selfcheck.json` | 117 |
+| 通过组 path P95 中位数 | 58.0 mm | 同上 | 117 |
+| 拒绝组 rear 中位数 | −0.136 m | 同上 | 89 |
+| 拒绝组 path P95 中位数 | 118.5 mm | 同上 | 89 |
+| 敏感度 / 特异度 / 精确率 | 0.413 / 0.188 / 0.444 | 同上 | 206 |
+| shell_contact 与 |rear| Spearman | −0.685 | 同上 | 206 |
+| contour_iou 与 |rear| Spearman | −0.653 | 同上 | 206 |
 
 ## V5 定量结论（沿用）
 
@@ -41,9 +41,9 @@
 | 数字 | 值 | 来源 | 样本 |
 | --- | --- | --- | --- |
 | 任务总数 | 234 | `dist/v6/lux3d_manifest.json` | 234 |
-| 已恢复 | 75 | 同上 | 75 |
-| 失联 | 159 | 同上 | 159 |
-| 已上传 GLB | 见 Release `v6-showcase` | `/tmp/v6upload.log` | 75 |
+| 已恢复/重建 | 241 | 同上 | 241 |
+| 失联 | 15 | 同上 | 15 |
+| 已上传 GLB | 75 旧 + 22 v3 重建 + 144 WP3 | Release `v6-showcase` / LFS | 241 |
 
 ## M3 连续路线
 

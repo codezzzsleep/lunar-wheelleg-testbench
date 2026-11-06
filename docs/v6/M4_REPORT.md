@@ -22,7 +22,7 @@
 4. `MUJOCO_GL=egl` 渲染首/中/末帧到 `check/`；
 5. 写 `check/replay_check.json`。
 
-### 已通过的真实展示单元（5 个）
+### 已通过的真实展示单元（7 个）
 
 | 单元 | 帧数 | 最大穿透 | 渲染 | 结果 |
 | --- | --- | --- | --- | --- |
@@ -31,14 +31,16 @@
 | A3_slope8 | 449 | 0.000 mm | true | ok |
 | B1_boulder_detour | 327 | 0.000 mm | true | ok |
 | B2_pit_side | 335 | 0.000 mm | true | ok |
+| A4_R1 | 441 | 0.000 mm | true | ok |
+| A4_BODY | 936 | 0.000 mm | true | ok |
 
-- 5/5 通过 §4（穿透 ≤5 mm、渲染成功、manifest sha 全对）。
+- 7/7 通过 §4（穿透 ≤5 mm、渲染成功、manifest sha 全对）。
 - 打包：`dist/v6/units/<unit>.tar.gz`；清单 `dist/v6/showcase_manifest.json`。
 - 已上传 Release `v6-showcase`：`v6__units__<unit>.tar.gz`。
 
 ## 未做到
 
-- A4（轮式 vs 抬身）未打包：它的两条轨迹在 `A4_wheel_vs_body/R1` 与 `BODY` 两个子目录，当前打包器只支持单 record。
+- A4 已用 `runs/v4/wp7/A4_scene.json` 分别打包成 `A4_R1` 与 `A4_BODY`，两者均通过。
 - M1 的岩石×视角单元、M3 路线单元尚未打包。
 - `scene/heightfield.npy` 与 `rocks/` 的完整 §3 结构未逐项校验；当前包以 `scene_spec.json + objects/coll + assets` 重建通过。
 

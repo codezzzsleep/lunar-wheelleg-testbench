@@ -81,7 +81,7 @@ def phase_e1_capture():
  gm=json.loads((OUT/'E1'/'geometry.json').read_text()) if (OUT/'E1'/'geometry.json').exists() else None
  stop=7.5
  if gm:
-  spec['objects'][1]={'mesh_file':gm['rock_mesh'],'x':9.0,'y':0.1,'target_height_m':gm['height']}
+  spec['objects'][1]={'mesh_file':str(ROOT/gm['rock_mesh'] if not str(gm['rock_mesh']).startswith('/') else gm['rock_mesh']),'x':9.0,'y':0.1,'target_height_m':gm['height']}
   spec['front_cam']={'pos':gm['cam_local'],'pitch_deg':gm['pitch_deg'],'fovy':70.0}
   stop=9.0-gm['delta_x']
  env=wheelleg_env.WheelLegEnv(spec,max_seconds=200); env.reset(seed=0); BASE=np.array([[0,0.85,-1.65]]*4)
@@ -108,7 +108,8 @@ def phase_e1_capture():
  camj={'camera_schema':'camera-snapshot/v2','world_pos':np.array(d.cam_xpos[cid],float).tolist(),'R_world_from_camera':np.array(d.cam_xmat[cid],float).reshape(3,3).tolist(),'fovy_deg':70.0,'image_width':1600,'image_height':1200,'intrinsics':{'fx':0.5*1200/np.tan(np.deg2rad(70)/2),'fy':0.5*1200/np.tan(np.deg2rad(70)/2),'cx':799.5,'cy':599.5,'width':1600,'height':1200},'depth_convention':'positive_camera_minus_z'}
  (od/'camera.json').write_text(json.dumps(camj,indent=2)); (od/'observation.json').write_text(json.dumps({'schema':'observation/v1','rock':'moon_rock_02','camera':camj,'intrinsics':camj['intrinsics'],'image':'rgb.png'},indent=2))
  np.savez(OUT/'E1'/'state.npz',qpos=np.asarray(d.qpos,float),qvel=np.asarray(d.qvel,float),t=float(env.t))
- print(json.dumps({'phase':'e1_capture','x':float(d.qpos[0]),'t':float(env.t),'mask':int((mask>0).sum())}))
+ bid=mujoco.mj_name2id(m,mujoco.mjtObj.mjOBJ_BODY,'obstacle1') if m.nbody>1 else -1
+ print(json.dumps({'phase':'e1_capture','x':float(d.qpos[0]),'t':float(env.t),'mask':int((mask>0).sum()),'term':getattr(env,'last_termination',None),'rock_xpos':(np.array(d.xpos[bid]).tolist() if bid>=0 else None),'cam_pos':np.array(d.cam_xpos[cid]).tolist()},default=str))
 
 if __name__=='__main__':
  cmd=sys.argv[1] if len(sys.argv)>1 else 'phase1'

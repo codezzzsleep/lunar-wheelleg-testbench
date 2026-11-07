@@ -3,7 +3,7 @@ import hashlib,json,pathlib,sys,time,zipfile
 ROOT=pathlib.Path(__file__).resolve().parent.parent; sys.path.insert(0,str(ROOT/'scripts'))
 import imagine,lux3d_client as LC
 import argparse
-ap=argparse.ArgumentParser(); ap.add_argument('request'); ap.add_argument('--adopt',default='{}'); a=ap.parse_args()
+ap=argparse.ArgumentParser(); ap.add_argument('request'); ap.add_argument('--adopt',default='{}'); ap.add_argument('--glb-root',default='assets/v7/lux'); a=ap.parse_args()
 ADOPT=json.loads(a.adopt); req_path=pathlib.Path(a.request).resolve(); req=json.loads(req_path.read_text()); look=req_path.parent
 cache=look/'lux_cache'; cache.mkdir(parents=True,exist_ok=True)
 def sha(p): return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
@@ -34,7 +34,7 @@ for it in req['items']:
   glb=glb_from(files,cache/str(tid))
  dd=glb.parent if glb else None
  if glb:
-  dst=ROOT/'assets/v7/lux'/str(tid)/'tex_mesh.glb'; dst.parent.mkdir(parents=True,exist_ok=True)
+  dst=ROOT/a.glb_root/str(tid)/'tex_mesh.glb'; dst.parent.mkdir(parents=True,exist_ok=True)
   dst.write_bytes(glb.read_bytes()); gsha=sha(dst)
   LC.append_ledger({'event':'v7_multi_downloaded','task_id':tid,'item':it['id'],'glb':str(dst.relative_to(ROOT)),'glb_sha256':gsha,'n_images':2})
   tasks.append({'id':it['id'],'task_id':tid,'status':'ok','submitted_at':at,'finished_at':time.strftime('%Y-%m-%dT%H:%M:%S%z'),'fetched_at':time.strftime('%Y-%m-%dT%H:%M:%S%z'),'glb':str(dst.relative_to(ROOT)),'glb_sha256':gsha,'inputs':[it['paths'][0],it['paths'][1]],'api_field':'imgs','n_images':2})

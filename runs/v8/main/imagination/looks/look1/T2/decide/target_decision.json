@@ -1,0 +1,288 @@
+{
+  "schema": "v8-target-decision/v1",
+  "metric_version": 2,
+  "obs": "/workspace/lunar-lab/runs/v8/main/imagination/looks/look1/T2",
+  "grid": {
+    "pitch": 0.00529,
+    "dims": [
+      313,
+      293,
+      103
+    ]
+  },
+  "volume_stats": {
+    "n_voxels": 9446027,
+    "n_free": 2806756,
+    "n_band": 18877,
+    "n_unknown": 6620394,
+    "n_in_fov": 9446027,
+    "n_masked_fov": 1622254,
+    "n_shell": 18877,
+    "valid_depth_frac": 0.799627,
+    "free_eps_m": 0.007935000000000001,
+    "band_m": 0.013225,
+    "shell_offset_m": 0.002645,
+    "pitch_m": 0.00529,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "thresholds": {
+    "schema": "v5-admission/v1",
+    "calibrated_from": "truth_v2 KA set",
+    "scale_ratio": {
+      "min": 0.889,
+      "max": 1.09
+    },
+    "hidden_frac_min": 0.3578,
+    "shell_contact_min": 0.0486,
+    "free_intrusion_max": 0.2864,
+    "contour_iou_min": 0.7068,
+    "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+  },
+  "candidates": [
+    {
+      "scale_ratio": 0.6351,
+      "hidden_frac": 0.9214,
+      "shell_contact": 0.3744,
+      "free_intrusion_frac": 0.02106,
+      "intrusion_depth_p95_mm": 22.44,
+      "voxels": 194481,
+      "contour_iou": 0.4747,
+      "scale_ratio_v5": 0.7015,
+      "id": "A1",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look1/T2/A1/tex_mesh.glb",
+      "M": [
+        [
+          0.08000045773481956,
+          0.34737310816007977,
+          -0.8026162984626493,
+          4.160910950367932
+        ],
+        [
+          0.8677358393680099,
+          0.06898415641088039,
+          0.11634763129961959,
+          0.7729446159909191
+        ],
+        [
+          0.10906654806571989,
+          -0.8036380914067879,
+          -0.3369441766844213,
+          0.08566927755142931
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.4747,
+        "mask_iou_all_pixels": 0.3767,
+        "outside_lit_px": 1915,
+        "in_dark_px": 409,
+        "occluded_px": 1762,
+        "depth_median_mm": 16.149,
+        "depth_p95_mm": 108.459,
+        "visible_median_mm": 26.488,
+        "visible_p95_mm": 194.267,
+        "n_candidate_pixels": 6287,
+        "n_mask_pixels": 8195
+      },
+      "footprint_cells": 75,
+      "footprint_x": [
+        6.175000000000001,
+        6.625
+      ],
+      "footprint_y": [
+        0.07500000000000018,
+        0.4750000000000001
+      ]
+    },
+    {
+      "scale_ratio": 0.9865,
+      "hidden_frac": 0.9198,
+      "shell_contact": 0.529,
+      "free_intrusion_frac": 0.04548,
+      "intrusion_depth_p95_mm": 37.03,
+      "voxels": 490823,
+      "contour_iou": 0.6972,
+      "scale_ratio_v5": 1.0896,
+      "id": "A2",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look1/T2/A2/tex_mesh.glb",
+      "M": [
+        [
+          -0.8104445739572138,
+          -0.602240158924428,
+          1.548767304903096,
+          4.295634154620677
+        ],
+        [
+          0.20926144202635547,
+          1.6724402236026337,
+          0.75983361900605,
+          0.8799347159604202
+        ],
+        [
+          -1.6485093335007792,
+          0.5083741443754489,
+          -0.6649560044891516,
+          0.23215729400331045
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.6972,
+        "mask_iou_all_pixels": 0.4119,
+        "outside_lit_px": 6015,
+        "in_dark_px": 1050,
+        "occluded_px": 5194,
+        "depth_median_mm": 27.354,
+        "depth_p95_mm": 158.799,
+        "visible_median_mm": 19.177,
+        "visible_p95_mm": 71.747,
+        "n_candidate_pixels": 13351,
+        "n_mask_pixels": 8195
+      },
+      "footprint_cells": 157,
+      "footprint_x": [
+        6.175000000000001,
+        7.025
+      ],
+      "footprint_y": [
+        0.07500000000000018,
+        0.7250000000000001
+      ]
+    },
+    {
+      "scale_ratio": 0.8514,
+      "hidden_frac": 0.7593,
+      "shell_contact": 0.3774,
+      "free_intrusion_frac": 0.11218,
+      "intrusion_depth_p95_mm": 28.49,
+      "voxels": 110411,
+      "contour_iou": 0.4684,
+      "scale_ratio_v5": 0.9403,
+      "id": "C1",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look1/T2/C1/tex_mesh.glb",
+      "M": [
+        [
+          -0.18389557078830007,
+          0.09120680607743381,
+          0.20170995280026147,
+          4.089381800079938
+        ],
+        [
+          -0.2172088988498753,
+          -0.02372466212987963,
+          -0.18729816378259764,
+          0.8754114402689431
+        ],
+        [
+          -0.0427303263965413,
+          -0.27192209623541447,
+          0.08399797779749432,
+          0.0829388937270109
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.4684,
+        "mask_iou_all_pixels": 0.3357,
+        "outside_lit_px": 3098,
+        "in_dark_px": 1470,
+        "occluded_px": 2146,
+        "depth_median_mm": 21.426,
+        "depth_p95_mm": 159.861,
+        "visible_median_mm": 31.289,
+        "visible_p95_mm": 183.022,
+        "n_candidate_pixels": 8852,
+        "n_mask_pixels": 8195
+      },
+      "footprint_cells": 64,
+      "footprint_x": [
+        6.175000000000001,
+        6.525
+      ],
+      "footprint_y": [
+        0.07500000000000018,
+        0.625
+      ]
+    },
+    {
+      "scale_ratio": 0.8378,
+      "hidden_frac": 0.7438,
+      "shell_contact": 0.3699,
+      "free_intrusion_frac": 0.12477,
+      "intrusion_depth_p95_mm": 30.39,
+      "voxels": 106863,
+      "contour_iou": 0.4658,
+      "scale_ratio_v5": 0.9254,
+      "id": "C2",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look1/T2/C2/tex_mesh.glb",
+      "M": [
+        [
+          -0.08476183875743887,
+          0.04238129878863236,
+          0.09144814831753623,
+          4.08679992100922
+        ],
+        [
+          -0.09898799396364479,
+          -0.01250049266678799,
+          -0.08595709605030034,
+          0.8831972152002975
+        ],
+        [
+          -0.018981974838537145,
+          -0.12406075456539746,
+          0.039901396406051996,
+          0.07907958048077612
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.4658,
+        "mask_iou_all_pixels": 0.3362,
+        "outside_lit_px": 3057,
+        "in_dark_px": 1511,
+        "occluded_px": 2039,
+        "depth_median_mm": 22.26,
+        "depth_p95_mm": 160.554,
+        "visible_median_mm": 32.376,
+        "visible_p95_mm": 189.062,
+        "n_candidate_pixels": 8859,
+        "n_mask_pixels": 8195
+      },
+      "footprint_cells": 62,
+      "footprint_x": [
+        6.175000000000001,
+        6.525
+      ],
+      "footprint_y": [
+        0.07500000000000018,
+        0.625
+      ]
+    }
+  ],
+  "admitted_ids": []
+}

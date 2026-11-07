@@ -12,3 +12,5 @@
   - T1：6/6 成功（A1、A2、B1、B2、C1、C2）；
   - T2：4/6 成功（A1、A2、C1、C2）；B1、B2 重提一次仍失败，记 `status=failed`；
   - GLB：`assets/v8/lux/main/look1/<T>/<id>/tex_mesh.glb`（10 个，82 MB）。
+- §3.1 第二眼：第一眼决策 `imagined_blocked` → 第二眼（`look2/T2`，imgs 3 个任务，真实两图）。
+- §3.2 第二眼 Lux3D（本机）：M1/M2/M3 **3/3 成功**，均 `api_field=imgs`、`n_images=2`；GLB 在 `assets/v8/lux/main/look2/T2/`。

@@ -1,0 +1,56 @@
+{
+  "schema": "v7-lux-request/v1",
+  "mode": "img",
+  "version": "G1-Turbo",
+  "faceCount": 30000,
+  "items": [
+    {
+      "id": "A_naive1",
+      "variant": "A_naive",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/A_naive1.png"
+    },
+    {
+      "id": "A_naive2",
+      "variant": "A_naive",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/A_naive2.png"
+    },
+    {
+      "id": "B_naive1",
+      "variant": "B_naive",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/B_naive1.png"
+    },
+    {
+      "id": "B_naive2",
+      "variant": "B_naive",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/B_naive2.png"
+    },
+    {
+      "id": "B_depth1",
+      "variant": "B_depth",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/B_depth1.png"
+    },
+    {
+      "id": "B_depth2",
+      "variant": "B_depth",
+      "path": "runs/v7/shadow_exp/moon_rock_07/low_behind/inputs/B_depth2.png"
+    }
+  ],
+  "result_file": "runs/v7/shadow_exp/moon_rock_07/low_behind/lux_result.json",
+  "result_schema": {
+    "tasks": [
+      {
+        "id": "B_depth1",
+        "task_id": "...",
+        "status": "ok|failed",
+        "submitted_at": "...",
+        "finished_at": "...",
+        "fetched_at": "...",
+        "glb": "repo-relative path of tex_mesh.glb",
+        "glb_sha256": "...",
+        "inputs": [
+          "repo-relative input image path"
+        ]
+      }
+    ]
+  }
+}

@@ -10,3 +10,6 @@
   - E1：OBS_CONS 选 R2，pass；E2：R1，pass。
   - 拉回 `runs/v7/route_obs/`：8568 个文件、189 MB，sha256 清单与沙箱逐文件一致。
   - 联系表：`docs/v7/contact_obs.png`（已检查：岩石有贴图、无空心/碎片，地面与天空正常）。
+- §3.4 准备完成：12 个条件（3 岩石 × 4 太阳）的全部 `photo/overlay/obs/inputs/stats/lux_request` 与 `truth_world.stl` 已拉回，195 个文件、209 MB，sha256 与沙箱一致。
+  - 深度分割 IoU：0.9793–0.9823（≥0.9，通过）。
+  - 只看亮度对照：`iou_naive_vs_render` 0.2653–0.9993，`naive_over_truth_px` 0.999–3.684，与 SPEC 表格一致。

@@ -4,3 +4,4 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | cnb-cu4-1k6pbstk8-001 | 2026-11-07T13:58+08:00 | 2026-11-07T14:04+08:00 | `python3 scripts/v4_regress.py`；`python3 scripts/v7/ka9_detour_wiring.py` | `runs/v4/regress/` | 2 个 JSON，约 1.6 KB | 本地复算一致 | 待提交 |
 | cnb-cu4-1k6pbstk8-001 | 2026-11-07T14:06+08:00 | 2026-11-07T14:17+08:00 | `MUJOCO_GL=egl python3 scripts/v7/v7_route.py --arm obs --run runs/v7/route_obs` | `runs/v7/route_obs/` | 8568 个文件，189 MB | 与沙箱 sha256 清单逐文件一致 | 待提交 |
+| cnb-cu4-1k6pbstk8-001 | 2026-11-07T14:30+08:00 | 2026-11-07T14:33+08:00 | `MUJOCO_GL=egl python3 scripts/v7/v7_shadow_exp.py --prepare --out runs/v7/shadow_exp` | `runs/v7/shadow_exp/` | 195 个文件，209 MB | 与沙箱 sha256 清单逐文件一致（195/195） | 待提交 |

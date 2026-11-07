@@ -1,0 +1,5 @@
+# V8 状态
+
+- 安装：`c3bb5848f`（`v8: polar corridor, three robots, dark-aware self-check`）；V8 与 V7.3 的补丁清单分别校验通过（根 `PATCH_SHA256.txt` 为 V8，V7.3 在 `docs/v7/PATCH_SHA256_v73.txt`）。
+- 沙箱：`cnb-0fp-1k6rn0am3-001`，8 核，`mujoco==3.17.0`，另需 `matplotlib`（V8 真值占地检查用）。
+- §2 第 1 次（conservative，`--max-looks 5`）：`result=stuck`、`looks=5`、`sim_time_s=142.2`、`wall_s=32.5`，与预期一致。

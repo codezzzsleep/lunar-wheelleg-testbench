@@ -1,0 +1,15 @@
+{"kind": "look", "k": 1, "label": "first", "pose": [2.292, -0.5, 0.03], "t": 16.08, "cells": {"FREE": 4876, "ROCK": 1289, "DARK": 4946, "HIDDEN": 9195, "UNSEEN": 4894, "NOGO": 0}, "cam_pos": [2.7117, -0.5, 0.3835]}
+{"kind": "plan", "policy": "conservative", "look": 1, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [4.49, 0.6, -47.9], "expected_new_cells": 538, "path": [[4.492, 0.6]]}
+{"kind": "look", "k": 2, "label": "extra1", "pose": [4.475, 0.571, -40.74], "t": 56.1, "cells": {"FREE": 6660, "ROCK": 2083, "DARK": 6371, "HIDDEN": 5192, "UNSEEN": 4894, "NOGO": 0}, "cam_pos": [4.7934, 0.2972, 0.3852]}
+{"kind": "plan", "policy": "conservative", "look": 2, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [4.08, 0.6, -9.2], "expected_new_cells": 130, "path": [[4.075, 0.6]]}
+{"kind": "look", "k": 3, "label": "extra2", "pose": [4.045, 0.501, -3.81], "t": 85.74, "cells": {"FREE": 7951, "ROCK": 2111, "DARK": 6605, "HIDDEN": 3552, "UNSEEN": 4894, "NOGO": 87}, "cam_pos": [4.4642, 0.4731, 0.3854]}
+{"kind": "plan", "policy": "conservative", "look": 3, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [4.05, 0.4, -10.2], "expected_new_cells": 136, "path": [[4.045, 0.4]]}
+{"kind": "look", "k": 4, "label": "extra3", "pose": [4.064, 0.371, -12.12], "t": 113.2, "cells": {"FREE": 8102, "ROCK": 2112, "DARK": 6743, "HIDDEN": 3260, "UNSEEN": 4894, "NOGO": 89}, "cam_pos": [4.4742, 0.2829, 0.3845]}
+{"kind": "plan", "policy": "conservative", "look": 4, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [4.06, 0.4, -10.0], "expected_new_cells": 136, "path": [[4.064, 0.4]]}
+{"kind": "look", "k": 5, "label": "extra4", "pose": [4.033, 0.382, -7.48], "t": 140.2, "cells": {"FREE": 8140, "ROCK": 2115, "DARK": 6886, "HIDDEN": 3076, "UNSEEN": 4894, "NOGO": 89}, "cam_pos": [4.4496, 0.3275, 0.3846]}
+{"kind": "plan", "policy": "conservative", "look": 5, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "result", "policy": "conservative", "tag": "conservative", "see_dark": false, "imagine": null, "result": "stuck", "looks": 5, "final_pose": [4.033, 0.382, -7.39], "sim_time_s": 142.2, "wall_s": 32.5, "collision": null}

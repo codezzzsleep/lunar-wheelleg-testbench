@@ -1,0 +1,197 @@
+{
+  "schema": "v7-decision/v1",
+  "metric_version": 2,
+  "frame": "local",
+  "local_frame": {
+    "x0": 18.03149464787464,
+    "y0": 0.4251046304874759,
+    "yaw0": 0.050132702956249595
+  },
+  "visible": {
+    "x_front": 1.1343785716587291,
+    "y_center": -0.3697055466421242,
+    "W_vis": 0.1408665361494158,
+    "H_vis": 0.10510202958139053,
+    "source": "visible_points (local frame, target-rock mask)"
+  },
+  "channel_half": 1.2,
+  "branch": "accept",
+  "actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2",
+    "BODY_CLEARANCE",
+    "A0"
+  ],
+  "n_candidates": 3,
+  "n_admitted": 1,
+  "full": {
+    "chosen": "R1",
+    "worst_rule": "R1",
+    "votes": {
+      "R1": 1,
+      "R2": 1,
+      "D1": 1,
+      "D2": 1,
+      "L1": 1,
+      "L2": 1,
+      "BODY_CLEARANCE": 1,
+      "A0": 0
+    },
+    "ranked": [
+      {
+        "action": "R1",
+        "cost": 5.786666666666666
+      },
+      {
+        "action": "L2",
+        "cost": 6.033333333333332
+      },
+      {
+        "action": "L1",
+        "cost": 6.239999999999999
+      },
+      {
+        "action": "D2",
+        "cost": 6.36
+      },
+      {
+        "action": "D1",
+        "cost": 6.5
+      },
+      {
+        "action": "R2",
+        "cost": 7.513333333333333
+      },
+      {
+        "action": "BODY_CLEARANCE",
+        "cost": 11.026666666666666
+      }
+    ],
+    "plan": {
+      "raise_z": 0.06,
+      "ramp_steps": 40,
+      "speed": 0.4,
+      "lower_at_x": 1.495,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "FULL",
+      "offset_m": 0.599,
+      "leave_x": 1.697,
+      "plan_id": "7374ebc81320b75f"
+    },
+    "per_candidate": [
+      {
+        "id": "M2",
+        "safe": [
+          "BODY_CLEARANCE",
+          "D1",
+          "D2",
+          "L1",
+          "L2",
+          "R1",
+          "R2"
+        ],
+        "plan": {
+          "raise_z": 0.06,
+          "ramp_steps": 40,
+          "speed": 0.4,
+          "lower_at_x": 1.495,
+          "end_x": 2.6,
+          "stop_tilt_deg": 12.0,
+          "far_edge_source": "FULL",
+          "offset_m": 0.599,
+          "leave_x": 1.697,
+          "plan_id": "7374ebc81320b75f"
+        },
+        "cost": {
+          "R1": 5.786666666666666,
+          "R2": 7.513333333333333,
+          "D1": 6.5,
+          "D2": 6.36,
+          "L1": 6.239999999999999,
+          "L2": 6.033333333333332,
+          "BODY_CLEARANCE": 11.026666666666666,
+          "A0": 60.0
+        }
+      }
+    ],
+    "fallback": null
+  },
+  "obs_cons": {
+    "chosen": "R1",
+    "safe_solid": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "safe_empty": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "safe_both": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "ranked": [
+      {
+        "action": "R1",
+        "cost": 5.786666666666666
+      },
+      {
+        "action": "L2",
+        "cost": 6.033333333333332
+      },
+      {
+        "action": "L1",
+        "cost": 6.239999999999999
+      },
+      {
+        "action": "D2",
+        "cost": 6.3933333333333335
+      },
+      {
+        "action": "D1",
+        "cost": 6.533333333333334
+      },
+      {
+        "action": "R2",
+        "cost": 7.513333333333333
+      },
+      {
+        "action": "BODY_CLEARANCE",
+        "cost": 11.053333333333335
+      }
+    ],
+    "plan": {
+      "raise_z": 0.06,
+      "ramp_steps": 40,
+      "speed": 0.4,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "OBS_CONS",
+      "offset_m": 0.599,
+      "leave_x": 1.785,
+      "plan_id": "5a047cc0b267673c"
+    }
+  },
+  "shadow_voxels": 413259
+}

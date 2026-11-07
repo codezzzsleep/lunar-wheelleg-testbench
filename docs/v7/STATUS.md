@@ -123,3 +123,16 @@
 - E2 分支：look1 `reject_all`、look2 `reject_all` → 回退 OBS_CONS，执行 **R1**，真值结局 **pass**（t=138.24，wheel contact）。
 - 全程：`final_x=22.0088`、`t_end=140.46 s`、`arrived=true`，退出码 0。
 - 联系表：`docs/v7/contact_full_r2.png`（已检查：三行观测有贴图、无空心/碎片，地面与天空正常）。
+- v7.2 补丁提交 `f5d534879`；真值检查提交 `e090003c0`。
+- 真值检查（沙箱）：
+  - E1 look1：`v5_scale_ratio=1.0571`，`v72_scale_ratio=1.0000`；
+  - E2 look1：`v5_scale_ratio=1.1132`，`v72_scale_ratio=1.0000`；
+  - E2 look2：`v5_scale_ratio=1.1132`，`v72_scale_ratio=1.0000`。
+- **重新决策：与 REVIEW_V7_R2 §0.3 不一致，按 §2.2 停下，未运行影子实验重评估、未重跑路线。**
+  - `summary.json` 的 `compare`：
+    - `E1: {"v72_action": "D2", "executed": "R1", "same": false}`
+    - `E2: {"v72_action": "R1", "executed": "R1", "same": true}`
+    - `all_same: false`
+  - 准入数与 §0.3 一致：E1 采纳 3/6（B1、B2、C1）；E2 look1 拒绝 0/4；E2 look2 采纳 1/3（M2）。
+  - 唯一差异：E1 的 v7.2 选择是 **D2**（`full_chosen` 与 `obs_chosen` 均为 D2、`worst_rule` 也是 D2），而 §0.3 预期与实际执行均为 **R1**。
+  - 输出已拉回 `runs/v7/route_full_r2_v72/`（17644 文件、305 MB，sha256 与沙箱逐文件一致）。

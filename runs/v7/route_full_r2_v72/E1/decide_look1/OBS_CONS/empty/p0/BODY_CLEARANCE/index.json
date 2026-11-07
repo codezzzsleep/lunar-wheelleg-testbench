@@ -1,0 +1,112 @@
+{
+  "schema": "v3-trajectory/v2",
+  "meta": {
+    "skill": "BODY_CLEARANCE",
+    "plan_id": "499f2feeb5552414"
+  },
+  "record_hz": 50.0,
+  "fields": {
+    "t": "s",
+    "control_index": "1",
+    "physics_index": "1",
+    "qpos": "m / rad (MuJoCo 顺序)",
+    "qvel": "m/s / rad/s (MuJoCo 顺序)",
+    "action_raw": "控制器输出（归一化，含义见 action_names）",
+    "joint_target": "rad",
+    "joint_vel_target": "rad/s",
+    "wheel_omega_target": "rad/s",
+    "wheel_brake": "0/1",
+    "joint_torque": "N*m (实际执行器)",
+    "wheel_torque": "N*m (实际执行器)",
+    "wheel_sinkage_m": "m",
+    "wheel_slip_ratio": "1",
+    "nav_target_y": "m (机体横向目标)",
+    "tilt_deg": "deg",
+    "n_contact": "1"
+  },
+  "field_keys": [
+    "action_raw",
+    "control_index",
+    "joint_target",
+    "joint_torque",
+    "joint_vel_target",
+    "n_contact",
+    "nav_target_y",
+    "physics_index",
+    "qpos",
+    "qvel",
+    "t",
+    "tilt_deg",
+    "wheel_brake",
+    "wheel_omega_target",
+    "wheel_sinkage_m",
+    "wheel_slip_ratio",
+    "wheel_torque"
+  ],
+  "array_names": {
+    "joint": [
+      "FR_hip",
+      "FR_thigh",
+      "FR_calf",
+      "FL_hip",
+      "FL_thigh",
+      "FL_calf",
+      "RR_hip",
+      "RR_thigh",
+      "RR_calf",
+      "RL_hip",
+      "RL_thigh",
+      "RL_calf"
+    ],
+    "wheel": [
+      "FR",
+      "FL",
+      "RR",
+      "RL"
+    ],
+    "qpos": "MuJoCo model.nq",
+    "qvel": "MuJoCo model.nv"
+  },
+  "units_note": "关节/轮的量都按关节名顺序；qpos/qvel 是 MuJoCo 原生顺序，渲染与回放必须读同一模型",
+  "unavailable": [],
+  "chunks": [
+    {
+      "chunk": 0,
+      "frames": 250,
+      "arrays": "chunk_00000.npz",
+      "arrays_sha256": "7acd7c5445c43976c6bf63decefd2715d473eb7971ceaf2c33a4c12288b95c12",
+      "contacts": "contacts_00000.jsonl",
+      "contacts_sha256": "c815e2bff93fc765e1b33462409ea8943ee87dda1c9b0d31144346633cfdef42",
+      "contacts_n": 1418,
+      "t_first": 0.02,
+      "t_last": 4.999999999999981
+    },
+    {
+      "chunk": 1,
+      "frames": 250,
+      "arrays": "chunk_00001.npz",
+      "arrays_sha256": "ea763d7a6c4065ddd0f5cb3223c26e64ac64a2cebe9686130139b4ebb3455219",
+      "contacts": "contacts_00001.jsonl",
+      "contacts_sha256": "bf16a6db4ccf4c7fb41b829af4b0f2224ea0d5f40921ea5ad88897323379c10b",
+      "contacts_n": 1127,
+      "t_first": 5.019999999999981,
+      "t_last": 9.999999999999876
+    },
+    {
+      "chunk": 2,
+      "frames": 117,
+      "arrays": "chunk_00002.npz",
+      "arrays_sha256": "7111a2bd9fddf9d9a7f9e50370c4a0fcb90553fece45e66b4688ffc11e358bb5",
+      "contacts": "contacts_00002.jsonl",
+      "contacts_sha256": "2117724e0a819cdca84c7314e1865f3fa49c4549e4c89f1ba069b7cee44ec187",
+      "contacts_n": 701,
+      "t_first": 10.019999999999875,
+      "t_last": 12.339999999999826
+    }
+  ],
+  "frame_count": 617,
+  "contacts_n": 3246,
+  "started_at": "2026-11-07T23:43:36+0800",
+  "closed_at": "2026-11-07T23:43:38+0800",
+  "duration_s": 12.319999999999826
+}

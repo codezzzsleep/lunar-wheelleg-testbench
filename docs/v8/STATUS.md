@@ -5,3 +5,5 @@
 - §2 第 1 次（conservative，`--max-looks 5`）：`result=stuck`、`looks=5`、`sim_time_s=142.2`、`wall_s=32.5`，与预期一致。
 - §2 第 2 次（optimistic）：`result=collision`、`looks=1`、`drive_margin_m=-0.23`、`sim_time_s=83.44`，与预期一致（撞上 B 藏在黑影里的一截，重叠 23 cm）。
 - §2 第 3 次（conservative_seedark）：`result=arrived`、`looks=3`、`sim_time_s=147.26`，与预期一致（黑影里能测深度时 3 眼通过）。
+- §2 第 4 次（imagination_truth）：`result=arrived`、`looks=1`、`drive_margin_m=0.117`、`sim_time_s=115.88`，与预期一致。
+- §2 四次运行全部与 SPEC §2 预期表一致。

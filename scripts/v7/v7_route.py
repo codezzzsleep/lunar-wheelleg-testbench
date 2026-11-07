@@ -12,6 +12,7 @@
   * 每一帧都有真实的 action / phase 标签。
 """
 import argparse
+import hashlib
 import json
 import pathlib
 import sys
@@ -155,7 +156,48 @@ def lux_ready(look_dir):
     if not p.exists():
         return None
     res = json.loads(p.read_text())
+    req = json.loads((pathlib.Path(look_dir) / 'lux_request.json').read_text())
+    if req['mode'] == 'imgs':
+        # 两视图必须是真实的两图调用（请求体字段 imgs，两张图按顺序），不得拼成一张组合图
+        for t in res['tasks']:
+            if t.get('status') == 'ok' and not (t.get('api_field') == 'imgs' and t.get('n_images') == 2):
+                raise RuntimeError(f'{p}: task {t.get("id")} is not a real two-image call (need api_field=imgs, n_images=2); '
+                                   'composite images are not allowed')
     return [{'id': t['id'], 'glb': str(ROOT / t['glb'])} for t in res['tasks'] if t.get('status') == 'ok' and t.get('glb')]
+
+
+def _sha(p):
+    return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+
+
+REUSE = None     # --reuse-lux：旧运行目录
+
+
+def try_reuse(look_dir, mode, items):
+    """复用旧运行同一位置、输入图逐字节相同的 Lux3D 结果。只限单图模式；任何一项对不上就不复用（照常请求）。"""
+    if REUSE is None or mode != 'img':
+        return False
+    look_dir = pathlib.Path(look_dir)
+    old_res = REUSE / look_dir.parent.name / look_dir.name / 'lux_result.json'
+    if not old_res.exists():
+        return False
+    by_id = {t['id']: t for t in json.loads(old_res.read_text())['tasks']}
+    out = []
+    for it in items:
+        t = by_id.get(it['id'])
+        if t is None or len(t.get('inputs') or []) != 1:
+            return False
+        if _sha(ROOT / t['inputs'][0]) != _sha(ROOT / it['path']):
+            return False
+        if t.get('status') == 'ok':
+            g = ROOT / t['glb']
+            if not g.exists() or _sha(g) != t.get('glb_sha256'):
+                return False
+        nt = dict(t); nt['inputs'] = [it['path']]; nt['reused_from'] = rel(old_res)
+        out.append(nt)
+    (look_dir / 'lux_result.json').write_text(json.dumps({'schema': 'v7-lux-result/v1', 'reused_from': rel(old_res),
+                                                         'input_check': 'sha256 of every input image identical', 'tasks': out}, indent=2))
+    return True
 
 
 def write_request(look_dir, mode, items):
@@ -163,7 +205,12 @@ def write_request(look_dir, mode, items):
            'result_file': rel(pathlib.Path(look_dir) / 'lux_result.json'),
            'result_schema': {'tasks': [{'id': 'A1', 'task_id': '...', 'status': 'ok|failed', 'submitted_at': '...', 'finished_at': '...',
                                         'fetched_at': '...', 'glb': 'repo-relative path of tex_mesh.glb', 'glb_sha256': '...',
-                                        'inputs': ['repo-relative input image paths']}]}}
+                                        'inputs': ['repo-relative input image paths'],
+                                        **({'api_field': 'imgs', 'n_images': 2} if mode == 'imgs' else {})}]}}
+    if mode == 'imgs':
+        req['imgs_rule'] = ('Each item is ONE Lux3D task whose request body carries the field imgs = [url of paths[0], url of paths[1]] '
+                            'in this order (scripts/lux3d_client.submit_img_to_3d_multi). Never stitch the two images into one picture. '
+                            'Items with identical paths are independent samples: give each its own sample id so they are not cache hits.')
     (pathlib.Path(look_dir) / 'lux_request.json').write_text(json.dumps(req, indent=2, ensure_ascii=False))
 
 
@@ -205,8 +252,12 @@ def encounter(env, log, run, enc, arm, vm):
     cands = lux_ready(look1)
     if cands is None:
         st = json.loads((look1 / 'state.json').read_text())
-        write_request(look1, 'img', [{'id': k, 'path': v['path']} for k, v in sorted(st['crops'].items())])
-        return 'WAIT'
+        items = [{'id': k, 'path': v['path']} for k, v in sorted(st['crops'].items())]
+        write_request(look1, 'img', items)
+        if not try_reuse(look1, 'img', items):
+            return 'WAIT'
+        log.event(encounter=enc, step='look1_lux_reused', source=rel(REUSE / enc / 'look1' / 'lux_result.json'))
+        cands = lux_ready(look1)
     dec1p = edir / 'decide_look1' / 'decision.json'
     dec = json.loads(dec1p.read_text()) if dec1p.exists() else VE.decide(look1, cands, edir / 'decide_look1')
     hold(env, log, 'WAIT_LUX3D', f'{enc}_imagine', 100)
@@ -234,8 +285,11 @@ def encounter(env, log, run, enc, arm, vm):
 
 
 def main():
+    global REUSE
     ap = argparse.ArgumentParser(); ap.add_argument('--arm', choices=['full', 'obs'], required=True); ap.add_argument('--run', required=True)
+    ap.add_argument('--reuse-lux', default=None, help='旧运行目录：单图请求的输入图逐字节相同时直接复用其 Lux3D 结果')
     a = ap.parse_args()
+    REUSE = pathlib.Path(a.reuse_lux).resolve() if a.reuse_lux else None
     run = pathlib.Path(a.run).resolve(); run.mkdir(parents=True, exist_ok=True)
     spec, rock_bodies = route_spec(run)
     (run / 'scene' / 'scene_spec.json').write_text(json.dumps(spec, indent=2, ensure_ascii=False))

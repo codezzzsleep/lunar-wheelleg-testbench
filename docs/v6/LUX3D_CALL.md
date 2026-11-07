@@ -67,9 +67,18 @@ AHOLO_API_KEY=... python3 scripts/v3_generate.py \
 - `mode`：`img`（每个 item 一张图，6 个任务）或 `imgs`（每个 item 两张图，3 个任务）；
 - `items`：`[{id, path}]` 或 `[{id, paths:[p1,p2]}]`；
 - `result_file`：结果 JSON 的仓库相对路径；
-- `result_schema`：本文件第 7 节。
+- `result_schema`：本节末的结果格式。
 
-结果 JSON 必须严格写成：
+### 6.1 `imgs` 模式（真实两图）
+
+- 一个 item = **一个 Lux3D 任务**；
+- 请求体字段 `imgs` = `[paths[0] 的 URL, paths[1] 的 URL]`，**顺序不能换**，且**不带** `img` 字段；
+- 调用 `scripts/lux3d_client.submit_img_to_3d_multi(img_urls, version='G1-Turbo', face_count=30000)`，做法同 `scripts/v7_generate.py`；
+- **禁止**把两张图拼成一张组合图提交；
+- 同一请求里路径相同的 item（如 M1–M3）是独立采样，必须各用一个 sample id，避免命中文件缓存；
+- 每张图先走 `upload_image` 拿 URL，再按顺序传入。
+
+### 6.2 结果格式
 
 ```json
 {
@@ -83,7 +92,9 @@ AHOLO_API_KEY=... python3 scripts/v3_generate.py \
       "fetched_at": "2026-11-07T10:06:10+08:00",
       "glb": "assets/v7/lux/123456/tex_mesh.glb",
       "glb_sha256": "...",
-      "inputs": ["runs/v7/route_full/E1/look1/inputs/A1.png"]
+      "inputs": ["runs/v7/route_full/E2/look1/gen/variants/A1.png", "runs/v7/route_full/E2/look2/gen/variants/A1.png"],
+      "api_field": "imgs",
+      "n_images": 2
     }
   ]
 }
@@ -91,6 +102,8 @@ AHOLO_API_KEY=... python3 scripts/v3_generate.py \
 
 - `status` 只允许 `ok` / `failed`；
 - 路径一律仓库相对路径，不得写绝对路径；
+- `inputs` 写**实际上传**的文件路径与顺序；
+- 两图任务必须写 `api_field: "imgs"`、`n_images: 2`，否则 `v7_route.py` 会报错停止；
 - 失败任务也写入结果，`status=failed`，不生成 `glb`。
 
 ## 7. 影子实验

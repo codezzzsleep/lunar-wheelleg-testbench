@@ -2,7 +2,13 @@
 
 不调用 Lux3D，不改动原运行目录，结果写到 --out。
 
-    MUJOCO_GL=egl python3 scripts/v7/v7_redecide.py --run runs/v7/route_full_r2 --out runs/v7/route_full_r2_v72
+    MUJOCO_GL=egl python3 scripts/v7/v7_redecide.py --run runs/v7/route_full_r2 --out runs/v7/route_full_r2_v73
+
+v7.3：预演场景的平地是一张高度场，它的半边长取模块全局变量 terrain.SPAN（场景 spec 里没写 span 时）。
+路线进程在 route_spec 里把它设成了 32 m，之后路线里每一次预演都建在这张 32 m 的平地上；
+单独运行本脚本时它是默认的 4 m。两种平地都是平的，但网格尺寸不同，接触计算在 1e-12 量级上不同，
+E1 直行这种轮子和小腿都擦石头的临界动作会被混沌放大成不同结局。
+为了复现路线当时的决策条件，本脚本默认在决策前设 terrain.SPAN = 32（--span 可改），并记入 summary。
 
 对每个遭遇的每一眼重新运行 v7_encounter.decide（完整 8 个动作 × 3 种扰动），
 再把每个遭遇最终选中的动作与原运行实际执行的动作（events.jsonl）对比：
@@ -17,6 +23,7 @@ import sys
 HERE = pathlib.Path(__file__).resolve().parent
 ROOT = HERE.parents[1]
 sys.path.insert(0, str(ROOT / 'scripts')); sys.path.insert(0, str(HERE))
+import terrain  # noqa: E402
 import v7_encounter as VE  # noqa: E402
 
 
@@ -27,7 +34,9 @@ def glbs_of(look_dir):
 
 def main():
     ap = argparse.ArgumentParser(); ap.add_argument('--run', required=True); ap.add_argument('--out', required=True)
+    ap.add_argument('--span', type=float, default=32.0, help='预演平地高度场的半边长；路线进程里是 32')
     a = ap.parse_args()
+    terrain.SPAN = a.span
     run = (ROOT / a.run).resolve(); out = (ROOT / a.out).resolve(); out.mkdir(parents=True, exist_ok=True)
     events = [json.loads(l) for l in (run / 'events.jsonl').read_text().splitlines() if l.strip()]
     executed = {e['encounter']: e['action'] for e in events if 'action' in e and 'encounter' in e}
@@ -49,7 +58,8 @@ def main():
             print(json.dumps({k: r[k] for k in ('encounter', 'look', 'branch', 'n_admitted', 'full_chosen', 'obs_chosen')}, ensure_ascii=False))
     cmp = {enc: {'v72_action': final[enc]['full_chosen'], 'executed': executed.get(enc),
                  'same': final[enc]['full_chosen'] == executed.get(enc)} for enc in final}
-    summ = {'schema': 'v7-redecide/v1', 'metric_version': 2, 'run': str(run.relative_to(ROOT)), 'rows': rows, 'compare': cmp,
+    summ = {'schema': 'v7-redecide/v2', 'metric_version': 2, 'rehearsal_ground_span_m': a.span,
+            'run': str(run.relative_to(ROOT)), 'rows': rows, 'compare': cmp,
             'all_same': all(v['same'] for v in cmp.values())}
     (out / 'summary.json').write_text(json.dumps(summ, indent=2, ensure_ascii=False))
     print(json.dumps(cmp, ensure_ascii=False))

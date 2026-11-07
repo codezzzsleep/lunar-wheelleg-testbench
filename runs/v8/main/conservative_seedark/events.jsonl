@@ -1,0 +1,9 @@
+{"kind": "look", "k": 1, "label": "first", "pose": [2.292, -0.5, 0.03], "t": 16.08, "cells": {"FREE": 4974, "ROCK": 1336, "DARK": 0, "HIDDEN": 14004, "UNSEEN": 4886, "NOGO": 0}, "cam_pos": [2.7117, -0.5, 0.3835]}
+{"kind": "plan", "policy": "conservative", "look": 1, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [4.49, 0.6, -47.5], "expected_new_cells": 548, "path": [[4.492, 0.6]]}
+{"kind": "look", "k": 2, "label": "extra1", "pose": [4.475, 0.571, -40.29], "t": 56.1, "cells": {"FREE": 7517, "ROCK": 2186, "DARK": 0, "HIDDEN": 10611, "UNSEEN": 4886, "NOGO": 0}, "cam_pos": [4.7958, 0.2998, 0.3855]}
+{"kind": "plan", "policy": "conservative", "look": 2, "path": null, "reason": "no_path", "margin_vs_truth": null}
+{"kind": "second_look_plan", "viewpoint": [6.08, -0.6, 24.0], "expected_new_cells": 96, "path": [[6.075, -0.6]]}
+{"kind": "look", "k": 3, "label": "extra2", "pose": [6.056, -0.601, 22.46], "t": 83.54, "cells": {"FREE": 11040, "ROCK": 2245, "DARK": 0, "HIDDEN": 7029, "UNSEEN": 4886, "NOGO": 0}, "cam_pos": [6.4446, -0.4406, 0.3845]}
+{"kind": "plan", "policy": "conservative", "look": 3, "path": [[6.3, -0.7], [8.1, -0.8], [10.5, 0.0]], "reason": null, "margin_vs_truth": {"drive_margin_m": 0.073, "turn_margin_m": 0.1}}
+{"kind": "result", "policy": "conservative", "tag": "conservative_seedark", "see_dark": true, "imagine": null, "result": "arrived", "looks": 3, "final_pose": [10.491, -0.001, 18.08], "sim_time_s": 147.26, "wall_s": 29.9, "collision": null}

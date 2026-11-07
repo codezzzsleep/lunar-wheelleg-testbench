@@ -113,3 +113,13 @@
   - 拉回 `runs/v7/route_full/`：21365 个文件、424 MB，sha256 清单与沙箱逐文件一致。
 - V7.1 补丁已安装（sha256 通过、`py_compile` 通过），提交 `eccf3716c`；route_full 的 E2 look2 已标记作废（`runs/v7/route_full/INVALID_E2_LOOK2.md`）；LUX3D_CALL §6 已改为真实两图规程。
 - `route_full_r2`：E1 look1 复用命中（`look1_lux_reused`）；E2 look1 未命中复用——A/B/C 输入图 sha256 与旧运行不同（相机位姿有微小差异），按规程记为未命中并提交 6 个新任务继续，不拼图。
+- V7.1 补丁安装提交 `eccf3716c`（含作废标记与 LUX3D_CALL §6）；`route_full_r2` 第二眼真实两图与结果提交 `edea14392`。
+- `route_full_r2`：E1 look1 复用命中；E2 look1 未命中（输入图 sha256 与旧运行不同），提交 6 个新任务：4 成功、2 失败（C1/C2 重提一次仍失败），准入 **0/6**。
+- E2 look2 真实两图任务（`lux3d_client.submit_img_to_3d_multi`，`api_field=imgs`、`n_images=2`）：
+  - M1 `task_id=4833278`，status=3（ok）；
+  - M2 `task_id=4833341`，status=3（ok）；
+  - M3 `task_id=4833387`，status=3（ok）；
+  - 准入 **0/3**。
+- E2 分支：look1 `reject_all`、look2 `reject_all` → 回退 OBS_CONS，执行 **R1**，真值结局 **pass**（t=138.24，wheel contact）。
+- 全程：`final_x=22.0088`、`t_end=140.46 s`、`arrived=true`，退出码 0。
+- 联系表：`docs/v7/contact_full_r2.png`（已检查：三行观测有贴图、无空心/碎片，地面与天空正常）。

@@ -1,0 +1,152 @@
+{
+  "schema": "v7-decision/v1",
+  "frame": "local",
+  "local_frame": {
+    "x0": 18.03149464787464,
+    "y0": 0.4251046304874759,
+    "yaw0": 0.050132702956249595
+  },
+  "visible": {
+    "x_front": 1.1343785716587291,
+    "y_center": -0.3697055466421242,
+    "W_vis": 0.1408665361494158,
+    "H_vis": 0.10510202958139053,
+    "source": "visible_points (local frame, target-rock mask)"
+  },
+  "channel_half": 1.2,
+  "branch": "reject_all",
+  "actions": [
+    "R1",
+    "R2",
+    "D1",
+    "D2",
+    "L1",
+    "L2",
+    "BODY_CLEARANCE",
+    "A0"
+  ],
+  "n_candidates": 3,
+  "n_admitted": 0,
+  "full": {
+    "chosen": "R1",
+    "worst_rule": "R1",
+    "votes": {},
+    "ranked": [
+      {
+        "action": "R1",
+        "cost": 5.786666666666666
+      },
+      {
+        "action": "L2",
+        "cost": 6.033333333333332
+      },
+      {
+        "action": "L1",
+        "cost": 6.239999999999999
+      },
+      {
+        "action": "D2",
+        "cost": 6.406666666666666
+      },
+      {
+        "action": "D1",
+        "cost": 6.533333333333334
+      },
+      {
+        "action": "R2",
+        "cost": 7.506666666666667
+      },
+      {
+        "action": "BODY_CLEARANCE",
+        "cost": 11.06
+      }
+    ],
+    "plan": {
+      "raise_z": 0.06,
+      "ramp_steps": 40,
+      "speed": 0.4,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "OBS_CONS",
+      "offset_m": 0.599,
+      "leave_x": 1.785,
+      "plan_id": "5a047cc0b267673c"
+    },
+    "per_candidate": [],
+    "fallback": "zero_admitted -> OBS_CONS"
+  },
+  "obs_cons": {
+    "chosen": "R1",
+    "safe_solid": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "safe_empty": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "safe_both": [
+      "BODY_CLEARANCE",
+      "D1",
+      "D2",
+      "L1",
+      "L2",
+      "R1",
+      "R2"
+    ],
+    "ranked": [
+      {
+        "action": "R1",
+        "cost": 5.786666666666666
+      },
+      {
+        "action": "L2",
+        "cost": 6.033333333333332
+      },
+      {
+        "action": "L1",
+        "cost": 6.239999999999999
+      },
+      {
+        "action": "D2",
+        "cost": 6.406666666666666
+      },
+      {
+        "action": "D1",
+        "cost": 6.533333333333334
+      },
+      {
+        "action": "R2",
+        "cost": 7.506666666666667
+      },
+      {
+        "action": "BODY_CLEARANCE",
+        "cost": 11.06
+      }
+    ],
+    "plan": {
+      "raise_z": 0.06,
+      "ramp_steps": 40,
+      "speed": 0.4,
+      "lower_at_x": 2.45,
+      "end_x": 2.6,
+      "stop_tilt_deg": 12.0,
+      "far_edge_source": "OBS_CONS",
+      "offset_m": 0.599,
+      "leave_x": 1.785,
+      "plan_id": "5a047cc0b267673c"
+    }
+  },
+  "shadow_voxels": 413259
+}

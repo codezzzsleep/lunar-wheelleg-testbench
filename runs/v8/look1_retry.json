@@ -1,0 +1,36 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "n": 2,
+  "tasks": [
+    {
+      "id": "v8_look1_T2_B1_retry",
+      "state_id": "v8_look1_T2",
+      "variant": "B1",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v8/main/imagination/looks/look1/T2/gen/variants/B1.png",
+      "image_sha256": "72fdc5a6e464dff1cc2b233edcec494684f27ed4d160659a5c4d7861f5b4abd7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 100,
+      "estimated_credits": 20.0,
+      "retry_of": "v8_look1_T2_B1"
+    },
+    {
+      "id": "v8_look1_T2_B2_retry",
+      "state_id": "v8_look1_T2",
+      "variant": "B2",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v8/main/imagination/looks/look1/T2/gen/variants/B2.png",
+      "image_sha256": "72fdc5a6e464dff1cc2b233edcec494684f27ed4d160659a5c4d7861f5b4abd7",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 101,
+      "estimated_credits": 20.0,
+      "retry_of": "v8_look1_T2_B2"
+    }
+  ]
+}

@@ -8,3 +8,7 @@
 - §2 第 4 次（imagination_truth）：`result=arrived`、`looks=1`、`drive_margin_m=0.117`、`sim_time_s=115.88`，与预期一致。
 - §2 四次运行全部与 SPEC §2 预期表一致。
 - §3.1 想象的车第一眼：退出码 **10**，`NEED_LUX3D.json` 列出 `look1/T1/lux_request.json` 与 `look1/T2/lux_request.json`。
+- §3.2 第一眼 Lux3D（本机）：
+  - T1：6/6 成功（A1、A2、B1、B2、C1、C2）；
+  - T2：4/6 成功（A1、A2、C1、C2）；B1、B2 重提一次仍失败，记 `status=failed`；
+  - GLB：`assets/v8/lux/main/look1/<T>/<id>/tex_mesh.glb`（10 个，82 MB）。

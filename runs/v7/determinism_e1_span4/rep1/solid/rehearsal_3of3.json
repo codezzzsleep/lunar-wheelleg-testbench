@@ -1,0 +1,40 @@
+{
+  "arm": "obs_solid",
+  "channel": 1.2,
+  "entries": [
+    {
+      "action": "R1",
+      "perturb": 0,
+      "success": false,
+      "reason": null,
+      "contacts": 0,
+      "cost": 60.0,
+      "t_end": 120.0,
+      "record_path": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p0/R1/index.json",
+      "lat_max": 0.3725230395793915
+    },
+    {
+      "action": "R1",
+      "perturb": 1,
+      "success": true,
+      "reason": "success",
+      "contacts": 0,
+      "cost": 6.54,
+      "t_end": 6.54,
+      "record_path": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p1/R1/index.json",
+      "lat_max": 0.5673862099647522
+    },
+    {
+      "action": "R1",
+      "perturb": 2,
+      "success": true,
+      "reason": "success",
+      "contacts": 0,
+      "cost": 6.6,
+      "t_end": 6.6,
+      "record_path": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p2/R1/index.json",
+      "lat_max": 0.6028096079826355
+    }
+  ],
+  "safe_actions": []
+}

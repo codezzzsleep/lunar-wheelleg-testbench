@@ -136,3 +136,8 @@
   - 准入数与 §0.3 一致：E1 采纳 3/6（B1、B2、C1）；E2 look1 拒绝 0/4；E2 look2 采纳 1/3（M2）。
   - 唯一差异：E1 的 v7.2 选择是 **D2**（`full_chosen` 与 `obs_chosen` 均为 D2、`worst_rule` 也是 D2），而 §0.3 预期与实际执行均为 **R1**。
   - 输出已拉回 `runs/v7/route_full_r2_v72/`（17644 文件、305 MB，sha256 与沙箱逐文件一致）。
+- v7.3 补丁提交 `b3b89dd05`；清单修正提交 `920635891`（根 `PATCH_SHA256.txt` 归 V8，V7.3 在 `docs/v7/PATCH_SHA256_v73.txt`）。
+- §2.1 可复现性检查（沙箱，两次）：
+  - `--span 32`：`rep0=rep1`（三种扰动 identical），`rep0=ref0`（三种 identical）；与 `ref1` 扰动 0 不同（7.04 s 成功 vs 60 s 卡住），扰动 1/2 数值上也有 10⁻⁷ 级差异但结局均为成功。
+  - `--span 4`：`rep0=rep1`（三种 identical）；`rep0=ref1`（三种 identical）；与 `ref0` 扰动 0 不同（卡住 vs 成功），扰动 1/2 数值差异、结局同为成功。
+  - `platform`：python 3.12.16、x86_64、8 核、mujoco 3.17.0、numpy 2.5.4。

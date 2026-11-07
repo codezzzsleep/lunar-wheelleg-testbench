@@ -1,0 +1,544 @@
+{
+  "schema": "v7-determinism/v1",
+  "obs": "runs/v7/route_full_r2/E1/look1",
+  "span": 4.0,
+  "sources": {
+    "rep0": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep0/solid",
+    "rep1": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid",
+    "ref0": "/workspace/lunar-lab/runs/v7/route_full_r2/E1/decide_look1/OBS_CONS/solid",
+    "ref1": "/workspace/lunar-lab/runs/v7/route_full_r2_v72/E1/decide_look1/OBS_CONS/solid"
+  },
+  "platform": {
+    "python": "3.12.16",
+    "machine": "x86_64",
+    "cpu_count": 8,
+    "cpu_model": "AMD EPYC 9K65 192-Core Processor",
+    "simd": [
+      "avx",
+      "avx2",
+      "avx512dq",
+      "avx512f",
+      "avx512vl",
+      "fma",
+      "sse4_2"
+    ],
+    "mujoco": "3.17.0",
+    "numpy": "2.5.4"
+  },
+  "runs": {
+    "rep0": {
+      "0": {
+        "success": false,
+        "contacts": 0,
+        "cost": 60.0,
+        "t_end": 120.0,
+        "chunks": [
+          "51393b5aed12432cecc9142da204b560bd9accdd95ec7b5959ed95140292ba6c",
+          "625a87b8e92d0b101c2d2ffdc5df98adf52c0cb02482f223fd8c30623e079cbf",
+          "9ab297b302a787e848e49e4ed246720ba793636f84c6908f22c44450033bfa6c",
+          "9b6d617ebad0cbeae4fd47ebe151c713709fa1b536b4711947dcc565db6b3881",
+          "6471dc7d99c858a5cf7158a251b1cedefcbf0bb23c6268d98bfebc77502255a8",
+          "b86727024a72126d40616d3af4266a7297e5ecf43eac44a63cf7119d7c7ddfb7",
+          "9670547bb4176f87c3bedb8c2c5d3db1a850a375ff05765145914ad2ff44474c",
+          "072e2e93952807a445217bbab4841c7536ee5f7bec428b349e1902e5dfaa18dc",
+          "b99583b2dad0fc3266335acef4af9df5494a5713e3a3220052737f2c693f17b3",
+          "606eb4fb1fa5b45e9a3f0f885cddae8042ea701454156ea44c6348fd35bd5390",
+          "c3e5146d59b5067e86c675107f4de27fdec18450059cb2ce6ff6ea0ecde382c8",
+          "e0bfb473063aaaf106d1bd8178b624b78ccd4b6e87d75332c403c03f04ca7bff",
+          "79445c1a134bd4c8284568235971b80bd7442a36229cbf8d7b162f6348584ba8",
+          "55b883fb94873a15772037b67925851cd61457b793fda9cb8ce1bef3d8b5fd60",
+          "b96cd7c11aa0e3790efeb05fc21c4f2d091e3c9110620ff784a76a153bf39961",
+          "ac16a0ae00fb70988e4b5b6c39c26a72c94976fdb646f2749a718c8afe640aa0",
+          "8b2b4549871701ee415900e4aef7a6ddc422237a1310f32aa94abc86b52684a3",
+          "bc46f88c90377506a6b85e5b0e7bc6486e38e03b5f9a6216b37da1fe4e033c45",
+          "ee53c1df1a5971e18e268bffeceaf834770c6bffb6086f57db1f01949eb449c4",
+          "85850fae236bd4e709c3635f93efe7cd89eaffe16dce45ff8798028993032eed",
+          "3c415d8b41cc5054476ce961171d8c7dac23959a04b6b672ae7e2d04ce6a777b",
+          "d53fc58521e1d73c4bb83d1513bbde612e6b7b14c1ce87de454de6868125678c",
+          "edc050c57695d5a38e9990994dd9840c97cb60b1e1db0f2dde0db09e91c67aa4",
+          "7ecf45c914a8043e35e025fc844ad18a129d1f4bf8bf7931a3b62db6ba093a67"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep0/solid/p0/R1"
+      },
+      "1": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.54,
+        "t_end": 6.54,
+        "chunks": [
+          "ba6c466f993ff0fea497a89203e6be1c4c106358f9df0f1d1089238aad3c35ff",
+          "d4c3577b15cd9c6ce5359ae0437aac664f43fb7235d2eba0662b1775385f6ce3"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep0/solid/p1/R1"
+      },
+      "2": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.6,
+        "t_end": 6.6,
+        "chunks": [
+          "939aa7d89d13645f1e0836b67b2a28657da638c9ce279cf5df98ca38447cf6f8",
+          "2ef9f45306e7e67d91fdf87e942e920ceaf68e81b3b0fba2151d141be258174d"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep0/solid/p2/R1"
+      }
+    },
+    "rep1": {
+      "0": {
+        "success": false,
+        "contacts": 0,
+        "cost": 60.0,
+        "t_end": 120.0,
+        "chunks": [
+          "51393b5aed12432cecc9142da204b560bd9accdd95ec7b5959ed95140292ba6c",
+          "625a87b8e92d0b101c2d2ffdc5df98adf52c0cb02482f223fd8c30623e079cbf",
+          "9ab297b302a787e848e49e4ed246720ba793636f84c6908f22c44450033bfa6c",
+          "9b6d617ebad0cbeae4fd47ebe151c713709fa1b536b4711947dcc565db6b3881",
+          "6471dc7d99c858a5cf7158a251b1cedefcbf0bb23c6268d98bfebc77502255a8",
+          "b86727024a72126d40616d3af4266a7297e5ecf43eac44a63cf7119d7c7ddfb7",
+          "9670547bb4176f87c3bedb8c2c5d3db1a850a375ff05765145914ad2ff44474c",
+          "072e2e93952807a445217bbab4841c7536ee5f7bec428b349e1902e5dfaa18dc",
+          "b99583b2dad0fc3266335acef4af9df5494a5713e3a3220052737f2c693f17b3",
+          "606eb4fb1fa5b45e9a3f0f885cddae8042ea701454156ea44c6348fd35bd5390",
+          "c3e5146d59b5067e86c675107f4de27fdec18450059cb2ce6ff6ea0ecde382c8",
+          "e0bfb473063aaaf106d1bd8178b624b78ccd4b6e87d75332c403c03f04ca7bff",
+          "79445c1a134bd4c8284568235971b80bd7442a36229cbf8d7b162f6348584ba8",
+          "55b883fb94873a15772037b67925851cd61457b793fda9cb8ce1bef3d8b5fd60",
+          "b96cd7c11aa0e3790efeb05fc21c4f2d091e3c9110620ff784a76a153bf39961",
+          "ac16a0ae00fb70988e4b5b6c39c26a72c94976fdb646f2749a718c8afe640aa0",
+          "8b2b4549871701ee415900e4aef7a6ddc422237a1310f32aa94abc86b52684a3",
+          "bc46f88c90377506a6b85e5b0e7bc6486e38e03b5f9a6216b37da1fe4e033c45",
+          "ee53c1df1a5971e18e268bffeceaf834770c6bffb6086f57db1f01949eb449c4",
+          "85850fae236bd4e709c3635f93efe7cd89eaffe16dce45ff8798028993032eed",
+          "3c415d8b41cc5054476ce961171d8c7dac23959a04b6b672ae7e2d04ce6a777b",
+          "d53fc58521e1d73c4bb83d1513bbde612e6b7b14c1ce87de454de6868125678c",
+          "edc050c57695d5a38e9990994dd9840c97cb60b1e1db0f2dde0db09e91c67aa4",
+          "7ecf45c914a8043e35e025fc844ad18a129d1f4bf8bf7931a3b62db6ba093a67"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p0/R1"
+      },
+      "1": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.54,
+        "t_end": 6.54,
+        "chunks": [
+          "ba6c466f993ff0fea497a89203e6be1c4c106358f9df0f1d1089238aad3c35ff",
+          "d4c3577b15cd9c6ce5359ae0437aac664f43fb7235d2eba0662b1775385f6ce3"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p1/R1"
+      },
+      "2": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.6,
+        "t_end": 6.6,
+        "chunks": [
+          "939aa7d89d13645f1e0836b67b2a28657da638c9ce279cf5df98ca38447cf6f8",
+          "2ef9f45306e7e67d91fdf87e942e920ceaf68e81b3b0fba2151d141be258174d"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/determinism_e1_span4/rep1/solid/p2/R1"
+      }
+    },
+    "ref0": {
+      "0": {
+        "success": true,
+        "contacts": 0,
+        "cost": 7.04,
+        "t_end": 7.04,
+        "chunks": [
+          "eb0ea28f66eb36e5a0ed8ace338ab30d6f4b58ccb6f1f1cf6302eef008730dac",
+          "2289ef12fd9bed741c0b193f36dca39753cc3e920d0fb11cde07f7f80e89b5c6"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2/E1/decide_look1/OBS_CONS/solid/p0/R1"
+      },
+      "1": {
+        "success": true,
+        "contacts": 0,
+        "cost": 7.72,
+        "t_end": 7.72,
+        "chunks": [
+          "c1c8e91baedc377f6bb47d125a36a357f90f22d81e3b62a0f53eca666f357e2c",
+          "a5ea11163de26c73345e798432c0e0a7539b9419340bd5beb8ae0e58a8aefe2d"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2/E1/decide_look1/OBS_CONS/solid/p1/R1"
+      },
+      "2": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.72,
+        "t_end": 6.72,
+        "chunks": [
+          "f13b006e078cd42a218a92f238a47918127caf91b5df2c35bd2ca18eae5904af",
+          "95a810fab20ae1a992483388cb8aea1caccb873af3902e053875eb46f9efd5c1"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2/E1/decide_look1/OBS_CONS/solid/p2/R1"
+      }
+    },
+    "ref1": {
+      "0": {
+        "success": false,
+        "contacts": 0,
+        "cost": 60.0,
+        "t_end": 120.0,
+        "chunks": [
+          "51393b5aed12432cecc9142da204b560bd9accdd95ec7b5959ed95140292ba6c",
+          "625a87b8e92d0b101c2d2ffdc5df98adf52c0cb02482f223fd8c30623e079cbf",
+          "9ab297b302a787e848e49e4ed246720ba793636f84c6908f22c44450033bfa6c",
+          "9b6d617ebad0cbeae4fd47ebe151c713709fa1b536b4711947dcc565db6b3881",
+          "6471dc7d99c858a5cf7158a251b1cedefcbf0bb23c6268d98bfebc77502255a8",
+          "b86727024a72126d40616d3af4266a7297e5ecf43eac44a63cf7119d7c7ddfb7",
+          "9670547bb4176f87c3bedb8c2c5d3db1a850a375ff05765145914ad2ff44474c",
+          "072e2e93952807a445217bbab4841c7536ee5f7bec428b349e1902e5dfaa18dc",
+          "b99583b2dad0fc3266335acef4af9df5494a5713e3a3220052737f2c693f17b3",
+          "606eb4fb1fa5b45e9a3f0f885cddae8042ea701454156ea44c6348fd35bd5390",
+          "c3e5146d59b5067e86c675107f4de27fdec18450059cb2ce6ff6ea0ecde382c8",
+          "e0bfb473063aaaf106d1bd8178b624b78ccd4b6e87d75332c403c03f04ca7bff",
+          "79445c1a134bd4c8284568235971b80bd7442a36229cbf8d7b162f6348584ba8",
+          "55b883fb94873a15772037b67925851cd61457b793fda9cb8ce1bef3d8b5fd60",
+          "b96cd7c11aa0e3790efeb05fc21c4f2d091e3c9110620ff784a76a153bf39961",
+          "ac16a0ae00fb70988e4b5b6c39c26a72c94976fdb646f2749a718c8afe640aa0",
+          "8b2b4549871701ee415900e4aef7a6ddc422237a1310f32aa94abc86b52684a3",
+          "bc46f88c90377506a6b85e5b0e7bc6486e38e03b5f9a6216b37da1fe4e033c45",
+          "ee53c1df1a5971e18e268bffeceaf834770c6bffb6086f57db1f01949eb449c4",
+          "85850fae236bd4e709c3635f93efe7cd89eaffe16dce45ff8798028993032eed",
+          "3c415d8b41cc5054476ce961171d8c7dac23959a04b6b672ae7e2d04ce6a777b",
+          "d53fc58521e1d73c4bb83d1513bbde612e6b7b14c1ce87de454de6868125678c",
+          "edc050c57695d5a38e9990994dd9840c97cb60b1e1db0f2dde0db09e91c67aa4",
+          "7ecf45c914a8043e35e025fc844ad18a129d1f4bf8bf7931a3b62db6ba093a67"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2_v72/E1/decide_look1/OBS_CONS/solid/p0/R1"
+      },
+      "1": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.54,
+        "t_end": 6.54,
+        "chunks": [
+          "ba6c466f993ff0fea497a89203e6be1c4c106358f9df0f1d1089238aad3c35ff",
+          "d4c3577b15cd9c6ce5359ae0437aac664f43fb7235d2eba0662b1775385f6ce3"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2_v72/E1/decide_look1/OBS_CONS/solid/p1/R1"
+      },
+      "2": {
+        "success": true,
+        "contacts": 0,
+        "cost": 6.6,
+        "t_end": 6.6,
+        "chunks": [
+          "939aa7d89d13645f1e0836b67b2a28657da638c9ce279cf5df98ca38447cf6f8",
+          "2ef9f45306e7e67d91fdf87e942e920ceaf68e81b3b0fba2151d141be258174d"
+        ],
+        "dir": "/workspace/lunar-lab/runs/v7/route_full_r2_v72/E1/decide_look1/OBS_CONS/solid/p2/R1"
+      }
+    }
+  },
+  "compare": [
+    {
+      "a": "rep0",
+      "b": "rep1",
+      "perturb": 0,
+      "identical": true,
+      "success": [
+        false,
+        false
+      ],
+      "cost": [
+        60.0,
+        60.0
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep0",
+      "b": "rep1",
+      "perturb": 1,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.54,
+        6.54
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep0",
+      "b": "rep1",
+      "perturb": 2,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.6,
+        6.6
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep0",
+      "b": "ref0",
+      "perturb": 0,
+      "identical": false,
+      "success": [
+        false,
+        true
+      ],
+      "cost": [
+        60.0,
+        7.04
+      ],
+      "first_diff": {
+        "frame": 7,
+        "max_abs_diff": 5.684341886080802e-14,
+        "max_abs_diff_after_50_frames": 0.000732421875
+      }
+    },
+    {
+      "a": "rep0",
+      "b": "ref0",
+      "perturb": 1,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.54,
+        7.72
+      ],
+      "first_diff": {
+        "frame": 13,
+        "max_abs_diff": 1.1920928955078125e-07,
+        "max_abs_diff_after_50_frames": 0.00110626220703125
+      }
+    },
+    {
+      "a": "rep0",
+      "b": "ref0",
+      "perturb": 2,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.6,
+        6.72
+      ],
+      "first_diff": {
+        "frame": 5,
+        "max_abs_diff": 3.637978807091713e-12,
+        "max_abs_diff_after_50_frames": 0.001617431640625
+      }
+    },
+    {
+      "a": "rep0",
+      "b": "ref1",
+      "perturb": 0,
+      "identical": true,
+      "success": [
+        false,
+        false
+      ],
+      "cost": [
+        60.0,
+        60.0
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep0",
+      "b": "ref1",
+      "perturb": 1,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.54,
+        6.54
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep0",
+      "b": "ref1",
+      "perturb": 2,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.6,
+        6.6
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep1",
+      "b": "ref0",
+      "perturb": 0,
+      "identical": false,
+      "success": [
+        false,
+        true
+      ],
+      "cost": [
+        60.0,
+        7.04
+      ],
+      "first_diff": {
+        "frame": 7,
+        "max_abs_diff": 5.684341886080802e-14,
+        "max_abs_diff_after_50_frames": 0.000732421875
+      }
+    },
+    {
+      "a": "rep1",
+      "b": "ref0",
+      "perturb": 1,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.54,
+        7.72
+      ],
+      "first_diff": {
+        "frame": 13,
+        "max_abs_diff": 1.1920928955078125e-07,
+        "max_abs_diff_after_50_frames": 0.00110626220703125
+      }
+    },
+    {
+      "a": "rep1",
+      "b": "ref0",
+      "perturb": 2,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.6,
+        6.72
+      ],
+      "first_diff": {
+        "frame": 5,
+        "max_abs_diff": 3.637978807091713e-12,
+        "max_abs_diff_after_50_frames": 0.001617431640625
+      }
+    },
+    {
+      "a": "rep1",
+      "b": "ref1",
+      "perturb": 0,
+      "identical": true,
+      "success": [
+        false,
+        false
+      ],
+      "cost": [
+        60.0,
+        60.0
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep1",
+      "b": "ref1",
+      "perturb": 1,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.54,
+        6.54
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "rep1",
+      "b": "ref1",
+      "perturb": 2,
+      "identical": true,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.6,
+        6.6
+      ],
+      "first_diff": null
+    },
+    {
+      "a": "ref0",
+      "b": "ref1",
+      "perturb": 0,
+      "identical": false,
+      "success": [
+        true,
+        false
+      ],
+      "cost": [
+        7.04,
+        60.0
+      ],
+      "first_diff": {
+        "frame": 7,
+        "max_abs_diff": 5.684341886080802e-14,
+        "max_abs_diff_after_50_frames": 0.000732421875
+      }
+    },
+    {
+      "a": "ref0",
+      "b": "ref1",
+      "perturb": 1,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        7.72,
+        6.54
+      ],
+      "first_diff": {
+        "frame": 13,
+        "max_abs_diff": 1.1920928955078125e-07,
+        "max_abs_diff_after_50_frames": 0.00110626220703125
+      }
+    },
+    {
+      "a": "ref0",
+      "b": "ref1",
+      "perturb": 2,
+      "identical": false,
+      "success": [
+        true,
+        true
+      ],
+      "cost": [
+        6.72,
+        6.6
+      ],
+      "first_diff": {
+        "frame": 5,
+        "max_abs_diff": 3.637978807091713e-12,
+        "max_abs_diff_after_50_frames": 0.001617431640625
+      }
+    }
+  ]
+}

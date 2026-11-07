@@ -1,0 +1,176 @@
+{
+  "schema": "v7-encounter-state/v1",
+  "visible": {
+    "x_front": 1.1700074308011141,
+    "y_center": 0.10624387046280824,
+    "W_vis": 0.17599385733071413,
+    "H_vis": 0.10513357272494805,
+    "source": "visible_points (local frame, target-rock mask)"
+  },
+  "local_frame": {
+    "x0": 18.01410617147838,
+    "y0": -0.019408831729842032,
+    "yaw0": 0.008445208987960346
+  },
+  "robot_qpos_world": [
+    18.01410617147838,
+    -0.019408831729842032,
+    0.38401237211854305,
+    0.9999910677157503,
+    -0.0001090723320316056,
+    0.00014890607459870466,
+    0.004222608071030853,
+    0.0026259492813000902,
+    0.8510732126389335,
+    -1.655211846196929,
+    297.19350172645153,
+    -0.002747823819003449,
+    0.851838126782861,
+    -1.6550207412569398,
+    263.6564323313422,
+    -0.0014312136179434607,
+    0.8477336669713369,
+    -1.657637128712295,
+    292.91383658791085,
+    0.0015519063820152688,
+    0.846892203116396,
+    -1.6578383975951347,
+    256.71222093428497
+  ],
+  "robot_qvel_world": [
+    2.738111297350751e-05,
+    1.337345766501388e-06,
+    -2.6167217681166183e-06,
+    -2.984822036136831e-06,
+    6.33978877410598e-05,
+    1.9954151028137444e-05,
+    -3.2564843704392665e-06,
+    -0.0001323105936499585,
+    -8.192660896676607e-05,
+    0.0008062204594679048,
+    -1.6957781202871587e-05,
+    -0.0001372282001927295,
+    -7.206328799340171e-05,
+    0.0008768295905664452,
+    3.0445861064936913e-05,
+    0.0001579776433059245,
+    9.566925313270144e-05,
+    -0.0009793800553060214,
+    -1.0595063609181845e-05,
+    0.00011780855125305036,
+    6.1788221377541e-05,
+    -0.000599230056153415
+  ],
+  "t_sim": 93.41999999999855,
+  "crop_native_px": 443,
+  "native_ok": false,
+  "crops": {
+    "A1": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/A1.png",
+      "sha256": "180f2aa6a6d7f369b8d68a52a681ad0f701e38bd664c9666dce9816eaa2b8f4b",
+      "class": "A",
+      "repeat_idx": 0,
+      "crop_box": [
+        1492,
+        1058,
+        2030,
+        1596
+      ],
+      "uploaded_object_height_px": 1264.8
+    },
+    "A2": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/A2.png",
+      "sha256": "180f2aa6a6d7f369b8d68a52a681ad0f701e38bd664c9666dce9816eaa2b8f4b",
+      "class": "A",
+      "repeat_idx": 1,
+      "crop_box": [
+        1492,
+        1058,
+        2030,
+        1596
+      ],
+      "uploaded_object_height_px": 1264.8
+    },
+    "B1": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/B1.png",
+      "sha256": "d80badcdb62ad550956cc8732f2bbda83223b0465f7a07f4bcbb5ad066fe0533",
+      "class": "B",
+      "repeat_idx": 0,
+      "crop_box": [
+        1492,
+        1058,
+        2030,
+        1596
+      ],
+      "uploaded_object_height_px": 1264.8
+    },
+    "B2": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/B2.png",
+      "sha256": "d80badcdb62ad550956cc8732f2bbda83223b0465f7a07f4bcbb5ad066fe0533",
+      "class": "B",
+      "repeat_idx": 1,
+      "crop_box": [
+        1492,
+        1058,
+        2030,
+        1596
+      ],
+      "uploaded_object_height_px": 1264.8
+    },
+    "C1": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/C1.png",
+      "sha256": "2651d9f7ddb77f5ebced71e6fbf4701f6c2738ee1fb64ae324733c398cf03130",
+      "class": "C",
+      "repeat_idx": 0,
+      "crop_box": [
+        1268,
+        834,
+        2254,
+        1820
+      ],
+      "uploaded_object_height_px": 690.1
+    },
+    "C2": {
+      "path": "runs/v7/route_full/E2/look1/gen/variants/C2.png",
+      "sha256": "2651d9f7ddb77f5ebced71e6fbf4701f6c2738ee1fb64ae324733c398cf03130",
+      "class": "C",
+      "repeat_idx": 1,
+      "crop_box": [
+        1268,
+        834,
+        2254,
+        1820
+      ],
+      "uploaded_object_height_px": 690.1
+    }
+  },
+  "mask_check": {
+    "iou_depth_mask_vs_render_seg": 0.9813,
+    "iou_depth_mask_vs_render_seg_hi": 0.9814,
+    "shadow_px": 412,
+    "ground_fit": {
+      "normal": [
+        -1.4499907504626831e-08,
+        -1.8383636693530962e-07,
+        0.9999999999999831
+      ],
+      "offset": 5.249709982105476e-07,
+      "inliers": 58102,
+      "tested": 60000,
+      "n_components": 1,
+      "plane": [
+        [
+          -1.4499907504626831e-08,
+          -1.8383636693530962e-07,
+          0.9999999999999831
+        ],
+        5.249709982105476e-07
+      ]
+    }
+  },
+  "observation_sha256": {
+    "rgb.png": "b176403815f799757875ae8c2d24d7f9b861afdbf5facf71d475a5e6c616db3f",
+    "depth.npy": "fecd7eec8ff8713c0f9fbb5bc0b89e4c6f97e849e9b05cf548b6fedbbaf81862",
+    "mask.png": "4cab3090bee2f612f164965cfe8eb0d99d4b174441159dc371945a84549081d1"
+  }
+}

@@ -105,3 +105,9 @@
     "median_hidden_iou": 0.1892
   }
 }```
+- §3.2 有想象一臂：沙箱完成，退出码 0；`final_x=22.0086`、`t_end=140.52 s`、`arrived=true`。
+  - E1 look1：Lux3D 6/6 成功，准入 5/6，分支 accept，执行 R1，pass（t=52.7）。
+  - E2 look1：Lux3D 6/6 成功，准入 0/6 → 侧移 0.42 m 第二眼（yaw 2.8°）。
+  - E2 look2：两视图 `imgs` 3 个任务（组合图）成功，仍 0/3 → 回退 OBS_CONS，执行 R1，pass（t=138.24）。
+  - 联系表：`docs/v7/contact_full.png`（已检查：三行观测均有贴图、无空心/碎片，地面与天空正常）。
+  - 拉回 `runs/v7/route_full/`：21365 个文件、424 MB，sha256 清单与沙箱逐文件一致。

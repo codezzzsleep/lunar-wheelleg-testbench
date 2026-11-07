@@ -1,0 +1,164 @@
+{
+  "schema": "v7-redecide/v2",
+  "metric_version": 2,
+  "rehearsal_ground_span_m": 32.0,
+  "run": "runs/v7/route_full_r2",
+  "rows": [
+    {
+      "encounter": "E1",
+      "look": "look1",
+      "branch": "accept",
+      "n_candidates": 6,
+      "n_admitted": 3,
+      "full_chosen": "R1",
+      "worst_rule": "R2",
+      "obs_chosen": "R2",
+      "fallback": null,
+      "candidates": [
+        {
+          "id": "A1",
+          "admitted": false,
+          "scale_ratio": 0.8468,
+          "scale_ratio_v5": 0.8952,
+          "contour_iou": 0.7997,
+          "free_intrusion_frac": 0.07824
+        },
+        {
+          "id": "A2",
+          "admitted": false,
+          "scale_ratio": 0.8378,
+          "scale_ratio_v5": 0.8857,
+          "contour_iou": 0.7755,
+          "free_intrusion_frac": 0.08261
+        },
+        {
+          "id": "B1",
+          "admitted": true,
+          "scale_ratio": 0.9099,
+          "scale_ratio_v5": 0.9619,
+          "contour_iou": 0.8391,
+          "free_intrusion_frac": 0.06992
+        },
+        {
+          "id": "B2",
+          "admitted": true,
+          "scale_ratio": 0.9099,
+          "scale_ratio_v5": 0.9619,
+          "contour_iou": 0.831,
+          "free_intrusion_frac": 0.06569
+        },
+        {
+          "id": "C1",
+          "admitted": true,
+          "scale_ratio": 0.8919,
+          "scale_ratio_v5": 0.9429,
+          "contour_iou": 0.8178,
+          "free_intrusion_frac": 0.05913
+        },
+        {
+          "id": "C2",
+          "admitted": false,
+          "scale_ratio": 0.8829,
+          "scale_ratio_v5": 0.9333,
+          "contour_iou": 0.807,
+          "free_intrusion_frac": 0.07429
+        }
+      ]
+    },
+    {
+      "encounter": "E2",
+      "look": "look1",
+      "branch": "reject_all",
+      "n_candidates": 4,
+      "n_admitted": 0,
+      "full_chosen": "R1",
+      "worst_rule": "R1",
+      "obs_chosen": "R1",
+      "fallback": "zero_admitted -> OBS_CONS",
+      "candidates": [
+        {
+          "id": "A1",
+          "admitted": false,
+          "scale_ratio": 0.8305,
+          "scale_ratio_v5": 0.9245,
+          "contour_iou": 0.2713,
+          "free_intrusion_frac": 0.34467
+        },
+        {
+          "id": "A2",
+          "admitted": false,
+          "scale_ratio": 0.7966,
+          "scale_ratio_v5": 0.8868,
+          "contour_iou": 0.2484,
+          "free_intrusion_frac": 0.3464
+        },
+        {
+          "id": "B1",
+          "admitted": false,
+          "scale_ratio": 0.8983,
+          "scale_ratio_v5": 1.0,
+          "contour_iou": 0.5701,
+          "free_intrusion_frac": 0.13532
+        },
+        {
+          "id": "B2",
+          "admitted": false,
+          "scale_ratio": 0.8983,
+          "scale_ratio_v5": 1.0,
+          "contour_iou": 0.5964,
+          "free_intrusion_frac": 0.10902
+        }
+      ]
+    },
+    {
+      "encounter": "E2",
+      "look": "look2",
+      "branch": "accept",
+      "n_candidates": 3,
+      "n_admitted": 1,
+      "full_chosen": "R1",
+      "worst_rule": "R1",
+      "obs_chosen": "R1",
+      "fallback": null,
+      "candidates": [
+        {
+          "id": "M1",
+          "admitted": false,
+          "scale_ratio": 1.1695,
+          "scale_ratio_v5": 1.3019,
+          "contour_iou": 0.6792,
+          "free_intrusion_frac": 0.28462
+        },
+        {
+          "id": "M2",
+          "admitted": true,
+          "scale_ratio": 1.0169,
+          "scale_ratio_v5": 1.1321,
+          "contour_iou": 0.8473,
+          "free_intrusion_frac": 0.12944
+        },
+        {
+          "id": "M3",
+          "admitted": false,
+          "scale_ratio": 1.1356,
+          "scale_ratio_v5": 1.2642,
+          "contour_iou": 0.7263,
+          "free_intrusion_frac": 0.19117
+        }
+      ]
+    }
+  ],
+  "compare": {
+    "E1": {
+      "v72_action": "R1",
+      "executed": "R1",
+      "same": true
+    },
+    "E2": {
+      "v72_action": "R1",
+      "executed": "R1",
+      "same": true
+    }
+  },
+  "all_same": true
+}

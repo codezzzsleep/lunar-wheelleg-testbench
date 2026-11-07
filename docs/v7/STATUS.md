@@ -141,3 +141,9 @@
   - `--span 32`：`rep0=rep1`（三种扰动 identical），`rep0=ref0`（三种 identical）；与 `ref1` 扰动 0 不同（7.04 s 成功 vs 60 s 卡住），扰动 1/2 数值上也有 10⁻⁷ 级差异但结局均为成功。
   - `--span 4`：`rep0=rep1`（三种 identical）；`rep0=ref1`（三种 identical）；与 `ref0` 扰动 0 不同（卡住 vs 成功），扰动 1/2 数值差异、结局同为成功。
   - `platform`：python 3.12.16、x86_64、8 核、mujoco 3.17.0、numpy 2.5.4。
+- §2.2 按路线条件重新决策（`route_full_r2_v73`，退出码 0）：
+  - `rehearsal_ground_span_m: 32.0`；
+  - `compare`: `E1 {v72_action: R1, executed: R1, same: true}`，`E2 {v72_action: R1, executed: R1, same: true}`，`all_same: true`；
+  - E1：采纳 3/6，`full_chosen=R1`、`worst_rule=R2`、`obs_chosen=R2`；E2 look1 拒绝 0/4，look2 采纳 1/3（M2），`full_chosen=R1`。
+- 结论（照 REVIEW_V7_R3 §3 抄录）：
+  > E1 直行（R1）的预演判定依赖预演地面的高度场尺寸：路线条件（32 m）下 R1 在 2/3 份准入候选里安全，决策为 R1，与实际执行相同；4 m 地面下只在 1/3 份里安全，决策为 D2。两种地面都是平的，差别只在数值层面，说明这个临界动作的安全判定不稳健。V7 到此收尾，不重跑路线。

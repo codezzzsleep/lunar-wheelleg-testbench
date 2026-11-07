@@ -6,3 +6,4 @@
 | cnb-0fp-1k6rn0am3-001 | 2026-11-08T03:30+08:00 | 2026-11-08T03:31+08:00 | `v8_run.py --policy optimistic` | `runs/v8/main/` | 68 MB | 逐文件一致 | 待提交 |
 | cnb-0fp-1k6rn0am3-001 | 2026-11-08T03:46+08:00 | 2026-11-08T03:47+08:00 | `v8_run.py --policy conservative --see-dark --max-looks 5 --tag conservative_seedark` | `runs/v8/main/` | 逐文件一致 | 待提交 |
 | cnb-0fp-1k6rn0am3-001 | 2026-11-08T03:50+08:00 | 2026-11-08T03:51+08:00 | `v8_run.py --policy imagination --imagine truth --tag imagination_truth` | `runs/v8/main/` | 逐文件一致 | 待提交 |
+| cnb-0fp-1k6rn0am3-001 | 2026-11-08T03:53+08:00 | 2026-11-08T03:54+08:00 | `v8_run.py --policy imagination --imagine lux`（退出 10） | `runs/v8/main/`（imagination 67 MB，41 文件） | 逐文件一致 | 待提交 |

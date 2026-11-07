@@ -1,0 +1,56 @@
+{
+  "schema": "v8-lux-request/v1",
+  "mode": "img",
+  "version": "G1-Turbo",
+  "faceCount": 30000,
+  "items": [
+    {
+      "id": "A1",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/A1.png",
+      "sha256": "c18054f4ad7c0df1a2ceedf9c704b6a0acd03ba99ae05ba6086e5521d4c87d3f"
+    },
+    {
+      "id": "A2",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/A2.png",
+      "sha256": "c18054f4ad7c0df1a2ceedf9c704b6a0acd03ba99ae05ba6086e5521d4c87d3f"
+    },
+    {
+      "id": "B1",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/B1.png",
+      "sha256": "72fdc5a6e464dff1cc2b233edcec494684f27ed4d160659a5c4d7861f5b4abd7"
+    },
+    {
+      "id": "B2",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/B2.png",
+      "sha256": "72fdc5a6e464dff1cc2b233edcec494684f27ed4d160659a5c4d7861f5b4abd7"
+    },
+    {
+      "id": "C1",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/C1.png",
+      "sha256": "e48ba2749485559e3f822896014a9f22689a32c16be98458f26a3d2586896913"
+    },
+    {
+      "id": "C2",
+      "path": "runs/v8/main/imagination/looks/look1/T2/gen/variants/C2.png",
+      "sha256": "e48ba2749485559e3f822896014a9f22689a32c16be98458f26a3d2586896913"
+    }
+  ],
+  "result_file": "runs/v8/main/imagination/looks/look1/T2/lux_result.json",
+  "result_schema": {
+    "tasks": [
+      {
+        "id": "A1",
+        "task_id": "...",
+        "status": "ok|failed",
+        "submitted_at": "...",
+        "finished_at": "...",
+        "fetched_at": "...",
+        "glb": "repo-relative path of tex_mesh.glb",
+        "glb_sha256": "...",
+        "inputs": [
+          "repo-relative input image paths"
+        ]
+      }
+    ]
+  }
+}

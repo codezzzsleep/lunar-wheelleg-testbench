@@ -1,0 +1,126 @@
+{
+  "schema": "v3-generation-tasks/v1",
+  "n": 8,
+  "tasks": [
+    {
+      "id": "v7_shadow_moon_rock_02_high_side_B_naive1_retry",
+      "state_id": "v7_shadow_moon_rock_02_high_side",
+      "variant": "B_naive",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_02/high_side/inputs/B_naive1.png",
+      "image_sha256": "b1b515866a54b5df952acf66de1b31e521ca81deefb191ae850512fa87dc7abf",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1001,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_02_high_side_B_naive1"
+    },
+    {
+      "id": "v7_shadow_moon_rock_02_high_side_B_naive2_retry",
+      "state_id": "v7_shadow_moon_rock_02_high_side",
+      "variant": "B_naive",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_02/high_side/inputs/B_naive2.png",
+      "image_sha256": "b1b515866a54b5df952acf66de1b31e521ca81deefb191ae850512fa87dc7abf",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1002,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_02_high_side_B_naive2"
+    },
+    {
+      "id": "v7_shadow_moon_rock_02_low_behind_B_naive1_retry",
+      "state_id": "v7_shadow_moon_rock_02_low_behind",
+      "variant": "B_naive",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_02/low_behind/inputs/B_naive1.png",
+      "image_sha256": "0a05eefb8c83fa7b26010c9af2ac841379d97dea582f249cee13d9b095479728",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1003,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_02_low_behind_B_naive1"
+    },
+    {
+      "id": "v7_shadow_moon_rock_02_low_behind_B_naive2_retry",
+      "state_id": "v7_shadow_moon_rock_02_low_behind",
+      "variant": "B_naive",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_02/low_behind/inputs/B_naive2.png",
+      "image_sha256": "0a05eefb8c83fa7b26010c9af2ac841379d97dea582f249cee13d9b095479728",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1004,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_02_low_behind_B_naive2"
+    },
+    {
+      "id": "v7_shadow_moon_rock_02_low_behind_B_depth2_retry",
+      "state_id": "v7_shadow_moon_rock_02_low_behind",
+      "variant": "B_depth",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_02/low_behind/inputs/B_depth2.png",
+      "image_sha256": "1e27011d05681ccfdc71a0dad7e978f721f8e0d25aa5df29667ae926539e49a9",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1005,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_02_low_behind_B_depth2"
+    },
+    {
+      "id": "v7_shadow_moon_rock_05_low_side_B_naive1_retry",
+      "state_id": "v7_shadow_moon_rock_05_low_side",
+      "variant": "B_naive",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_05/low_side/inputs/B_naive1.png",
+      "image_sha256": "e24d6604e45131f76ab8f91976ccd4c8c0e0852cd34bcc1af40edad56d71aca3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1006,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_05_low_side_B_naive1"
+    },
+    {
+      "id": "v7_shadow_moon_rock_05_low_side_B_naive2_retry",
+      "state_id": "v7_shadow_moon_rock_05_low_side",
+      "variant": "B_naive",
+      "repeat_idx": 1,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_05/low_side/inputs/B_naive2.png",
+      "image_sha256": "e24d6604e45131f76ab8f91976ccd4c8c0e0852cd34bcc1af40edad56d71aca3",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1007,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_05_low_side_B_naive2"
+    },
+    {
+      "id": "v7_shadow_moon_rock_07_high_side_B_depth1_retry",
+      "state_id": "v7_shadow_moon_rock_07_high_side",
+      "variant": "B_depth",
+      "repeat_idx": 0,
+      "image": "/var/lib/deepseek-harness/lunar-lab/runs/v7/shadow_exp/moon_rock_07/high_side/inputs/B_depth1.png",
+      "image_sha256": "e963c8f694ab6bb9eb96ab0ae305b8ad1ccc9153b16a6af8ccc6a183de63db39",
+      "model": {
+        "version": "G1-Turbo",
+        "face_count": 30000
+      },
+      "create_order": 1008,
+      "estimated_credits": 20.0,
+      "retry_of": "v7_shadow_moon_rock_07_high_side_B_depth1"
+    }
+  ]
+}

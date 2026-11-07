@@ -13,3 +13,6 @@
 - §3.4 准备完成：12 个条件（3 岩石 × 4 太阳）的全部 `photo/overlay/obs/inputs/stats/lux_request` 与 `truth_world.stl` 已拉回，195 个文件、209 MB，sha256 与沙箱一致。
   - 深度分割 IoU：0.9793–0.9823（≥0.9，通过）。
   - 只看亮度对照：`iou_naive_vs_render` 0.2653–0.9993，`naive_over_truth_px` 0.999–3.684，与 SPEC 表格一致。
+- §3.4 Lux3D：72 个任务一次性提交（12 条件 × 6），**64 成功 / 8 失败**；失败任务按规则重提一次后仍失败，已在各自 `lux_result.json` 记 `status=failed`，流程继续。
+  - GLB：`assets/v7/lux/<task_id>/tex_mesh.glb`，共 64 个、481 MB（LFS）。
+  - 请求与结果文件：12 个条件各自的 `lux_request.json` / `lux_result.json`。

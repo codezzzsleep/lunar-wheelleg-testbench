@@ -1,0 +1,41 @@
+{
+  "schema": "v4-regress/v1",
+  "at": "2026-11-07T13:53:44+0800",
+  "tests": {
+    "T1": {
+      "pass": true,
+      "hidden_iou": 1.0,
+      "diff_outside_U": 0
+    },
+    "T2": {
+      "pass": true,
+      "mask_iou": 0.9609,
+      "depth_p95_mm": 19.874
+    },
+    "T4": {
+      "pass": false,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/workspace/lunar-lab/runs/v3/stage008/truth_v2/truth_coll/manifest.json'"
+    },
+    "T5": {
+      "pass": false,
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/workspace/lunar-lab/runs/v3/stage008/truth_v2/truth_coll/manifest.json'"
+    },
+    "T6": {
+      "pass": false,
+      "error": "no frames"
+    },
+    "T3": {
+      "pass": true,
+      "d2": {
+        "success": true,
+        "t_end": 7.28,
+        "last_frame": 7.279999999999933
+      },
+      "body": {
+        "success": true,
+        "t_end": 115.93999999999407,
+        "last_frame": 115.93999999999407
+      }
+    }
+  }
+}

@@ -1,0 +1,5 @@
+# V7 沙箱作业记录
+
+| 沙箱 id | 开始时刻 | 结束时刻 | 命令 | 拉回的目录 | 文件数与总字节 | sha 校验 | 推送提交号 |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| cnb-cu4-1k6pbstk8-001 | 2026-11-07T13:58+08:00 | 2026-11-07T14:04+08:00 | `python3 scripts/v4_regress.py`；`python3 scripts/v7/ka9_detour_wiring.py` | `runs/v4/regress/` | 2 个 JSON，约 1.6 KB | 本地复算一致 | 待提交 |

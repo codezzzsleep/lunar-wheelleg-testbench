@@ -112,7 +112,8 @@ def env_unguard(env, g):
 
 
 def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
-               record=False, record_dir=None, record_meta=None, pre_step_hook=None):
+               record=False, record_dir=None, record_meta=None, pre_step_hook=None,
+               params=None):
     sk = skills.make_skill(action)
     try: sk.channel_half = float(env.channel_half_width)
     except Exception: pass
@@ -126,7 +127,8 @@ def run_action(env, snapshot, action, visible, *, mode='project', seed=0,
     _budget = float(getattr(env, 'max_seconds', 120.0))
     _hz = float(getattr(env, 'control_hz', 50.0))
     _max_steps = int(round(_budget * _hz))
-    ep = runner.EpisodeRunner(env, sk, visible=visible, seed=seed,
+    # V7：绕行等动作的几何计划（offset_m / leave_x）必须真正传进动作状态机
+    ep = runner.EpisodeRunner(env, sk, visible=visible, params=params, seed=seed,
                               max_steps=_max_steps,
                               record_trajectory=record, recorder=rec)
     t0 = time.time()
@@ -270,7 +272,8 @@ def rehearse_on_spec(state, spec, snapshot, proto, seed=0, mode='same_scene',
             else:
                 env = make_env(spec, proto, budget=budget or climb_budget)
                 r = run_action(env, snapshot, a, visible, mode=mode, seed=seed,
-                               record_dir=rdir)
+                               record_dir=rdir,
+                               params=(body_plan if a in ('D1', 'D2') else None))
                 del env
         except Exception as e:  # noqa: BLE001
             r = {'action': a, 'ok': False, 'error_class': 'episode',

@@ -1,0 +1,32 @@
+{
+  "schema": "v4-regress/v1",
+  "at": "2026-11-07T13:59:49+0800",
+  "tests": {
+    "T1": {
+      "pass": true,
+      "hidden_iou": 1.0,
+      "diff_outside_U": 0
+    },
+    "T2": {
+      "pass": true,
+      "mask_iou": 0.9609,
+      "depth_p95_mm": 19.874
+    },
+    "T4": {
+      "pass": false,
+      "error": "ValueError: 机器人关节/执行器映射不兼容，拒绝恢复"
+    },
+    "T5": {
+      "pass": false,
+      "error": "ValueError: 机器人关节/执行器映射不兼容，拒绝恢复"
+    },
+    "T6": {
+      "pass": false,
+      "error": "no frames"
+    },
+    "T3": {
+      "pass": false,
+      "error": "ValueError: 机器人关节/执行器映射不兼容，拒绝恢复"
+    }
+  }
+}

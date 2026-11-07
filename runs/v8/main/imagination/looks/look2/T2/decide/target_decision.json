@@ -1,0 +1,227 @@
+{
+  "schema": "v8-target-decision/v1",
+  "metric_version": 2,
+  "obs": "/workspace/lunar-lab/runs/v8/main/imagination/looks/look2/T2",
+  "grid": {
+    "pitch": 0.00529,
+    "dims": [
+      313,
+      375,
+      109
+    ]
+  },
+  "volume_stats": {
+    "n_voxels": 12793875,
+    "n_free": 8097988,
+    "n_band": 32123,
+    "n_unknown": 4663764,
+    "n_in_fov": 12793875,
+    "n_masked_fov": 2801008,
+    "n_shell": 32123,
+    "valid_depth_frac": 0.744432,
+    "free_eps_m": 0.007935000000000001,
+    "band_m": 0.013225,
+    "shell_offset_m": 0.002645,
+    "pitch_m": 0.00529,
+    "depth_convention": "positive_camera_minus_z"
+  },
+  "thresholds": {
+    "schema": "v5-admission/v1",
+    "calibrated_from": "truth_v2 KA set",
+    "scale_ratio": {
+      "min": 0.889,
+      "max": 1.09
+    },
+    "hidden_frac_min": 0.3578,
+    "shell_contact_min": 0.0486,
+    "free_intrusion_max": 0.2864,
+    "contour_iou_min": 0.7068,
+    "notes": "calibrated before candidates; column_fill_top; truth prior intrusion is not 2%"
+  },
+  "candidates": [
+    {
+      "scale_ratio": 0.8333,
+      "hidden_frac": 0.7657,
+      "shell_contact": 0.4062,
+      "free_intrusion_frac": 0.16615,
+      "intrusion_depth_p95_mm": 33.46,
+      "voxels": 273471,
+      "contour_iou": 0.5573,
+      "scale_ratio_v5": 0.9155,
+      "id": "M1",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look2/T2/4854826/tex_mesh.glb",
+      "M": [
+        [
+          -0.1668078769101541,
+          -0.9439987368190811,
+          -0.7286195520647694,
+          2.492671007669261
+        ],
+        [
+          -1.084212454314334,
+          0.42637388324793307,
+          -0.304193359822538,
+          0.30793643881992194
+        ],
+        [
+          0.49649110835620425,
+          0.6139353639711704,
+          -0.9090791399846171,
+          0.20668530251665937
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.5573,
+        "mask_iou_all_pixels": 0.4812,
+        "outside_lit_px": 5142,
+        "in_dark_px": 4197,
+        "occluded_px": 2392,
+        "depth_median_mm": 52.713,
+        "depth_p95_mm": 289.5,
+        "visible_median_mm": 39.262,
+        "visible_p95_mm": 292.283,
+        "n_candidate_pixels": 32569,
+        "n_mask_pixels": 38933
+      },
+      "footprint_cells": 90,
+      "footprint_x": [
+        6.175000000000001,
+        6.675000000000001
+      ],
+      "footprint_y": [
+        0.02499999999999991,
+        0.5250000000000004
+      ]
+    },
+    {
+      "scale_ratio": 0.9359,
+      "hidden_frac": 0.7128,
+      "shell_contact": 0.3269,
+      "free_intrusion_frac": 0.20966,
+      "intrusion_depth_p95_mm": 33.87,
+      "voxels": 234508,
+      "contour_iou": 0.515,
+      "scale_ratio_v5": 1.0282,
+      "id": "M2",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look2/T2/4855077/tex_mesh.glb",
+      "M": [
+        [
+          -1.2030635443323672,
+          -0.002500144013288286,
+          -0.09737814463750677,
+          2.4911396865343565
+        ],
+        [
+          -0.09417141739631739,
+          -0.2787018411020038,
+          1.17060141525056,
+          0.3299361492069165
+        ],
+        [
+          -0.024909795637438358,
+          1.1743805509803702,
+          0.2775976747651771,
+          0.2124668491846209
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.515,
+        "mask_iou_all_pixels": 0.4812,
+        "outside_lit_px": 1007,
+        "in_dark_px": 2804,
+        "occluded_px": 3,
+        "depth_median_mm": 50.764,
+        "depth_p95_mm": 610.636,
+        "visible_median_mm": 38.643,
+        "visible_p95_mm": 407.066,
+        "n_candidate_pixels": 24380,
+        "n_mask_pixels": 38933
+      },
+      "footprint_cells": 92,
+      "footprint_x": [
+        6.175000000000001,
+        6.625
+      ],
+      "footprint_y": [
+        0.07500000000000018,
+        0.5750000000000002
+      ]
+    },
+    {
+      "scale_ratio": 0.6795,
+      "hidden_frac": 0.7999,
+      "shell_contact": 0.2907,
+      "free_intrusion_frac": 0.11738,
+      "intrusion_depth_p95_mm": 35.49,
+      "voxels": 203315,
+      "contour_iou": 0.4239,
+      "scale_ratio_v5": 0.7465,
+      "id": "M3",
+      "glb": "/workspace/lunar-lab/assets/v8/lux/main/look2/T2/4855293/tex_mesh.glb",
+      "M": [
+        [
+          -1.1454110452672572,
+          0.2984408799051885,
+          -0.23148503352875327,
+          2.5411622007373467
+        ],
+        [
+          -0.37283549177329595,
+          -0.7752502092755684,
+          0.8453399027958942,
+          0.31751503214481747
+        ],
+        [
+          0.060381914681097756,
+          0.8743791491030802,
+          0.8285130476702466,
+          0.19609077563738334
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "admitted": false,
+      "eval": {
+        "mask_iou": 0.4239,
+        "mask_iou_all_pixels": 0.403,
+        "outside_lit_px": 1448,
+        "in_dark_px": 1687,
+        "occluded_px": 381,
+        "depth_median_mm": 54.205,
+        "depth_p95_mm": 351.142,
+        "visible_median_mm": 51.877,
+        "visible_p95_mm": 408.994,
+        "n_candidate_pixels": 20089,
+        "n_mask_pixels": 38933
+      },
+      "footprint_cells": 87,
+      "footprint_x": [
+        6.175000000000001,
+        6.625
+      ],
+      "footprint_y": [
+        -0.02499999999999991,
+        0.5750000000000002
+      ]
+    }
+  ],
+  "admitted_ids": []
+}

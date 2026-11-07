@@ -14,3 +14,6 @@
   - GLB：`assets/v8/lux/main/look1/<T>/<id>/tex_mesh.glb`（10 个，82 MB）。
 - §3.1 第二眼：第一眼决策 `imagined_blocked` → 第二眼（`look2/T2`，imgs 3 个任务，真实两图）。
 - §3.2 第二眼 Lux3D（本机）：M1/M2/M3 **3/3 成功**，均 `api_field=imgs`、`n_images=2`；GLB 在 `assets/v8/lux/main/look2/T2/`。
+- §3.3 第二次退出码 **10**：第二眼（look2/T2）决策仍 `imagined_blocked`，脚本继续要求 **look3/T2**。
+  - 这与 SPEC §0.4“两眼之后还不行，就停车”不一致（脚本 `--max-looks` 默认 1+MAX_EXTRA_LOOKS，允许继续看第三眼）。
+  - 按“遇到与文档不一致停下回报”，未调用 look3 的 Lux3D，未删目录；look3 请求已拉回并推送。

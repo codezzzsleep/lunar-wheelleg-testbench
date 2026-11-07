@@ -1,0 +1,142 @@
+{
+  "schema": "v8-target-state/v1",
+  "target": "T2",
+  "look": "look3",
+  "visible": {
+    "x_front": 2.6598635381751428,
+    "y_center": 0.39496413064121716,
+    "W_vis": 0.9764701062880092,
+    "H_vis": 0.4185689326839151,
+    "source": "visible_points (local frame, lit pixels of this target)"
+  },
+  "local_frame": {
+    "x0": 3.4788215314101123,
+    "y0": 0.20053434588577398,
+    "yaw0": -0.11668208227178717
+  },
+  "robot_qpos_world": [
+    3.4788215314101123,
+    0.20053434588577398,
+    0.3853651681676362,
+    0.9982970934070698,
+    0.0017140896163698727,
+    -0.0004996847283672935,
+    -0.05830716514251692,
+    -0.0068295194043404474,
+    0.8574863364547763,
+    -1.6546736122178085,
+    65.30390703922642,
+    -0.002216718879553831,
+    0.8447376411965416,
+    -1.6557370143483072,
+    61.792340602330356,
+    0.0016427288414331237,
+    0.8548678640514407,
+    -1.6500118910954478,
+    54.76270378250899,
+    0.007477704002553892,
+    0.8404531113820273,
+    -1.6650734568816419,
+    51.29611279646312
+  ],
+  "t_sim": 79.82000000000126,
+  "crop_native_px": 398,
+  "native_ok": false,
+  "crops": {
+    "A1": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/A1.png",
+      "sha256": "0093da2686f09a7897cb04d547ae107db3316d8c50fda17f28275be634699a65",
+      "class": "A",
+      "repeat_idx": 0,
+      "crop_box": [
+        1133,
+        166,
+        2171,
+        1204
+      ],
+      "uploaded_object_height_px": 588.9
+    },
+    "A2": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/A2.png",
+      "sha256": "0093da2686f09a7897cb04d547ae107db3316d8c50fda17f28275be634699a65",
+      "class": "A",
+      "repeat_idx": 1,
+      "crop_box": [
+        1133,
+        166,
+        2171,
+        1204
+      ],
+      "uploaded_object_height_px": 588.9
+    },
+    "B1": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/B1.png",
+      "sha256": "4ea7ee3e2312b8d81e5bb788821de40efa3be27d50c4ac6e3345c06c02622501",
+      "class": "B",
+      "repeat_idx": 0,
+      "crop_box": [
+        1133,
+        166,
+        2171,
+        1204
+      ],
+      "uploaded_object_height_px": 588.9
+    },
+    "B2": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/B2.png",
+      "sha256": "4ea7ee3e2312b8d81e5bb788821de40efa3be27d50c4ac6e3345c06c02622501",
+      "class": "B",
+      "repeat_idx": 1,
+      "crop_box": [
+        1133,
+        166,
+        2171,
+        1204
+      ],
+      "uploaded_object_height_px": 588.9
+    },
+    "C1": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/C1.png",
+      "sha256": "def2921718e9bf2797563c538fc0fdba2a91a8ce2ab1e9ef9a344aa24e2b21a8",
+      "class": "C",
+      "repeat_idx": 0,
+      "crop_box": [
+        700,
+        0,
+        2603,
+        1903
+      ],
+      "uploaded_object_height_px": 321.2
+    },
+    "C2": {
+      "path": "runs/v8/main/imagination/looks/look3/T2/gen/variants/C2.png",
+      "sha256": "def2921718e9bf2797563c538fc0fdba2a91a8ce2ab1e9ef9a344aa24e2b21a8",
+      "class": "C",
+      "repeat_idx": 1,
+      "crop_box": [
+        700,
+        0,
+        2603,
+        1903
+      ],
+      "uploaded_object_height_px": 321.2
+    }
+  },
+  "cells_world": {
+    "x": [
+      6.175000000000001,
+      7.375
+    ],
+    "y": [
+      -0.32499999999999996,
+      0.7250000000000001
+    ],
+    "n": 257
+  },
+  "observation_sha256": {
+    "rgb.png": "4491c02e59d31130c02061f1d93352054c357dd77aa543dfadbe9bba8721edc3",
+    "depth.npy": "ceacc7f4bbfd51c51fbc28d4619ce5374c92cbb809e94c0374ea523e7b038697",
+    "mask.png": "366890cda5ab0bdf6292948eca856edc478a2a3c0ce4f1e30126be7ca54dcbcc",
+    "dark.png": "e4f83795bb3522e8ed786525dcaf92477962a6705098983fa82932d1f0c9294a"
+  }
+}

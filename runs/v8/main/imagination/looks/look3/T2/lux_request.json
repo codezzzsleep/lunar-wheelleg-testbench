@@ -1,0 +1,62 @@
+{
+  "schema": "v8-lux-request/v1",
+  "mode": "imgs",
+  "version": "G1-Turbo",
+  "faceCount": 30000,
+  "items": [
+    {
+      "id": "M1",
+      "paths": [
+        "runs/v8/main/imagination/looks/look1/T2/gen/variants/A1.png",
+        "runs/v8/main/imagination/looks/look3/T2/gen/variants/A1.png"
+      ],
+      "sha256": [
+        "c18054f4ad7c0df1a2ceedf9c704b6a0acd03ba99ae05ba6086e5521d4c87d3f",
+        "0093da2686f09a7897cb04d547ae107db3316d8c50fda17f28275be634699a65"
+      ]
+    },
+    {
+      "id": "M2",
+      "paths": [
+        "runs/v8/main/imagination/looks/look1/T2/gen/variants/A1.png",
+        "runs/v8/main/imagination/looks/look3/T2/gen/variants/A1.png"
+      ],
+      "sha256": [
+        "c18054f4ad7c0df1a2ceedf9c704b6a0acd03ba99ae05ba6086e5521d4c87d3f",
+        "0093da2686f09a7897cb04d547ae107db3316d8c50fda17f28275be634699a65"
+      ]
+    },
+    {
+      "id": "M3",
+      "paths": [
+        "runs/v8/main/imagination/looks/look1/T2/gen/variants/A1.png",
+        "runs/v8/main/imagination/looks/look3/T2/gen/variants/A1.png"
+      ],
+      "sha256": [
+        "c18054f4ad7c0df1a2ceedf9c704b6a0acd03ba99ae05ba6086e5521d4c87d3f",
+        "0093da2686f09a7897cb04d547ae107db3316d8c50fda17f28275be634699a65"
+      ]
+    }
+  ],
+  "result_file": "runs/v8/main/imagination/looks/look3/T2/lux_result.json",
+  "result_schema": {
+    "tasks": [
+      {
+        "id": "A1",
+        "task_id": "...",
+        "status": "ok|failed",
+        "submitted_at": "...",
+        "finished_at": "...",
+        "fetched_at": "...",
+        "glb": "repo-relative path of tex_mesh.glb",
+        "glb_sha256": "...",
+        "inputs": [
+          "repo-relative input image paths"
+        ],
+        "api_field": "imgs",
+        "n_images": 2
+      }
+    ]
+  },
+  "imgs_rule": "Each item is ONE Lux3D task whose request body carries the field imgs = [url of paths[0], url of paths[1]] in this order (scripts/lux3d_client.submit_img_to_3d_multi). Never stitch the two images into one picture. Items with identical paths are independent samples: give each its own sample id so they are not cache hits."
+}

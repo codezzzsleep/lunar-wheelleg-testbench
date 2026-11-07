@@ -155,16 +155,17 @@ def evaluate_one(outroot, rock, sun):
             mesh = trimesh.load(str(glb), force='mesh', process=False)
             ev = v3_register.evaluate_matrix(mesh, obs, M)
             m = C.admission_metrics(mesh, M, V, g, ev)
+            m['scale_ratio_v5'] = m['scale_ratio']; m['scale_ratio'] = VE.scale_ratio_ground(m['P'], V, g)
             hm = R.hidden_metrics(m['P'], T, U, g)
             P = m['P']
-            row.update({k: m[k] for k in ('scale_ratio', 'hidden_frac', 'shell_contact', 'free_intrusion_frac', 'contour_iou')})
+            row.update({k: m[k] for k in ('scale_ratio', 'scale_ratio_v5', 'hidden_frac', 'shell_contact', 'free_intrusion_frac', 'contour_iou')})
             row.update({'admitted': VE.admitted(m), 'rear_err_m': hm['rear_err_m'], 'top_err_m': hm['top_err_m'],
                         'path_p95_mm': hm['path_p95_mm'],
                         'hidden_iou': round(float((P & U & T).sum() / max(1, ((P & U) | (T & U)).sum())), 4),
                         'footprint_ratio': round(float((P & above).any(axis=2).sum() / max(t_fp, 1)), 3), 'M': M.tolist()})
             del P, m, mesh
         rows.append(row); print(json.dumps({k: row.get(k) for k in ('rock', 'sun', 'id', 'admitted', 'rear_err_m', 'footprint_ratio', 'hidden_iou')}))
-    (cdir / 'eval' / 'rows.json').write_text(json.dumps({'lux_result_sha256': _sha(res_p), 'rows': rows}, indent=2))
+    (cdir / 'eval' / 'rows.json').write_text(json.dumps({'lux_result_sha256': _sha(res_p), 'metric_version': 2, 'rows': rows}, indent=2))
 
 
 def _sha(p):
@@ -182,7 +183,8 @@ def evaluate(outroot, out_arg):
             if not res_p.exists():
                 continue
             rp = cdir / 'eval' / 'rows.json'
-            fresh = rp.exists() and json.loads(rp.read_text()).get('lux_result_sha256') == _sha(res_p)
+            fresh = rp.exists() and json.loads(rp.read_text()).get('lux_result_sha256') == _sha(res_p) \
+                and json.loads(rp.read_text()).get('metric_version') == 2
             if not fresh:                  # 结果文件变了（或从未评估）才重算
                 subprocess.run([sys.executable, __file__, '--eval-one', f'{rock}:{sun}', '--out', out_arg], check=True)
             rows += json.loads(rp.read_text())['rows']

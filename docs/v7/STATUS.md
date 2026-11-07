@@ -16,3 +16,92 @@
 - §3.4 Lux3D：72 个任务一次性提交（12 条件 × 6），**64 成功 / 8 失败**；失败任务按规则重提一次后仍失败，已在各自 `lux_result.json` 记 `status=failed`，流程继续。
   - GLB：`assets/v7/lux/<task_id>/tex_mesh.glb`，共 64 个、481 MB（LFS）。
   - 请求与结果文件：12 个条件各自的 `lux_request.json` / `lux_result.json`。
+- §3.4 评估完成（沙箱，退出 0）：72 行评估写入 `eval_rows.json`，12 条件汇总写入 `summary.json`。原文如下：
+
+```json
+{
+  "A_naive|high_side": {
+    "n": 6,
+    "admitted": 4,
+    "median_abs_rear_m": 0.051,
+    "median_footprint_ratio": 0.661,
+    "median_hidden_iou": 0.6508
+  },
+  "A_naive|low_behind": {
+    "n": 6,
+    "admitted": 4,
+    "median_abs_rear_m": 0.036,
+    "median_footprint_ratio": 0.737,
+    "median_hidden_iou": 0.6954
+  },
+  "A_naive|low_front": {
+    "n": 6,
+    "admitted": 2,
+    "median_abs_rear_m": 0.048,
+    "median_footprint_ratio": 0.603,
+    "median_hidden_iou": 0.4548
+  },
+  "A_naive|low_side": {
+    "n": 6,
+    "admitted": 2,
+    "median_abs_rear_m": 0.024,
+    "median_footprint_ratio": 0.581,
+    "median_hidden_iou": 0.4796
+  },
+  "B_depth|high_side": {
+    "n": 5,
+    "admitted": 3,
+    "median_abs_rear_m": 0.034,
+    "median_footprint_ratio": 0.781,
+    "median_hidden_iou": 0.7083
+  },
+  "B_depth|low_behind": {
+    "n": 5,
+    "admitted": 3,
+    "median_abs_rear_m": 0.046,
+    "median_footprint_ratio": 0.781,
+    "median_hidden_iou": 0.6601
+  },
+  "B_depth|low_front": {
+    "n": 6,
+    "admitted": 4,
+    "median_abs_rear_m": 0.041,
+    "median_footprint_ratio": 0.841,
+    "median_hidden_iou": 0.7509
+  },
+  "B_depth|low_side": {
+    "n": 6,
+    "admitted": 2,
+    "median_abs_rear_m": 0.019,
+    "median_footprint_ratio": 0.768,
+    "median_hidden_iou": 0.7277
+  },
+  "B_naive|high_side": {
+    "n": 4,
+    "admitted": 2,
+    "median_abs_rear_m": 0.073,
+    "median_footprint_ratio": 0.746,
+    "median_hidden_iou": 0.5207
+  },
+  "B_naive|low_behind": {
+    "n": 4,
+    "admitted": 2,
+    "median_abs_rear_m": 0.058,
+    "median_footprint_ratio": 0.81,
+    "median_hidden_iou": 0.6287
+  },
+  "B_naive|low_front": {
+    "n": 6,
+    "admitted": 0,
+    "median_abs_rear_m": 0.136,
+    "median_footprint_ratio": 0.363,
+    "median_hidden_iou": 0.1798
+  },
+  "B_naive|low_side": {
+    "n": 4,
+    "admitted": 0,
+    "median_abs_rear_m": 0.174,
+    "median_footprint_ratio": 0.418,
+    "median_hidden_iou": 0.1892
+  }
+}```

@@ -6,3 +6,4 @@
 | cnb-cu4-1k6pbstk8-001 | 2026-11-07T14:06+08:00 | 2026-11-07T14:17+08:00 | `MUJOCO_GL=egl python3 scripts/v7/v7_route.py --arm obs --run runs/v7/route_obs` | `runs/v7/route_obs/` | 8568 个文件，189 MB | 与沙箱 sha256 清单逐文件一致 | 待提交 |
 | cnb-cu4-1k6pbstk8-001 | 2026-11-07T14:30+08:00 | 2026-11-07T14:33+08:00 | `MUJOCO_GL=egl python3 scripts/v7/v7_shadow_exp.py --prepare --out runs/v7/shadow_exp` | `runs/v7/shadow_exp/` | 195 个文件，209 MB | 与沙箱 sha256 清单逐文件一致（195/195） | 待提交 |
 | cnb-cu4-1k6pbstk8-001 | 2026-11-07T14:30+08:00 | 2026-11-07T14:33+08:00 | `v7_shadow_exp.py --prepare`（同上，补充 Lux3D 阶段说明） | `runs/v7/shadow_exp/` | 195 文件 / 209 MB | 逐文件一致 | 2eaf49a5a |
+| cnb-cu4-1k6pbstk8-001 | 2026-11-07T17:05+08:00 | 2026-11-07T17:43+08:00 | `python3 scripts/v7/v7_shadow_exp.py --evaluate --out runs/v7/shadow_exp` | `runs/v7/shadow_exp/`（含 12 个 eval/rows.json、eval_rows.json、summary.json） | 72 行评估 + 12 条件汇总 | 与沙箱一致 | 待提交 |

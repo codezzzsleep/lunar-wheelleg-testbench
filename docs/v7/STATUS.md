@@ -111,3 +111,5 @@
   - E2 look2：两视图 `imgs` 3 个任务（组合图）成功，仍 0/3 → 回退 OBS_CONS，执行 R1，pass（t=138.24）。
   - 联系表：`docs/v7/contact_full.png`（已检查：三行观测均有贴图、无空心/碎片，地面与天空正常）。
   - 拉回 `runs/v7/route_full/`：21365 个文件、424 MB，sha256 清单与沙箱逐文件一致。
+- V7.1 补丁已安装（sha256 通过、`py_compile` 通过），提交 `eccf3716c`；route_full 的 E2 look2 已标记作废（`runs/v7/route_full/INVALID_E2_LOOK2.md`）；LUX3D_CALL §6 已改为真实两图规程。
+- `route_full_r2`：E1 look1 复用命中（`look1_lux_reused`）；E2 look1 未命中复用——A/B/C 输入图 sha256 与旧运行不同（相机位姿有微小差异），按规程记为未命中并提交 6 个新任务继续，不拼图。

@@ -1,0 +1,50 @@
+{
+  "schema": "v7-lux-request/v1",
+  "mode": "img",
+  "version": "G1-Turbo",
+  "faceCount": 30000,
+  "items": [
+    {
+      "id": "A1",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/A1.png"
+    },
+    {
+      "id": "A2",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/A2.png"
+    },
+    {
+      "id": "B1",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/B1.png"
+    },
+    {
+      "id": "B2",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/B2.png"
+    },
+    {
+      "id": "C1",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/C1.png"
+    },
+    {
+      "id": "C2",
+      "path": "runs/v7/route_full_r2/E1/look1/gen/variants/C2.png"
+    }
+  ],
+  "result_file": "runs/v7/route_full_r2/E1/look1/lux_result.json",
+  "result_schema": {
+    "tasks": [
+      {
+        "id": "A1",
+        "task_id": "...",
+        "status": "ok|failed",
+        "submitted_at": "...",
+        "finished_at": "...",
+        "fetched_at": "...",
+        "glb": "repo-relative path of tex_mesh.glb",
+        "glb_sha256": "...",
+        "inputs": [
+          "repo-relative input image paths"
+        ]
+      }
+    ]
+  }
+}

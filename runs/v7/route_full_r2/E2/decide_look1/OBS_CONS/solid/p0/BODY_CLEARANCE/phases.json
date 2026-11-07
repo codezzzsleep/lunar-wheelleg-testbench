@@ -1,0 +1,38 @@
+{
+  "phases": [
+    "settle",
+    "raise",
+    "drive_to_lower",
+    "lower",
+    "drive_to_end",
+    "recover"
+  ],
+  "phase_times": {
+    "settle": [
+      0.02,
+      0.3
+    ],
+    "raise": [
+      0.32,
+      1.1
+    ],
+    "drive_to_lower": [
+      1.12,
+      9.56
+    ],
+    "lower": [
+      9.58,
+      10.36
+    ],
+    "drive_to_end": [
+      10.38,
+      10.88
+    ],
+    "recover": [
+      10.9,
+      11.18
+    ]
+  },
+  "failed_phase": null,
+  "n_steps": 559
+}

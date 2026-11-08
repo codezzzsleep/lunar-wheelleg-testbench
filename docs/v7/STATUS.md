@@ -147,3 +147,94 @@
   - E1：采纳 3/6，`full_chosen=R1`、`worst_rule=R2`、`obs_chosen=R2`；E2 look1 拒绝 0/4，look2 采纳 1/3（M2），`full_chosen=R1`。
 - 结论（照 REVIEW_V7_R3 §3 抄录）：
   > E1 直行（R1）的预演判定依赖预演地面的高度场尺寸：路线条件（32 m）下 R1 在 2/3 份准入候选里安全，决策为 R1，与实际执行相同；4 m 地面下只在 1/3 份里安全，决策为 D2。两种地面都是平的，差别只在数值层面，说明这个临界动作的安全判定不稳健。V7 到此收尾，不重跑路线。
+- §2.3 影子实验重新评估（v7.3，沙箱，退出码 0）：`summary.json` 原文如下：
+
+```json
+{
+  "A_naive|high_side": {
+    "n": 6,
+    "admitted": 3,
+    "median_abs_rear_m": 0.051,
+    "median_footprint_ratio": 0.661,
+    "median_hidden_iou": 0.6508
+  },
+  "A_naive|low_behind": {
+    "n": 6,
+    "admitted": 4,
+    "median_abs_rear_m": 0.036,
+    "median_footprint_ratio": 0.737,
+    "median_hidden_iou": 0.6954
+  },
+  "A_naive|low_front": {
+    "n": 6,
+    "admitted": 1,
+    "median_abs_rear_m": 0.048,
+    "median_footprint_ratio": 0.603,
+    "median_hidden_iou": 0.4548
+  },
+  "A_naive|low_side": {
+    "n": 6,
+    "admitted": 2,
+    "median_abs_rear_m": 0.024,
+    "median_footprint_ratio": 0.581,
+    "median_hidden_iou": 0.4796
+  },
+  "B_depth|high_side": {
+    "n": 5,
+    "admitted": 2,
+    "median_abs_rear_m": 0.034,
+    "median_footprint_ratio": 0.781,
+    "median_hidden_iou": 0.7083
+  },
+  "B_depth|low_behind": {
+    "n": 5,
+    "admitted": 1,
+    "median_abs_rear_m": 0.046,
+    "median_footprint_ratio": 0.781,
+    "median_hidden_iou": 0.6601
+  },
+  "B_depth|low_front": {
+    "n": 6,
+    "admitted": 3,
+    "median_abs_rear_m": 0.041,
+    "median_footprint_ratio": 0.841,
+    "median_hidden_iou": 0.7509
+  },
+  "B_depth|low_side": {
+    "n": 6,
+    "admitted": 2,
+    "median_abs_rear_m": 0.019,
+    "median_footprint_ratio": 0.768,
+    "median_hidden_iou": 0.7277
+  },
+  "B_naive|high_side": {
+    "n": 4,
+    "admitted": 1,
+    "median_abs_rear_m": 0.073,
+    "median_footprint_ratio": 0.746,
+    "median_hidden_iou": 0.5207
+  },
+  "B_naive|low_behind": {
+    "n": 4,
+    "admitted": 2,
+    "median_abs_rear_m": 0.058,
+    "median_footprint_ratio": 0.81,
+    "median_hidden_iou": 0.6287
+  },
+  "B_naive|low_front": {
+    "n": 6,
+    "admitted": 0,
+    "median_abs_rear_m": 0.136,
+    "median_footprint_ratio": 0.363,
+    "median_hidden_iou": 0.1798
+  },
+  "B_naive|low_side": {
+    "n": 4,
+    "admitted": 0,
+    "median_abs_rear_m": 0.174,
+    "median_footprint_ratio": 0.418,
+    "median_hidden_iou": 0.1892
+  }
+}```
+- 自检统计（64 个成功任务）：想象错误 32 份（隐藏区 IoU < 0.5）采纳 **0**；想象正确 31 份（≥ 0.6）采纳 **21**；被采纳想象背面误差最大 **5.0 cm**。与 REVIEW_V7_R3 §0.3 一致。
+- 长影子合计：亮度抠图 **0/10**、原图裁剪 **3/12**、深度抠图 **5/12**，与 R3 一致。

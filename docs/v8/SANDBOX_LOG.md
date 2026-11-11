@@ -20,5 +20,6 @@
 | --- | --- | --- | --- | --- | --- | --- |
 | 本机 | 2026-11-11T20:36+08:00 | 20:39 | `v8_run.py --policy imagination --imagine lux` | **11** | look1 逐字节复现、复用沙箱 Lux3D；look2 重放差 0.19 mm → `replay_mismatch` | 见 `imagination/looks/look2/REPLAY_DIFF.json` |
 | 本机 | 2026-11-11T20:41+08:00 | 20:42 | `v8_run.py --policy imagination --imagine lux --trust T2=C1 --tag counterfactual_T2_C1` | **0** | `result=collision`、撞 `obstacle1`（t=89.18 s）、规划期 `drive_margin_m=-0.23` | `counterfactual_T2_C1/` |
+| 本机 | 2026-11-11T21:30+08:00 | 21:31 | `v8_run.py --policy imagination --imagine lux --accept-replay-drift` | **0** | `result=stuck`、`looks=2`、52.72 s、无碰撞；look2 决策仍 `imagined_blocked`（T2 三份候选 0/3 准入）→ 按 SPEC §0.4 停车 | `imagination/`（含 `summary.replay_drift_accepted` 与 `looks/look2_replay/`） |
 
 两次本机运行都**没有调用 Lux3D**（`AHOLO_API_KEY` 未设置；复用判定命中即用已有结果）。

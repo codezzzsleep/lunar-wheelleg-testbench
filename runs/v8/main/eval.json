@@ -16,6 +16,29 @@
       "min_center_distance_to_rock_m": 0.403,
       "collision": null
     },
+    "counterfactual_T2_C1": {
+      "result": "collision",
+      "looks": 1,
+      "sim_time_s": 91.68,
+      "min_center_distance_to_rock_m": 0.304,
+      "collision": {
+        "body": "obstacle1",
+        "robot_geom": null,
+        "pos": [
+          6.941,
+          -0.272,
+          0.11
+        ],
+        "t": 89.18
+      }
+    },
+    "imagination": {
+      "result": "stuck",
+      "looks": 2,
+      "sim_time_s": 52.72,
+      "min_center_distance_to_rock_m": 0.707,
+      "collision": null
+    },
     "imagination_truth": {
       "result": "arrived",
       "looks": 1,
@@ -276,9 +299,7 @@
       }
     }
   ],
-  "incomplete_runs": [
-    "imagination"
-  ],
+  "incomplete_runs": [],
   "summary": {
     "admitted": 2,
     "rejected": 11,

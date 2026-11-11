@@ -116,3 +116,6 @@ runs/v3/stage009/*.tar.gz
 # `--trust` 反事实运行会把 imagination/looks 整份复制进新目录（V8 §4.2 实测 482 MB 纯副本）；
 # 原目录仍在 runs/v8/main/imagination/looks/，副本不入库。
 runs/**/counterfactual_*/looks/
+
+# 实验打包产物（实测 runs/v4/wp3/wp3_batch1.tgz 59 MB 未跟踪）
+runs/**/*.tgz

@@ -14,7 +14,7 @@
 | --- | --- | --- | --- | --- |
 | V8 §2 | 保守车能否自己走过走廊 | 不能：5 眼后 `stuck`（142.2 s）；乐观车 `collision`；黑影可测深对照 `arrived`；真值想象上界 `arrived` | A | `runs/v8/main/`（各车 `summary.json`） |
 | V8 §3.2 | 生成与采纳率 | 首眼 T1 采纳 2/6（B2、C2）、T2 0/4；第二眼 0/3；两次决策均 `imagined_blocked` | A | `runs/v8/main/imagination/looks/look1/T1/decide/target_decision.json`、`docs/v8/STATUS.md` |
-| V8 §3.3 | 两眼上限下会停车吗 | 会（按 SPEC §0.4 由已记决策推导）；但本机**跑不成**一次完整物理运行：跨机重放差 0.19 mm 使复用判据失效，退出码 11 | B | `runs/v8/main/imagination/looks/look2/REPLAY_DIFF.json`、`docs/v8/SANDBOX_LOG.md` |
+| V8 §3.3 | 两眼上限下会停车吗 | **会，已跑成真实运行**：`stuck`、2 眼、52.72 s、无碰撞、不再要第三眼（look2 的 T2 候选 0/3 准入）。默认仍严格：重放不一致即退出 11；本次用显式 `--accept-replay-drift` 沿用归档 look2 观测，位姿差 0.1902 mm 已记入 `summary.replay_drift_accepted` | A（附该口径） | `runs/v8/main/imagination/summary.json`、`.../look2/REPLAY_DIFF.json`、`docs/v8/STATUS.md` |
 | V8 §4.1 | 想象与真值差多少 | 13 行比较：采纳 2、拒绝 11（其中 10 份"想短了"）；被采纳的背面误差 0.00–0.35 m | A | `runs/v8/main/eval.json` |
 | V8 §4.2 | 采纳被拒候选会怎样 | 真实运行：规划期余量 −0.23 m，t=89.18 s 撞 `obstacle1`，`collision` | A | `runs/v8/main/counterfactual_T2_C1/` |
 | V7 §3.4 | 自检能否挡住坏想象 | 72 个任务 64 成功 / 8 失败；成功样本里 IoU<0.5 的 32 份采纳 0，≥0.6 的 31 份采纳 21；样本内最大背面误差 5.0 cm | A（样本内） | `runs/v7/shadow_exp/eval_rows.json` |
@@ -35,7 +35,7 @@
 | --- | --- | --- | --- | --- |
 | `conservative` | 保守：看不见的格子一律当障碍（不用 Lux3D） | `stuck` | 5 | 142.2 s |
 | `optimistic` | 乐观：看不见的格子一律当空地 | `collision`（t=80.94 s 撞 `obstacle1`） | 1 | 83.44 s |
-| `imagination` | 真实 Lux3D 候选 + 自检 + 第二眼 | 无 `summary.json`（停在 look2 的重放，退出码 11） | 2（推导） | — |
+| `imagination` | 真实 Lux3D 候选 + 自检 + 第二眼 | `stuck`（停在半路，未要第三眼） | 2 | 52.72 s |
 | `conservative_seedark` | 对照：假设黑影里也能测深 | `arrived` | 3 | 147.26 s |
 | `imagination_truth` | 上界：真值几何当完美想象 | `arrived` | 1 | 115.88 s |
 
@@ -59,7 +59,7 @@
 
 | 类别 | 条目 |
 | --- | --- |
-| 做不了 | Lux3D 需密钥与积分：本机两次补跑都没调用（无密钥，复用命中即用旧结果，`docs/v8/SANDBOX_LOG.md`）。V8 §3.3 要有一次完整运行只能回原沙箱，或把复用判据改成"位姿 + 像素容差"（削弱证据强度，需负责人决策，未改） |
+| 做不了 | 生成新的 Lux3D 候选：本机所有补跑都**没有**产生 API 调用（无 `AHOLO_API_KEY`，复用命中即用归档结果）。因此"换一批候选会不会更好"无法在本机回答 |
 | 没做 | 留出检验集（故 5.0 cm 只算样本内）。`docs/EVIDENCE_INDEX.md` 已重生成（143 条，`runs/v3` 全覆盖、0 死链），但**只覆盖 v3**；v4–v8 的证据就是本文件第 2 节这张矩阵 |
 | 不可引用 | V4 WP8 的 20 m 路线；V6 的 R1 包与 `RESULTS.md` 的"M3 未执行"；V5 C2 的正例；任何"想象带来了收益"的说法 |
 

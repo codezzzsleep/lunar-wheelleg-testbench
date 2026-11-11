@@ -78,6 +78,9 @@ def build_parser():
     ap.add_argument('--see-dark', action='store_true', help='对照实验：假设相机在黑影里也能测出深度')
     ap.add_argument('--max-looks', type=int, default=MAX_LOOKS_BY_SPEC,
                     help=f'最多看几眼（含第一眼）；默认 {MAX_LOOKS_BY_SPEC}（SPEC §0.4 的两眼上限），更大值会标 looks_exceed_spec')
+    ap.add_argument('--accept-replay-drift', action='store_true',
+                    help='重放与归档观测不逐字节相同时不退出 11，而是沿用归档那一眼的观测与 Lux3D 结果'
+                         '（位姿差记进 summary.replay_drift_accepted，本机重拍的图留在 look{k}_replay/）')
     ap.add_argument('--tag', default=None, help='输出子目录名（默认等于策略名）')
     ap.add_argument('--trust', default=None, help='反事实：T1=A2,T2=B1 —— 这几块石头只用指定的那份想象，不管自检结论，也不看第二眼')
     return ap
@@ -167,6 +170,7 @@ def main():
 
     state = look('first')
 
+    replay_drift_accepted = []        # --accept-replay-drift 下记录每次漂移的位姿差（进 summary）
     tlooks = []                       # 每一眼的目标石头 [{'target','dir','cells','state'}]
     imagined_meshes = {}              # 目标 -> [被采纳候选的世界坐标 OBJ]（用于在想象里预演）
     focus = {'cells': None}           # 第二眼要看的地方：想象全被拒绝的石头周围
@@ -187,13 +191,36 @@ def main():
                 shutil.rmtree(tmp)
             tg_new = O.capture(vm, env, tmp, f'look{k}', state, dark_thr=dark_thr)
             tg = []
+            drift = []
             for t in tg_new:
                 old = ld / t['target'] / 'state.json'
-                if not old.exists() or not LX.same_inputs(json.loads(old.read_text()), t['state']):
-                    ev('replay_mismatch', look=k, target=t['target'])
-                    raise SystemExit(11)
-                tg.append(dict(t, dir=ld / t['target'], state=json.loads(old.read_text())))
-            shutil.rmtree(tmp)
+                old_state = json.loads(old.read_text()) if old.exists() else None
+                if old_state is None or not LX.same_inputs(old_state, t['state']):
+                    # 跨机器的浮点漂移会让第二眼的停车位姿差零点几毫米，渲染像素随之改变，
+                    # 于是"逐字节相同"判据必然失效（V8 §3.3 实测 0.19 mm / 0.0085°）。
+                    # 默认仍然停车（退出码 11，绝不拿旧结果冒充）；只有显式给了
+                    # --accept-replay-drift 才继续——此时**沿用归档那一眼的观测与 Lux3D 结果**，
+                    # 把本机重拍的图原样留在 look{k}_replay/ 作为差异证据，并把位移量记进 summary。
+                    if not a.accept_replay_drift:
+                        ev('replay_mismatch', look=k, target=t['target'])
+                        raise SystemExit(11)
+                    pa = (old_state or {}).get('local_frame') or {}
+                    pb = t['state'].get('local_frame') or {}
+                    d = {f'd{k2}_mm': round((pb[k2] - pa[k2]) * 1000.0, 4)
+                         for k2 in ('x0', 'y0') if k2 in pa and k2 in pb}
+                    if 'yaw0' in pa and 'yaw0' in pb:
+                        d['dyaw_deg'] = round(float(np.degrees(pb['yaw0'] - pa['yaw0'])), 6)
+                    drift.append({'target': t['target'], 'pose_delta': d})
+                    ev('replay_drift_accepted', look=k, target=t['target'], pose_delta=d,
+                       archive_dir=str(ld / t['target']))
+                    tg.append(dict(t, dir=ld / t['target'], state=old_state, replay_drift=True))
+                    continue
+                tg.append(dict(t, dir=ld / t['target'], state=old_state))
+            if drift:
+                # tmp 本身就叫 look{k}_replay：接受漂移时**不删**，它就地成为差异证据
+                replay_drift_accepted.extend(drift)
+            else:
+                shutil.rmtree(tmp)
         tlooks.append(tg)
         return tg
 
@@ -383,7 +410,9 @@ def main():
 
     x, y, yaw = pose(env)
     summ = {'policy': a.policy, 'tag': a.tag or a.policy, 'see_dark': bool(a.see_dark), 'imagine': a.imagine if a.policy == 'imagination' else None, 'result': result,
-            'looks': len(looks), 'looks_exceed_spec': bool(looks_exceed_spec), 'final_pose': [round(x, 3), round(y, 3), round(float(np.degrees(yaw)), 2)],
+            'looks': len(looks), 'looks_exceed_spec': bool(looks_exceed_spec),
+            'replay_drift_accepted': replay_drift_accepted or None,
+            'final_pose': [round(x, 3), round(y, 3), round(float(np.degrees(yaw)), 2)],
             'sim_time_s': round(env.t, 2), 'wall_s': round(time.time() - t0, 1), 'collision': crash or None}
     ev('result', **summ)
     rec.save(out / 'traj.npz')

@@ -105,7 +105,7 @@ def main():
         notes.append('git-lfs 已安装')
 
     # 文档链接：历史遗留的悬空引用有固定基线（见 docs/README.md），只拦"新增"。
-    doc_baseline = 27
+    doc_baseline = 25
     try:
         r = subprocess.run([sys.executable, str(ROOT / 'scripts/check_docs_links.py'), '--count'],
                            cwd=str(ROOT), capture_output=True, text=True, timeout=120)

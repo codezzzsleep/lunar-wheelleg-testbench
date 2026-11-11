@@ -119,8 +119,14 @@ def rock_asset_uniform(rock_id, height, level='h1'):
 
 
 def scene_spec(run):
-    H = height_map()
-    hf = pathlib.Path(run) / 'scene' / 'height.npy'; hf.parent.mkdir(parents=True, exist_ok=True); np.save(hf, H)
+    # 2026-11-11：以前每次运行都会重新生成并覆盖 height.npy。实测重生成与归档只差
+    # 3.5e-18（747/66049 个格子的最后一位），但足以让受版本控制的文件显示"被修改"，
+    # 也让"重放是不是同一个世界"变得不可判定。现在：文件已在则**直接沿用**，
+    # 只有第一次（或显式删掉 scene/ 后）才生成。
+    hf = pathlib.Path(run) / 'scene' / 'height.npy'
+    if not hf.exists():
+        H = height_map()
+        hf.parent.mkdir(parents=True, exist_ok=True); np.save(hf, H)
     spec = terrain.make_spec(kind='flat', seed=0, goal_x=GOAL[0], span=SPAN, name='v8_polar')
     spec['terrain']['field_x_max'] = SPAN
     spec['terrain']['custom_height_file'] = str(hf)

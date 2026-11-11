@@ -3,13 +3,13 @@ import json
 import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-GROUPS = ['basic_cycle', 'climb', 'wheel_probe', 'rock_actions', 'route', 'e_cases', 'stage003']
+# 2026-11-11：原实现只写死 7 个组，而仓库里实际有 12 个组（stage004..stage008、control 等），
+# 导致本文件长期"自称自动生成、实则无法由脚本复现"（旧版本 130 行里 42 行指向不存在的目录、
+# 磁盘上另有 55 个 run 没进索引）。改为按磁盘扫描，顺序稳定，重生成结果与仓库一致。
 rows = []
-for group in GROUPS:
-    base = ROOT / 'runs/v3' / group
-    if not base.exists():
-        continue
-    for res in sorted(base.glob('*/result.json')):
+_all_results = sorted((ROOT / 'runs/v3').glob('*/*/result.json'))
+for res in _all_results:
+    if True:
         try:
             d = json.loads(res.read_text())
         except Exception:  # noqa: BLE001
@@ -36,7 +36,10 @@ for group in GROUPS:
 out = ROOT / 'runs/v3/evidence_index.json'
 out.write_text(json.dumps({'schema': 'v3-evidence-index/v1', 'n': len(rows),
                            'rows': rows}, ensure_ascii=False, indent=2))
-lines = ['# 证据索引（自动生成）', '',
+# 范围声明写进生成物：本索引只覆盖 runs/v3/*；v4–v8 的证据见 docs/DELIVERY.md。
+NOTE = ('> 本文件由 `scripts/v3_evidence_index.py` 生成，**只覆盖 v3 批次**（`runs/v3/*`）。'
+        'v4–v8 的证据与结论矩阵见 `docs/DELIVERY.md`；本文件不要当全项目证据索引引用。')
+lines = ['# 证据索引（自动生成）', '', NOTE, '',
          '| run | schema | 结果 | 关键指标 |', '| --- | --- | --- | --- |']
 for r in rows:
     ok = r['all_ok']

@@ -54,7 +54,9 @@ check('perturbed hashes distinct',
 idx = j('runs/v3/evidence_index.json')
 check('evidence index present', idx.get('n', 0) > 0, idx.get('n'))
 
-lines = ['# 交付一致性检查', '',
+NOTE = ('> **范围（2026-11-11 标注）**：本检查是 **v3 批次**的一致性口径，不覆盖 v4–v8。'
+        '全项目当前的边界与证据等级见 `docs/DELIVERY.md`。')
+lines = ['# 交付一致性检查', '', NOTE, '',
          '| 检查 | 结果 | 实际值 |', '| --- | --- | --- |']
 for c in checks:
     lines.append(f"| {c['name']} | {'通过' if c['ok'] else '**失败**'} | {c['detail']} |")

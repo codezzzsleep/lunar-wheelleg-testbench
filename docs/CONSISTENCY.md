@@ -1,5 +1,7 @@
 # 交付一致性检查
 
+> **范围（2026-11-11 标注）**：本检查是 **v3 批次**的一致性口径，不覆盖 v4–v8。全项目当前的边界与证据等级见 `docs/DELIVERY.md`。
+
 | 检查 | 结果 | 实际值 |
 | --- | --- | --- |
 | route rigid final_x | 通过 | 23.5482 |
@@ -16,6 +18,6 @@
 | perturbed S1 n=3 | 通过 | 3 |
 | perturbed S1 unified=2 | 通过 | 2 |
 | perturbed hashes distinct | 通过 | 3 |
-| evidence index present | 通过 | 82 |
+| evidence index present | 通过 | 143 |
 
 总计：15/15 通过。

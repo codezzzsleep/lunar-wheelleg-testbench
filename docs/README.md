@@ -22,7 +22,7 @@
 
 ## 三件容易踩的事
 
-**① 8 份文档是脚本生成物**，手改会被下次运行覆盖，要改就改脚本再重跑：
+**① 6 份文档是脚本生成物**，手改会被下次运行覆盖，要改就改脚本再重跑：
 
 | 生成物 | 生成脚本 |
 |---|---|
@@ -30,7 +30,9 @@
 | `EVIDENCE_INDEX.md` | `scripts/v3_evidence_index.py` |
 | `LINK_CHECK.md` | `scripts/v3_link_check.py` |
 | `CONSISTENCY.md` | `scripts/v3_consistency.py` |
-| `G6_DELIVERY.md`、`G6_STATUS.md` | `scripts/v3_minimal_site.py` |
+
+（`G6_DELIVERY.md`、`G6_STATUS.md`、`BOUNDARY.md` 是手写的 v3 期文档，不是生成物——
+`scripts/v3_minimal_site.py` 只是把它们**链接**进静态站点，不会写它们。）
 
 **② 三个"v7"不是一个东西**：
 
@@ -45,7 +47,7 @@
 ## 文档链接自检
 
 `python3 scripts/check_docs_links.py` 扫描所有 md 里的路径引用（反引号路径与 Markdown 链接），
-报出目标不存在的条目。**当前基线：27 个不同的悬空目标 / 28 处引用**（迁移前后一致、无新增），主要是：
+报出目标不存在的条目。**当前基线：25 个不同的悬空目标**（迁移前后一致、无新增），主要是：
 
 <!-- link-check:ignore-start -->
 - **真正缺失的产物**（文档宣称有、仓库里没有）：`runs/v3/report/v3_table.csv`、
@@ -56,4 +58,4 @@
 - **从未提交的脚本**：`scripts/v7_contact_sheet.py`、`scripts/align_orient.py`、`scripts/h5_fixture_loop.py`。
 <!-- link-check:ignore-end -->
 
-门禁用法：`python3 scripts/check_docs_links.py --baseline 27`（现有悬空不阻断，新增一条就失败）。
+门禁用法：`python3 scripts/check_docs_links.py --baseline 25`（现有悬空不阻断，新增一条就失败）。

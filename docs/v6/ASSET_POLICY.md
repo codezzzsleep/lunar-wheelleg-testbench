@@ -9,5 +9,5 @@
 ## 当前本地资产
 
 - `assets/v6/lux3d/`：80 份 GLB（`model.glb` + `meta.json`），619 MB；清单 `dist/v6/local_lux3d_store.json`。
-- `assets/v6/assets_v3_rocks.tar.gz`：v3 岩石网格/贴图（如已转存）。
+- `assets/v6/rocks/assets_v3_rocks.tar.gz`：v3 岩石网格/贴图（如已转存）。
 - Release `v6-showcase`：`v6__lux3d__<identity>.glb`、`v6__assets__v3_rocks.tar.gz`、`v6__wp7__scenes.tar.gz`。

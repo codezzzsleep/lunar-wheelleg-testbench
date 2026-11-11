@@ -1,6 +1,6 @@
 {
   "schema": "v3-evidence-index/v1",
-  "n": 82,
+  "n": 143,
   "rows": [
     {
       "run": "runs/v3/basic_cycle/nominal_FL_r1",
@@ -344,133 +344,13 @@
       }
     },
     {
-      "run": "runs/v3/wheel_probe/full_h0.05_v0.30",
-      "schema": "v3-wheel-probe/v2",
-      "status": "passed",
-      "all_ok": true,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.05,
-        "final_x": 2.8453,
-        "tilt_max_deg": 0.31
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/full_h0.12_v0.30",
-      "schema": "v3-wheel-probe/v2",
-      "status": "failed",
-      "all_ok": false,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.12,
-        "final_x": 0.6984,
-        "tilt_max_deg": 60.388
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.12_v0.30",
-      "schema": "v3-wheel-probe/v1",
-      "status": null,
-      "all_ok": true,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.12,
-        "final_x": 1.55,
-        "tilt_max_deg": 19.69
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.12_v0.50",
-      "schema": "v3-wheel-probe/v1",
-      "status": null,
-      "all_ok": true,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.5,
-        "step_h_m": 0.12,
-        "final_x": 1.5505,
-        "tilt_max_deg": 21.361
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.18_v0.30",
-      "schema": "v3-wheel-probe/v1",
+      "run": "runs/v3/control/legtest",
+      "schema": "v3-v1-legtest/v1",
       "status": null,
       "all_ok": false,
       "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.18,
-        "final_x": 0.8373,
-        "tilt_max_deg": 60.042
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.18_v0.50",
-      "schema": "v3-wheel-probe/v1",
-      "status": null,
-      "all_ok": false,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.5,
-        "step_h_m": 0.18,
-        "final_x": 0.7904,
-        "tilt_max_deg": 60.079
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.24_v0.30",
-      "schema": "v3-wheel-probe/v1",
-      "status": null,
-      "all_ok": false,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.24,
-        "final_x": 0.7056,
-        "tilt_max_deg": 60.03
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/h0.24_v0.50",
-      "schema": "v3-wheel-probe/v1",
-      "status": null,
-      "all_ok": false,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.5,
-        "step_h_m": 0.24,
-        "final_x": 0.6978,
-        "tilt_max_deg": 60.076
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/rigid_v0.10",
-      "schema": "v3-wheel-probe/v1",
-      "status": "failed",
-      "all_ok": false,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.1,
-        "step_h_m": 0.05,
-        "final_x": 0.754,
-        "tilt_max_deg": 7.26
-      }
-    },
-    {
-      "run": "runs/v3/wheel_probe/rigid_v0.30",
-      "schema": "v3-wheel-probe/v1",
-      "status": "passed",
-      "all_ok": true,
-      "metrics": {
-        "soil": "rigid",
-        "speed_mps": 0.3,
-        "step_h_m": 0.05,
-        "final_x": 1.5516,
-        "tilt_max_deg": 11.414
+        "phases": 4,
+        "ok_phases": 0
       }
     },
     {
@@ -766,6 +646,75 @@
       }
     },
     {
+      "run": "runs/v3/stage003/fix_leg_state1",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/fix_leg_state2",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/fix_leg_state3",
+      "schema": "v3-climb-front2/v2",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage003/fix_s5_wheel",
+      "schema": "v3-wheel-compare/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 6,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage003/fix_s5_wheel2",
+      "schema": "v3-wheel-compare/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "soil": "nominal",
+        "actions": 6,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
       "run": "runs/v3/stage003/s1_rigid",
       "schema": "v3-endgame-diag/v1",
       "status": null,
@@ -1049,6 +998,661 @@
         "actions": 6,
         "ok_actions": 0,
         "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage004/dev_regression1",
+      "schema": "v3-climb-front2/v3",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_h1v0_v2",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_p1",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_p2",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_p2_fix",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_p3",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_04_p3_fix",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_moon_rock_01_h2v0",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/e2e_moon_rock_05_h1v1",
+      "schema": "stage4-full-obs/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/g1_dev5",
+      "schema": "stage4-g1/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/g1b_climb_only",
+      "schema": "stage4-g1/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/geom_h04_1",
+      "schema": "v3-climb-front2/v3",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": null,
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 26
+      }
+    },
+    {
+      "run": "runs/v3/stage004/geom_shift1",
+      "schema": "v3-climb-front2/v3",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": true,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage004/geom_shift_pos1",
+      "schema": "v3-climb-front2/v3",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": true,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage004/geom_unknown_far1",
+      "schema": "v3-climb-front2/v3",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "nominal",
+        "robot_mass_kg": 19.1264,
+        "robot_weight_n": 30.985,
+        "blocked_at": "descent",
+        "terminated": false,
+        "phases": 26,
+        "ok_phases": 25
+      }
+    },
+    {
+      "run": "runs/v3/stage004/truth_moon_rock_01_h2v0",
+      "schema": "stage4-truth-arm/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/truth_moon_rock_04_h1v0",
+      "schema": "stage4-truth-arm/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage004/truth_moon_rock_05_h1v1",
+      "schema": "stage4-truth-arm/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/comp_main",
+      "schema": "stage5-composite-check/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/comp_main2",
+      "schema": "stage5-composite-check/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/comp_main4",
+      "schema": "stage5-composite-check/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/comp_main5",
+      "schema": "stage5-composite-check/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/diag2",
+      "schema": null,
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/smoke",
+      "schema": "stage5-smoke/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage005/smoke6",
+      "schema": "stage5-smoke/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage006/calib",
+      "schema": "stage6-calib/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage006/fix",
+      "schema": "stage6-fix/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage006/matrix2",
+      "schema": "stage6-matrix/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 3,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage006/matrix_030_obs",
+      "schema": "stage6-matrix/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 3,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage006/matrix_032",
+      "schema": "stage6-matrix/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 0,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage006/rock5",
+      "schema": "stage6-rock/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage007/layout2",
+      "schema": "stage7-layout/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632564_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632564_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632564_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632603_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632603_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632603_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632618_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632618_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632618_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632621_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632621_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632621_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632624_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632624_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632624_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632627_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632627_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_4632627_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_ref_full",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 1,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_ref_obs",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/case_ref_obs_truth",
+      "schema": "stage8-case/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {
+        "actions": 8,
+        "ok_actions": 2,
+        "unified_actions": 0
+      }
+    },
+    {
+      "run": "runs/v3/stage008/formal_v2",
+      "schema": "stage8-formal-v2/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/stage008/ref_repro",
+      "schema": "stage6-fix/v1",
+      "status": null,
+      "all_ok": null,
+      "metrics": {}
+    },
+    {
+      "run": "runs/v3/wheel_probe/full_h0.05_v0.30",
+      "schema": "v3-wheel-probe/v2",
+      "status": "passed",
+      "all_ok": true,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.05,
+        "final_x": 2.8453,
+        "tilt_max_deg": 0.31
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/full_h0.12_v0.30",
+      "schema": "v3-wheel-probe/v2",
+      "status": "failed",
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.12,
+        "final_x": 0.6984,
+        "tilt_max_deg": 60.388
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.12_v0.30",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.12,
+        "final_x": 1.55,
+        "tilt_max_deg": 19.69
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.12_v0.50",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": true,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.5,
+        "step_h_m": 0.12,
+        "final_x": 1.5505,
+        "tilt_max_deg": 21.361
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.18_v0.30",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.18,
+        "final_x": 0.8373,
+        "tilt_max_deg": 60.042
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.18_v0.50",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.5,
+        "step_h_m": 0.18,
+        "final_x": 0.7904,
+        "tilt_max_deg": 60.079
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.24_v0.30",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.24,
+        "final_x": 0.7056,
+        "tilt_max_deg": 60.03
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/h0.24_v0.50",
+      "schema": "v3-wheel-probe/v1",
+      "status": null,
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.5,
+        "step_h_m": 0.24,
+        "final_x": 0.6978,
+        "tilt_max_deg": 60.076
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/rigid_v0.10",
+      "schema": "v3-wheel-probe/v1",
+      "status": "failed",
+      "all_ok": false,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.1,
+        "step_h_m": 0.05,
+        "final_x": 0.754,
+        "tilt_max_deg": 7.26
+      }
+    },
+    {
+      "run": "runs/v3/wheel_probe/rigid_v0.30",
+      "schema": "v3-wheel-probe/v1",
+      "status": "passed",
+      "all_ok": true,
+      "metrics": {
+        "soil": "rigid",
+        "speed_mps": 0.3,
+        "step_h_m": 0.05,
+        "final_x": 1.5516,
+        "tilt_max_deg": 11.414
       }
     }
   ]

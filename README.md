@@ -217,13 +217,18 @@ curl -sS 'http://127.0.0.1:8091/api/run?name=pipeline_H5_R03' | python3 -m json.
 ## 目录（当前相关）
 
 ```text
-scripts/app_unseen.py                 只读页面（manifest + registry 驱动）
-runs/unseen/page_registry.json        页面运行注册表
-runs/unseen/delivery_v5/v5_20261029/  V5 批次：manifest、observations、candidates、cases、soil、verify、media/page
-runs/unseen/recovery_r3/              已提交的支持运行（真实 G_R03、六方法、fixture 观察链、开发例）
-cases/unseen_v1/                      案例定义与 V5 truth/twin 用例
-docs/DEMO_V5.md                       2–3 分钟演示脚本（当前批次证据）
-docs/archive/unseen/UNSEEN_STATUS_CURRENT.md  研究状态与边界（历史状态文档之一）
+README.md                  本文件：交付入口 + 现状一句话 + 复现
+docs/DELIVERY.md           交付说明：结论矩阵（A/B/C 证据等级）、V8 完整故事、方法学发现、边界
+docs/README.md             文档地图：现行 vs 归档、8 份脚本生成物一览、三个"v7"辨析
+docs/v8/                   当前主线：SPEC_V8、STATUS、SANDBOX_LOG
+docs/v7/                   唯一基本闭环的版本：SPEC_V7、STATUS、REVIEW_V7_R1/R2/R3
+docs/archive/              58 篇历史过程文档（v2 批 / 轮次报告 / unseen 各版状态 / v4–v6 过程报告）
+scripts/README.md          代次导航：哪一代解决什么问题、现行入口、4 条已知坑
+scripts/v8/                V8 主程序：v8_run（路线）、v8_eval（复盘）、v8_replay_diff（重放取证）
+scripts/setup_local_gl.sh  没有 GL 的机器上装软件渲染（OSMesa，不需要 root）
+runs/README.md             批次索引：8 个主要批次 + 其余 50 个、哪些产物是证据不能删
+runs/v8/main/              当前主线全部产物（五台车 + 反事实 + 逐眼观测与候选）
+runs/v7/shadow_exp/        V7 影子实验原始行（64 ok / 72，5 cm 余量的唯一出处）
 ```
 
 ## 历史：旧考场与 RL/训练路线（保留，不再作为当前主入口）

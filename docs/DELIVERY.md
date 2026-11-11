@@ -19,7 +19,7 @@
 | V8 §4.2 | 采纳被拒候选会怎样 | 真实运行：规划期余量 −0.23 m，t=89.18 s 撞 `obstacle1`，`collision` | A | `runs/v8/main/counterfactual_T2_C1/` |
 | V7 §3.4 | 自检能否挡住坏想象 | 72 个任务 64 成功 / 8 失败；成功样本里 IoU<0.5 的 32 份采纳 0，≥0.6 的 31 份采纳 21；样本内最大背面误差 5.0 cm | A（样本内） | `runs/v7/shadow_exp/eval_rows.json` |
 | V7 §3.1–3.2 | 路线能否闭环 | 只看正面 22.0109 m / 96.78 s、有想象 22.0088 m / 140.46 s，均 `arrived`；但两次观测采纳 0/6、0/3，最终回退正面规划器执行 R1 | A | `runs/v7/route_full_r2/result.json` |
-| V7 §2.2 | 决策是否稳健 | 不稳健：预演地面尺寸 32 m→4 m（都是平地）使 E1 直行从"2/3 安全、选 R1"翻成"1/3 安全、选 D2" | B | `docs/v7/REVIEW_V7_R3.md:58` |
+| V7 §2.2 | 决策是否稳健 | 不稳健：预演地面尺寸 32 m→4 m（都是平地）使 E1 直行从"2/3 安全、选 R1"翻成"1/3 安全、选 D2" | B | `docs/v7/REVIEW_V7_R3.md:60-64` |
 | V6 M3 | 连续路线能否跑通 | 现行 R2 包两臂都到 x≈22.0 成功结束（22.0113 m / 59.76 s；22.0014 m / 56.16 s）；差别在 E1 选动作（full=R2 / obs=R1），不在结局 | A | `runs/v6/m4/units/M3_route2_full/runs/full/result.json` |
 | V6 文档 | M3 到底跑没跑 | `RESULTS.md` 开头"M3 未执行"属**文档没更新**（同文后段有完整 M3 数字）；`runs/v6/m1/selfcheck.json` 记 n=206 而 M1 表 218 行，差 12 行无解释 | C | `docs/v6/RESULTS.md` |
 | V5 | C2 有正例 | 已被自身 R3 推翻（FULL=A0，无存活正例）；C4/C6 无目录、无报告 | C | `docs/v5/A_R3_REPORT.md` |
@@ -47,8 +47,12 @@
 
 ## 4 方法学发现
 
-1. **临界判定不稳健**：同一物理、仅改预演地面的数值尺寸（32 m vs 4 m，都是平地），同一动作的安全性就从 2/3 变成 1/3，决策从 R1 变成 D2。这类判定不能只报一次结果（`docs/v7/REVIEW_V7_R3.md:58`）。
-2. **跨机重放会漂移**：同机逐位可复现；换机后第二眼停车位姿差 dx=0.1902 mm、dy=0.0923 mm、dyaw=0.008483°，RGB 平均绝对差 1.5608（192 万像素里 28,438 个像素差 >8），深度中位数差 0.83 mm、p90 8.93 mm。于是"逐字节相同才复用"的判据跨机失效——是工程约束，不是实验失败（见 §2 表）。
+1. **临界判定不稳健**：同一物理、仅改预演地面的数值尺寸（32 m vs 4 m，都是平地），同一动作的安全性就从 2/3 变成 1/3，决策从 R1 变成 D2。这类判定不能只报一次结果（`docs/v7/REVIEW_V7_R3.md:60-64`）。
+2. **跨机重放会漂移，但结论不变**：同机逐位可复现；换机后第二眼停车位姿差 dx=0.1902 mm、
+   dy=0.0923 mm、dyaw=0.008483°，RGB 平均绝对差 1.5608（192 万像素里 28,438 个像素差 >8），
+   深度中位数差 0.83 mm、p90 8.93 mm —— 于是"逐字节相同才复用"的判据跨机失效（工程约束，不是实验失败）。
+   同一次本机复跑里，乐观车仍在 t=80.84 s 撞（归档值 80.94 s）、规划期余量仍是 −0.23 m：
+   **数值漂 ≤0.1 s / ≤1 cm，结论不变**（`docs/DELIVERY.md` 第 6 节的命令可自行复现）。
 3. **5.0 cm 不是性能保证**：它是 n=21 的**样本内最大值**，无留出集、无安全系数，只能说明自检没有放进明显偏长的想象（`runs/v7/shadow_exp/eval_rows.json`）。
 
 ## 5 明确边界与未做
@@ -56,7 +60,7 @@
 | 类别 | 条目 |
 | --- | --- |
 | 做不了 | Lux3D 需密钥与积分：本机两次补跑都没调用（无密钥，复用命中即用旧结果，`docs/v8/SANDBOX_LOG.md`）。V8 §3.3 要有一次完整运行只能回原沙箱，或把复用判据改成"位姿 + 像素容差"（削弱证据强度，需负责人决策，未改） |
-| 没做 | 留出检验集（故 5.0 cm 只算样本内）；`docs/EVIDENCE_INDEX.md` 未重生成，里面没有任何 V8 条目 |
+| 没做 | 留出检验集（故 5.0 cm 只算样本内）。`docs/EVIDENCE_INDEX.md` 已重生成（143 条，`runs/v3` 全覆盖、0 死链），但**只覆盖 v3**；v4–v8 的证据就是本文件第 2 节这张矩阵 |
 | 不可引用 | V4 WP8 的 20 m 路线；V6 的 R1 包与 `RESULTS.md` 的"M3 未执行"；V5 C2 的正例；任何"想象带来了收益"的说法 |
 
 ## 6 怎么复现
@@ -83,12 +87,10 @@ sha256sum -c PATCH_SHA256.txt                       # 11/11
 有 GPU/EGL 的机器把第 0 步换成 `export MUJOCO_GL=egl` 即可。原归档运行用的是
 `--out runs/v8/main`（见 `docs/v8/SPEC_V8.md`）。
 
-**没有 GL 的机器**：用 `apt-get download` + `dpkg -x` 把 `libosmesa6`、`libglvnd0`、`libglapi-mesa`、`libllvm20` 等解到 `/tmp/glroot`，再
-
-```bash
-LD_LIBRARY_PATH=/tmp/glroot/usr/lib/x86_64-linux-gnu MUJOCO_GL=osmesa python3 scripts/v8/v8_run.py ...
-```
-
+第 0 步做的事（供审计）：`scripts/setup_local_gl.sh` 用 `apt-get download`（不需要 root）取
+`libosmesa6`/`libglvnd0`/`libglapi-mesa`/`libglx-mesa0`/`libgl1-mesa-dri`/`libllvm20`，
+`dpkg -x` 解到 `/tmp/glroot`，再建一个 64×64 的 Renderer 渲染一帧自检；`--export` 只打印环境变量。
+它不改系统、不需要 sudo。
 补丁校验 `sha256sum -c PATCH_SHA256.txt` → **11/11**（已复验）。测试规模：当前收集 **147** 项；2026-11-11 在本机完整跑过一次——**exit 0、15 分 22 秒**（无 GL 时 `test_camera`/`test_freespace` 共 11 项自动跳过）。
 
 ## 7 交付清单

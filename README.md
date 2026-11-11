@@ -30,6 +30,10 @@ unseen 各版状态、v4–v6 过程报告），**不要**当现行结论引用�
   默认判据仍是"重放不逐字节一致就退出 11"；本次用显式 `--accept-replay-drift` 沿用归档 look2 观测，
   跨机位姿差 0.1902 mm 已记进 summary（`runs/v8/main/imagination/summary.json`）。
 
+- **V8 的"停车"只差 1.36%**（2026-11-11 新增分析）：11 次拒绝全部首卡 `contour_iou`，其中 T2/A2 只差
+  1.4%；把门槛整体放宽 1.36% 真跑一次，车就改判有路、直接开出去，**t=89.18 s 撞上那块没被想象到的石头**。
+  严格门槛拦住的正是这次碰撞——结论保守得恰好，但离"送死"只有一个百分点。见 `docs/ANALYSIS_V8.md`。
+
 **2026-11-03 历史交付（v3 口径，非现状）**：`dist/minimal/index.html`（最小可复现交付页）、
 `docs/G6_DELIVERY.md`、`docs/G6_STATUS.md`、`docs/FINAL_STATE.md`、
 `docs/CURRENT_STATUS.md`（标题仍是 `SPEC_UNSEEN_RECOVERY_002`）。这些文件里的状态矩阵

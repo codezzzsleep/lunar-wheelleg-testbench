@@ -78,6 +78,9 @@ def build_parser():
     ap.add_argument('--see-dark', action='store_true', help='对照实验：假设相机在黑影里也能测出深度')
     ap.add_argument('--max-looks', type=int, default=MAX_LOOKS_BY_SPEC,
                     help=f'最多看几眼（含第一眼）；默认 {MAX_LOOKS_BY_SPEC}（SPEC §0.4 的两眼上限），更大值会标 looks_exceed_spec')
+    ap.add_argument('--adm-relax', type=float, default=0.0,
+                    help='健壮性实验：把准入阈值整体放宽这个比例（ge 阈值×(1-x)、le 阈值×(1+x)），'
+                         '其余条件不变；放宽后的阈值写进 decision 的 thresholds 与 summary')
     ap.add_argument('--accept-replay-drift', action='store_true',
                     help='重放与归档观测不逐字节相同时不退出 11，而是沿用归档那一眼的观测与 Lux3D 结果'
                          '（位姿差记进 summary.replay_drift_accepted，本机重拍的图留在 look{k}_replay/）')
@@ -114,6 +117,22 @@ def main():
     def ev(kind, **kw):
         e = {'kind': kind, **kw}; events.append(e); print(json.dumps(e, ensure_ascii=False)); return e
 
+    if a.adm_relax:
+        import copy
+        import v8_imagine as _IM
+        base = copy.deepcopy(_IM.VE.ADM)
+        rel = {'schema': base.get('schema'), 'calibrated_from': base.get('calibrated_from'),
+               'scale_ratio': {'min': base['scale_ratio']['min'] * (1 - a.adm_relax),
+                               'max': base['scale_ratio']['max'] * (1 + a.adm_relax)},
+               'hidden_frac_min': base['hidden_frac_min'] * (1 - a.adm_relax),
+               'shell_contact_min': base['shell_contact_min'] * (1 - a.adm_relax),
+               'free_intrusion_max': base['free_intrusion_max'] * (1 + a.adm_relax),
+               'contour_iou_min': base['contour_iou_min'] * (1 - a.adm_relax),
+               'notes': (str(base.get('notes', '')) +
+                         f' | RELAXED +{a.adm_relax:.2f} (2026-11-11 阈值敏感性实验, 非标定门槛)').strip()}
+        _IM.VE.ADM = rel
+        _IM.ADM = rel
+        ev('admission_relaxed', factor=a.adm_relax, thresholds=rel)
     import v8_vis as VZ
     t0 = time.time()
     spec, rb, meta = S.scene_spec(pathlib.Path(a.out) / 'scene')
@@ -412,6 +431,7 @@ def main():
     summ = {'policy': a.policy, 'tag': a.tag or a.policy, 'see_dark': bool(a.see_dark), 'imagine': a.imagine if a.policy == 'imagination' else None, 'result': result,
             'looks': len(looks), 'looks_exceed_spec': bool(looks_exceed_spec),
             'replay_drift_accepted': replay_drift_accepted or None,
+            'admission_relax': (a.adm_relax or None),
             'final_pose': [round(x, 3), round(y, 3), round(float(np.degrees(yaw)), 2)],
             'sim_time_s': round(env.t, 2), 'wall_s': round(time.time() - t0, 1), 'collision': crash or None}
     ev('result', **summ)

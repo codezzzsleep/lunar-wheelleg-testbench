@@ -1,0 +1,62 @@
+{
+  "look": "look2",
+  "replay_dir": "runs/v8/main/imagination/looks/look2_replay",
+  "targets": {
+    "T1": {
+      "pose_delta": {
+        "dx0_mm": 0.1902,
+        "dy0_mm": 0.0923,
+        "dyaw_deg": 0.008483
+      },
+      "sha_equal": {
+        "observation": false,
+        "crops": false
+      },
+      "rgb": {
+        "mean_abs_diff": 1.5608,
+        "max_abs_diff": 135,
+        "pixels_gt8": 28438,
+        "pixels": 1920000
+      },
+      "depth": {
+        "finite_common": 1428578,
+        "p50_mm": 0.8322,
+        "p90_mm": 8.932,
+        "p99_mm": 351.34,
+        "gt_1mm": 627374,
+        "gt_50mm": 115656
+      },
+      "mask": {
+        "same": false
+      }
+    },
+    "T2": {
+      "pose_delta": {
+        "dx0_mm": 0.1902,
+        "dy0_mm": 0.0923,
+        "dyaw_deg": 0.008483
+      },
+      "sha_equal": {
+        "observation": false,
+        "crops": false
+      },
+      "rgb": {
+        "mean_abs_diff": 1.5608,
+        "max_abs_diff": 135,
+        "pixels_gt8": 28438,
+        "pixels": 1920000
+      },
+      "depth": {
+        "finite_common": 1428578,
+        "p50_mm": 0.8322,
+        "p90_mm": 8.932,
+        "p99_mm": 351.34,
+        "gt_1mm": 627374,
+        "gt_50mm": 115656
+      },
+      "mask": {
+        "same": false
+      }
+    }
+  }
+}

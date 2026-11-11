@@ -59,3 +59,10 @@
 <!-- link-check:ignore-end -->
 
 门禁用法：`python3 scripts/check_docs_links.py --baseline 25`（现有悬空不阻断，新增一条就失败）。
+
+## 分析与健壮性（2026-11-11 新增）
+
+| 文件 | 内容 |
+| --- | --- |
+| `ANALYSIS_V8.md` | V8"停车"结论有多稳：逐候选归因、阈值敏感性、放宽门槛真跑、V7 门槛工作点与 5 cm 留一检验 |
+| 脚本 | `scripts/v8/v8_admission_report.py`、`scripts/v7/v7_gate_report.py` |

@@ -65,4 +65,4 @@
 | 文件 | 内容 |
 | --- | --- |
 | `ANALYSIS_V8.md` | V8"停车"结论有多稳：逐候选归因、阈值敏感性、放宽门槛真跑、V7 门槛工作点与 5 cm 留一检验 |
-| 脚本 | `scripts/v8/v8_admission_report.py`、`scripts/v7/v7_gate_report.py` |
+| 脚本 | `scripts/v8/v8_admission_report.py`（候选归因/敏感性）、`scripts/v7/v7_gate_report.py`（门槛工作点/留一检验）、`scripts/v7/v7_margin_model.py`（余量可预测性，负结果） |

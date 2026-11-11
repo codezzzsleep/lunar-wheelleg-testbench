@@ -42,3 +42,8 @@
 ```
 rg -n "<脚本名>" scripts docs | grep -v "^scripts/<脚本名>"
 ```
+
+5. **跑测试会重写 `scenes/*.json`**（`tests/test_pipeline.py` 以仓库根为 cwd 跑 `pipeline.py --demo`，
+   第一步 `make_pg_scenes.py` 会把场景集写回 `scenes/`）。2026-11-11 起夹具已与生成器同步
+   （唯一历史差异是 `terrain.span` 字段），生成是幂等的：跑完 `git status` 应当干净。
+   若不干净，说明生成器改了而夹具没跟着提交 —— 补一次 `python3 scripts/make_pg_scenes.py` 再提交即可。

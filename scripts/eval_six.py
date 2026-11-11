@@ -141,6 +141,12 @@ def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
       · snapshot=None -> 新建 episode（会 reset）
       · snapshot 给了 -> 调用 runner.run_from_state，恢复后到第一执行帧之间不 reset
     action_id 不允许缺失：None 直接报错，不能悄悄变成 A0。
+
+    **预算语义（2026-11-11 审查更正）**：真正的时限是 `env.max_seconds`，它在
+    `build_env` 时就固定了；本函数的 `time_limit` 只是"调用方声明的预算"，运行期
+    不再传给物理循环。两者可能不同，所以每行结果都带 `budget` 块，把
+    `declared_s` / `env_max_seconds` / `enforced` 一起落盘——同预算比较必须能审计，
+    不能让声明的预算悄悄失效（旧版本里该参数完全没被使用且不留痕）。
     """
     if option is None:
         raise ValueError('action_id 不能为 None（不能把 None 悄悄转成 A0）')
@@ -155,9 +161,16 @@ def run_episode_from_env(env, option, seed, visible, goal_x, time_limit=15.0,
         out = r.run()
         resumed = False
     finished_at = time.time()
+    env_max = getattr(env, 'max_seconds', None)
+    declared = float(time_limit)
+    budget = {'declared_s': declared,
+              'env_max_seconds': (None if env_max is None else float(env_max)),
+              'enforced': (env_max is not None
+                           and abs(float(env_max) - declared) < 1e-9)}
     return [{'phase': 'rehearsal', 'hypothesis_id': hid, 'option': option, 'seed': seed,
              'resumed': resumed,
              'started_at': started_at, 'finished_at': finished_at,
+             'budget': budget,
              'sim_time_s_': round(float(env.t), 4), 'reason': out['reason'],
              'success': out['success'], 'abort': out['abort'], 't_end': out['t_end'],
              'final_x': out['final_x'], 'max_tilt': out['max_tilt'],

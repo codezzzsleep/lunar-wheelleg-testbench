@@ -10,7 +10,9 @@ import trimesh
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
+sys.path.insert(0, str(ROOT / 'tests'))         # 同目录 _gl.py：子进程探测 GL，避免主进程 SIGABRT
 import align                                            # noqa: E402
+from _gl import gl_available                            # noqa: E402
 
 OX = 1.80
 
@@ -29,6 +31,7 @@ def _obs_with_base(tmp):
     return base, tmp / 'obs'
 
 
+@unittest.skipUnless(gl_available(), 'no OpenGL context')
 class TestFreespaceV21(unittest.TestCase):
     @classmethod
     def setUpClass(cls):

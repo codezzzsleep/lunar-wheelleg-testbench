@@ -1,7 +1,9 @@
 # 实测依赖锁定（2026-11-02，CNB 沙箱 /opt/lunar 解释器）
 # Python 3.12.16；本机开发 venv 为 3.12.3，同一组包版本。
 # 任何融合/预演结果必须记录 environment 块（fuse_observed/v3 起写入 manifest）。
-python==3.12.16
+# python: 3.12.16（沙箱解释器；本机开发 venv 为 3.12.3）
+# ↑ 解释器版本不是 pip 依赖：写成 python==3.12.16 会被 pip 当成包名 python 去解析并失败，
+#   故改为注释。下列包版本与 requirements.txt 为同一组实测通过的组合。
 mujoco==3.17.0
 numpy==2.5.4
 scipy==1.18.1

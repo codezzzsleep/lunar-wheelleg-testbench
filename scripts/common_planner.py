@@ -110,6 +110,7 @@ def plan_action(hypotheses, snapshot, visible, planning_soils, budget,
                                    'success': bool(r['success']),
                                    'cost': r.get('cost'), 'reason': r.get('reason'),
                                    'sim_time_s': r.get('sim_time_s_'),
+                                   'budget': r.get('budget'),
                                    't_end': r.get('t_end'), 'final_x': r.get('final_x'),
                                    'max_tilt': r.get('max_tilt'),
                                    'triggered': r.get('triggered')})

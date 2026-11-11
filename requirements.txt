@@ -8,3 +8,8 @@ manifold3d==3.5.4
 pillow==13.0.0
 rtree==1.4.1
 networkx==3.7
+
+# 可选：仅 V8 复盘（scripts/v8/v8_eval.py）需要 matplotlib 计算真值占地。
+# 这里只写注释、不 pin：`.cnb/bootstrap.sh` 只校验带 `==` 的行，加 pin 会让
+# 镜像与 requirements 判不一致。本机实测用 matplotlib 3.11.2 跑通 eval.json。
+# matplotlib==3.11.2

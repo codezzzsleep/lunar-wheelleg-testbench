@@ -17,6 +17,10 @@ assets/generated/**/*.ply
 assets/generated/**/*.zip
 # 解包目录与 assets/raw/*.glb 是同一份文件，只保留 raw
 assets/generated/**/unpacked/
+# 同一批解包产物在部分批次里叫 extracted/（实测 7 个 tex_mesh.glb，0 个入库）；
+# 不整目录 ignore assets/generated/**：那里的 GLB 与 manifest 本来就是保留项
+# （见上面 16–17 行），整目录拦会把该保留的 GLB 一起屏蔽。
+assets/generated/**/extracted/
 
 # 图生任务的原始 results.zip（含 PLY/3DGS，动辄数十 MB）不入库；
 # 只保留 model.glb 与 meta.json，zip 可用 task_id 重新下载。
@@ -45,6 +49,60 @@ runs/v3/selftest_collision/
 
 # C 包隔离实验的粗盒产物可重建，只保留 result/manifest
 runs/v3/isolation5_r*/coll_truth_ds2/parts/
+
+# ============================================================================
+# 2026-11-11 产物布局实测后补齐（依据：git ls-files 287,287 条 + git status -uall
+# 86,549 条未跟踪项 + du 抽样）。原则：只拦"从未入库"的批量产物；已入库的二进制
+# 保持原样（不 rm --cached、不改历史，那是另一个决策），下面逐条注明影响面。
+# ============================================================================
+
+# 1) 图生任务 results.zip 的真实布局是 runs/unseen/delivery_v*/*/generation/task_*/，
+#    旧规则 runs/unseen/generation/**/results.zip 到不了 delivery 批次。
+#    影响面：delivery_v5/v7 已有 18 个 results.zip 在库，本规则对它们无效
+#    （git check-ignore 对已跟踪路径返回 1），只拦后续新增批次。
+runs/**/generation/**/*.zip
+
+# 2) Lux3D 下载缓存（每任务 GLB + results.zip，单文件数十 MB）。现有 12 个文件
+#    全部已在库，本规则只拦后续新增的缓存目录。
+runs/**/lux_cache/**
+
+# 3) raw/ 下只拦原始下载包 *.zip，不整目录拦：raw/*.png 是入库证据
+#    （runs/v4/wp3/crops/*/yaw*/raw/*.png 已有 54 个在库），整目录拦会让这类
+#    正常 git add 静默失效。
+runs/**/raw/**/*.zip
+
+# 4) 逐帧渲染帧序列。实测不存在 runs/**/frames/ 目录，真实目录名是 replay_frames/
+#    （runs/v3/stage003/wheel_state1_r1/replay_frames，300 帧 29 MB，0 个入库）。
+runs/**/replay_frames/
+
+# 5) 未跟踪的实验批次目录（实测每个目录内 0 个已入库文件，共 12,489 个文件）。
+#    刻意不写全局 rock_grid_*/ holdout_*/ rock_families*/：同批次里 rock_grid_v3
+#    已有 19,995 个、rock_families4 已有 7,388 个文件在库，全局 glob 会让这些
+#    目录下正常的 git add 静默失效，故按实测目录逐一列出。
+runs/unseen/delivery_v7/v7_20261030_r1/rock_grid_v2/
+runs/unseen/delivery_v7/v7_20261030_r1/rock_families/
+runs/unseen/delivery_v7/v7_20261030_r1/rock_families2/
+runs/unseen/delivery_v7/v7_20261030_r1/rock_families3/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_v2/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_v3/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_confirm/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_scan_b/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_scan_c/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_scan_full/
+runs/unseen/delivery_v7/v7_20261030_r1/holdout_scan_smoke/
+# 根级监控脚本产物（monitor_531790/，0 个入库）
+monitor_*/
+
+# 6) dist 打包产物：*.tar.gz 入库（dist/stage003_bundle.tar.gz 已跟踪），
+#    解包目录是同一份内容的双份展开（42–67 MB），不入库。
+dist/*_bundle/
+
+# 7) v3 状态的 truth 几何：每个 state 约 14 MB、合计 68,843 个 *.stl，0 个入库。
+#    只拦 *.stl；truth/ 下的 manifest.json、truth_occ.json、*_occ_ds.npz 仍入库。
+runs/v3/states/*/truth/**/*.stl
+
+# 8) 并发跑留下的 ledger 文件锁
+runs/**/.ledger.lock
 
 # Stage007 回取的大体量资产（保留在主机工作区，不入库）
 runs/v3/stage007/lux3d/generation/**/*.glb

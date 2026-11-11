@@ -9,7 +9,7 @@
   2. 按自己的策略规划到终点的路线
      保守：看不见的格子当障碍；乐观：当空地；想象：想象出的石块当障碍，其余当空地
   3. 想象的车：先给想象留 5 cm 余量规划；留不出余量（或想象说过不去）时，先看第二眼再决定
-     保守的车：规划不出路线时看第二眼（最多再看两眼），还是规划不出就停车
+     保守的车：规划不出路线时看第二眼（默认两眼；--max-looks 只能人为放宽，会标 looks_exceed_spec）
   4. 有路线就执行（原地转向 + 直行），全程检查是否碰到任何石块
 --imagine truth：用场景里真实石块的形状当"完美想象"，只用于检验规划与执行；正式运行用 Lux3D 候选与自检（v8_imagine）。
 """
@@ -27,7 +27,9 @@ sys.path.insert(0, str(HERE))
 import v8_scene as S, v8_nav as N, follow as F  # noqa: E401,E402
 
 IMAG_MARGIN_CELLS = 1          # 想象余量 5 cm（V7 影子实验：被采纳的想象背面误差最大 5.0 cm）
-MAX_EXTRA_LOOKS = 2
+# 眼数上限以文档为准：docs/v8/SPEC_V8.md §0.4:64「两眼之后还不行，就停车。」
+MAX_LOOKS_BY_SPEC = 2          # 第一眼 + 第二眼；--max-looks 默认取它，第三眼只能由人为显式要求
+MAX_EXTRA_LOOKS = MAX_LOOKS_BY_SPEC - 1   # 第一眼之后最多再看一眼（旧值 2 会让默认跑出第三眼）
 
 
 class Recorder:
@@ -69,15 +71,30 @@ def pose(env):
     return float(q[0]), float(q[1]), F.yaw_of(q)
 
 
-def main():
+def build_parser():
     ap = argparse.ArgumentParser()
     ap.add_argument('--policy', required=True, choices=['conservative', 'optimistic', 'imagination'])
     ap.add_argument('--out', required=True); ap.add_argument('--imagine', default='truth')
     ap.add_argument('--see-dark', action='store_true', help='对照实验：假设相机在黑影里也能测出深度')
-    ap.add_argument('--max-looks', type=int, default=1 + MAX_EXTRA_LOOKS, help='最多看几眼（含第一眼）')
+    ap.add_argument('--max-looks', type=int, default=MAX_LOOKS_BY_SPEC,
+                    help=f'最多看几眼（含第一眼）；默认 {MAX_LOOKS_BY_SPEC}（SPEC §0.4 的两眼上限），更大值会标 looks_exceed_spec')
     ap.add_argument('--tag', default=None, help='输出子目录名（默认等于策略名）')
     ap.add_argument('--trust', default=None, help='反事实：T1=A2,T2=B1 —— 这几块石头只用指定的那份想象，不管自检结论，也不看第二眼')
-    a = ap.parse_args()
+    return ap
+
+
+def resolve_max_looks(max_looks):
+    """眼数上限：默认等于 SPEC 的两眼；显式传更大值才算人为超规范，并在 stderr 打警告。"""
+    exceed = max_looks > MAX_LOOKS_BY_SPEC
+    if exceed:
+        print(f'警告：--max-looks {max_looks} 超过 SPEC_V8 §0.4 的两眼上限 {MAX_LOOKS_BY_SPEC}；'
+              '第三眼及以后只在人为显式要求时发生，结果会记 looks_exceed_spec=true。', file=sys.stderr)
+    return max_looks, exceed
+
+
+def main():
+    a = build_parser().parse_args()
+    a.max_looks, looks_exceed_spec = resolve_max_looks(a.max_looks)
     out = pathlib.Path(a.out) / (a.tag or a.policy); out.mkdir(parents=True, exist_ok=True)
     dark_thr = 0.0 if a.see_dark else 0.10
     trust = dict(kv.split('=') for kv in a.trust.split(',')) if a.trust else None
@@ -348,6 +365,7 @@ def main():
                 result = 'arrived' if np.hypot(xg - S.GOAL[0], yg - S.GOAL[1]) < 0.3 else 'stopped_short'
                 rec.hold(env, 'arrived', 1.5)
             break
+        # 眼数已到上限（默认 = SPEC 的两眼上限）：停车——不再规划下一眼，也不再发任何 Lux3D 请求
         if len(looks) >= a.max_looks or trust:
             result = 'stuck'; rec.hold(env, 'stuck', 2.0); break
         if a.policy == 'imagination':
@@ -365,7 +383,7 @@ def main():
 
     x, y, yaw = pose(env)
     summ = {'policy': a.policy, 'tag': a.tag or a.policy, 'see_dark': bool(a.see_dark), 'imagine': a.imagine if a.policy == 'imagination' else None, 'result': result,
-            'looks': len(looks), 'final_pose': [round(x, 3), round(y, 3), round(float(np.degrees(yaw)), 2)],
+            'looks': len(looks), 'looks_exceed_spec': bool(looks_exceed_spec), 'final_pose': [round(x, 3), round(y, 3), round(float(np.degrees(yaw)), 2)],
             'sim_time_s': round(env.t, 2), 'wall_s': round(time.time() - t0, 1), 'collision': crash or None}
     ev('result', **summ)
     rec.save(out / 'traj.npz')

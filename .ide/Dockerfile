@@ -20,6 +20,7 @@ RUN python3 -m venv /opt/lunar \
         mujoco==3.17.0 \
         numpy==2.5.4 \
         trimesh==5.2.0 \
+        scipy==1.18.1 \
         coacd==1.0.14 \
         manifold3d==3.5.4 \
         pillow==13.0.0 \

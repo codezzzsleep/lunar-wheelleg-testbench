@@ -18,10 +18,12 @@ import numpy as np
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / 'scripts'))
+sys.path.insert(0, str(ROOT / 'tests'))          # 同目录 _gl.py：子进程探测 GL，避免主进程 SIGABRT
 
 import mujoco                       # noqa: E402
 import terrain                      # noqa: E402
 import wheelleg_env                 # noqa: E402
+from _gl import gl_available        # noqa: E402
 
 
 def _env(objects=None, pitch=-12.0, pos=(0.42, 0.0, 0.20), fovy=70.0):
@@ -66,6 +68,7 @@ def _object_pixels(env, W=640, H=480):
     return diff > 12
 
 
+@unittest.skipUnless(gl_available(), 'no OpenGL context')
 class TestCameraFrame(unittest.TestCase):
     def test_axes_follow_xyaxes_contract(self):
         env = _env()
@@ -137,6 +140,7 @@ class TestCameraFrame(unittest.TestCase):
                         f'高物体应更靠上：行号 {rows[1]:.1f} vs {rows[0]:.1f}')
 
 
+@unittest.skipUnless(gl_available(), 'no OpenGL context')
 class TestAlignSharesCamera(unittest.TestCase):
     """
     运行时验证 align 与观测用同一相机，而不是检查源码里出现了哪些字符串

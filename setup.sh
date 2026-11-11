@@ -14,6 +14,16 @@ MUJOCO_COMMIT="1eb6642e3f3fdfb7fb13a9794fd6a2dd93ea0e7d"
 
 die() { echo "错误：$*" >&2; exit 1; }
 
+echo "== 前置检查：git-lfs =="
+# 本仓库的大体量二进制（9.5 万余个）由 Git LFS 托管。缺 git-lfs 时 clone/pull 不会报错，
+# 工作区里只会落下一堆约 130 B 的指针文件（"version https://git-lfs.github.com/spec/v1"），
+# 等到第 1 关验收才炸，且错误信息与真实原因无关。这里直接失败并给出补救命令。
+command -v git-lfs >/dev/null 2>&1 || die "未检测到 git-lfs。本仓库的 assets/runs 大文件由 Git LFS 托管，
+     缺它时工作区里只会是指针文件（每个约 130 B），装完依赖也过不了第 1 关。
+     安装：apt-get install -y git-lfs  （macOS: brew install git-lfs）
+     装好后执行：git lfs install && git lfs pull，然后重跑本脚本。"
+git lfs version >/dev/null 2>&1 || die "git-lfs 存在但 'git lfs version' 执行失败，LFS 未正确安装，先修好再重跑。"
+
 echo "== 0/5 检查 Python =="
 "$PY" -c 'import sys; sys.exit(0 if sys.version_info[:2] == (3, 12) else 1)' \
   || die "需要 Python 3.12，当前为 $("$PY" -V 2>&1)。可用 PYTHON=/path/to/python3.12 ./setup.sh 指定。"

@@ -18,6 +18,8 @@
   - 请求与结果文件：12 个条件各自的 `lux_request.json` / `lux_result.json`。
 - §3.4 评估完成（沙箱，退出 0）：72 行评估写入 `eval_rows.json`，12 条件汇总写入 `summary.json`。原文如下：
 
+> **已作废（2026-11-11）**：本表 admitted 合计 28 已被 §2.3 的 v7.3 重评估（合计 21）取代——v7.2 把尺度比改为 `scale_ratio_ground`（`scripts/v7/v7_shadow_exp.py:158`）后准入规则改变。下方 §2.3 表为准。
+
 ```json
 {
   "A_naive|high_side": {
@@ -105,6 +107,9 @@
     "median_hidden_iou": 0.1892
   }
 }```
+> 灰区（2026-11-11 补）：64 份成功任务中，`hidden_iou` < 0.5 有 32 份、≥ 0.6 有 31 份，另 1 份落在
+> 0.5–0.6 之间（`moon_rock_07|low_behind|B_depth`，0.5513，不计入两侧统计）。
+
 - §3.2 有想象一臂：沙箱完成，退出码 0；`final_x=22.0086`、`t_end=140.52 s`、`arrived=true`。
   - E1 look1：Lux3D 6/6 成功，准入 5/6，分支 accept，执行 R1，pass（t=52.7）。
   - E2 look1：Lux3D 6/6 成功，准入 0/6 → 侧移 0.42 m 第二眼（yaw 2.8°）。

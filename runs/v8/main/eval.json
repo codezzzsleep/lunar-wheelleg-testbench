@@ -1,0 +1,51 @@
+{
+  "schema": "v8-eval/v1",
+  "run": "runs/v8/main",
+  "robots": {
+    "conservative": {
+      "result": "stuck",
+      "looks": 5,
+      "sim_time_s": 142.2,
+      "min_center_distance_to_rock_m": 0.602,
+      "collision": null
+    },
+    "conservative_seedark": {
+      "result": "arrived",
+      "looks": 3,
+      "sim_time_s": 147.26,
+      "min_center_distance_to_rock_m": 0.403,
+      "collision": null
+    },
+    "imagination_truth": {
+      "result": "arrived",
+      "looks": 1,
+      "sim_time_s": 115.88,
+      "min_center_distance_to_rock_m": 0.447,
+      "collision": null
+    },
+    "optimistic": {
+      "result": "collision",
+      "looks": 1,
+      "sim_time_s": 83.44,
+      "min_center_distance_to_rock_m": 0.304,
+      "collision": {
+        "body": "obstacle1",
+        "robot_geom": null,
+        "pos": [
+          6.962,
+          -0.278,
+          0.112
+        ],
+        "t": 80.94
+      }
+    }
+  },
+  "imagination": [],
+  "summary": {
+    "admitted": 0,
+    "rejected": 0,
+    "admitted_back_err_range_m": null,
+    "admitted_footprint_iou_range": null,
+    "rejected_too_short": 0
+  }
+}

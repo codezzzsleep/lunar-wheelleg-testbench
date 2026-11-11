@@ -9,12 +9,19 @@ worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。�
 
 ## 当前状态（唯一入口）
 
-**2026-11-03 最新交付**：`dist/minimal/index.html`（最小可复现交付页，单文件）、
-`docs/G6_DELIVERY.md`（交付页 Markdown）。状态矩阵：A/B/F 通过、C 部分、D 未通过、
-E 无正例；证据索引见 `docs/EVIDENCE_INDEX.md`，能力边界见 `docs/BOUNDARY.md`。
+- **最新（2026-11-08）**：`docs/v8/STATUS.md` —— V8 停在 SPEC §3.3，未收口；
+- **V7（已收尾）**：`docs/v7/STATUS.md` —— 含 v7.3 重评估与收尾结论。
 
-**`docs/CURRENT_STATUS.md` 是本项目唯一的当前状态文档**，其他 `docs/*.md` 一律视为归档，
-保留过程与更正记录，不再逐份更新。
+总述：v5 收口 → V6/V7 收尾 → V8 在 §3.3 停住等对齐（眼数已按 SPEC §0.4 对齐为两眼，
+待重跑 §3.3 收口；`runs/v8/main/eval.json` 已由本机脚本生成，但**不含想象车**——那次运行
+退出码 10、没有 `summary.json`，缺口与读法见 `docs/v8/STATUS.md`）。除这两份，其他 `docs/*.md`
+按归档处理，保留过程与更正记录。
+
+**2026-11-03 历史交付（v3 口径，非现状）**：`dist/minimal/index.html`（最小可复现交付页）、
+`docs/G6_DELIVERY.md`、`docs/G6_STATUS.md`、`docs/FINAL_STATE.md`、
+`docs/CURRENT_STATUS.md`（标题仍是 `SPEC_UNSEEN_RECOVERY_002`）。这些文件里的状态矩阵
+（A/B/F 通过、C 部分、D 未通过、E 无正例）与 `docs/EVIDENCE_INDEX.md` 的 `runs/v3/*`
+证据只对应 v3 批次，不要当作当前结论。
 
 - 五画面作品页：`runs/unseen/delivery_v7/v7_20261030_r1/story/R02.html`（看见 → 想象 → 试走 → 决定 → 真走与揭晓）
 - 共同规划入口：`scripts/common_planner.py`（唯一实现，所有比较入口复用）
@@ -24,6 +31,13 @@ E 无正例；证据索引见 `docs/EVIDENCE_INDEX.md`，能力边界见 `docs/B
 - 演示包：`demo/r1_r03_two_view/run_demo.sh`
 
 
+
+## 三个同名“v7”（别混）
+
+- `runs/unseen/delivery_v7/`：**2026-10-30 批次**的数据与页面（`v7_20261030`、`v7_20261030_r1`）；
+- `docs/UNSEEN_STATUS_V7.md`：**10-30** 那批的状态文档（R1 修正批），不是现行 V7 规范；
+- `docs/v7/SPEC_V7.md` + `docs/v7/STATUS.md`：**11-07 起**的 V7 规范与状态，含 v7.1–v7.3 补丁
+  与收尾结论；本文提到“V7”时指这一份。
 
 ## V6（2026-10-29）观测约束融合与连续回放
 
@@ -46,7 +60,8 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 
 ## 资料与项目历程
 
-- **当前执行状态**（唯一状态中心）：`docs/UNSEEN_STATUS_V6_1.md`（V6.1 在途）→ `docs/UNSEEN_STATUS_V6.md`
+- **当前执行状态**：`docs/v8/STATUS.md`（最新，2026-11-08）与 `docs/v7/STATUS.md`（V7 已收尾）；
+  V6.1 时期的交接见 `docs/UNSEEN_STATUS_V6_1.md` → `docs/UNSEEN_STATUS_V6.md`（历史）
 - **项目历程与决策证据**：`docs/PROJECT_JOURNEY.md`（每阶段：想解决什么、怎么做的、哪条判断被修正、证据等级）
 - **外部资料来源登记**：`docs/sources/lux3d/README.md` + 机器可读 `docs/sources/lux3d/source_manifest.json`
 - **场景适配分析**：`docs/research/LUX3D_SCENE_FIT.md`（官方说明 / 项目实测 / 项目推断三类分开）
@@ -167,8 +182,13 @@ LD_LIBRARY_PATH=/tmp/sysroot/usr/lib/x86_64-linux-gnu:/tmp/sysroot/lib/x86_64-li
 
 ```bash
 .venv/bin/python -m py_compile scripts/app_unseen.py
-.venv/bin/python -m unittest discover -s tests -v      # 现有单元测试
+MUJOCO_GL=egl .venv/bin/python -m unittest discover -s tests -v    # 全套约 15 分钟
 ```
+
+- `MUJOCO_GL=egl` 要显式给：默认后端在无 `DISPLAY` 的机器上起不来。
+- **无 GL 时两个渲染模块自动跳过**（`tests/_gl.py` 子进程探测 + `skipUnless`）：
+  `test_camera` / `test_freespace` 变成 `OK (skipped=N)`，不会中断 suite，其余 11 个模块正常跑。
+- 总时长约 15 分钟（`test_pipeline` 534 s、`test_trainer` 321 s）。
 
 页面接口烟测：
 

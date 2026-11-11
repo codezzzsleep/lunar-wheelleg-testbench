@@ -46,16 +46,27 @@ def main():
     a = ap.parse_args()
     run = pathlib.Path(a.run)
     truth = truth_footprints(run)
-    rep = {'schema': 'v8-eval/v1', 'run': str(run), 'robots': {}, 'imagination': []}
-    for d in sorted(p for p in run.iterdir() if (p / 'summary.json').exists()):
+    rep = {'schema': 'v8-eval/v1', 'run': str(run), 'robots': {}, 'imagination': [],
+           'incomplete_runs': []}
+    # 2026-11-11 修：旧版只遍历有 summary.json 的目录，导致"跑到一半退出"的车
+    # 被静默跳过（V8 §3.3 的想象车退出码 10/11，没有 summary.json），
+    # eval.json 里 imagination 为空、admitted=0 会被误读成"没有候选被采纳"。
+    # 现在：机器人成绩只对有 summary 的运行给出；候选比较独立扫描 looks/，
+    # 并把"有 looks 但没有 summary"的运行显式记进 incomplete_runs。
+    dirs = [p for p in sorted(run.iterdir()) if p.is_dir()]
+    for d in dirs:
+        if not (d / 'summary.json').exists():
+            if (d / 'looks').exists() or (d / 'events.jsonl').exists():
+                rep['incomplete_runs'].append(d.name)
+            continue
         s = json.loads((d / 'summary.json').read_text())
-        ev = [json.loads(l) for l in (d / 'events.jsonl').read_text().splitlines() if l.strip()]
         z = np.load(d / 'traj.npz'); q = z['qpos']
         clr = N.clearance(truth['A'] | truth['B'])
         i = np.clip(((q[:, 0] - N.X0) / N.RES).astype(int), 0, N.NX - 1); j = np.clip(((q[:, 1] - N.Y0) / N.RES).astype(int), 0, N.NY - 1)
         rep['robots'][d.name] = {'result': s['result'], 'looks': s['looks'], 'sim_time_s': s['sim_time_s'],
                                  'min_center_distance_to_rock_m': round(float(clr[i, j].min()), 3),
                                  'collision': s.get('collision')}
+    for d in dirs:
         looks = d / 'looks'
         for ld in sorted(looks.glob('look*')) if looks.exists() else []:
             if not ld.is_dir() or ld.name.endswith('_replay'):

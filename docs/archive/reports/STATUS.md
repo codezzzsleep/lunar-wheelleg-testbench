@@ -26,9 +26,9 @@
 ## 下一步（只选一个方向）
 
 **训练能力**：奖励里前进项主导、越障收益延迟数百步；需重做奖励时序权衡与课程，
-而不是继续换几何来源。详见 `docs/PG_REPORT.md` 第 6 节。
+而不是继续换几何来源。详见 `docs/archive/reports/PG_REPORT.md` 第 6 节。
 
 ## 历史
 
 - 旧"机器人考场"（固定控制器 × 2520 trial）保留在 `docs/REPORT.md`，是基础验证模块，非训练主路径。
-- 旧 M0 训练报告（`docs/TRAINING_REPORT.md`）顶部已标注其结论受 PPO 实现错误影响，不再作为依据。
+- 旧 M0 训练报告（`docs/archive/reports/TRAINING_REPORT.md`）顶部已标注其结论受 PPO 实现错误影响，不再作为依据。

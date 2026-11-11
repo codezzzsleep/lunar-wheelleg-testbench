@@ -83,4 +83,4 @@
 验证：`scripts/check_ppo.py`（中心差分误差 ~1e-10）、`tests/test_trainer.py`（10 项）。
 旧 150k 步与旧 checkpoint 保留在 `runs/train_P_150k`、`runs/train_G_40k` 等目录，
 标注为"actor 未更新、动作概率不一致，不能用于判断 PPO 学习能力或 P/G 收益"。
-结论见 [`TRAINER_REPORT.md`](TRAINER_REPORT.md)。
+结论见 [`archive/reports/TRAINER_REPORT.md`](archive/reports/TRAINER_REPORT.md)。

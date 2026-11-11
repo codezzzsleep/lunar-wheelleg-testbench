@@ -2,8 +2,8 @@
 
 > ⚠️ **本页是 2026-10-27 早期阶段的进度快照，已被后续批次取代，不是当前状态中心。**
 > 当前状态请跳转：
-> - `docs/UNSEEN_STATUS_V6_1.md`（V6.1 在途，最新）
-> - `docs/UNSEEN_STATUS_V6.md`（V6 已完成批次）
+> - `docs/archive/unseen/UNSEEN_STATUS_V6_1.md`（V6.1 在途，最新）
+> - `docs/archive/unseen/UNSEEN_STATUS_V6.md`（V6 已完成批次）
 > - 表内「未开始 / 未通过」是**当时**的状态，后续已被 V5/V6 改写（见 `docs/PROJECT_JOURNEY.md`）。
 
 | 阶段 | 当时的状态 | 证据 | 后来如何 |
@@ -25,6 +25,6 @@
 - 外部资料来源登记：`docs/sources/lux3d/README.md`
   （机器可读：`docs/sources/lux3d/source_manifest.json`）
 - 场景适配分析（官方说明 / 项目实测 / 项目推断三类分开）：`docs/research/LUX3D_SCENE_FIT.md`
-- 当前能力状态：`docs/UNSEEN_STATUS_V6_1.md`（在途）→ `docs/UNSEEN_STATUS_V6.md`（上一批完成）
+- 当前能力状态：`docs/archive/unseen/UNSEEN_STATUS_V6_1.md`（在途）→ `docs/archive/unseen/UNSEEN_STATUS_V6.md`（上一批完成）
 
 > 资料只记录「当时参考了什么、资料说了什么、没有证明什么」；原文与素材未归档。

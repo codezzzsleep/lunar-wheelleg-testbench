@@ -10,15 +10,15 @@
 | B 基础周期 | **通过** | `runs/v3/basic_cycle/*`（8 run，168/168） |
 | C 预演保真 | **部分** | `runs/v3/isolation5_r3`：五臂均 physical_failure（final_x 2.109/2.109/1.957/1.602/1.630）；A-B 第 72 步分叉；残差已解释 |
 | D 腿式能力 | **未通过** | `runs/v3/climb/CLIMB_failure_report.json`；D3 原始 1/2、扰动 2/3 |
-| E 主角对照 | **无正例** | `docs/E_CASES.md`、`runs/v3/e_cases/index.json` |
+| E 主角对照 | **无正例** | `docs/archive/reports/E_CASES.md`、`runs/v3/e_cases/index.json` |
 | F 连续路线 | **通过** | `runs/v3/route/rigid_r2`、`runs/v3/route/nominal_r1` |
 
 ## 2. 证据入口
 
 - 自动索引（57 run）：`docs/EVIDENCE_INDEX.md`、`runs/v3/evidence_index.json`。
 - 能力边界：`docs/BOUNDARY.md`。
-- CLIMB 最小失败报告：`docs/D_FAILURE_REPORT.md`。
-- E 三案例：`docs/E_CASES.md`。
+- CLIMB 最小失败报告：`docs/archive/reports/D_FAILURE_REPORT.md`。
+- E 三案例：`docs/archive/reports/E_CASES.md`。
 
 ## 3. 复现命令
 

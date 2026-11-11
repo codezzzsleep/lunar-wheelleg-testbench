@@ -3,7 +3,7 @@
 本目录记录**我们参考了什么外部资料、资料说了什么、我们据此做了什么判断**。
 它不是官方原文的镜像，也不是当前能力状态报告。
 
-- 当前能力状态：`docs/UNSEEN_STATUS_V6_1.md`（V6.1 在途）→ `docs/UNSEEN_STATUS_V6.md`（V6 已完成批次）
+- 当前能力状态：`docs/archive/unseen/UNSEEN_STATUS_V6_1.md`（V6.1 在途）→ `docs/archive/unseen/UNSEEN_STATUS_V6.md`（V6 已完成批次）
 - 场景适配分析：`docs/research/LUX3D_SCENE_FIT.md`
 - 项目历程与决策证据：`docs/PROJECT_JOURNEY.md`
 - 机器可读清单：`source_manifest.json`

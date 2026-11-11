@@ -55,4 +55,4 @@
 | H5_raw（诊断） | 0 | 4 | 2 |
 | **H5_F** | 1 | **3** | 2 |
 
-P06·S1 复盘见 `docs/P06_S1_DIAGNOSIS.md`。
+P06·S1 复盘见 `docs/archive/reports/P06_S1_DIAGNOSIS.md`。

@@ -8,7 +8,7 @@
 
 ## 0.5 先读评审（很重要）
 
-`docs/REVIEW_2026-11-03.md` 对本批给出了严格判定：**八行主表目前不能作为研究证据**。
+`docs/archive/reports/REVIEW_2026-11-03.md` 对本批给出了严格判定：**八行主表目前不能作为研究证据**。
 新会话必须先读完它，尤其 P0-1..P0-6。与本交接直接相关的结论：
 
 - **5 点表是附录，不是主表**：16/20 状态连真值参考 U_truth 都是 A0；已把
@@ -139,4 +139,4 @@ python3 scripts/v2_main_table.py --states $R/v2_main_states.json \
 - `d1f384fe7`：融合修复 + 消融 + 5 点规划 + 工具链。
 - `e73e84609`：`reports/v2` 首批审阅包。
 - 新会话应把 B 的 P22/P76/P29/P37 结果、最终 nominal 表、更新后的
-  `CURRENT_STATUS.md` 与本文档一起提交并推送。
+  `docs/CURRENT_STATUS.md` 与本文档一起提交并推送。

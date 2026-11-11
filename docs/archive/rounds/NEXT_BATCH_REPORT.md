@@ -115,7 +115,7 @@ actions, budget, build_environment)`。
 | 新生成任务 | **0**（未授权） |
 
 规则在扫描前冻结（`plans/holdout_protocol.json`）；池不足 48 的原因已写入协议。
-生成申请为**草案**（`docs/GENERATION_REQUEST_DRAFT.md`），单价与费用上界留空待填。
+生成申请为**草案**（`docs/archive/rounds/GENERATION_REQUEST_DRAFT.md`），单价与费用上界留空待填。
 
 ## 8. 单/多候选对照（R01，现有两个候选）
 

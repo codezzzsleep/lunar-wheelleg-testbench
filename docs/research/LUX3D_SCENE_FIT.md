@@ -4,7 +4,7 @@
 > 任务意味着什么、我们据此怎么调整」，不修改项目纲领方向，也不重写当前状态报告。
 >
 > 关联：来源登记 `docs/sources/lux3d/README.md`｜历程 `docs/PROJECT_JOURNEY.md`｜
-> 当前状态 `docs/UNSEEN_STATUS_V6_1.md`
+> 当前状态 `docs/archive/unseen/UNSEEN_STATUS_V6_1.md`
 
 写作规则：**官方说明**（厂商页面）、**项目实测**（仓库可复算产物）、**项目推断**
 （我们的解释与计划）三类分开标注；计划不写成已执行。
@@ -22,7 +22,7 @@
 - 在**同一真值、同一初态**下，预演是否给出比强基线更好的决策依据。
 
 如果三条都不成立，那么「生成得更像」对决策毫无价值。这条判据贯穿 V5/V6/V6.1，
-也是所有报告的最终评价口径（`docs/UNSEEN_STATUS_V5.md`、`docs/UNSEEN_STATUS_V6.md`）。
+也是所有报告的最终评价口径（`docs/archive/unseen/UNSEEN_STATUS_V5.md`、`docs/archive/unseen/UNSEEN_STATUS_V6.md`）。
 
 ## 2. 资料里的几何能力与我们的任务要求之间有差距
 
@@ -36,10 +36,10 @@
 
 | 现象 | 证据路径 | 批次/协议 |
 | --- | --- | --- |
-| 12 份原始网格在同口径搜索与验收下 0 份通过（其中 6 份经预检为薄片，本不应做长配准）。**注**：早期曾报「19 个候选 0 合格」，已撤回——表实际 12 行，不能用历史资产合成分母 | `docs/UNSEEN_STATUS_E3.md`、`docs/UNSEEN_RECOVERY_R3.md` 更正 2 | 早期对照（含撤回记录） |
+| 12 份原始网格在同口径搜索与验收下 0 份通过（其中 6 份经预检为薄片，本不应做长配准）。**注**：早期曾报「19 个候选 0 合格」，已撤回——表实际 12 行，不能用历史资产合成分母 | `docs/archive/unseen/UNSEEN_STATUS_E3.md`、`docs/archive/unseen/UNSEEN_RECOVERY_R3.md` 更正 2 | 早期对照（含撤回记录） |
 | R01 三份候选清理通过但 IoU 0.73–0.82，均不合格 | 提交 `867a2c4`、`f878d7f` | clean/v4 |
 | 相机快照/恢复修正后单个候选 IoU 从 0.0077 升到 0.9448 | 提交 `dbcd951` | align24 |
-| 网格缓存污染曾让自由空间从 28.49% 变 0 | `docs/UNSEEN_REVIEW_REPORT.md` | review |
+| 网格缓存污染曾让自由空间从 28.49% 变 0 | `docs/archive/unseen/UNSEEN_REVIEW_REPORT.md` | review |
 | V5 `C_R01_face12k` 严格 0/3、仅 1 个 IoU-only planning eligible | `runs/unseen/delivery_v5/v5_20261029/manifest.json` | V5 30 s |
 | V6 H5-F 可见面通过，但 CoACD 32/64 占据 IoU 0.2837/0.2861 | `runs/unseen/delivery_v6/v6_20261029/collision/H5_F_single.json`、`runs/unseen/delivery_v6/v6_20261029/collision/H5_F_64.json` | V6 |
 
@@ -128,7 +128,7 @@ vs 实测 −0.893 mm（差一个量级），已如实记录在
 
 | 判断 | 类别 | 当前状态 | 依据 | 后续动作 |
 | --- | --- | --- | --- | --- |
-| Lux3D 输出作为隐藏形状候选 | 研究方法 | 正在验证 | 纲领 v2.1；`docs/UNSEEN_STATUS_V6.md` | 保留主线 |
+| Lux3D 输出作为隐藏形状候选 | 研究方法 | 正在验证 | 纲领 v2.1；`docs/archive/unseen/UNSEEN_STATUS_V6.md` | 保留主线 |
 | raw 模型直接满足物理推演要求 | 能力命题 | 尚未建立 | V5 严格 0/3；V6 raw 也不可靠（IoU 0.1917） | 分层排查，不单因归因 |
 | H5-F 可见面符合观测 | 工程结果 | V6 有通过样本 | `runs/unseen/delivery_v6/…/fusion/`（5 mm 0.9475/2.82/0.0376） | 保留；V6.1 修正后复验 |
 | H5-F 隐藏先验改善决策 | 收益命题 | **NOT_ESTABLISHED** | 同真值比较：H5_F 3/3 + 5/5，但 B3/U/宽度规则同为 3/3；R03 H5=盲走 | 按 V6.1 继续验证 |

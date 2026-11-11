@@ -5,7 +5,7 @@
 | 步骤 | 状态 | 证据 / 说明 |
 | --- | --- | --- |
 | S01 核对开工状态 | DONE | `git log`；工作区干净 |
-| S02 复现审查发现 | DONE | 五项 before/after 见 `docs/UNSEEN_REVIEW_REPORT.md` §2 |
+| S02 复现审查发现 | DONE | 五项 before/after 见 `docs/archive/unseen/UNSEEN_REVIEW_REPORT.md` §2 |
 | S03 预算账本 | DONE | `scripts/budget.py`、`tests/test_budget.py`(16) |
 | S04 客户端模式/缓存/恢复 | DONE | `tests/test_budget.py::TestModes`（7 项） |
 | S05 低置相机与观测包 | DONE | `scripts/observe.py`；相机位姿由 reset 后实测；`runs/unseen/obs/final_{cal,planA,planB}` |

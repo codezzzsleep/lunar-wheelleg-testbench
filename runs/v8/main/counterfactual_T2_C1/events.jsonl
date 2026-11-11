@@ -1,0 +1,5 @@
+{"kind": "look", "k": 1, "label": "first", "pose": [2.292, -0.5, 0.03], "t": 16.08, "cells": {"FREE": 4876, "ROCK": 1289, "DARK": 4946, "HIDDEN": 9195, "UNSEEN": 4894, "NOGO": 0}, "cam_pos": [2.7117, -0.5, 0.3835]}
+{"kind": "imagination", "look": 1, "targets": [{"target": "T1", "n_candidates": 6, "admitted": ["B2", "C2"], "rejected": ["A1", "A2", "B1", "C1"]}, {"target": "T2", "trusted": "C1", "admitted_by_self_check": false}]}
+{"kind": "plan", "policy": "imagination", "look": 1, "path": [[3.8, 0.1], [4.9, 0.4], [6.2, -0.6], [10.5, 0.0]], "reason": null, "margin_vs_truth": {"drive_margin_m": -0.23, "turn_margin_m": 0.083}}
+{"kind": "collision", "body": "obstacle1", "robot_geom": null, "pos": [6.941, -0.272, 0.11], "t": 89.18}
+{"kind": "result", "policy": "imagination", "tag": "counterfactual_T2_C1", "see_dark": false, "imagine": "lux", "result": "collision", "looks": 1, "looks_exceed_spec": false, "final_pose": [6.704, -0.525, 8.26], "sim_time_s": 91.68, "wall_s": 70.4, "collision": {"body": "obstacle1", "robot_geom": null, "pos": [6.941, -0.272, 0.11], "t": 89.18}}

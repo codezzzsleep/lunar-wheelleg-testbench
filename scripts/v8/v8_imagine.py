@@ -28,6 +28,44 @@ import v8_nav as N  # noqa: E402
 PROTO = json.loads((ROOT / 'plans/v3_protocol.json').read_text())
 ADM = VE.ADM
 
+# 仓库内的顶层目录名：产物里如果记着别的机器上的绝对路径（历史沙箱是
+# /workspace/lunar-lab/...），从这些目录名开始截断再接回本机 ROOT。
+_TOP_DIRS = {'assets', 'runs', 'scripts', 'docs', 'plans', 'cases', 'configs',
+             'scenes', 'dist', 'tests', 'vendor'}
+
+
+def resolve_path(p):
+    """把产物里记录的路径解析成本机可读路径。
+
+    2026-11-11：V8 §3.3 在本机重跑时暴露的移植性缺陷——`target_decision.json`
+    里 `glb` 与 `obs` 记的是沙箱绝对路径 `/workspace/lunar-lab/...`，换机器后
+    `trimesh.load` 直接 `ValueError: string is not a file`。解析顺序：
+      1. 原样；2. 相对路径按 ROOT 拼；3. 绝对路径从已知顶层目录截断后按 ROOT 拼。
+    找不到就返回原值，让调用方报出原始错误（不猜、不静默）。
+    """
+    s = str(p)
+    pure = pathlib.PurePosixPath(s)
+    cands = [pathlib.Path(s)]
+    if not pure.is_absolute():
+        cands.append(ROOT / s)
+    else:
+        for i, part in enumerate(pure.parts):
+            if part in _TOP_DIRS:
+                cands.append(ROOT / pathlib.PurePosixPath(*pure.parts[i:]))
+                break
+    for c in cands:
+        if c.exists():
+            return str(c)
+    return s
+
+
+def repo_rel(p):
+    """尽量记成仓库相对路径；落在仓库外则保持绝对路径（不假装）。"""
+    try:
+        return str(pathlib.Path(p).resolve().relative_to(ROOT))
+    except ValueError:
+        return str(p)
+
 
 # ---------------------------------------------------------------- 黑影感知的配准（替换 v3_register 里的三个函数）
 _orig_load = REG.load_observation
@@ -225,15 +263,16 @@ def decide_target(obs_dir, glbs, out_dir):
     fps = {}
     for c in glbs:
         rd = out / 'reg' / c['id']; rd.mkdir(parents=True, exist_ok=True)
-        rec = REG.register(str(c['glb']), str(obs_dir), PROTO, rd, top_k=6)
+        glb = resolve_path(c['glb'])
+        rec = REG.register(glb, str(obs_dir), PROTO, rd, top_k=6)
         M = np.asarray(rec['best']['M'], float)
-        mesh = trimesh.load(str(c['glb']), force='mesh', process=False)
+        mesh = trimesh.load(glb, force='mesh', process=False)
         ev = evaluate_matrix(mesh, obs, M)
         m = C.admission_metrics(mesh, M, V, g, ev)
         m['scale_ratio_v5'] = m['scale_ratio']; m['scale_ratio'] = VE.scale_ratio_ground(m['P'], V, g)
         fp = footprint_world(m['P'], g, st['local_frame'])
         row = {k: v for k, v in m.items() if k != 'P'}
-        row.update({'id': c['id'], 'glb': str(c['glb']), 'M': M.tolist(), 'admitted': admitted(m),
+        row.update({'id': c['id'], 'glb': repo_rel(glb), 'M': M.tolist(), 'admitted': admitted(m),
                     'eval': ev, 'footprint_cells': int(fp.sum()),
                     'footprint_x': [float(N.GX[fp].min()), float(N.GX[fp].max())] if fp.any() else None,
                     'footprint_y': [float(N.GY[fp].min()), float(N.GY[fp].max())] if fp.any() else None})
@@ -252,8 +291,11 @@ def decide_target(obs_dir, glbs, out_dir):
 
 # ---------------------------------------------------------------- 在想象里预演
 def candidate_world_mesh(glb, M, local_frame, out_obj):
-    """候选 GLB -> 配准矩阵 M（局部）-> 世界坐标网格，写成 OBJ。"""
-    mesh = trimesh.load(str(glb), force='mesh', process=False)
+    """候选 GLB -> 配准矩阵 M（局部）-> 世界坐标网格，写成 OBJ。
+
+    `glb` 可能是历史产物里记下的沙箱绝对路径，统一走 `resolve_path` 解析。
+    """
+    mesh = trimesh.load(resolve_path(glb), force='mesh', process=False)
     mesh.apply_transform(np.asarray(M, float))
     c, s = np.cos(local_frame['yaw0']), np.sin(local_frame['yaw0'])
     T = np.array([[c, -s, 0, local_frame['x0']], [s, c, 0, local_frame['y0']], [0, 0, 1, 0], [0, 0, 0, 1.0]])

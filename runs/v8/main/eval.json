@@ -40,12 +40,256 @@
       }
     }
   },
-  "imagination": [],
+  "imagination": [
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "A1",
+      "admitted": false,
+      "footprint_iou": 0.707,
+      "back_err_m": -0.05,
+      "right_err_m": -0.15,
+      "metrics": {
+        "scale_ratio": 1.0225,
+        "hidden_frac": 0.7632,
+        "shell_contact": 0.7007,
+        "free_intrusion_frac": 0.18939,
+        "contour_iou": 0.7022
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "A2",
+      "admitted": false,
+      "footprint_iou": 0.375,
+      "back_err_m": -0.3,
+      "right_err_m": 0.2,
+      "metrics": {
+        "scale_ratio": 1.0225,
+        "hidden_frac": 0.6499,
+        "shell_contact": 0.5612,
+        "free_intrusion_frac": 0.28389,
+        "contour_iou": 0.6919
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "B1",
+      "admitted": false,
+      "footprint_iou": 0.255,
+      "back_err_m": -0.4,
+      "right_err_m": 0.25,
+      "metrics": {
+        "scale_ratio": 1.0,
+        "hidden_frac": 0.5885,
+        "shell_contact": 0.5735,
+        "free_intrusion_frac": 0.30879,
+        "contour_iou": 0.516
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "B2",
+      "admitted": true,
+      "footprint_iou": 0.6,
+      "back_err_m": 0.35,
+      "right_err_m": 0.0,
+      "metrics": {
+        "scale_ratio": 0.9101,
+        "hidden_frac": 0.9173,
+        "shell_contact": 0.7217,
+        "free_intrusion_frac": 0.05279,
+        "contour_iou": 0.7969
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "C1",
+      "admitted": false,
+      "footprint_iou": 0.315,
+      "back_err_m": -0.35,
+      "right_err_m": 0.2,
+      "metrics": {
+        "scale_ratio": 1.0337,
+        "hidden_frac": 0.602,
+        "shell_contact": 0.6883,
+        "free_intrusion_frac": 0.30751,
+        "contour_iou": 0.583
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T1",
+      "rock": "A",
+      "candidate": "C2",
+      "admitted": true,
+      "footprint_iou": 0.714,
+      "back_err_m": 0.0,
+      "right_err_m": 0.1,
+      "metrics": {
+        "scale_ratio": 0.9326,
+        "hidden_frac": 0.8192,
+        "shell_contact": 0.6179,
+        "free_intrusion_frac": 0.13723,
+        "contour_iou": 0.7219
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "A1",
+      "admitted": false,
+      "footprint_iou": 0.165,
+      "back_err_m": -0.8,
+      "right_err_m": 0.4,
+      "metrics": {
+        "scale_ratio": 0.6351,
+        "hidden_frac": 0.9214,
+        "shell_contact": 0.3744,
+        "free_intrusion_frac": 0.02106,
+        "contour_iou": 0.4747
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "A2",
+      "admitted": false,
+      "footprint_iou": 0.352,
+      "back_err_m": -0.4,
+      "right_err_m": 0.4,
+      "metrics": {
+        "scale_ratio": 0.9865,
+        "hidden_frac": 0.9198,
+        "shell_contact": 0.529,
+        "free_intrusion_frac": 0.04548,
+        "contour_iou": 0.6972
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "C1",
+      "admitted": false,
+      "footprint_iou": 0.134,
+      "back_err_m": -0.9,
+      "right_err_m": 0.4,
+      "metrics": {
+        "scale_ratio": 0.8514,
+        "hidden_frac": 0.7593,
+        "shell_contact": 0.3774,
+        "free_intrusion_frac": 0.11218,
+        "contour_iou": 0.4684
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look1",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "C2",
+      "admitted": false,
+      "footprint_iou": 0.129,
+      "back_err_m": -0.9,
+      "right_err_m": 0.4,
+      "metrics": {
+        "scale_ratio": 0.8378,
+        "hidden_frac": 0.7438,
+        "shell_contact": 0.3699,
+        "free_intrusion_frac": 0.12477,
+        "contour_iou": 0.4658
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look2",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "M1",
+      "admitted": false,
+      "footprint_iou": 0.199,
+      "back_err_m": -0.75,
+      "right_err_m": 0.35,
+      "metrics": {
+        "scale_ratio": 0.8333,
+        "hidden_frac": 0.7657,
+        "shell_contact": 0.4062,
+        "free_intrusion_frac": 0.16615,
+        "contour_iou": 0.5573
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look2",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "M2",
+      "admitted": false,
+      "footprint_iou": 0.192,
+      "back_err_m": -0.8,
+      "right_err_m": 0.4,
+      "metrics": {
+        "scale_ratio": 0.9359,
+        "hidden_frac": 0.7128,
+        "shell_contact": 0.3269,
+        "free_intrusion_frac": 0.20966,
+        "contour_iou": 0.515
+      }
+    },
+    {
+      "robot": "imagination",
+      "look": "look2",
+      "target": "T2",
+      "rock": "B",
+      "candidate": "M3",
+      "admitted": false,
+      "footprint_iou": 0.186,
+      "back_err_m": -0.8,
+      "right_err_m": 0.3,
+      "metrics": {
+        "scale_ratio": 0.6795,
+        "hidden_frac": 0.7999,
+        "shell_contact": 0.2907,
+        "free_intrusion_frac": 0.11738,
+        "contour_iou": 0.4239
+      }
+    }
+  ],
+  "incomplete_runs": [
+    "imagination"
+  ],
   "summary": {
-    "admitted": 0,
-    "rejected": 0,
-    "admitted_back_err_range_m": null,
-    "admitted_footprint_iou_range": null,
-    "rejected_too_short": 0
+    "admitted": 2,
+    "rejected": 11,
+    "admitted_back_err_range_m": [
+      0.0,
+      0.35
+    ],
+    "admitted_footprint_iou_range": [
+      0.6,
+      0.714
+    ],
+    "rejected_too_short": 10
   }
 }

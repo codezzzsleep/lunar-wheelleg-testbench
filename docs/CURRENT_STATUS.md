@@ -825,4 +825,4 @@ MUJOCO_GL=egl /opt/lunar/bin/python scripts/v3_basic_cycle.py \
 | 素材包 | `dist/v3_bundle/`（仅旧批次，待按新口径重建） |
 
 # 归档：v2 及更早
-v2 的主表与“修复前 H5_F 不检验本方法”的定级保留在 `docs/V2_*.md` 与 `runs/unseen/...`，不参与 v3 分母；其工程结论（融合入口缺陷、组件清理会删壳层、freespace 超限来自体素化）已并入 v3 实现合同。
+v2 的主表与“修复前 H5_F 不检验本方法”的定级保留在 `docs/archive/v2/*.md` 与 `runs/unseen/...`，不参与 v3 分母；其工程结论（融合入口缺陷、组件清理会删壳层、freespace 超限来自体素化）已并入 v3 实现合同。

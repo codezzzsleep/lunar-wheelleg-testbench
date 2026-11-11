@@ -4,7 +4,7 @@
 > 产物在哪里、哪条判断被修正、为什么进入下一阶段、以及证据等级。
 >
 > 方向依据：《看不见的那一面》项目纲领 v2.1（工作区当前未找到原件；本文件不重写纲领）。
-> 当前状态请看 `docs/UNSEEN_STATUS_V6_1.md`（在途）→ `docs/UNSEEN_STATUS_V6.md`（上一批完成）。
+> 当前状态请看 `docs/archive/unseen/UNSEEN_STATUS_V6_1.md`（在途）→ `docs/archive/unseen/UNSEEN_STATUS_V6.md`（上一批完成）。
 
 ## 0. 证据等级约定
 
@@ -48,7 +48,7 @@
   `1fe0828`/`cb018a0`（环境快照必须在创建运行目录**之前**拍，否则 `git_dirty` 自污染）。
 - **得到**：实现错误修完后收益仍不稳定 → 不是（只是）实现问题。
 - **被修正**：一次被自污染的批次（`canonical_r2`）**作废并移出版本控制**，保留记录。
-- **等级**：A（修复提交 + `docs/TRAINER_REPORT.md`）。
+- **等级**：A（修复提交 + `docs/archive/reports/TRAINER_REPORT.md`）。
 
 ## 4. 转向「部分观测下的行动前推演」（2026-10-27）
 
@@ -73,7 +73,7 @@
 - **得到**：配准可达 0.94+。早期曾据 `1ecbb94` 报「19 个真实候选 0 个通过」——
   **该表述已撤回**：`alignment_table.json` 实际只有 12 行，历史资产/标定物/旧滚转输入不能
   合成一个分母。同口径结论是「12 份原始网格在本版搜索与验收下 0 份通过，其中 6 份经预检为薄片、
-  本不应进入长配准」（见 `docs/UNSEEN_STATUS_E3.md`、`docs/UNSEEN_RECOVERY_R3.md` 更正 2）。
+  本不应进入长配准」（见 `docs/archive/unseen/UNSEEN_STATUS_E3.md`、`docs/archive/unseen/UNSEEN_RECOVERY_R3.md` 更正 2）。
 - **被修正**：很多「模型不行」的结论实际是**相机、缓存、清理器**的问题，逐条被推翻重写。
 - **等级**：A。
 
@@ -93,7 +93,7 @@
 - **方法**：统一初态扰动（lateral 0.05 / yaw 0.05）、30 s 物理任务、12 s 观察、
   六方法同协议、planning/validation 分离种子、冻结决策规则。
 - **产物**：`827a73b`（批次计划 + 三个 Lux3D 任务）、`7a037aa`（30 s 六方法比较）、
-  `2e3c5f4`、`1de8333`；状态 `docs/UNSEEN_STATUS_V5.md`；批次入口
+  `2e3c5f4`、`1de8333`；状态 `docs/archive/unseen/UNSEEN_STATUS_V5.md`；批次入口
   `runs/unseen/delivery_v5/v5_20261029/manifest.json`。
 - **得到**：R01 的 H5 **2/3**，低于 B3/镜像、U 上界与宽度规则的 3/3；R03 的 H5 = 盲走；
   R02/R04 无成功。`benefit_status = NOT_ESTABLISHED`。
@@ -111,7 +111,7 @@
 - **方法**：H5-F（生成父候选 + 观测约束）、B3-F（镜像父候选 + 同一融合器）、
   同真值同初态 30 s 匹配比较、预测审计、真实第二观察、静态土壤测量、连续回放页、绑定校验器。
 - **产物**：`7d6610a`、`f6b301b`、`2f596fe`、`2e13773`、`6c35a15`、`4109128`；
-  批次 `runs/unseen/delivery_v6/v6_20261029/manifest.json`；状态 `docs/UNSEEN_STATUS_V6.md`；
+  批次 `runs/unseen/delivery_v6/v6_20261029/manifest.json`；状态 `docs/archive/unseen/UNSEEN_STATUS_V6.md`；
   页面 `runs/unseen/delivery_v6/v6_20261029/media/replay/index.html`；
   校验 `…/verify/report_v6.json`（33/33）；单测 130 项。
 - **得到**：
@@ -159,19 +159,19 @@
 
 | 文档 | 所属阶段 | 当时的基线 | 后来是否修订 | 现在应跳转 |
 | --- | --- | --- | --- | --- |
-| `docs/STATUS.md` | 早期总体状态（2026-10-25） | 考场/RL 时期 | 方向已改为「先想后走」 | `docs/PROJECT_JOURNEY.md` 第 1–3 节 |
-| `docs/TRAINING_REPORT.md`、`docs/TRAINER_REPORT.md`、`docs/PG_REPORT.md` | 训练与训练器修复 | PPO 修复前后 | 收益结论未变（不成立） | 本文件第 2–3 节 |
+| `docs/archive/reports/STATUS.md` | 早期总体状态（2026-10-25） | 考场/RL 时期 | 方向已改为「先想后走」 | `docs/PROJECT_JOURNEY.md` 第 1–3 节 |
+| `docs/archive/reports/TRAINING_REPORT.md`、`docs/archive/reports/TRAINER_REPORT.md`、`docs/archive/reports/PG_REPORT.md` | 训练与训练器修复 | PPO 修复前后 | 收益结论未变（不成立） | 本文件第 2–3 节 |
 | `docs/REPORT.md` | 早中期总报告 | 考场时期 | 部分结论被 V5 取代 | 本文件第 1–4 节 |
-| `docs/UNSEEN_STATUS_PILOT.md`、`E3/E4/E4B/E4C`、`NEXT` | 图生试点与多轮排查 | 试运行 | 被 V5/V6 取代 | 本文件第 5–6 节 |
-| `docs/UNSEEN_EXECUTION_STATUS.md`、`UNSEEN_REVIEW_REPORT.md` | 执行与审查 | 2026-10-28 | 结论仍有效（缓存/相机/清理） | 本文件第 5 节 |
-| `docs/UNSEEN_RECOVERY_R3.md`、`UNSEEN_FINAL_REPORT.md` | 恢复与收口 | 2026-10-28 | 被 V5 部分取代 | 本文件第 5–7 节 |
-| `docs/UNSEEN_STATUS_V5.md` | V5 统一初态 | `2e3c5f4` 前后 | 已被 V6 超越，但**更正记录保留** | 本文件第 7 节 |
-| `docs/UNSEEN_STATUS_V6.md` | V6 观测约束融合 | `4109128` | V6.1 正在修其碰撞结论 | 本文件第 8 节 → `docs/UNSEEN_STATUS_V6_1.md` |
-| `docs/UNSEEN_STATUS_V6_1.md` | **当前在途** | `b7d906d` 起 | — | 当前状态入口 |
-| `docs/UNSEEN_STATUS_CURRENT.md` | 指针 | — | 指向 V6/V6.1 | 同左 |
+| `docs/archive/unseen/UNSEEN_STATUS_PILOT.md`、`E3/E4/E4B/E4C`、`NEXT` | 图生试点与多轮排查 | 试运行 | 被 V5/V6 取代 | 本文件第 5–6 节 |
+| `docs/archive/unseen/UNSEEN_EXECUTION_STATUS.md`、`archive/unseen/UNSEEN_REVIEW_REPORT.md` | 执行与审查 | 2026-10-28 | 结论仍有效（缓存/相机/清理） | 本文件第 5 节 |
+| `docs/archive/unseen/UNSEEN_RECOVERY_R3.md`、`archive/unseen/UNSEEN_FINAL_REPORT.md` | 恢复与收口 | 2026-10-28 | 被 V5 部分取代 | 本文件第 5–7 节 |
+| `docs/archive/unseen/UNSEEN_STATUS_V5.md` | V5 统一初态 | `2e3c5f4` 前后 | 已被 V6 超越，但**更正记录保留** | 本文件第 7 节 |
+| `docs/archive/unseen/UNSEEN_STATUS_V6.md` | V6 观测约束融合 | `4109128` | V6.1 正在修其碰撞结论 | 本文件第 8 节 → `docs/archive/unseen/UNSEEN_STATUS_V6_1.md` |
+| `docs/archive/unseen/UNSEEN_STATUS_V6_1.md` | **当前在途** | `b7d906d` 起 | — | 当前状态入口 |
+| `docs/archive/unseen/UNSEEN_STATUS_CURRENT.md` | 指针 | — | 指向 V6/V6.1 | 同左 |
 
-**当前状态中心只有一个**：`docs/UNSEEN_STATUS_V6_1.md`（在途）与
-`docs/UNSEEN_STATUS_V6.md`（已完成批次）。本文件不承担状态职责。
+**当前状态中心只有一个**：`docs/archive/unseen/UNSEEN_STATUS_V6_1.md`（在途）与
+`docs/archive/unseen/UNSEEN_STATUS_V6.md`（已完成批次）。本文件不承担状态职责。
 
 ## 12. 任务书与纲领文件
 

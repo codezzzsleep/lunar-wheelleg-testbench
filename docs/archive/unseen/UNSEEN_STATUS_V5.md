@@ -1,6 +1,6 @@
 # V5 当前状态（2026-10-29，main）
 
-> 本文件是 V5 批次的当前状态；`docs/UNSEEN_STATUS_CURRENT.md` 顶部指向本文件，
+> 本文件是 V5 批次的当前状态；`docs/archive/unseen/UNSEEN_STATUS_CURRENT.md` 顶部指向本文件，
 > 其下 V4 段落保留为历史。所有数字来自
 > `runs/unseen/delivery_v5/v5_20261029/manifest.json` 及其子产物。
 

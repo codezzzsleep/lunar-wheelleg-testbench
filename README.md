@@ -7,15 +7,27 @@ worst-case 规则选一个动作，再在**独立真值**上执行并揭晓。�
 
 > 页面是当前主入口；旧的考场与 RL/训练路线已降为历史，数据与报告仍保留在仓库里。
 
-## 当前状态（唯一入口）
+## 交付入口（先读这三份）
 
-- **最新（2026-11-08）**：`docs/v8/STATUS.md` —— V8 停在 SPEC §3.3，未收口；
-- **V7（已收尾）**：`docs/v7/STATUS.md` —— 含 v7.3 重评估与收尾结论。
+- **[docs/DELIVERY.md](docs/DELIVERY.md)** —— 交付说明：结论矩阵、证据等级（A 可引用 / B 机制验证 / C 不可引用）、
+  边界与复现命令。**这是唯一该当结论看的地方。**
+- **[docs/v8/STATUS.md](docs/v8/STATUS.md)** —— 最新状态（V8；2026-11-11 本机补跑后，§4.1/§4.2 已收口、§3.3 记 BLOCKED）。
+- **[docs/v7/STATUS.md](docs/v7/STATUS.md)** —— V7 收尾与 v7.3 重评估（唯一基本闭环的版本）。
 
-总述：v5 收口 → V6/V7 收尾 → V8 在 §3.3 停住等对齐（眼数已按 SPEC §0.4 对齐为两眼，
-待重跑 §3.3 收口；`runs/v8/main/eval.json` 已由本机脚本生成，但**不含想象车**——那次运行
-退出码 10、没有 `summary.json`，缺口与读法见 `docs/v8/STATUS.md`）。除这两份，其他 `docs/*.md`
-按归档处理，保留过程与更正记录。
+其余按归档处理：`docs/README.md` 是文档地图，`docs/archive/` 是历史过程文档（v2 批、轮次报告、
+unseen 各版状态、v4–v6 过程报告），**不要**当现行结论引用。
+
+### 一句话现状（2026-11-11）
+
+- **研究结论：`benefit = NOT_ESTABLISHED`**（自 v5 起未变）。V8 的完整故事：保守车 5 眼后卡住；
+  乐观车撞；"假设黑影里也能测深处"的对照车 3 眼到终点；"用真值几何当想象的"上界车 1 眼到终点；
+  而**真实 Lux3D 想象的车，一次都没能让自检放行出可走路线**（首眼 T1 采纳 2/6、T2 0/4，第二眼 0/3）。
+- **反事实这次真跑了**：把被自检拒绝、想得最短的那份想象强行采纳（`--trust T2=C1`，短 0.9 m），
+  规划器就在"真值里看不见的那 0.9 m"上看见了空路，`t=89.18 s` 直接撞上石头 —— 说明**自检的拒绝是
+  load-bearing 的**，而不是形式主义。
+- **V8 §3.3 有一个明确缺口**：两眼上限下"会停车"的结论成立，但本机跑不成一次完整物理运行 ——
+  跨机重放第二眼时位姿差 0.19 mm，逐字节复用判据失效，脚本按设计退出码 11（拒绝拿旧结果冒充）。
+  已量化留证：`runs/v8/main/imagination/looks/look2/REPLAY_DIFF.json`。
 
 **2026-11-03 历史交付（v3 口径，非现状）**：`dist/minimal/index.html`（最小可复现交付页）、
 `docs/G6_DELIVERY.md`、`docs/G6_STATUS.md`、`docs/FINAL_STATE.md`、
@@ -45,7 +57,7 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 
 - 入口：`runs/unseen/delivery_v6/v6_20261029/manifest.json`
 - 连续回放页：`runs/unseen/delivery_v6/v6_20261029/media/replay/index.html`
-- 当前状态：`docs/UNSEEN_STATUS_V6.md`
+- 当前状态：`docs/archive/unseen/UNSEEN_STATUS_V6.md`
 - 关键限制：H5-F 可见几何过 strict，但 CoACD 32/64 的占据 IoU 只有 0.28，标 `COLLISION_UNRELIABLE`；H5-F 的 S1 成功不能归因于隐藏几何。第二观察真实触发但两者都保留，worst-case 选 A0；benefit=NOT_ESTABLISHED。
 
 ## V6.1（2026-10-30，在途）融合修复与新发现
@@ -53,7 +65,7 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 - 批次入口：`runs/unseen/delivery_v6_1/v6_1_20261029/manifest.json`
 - **批次报告页（静态、已用无头浏览器验证）**：`runs/unseen/delivery_v6_1/v6_1_20261029/media/report/index.html`
   （截图：`.../media/report/screenshot.png`）
-- 当前状态：`docs/UNSEEN_STATUS_V6_1.md`；交付验收器：`scripts/verify_delivery_v6_1.py`（103/103）
+- 当前状态：`docs/archive/unseen/UNSEEN_STATUS_V6_1.md`；交付验收器：`scripts/verify_delivery_v6_1.py`（103/103）
 - 三条要点：① 观测壳层曾无上界，把未知区填成实体（face12k 新增 40310 → 修复后 279 体素）；
   ② 误差首次出现在**占据化+网格提取**（S2），不是相机/加载；③ 多假设达到真值上限，但**镜像先验同分**，
   benefit 仍 `NOT_ESTABLISHED`；④ 正面可见面排序会被视角反转（F 第二观察实测）。
@@ -61,7 +73,7 @@ V6 用 V5 已有真实资产，**不新增付费 create**：把观测到的可�
 ## 资料与项目历程
 
 - **当前执行状态**：`docs/v8/STATUS.md`（最新，2026-11-08）与 `docs/v7/STATUS.md`（V7 已收尾）；
-  V6.1 时期的交接见 `docs/UNSEEN_STATUS_V6_1.md` → `docs/UNSEEN_STATUS_V6.md`（历史）
+  V6.1 时期的交接见 `docs/archive/unseen/UNSEEN_STATUS_V6_1.md` → `docs/archive/unseen/UNSEEN_STATUS_V6.md`（历史）
 - **项目历程与决策证据**：`docs/PROJECT_JOURNEY.md`（每阶段：想解决什么、怎么做的、哪条判断被修正、证据等级）
 - **外部资料来源登记**：`docs/sources/lux3d/README.md` + 机器可读 `docs/sources/lux3d/source_manifest.json`
 - **场景适配分析**：`docs/research/LUX3D_SCENE_FIT.md`（官方说明 / 项目实测 / 项目推断三类分开）
@@ -182,13 +194,18 @@ LD_LIBRARY_PATH=/tmp/sysroot/usr/lib/x86_64-linux-gnu:/tmp/sysroot/lib/x86_64-li
 
 ```bash
 .venv/bin/python -m py_compile scripts/app_unseen.py
-MUJOCO_GL=egl .venv/bin/python -m unittest discover -s tests -v    # 全套约 15 分钟
+.venv/bin/python -m unittest discover -s tests -v     # 全套约 15 分钟，约 150 项
+.venv/bin/python scripts/check_repo_hygiene.py        # 仓库卫生：补丁清单 / LFS / 大文件直入库 / 产物类路径
+sha256sum -c PATCH_SHA256.txt                         # V8 补丁清单，应 11/11 OK
 ```
 
-- `MUJOCO_GL=egl` 要显式给：默认后端在无 `DISPLAY` 的机器上起不来。
-- **无 GL 时两个渲染模块自动跳过**（`tests/_gl.py` 子进程探测 + `skipUnless`）：
-  `test_camera` / `test_freespace` 变成 `OK (skipped=N)`，不会中断 suite，其余 11 个模块正常跑。
-- 总时长约 15 分钟（`test_pipeline` 534 s、`test_trainer` 321 s）。
+- **有 GL 的机器**：加 `MUJOCO_GL=egl` 再跑。
+- **没有 GL 的机器**（无 `DISPLAY`、无 root）：跑一次
+  `./scripts/setup_local_gl.sh`（自动下载并解包 Mesa 到 `/tmp/glroot`，不需要 root），
+  然后 `source <(./scripts/setup_local_gl.sh --export)` 激活，即可用 `MUJOCO_GL=osmesa` 跑渲染。
+  不装也能跑测试：`tests/_gl.py` 用子进程探测 GL，没有上下文时 `test_camera` / `test_freespace`
+  自动跳过（`OK (skipped=N)`），不会 core dump 中断 suite。
+- 总时长约 15 分钟（`test_pipeline` 534 s、`test_trainer` 321 s），其余 11 个模块都是秒级。
 
 页面接口烟测：
 
@@ -206,19 +223,19 @@ runs/unseen/delivery_v5/v5_20261029/  V5 批次：manifest、observations、cand
 runs/unseen/recovery_r3/              已提交的支持运行（真实 G_R03、六方法、fixture 观察链、开发例）
 cases/unseen_v1/                      案例定义与 V5 truth/twin 用例
 docs/DEMO_V5.md                       2–3 分钟演示脚本（当前批次证据）
-docs/UNSEEN_STATUS_CURRENT.md         研究状态与边界（历史状态文档之一）
+docs/archive/unseen/UNSEEN_STATUS_CURRENT.md  研究状态与边界（历史状态文档之一）
 ```
 
 ## 历史：旧考场与 RL/训练路线（保留，不再作为当前主入口）
 
 以下内容保留用于追溯，**不是**当前默认路线，也不代表当前 V5 交付。旧运行目录、
-`docs/ROUND*_REPORT.md`、`docs/PG_REPORT.md`、`runs/canonical*/` 等均未删除。
+`docs/archive/rounds/ROUND*_REPORT.md`、`docs/archive/reports/PG_REPORT.md`、`runs/canonical*/` 等均未删除。
 
 - 旧主线是“条件 → 场景 → 训练 → 共同评估”的 RL/考试路线：`scripts/pipeline.py`、
   `scripts/run_experiments.py`、`scripts/evaluate.py`；控制器是 `hold` / `step` / `adapt`
   手工控制器，不是学出来的技能。
 - 旧考场：`scripts/demo.py`、`scripts/analyze.py`、`scripts/replay.py`；`hold/step/adapt`
-  的实测边界见 `docs/ROUND3_REPORT.md`。旧结论（任务 M 无可测增益、任务 K 未达 10pp、
+  的实测边界见 `docs/archive/rounds/ROUND3_REPORT.md`。旧结论（任务 M 无可测增益、任务 K 未达 10pp、
   固定原语 0/12）只属于旧路线，不要搬到 V5 上。
 - 旧入口 `scripts/app.py --port 8080` 仍保留，但新工作看 `scripts/app_unseen.py`。
 - 旧训练/考场数据与报告仍在 `runs/`、`docs/` 中；本 README 不删除任何旧数据。

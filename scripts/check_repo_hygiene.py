@@ -104,6 +104,20 @@ def main():
     else:
         notes.append('git-lfs 已安装')
 
+    # 文档链接：历史遗留的悬空引用有固定基线（见 docs/README.md），只拦"新增"。
+    doc_baseline = 27
+    try:
+        r = subprocess.run([sys.executable, str(ROOT / 'scripts/check_docs_links.py'), '--count'],
+                           cwd=str(ROOT), capture_output=True, text=True, timeout=120)
+        n_bad = int(r.stdout.strip()) if r.stdout.strip().isdigit() else -1
+    except Exception as e:                                   # noqa: BLE001
+        notes.append(f'文档链接检查未执行：{type(e).__name__}')
+        n_bad = -1
+    if n_bad > doc_baseline:
+        problems.append(f'文档悬空目标 {n_bad} 个，超过基线 {doc_baseline}（新增了断链）')
+    elif n_bad >= 0:
+        notes.append(f'文档悬空目标 {n_bad} 个（基线 {doc_baseline}，没有新增）')
+
     blobs = tracked_blobs()
     limit = int(a.max_mb * 1024 * 1024)
     big = sorted(((p, s) for p, s in blobs if s > limit), key=lambda x: -x[1])

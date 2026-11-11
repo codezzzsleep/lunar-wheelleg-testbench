@@ -5,7 +5,7 @@
 
 - 代码与协议：`d1f384fe7`（本目录随后续结果更新）
 - 状态入口：[docs/CURRENT_STATUS.md](../../docs/CURRENT_STATUS.md)
-- 接续说明：[docs/V2_HANDOFF.md](../../docs/V2_HANDOFF.md)
+- 接续说明：[docs/archive/v2/V2_HANDOFF.md](../../docs/archive/v2/V2_HANDOFF.md)
 
 ## 1. 融合缺陷修复（已定稿）
 
@@ -73,5 +73,5 @@ U_truth 行按正式可见量记，真值无动作的状态记 `safe_stop_no_ref
 - `key_states/truth_*.manifest.json`：已知答案的融合清单；
 - `nominal/`：nominal 主比较结果，A 侧已完成 13 个状态；B 侧 P22/P76/P29/P37 待补。
 
-**先读** [docs/REVIEW_2026-11-03.md](../../docs/REVIEW_2026-11-03.md)：评审指出 strict 测的是壳层而非生成几何、
+**先读** [docs/archive/reports/REVIEW_2026-11-03.md](../../docs/archive/reports/REVIEW_2026-11-03.md)：评审指出 strict 测的是壳层而非生成几何、
 真值对照未过 strict、5 点表退化、first/multi 组成不一致；本批目前不能作为方法优劣的发表证据。

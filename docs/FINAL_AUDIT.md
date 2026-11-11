@@ -9,9 +9,9 @@
 | `docs/BOUNDARY.md` | D/E 能力边界 | 存在 |
 | `docs/EVIDENCE_INDEX.md` | 57 run 自动索引 | 存在 |
 | `docs/CONSISTENCY.md` | 15 项一致性检查 | 存在 |
-| `docs/D_FAILURE_REPORT.md` | CLIMB 最小失败报告 | 存在 |
-| `docs/E_CASES.md` | E 三案例 | 存在 |
-| `docs/D2_ROCK_SUMMARY.md` | 真实岩石动作矩阵 | 存在 |
+| `docs/archive/reports/D_FAILURE_REPORT.md` | CLIMB 最小失败报告 | 存在 |
+| `docs/archive/reports/E_CASES.md` | E 三案例 | 存在 |
+| `docs/archive/reports/D2_ROCK_SUMMARY.md` | 真实岩石动作矩阵 | 存在 |
 | `docs/CURRENT_STATUS.md` | 交接/状态页 | 存在 |
 
 ## 自动核对
